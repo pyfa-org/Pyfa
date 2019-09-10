@@ -54,7 +54,7 @@ class YDpsMixin:
         for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
-            dpsMap[mod] = mod.getDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))
+            dpsMap[mod] = mod.getDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False))
         for drone in src.item.activeDronesIter():
             if not drone.isDealingDamage():
                 continue
@@ -88,7 +88,7 @@ class YVolleyMixin:
         for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
-            volleyMap[mod] = mod.getVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))
+            volleyMap[mod] = mod.getVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False))
         for drone in src.item.activeDronesIter():
             if not drone.isDealingDamage():
                 continue

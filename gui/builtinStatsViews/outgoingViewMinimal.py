@@ -28,27 +28,27 @@ import eos.config
 stats = [
     (
         "labelRemoteCapacitor", "Capacitor:", "{}{} GJ/s", "capacitorInfo", "Capacitor restored",
-        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).capacitor,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).capacitor,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).capacitor,
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).capacitor,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).capacitor,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).capacitor,
         3, 0, 0),
     (
         "labelRemoteShield", "Shield:", "{}{} HP/s", "shieldActive", "Shield restored",
-        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).shield,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).shield,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).shield,
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).shield,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).shield,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).shield,
         3, 0, 0),
     (
         "labelRemoteArmor", "Armor:", "{}{} HP/s", "armorActive", "Armor restored",
-        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).armor,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).armor,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).armor,
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).armor,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).armor,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).armor,
         3, 0, 0),
     (
         "labelRemoteHull", "Hull:", "{}{} HP/s", "hullActive", "Hull restored",
-        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).hull,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).hull,
-        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).hull,
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).hull,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).hull,
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).hull,
         3, 0, 0)]
 
 

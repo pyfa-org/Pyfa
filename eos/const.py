@@ -90,9 +90,12 @@ class FittingHardpoint(IntEnum):
 
 @unique
 class SpoolType(IntEnum):
-    SCALE = 0  # [0..1]
-    TIME = 1  # Expressed via time in seconds since spool up started
-    CYCLES = 2  # Expressed in amount of cycles since spool up started
+    # Spool and cycle scale are different in case if max spool amount cannot
+    # be divided by spool step without remainder
+    SPOOL_SCALE = 0  # [0..1]
+    CYCLE_SCALE = 1  # [0..1]
+    TIME = 2  # Expressed via time in seconds since spool up started
+    CYCLES = 3  # Expressed in amount of cycles since spool up started
 
 
 @unique

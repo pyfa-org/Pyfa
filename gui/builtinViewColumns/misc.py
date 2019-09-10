@@ -113,7 +113,7 @@ class Miscellanea(ViewColumn):
                 info.append((text, tooltip))
 
             defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-            spoolTime = stuff.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))[1]
+            spoolTime = stuff.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False))[1]
             if spoolTime:
                 text = "{0}s".format(formatAmount(spoolTime, 3, 0, 3))
                 tooltip = "spool up time"
@@ -396,9 +396,9 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup == "Mutadaptive Remote Armor Repairer":
             defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-            spoolOptDefault = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
-            spoolOptPre = SpoolOptions(SpoolType.SCALE, 0, True)
-            spoolOptFull = SpoolOptions(SpoolType.SCALE, 1, True)
+            spoolOptDefault = SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)
+            spoolOptPre = SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)
+            spoolOptFull = SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)
             rps = stuff.getRemoteReps(spoolOptions=spoolOptDefault, ignoreState=True).armor
             rpsPre = stuff.getRemoteReps(spoolOptions=spoolOptPre, ignoreState=True).armor
             rpsFull = stuff.getRemoteReps(spoolOptions=spoolOptFull, ignoreState=True).armor

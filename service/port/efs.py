@@ -363,7 +363,7 @@ class EfsPort:
         groups = {}
         # Export at maximum spool for consistency, spoolup data is exported anyway.
         defaultSpoolValue = 1
-        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, True)
+        spoolOptions = SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, True)
         for mod in fit.modules:
             if mod.getDps(spoolOptions=spoolOptions).total > 0:
                 # Group weapon + ammo combinations that occur more than once
@@ -689,7 +689,7 @@ class EfsPort:
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
         # Export at maximum spool for consistency, spoolup data is exported anyway.
         defaultSpoolValue = 1
-        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, True)
+        spoolOptions = SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, True)
 
         cargoIDs = []
         for cargo in fit.cargo:

@@ -50,7 +50,7 @@ class YRpsMixin:
             isAncShield = 'shipModuleAncillaryRemoteShieldBooster' in mod.item.effects
             isAncArmor = 'shipModuleAncillaryRemoteArmorRepairer' in mod.item.effects
             rpsMap[mod] = mod.getRemoteReps(
-                spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False),
+                spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False),
                 reloadOverride=ancReload if (isAncShield or isAncArmor) else None)
         for drone in src.item.activeDronesIter():
             if not drone.isRemoteRepping():

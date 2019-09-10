@@ -84,7 +84,7 @@ class DpsColumn(GraphColumn):
 
     def _getValue(self, fit):
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        return fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total, None
+        return fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total, None
 
     def _getFitTooltip(self):
         return 'Declared DPS'
@@ -102,7 +102,7 @@ class VolleyColumn(GraphColumn):
 
     def _getValue(self, fit):
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        return fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total, None
+        return fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total, None
 
     def _getFitTooltip(self):
         return 'Declared volley'
@@ -329,7 +329,7 @@ class ShieldRRColumn(GraphColumn):
 
     def _getValue(self, fit):
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).shield, 'HP/s'
+        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).shield, 'HP/s'
 
     def _getFitTooltip(self):
         return 'Declared shield repair speed'
@@ -348,7 +348,7 @@ class ArmorRRColumn(GraphColumn):
 
     def _getValue(self, fit):
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).armor, 'HP/s'
+        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).armor, 'HP/s'
 
     def _getFitTooltip(self):
         return 'Declared armor repair speed'
@@ -367,7 +367,7 @@ class HullRRColumn(GraphColumn):
 
     def _getValue(self, fit):
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).hull, 'HP/s'
+        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).hull, 'HP/s'
 
     def _getFitTooltip(self):
         return 'Declared hull repair speed'
