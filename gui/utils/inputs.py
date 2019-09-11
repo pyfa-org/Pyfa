@@ -110,7 +110,11 @@ class FloatRangeBox(wx.TextCtrl):
         super().__init__(parent=parent, id=id, style=style, **kwargs)
         self.Bind(wx.EVT_TEXT, self.OnText)
         self._storedValue = ''
-        self.ChangeValue('{}-{}'.format(valToStr(min(value)), valToStr(max(value))))
+        value = [v for v in value if v is not None]
+        if not value:
+            self.ChangeValue('')
+        else:
+            self.ChangeValue('{}-{}'.format(valToStr(min(value)), valToStr(max(value))))
 
     def ChangeValue(self, value):
         self._storedValue = value
