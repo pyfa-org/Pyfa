@@ -46,6 +46,7 @@ from gui.builtinContextMenus.targetProfile import switcher
 # Graph extra options
 from gui.builtinContextMenus import graphDmgIgnoreResists
 from gui.builtinContextMenus import graphDmgApplyProjected
+from gui.builtinContextMenus import graphDroneControlRange
 from gui.builtinContextMenus import graphDmgDroneMode
 # Additions panel menus
 from gui.builtinContextMenus import additionsExportSelection

@@ -20,6 +20,7 @@
 
 from eos.utils.float import floatUnerr
 from graphs.calc import calculateRangeFactor
+from service.settings import GraphSettings
 
 
 def getApplicationPerKey(src, distance):
@@ -34,7 +35,14 @@ def getApplicationPerKey(src, distance):
     for drone in src.item.activeDronesIter():
         if not drone.isRemoteRepping():
             continue
-        applicationMap[drone] = 1 if distance is None or distance <= src.item.extraAttributes['droneControlRange'] else 0
+        if (
+            distance is None or
+            GraphSettings.getInstance().get('ignoreDCR') or
+            distance <= src.item.extraAttributes['droneControlRange']
+        ):
+            applicationMap[drone] = 1
+        else:
+            applicationMap[drone] = 0
     # Ensure consistent results - round off a little to avoid float errors
     for k, v in applicationMap.items():
         applicationMap[k] = floatUnerr(v)

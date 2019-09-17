@@ -519,6 +519,7 @@ class GraphSettings:
     def __init__(self):
         defaults = {
             'mobileDroneMode': GraphDpsDroneMode.auto,
+            'ignoreDCR': False,
             'ignoreResists': True,
             'applyProjected': True}
         self.settings = SettingsProvider.getInstance().getSettings('graphSettings', defaults)

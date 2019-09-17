@@ -22,6 +22,7 @@ import math
 
 from graphs.calc import calculateMultiplier, calculateRangeFactor
 from graphs.data.base import SmoothPointGetter
+from service.settings import GraphSettings
 
 
 class Distance2NeutingStrGetter(SmoothPointGetter):
@@ -51,7 +52,8 @@ class Distance2NeutingStrGetter(SmoothPointGetter):
             if 'entityEnergyNeutralizerFalloff' in drone.item.effects:
                 neuts.extend(drone.amountActive * ((
                     drone.getModifiedItemAttr('energyNeutralizerAmount') / (drone.getModifiedItemAttr('energyNeutralizerDuration') / 1000) * resonance,
-                    src.item.extraAttributes['droneControlRange'], 0),))
+                    math.inf if GraphSettings.getInstance().get('ignoreDCR') else src.item.extraAttributes['droneControlRange'],
+                    0),))
         for fighter, ability in src.item.activeFighterAbilityIter():
             if ability.effect.name == 'fighterAbilityEnergyNeutralizer':
                 nps = fighter.getModifiedItemAttr('fighterAbilityEnergyNeutralizerAmount') / (ability.cycleTime / 1000)
@@ -94,7 +96,8 @@ class Distance2WebbingStrGetter(SmoothPointGetter):
             if 'remoteWebifierEntity' in drone.item.effects:
                 webs.extend(drone.amountActive * ((
                     drone.getModifiedItemAttr('speedFactor') * resonance,
-                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+                    math.inf if GraphSettings.getInstance().get('ignoreDCR') else src.item.extraAttributes['droneControlRange'],
+                    0, 'default'),))
         for fighter, ability in src.item.activeFighterAbilityIter():
             if ability.effect.name == 'fighterAbilityStasisWebifier':
                 webs.append((
@@ -139,7 +142,8 @@ class Distance2EcmStrMaxGetter(SmoothPointGetter):
             if 'entityECMFalloff' in drone.item.effects:
                 ecms.extend(drone.amountActive * ((
                     max(drone.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
-                    src.item.extraAttributes['droneControlRange'], 0),))
+                    math.inf if GraphSettings.getInstance().get('ignoreDCR') else src.item.extraAttributes['droneControlRange'],
+                    0),))
         for fighter, ability in src.item.activeFighterAbilityIter():
             if ability.effect.name == 'fighterAbilityECM':
                 ecms.append((
@@ -178,7 +182,8 @@ class Distance2DampStrLockRangeGetter(SmoothPointGetter):
             if 'remoteSensorDampEntity' in drone.item.effects:
                 damps.extend(drone.amountActive * ((
                     drone.getModifiedItemAttr('maxTargetRangeBonus') * resonance,
-                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+                    math.inf if GraphSettings.getInstance().get('ignoreDCR') else src.item.extraAttributes['droneControlRange'],
+                    0, 'default'),))
         return {'damps': damps}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
@@ -215,7 +220,8 @@ class Distance2TdStrOptimalGetter(SmoothPointGetter):
             if 'npcEntityWeaponDisruptor' in drone.item.effects:
                 tds.extend(drone.amountActive * ((
                     drone.getModifiedItemAttr('maxRangeBonus') * resonance,
-                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+                    math.inf if GraphSettings.getInstance().get('ignoreDCR') else src.item.extraAttributes['droneControlRange'],
+                    0, 'default'),))
         return {'tds': tds}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
@@ -291,7 +297,8 @@ class Distance2TpStrGetter(SmoothPointGetter):
             if 'remoteTargetPaintEntity' in drone.item.effects:
                 tps.extend(drone.amountActive * ((
                     drone.getModifiedItemAttr('signatureRadiusBonus') * resonance,
-                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+                    math.inf if GraphSettings.getInstance().get('ignoreDCR') else src.item.extraAttributes['droneControlRange'],
+                    0, 'default'),))
         return {'tps': tps}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):

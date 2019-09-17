@@ -200,7 +200,11 @@ def getGuidedBombMult(mod, src, distance, tgtSigRadius):
 
 
 def getDroneMult(drone, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
-    if distance is not None and distance > src.item.extraAttributes['droneControlRange']:
+    if (
+        distance is not None and
+        not GraphSettings.getInstance().get('ignoreDCR') and
+        distance > src.item.extraAttributes['droneControlRange']
+    ):
         return 0
     droneSpeed = drone.getModifiedItemAttr('maxVelocity')
     # Hard to simulate drone behavior, so assume chance to hit is 1 for mobile drones

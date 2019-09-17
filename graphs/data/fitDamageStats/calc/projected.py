@@ -94,7 +94,11 @@ def getTackledSpeed(src, tgt, currentUntackledSpeed, srcScramRange, tgtScrammabl
     mobileWebs = []
     mobileWebs.extend(webFighters)
     # Drones have range limit
-    if distance is None or distance <= src.item.extraAttributes['droneControlRange']:
+    if (
+        distance is None or
+        GraphSettings.getInstance().get('ignoreDCR') or
+        distance <= src.item.extraAttributes['droneControlRange']
+    ):
         mobileWebs.extend(webDrones)
     atkRadius = src.getRadius()
     # As mobile webs either follow the target or stick to the attacking ship,
@@ -155,7 +159,11 @@ def getSigRadiusMult(src, tgt, tgtSpeed, srcScramRange, tgtScrammables, tpMods, 
     mobileTps = []
     mobileTps.extend(tpFighters)
     # Drones have range limit
-    if distance is None or distance <= src.item.extraAttributes['droneControlRange']:
+    if (
+        distance is None or
+        GraphSettings.getInstance().get('ignoreDCR') or
+        distance <= src.item.extraAttributes['droneControlRange']
+    ):
         mobileTps.extend(tpDrones)
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
     atkRadius = src.getRadius()
