@@ -155,8 +155,8 @@ class CharacterEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Character Editor", resizeable=True,
-            pos=wx.DefaultPosition, size=wx.Size(640, 600))
+            parent, id=wx.ID_ANY, title="Character Editor", resizeable=True, pos=wx.DefaultPosition,
+            size=wx.Size(950, 650) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 600))
 
         i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
@@ -209,6 +209,7 @@ class CharacterEditor(AuxiliaryFrame):
         self.SetSizer(mainSizer)
         self.Layout()
 
+        self.SetMinSize(self.GetSize())
         self.Centre(wx.BOTH)
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
