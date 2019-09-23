@@ -440,10 +440,8 @@ class Fit:
             return False
 
         # Citadel modules are now under a new category, so we can check this to ensure only structure modules can fit on a citadel
-        if isinstance(self.ship, Citadel) and item.category.name != "Structure Module" or \
-                not isinstance(self.ship, Citadel) and item.category.name == "Structure Module":
+        if isinstance(self.ship, Citadel) is not item.isStandup:
             return False
-
         return True
 
     def clear(self, projected=False, command=False):

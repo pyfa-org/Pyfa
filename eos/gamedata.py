@@ -530,6 +530,14 @@ class Item(EqBase):
     def isBooster(self):
         return self.group.name == 'Booster' and self.category.name == 'Implant'
 
+    @property
+    def isStandup(self):
+        if self.category.name == "Structure Module":
+            return True
+        if self.isFighter and {'fighterSquadronIsStandupLight', 'fighterSquadronIsStandupHeavy', 'fighterSquadronIsStandupSupport'}.intersection(self.attributes):
+            return True
+        return False
+
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
                 self.ID, self.name, hex(id(self))
