@@ -21,7 +21,7 @@
 import math
 
 from eos.utils.float import floatUnerr
-from graphs.calc import calculateRangeFactor
+from graphs.calc import calculateRangeFactor, checkLockRange, checkDroneControlRange
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
@@ -75,30 +75,29 @@ def getTackledSpeed(src, tgt, currentUntackledSpeed, srcScramRange, tgtScrammabl
     # What's immobile cannot be slowed
     if maxUntackledSpeed == 0:
         return maxUntackledSpeed
+    inLockRange = checkLockRange(src=src, distance=distance)
+    inDroneRange = checkDroneControlRange(src=src, distance=distance)
     speedRatio = currentUntackledSpeed / maxUntackledSpeed
     # No scrams or distance is longer than longest scram - nullify scrammables list
-    if srcScramRange is None or (distance is not None and distance > srcScramRange):
+    if not inLockRange or srcScramRange is None or (distance is not None and distance > srcScramRange):
         tgtScrammables = ()
     appliedMultipliers = {}
-    # Modules first, they are applied always the same way
-    for wData in webMods:
-        appliedBoost = wData.boost * calculateRangeFactor(
-            srcOptimalRange=wData.optimal,
-            srcFalloffRange=wData.falloff,
-            distance=distance)
-        if appliedBoost:
-            appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
+    # Modules first, they are always applied the same way
+    if inLockRange:
+        for wData in webMods:
+            appliedBoost = wData.boost * calculateRangeFactor(
+                srcOptimalRange=wData.optimal,
+                srcFalloffRange=wData.falloff,
+                distance=distance)
+            if appliedBoost:
+                appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
     maxTackledSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers, ignoreAfflictors=tgtScrammables)
     currentTackledSpeed = maxTackledSpeed * speedRatio
     # Drones and fighters
     mobileWebs = []
-    mobileWebs.extend(webFighters)
-    # Drones have range limit
-    if (
-        distance is None or
-        GraphSettings.getInstance().get('ignoreDCR') or
-        distance <= src.item.extraAttributes['droneControlRange']
-    ):
+    if inLockRange:
+        mobileWebs.extend(webFighters)
+    if inLockRange and inDroneRange:
         mobileWebs.extend(webDrones)
     atkRadius = src.getRadius()
     # As mobile webs either follow the target or stick to the attacking ship,
@@ -142,28 +141,27 @@ def getSigRadiusMult(src, tgt, tgtSpeed, srcScramRange, tgtScrammables, tpMods, 
     # Can blow non-immune ships and target profiles
     if tgt.isFit and tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return 1
+    inLockRange = checkLockRange(src=src, distance=distance)
+    inDroneRange = checkDroneControlRange(src=src, distance=distance)
     initSig = tgt.getSigRadius()
     # No scrams or distance is longer than longest scram - nullify scrammables list
-    if srcScramRange is None or (distance is not None and distance > srcScramRange):
+    if not inLockRange or srcScramRange is None or (distance is not None and distance > srcScramRange):
         tgtScrammables = ()
     # TPing modules
     appliedMultipliers = {}
-    for tpData in tpMods:
-        appliedBoost = tpData.boost * calculateRangeFactor(
-            srcOptimalRange=tpData.optimal,
-            srcFalloffRange=tpData.falloff,
-            distance=distance)
-        if appliedBoost:
-            appliedMultipliers.setdefault(tpData.stackingGroup, []).append((1 + appliedBoost / 100, tpData.resAttrID))
+    if inLockRange:
+        for tpData in tpMods:
+            appliedBoost = tpData.boost * calculateRangeFactor(
+                srcOptimalRange=tpData.optimal,
+                srcFalloffRange=tpData.falloff,
+                distance=distance)
+            if appliedBoost:
+                appliedMultipliers.setdefault(tpData.stackingGroup, []).append((1 + appliedBoost / 100, tpData.resAttrID))
     # TPing drones
     mobileTps = []
-    mobileTps.extend(tpFighters)
-    # Drones have range limit
-    if (
-        distance is None or
-        GraphSettings.getInstance().get('ignoreDCR') or
-        distance <= src.item.extraAttributes['droneControlRange']
-    ):
+    if inLockRange:
+        mobileTps.extend(tpFighters)
+    if inLockRange and inDroneRange:
         mobileTps.extend(tpDrones)
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
     atkRadius = src.getRadius()

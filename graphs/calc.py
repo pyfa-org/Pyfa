@@ -20,6 +20,8 @@
 
 import math
 
+from service.settings import GraphSettings
+
 
 def calculateRangeFactor(srcOptimalRange, srcFalloffRange, distance, restrictedRange=True):
     """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
@@ -63,3 +65,19 @@ def calculateMultiplier(multipliers):
                 bonus = l[i]
                 val *= 1 + (bonus - 1) * math.exp(- i ** 2 / 7.1289)
     return val
+
+
+def checkLockRange(src, distance):
+    if distance is None:
+        return True
+    if GraphSettings.getInstance().get('ignoreLockRange'):
+        return True
+    return distance <= src.item.maxTargetRange
+
+
+def checkDroneControlRange(src, distance):
+    if distance is None:
+        return True
+    if GraphSettings.getInstance().get('ignoreDCR'):
+        return True
+    return distance <= src.item.extraAttributes['droneControlRange']

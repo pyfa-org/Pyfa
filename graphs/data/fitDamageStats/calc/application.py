@@ -23,35 +23,44 @@ from functools import lru_cache
 
 from eos.const import FittingHardpoint
 from eos.utils.float import floatUnerr
-from graphs.calc import calculateRangeFactor
+from graphs.calc import calculateRangeFactor, checkLockRange, checkDroneControlRange
 from service.attribute import Attribute
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
 def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+    inLockRange = checkLockRange(src=src, distance=distance)
+    inDroneRange = checkDroneControlRange(src=src, distance=distance)
     applicationMap = {}
     for mod in src.item.activeModulesIter():
         if not mod.isDealingDamage():
             continue
         if mod.hardpoint == FittingHardpoint.TURRET:
-            applicationMap[mod] = getTurretMult(
-                mod=mod,
-                src=src,
-                tgt=tgt,
-                atkSpeed=atkSpeed,
-                atkAngle=atkAngle,
-                distance=distance,
-                tgtSpeed=tgtSpeed,
-                tgtAngle=tgtAngle,
-                tgtSigRadius=tgtSigRadius)
+            if inLockRange:
+                applicationMap[mod] = getTurretMult(
+                    mod=mod,
+                    src=src,
+                    tgt=tgt,
+                    atkSpeed=atkSpeed,
+                    atkAngle=atkAngle,
+                    distance=distance,
+                    tgtSpeed=tgtSpeed,
+                    tgtAngle=tgtAngle,
+                    tgtSigRadius=tgtSigRadius)
+            else:
+                applicationMap[mod] = 0
         elif mod.hardpoint == FittingHardpoint.MISSILE:
-            applicationMap[mod] = getLauncherMult(
-                mod=mod,
-                src=src,
-                distance=distance,
-                tgtSpeed=tgtSpeed,
-                tgtSigRadius=tgtSigRadius)
+            # FoF missiles can shoot beyond lock range
+            if inLockRange or (mod.charge is not None and 'fofMissileLaunching' in mod.charge.effects):
+                applicationMap[mod] = getLauncherMult(
+                    mod=mod,
+                    src=src,
+                    distance=distance,
+                    tgtSpeed=tgtSpeed,
+                    tgtSigRadius=tgtSigRadius)
+            else:
+                applicationMap[mod] = 0
         elif mod.item.group.name in ('Smart Bomb', 'Structure Area Denial Module'):
             applicationMap[mod] = getSmartbombMult(
                 mod=mod,
@@ -64,44 +73,58 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                 distance=distance,
                 tgtSigRadius=tgtSigRadius)
         elif mod.item.group.name == 'Structure Guided Bomb Launcher':
-            applicationMap[mod] = getGuidedBombMult(
-                mod=mod,
-                src=src,
-                distance=distance,
-                tgtSigRadius=tgtSigRadius)
+            if inLockRange:
+                applicationMap[mod] = getGuidedBombMult(
+                    mod=mod,
+                    src=src,
+                    distance=distance,
+                    tgtSigRadius=tgtSigRadius)
+            else:
+                applicationMap[mod] = 0
         elif mod.item.group.name in ('Super Weapon', 'Structure Doomsday Weapon'):
-            applicationMap[mod] = getDoomsdayMult(
-                mod=mod,
-                tgt=tgt,
-                distance=distance,
-                tgtSigRadius=tgtSigRadius)
+            # Only single-target DDs need locks
+            if not inLockRange and {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar', 'lightningWeapon'}.intersection(mod.item.effects):
+                applicationMap[mod] = 0
+            else:
+                applicationMap[mod] = getDoomsdayMult(
+                    mod=mod,
+                    tgt=tgt,
+                    distance=distance,
+                    tgtSigRadius=tgtSigRadius)
     for drone in src.item.activeDronesIter():
         if not drone.isDealingDamage():
             continue
-        applicationMap[drone] = getDroneMult(
-            drone=drone,
-            src=src,
-            tgt=tgt,
-            atkSpeed=atkSpeed,
-            atkAngle=atkAngle,
-            distance=distance,
-            tgtSpeed=tgtSpeed,
-            tgtAngle=tgtAngle,
-            tgtSigRadius=tgtSigRadius)
+        if inLockRange and inDroneRange:
+            applicationMap[drone] = getDroneMult(
+                drone=drone,
+                src=src,
+                tgt=tgt,
+                atkSpeed=atkSpeed,
+                atkAngle=atkAngle,
+                distance=distance,
+                tgtSpeed=tgtSpeed,
+                tgtAngle=tgtAngle,
+                tgtSigRadius=tgtSigRadius)
+        else:
+            applicationMap[drone] = 0
     for fighter in src.item.activeFightersIter():
         if not fighter.isDealingDamage():
             continue
         for ability in fighter.abilities:
             if not ability.dealsDamage or not ability.active:
                 continue
-            applicationMap[(fighter, ability.effectID)] = getFighterAbilityMult(
-                fighter=fighter,
-                ability=ability,
-                src=src,
-                tgt=tgt,
-                distance=distance,
-                tgtSpeed=tgtSpeed,
-                tgtSigRadius=tgtSigRadius)
+            # Bomb launching doesn't need locks
+            if inLockRange or ability.effect.name == 'fighterAbilityLaunchBomb':
+                applicationMap[(fighter, ability.effectID)] = getFighterAbilityMult(
+                    fighter=fighter,
+                    ability=ability,
+                    src=src,
+                    tgt=tgt,
+                    distance=distance,
+                    tgtSpeed=tgtSpeed,
+                    tgtSigRadius=tgtSigRadius)
+            else:
+                applicationMap[(fighter, ability.effectID)] = 0
     # Ensure consistent results - round off a little to avoid float errors
     for k, v in applicationMap.items():
         applicationMap[k] = floatUnerr(v)
@@ -201,9 +224,9 @@ def getGuidedBombMult(mod, src, distance, tgtSigRadius):
 
 def getDroneMult(drone, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
     if (
-        distance is not None and
-        not GraphSettings.getInstance().get('ignoreDCR') and
-        distance > src.item.extraAttributes['droneControlRange']
+        distance is not None and (
+            (not GraphSettings.getInstance().get('ignoreDCR') and distance > src.item.extraAttributes['droneControlRange']) or
+            (not GraphSettings.getInstance().get('ignoreLockRange') and distance > src.item.maxTargetRange))
     ):
         return 0
     droneSpeed = drone.getModifiedItemAttr('maxVelocity')

@@ -19,18 +19,17 @@
 
 
 from eos.utils.float import floatUnerr
-from graphs.calc import calculateRangeFactor
-from service.settings import GraphSettings
+from graphs.calc import calculateRangeFactor, checkLockRange, checkDroneControlRange
 
 
 def getApplicationPerKey(src, distance):
+    inLockRange = checkLockRange(src=src, distance=distance)
+    inDroneRange = checkDroneControlRange(src=src, distance=distance)
     applicationMap = {}
     for mod in src.item.activeModulesIter():
         if not mod.isRemoteRepping():
             continue
-        if distance is None:
-            applicationMap[mod] = 1
-        elif not GraphSettings.getInstance().get('ignoreLockRange') and distance > src.item.maxTargetRange:
+        if not inLockRange:
             applicationMap[mod] = 0
         else:
             applicationMap[mod] = calculateRangeFactor(
@@ -40,11 +39,7 @@ def getApplicationPerKey(src, distance):
     for drone in src.item.activeDronesIter():
         if not drone.isRemoteRepping():
             continue
-        if distance is None:
-            applicationMap[drone] = 1
-        elif not GraphSettings.getInstance().get('ignoreDCR') and distance > src.item.extraAttributes['droneControlRange']:
-            applicationMap[drone] = 0
-        elif not GraphSettings.getInstance().get('ignoreLockRange') and distance > src.item.maxTargetRange:
+        if not inLockRange or not inDroneRange:
             applicationMap[drone] = 0
         else:
             applicationMap[drone] = 1
