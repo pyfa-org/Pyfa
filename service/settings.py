@@ -521,6 +521,7 @@ class GraphSettings:
             'mobileDroneMode': GraphDpsDroneMode.auto,
             'ignoreDCR': False,
             'ignoreResists': True,
+            'ignoreLockRange': True,
             'applyProjected': True}
         self.settings = SettingsProvider.getInstance().getSettings('graphSettings', defaults)
 

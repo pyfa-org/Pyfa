@@ -28,21 +28,26 @@ def getApplicationPerKey(src, distance):
     for mod in src.item.activeModulesIter():
         if not mod.isRemoteRepping():
             continue
-        applicationMap[mod] = 1 if distance is None else calculateRangeFactor(
-            srcOptimalRange=mod.maxRange or 0,
-            srcFalloffRange=mod.falloff or 0,
-            distance=distance)
+        if distance is None:
+            applicationMap[mod] = 1
+        elif not GraphSettings.getInstance().get('ignoreLockRange') and distance > src.item.maxTargetRange:
+            applicationMap[mod] = 0
+        else:
+            applicationMap[mod] = calculateRangeFactor(
+                srcOptimalRange=mod.maxRange or 0,
+                srcFalloffRange=mod.falloff or 0,
+                distance=distance)
     for drone in src.item.activeDronesIter():
         if not drone.isRemoteRepping():
             continue
-        if (
-            distance is None or
-            GraphSettings.getInstance().get('ignoreDCR') or
-            distance <= src.item.extraAttributes['droneControlRange']
-        ):
+        if distance is None:
             applicationMap[drone] = 1
-        else:
+        elif not GraphSettings.getInstance().get('ignoreDCR') and distance > src.item.extraAttributes['droneControlRange']:
             applicationMap[drone] = 0
+        elif not GraphSettings.getInstance().get('ignoreLockRange') and distance > src.item.maxTargetRange:
+            applicationMap[drone] = 0
+        else:
+            applicationMap[drone] = 1
     # Ensure consistent results - round off a little to avoid float errors
     for k, v in applicationMap.items():
         applicationMap[k] = floatUnerr(v)
