@@ -60,6 +60,7 @@ from .gui.projectedChangeStates import GuiChangeProjectedItemStatesCommand
 from .gui.projectedDrone.add import GuiAddProjectedDroneCommand
 from .gui.projectedDrone.changeAmount import GuiChangeProjectedDroneAmountCommand
 from .gui.projectedDrone.changeMetas import GuiChangeProjectedDroneMetasCommand
+from .gui.projectedDrone.changeProjectionRange import GuiChangeProjectedDroneProjectionRangeCommand
 from .gui.projectedFighter.abilityToggleState import GuiToggleProjectedFighterAbilityStateCommand
 from .gui.projectedFighter.add import GuiAddProjectedFighterCommand
 from .gui.projectedFighter.changeAmount import GuiChangeProjectedFighterAmountCommand
