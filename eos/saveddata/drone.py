@@ -45,6 +45,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.amount = 0
         self.amountActive = 0
         self.projected = False
+        self.projectionRange = None
         self.build()
 
     @reconstructor
@@ -319,23 +320,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                                  projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
-                    try:
-                        effect.handler(fit, self, context, effect=effect)
-                    except:
-                        effect.handler(fit, self, context)
+                    effect.handler(fit, self, context, self.projectionRange, effect=effect)
                 else:
                     i = 0
                     while i != self.amountActive:
-                        try:
-                            effect.handler(fit, self, context, effect=effect)
-                        except:
-                            effect.handler(fit, self, context)
+                        effect.handler(fit, self, context, self.projectionRange, effect=effect)
                         i += 1
 
         if self.charge:
             for effect in self.charge.effects.values():
                 if effect.runTime == runTime and effect.activeByDefault:
-                    effect.handler(fit, self, ("droneCharge",))
+                    effect.handler(fit, self, ("droneCharge",), self.projectionRange)
 
     def __deepcopy__(self, memo):
         copy = Drone(self.item)

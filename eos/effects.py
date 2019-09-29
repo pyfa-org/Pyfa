@@ -19,6 +19,7 @@
 
 
 import eos.config
+from eos.calc import calculateRangeFactor
 from eos.const import FittingModuleState, FitSystemSecurity
 from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, resolveSpoolOptions
 
@@ -26,7 +27,7 @@ from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, re
 class BaseEffect:
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         pass
 
 
@@ -46,7 +47,7 @@ class Effect4(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('shieldBonus')
         speed = module.getModifiedItemAttr('duration') / 1000.0
         fit.extraAttributes.increase('shieldRepair', amount / speed, **kwargs)
@@ -64,7 +65,7 @@ class Effect10(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # Set reload time to 1 second
         module.reloadTime = 1000
 
@@ -81,7 +82,7 @@ class Effect17(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         miningDroneAmountPercent = container.getModifiedItemAttr('miningDroneAmountPercent')
         if (miningDroneAmountPercent is None) or (miningDroneAmountPercent == 0):
             pass
@@ -101,7 +102,7 @@ class Effect21(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('shieldCapacity', module.getModifiedItemAttr('capacityBonus'), **kwargs)
 
 
@@ -116,7 +117,7 @@ class Effect25(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('capacitorCapacity', ship.getModifiedItemAttr('capacitorBonus'), **kwargs)
 
 
@@ -132,7 +133,7 @@ class Effect26(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('structureDamageAmount')
         speed = module.getModifiedItemAttr('duration') / 1000.0
         fit.extraAttributes.increase('hullRepair', amount / speed, **kwargs)
@@ -150,7 +151,7 @@ class Effect27(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('armorDamageAmount')
         speed = module.getModifiedItemAttr('duration') / 1000.0
         rps = amount / speed
@@ -171,7 +172,7 @@ class Effect34(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         rt = module.getModifiedItemAttr('reloadTime')
         if not rt:
             # Set reload time to 10 seconds
@@ -202,8 +203,8 @@ class Effect39(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
-        if 'projected' in context:
+    def handler(fit, module, context, projectionRange, **kwargs):
+        if 'projected' in context and module.maxRange >= (projectionRange or 0):
             fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
 
 
@@ -218,7 +219,7 @@ class Effect48(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # Set reload time to 10 seconds
         module.reloadTime = 10000
         # Make so that reloads are always taken into account during clculations
@@ -245,7 +246,7 @@ class Effect50(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('shieldRechargeRate', module.getModifiedItemAttr('shieldRechargeRateMultiplier') or 1, **kwargs)
 
 
@@ -265,7 +266,7 @@ class Effect51(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('rechargeRate', module.getModifiedItemAttr('capacitorRechargeRateMultiplier'), **kwargs)
 
 
@@ -295,7 +296,7 @@ class Effect56(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # We default this to None as there are times when the source attribute doesn't exist (for example, Cap Power Relay).
         # It will return 0 as it doesn't exist, which would nullify whatever the target attribute is
         fit.ship.multiplyItemAttr('powerOutput', module.getModifiedItemAttr('powerOutputMultiplier', None), **kwargs)
@@ -315,7 +316,7 @@ class Effect57(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # We default this to None as there are times when the source attribute doesn't exist (for example, Cap Power Relay).
         # It will return 0 as it doesn't exist, which would nullify whatever the target attribute is
         fit.ship.multiplyItemAttr('shieldCapacity', module.getModifiedItemAttr('shieldCapacityMultiplier', None), **kwargs)
@@ -336,7 +337,7 @@ class Effect58(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # We default this to None as there are times when the source attribute doesn't exist (for example, Cap Power Relay).
         # It will return 0 as it doesn't exist, which would nullify whatever the target attribute is
         fit.ship.multiplyItemAttr('capacitorCapacity', module.getModifiedItemAttr('capacitorCapacityMultiplier', None), **kwargs)
@@ -355,7 +356,7 @@ class Effect59(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('capacity', module.getModifiedItemAttr('cargoCapacityMultiplier'), **kwargs)
 
 
@@ -371,7 +372,7 @@ class Effect60(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('hp', module.getModifiedItemAttr('structureHPMultiplier'), **kwargs)
 
 
@@ -386,7 +387,7 @@ class Effect61(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('agility', src.getModifiedItemAttr('agilityBonusAdd'), **kwargs)
 
 
@@ -402,7 +403,7 @@ class Effect63(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('armorHP', module.getModifiedItemAttr('armorHPMultiplier'), **kwargs)
 
 
@@ -420,7 +421,7 @@ class Effect67(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # Set reload time to 1 second
         module.reloadTime = 1000
 
@@ -436,7 +437,7 @@ class Effect89(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -453,7 +454,7 @@ class Effect91(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -470,7 +471,7 @@ class Effect92(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -487,7 +488,7 @@ class Effect93(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -504,7 +505,7 @@ class Effect95(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Weapon',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -521,7 +522,7 @@ class Effect96(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -541,7 +542,7 @@ class Effect101(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         # Set reload time to 10 seconds
         src.reloadTime = 10000
 
@@ -576,7 +577,7 @@ class Effect118(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('maxLockedTargets', module.getModifiedItemAttr('maxLockedTargetsBonus'), **kwargs)
 
 
@@ -592,7 +593,7 @@ class Effect157(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -610,7 +611,7 @@ class Effect159(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -628,7 +629,7 @@ class Effect160(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -646,7 +647,7 @@ class Effect161(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -665,7 +666,7 @@ class Effect162(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -683,7 +684,7 @@ class Effect172(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -701,7 +702,7 @@ class Effect173(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -719,7 +720,7 @@ class Effect174(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -738,7 +739,7 @@ class Effect212(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Electronics Upgrades'),
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level, **kwargs)
@@ -755,7 +756,7 @@ class Effect214(BaseEffect):
     type = 'passive', 'structure'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         amount = skill.getModifiedItemAttr('maxTargetBonus') * skill.level
         fit.extraAttributes.increase('maxTargetsLockedFromSkills', amount, **kwargs)
 
@@ -772,7 +773,7 @@ class Effect223(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', implant.getModifiedItemAttr('velocityBonus'), **kwargs)
 
 
@@ -787,7 +788,7 @@ class Effect227(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus'), **kwargs)
 
@@ -805,7 +806,7 @@ class Effect230(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'duration', container.getModifiedItemAttr('durationBonus') * level, **kwargs)
@@ -822,7 +823,7 @@ class Effect235(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpCapacitorNeed', implant.getModifiedItemAttr('warpCapacitorNeedBonus'), **kwargs)
 
 
@@ -837,7 +838,7 @@ class Effect242(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
                                       'speedFactor', implant.getModifiedItemAttr('speedFBonus'), **kwargs)
 
@@ -854,7 +855,7 @@ class Effect244(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -875,7 +876,7 @@ class Effect271(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('armorHP', (container.getModifiedItemAttr('armorHpBonus') or 0) * level, **kwargs)
 
@@ -894,7 +895,7 @@ class Effect272(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'duration', container.getModifiedItemAttr('durationSkillBonus') * level, **kwargs)
@@ -913,7 +914,7 @@ class Effect273(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Upgrades'),
                                       'power', container.getModifiedItemAttr('powerNeedBonus') * level, **kwargs)
@@ -930,7 +931,7 @@ class Effect277(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('shieldUniformity', skill.getModifiedItemAttr('uniformityBonus') * skill.level, **kwargs)
 
 
@@ -946,7 +947,7 @@ class Effect279(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -964,7 +965,7 @@ class Effect287(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -983,7 +984,7 @@ class Effect290(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level, **kwargs)
@@ -1002,7 +1003,7 @@ class Effect298(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'falloff', container.getModifiedItemAttr('falloffBonus') * level, **kwargs)
@@ -1019,7 +1020,7 @@ class Effect315(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         amount = skill.getModifiedItemAttr('maxActiveDroneBonus') * skill.level
         fit.extraAttributes.increase('maxActiveDrones', amount, **kwargs)
 
@@ -1038,7 +1039,7 @@ class Effect391(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'miningAmount', container.getModifiedItemAttr('miningAmountBonus') * level, **kwargs)
@@ -1057,7 +1058,7 @@ class Effect392(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('hp', container.getModifiedItemAttr('hullHpBonus') * level, **kwargs)
 
@@ -1078,7 +1079,7 @@ class Effect394(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         amount = container.getModifiedItemAttr('velocityBonus') or 0
         penalties = 'skill' not in context and 'implant' not in context and 'booster' not in context
@@ -1103,7 +1104,7 @@ class Effect395(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalties = 'skill' not in context and 'implant' not in context
         fit.ship.boostItemAttr('agility', container.getModifiedItemAttr('agilityBonus') * level,
@@ -1123,7 +1124,7 @@ class Effect396(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Energy Grid Upgrades'),
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level, **kwargs)
@@ -1144,7 +1145,7 @@ class Effect397(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('cpuOutput', container.getModifiedItemAttr('cpuOutputBonus2') * level, **kwargs)
 
@@ -1161,7 +1162,7 @@ class Effect408(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -1180,7 +1181,7 @@ class Effect414(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'speed', container.getModifiedItemAttr('turretSpeeBonus') * level, **kwargs)
@@ -1201,7 +1202,7 @@ class Effect446(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('shieldCapacity', container.getModifiedItemAttr('shieldCapacityBonus') * level, **kwargs)
 
@@ -1220,7 +1221,7 @@ class Effect485(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('rechargeRate', container.getModifiedItemAttr('capRechargeBonus') * level, **kwargs)
 
@@ -1239,7 +1240,7 @@ class Effect486(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('shieldRechargeRate', container.getModifiedItemAttr('rechargeratebonus') * level, **kwargs)
 
@@ -1259,7 +1260,7 @@ class Effect490(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('powerOutput', container.getModifiedItemAttr('powerEngineeringOutputBonus') * level, **kwargs)
 
@@ -1276,7 +1277,7 @@ class Effect494(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('warpCapacitorNeed', container.getModifiedItemAttr('warpCapacitorNeedBonus') * level,
                                stackingPenalties='skill' not in context, **kwargs)
@@ -1294,7 +1295,7 @@ class Effect504(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         amount = container.getModifiedItemAttr('droneRangeBonus') * level
         fit.extraAttributes.increase('droneControlRange', amount, **kwargs)
@@ -1312,7 +1313,7 @@ class Effect506(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level, **kwargs)
 
@@ -1329,7 +1330,7 @@ class Effect507(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('maxTargetRange', container.getModifiedItemAttr('maxTargetRangeBonus') * level, **kwargs)
 
@@ -1351,7 +1352,7 @@ class Effect508(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -1373,7 +1374,7 @@ class Effect511(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonus2AF'),
                                       skill='Amarr Frigate', **kwargs)
@@ -1395,7 +1396,7 @@ class Effect512(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusGF'),
                                       skill='Gallente Frigate', **kwargs)
@@ -1415,7 +1416,7 @@ class Effect514(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusAF'),
                                       skill='Amarr Frigate', **kwargs)
@@ -1434,7 +1435,7 @@ class Effect516(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusAC'),
                                       skill='Amarr Cruiser', **kwargs)
@@ -1451,7 +1452,7 @@ class Effect521(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCC'),
                                       skill='Caldari Cruiser', **kwargs)
@@ -1470,7 +1471,7 @@ class Effect527(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusMI'),
                                skill='Minmatar Industrial', **kwargs)
 
@@ -1487,7 +1488,7 @@ class Effect529(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusAI'),
                                skill='Amarr Industrial', **kwargs)
 
@@ -1504,7 +1505,7 @@ class Effect536(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('cpuOutput', module.getModifiedItemAttr('cpuMultiplier'), **kwargs)
 
 
@@ -1520,7 +1521,7 @@ class Effect542(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -1538,7 +1539,7 @@ class Effect549(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMB'),
                                       skill='Minmatar Battleship', **kwargs)
@@ -1560,7 +1561,7 @@ class Effect550(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusGB'),
                                       skill='Gallente Battleship', **kwargs)
@@ -1577,7 +1578,7 @@ class Effect553(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGB'),
                                       skill='Gallente Battleship', **kwargs)
@@ -1600,7 +1601,7 @@ class Effect562(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -1618,7 +1619,7 @@ class Effect581(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level, **kwargs)
@@ -1635,7 +1636,7 @@ class Effect582(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'speed', skill.getModifiedItemAttr('rofBonus') * skill.level, **kwargs)
 
@@ -1653,7 +1654,7 @@ class Effect584(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'damageMultiplier', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -1669,7 +1670,7 @@ class Effect587(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -1685,7 +1686,7 @@ class Effect588(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -1701,7 +1702,7 @@ class Effect589(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -1718,7 +1719,7 @@ class Effect590(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Energy Pulse Weapons'),
                                       'duration', container.getModifiedItemAttr('durationBonus') * level, **kwargs)
@@ -1735,7 +1736,7 @@ class Effect596(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.multiplyItemAttr('maxRange', module.getModifiedChargeAttr('weaponRangeMultiplier'), **kwargs)
 
 
@@ -1752,7 +1753,7 @@ class Effect598(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.multiplyItemAttr('speed', module.getModifiedChargeAttr('speedMultiplier') or 1, **kwargs)
 
 
@@ -1772,7 +1773,7 @@ class Effect599(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.multiplyItemAttr('falloff', module.getModifiedChargeAttr('fallofMultiplier') or 1, **kwargs)
 
 
@@ -1788,7 +1789,7 @@ class Effect600(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.multiplyItemAttr('trackingSpeed', module.getModifiedChargeAttr('trackingSpeedMultiplier'), **kwargs)
 
 
@@ -1807,7 +1808,7 @@ class Effect602(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser', **kwargs)
 
@@ -1827,7 +1828,7 @@ class Effect604(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusMB2'), skill='Minmatar Battleship', **kwargs)
 
@@ -1844,7 +1845,7 @@ class Effect607(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # Set flag which is used to determine if ship is cloaked or not
         # This is used to apply cloak-only bonuses, like Black Ops' speed bonus
         # Doesn't apply to covops cloaks
@@ -1865,7 +1866,7 @@ class Effect623(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
                                      'miningAmount',
@@ -1883,7 +1884,7 @@ class Effect627(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('powerOutput', module.getModifiedItemAttr('powerIncrease'), **kwargs)
 
 
@@ -1900,7 +1901,7 @@ class Effect657(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility',
                                module.getModifiedItemAttr('agilityMultiplier'),
                                stackingPenalties=True, **kwargs)
@@ -1919,7 +1920,7 @@ class Effect660(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill(skill),
                                         'emDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -1937,7 +1938,7 @@ class Effect661(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill(skill),
                                         'explosiveDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -1955,7 +1956,7 @@ class Effect662(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill(skill),
                                         'thermalDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -1973,7 +1974,7 @@ class Effect668(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill(skill),
                                         'kineticDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -1989,7 +1990,7 @@ class Effect670(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
 
 
@@ -2004,7 +2005,7 @@ class Effect675(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Energy Pulse Weapons'),
                                       'cpu', skill.getModifiedItemAttr('cpuNeedBonus') * skill.level, **kwargs)
 
@@ -2021,7 +2022,7 @@ class Effect677(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level, **kwargs)
@@ -2041,7 +2042,7 @@ class Effect699(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.ship.boostItemAttr('scanResolution', container.getModifiedItemAttr('scanResolutionBonus') * level,
@@ -2059,7 +2060,7 @@ class Effect706(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpFactor', src.getModifiedItemAttr('eliteBonusCovertOps1'), skill='Covert Ops', **kwargs)
 
 
@@ -2076,7 +2077,7 @@ class Effect726(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         # TODO: investigate if we can live without such ifs or hardcoding
         # Viator doesn't have GI bonus
         if 'shipBonusGI' in fit.ship.item.attributes:
@@ -2098,7 +2099,7 @@ class Effect727(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Industrial', **kwargs)
 
 
@@ -2114,7 +2115,7 @@ class Effect728(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusMI'), skill='Minmatar Industrial', **kwargs)
 
 
@@ -2133,7 +2134,7 @@ class Effect729(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         # TODO: investigate if we can live without such ifs or hardcoding
         # Viator doesn't have GI bonus
         if 'shipBonusGI' in fit.ship.item.attributes:
@@ -2155,7 +2156,7 @@ class Effect730(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Industrial', **kwargs)
 
 
@@ -2171,7 +2172,7 @@ class Effect732(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusAI'), skill='Amarr Industrial', **kwargs)
 
 
@@ -2187,7 +2188,7 @@ class Effect736(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacitorCapacity', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship', **kwargs)
 
 
@@ -2203,7 +2204,7 @@ class Effect744(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('CPU Management'),
                                       'duration', container.getModifiedItemAttr('scanspeedBonus') * level, **kwargs)
@@ -2220,7 +2221,7 @@ class Effect754(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
 
@@ -2239,7 +2240,7 @@ class Effect757(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
@@ -2257,7 +2258,7 @@ class Effect760(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'speed', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
@@ -2273,7 +2274,7 @@ class Effect763(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
             fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                                '%sDamage' % dmgType,
@@ -2295,7 +2296,7 @@ class Effect784(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
@@ -2314,7 +2315,7 @@ class Effect804(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # Dirty hack to work around cap charges setting cap booster
         # injection amount to zero
         rawAttr = module.item.getAttribute('capacitorNeed')
@@ -2333,7 +2334,7 @@ class Effect836(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', module.getModifiedItemAttr('cargoCapacityBonus'), **kwargs)
 
 
@@ -2348,7 +2349,7 @@ class Effect848(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cloaking'),
                                       'cloakingTargetingDelay',
                                       skill.getModifiedItemAttr('cloakingTargetingDelayBonus') * skill.level, **kwargs)
@@ -2365,7 +2366,7 @@ class Effect854(BaseEffect):
     type = 'offline'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('scanResolution',
                                   module.getModifiedItemAttr('scanResolutionMultiplier'),
                                   stackingPenalties=True, penaltyGroup='cloakingScanResolutionMultiplier', **kwargs)
@@ -2384,7 +2385,7 @@ class Effect856(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         penalized = False if 'skill' in context or 'implant' in context else True
         fit.ship.boostItemAttr('baseWarpSpeed', container.getModifiedItemAttr('WarpSBonus'),
                                stackingPenalties=penalized, **kwargs)
@@ -2401,7 +2402,7 @@ class Effect874(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
 
@@ -2418,7 +2419,7 @@ class Effect882(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
@@ -2434,7 +2435,7 @@ class Effect887(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship', **kwargs)
 
@@ -2450,7 +2451,7 @@ class Effect889(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -2467,7 +2468,7 @@ class Effect891(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'),
                                         skill='Caldari Battleship', **kwargs)
@@ -2484,7 +2485,7 @@ class Effect892(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'),
                                         skill='Caldari Battleship', **kwargs)
@@ -2502,7 +2503,7 @@ class Effect896(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cloaking Device',
                                          'cpu', container.getModifiedItemAttr('cloakingCpuNeedBonus'), **kwargs)
 
@@ -2520,7 +2521,7 @@ class Effect898(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCF'),
                                         skill='Caldari Frigate', **kwargs)
@@ -2539,7 +2540,7 @@ class Effect899(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCC'),
                                         skill='Caldari Cruiser', **kwargs)
@@ -2556,7 +2557,7 @@ class Effect900(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Light Drone Operation'),
                                      'thermalDamage', ship.getModifiedItemAttr('shipBonusGF2'),
                                      skill='Gallente Frigate', **kwargs)
@@ -2574,7 +2575,7 @@ class Effect907(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusAC2'),
                                       skill='Amarr Cruiser', **kwargs)
@@ -2591,7 +2592,7 @@ class Effect909(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('shipBonusAC2'),
                                skill='Amarr Cruiser', **kwargs)
 
@@ -2607,7 +2608,7 @@ class Effect912(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'speed', ship.getModifiedItemAttr('shipBonusCC2'),
                                       skill='Caldari Cruiser', **kwargs)
@@ -2624,7 +2625,7 @@ class Effect918(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.extraAttributes.increase('maxActiveDrones', ship.getModifiedItemAttr('shipBonusGC2'),
                                      skill='Gallente Cruiser', **kwargs)
 
@@ -2641,7 +2642,7 @@ class Effect919(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC2'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -2658,7 +2659,7 @@ class Effect958(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusAC2'),
                                skill='Amarr Cruiser', **kwargs)
 
@@ -2674,7 +2675,7 @@ class Effect959(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusAC2'),
                                skill='Amarr Cruiser', **kwargs)
 
@@ -2690,7 +2691,7 @@ class Effect960(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('shipBonusAC2'),
                                skill='Amarr Cruiser', **kwargs)
 
@@ -2706,7 +2707,7 @@ class Effect961(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('shipBonusAC2'),
                                skill='Amarr Cruiser', **kwargs)
 
@@ -2724,7 +2725,7 @@ class Effect968(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMC2'),
                                       skill='Minmatar Cruiser', **kwargs)
@@ -2742,7 +2743,7 @@ class Effect980(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.extraAttributes['cloaked'] = True
 
 
@@ -2759,7 +2760,7 @@ class Effect989(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                       skill='Assault Frigates', **kwargs)
@@ -2776,7 +2777,7 @@ class Effect991(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                       skill='Assault Frigates', **kwargs)
@@ -2793,7 +2794,7 @@ class Effect996(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                       skill='Assault Frigates', **kwargs)
@@ -2810,7 +2811,7 @@ class Effect998(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                       skill='Assault Frigates', **kwargs)
@@ -2827,7 +2828,7 @@ class Effect999(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                       skill='Assault Frigates', **kwargs)
@@ -2844,7 +2845,7 @@ class Effect1001(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('rechargeRate', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                skill='Assault Frigates', **kwargs)
 
@@ -2860,7 +2861,7 @@ class Effect1003(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Pulse Laser Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2876,7 +2877,7 @@ class Effect1004(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Beam Laser Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2892,7 +2893,7 @@ class Effect1005(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Blaster Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2908,7 +2909,7 @@ class Effect1006(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Railgun Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2924,7 +2925,7 @@ class Effect1007(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Autocannon Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2940,7 +2941,7 @@ class Effect1008(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Artillery Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2956,7 +2957,7 @@ class Effect1009(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Pulse Laser Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2972,7 +2973,7 @@ class Effect1010(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Beam Laser Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -2988,7 +2989,7 @@ class Effect1011(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Blaster Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3004,7 +3005,7 @@ class Effect1012(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Railgun Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3020,7 +3021,7 @@ class Effect1013(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Autocannon Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3036,7 +3037,7 @@ class Effect1014(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Artillery Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3052,7 +3053,7 @@ class Effect1015(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Pulse Laser Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3068,7 +3069,7 @@ class Effect1016(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Beam Laser Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3084,7 +3085,7 @@ class Effect1017(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Blaster Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3100,7 +3101,7 @@ class Effect1018(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Railgun Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3116,7 +3117,7 @@ class Effect1019(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Autocannon Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3132,7 +3133,7 @@ class Effect1020(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Artillery Specialization'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -3148,7 +3149,7 @@ class Effect1021(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                       skill='Assault Frigates', **kwargs)
@@ -3166,7 +3167,7 @@ class Effect1024(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'),
                                         skill='Caldari Cruiser', **kwargs)
@@ -3184,7 +3185,7 @@ class Effect1025(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'),
                                         skill='Caldari Cruiser', **kwargs)
@@ -3203,7 +3204,7 @@ class Effect1030(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -3220,7 +3221,7 @@ class Effect1033(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('eliteBonusLogistics1'), skill='Logistics Cruisers', **kwargs)
 
@@ -3237,7 +3238,7 @@ class Effect1034(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('eliteBonusLogistics2'), skill='Logistics Cruisers', **kwargs)
 
@@ -3253,7 +3254,7 @@ class Effect1035(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('eliteBonusLogistics2'), skill='Logistics Cruisers', **kwargs)
 
@@ -3270,7 +3271,7 @@ class Effect1036(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('eliteBonusLogistics1'), skill='Logistics Cruisers', **kwargs)
 
@@ -3286,7 +3287,7 @@ class Effect1046(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'maxRange',
                                       src.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -3302,7 +3303,7 @@ class Effect1047(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'maxRange',
                                       src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)
 
@@ -3319,7 +3320,7 @@ class Effect1048(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'maxRange',
                                       src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
@@ -3335,7 +3336,7 @@ class Effect1049(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'maxRange',
                                       src.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -3351,7 +3352,7 @@ class Effect1056(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3368,7 +3369,7 @@ class Effect1057(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3385,7 +3386,7 @@ class Effect1058(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3402,7 +3403,7 @@ class Effect1060(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3420,7 +3421,7 @@ class Effect1061(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3437,7 +3438,7 @@ class Effect1062(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3454,7 +3455,7 @@ class Effect1063(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3471,7 +3472,7 @@ class Effect1080(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3488,7 +3489,7 @@ class Effect1081(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'explosionDelay', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                         skill='Heavy Assault Cruisers', **kwargs)
@@ -3505,7 +3506,7 @@ class Effect1082(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'explosionDelay', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                         skill='Heavy Assault Cruisers', **kwargs)
@@ -3522,7 +3523,7 @@ class Effect1084(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.extraAttributes.increase('droneControlRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                      skill='Heavy Assault Cruisers', **kwargs)
 
@@ -3538,7 +3539,7 @@ class Effect1087(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -3557,7 +3558,7 @@ class Effect1099(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusMF2'),
                                       skill='Minmatar Frigate', **kwargs)
@@ -3575,7 +3576,7 @@ class Effect1176(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
                                       'speedFactor', container.getModifiedItemAttr('speedFBonus') * level, **kwargs)
@@ -3592,7 +3593,7 @@ class Effect1179(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                       skill='Assault Frigates', **kwargs)
@@ -3609,7 +3610,7 @@ class Effect1181(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                       'capacitorNeed', ship.getModifiedItemAttr('eliteBonusLogistics1'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -3626,7 +3627,7 @@ class Effect1182(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAC'),
                                       skill='Amarr Cruiser', **kwargs)
@@ -3644,7 +3645,7 @@ class Effect1183(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                       'capacitorNeed', ship.getModifiedItemAttr('eliteBonusLogistics2'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -3662,7 +3663,7 @@ class Effect1184(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCC2'),
                                       skill='Caldari Cruiser', **kwargs)
@@ -3680,7 +3681,7 @@ class Effect1185(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', implant.getModifiedItemAttr('signatureRadiusBonus'), **kwargs)
 
 
@@ -3697,7 +3698,7 @@ class Effect1190(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
                                       'duration', container.getModifiedItemAttr('iceHarvestCycleBonus') * level, **kwargs)
@@ -3715,7 +3716,7 @@ class Effect1200(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.multiplyItemAttr('specialtyMiningAmount',
                                 module.getModifiedChargeAttr('specialisationAsteroidYieldMultiplier'), **kwargs)
 
@@ -3732,7 +3733,7 @@ class Effect1212(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.preAssignItemAttr('specialtyMiningAmount', module.getModifiedItemAttr('miningAmount'), **kwargs)
 
 
@@ -3749,7 +3750,7 @@ class Effect1215(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', ship.getModifiedItemAttr('shipBonusAF'),
                                       skill='Amarr Frigate', **kwargs)
@@ -3768,7 +3769,7 @@ class Effect1218(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -3784,7 +3785,7 @@ class Effect1219(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', ship.getModifiedItemAttr('shipBonusAB'),
                                       skill='Amarr Battleship', **kwargs)
@@ -3803,7 +3804,7 @@ class Effect1220(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', ship.getModifiedItemAttr('shipBonusAC'),
                                       skill='Amarr Cruiser', **kwargs)
@@ -3820,7 +3821,7 @@ class Effect1221(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMB'),
                                       skill='Minmatar Battleship', **kwargs)
@@ -3837,7 +3838,7 @@ class Effect1222(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMC2'),
                                       skill='Minmatar Cruiser', **kwargs)
@@ -3855,7 +3856,7 @@ class Effect1228(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -3873,7 +3874,7 @@ class Effect1230(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -3890,7 +3891,7 @@ class Effect1232(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -3907,7 +3908,7 @@ class Effect1233(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -3924,7 +3925,7 @@ class Effect1234(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -3940,7 +3941,7 @@ class Effect1239(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -3956,7 +3957,7 @@ class Effect1240(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -3973,7 +3974,7 @@ class Effect1255(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'durationBonus', implant.getModifiedItemAttr('implantSetBloodraider'), **kwargs)
 
@@ -3989,7 +3990,7 @@ class Effect1256(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capacitor Emission Systems'),
                                       'duration', implant.getModifiedItemAttr('durationBonus'), **kwargs)
 
@@ -4006,7 +4007,7 @@ class Effect1261(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'velocityBonus', implant.getModifiedItemAttr('implantSetSerpentis'), **kwargs)
 
@@ -4022,7 +4023,7 @@ class Effect1264(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusInterceptor2'),
                                       skill='Interceptors', **kwargs)
@@ -4039,7 +4040,7 @@ class Effect1268(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusInterceptor2'),
                                       skill='Interceptors', **kwargs)
@@ -4058,7 +4059,7 @@ class Effect1281(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         penalized = 'implant' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', container.getModifiedItemAttr('repairBonus'),
@@ -4077,7 +4078,7 @@ class Effect1318(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         groups = ('ECM', 'Burst Jammer')
         level = container.level if 'skill' in context else 1
         for scanType in ('Gravimetric', 'Ladar', 'Magnetometric', 'Radar'):
@@ -4099,7 +4100,7 @@ class Effect1360(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Sensor Linking'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -4117,7 +4118,7 @@ class Effect1361(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -4135,7 +4136,7 @@ class Effect1370(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Target Painting'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -4154,7 +4155,7 @@ class Effect1372(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -4171,7 +4172,7 @@ class Effect1395(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', container.getModifiedItemAttr('shieldBoostMultiplier'), **kwargs)
 
@@ -4188,7 +4189,7 @@ class Effect1397(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'shieldBoostMultiplier', implant.getModifiedItemAttr('implantSetGuristas'), **kwargs)
 
@@ -4206,7 +4207,7 @@ class Effect1409(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Astrometrics'),
                                       'duration', container.getModifiedItemAttr('durationBonus') * level, **kwargs)
@@ -4224,7 +4225,7 @@ class Effect1410(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Propulsion Jamming'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -4241,7 +4242,7 @@ class Effect1412(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
 
@@ -4257,7 +4258,7 @@ class Effect1434(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for sensorType in ('Gravimetric', 'Ladar', 'Magnetometric', 'Radar'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Electronic Warfare'),
                                           'scan{0}StrengthBonus'.format(sensorType),
@@ -4276,7 +4277,7 @@ class Effect1441(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCB3'),
                                       skill='Caldari Battleship', **kwargs)
@@ -4293,7 +4294,7 @@ class Effect1442(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -4311,7 +4312,7 @@ class Effect1443(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusCC'),
                                       skill='Caldari Cruiser', **kwargs)
@@ -4329,7 +4330,7 @@ class Effect1445(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Sensor Linking'),
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
@@ -4348,7 +4349,7 @@ class Effect1446(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
@@ -4367,7 +4368,7 @@ class Effect1448(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Weapon Disruptor',
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
@@ -4385,7 +4386,7 @@ class Effect1449(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Sensor Linking'),
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
 
@@ -4401,7 +4402,7 @@ class Effect1450(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
 
@@ -4417,7 +4418,7 @@ class Effect1451(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Weapon Disruptor',
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
 
@@ -4435,7 +4436,7 @@ class Effect1452(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
@@ -4453,7 +4454,7 @@ class Effect1453(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
 
@@ -4471,7 +4472,7 @@ class Effect1472(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalize = False if 'skill' in context or 'implant' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
@@ -4491,7 +4492,7 @@ class Effect1500(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'capacitorNeed', container.getModifiedItemAttr('shieldBoostCapacitorBonus') * level, **kwargs)
@@ -4508,7 +4509,7 @@ class Effect1550(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'signatureRadiusBonus',
                                       skill.getModifiedItemAttr('scanSkillTargetPaintStrengthBonus') * skill.level, **kwargs)
@@ -4526,7 +4527,7 @@ class Effect1551(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('shipBonusMF2'),
                                       skill='Minmatar Frigate', **kwargs)
@@ -4544,7 +4545,7 @@ class Effect1577(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(
             lambda implant: 'signatureRadiusBonus' in implant.itemModifiedAttributes and
                             'implantSetAngel' in implant.itemModifiedAttributes,
@@ -4565,7 +4566,7 @@ class Effect1579(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'armorHpBonus', implant.getModifiedItemAttr('implantSetAmulet') or 1, **kwargs)
 
@@ -4581,7 +4582,7 @@ class Effect1581(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('jumpDriveRange', skill.getModifiedItemAttr('jumpDriveRangeBonus') * skill.level, **kwargs)
 
 
@@ -4596,7 +4597,7 @@ class Effect1585(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -4612,7 +4613,7 @@ class Effect1586(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Projectile Turret'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -4628,7 +4629,7 @@ class Effect1587(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'),
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -4645,7 +4646,7 @@ class Effect1588(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Torpedoes'),
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -4664,7 +4665,7 @@ class Effect1590(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalize = False if 'skill' in context or 'implant' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
@@ -4684,7 +4685,7 @@ class Effect1592(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Torpedoes'),
                                         'emDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -4702,7 +4703,7 @@ class Effect1593(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Torpedoes'),
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -4720,7 +4721,7 @@ class Effect1594(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Torpedoes'),
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -4738,7 +4739,7 @@ class Effect1595(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         mod = src.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'emDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod, **kwargs)
@@ -4756,7 +4757,7 @@ class Effect1596(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         mod = src.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosiveDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod, **kwargs)
@@ -4774,7 +4775,7 @@ class Effect1597(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         mod = src.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod, **kwargs)
@@ -4791,7 +4792,7 @@ class Effect1615(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         skillName = 'Advanced Spaceship Command'
         skill = fit.character.getSkill(skillName)
         fit.ship.boostItemAttr('agility', skill.getModifiedItemAttr('agilityBonus'), skill=skillName, **kwargs)
@@ -4808,7 +4809,7 @@ class Effect1616(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         if fit.ship.item.requiresSkill('Capital Ships'):
             fit.ship.boostItemAttr('agility', skill.getModifiedItemAttr('agilityBonus') * skill.level, **kwargs)
 
@@ -4824,7 +4825,7 @@ class Effect1617(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('agility', src.getModifiedItemAttr('advancedCapitalAgility'),
                                   stackingPenalties=True, **kwargs)
 
@@ -4841,7 +4842,7 @@ class Effect1634(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'),
                                       'capacitorNeed', container.getModifiedItemAttr('shieldBoostCapacitorBonus') * level, **kwargs)
@@ -4859,7 +4860,7 @@ class Effect1635(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Repair Systems'),
                                       'duration', container.getModifiedItemAttr('durationSkillBonus') * level,
@@ -4877,7 +4878,7 @@ class Effect1638(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Gunnery') or mod.item.requiresSkill('Missile Launcher Operation'),
             'power', skill.getModifiedItemAttr('powerNeedBonus') * skill.level, **kwargs)
@@ -4896,7 +4897,7 @@ class Effect1643(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Armored Command'), 'warfareBuff2Multiplier',
                                         src.getModifiedItemAttr('mindlinkBonus'), **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Armored Command'), 'warfareBuff1Multiplier',
@@ -4922,7 +4923,7 @@ class Effect1644(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Skirmish Command'), 'warfareBuff3Multiplier',
                                         src.getModifiedItemAttr('mindlinkBonus'), **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Skirmish Command'), 'warfareBuff4Multiplier',
@@ -4946,7 +4947,7 @@ class Effect1645(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'warfareBuff4Multiplier',
                                         src.getModifiedItemAttr('mindlinkBonus'), **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'warfareBuff3Multiplier',
@@ -4972,7 +4973,7 @@ class Effect1646(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Information Command'), 'warfareBuff4Multiplier',
                                         src.getModifiedItemAttr('mindlinkBonus'), **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Information Command'), 'warfareBuff3Multiplier',
@@ -4996,7 +4997,7 @@ class Effect1650(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         amount = -skill.getModifiedItemAttr('consumptionQuantityBonus')
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill(skill),
                                          'consumptionQuantity', amount * skill.level, **kwargs)
@@ -5014,7 +5015,7 @@ class Effect1657(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         mod = src.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'thermalDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod, **kwargs)
@@ -5031,7 +5032,7 @@ class Effect1668(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusA2'), skill='Amarr Freighter', **kwargs)
 
 
@@ -5046,7 +5047,7 @@ class Effect1669(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusC2'), skill='Caldari Freighter', **kwargs)
 
 
@@ -5061,7 +5062,7 @@ class Effect1670(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusG2'), skill='Gallente Freighter', **kwargs)
 
 
@@ -5076,7 +5077,7 @@ class Effect1671(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusM2'), skill='Minmatar Freighter', **kwargs)
 
 
@@ -5091,7 +5092,7 @@ class Effect1672(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusA1'), skill='Amarr Freighter', **kwargs)
 
 
@@ -5106,7 +5107,7 @@ class Effect1673(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusC1'), skill='Caldari Freighter', **kwargs)
 
 
@@ -5121,7 +5122,7 @@ class Effect1674(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusG1'), skill='Gallente Freighter', **kwargs)
 
 
@@ -5136,7 +5137,7 @@ class Effect1675(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusM1'), skill='Minmatar Freighter', **kwargs)
 
 
@@ -5152,7 +5153,7 @@ class Effect1720(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Operation') or mod.item.requiresSkill('Capital Shield Operation'),
             'shieldBonus', module.getModifiedItemAttr('shieldBoostMultiplier'),
@@ -5170,7 +5171,7 @@ class Effect1722(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('jumpDriveCapacitorNeed',
                                skill.getModifiedItemAttr('jumpDriveCapacitorNeedBonus') * skill.level, **kwargs)
 
@@ -5186,7 +5187,7 @@ class Effect1730(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill(skill),
                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -5217,7 +5218,7 @@ class Effect1763(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'speed', container.getModifiedItemAttr('rofBonus') * level, **kwargs)
@@ -5236,7 +5237,7 @@ class Effect1764(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context or 'implant' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
@@ -5256,7 +5257,7 @@ class Effect1773(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -5274,7 +5275,7 @@ class Effect1804(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
 
@@ -5291,7 +5292,7 @@ class Effect1805(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('shipBonusAF'),
                                skill='Amarr Frigate', **kwargs)
 
@@ -5309,7 +5310,7 @@ class Effect1806(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('shipBonusAF'),
                                skill='Amarr Frigate', **kwargs)
 
@@ -5327,7 +5328,7 @@ class Effect1807(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusAF'),
                                skill='Amarr Frigate', **kwargs)
 
@@ -5343,7 +5344,7 @@ class Effect1812(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('shipBonusCC2'),
                                skill='Caldari Cruiser', **kwargs)
 
@@ -5359,7 +5360,7 @@ class Effect1813(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', ship.getModifiedItemAttr('shipBonusCC2'),
                                skill='Caldari Cruiser', **kwargs)
 
@@ -5375,7 +5376,7 @@ class Effect1814(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', ship.getModifiedItemAttr('shipBonusCC2'),
                                skill='Caldari Cruiser', **kwargs)
 
@@ -5391,7 +5392,7 @@ class Effect1815(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusCC2'),
                                skill='Caldari Cruiser', **kwargs)
 
@@ -5409,7 +5410,7 @@ class Effect1816(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('shipBonusCF'),
                                skill='Caldari Frigate', **kwargs)
 
@@ -5427,7 +5428,7 @@ class Effect1817(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', ship.getModifiedItemAttr('shipBonusCF'),
                                skill='Caldari Frigate', **kwargs)
 
@@ -5445,7 +5446,7 @@ class Effect1819(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', ship.getModifiedItemAttr('shipBonusCF'),
                                skill='Caldari Frigate', **kwargs)
 
@@ -5463,7 +5464,7 @@ class Effect1820(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusCF'),
                                skill='Caldari Frigate', **kwargs)
 
@@ -5480,7 +5481,7 @@ class Effect1848(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff4Multiplier',
                                         src.getModifiedItemAttr('mindlinkBonus'), **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff2Multiplier',
@@ -5506,7 +5507,7 @@ class Effect1851(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill),
                                       'speed', skill.getModifiedItemAttr('rofBonus') * skill.level, **kwargs)
 
@@ -5522,7 +5523,7 @@ class Effect1862(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusCF2'),
                                         skill='Caldari Frigate', **kwargs)
@@ -5539,7 +5540,7 @@ class Effect1863(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusCF2'),
                                         skill='Caldari Frigate', **kwargs)
@@ -5556,7 +5557,7 @@ class Effect1864(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusCF2'),
                                         skill='Caldari Frigate', **kwargs)
@@ -5574,7 +5575,7 @@ class Effect1882(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'miningAmount', module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
 
@@ -5591,7 +5592,7 @@ class Effect1885(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Cruise',
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'),
                                       skill='Caldari Battleship', **kwargs)
@@ -5609,7 +5610,7 @@ class Effect1886(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo',
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'),
                                       skill='Caldari Battleship', **kwargs)
@@ -5626,7 +5627,7 @@ class Effect1896(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
                                       'duration', ship.getModifiedItemAttr('eliteBonusBarge2'),
                                       skill='Exhumers', **kwargs)
@@ -5644,7 +5645,7 @@ class Effect1910(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -5663,7 +5664,7 @@ class Effect1911(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanGravimetricStrengthBonus', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -5682,7 +5683,7 @@ class Effect1912(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanMagnetometricStrengthBonus', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -5701,7 +5702,7 @@ class Effect1913(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanRadarStrengthBonus', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -5720,7 +5721,7 @@ class Effect1914(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanLadarStrengthBonus', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -5740,7 +5741,7 @@ class Effect1921(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -5759,7 +5760,7 @@ class Effect1922(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -5776,7 +5777,7 @@ class Effect1959(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('mass', module.getModifiedItemAttr('massAddition'), **kwargs)
 
 
@@ -5791,7 +5792,7 @@ class Effect1964(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
@@ -5807,7 +5808,7 @@ class Effect1969(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -5824,7 +5825,7 @@ class Effect1996(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusCF2'),
                                       skill='Caldari Frigate', **kwargs)
@@ -5841,7 +5842,7 @@ class Effect2000(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('droneRangeBonus')
         fit.extraAttributes.increase('droneControlRange', amount, **kwargs)
 
@@ -5858,7 +5859,7 @@ class Effect2008(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cynosural Field Theory'),
                                       'duration', ship.getModifiedItemAttr('durationBonus'), **kwargs)
 
@@ -5876,7 +5877,7 @@ class Effect2013(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalties = False if 'implant' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
@@ -5895,7 +5896,7 @@ class Effect2014(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
@@ -5915,7 +5916,7 @@ class Effect2015(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'shieldCapacity', module.getModifiedItemAttr('hullHpBonus'), **kwargs)
 
@@ -5931,7 +5932,7 @@ class Effect2016(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'armorHP', module.getModifiedItemAttr('hullHpBonus'), **kwargs)
 
@@ -5947,7 +5948,7 @@ class Effect2017(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'hp', container.getModifiedItemAttr('hullHpBonus') * level, **kwargs)
@@ -5965,7 +5966,7 @@ class Effect2019(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
@@ -5985,7 +5986,7 @@ class Effect2020(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
@@ -6005,7 +6006,7 @@ class Effect2029(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusAdd'), **kwargs)
 
 
@@ -6021,7 +6022,7 @@ class Effect2041(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for type in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.ship.boostItemAttr('armor%sDamageResonance' % type.capitalize(),
                                    module.getModifiedItemAttr('%sDamageResistanceBonus' % type),
@@ -6039,7 +6040,7 @@ class Effect2052(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for type in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.ship.boostItemAttr('shield%sDamageResonance' % type.capitalize(),
                                    module.getModifiedItemAttr('%sDamageResistanceBonus' % type),
@@ -6057,7 +6058,7 @@ class Effect2053(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Shield Resistance Amplifier',
                                       'emDamageResistanceBonus', skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
 
@@ -6073,7 +6074,7 @@ class Effect2054(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Shield Resistance Amplifier',
                                       'explosiveDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6090,7 +6091,7 @@ class Effect2055(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Shield Resistance Amplifier',
                                       'kineticDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6107,7 +6108,7 @@ class Effect2056(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Shield Resistance Amplifier',
                                       'thermalDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6124,7 +6125,7 @@ class Effect2105(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Coating',
                                       'emDamageResistanceBonus', skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
 
@@ -6140,7 +6141,7 @@ class Effect2106(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Coating',
                                       'explosiveDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6157,7 +6158,7 @@ class Effect2107(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Coating',
                                       'kineticDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6174,7 +6175,7 @@ class Effect2108(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Coating',
                                       'thermalDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6191,7 +6192,7 @@ class Effect2109(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
                                       'emDamageResistanceBonus', skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
 
@@ -6207,7 +6208,7 @@ class Effect2110(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
                                       'explosiveDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6224,7 +6225,7 @@ class Effect2111(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
                                       'kineticDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6241,7 +6242,7 @@ class Effect2112(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
                                       'thermalDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
@@ -6259,7 +6260,7 @@ class Effect2130(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -6277,7 +6278,7 @@ class Effect2131(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -6293,7 +6294,7 @@ class Effect2132(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -6310,7 +6311,7 @@ class Effect2133(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus2'), **kwargs)
 
@@ -6329,7 +6330,7 @@ class Effect2134(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Shield Booster', 'maxRange',
                                       ship.getModifiedItemAttr('maxRangeBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Ancillary Remote Shield Booster', 'maxRange',
@@ -6351,7 +6352,7 @@ class Effect2135(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Armor Repairer', 'maxRange',
                                       src.getModifiedItemAttr('maxRangeBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Ancillary Remote Armor Repairer', 'maxRange',
@@ -6369,7 +6370,7 @@ class Effect2143(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('shipBonusMC2'),
                                       skill='Minmatar Cruiser', **kwargs)
@@ -6386,7 +6387,7 @@ class Effect2152(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -6402,7 +6403,7 @@ class Effect2155(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
                                       skill='Command Ships', **kwargs)
@@ -6419,7 +6420,7 @@ class Effect2156(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                       skill='Command Ships', **kwargs)
@@ -6436,7 +6437,7 @@ class Effect2157(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
                                       skill='Command Ships', **kwargs)
@@ -6453,7 +6454,7 @@ class Effect2158(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                       skill='Command Ships', **kwargs)
@@ -6470,7 +6471,7 @@ class Effect2160(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                       skill='Command Ships', **kwargs)
@@ -6487,7 +6488,7 @@ class Effect2161(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
                                       skill='Command Ships', **kwargs)
@@ -6506,7 +6507,7 @@ class Effect2179(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('shieldCapacity', 'armorHP', 'hp'):
             fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                          type, ship.getModifiedItemAttr('shipBonusGC2'),
@@ -6524,7 +6525,7 @@ class Effect2181(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('shieldCapacity', 'armorHP', 'hp'):
             fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                          type, ship.getModifiedItemAttr('shipBonusAC2'),
@@ -6543,7 +6544,7 @@ class Effect2186(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('shieldCapacity', 'armorHP', 'hp'):
             fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                          type, ship.getModifiedItemAttr('shipBonusGB2'),
@@ -6562,7 +6563,7 @@ class Effect2187(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGB2'),
                                      skill='Gallente Battleship', **kwargs)
@@ -6581,7 +6582,7 @@ class Effect2188(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'),
                                      skill='Gallente Cruiser', **kwargs)
@@ -6598,7 +6599,7 @@ class Effect2189(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusAC2'),
                                      skill='Amarr Cruiser', **kwargs)
@@ -6615,7 +6616,7 @@ class Effect2200(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'),
             'kineticDamage', ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors', **kwargs)
@@ -6632,7 +6633,7 @@ class Effect2201(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusInterdictors1'),
                                       skill='Interdictors', **kwargs)
@@ -6652,7 +6653,7 @@ class Effect2215(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -6668,7 +6669,7 @@ class Effect2232(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for type in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
             fit.ship.boostItemAttr('scan%sStrength' % type,
                                    module.getModifiedItemAttr('scan%sStrengthPercent' % type),
@@ -6686,7 +6687,7 @@ class Effect2249(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'miningAmount', ship.getModifiedItemAttr('shipBonusAC2'),
                                      skill='Amarr Cruiser', **kwargs)
@@ -6703,7 +6704,7 @@ class Effect2250(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
                                      'miningAmount', ship.getModifiedItemAttr('shipBonusGC2'),
                                      skill='Gallente Cruiser', **kwargs)
@@ -6722,7 +6723,7 @@ class Effect2251(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
                                          src.getModifiedItemAttr('maxGangModules'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
@@ -6749,7 +6750,7 @@ class Effect2252(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemForce(lambda mod: mod.item.requiresSkill('Cloaking'),
                                       'moduleReactivationDelay',
                                       container.getModifiedItemAttr('covertOpsAndReconOpsCloakModuleDelay'), **kwargs)
@@ -6772,7 +6773,7 @@ class Effect2253(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemForce(lambda mod: mod.item.group.name == 'Cloaking Device',
                                       'cloakingTargetingDelay',
                                       ship.getModifiedItemAttr('covertOpsStealthBomberTargettingDelay'), **kwargs)
@@ -6801,7 +6802,7 @@ class Effect2298(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         for type in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
             sensorType = 'scan{0}Strength'.format(type)
             sensorBoost = 'scan{0}StrengthPercent'.format(type)
@@ -6820,7 +6821,7 @@ class Effect2302(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
             for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
                 bonus = '%s%sDamageResonance' % (attrPrefix, damageType)
@@ -6842,7 +6843,7 @@ class Effect2305(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
                                       'energyNeutralizerAmount', ship.getModifiedItemAttr('eliteBonusReconShip2'),
                                       skill='Recon Ships', **kwargs)
@@ -6860,7 +6861,7 @@ class Effect2354(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -6877,7 +6878,7 @@ class Effect2355(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -6894,7 +6895,7 @@ class Effect2356(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Capacitor Emission Systems'),
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level, **kwargs)
 
@@ -6910,7 +6911,7 @@ class Effect2402(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         damageTypes = ('em', 'explosive', 'kinetic', 'thermal')
         for dmgType in damageTypes:
             dmgAttr = '{0}Damage'.format(dmgType)
@@ -6932,7 +6933,7 @@ class Effect2422(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', implant.getModifiedItemAttr('implantBonusVelocity'), **kwargs)
 
 
@@ -6952,7 +6953,7 @@ class Effect2432(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.ship.boostItemAttr('capacitorCapacity', container.getModifiedItemAttr('capacitorCapacityBonus') * level, **kwargs)
 
@@ -6969,7 +6970,7 @@ class Effect2444(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'cpu', module.getModifiedItemAttr('cpuPenaltyPercent'), **kwargs)
 
@@ -6985,7 +6986,7 @@ class Effect2445(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
                                       'cpu', module.getModifiedItemAttr('cpuPenaltyPercent'), **kwargs)
 
@@ -7002,7 +7003,7 @@ class Effect2456(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Upgrades'),
                                       'cpuPenaltyPercent',
@@ -7021,7 +7022,7 @@ class Effect2465(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
             fit.ship.boostItemAttr('armor{0}DamageResonance'.format(type), ship.getModifiedItemAttr('shipBonusAB'),
                                    skill='Amarr Battleship', **kwargs)
@@ -7039,7 +7040,7 @@ class Effect2479(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
                                       'duration', module.getModifiedItemAttr('iceHarvestCycleBonus'), **kwargs)
 
@@ -7058,7 +7059,7 @@ class Effect2485(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', implant.getModifiedItemAttr('armorHpBonus2'), **kwargs)
 
 
@@ -7073,7 +7074,7 @@ class Effect2488(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', implant.getModifiedItemAttr('velocityBonus2'), **kwargs)
 
 
@@ -7088,7 +7089,7 @@ class Effect2489(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'falloffEffectiveness', ship.getModifiedItemAttr('shipBonusMC'),
                                       skill='Minmatar Cruiser', **kwargs)
@@ -7105,7 +7106,7 @@ class Effect2490(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'falloffEffectiveness', ship.getModifiedItemAttr('shipBonusGC2'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -7123,7 +7124,7 @@ class Effect2491(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Jammer',
                                       'ecmBurstRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
@@ -7143,7 +7144,7 @@ class Effect2492(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Jammer',
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -7161,7 +7162,7 @@ class Effect2503(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGB2'),
                                       skill='Gallente Battleship', **kwargs)
@@ -7181,7 +7182,7 @@ class Effect2504(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGF2'),
                                       skill='Gallente Frigate', **kwargs)
@@ -7198,7 +7199,7 @@ class Effect2561(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                         skill='Assault Frigates', **kwargs)
@@ -7216,7 +7217,7 @@ class Effect2589(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         for i in range(5):
             attr = 'boosterEffectChance{0}'.format(i + 1)
@@ -7237,7 +7238,7 @@ class Effect2602(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('shipBonus2CB'),
                                skill='Caldari Battleship', **kwargs)
 
@@ -7255,7 +7256,7 @@ class Effect2603(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonus2CB'),
                                skill='Caldari Battleship', **kwargs)
 
@@ -7273,7 +7274,7 @@ class Effect2604(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', ship.getModifiedItemAttr('shipBonus2CB'),
                                skill='Caldari Battleship', **kwargs)
 
@@ -7291,7 +7292,7 @@ class Effect2605(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', ship.getModifiedItemAttr('shipBonus2CB'),
                                skill='Caldari Battleship', **kwargs)
 
@@ -7307,7 +7308,7 @@ class Effect2611(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                       skill='Assault Frigates', **kwargs)
@@ -7324,7 +7325,7 @@ class Effect2644(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -7341,7 +7342,7 @@ class Effect2645(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionMultiplier'),
                                   stackingPenalties=True, **kwargs)
 
@@ -7357,7 +7358,7 @@ class Effect2646(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -7373,7 +7374,7 @@ class Effect2647(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy',
                                       'speed', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -7390,7 +7391,7 @@ class Effect2648(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy Assault',
                                       'speed', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -7407,7 +7408,7 @@ class Effect2649(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Light',
                                       'speed', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -7424,7 +7425,7 @@ class Effect2670(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
                                stackingPenalties=True, **kwargs)
         fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus'),
@@ -7448,7 +7449,7 @@ class Effect2688(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'capacitorNeed', module.getModifiedItemAttr('capNeedBonus'), **kwargs)
 
@@ -7464,7 +7465,7 @@ class Effect2689(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'capacitorNeed', module.getModifiedItemAttr('capNeedBonus'), **kwargs)
 
@@ -7480,7 +7481,7 @@ class Effect2690(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'cpu', module.getModifiedItemAttr('cpuNeedBonus'), **kwargs)
 
@@ -7496,7 +7497,7 @@ class Effect2691(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'cpu', module.getModifiedItemAttr('cpuNeedBonus'), **kwargs)
 
@@ -7512,7 +7513,7 @@ class Effect2693(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -7529,7 +7530,7 @@ class Effect2694(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -7546,7 +7547,7 @@ class Effect2695(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -7563,7 +7564,7 @@ class Effect2696(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -7580,7 +7581,7 @@ class Effect2697(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -7597,7 +7598,7 @@ class Effect2698(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -7614,7 +7615,7 @@ class Effect2706(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'power', module.getModifiedItemAttr('drawback'), **kwargs)
 
@@ -7630,7 +7631,7 @@ class Effect2707(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'power', module.getModifiedItemAttr('drawback'), **kwargs)
 
@@ -7646,7 +7647,7 @@ class Effect2708(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'power', module.getModifiedItemAttr('drawback'), **kwargs)
 
@@ -7662,7 +7663,7 @@ class Effect2712(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', module.getModifiedItemAttr('drawback'), **kwargs)
 
 
@@ -7677,7 +7678,7 @@ class Effect2713(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('cpuOutput', module.getModifiedItemAttr('drawback'), **kwargs)
 
 
@@ -7692,7 +7693,7 @@ class Effect2714(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'cpu', module.getModifiedItemAttr('drawback'), **kwargs)
 
@@ -7709,7 +7710,7 @@ class Effect2716(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('drawback'),
                                stackingPenalties=True, **kwargs)
 
@@ -7726,7 +7727,7 @@ class Effect2717(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('drawback'),
                                stackingPenalties=True, **kwargs)
 
@@ -7744,7 +7745,7 @@ class Effect2718(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', module.getModifiedItemAttr('drawback'), **kwargs)
 
 
@@ -7770,7 +7771,7 @@ class Effect2727(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
                                          'maxGroupActive', skill.level, **kwargs)
 
@@ -7786,7 +7787,7 @@ class Effect2734(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('Gravimetric', 'Ladar', 'Radar', 'Magnetometric'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                           'scan{0}StrengthBonus'.format(type),
@@ -7807,7 +7808,7 @@ class Effect2735(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
 
@@ -7826,7 +7827,7 @@ class Effect2736(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Armor Repair Unit', 'Ancillary Armor Repairer'),
                                       'armorDamageAmount', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
@@ -7844,7 +7845,7 @@ class Effect2737(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
 
@@ -7863,7 +7864,7 @@ class Effect2739(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'maxRange', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
@@ -7882,7 +7883,7 @@ class Effect2741(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'falloff', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
@@ -7901,7 +7902,7 @@ class Effect2745(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacitorCapacity', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
 
@@ -7919,7 +7920,7 @@ class Effect2746(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
 
@@ -7937,7 +7938,7 @@ class Effect2747(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'trackingSpeed', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
@@ -7956,7 +7957,7 @@ class Effect2748(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
@@ -7974,7 +7975,7 @@ class Effect2749(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'aoeVelocity', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
@@ -7990,7 +7991,7 @@ class Effect2756(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('Gravimetric', 'Magnetometric', 'Ladar', 'Radar'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                           'scan{0}StrengthBonus'.format(type), ship.getModifiedItemAttr('shipBonusCC'),
@@ -8022,7 +8023,7 @@ class Effect2760(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         attrs = ('boosterArmorHPPenalty', 'boosterArmorRepairAmountPenalty')
         for attr in attrs:
@@ -8043,7 +8044,7 @@ class Effect2763(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         attrs = ('boosterShieldBoostAmountPenalty', 'boosterShieldCapacityPenalty', 'shieldBoostMultiplier')
         for attr in attrs:
@@ -8066,7 +8067,7 @@ class Effect2766(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         attrs = ('boosterCapacitorCapacityPenalty', 'boosterMaxVelocityPenalty')
         for attr in attrs:
@@ -8087,7 +8088,7 @@ class Effect2776(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         attrs = ('boosterAOEVelocityPenalty', 'boosterMissileAOECloudPenalty', 'boosterMissileVelocityPenalty')
         for attr in attrs:
@@ -8108,7 +8109,7 @@ class Effect2778(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         attrs = ('boosterTurretFalloffPenalty', 'boosterTurretOptimalRangePenalty', 'boosterTurretTrackingPenalty')
         for attr in attrs:
@@ -8130,7 +8131,7 @@ class Effect2791(BaseEffect):
     type = 'boosterSideEffect'
 
     @classmethod
-    def handler(cls, fit, booster, context, **kwargs):
+    def handler(cls, fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'aoeCloudSize', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
@@ -8146,7 +8147,7 @@ class Effect2792(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for type in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.ship.boostItemAttr('armor' + type.capitalize() + 'DamageResonance',
                                    module.getModifiedItemAttr(type + 'DamageResistanceBonus') or 0,
@@ -8165,7 +8166,7 @@ class Effect2794(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Salvaging'),
                                          'accessDifficultyBonus', container.getModifiedItemAttr('accessDifficultyBonus'),
                                          position='post', **kwargs)
@@ -8182,7 +8183,7 @@ class Effect2795(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for type in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.ship.boostItemAttr('shield' + type.capitalize() + 'DamageResonance',
                                    module.getModifiedItemAttr(type + 'DamageResistanceBonus') or 0,
@@ -8200,7 +8201,7 @@ class Effect2796(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('mass', module.getModifiedItemAttr('massBonusPercentage'),
                                stackingPenalties=True, **kwargs)
 
@@ -8216,7 +8217,7 @@ class Effect2797(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -8233,7 +8234,7 @@ class Effect2798(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -8250,7 +8251,7 @@ class Effect2799(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -8267,7 +8268,7 @@ class Effect2801(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Weapon',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -8284,7 +8285,7 @@ class Effect2802(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -8301,7 +8302,7 @@ class Effect2803(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -8318,7 +8319,7 @@ class Effect2804(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -8336,7 +8337,7 @@ class Effect2805(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusAB2'),
                                       skill='Amarr Battleship', **kwargs)
@@ -8354,7 +8355,7 @@ class Effect2809(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'),
                                         skill='Caldari Cruiser', **kwargs)
@@ -8371,7 +8372,7 @@ class Effect2810(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'explosionDelay', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                         skill='Heavy Assault Cruisers', **kwargs)
@@ -8388,7 +8389,7 @@ class Effect2812(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Jammer',
                                       'ecmBurstRange', ship.getModifiedItemAttr('shipBonusCB3'),
                                       skill='Caldari Battleship', **kwargs)
@@ -8405,7 +8406,7 @@ class Effect2837(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('armorHP', module.getModifiedItemAttr('armorHPBonusAdd'), **kwargs)
 
 
@@ -8424,7 +8425,7 @@ class Effect2847(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'trackingSpeed', container.getModifiedItemAttr('trackingSpeedBonus') * level, **kwargs)
@@ -8443,7 +8444,7 @@ class Effect2848(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda module: module.item.requiresSkill('Archaeology'),
                                          'accessDifficultyBonus',
                                          container.getModifiedItemAttr('accessDifficultyBonusModifier'),
@@ -8464,7 +8465,7 @@ class Effect2849(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda c: c.item.requiresSkill('Hacking'),
                                          'accessDifficultyBonus',
                                          container.getModifiedItemAttr('accessDifficultyBonusModifier'),
@@ -8482,7 +8483,7 @@ class Effect2850(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
                                       'duration', module.getModifiedItemAttr('durationBonus'), **kwargs)
 
@@ -8498,7 +8499,7 @@ class Effect2851(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
             fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                                '%sDamage' % dmgType,
@@ -8517,7 +8518,7 @@ class Effect2853(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda module: module.item.requiresSkill('Cloaking'),
                                       'cloakingTargetingDelay', module.getModifiedItemAttr('cloakingTargetingDelayBonus'), **kwargs)
 
@@ -8533,7 +8534,7 @@ class Effect2857(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'), **kwargs)
 
 
@@ -8548,7 +8549,7 @@ class Effect2858(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
         fit.ship.forceItemAttr('canCloak', mod.getModifiedChargeAttr('canCloak'), **kwargs)
@@ -8567,7 +8568,7 @@ class Effect2865(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('implantBonusVelocity'),
                                stackingPenalties=True, **kwargs)
 
@@ -8584,7 +8585,7 @@ class Effect2866(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.boosters.filteredItemBoost(lambda bst: True, 'boosterDuration',
                                        container.getModifiedItemAttr('durationBonus') * level, **kwargs)
@@ -8601,7 +8602,7 @@ class Effect2867(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'damageMultiplier', module.getModifiedItemAttr('damageMultiplierBonus'),
                                      stackingPenalties=True, **kwargs)
@@ -8618,7 +8619,7 @@ class Effect2868(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Repair Systems'),
                                       'armorDamageAmount', implant.getModifiedItemAttr('repairBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -8635,7 +8636,7 @@ class Effect2872(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Defender Missiles'),
                                            'maxVelocity', container.getModifiedItemAttr('missileVelocityBonus'), **kwargs)
 
@@ -8651,7 +8652,7 @@ class Effect2881(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8667,7 +8668,7 @@ class Effect2882(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8683,7 +8684,7 @@ class Effect2883(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8699,7 +8700,7 @@ class Effect2884(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8715,7 +8716,7 @@ class Effect2885(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'),
                                       'duration', implant.getModifiedItemAttr('durationBonus'), **kwargs)
 
@@ -8731,7 +8732,7 @@ class Effect2887(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8747,7 +8748,7 @@ class Effect2888(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8763,7 +8764,7 @@ class Effect2889(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8779,7 +8780,7 @@ class Effect2890(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8795,7 +8796,7 @@ class Effect2891(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8811,7 +8812,7 @@ class Effect2892(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8827,7 +8828,7 @@ class Effect2893(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8843,7 +8844,7 @@ class Effect2894(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8859,7 +8860,7 @@ class Effect2899(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8875,7 +8876,7 @@ class Effect2900(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8891,7 +8892,7 @@ class Effect2901(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8907,7 +8908,7 @@ class Effect2902(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8923,7 +8924,7 @@ class Effect2903(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8939,7 +8940,7 @@ class Effect2904(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8955,7 +8956,7 @@ class Effect2905(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8971,7 +8972,7 @@ class Effect2906(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -8987,7 +8988,7 @@ class Effect2907(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -9003,7 +9004,7 @@ class Effect2908(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -9019,7 +9020,7 @@ class Effect2909(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -9035,7 +9036,7 @@ class Effect2910(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -9051,7 +9052,7 @@ class Effect2911(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Data Miners',
                                       'duration', implant.getModifiedItemAttr('durationBonus'), **kwargs)
 
@@ -9067,7 +9068,7 @@ class Effect2967(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         amount = -skill.getModifiedItemAttr('consumptionQuantityBonus')
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill(skill),
                                          'consumptionQuantity', amount * skill.level, **kwargs)
@@ -9084,7 +9085,7 @@ class Effect2979(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Hull Repair Systems'),
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level, **kwargs)
 
@@ -9100,7 +9101,7 @@ class Effect2980(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Remote Hull Repair Systems'),
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level, **kwargs)
 
@@ -9116,7 +9117,7 @@ class Effect2982(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         # We need to make sure that the attribute exists, otherwise we add attributes that don't belong.  See #927
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Burst Projector Operation') and
                                                   mod.item.getAttribute('duration'),
@@ -9157,7 +9158,7 @@ class Effect3001(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('speed', module.getModifiedItemAttr('overloadRofBonus'), **kwargs)
 
 
@@ -9184,7 +9185,7 @@ class Effect3002(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('duration', module.getModifiedItemAttr('overloadSelfDurationBonus') or 0, **kwargs)
 
 
@@ -9200,7 +9201,7 @@ class Effect3024(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                         'explosiveDamage', ship.getModifiedItemAttr('eliteBonusCovertOps1'),
                                         skill='Covert Ops', **kwargs)
@@ -9220,7 +9221,7 @@ class Effect3025(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('damageMultiplier', module.getModifiedItemAttr('overloadDamageModifier'), **kwargs)
 
 
@@ -9235,7 +9236,7 @@ class Effect3026(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                         'kineticDamage', ship.getModifiedItemAttr('eliteBonusCovertOps1'),
                                         skill='Covert Ops', **kwargs)
@@ -9253,7 +9254,7 @@ class Effect3027(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                         'thermalDamage', ship.getModifiedItemAttr('eliteBonusCovertOps1'),
                                         skill='Covert Ops', **kwargs)
@@ -9270,7 +9271,7 @@ class Effect3028(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                         'emDamage', ship.getModifiedItemAttr('eliteBonusCovertOps1'),
                                         skill='Covert Ops', **kwargs)
@@ -9289,7 +9290,7 @@ class Effect3029(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('emDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'), **kwargs)
 
 
@@ -9306,7 +9307,7 @@ class Effect3030(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('thermalDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'), **kwargs)
 
 
@@ -9323,7 +9324,7 @@ class Effect3031(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('explosiveDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'), **kwargs)
 
 
@@ -9340,7 +9341,7 @@ class Effect3032(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('kineticDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'), **kwargs)
 
 
@@ -9356,7 +9357,7 @@ class Effect3035(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for type in ('kinetic', 'thermal', 'explosive', 'em'):
             module.boostItemAttr('%sDamageResistanceBonus' % type,
                                  module.getModifiedItemAttr('overloadHardeningBonus'), **kwargs)
@@ -9373,7 +9374,7 @@ class Effect3036(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Bomb',
                                       'moduleReactivationDelay', skill.getModifiedItemAttr('reactivationDelayBonus') * skill.level, **kwargs)
 
@@ -9389,7 +9390,7 @@ class Effect3046(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'), stackingPenalties=True, **kwargs)
 
 
@@ -9404,7 +9405,7 @@ class Effect3047(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('hp', module.getModifiedItemAttr('structureHPMultiplier'), **kwargs)
 
 
@@ -9419,7 +9420,7 @@ class Effect3061(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'heatDamage', module.getModifiedItemAttr('heatDamageBonus'), **kwargs)
 
@@ -9435,7 +9436,7 @@ class Effect3169(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'cpu',
                                       src.getModifiedItemAttr('shieldTransportCpuNeedBonus'), **kwargs)
 
@@ -9453,7 +9454,7 @@ class Effect3172(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         # This is actually level-less bonus, anyway you have to train cruisers 5
         # and will get 100% (20%/lvl as stated by description)
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
@@ -9473,7 +9474,7 @@ class Effect3173(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         # This is actually level-less bonus, anyway you have to train cruisers 5
         # and will get 100% (20%/lvl as stated by description)
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
@@ -9493,7 +9494,7 @@ class Effect3174(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('maxRange', module.getModifiedItemAttr('overloadRangeBonus'),
                              stackingPenalties=True, **kwargs)
 
@@ -9509,7 +9510,7 @@ class Effect3175(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('speedFactor', module.getModifiedItemAttr('overloadSpeedFactorBonus'),
                              stackingPenalties=True, **kwargs)
 
@@ -9526,7 +9527,7 @@ class Effect3182(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
                 module.boostItemAttr('scan{0}StrengthBonus'.format(scanType),
@@ -9545,7 +9546,7 @@ class Effect3196(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: 'heatDamage' in mod.item.attributes, 'heatDamage',
                                       skill.getModifiedItemAttr('thermodynamicsHeatDamage') * skill.level, **kwargs)
 
@@ -9562,7 +9563,7 @@ class Effect3200(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('duration', module.getModifiedItemAttr('overloadSelfDurationBonus'))
         module.boostItemAttr('armorDamageAmount', module.getModifiedItemAttr('overloadArmorDamageAmount'),
                              stackingPenalties=True, **kwargs)
@@ -9580,7 +9581,7 @@ class Effect3201(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('duration', module.getModifiedItemAttr('overloadSelfDurationBonus'))
         module.boostItemAttr('shieldBonus', module.getModifiedItemAttr('overloadShieldBonus'), stackingPenalties=True, **kwargs)
 
@@ -9596,7 +9597,7 @@ class Effect3212(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('FoF Missiles'),
                                         'aoeCloudSize', container.getModifiedItemAttr('aoeCloudSizeBonus') * level, **kwargs)
@@ -9614,7 +9615,7 @@ class Effect3234(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusAF'),
                                         skill='Amarr Frigate', **kwargs)
@@ -9632,7 +9633,7 @@ class Effect3235(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusAF'),
                                         skill='Amarr Frigate', **kwargs)
@@ -9650,7 +9651,7 @@ class Effect3236(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusAF'),
                                         skill='Amarr Frigate', **kwargs)
@@ -9668,7 +9669,7 @@ class Effect3237(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusAF'),
                                         skill='Amarr Frigate', **kwargs)
@@ -9685,7 +9686,7 @@ class Effect3241(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                skill='Assault Frigates', **kwargs)
 
@@ -9701,7 +9702,7 @@ class Effect3242(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                skill='Assault Frigates', **kwargs)
 
@@ -9717,7 +9718,7 @@ class Effect3243(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                skill='Assault Frigates', **kwargs)
 
@@ -9733,7 +9734,7 @@ class Effect3244(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                skill='Assault Frigates', **kwargs)
 
@@ -9749,7 +9750,7 @@ class Effect3249(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('rechargeRate', ship.getModifiedItemAttr('shipBonus2AF'),
                                skill='Amarr Frigate', **kwargs)
 
@@ -9765,7 +9766,7 @@ class Effect3264(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         amount = -skill.getModifiedItemAttr('consumptionQuantityBonus')
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill(skill),
                                          'consumptionQuantity', amount * skill.level, **kwargs)
@@ -9782,7 +9783,7 @@ class Effect3267(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Industrial Reconfiguration'),
                                       'consumptionQuantity', ship.getModifiedItemAttr('shipBonusORECapital1'),
                                       skill='Capital Industrial Ships', **kwargs)
@@ -9799,7 +9800,7 @@ class Effect3297(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
                                       'energyNeutralizerAmount', ship.getModifiedItemAttr('shipBonusAB'),
                                       skill='Amarr Battleship', **kwargs)
@@ -9817,7 +9818,7 @@ class Effect3298(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
                                       'energyNeutralizerAmount', ship.getModifiedItemAttr('shipBonusAC'),
                                       skill='Amarr Cruiser', **kwargs)
@@ -9836,7 +9837,7 @@ class Effect3299(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
                                       'energyNeutralizerAmount', ship.getModifiedItemAttr('shipBonusAF'),
                                       skill='Amarr Frigate', **kwargs)
@@ -9853,7 +9854,7 @@ class Effect3313(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxJumpClones', skill.getModifiedItemAttr('maxJumpClonesBonus') * skill.level, **kwargs)
 
 
@@ -9868,7 +9869,7 @@ class Effect3331(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships', **kwargs)
 
 
@@ -9883,7 +9884,7 @@ class Effect3335(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
 
@@ -9898,7 +9899,7 @@ class Effect3336(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusMC2'),
                                skill='Minmatar Cruiser', **kwargs)
 
@@ -9914,7 +9915,7 @@ class Effect3339(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('shipBonusMC2'),
                                skill='Minmatar Cruiser', **kwargs)
 
@@ -9930,7 +9931,7 @@ class Effect3340(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('shipBonusMC2'),
                                skill='Minmatar Cruiser', **kwargs)
 
@@ -9946,7 +9947,7 @@ class Effect3343(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
                                       skill='Heavy Interdiction Cruisers', **kwargs)
@@ -9963,7 +9964,7 @@ class Effect3355(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
                                         skill='Heavy Interdiction Cruisers', **kwargs)
@@ -9980,7 +9981,7 @@ class Effect3356(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
                                         skill='Heavy Interdiction Cruisers', **kwargs)
@@ -9997,7 +9998,7 @@ class Effect3357(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
                                         skill='Heavy Interdiction Cruisers', **kwargs)
@@ -10015,7 +10016,7 @@ class Effect3366(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -10031,7 +10032,7 @@ class Effect3367(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusElectronicAttackShip1'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -10048,7 +10049,7 @@ class Effect3369(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusElectronicAttackShip1'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -10065,7 +10066,7 @@ class Effect3370(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusElectronicAttackShip1'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -10082,7 +10083,7 @@ class Effect3371(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'capacitorNeed', ship.getModifiedItemAttr('eliteBonusElectronicAttackShip2'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -10099,7 +10100,7 @@ class Effect3374(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('eliteBonusElectronicAttackShip2'),
                                skill='Electronic Attack Ships', **kwargs)
 
@@ -10115,7 +10116,7 @@ class Effect3379(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'capacitorNeed', implant.getModifiedItemAttr('capNeedBonus'), **kwargs)
 
@@ -10132,7 +10133,7 @@ class Effect3380(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             if module.charge is not None:
                 if module.charge.ID in (29003, 45010):
@@ -10163,7 +10164,7 @@ class Effect3392(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
 
@@ -10179,7 +10180,7 @@ class Effect3403(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         if fit.extraAttributes['cloaked']:
             fit.ship.multiplyItemAttr('maxVelocity', ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
 
@@ -10195,7 +10196,7 @@ class Effect3406(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
 
 
@@ -10210,7 +10211,7 @@ class Effect3415(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'), **kwargs)
 
@@ -10226,7 +10227,7 @@ class Effect3416(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'), **kwargs)
 
@@ -10242,7 +10243,7 @@ class Effect3417(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'), **kwargs)
 
@@ -10258,7 +10259,7 @@ class Effect3424(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusViolators1'), skill='Marauders', **kwargs)
 
@@ -10274,7 +10275,7 @@ class Effect3425(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusViolators1'), skill='Marauders', **kwargs)
 
@@ -10290,7 +10291,7 @@ class Effect3427(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusViolatorsRole2'), **kwargs)
 
@@ -10306,7 +10307,7 @@ class Effect3439(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('eliteBonusViolators1'),
                                       skill='Marauders', **kwargs)
@@ -10324,7 +10325,7 @@ class Effect3447(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -10340,7 +10341,7 @@ class Effect3466(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('rechargeRate', ship.getModifiedItemAttr('eliteBonusElectronicAttackShip2'),
                                skill='Electronic Attack Ships', **kwargs)
 
@@ -10356,7 +10357,7 @@ class Effect3467(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacitorCapacity', ship.getModifiedItemAttr('eliteBonusElectronicAttackShip2'),
                                skill='Electronic Attack Ships', **kwargs)
 
@@ -10372,7 +10373,7 @@ class Effect3468(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
                                       'warpScrambleRange', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors2'),
                                       skill='Heavy Interdiction Cruisers', **kwargs)
@@ -10389,7 +10390,7 @@ class Effect3473(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'maxTractorVelocity', ship.getModifiedItemAttr('eliteBonusViolatorsRole3'), **kwargs)
 
@@ -10406,7 +10407,7 @@ class Effect3478(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -10422,7 +10423,7 @@ class Effect3480(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship', **kwargs)
 
@@ -10441,7 +10442,7 @@ class Effect3483(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -10458,7 +10459,7 @@ class Effect3484(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)
 
@@ -10479,7 +10480,7 @@ class Effect3487(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -10496,7 +10497,7 @@ class Effect3489(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -10512,7 +10513,7 @@ class Effect3493(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Cargo Scanner',
                                       'cargoScanRange', ship.getModifiedItemAttr('cargoScannerRangeBonus'), **kwargs)
 
@@ -10528,7 +10529,7 @@ class Effect3494(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Survey Scanner',
                                       'surveyScanRange', ship.getModifiedItemAttr('surveyScannerRangeBonus'), **kwargs)
 
@@ -10548,7 +10549,7 @@ class Effect3495(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         groups = ('Stasis Web', 'Warp Scrambler')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'capacitorNeed', ship.getModifiedItemAttr('eliteBonusInterceptorRole'), **kwargs)
@@ -10566,7 +10567,7 @@ class Effect3496(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'agilityBonus', implant.getModifiedItemAttr('implantSetThukker'), **kwargs)
 
@@ -10583,7 +10584,7 @@ class Effect3498(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'scanStrengthBonus', implant.getModifiedItemAttr('implantSetSisters'), **kwargs)
 
@@ -10600,7 +10601,7 @@ class Effect3499(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'boosterAttributeModifier',
                                                  implant.getModifiedItemAttr('implantSetSyndicate'), **kwargs)
@@ -10618,7 +10619,7 @@ class Effect3513(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'rangeSkillBonus', implant.getModifiedItemAttr('implantSetMordus'), **kwargs)
 
@@ -10634,7 +10635,7 @@ class Effect3514(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusInterceptor2'), skill='Interceptors', **kwargs)
 
@@ -10650,7 +10651,7 @@ class Effect3519(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Bomb Deployment'),
                                       'cpu', skill.getModifiedItemAttr('cpuNeedBonus') * skill.level, **kwargs)
 
@@ -10666,7 +10667,7 @@ class Effect3520(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Bomb Deployment'),
                                       'power', skill.getModifiedItemAttr('powerNeedBonus') * skill.level, **kwargs)
 
@@ -10683,7 +10684,7 @@ class Effect3526(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Cynosural Field Generator',
                                       'consumptionQuantity',
@@ -10701,7 +10702,7 @@ class Effect3530(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
 
 
@@ -10716,7 +10717,7 @@ class Effect3532(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('jumpDriveConsumptionAmount',
                                skill.getModifiedItemAttr('consumptionQuantityBonusPercentage') * skill.level, **kwargs)
 
@@ -10733,7 +10734,7 @@ class Effect3561(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Weapon Disruptor',
                                       'trackingSpeedBonus',
@@ -10751,7 +10752,7 @@ class Effect3568(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'maxRangeBonus', ship.getModifiedItemAttr('eliteBonusLogistics1'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -10768,7 +10769,7 @@ class Effect3569(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'maxRangeBonus', ship.getModifiedItemAttr('eliteBonusLogistics2'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -10785,7 +10786,7 @@ class Effect3570(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'trackingSpeedBonus', ship.getModifiedItemAttr('eliteBonusLogistics2'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -10802,7 +10803,7 @@ class Effect3571(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'trackingSpeedBonus', ship.getModifiedItemAttr('eliteBonusLogistics1'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -10820,7 +10821,7 @@ class Effect3586(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
@@ -10840,7 +10841,7 @@ class Effect3587(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'maxTargetRangeBonus', ship.getModifiedItemAttr('shipBonusGC2'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -10858,7 +10859,7 @@ class Effect3588(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'maxTargetRangeBonus', ship.getModifiedItemAttr('shipBonusGF2'),
                                       skill='Gallente Frigate', **kwargs)
@@ -10876,7 +10877,7 @@ class Effect3589(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'scanResolutionBonus', ship.getModifiedItemAttr('shipBonusGF2'),
                                       skill='Gallente Frigate', **kwargs)
@@ -10893,7 +10894,7 @@ class Effect3590(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'scanResolutionBonus', ship.getModifiedItemAttr('shipBonusGC2'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -10911,7 +10912,7 @@ class Effect3591(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'maxTargetRangeBonus',
@@ -10929,7 +10930,7 @@ class Effect3592(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('hp', ship.getModifiedItemAttr('eliteBonusJumpFreighter1'), skill='Jump Freighters', **kwargs)
 
 
@@ -10944,7 +10945,7 @@ class Effect3593(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('jumpDriveConsumptionAmount', ship.getModifiedItemAttr('eliteBonusJumpFreighter2'),
                                skill='Jump Freighters', **kwargs)
 
@@ -10961,7 +10962,7 @@ class Effect3597(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('scanResolutionBonus', module.getModifiedChargeAttr('scanResolutionBonusBonus'), **kwargs)
 
 
@@ -10977,7 +10978,7 @@ class Effect3598(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('maxTargetRangeBonus', module.getModifiedChargeAttr('maxTargetRangeBonusBonus'), **kwargs)
 
 
@@ -10993,7 +10994,7 @@ class Effect3599(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('trackingSpeedBonus', module.getModifiedChargeAttr('trackingSpeedBonusBonus'), **kwargs)
 
 
@@ -11009,7 +11010,7 @@ class Effect3600(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('maxRangeBonus', module.getModifiedChargeAttr('maxRangeBonusBonus'), **kwargs)
 
 
@@ -11024,7 +11025,7 @@ class Effect3601(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.forceItemAttr('disallowInEmpireSpace', module.getModifiedChargeAttr('disallowInEmpireSpace'), **kwargs)
 
 
@@ -11039,7 +11040,7 @@ class Effect3602(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('duration', module.getModifiedChargeAttr('durationBonus'), **kwargs)
 
 
@@ -11055,7 +11056,7 @@ class Effect3617(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('signatureRadiusBonus', module.getModifiedChargeAttr('signatureRadiusBonusBonus'), **kwargs)
 
 
@@ -11071,7 +11072,7 @@ class Effect3618(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('massBonusPercentage', module.getModifiedChargeAttr('massBonusPercentageBonus'), **kwargs)
 
 
@@ -11087,7 +11088,7 @@ class Effect3619(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('speedBoostFactorBonus', module.getModifiedChargeAttr('speedBoostFactorBonusBonus'), **kwargs)
 
 
@@ -11103,7 +11104,7 @@ class Effect3620(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('speedFactorBonus', module.getModifiedChargeAttr('speedFactorBonusBonus'), **kwargs)
 
 
@@ -11118,7 +11119,7 @@ class Effect3648(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('warpScrambleRange', module.getModifiedChargeAttr('warpScrambleRangeBonus'), **kwargs)
 
 
@@ -11133,7 +11134,7 @@ class Effect3649(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusViolators1'),
                                       skill='Marauders', **kwargs)
@@ -11150,7 +11151,7 @@ class Effect3650(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
 
@@ -11166,7 +11167,7 @@ class Effect3651(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
 
@@ -11182,7 +11183,7 @@ class Effect3652(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Weapon Disruptor',
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
 
@@ -11198,7 +11199,7 @@ class Effect3653(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Projectors',
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
 
@@ -11214,7 +11215,7 @@ class Effect3655(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -11231,7 +11232,7 @@ class Effect3656(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -11249,7 +11250,7 @@ class Effect3657(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -11266,7 +11267,7 @@ class Effect3659(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -11283,7 +11284,7 @@ class Effect3660(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('maxLockedTargets', module.getModifiedItemAttr('maxLockedTargetsBonus'), **kwargs)
 
 
@@ -11298,7 +11299,7 @@ class Effect3668(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mining Laser',
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -11314,7 +11315,7 @@ class Effect3669(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Frequency Mining Laser',
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -11330,7 +11331,7 @@ class Effect3670(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Strip Miner',
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -11346,7 +11347,7 @@ class Effect3671(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -11363,7 +11364,7 @@ class Effect3672(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'maxRangeBonus', implant.getModifiedItemAttr('implantSetORE'), **kwargs)
 
@@ -11379,7 +11380,7 @@ class Effect3674(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -11396,7 +11397,7 @@ class Effect3677(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship', **kwargs)
 
@@ -11413,7 +11414,7 @@ class Effect3678(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('eliteBonusJumpFreighter1'),
                                skill='Jump Freighters', **kwargs)
 
@@ -11430,7 +11431,7 @@ class Effect3679(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('eliteBonusJumpFreighter1'), skill='Jump Freighters', **kwargs)
 
 
@@ -11445,7 +11446,7 @@ class Effect3680(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusC1'), skill='Caldari Freighter', **kwargs)
 
 
@@ -11460,7 +11461,7 @@ class Effect3681(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusM1'), skill='Minmatar Freighter', **kwargs)
 
 
@@ -11475,7 +11476,7 @@ class Effect3682(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusG1'), skill='Gallente Freighter', **kwargs)
 
 
@@ -11490,7 +11491,7 @@ class Effect3683(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusA1'), skill='Amarr Freighter', **kwargs)
 
 
@@ -11506,7 +11507,7 @@ class Effect3686(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('falloffBonus', module.getModifiedChargeAttr('falloffBonusBonus'), **kwargs)
 
 
@@ -11521,7 +11522,7 @@ class Effect3703(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         groups = ('Missile Launcher Rapid Light', 'Missile Launcher Heavy', 'Missile Launcher Heavy Assault')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'speed', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
@@ -11539,7 +11540,7 @@ class Effect3705(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -11555,7 +11556,7 @@ class Effect3706(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -11571,7 +11572,7 @@ class Effect3726(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', module.getModifiedItemAttr('agilityBonus'), stackingPenalties=True, **kwargs)
 
 
@@ -11586,7 +11587,7 @@ class Effect3727(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('implantBonusVelocity'),
                                stackingPenalties=True, **kwargs)
 
@@ -11602,7 +11603,7 @@ class Effect3739(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam', 'maxRange',
                                       src.getModifiedItemAttr('roleBonusTractorBeamRange'), **kwargs)
 
@@ -11618,7 +11619,7 @@ class Effect3740(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam', 'maxTractorVelocity',
                                       ship.getModifiedItemAttr('roleBonusTractorBeamVelocity'), **kwargs)
 
@@ -11634,7 +11635,7 @@ class Effect3742(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialOreHoldCapacity',
                                src.getModifiedItemAttr('shipBonusICS1'),
                                skill='Industrial Command Ships', **kwargs)
@@ -11655,7 +11656,7 @@ class Effect3744(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff4Value',
                                       src.getModifiedItemAttr('shipBonusICS2'), skill='Industrial Command Ships', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff1Value',
@@ -11679,7 +11680,7 @@ class Effect3745(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Survey Scanner', 'surveyScanRange',
                                       src.getModifiedItemAttr('roleBonusSurveyScannerRange'), **kwargs)
 
@@ -11695,7 +11696,7 @@ class Effect3765(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo',
                                          'power', ship.getModifiedItemAttr('stealthBomberLauncherPower'), **kwargs)
 
@@ -11711,7 +11712,7 @@ class Effect3766(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('eliteBonusInterceptor'),
                                       skill='Interceptors', **kwargs)
@@ -11728,7 +11729,7 @@ class Effect3767(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'aoeVelocity', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                         skill='Command Ships', **kwargs)
@@ -11745,7 +11746,7 @@ class Effect3771(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('armorHP', module.getModifiedItemAttr('armorHPBonusAdd') or 0, **kwargs)
 
 
@@ -11760,7 +11761,7 @@ class Effect3773(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('turretSlotsLeft', module.getModifiedItemAttr('turretHardPointModifier'), **kwargs)
         fit.ship.increaseItemAttr('launcherSlotsLeft', module.getModifiedItemAttr('launcherHardPointModifier'), **kwargs)
 
@@ -11776,7 +11777,7 @@ class Effect3774(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('hiSlots', module.getModifiedItemAttr('hiSlotModifier'), **kwargs)
         fit.ship.increaseItemAttr('medSlots', module.getModifiedItemAttr('medSlotModifier'), **kwargs)
         fit.ship.increaseItemAttr('lowSlots', module.getModifiedItemAttr('lowSlotModifier'), **kwargs)
@@ -11793,7 +11794,7 @@ class Effect3782(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('powerOutput', module.getModifiedItemAttr('powerOutput'), **kwargs)
 
 
@@ -11808,7 +11809,7 @@ class Effect3783(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('cpuOutput', module.getModifiedItemAttr('cpuOutput'), **kwargs)
 
 
@@ -11823,7 +11824,7 @@ class Effect3797(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('droneBandwidth', module.getModifiedItemAttr('droneBandwidth'), **kwargs)
 
 
@@ -11838,7 +11839,7 @@ class Effect3799(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('droneCapacity', module.getModifiedItemAttr('droneCapacity'), **kwargs)
 
 
@@ -11853,7 +11854,7 @@ class Effect3807(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRange'), **kwargs)
 
 
@@ -11869,7 +11870,7 @@ class Effect3808(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadius'), **kwargs)
 
 
@@ -11885,7 +11886,7 @@ class Effect3810(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, subsystem, context, **kwargs):
+    def handler(fit, subsystem, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('capacity', subsystem.getModifiedItemAttr('cargoCapacityAdd') or 0, **kwargs)
 
 
@@ -11900,7 +11901,7 @@ class Effect3811(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('capacitorCapacity', module.getModifiedItemAttr('capacitorCapacity') or 0, **kwargs)
 
 
@@ -11915,7 +11916,7 @@ class Effect3831(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('shieldCapacity', module.getModifiedItemAttr('shieldCapacity'), **kwargs)
 
 
@@ -11930,7 +11931,7 @@ class Effect3857(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('subsystemBonusAmarrPropulsion'),
                                skill='Amarr Propulsion Systems', **kwargs)
 
@@ -11946,7 +11947,7 @@ class Effect3859(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('subsystemBonusCaldariPropulsion'),
                                skill='Caldari Propulsion Systems', **kwargs)
 
@@ -11962,7 +11963,7 @@ class Effect3860(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('subsystemBonusMinmatarPropulsion'),
                                skill='Minmatar Propulsion Systems', **kwargs)
 
@@ -11978,7 +11979,7 @@ class Effect3861(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'speedFactor', module.getModifiedItemAttr('subsystemBonusMinmatarPropulsion'),
                                       skill='Minmatar Propulsion Systems', **kwargs)
@@ -11995,7 +11996,7 @@ class Effect3863(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'speedFactor', module.getModifiedItemAttr('subsystemBonusCaldariPropulsion'),
                                       skill='Caldari Propulsion Systems', **kwargs)
@@ -12012,7 +12013,7 @@ class Effect3864(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'speedFactor', module.getModifiedItemAttr('subsystemBonusAmarrPropulsion'),
                                       skill='Amarr Propulsion Systems', **kwargs)
@@ -12029,7 +12030,7 @@ class Effect3865(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', src.getModifiedItemAttr('subsystemBonusAmarrPropulsion2'),
                                skill='Amarr Propulsion Systems', **kwargs)
 
@@ -12045,7 +12046,7 @@ class Effect3866(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', src.getModifiedItemAttr('subsystemBonusCaldariPropulsion2'),
                                skill='Caldari Propulsion Systems', **kwargs)
 
@@ -12061,7 +12062,7 @@ class Effect3867(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', src.getModifiedItemAttr('subsystemBonusGallentePropulsion2'),
                                skill='Gallente Propulsion Systems', **kwargs)
 
@@ -12077,7 +12078,7 @@ class Effect3868(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', src.getModifiedItemAttr('subsystemBonusMinmatarPropulsion2'),
                                skill='Minmatar Propulsion Systems', **kwargs)
 
@@ -12093,7 +12094,7 @@ class Effect3869(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'signatureRadiusBonus', src.getModifiedItemAttr('subsystemBonusMinmatarPropulsion2'),
                                       skill='Minmatar Propulsion Systems', **kwargs)
@@ -12110,7 +12111,7 @@ class Effect3872(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'signatureRadiusBonus', src.getModifiedItemAttr('subsystemBonusAmarrPropulsion2'),
                                       skill='Amarr Propulsion Systems', **kwargs)
@@ -12127,7 +12128,7 @@ class Effect3875(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
                                       'capacitorNeed', module.getModifiedItemAttr('subsystemBonusGallentePropulsion'),
                                       skill='Gallente Propulsion Systems', **kwargs)
@@ -12144,7 +12145,7 @@ class Effect3893(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanLadarStrength', src.getModifiedItemAttr('subsystemBonusMinmatarCore'),
                                skill='Minmatar Core Systems', **kwargs)
 
@@ -12160,7 +12161,7 @@ class Effect3895(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanMagnetometricStrength', src.getModifiedItemAttr('subsystemBonusGallenteCore'),
                                skill='Gallente Core Systems', **kwargs)
 
@@ -12176,7 +12177,7 @@ class Effect3897(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanGravimetricStrength', src.getModifiedItemAttr('subsystemBonusCaldariCore'), skill='Caldari Core Systems', **kwargs)
 
 
@@ -12191,7 +12192,7 @@ class Effect3900(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanRadarStrength', src.getModifiedItemAttr('subsystemBonusAmarrCore'),
                                skill='Amarr Core Systems', **kwargs)
 
@@ -12208,7 +12209,7 @@ class Effect3959(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', module.getModifiedItemAttr('subsystemBonusAmarrDefensive'),
                                       skill='Amarr Defensive Systems', **kwargs)
@@ -12226,7 +12227,7 @@ class Effect3961(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', module.getModifiedItemAttr('subsystemBonusGallenteDefensive'),
                                       skill='Gallente Defensive Systems', **kwargs)
@@ -12244,7 +12245,7 @@ class Effect3962(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('subsystemBonusMinmatarDefensive'),
                                       skill='Minmatar Defensive Systems', **kwargs)
@@ -12265,7 +12266,7 @@ class Effect3964(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', module.getModifiedItemAttr('subsystemBonusCaldariDefensive'),
                                       skill='Caldari Defensive Systems', **kwargs)
@@ -12282,7 +12283,7 @@ class Effect3976(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', module.getModifiedItemAttr('subsystemBonusCaldariDefensive'),
                                skill='Caldari Defensive Systems', **kwargs)
 
@@ -12298,7 +12299,7 @@ class Effect3979(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', src.getModifiedItemAttr('subsystemBonusMinmatarDefensive'),
                                skill='Minmatar Defensive Systems', **kwargs)
         fit.ship.boostItemAttr('armorHP', src.getModifiedItemAttr('subsystemBonusMinmatarDefensive'),
@@ -12316,7 +12317,7 @@ class Effect3980(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', module.getModifiedItemAttr('subsystemBonusGallenteDefensive'),
                                skill='Gallente Defensive Systems', **kwargs)
 
@@ -12332,7 +12333,7 @@ class Effect3982(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', module.getModifiedItemAttr('subsystemBonusAmarrDefensive'),
                                skill='Amarr Defensive Systems', **kwargs)
 
@@ -12349,7 +12350,7 @@ class Effect3992(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('shieldCapacity', beacon.getModifiedItemAttr('shieldCapacityMultiplier'), **kwargs)
 
 
@@ -12366,7 +12367,7 @@ class Effect3993(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('maxTargetRange', beacon.getModifiedItemAttr('maxTargetRangeMultiplier'),
                                   stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
@@ -12384,7 +12385,7 @@ class Effect3995(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('signatureRadius', beacon.getModifiedItemAttr('signatureRadiusMultiplier'),
                                   stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
@@ -12402,7 +12403,7 @@ class Effect3996(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', beacon.getModifiedItemAttr('armorEmDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -12420,7 +12421,7 @@ class Effect3997(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance',
                                beacon.getModifiedItemAttr('armorExplosiveDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
@@ -12439,7 +12440,7 @@ class Effect3998(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance',
                                beacon.getModifiedItemAttr('armorKineticDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
@@ -12458,7 +12459,7 @@ class Effect3999(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance',
                                beacon.getModifiedItemAttr('armorThermalDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
@@ -12476,7 +12477,7 @@ class Effect4002(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                            'maxVelocity', beacon.getModifiedItemAttr('missileVelocityMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -12494,7 +12495,7 @@ class Effect4003(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('maxVelocity', beacon.getModifiedItemAttr('maxVelocityMultiplier'),
                                   stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
@@ -12511,7 +12512,7 @@ class Effect4016(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Gunnery'),
                                          'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -12529,7 +12530,7 @@ class Effect4017(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                            'thermalDamage', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -12547,7 +12548,7 @@ class Effect4018(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                            'emDamage', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -12565,7 +12566,7 @@ class Effect4019(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                            'explosiveDamage', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -12583,7 +12584,7 @@ class Effect4020(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                            'kineticDamage', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -12601,7 +12602,7 @@ class Effect4021(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.drones.filteredItemMultiply(lambda drone: drone.item.requiresSkill('Drones'),
                                         'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
                                         stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -12619,7 +12620,7 @@ class Effect4022(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Gunnery'),
                                          'trackingSpeed', module.getModifiedItemAttr('trackingSpeedMultiplier'),
                                          stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -12637,7 +12638,7 @@ class Effect4023(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                            'aoeVelocity', beacon.getModifiedItemAttr('aoeVelocityMultiplier'), **kwargs)
 
@@ -12654,7 +12655,7 @@ class Effect4033(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'heatDamage' in mod.itemModifiedAttributes,
                                          'heatDamage', module.getModifiedItemAttr('heatDamageMultiplier'), **kwargs)
 
@@ -12671,7 +12672,7 @@ class Effect4034(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadArmorDamageAmount' in mod.itemModifiedAttributes,
                                          'overloadArmorDamageAmount', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12688,7 +12689,7 @@ class Effect4035(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadDamageModifier' in mod.itemModifiedAttributes,
                                          'overloadDamageModifier', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12705,7 +12706,7 @@ class Effect4036(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadDurationBonus' in mod.itemModifiedAttributes,
                                          'overloadDurationBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12722,7 +12723,7 @@ class Effect4037(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadECCMStrenghtBonus' in mod.itemModifiedAttributes,
                                          'overloadECCMStrenghtBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12739,7 +12740,7 @@ class Effect4038(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadECMStrenghtBonus' in mod.itemModifiedAttributes,
                                          'overloadECMStrenghtBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12756,7 +12757,7 @@ class Effect4039(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadHardeningBonus' in mod.itemModifiedAttributes,
                                          'overloadHardeningBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12773,7 +12774,7 @@ class Effect4040(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadRangeBonus' in mod.itemModifiedAttributes,
                                          'overloadRangeBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12790,7 +12791,7 @@ class Effect4041(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadRofBonus' in mod.itemModifiedAttributes,
                                          'overloadRofBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12807,7 +12808,7 @@ class Effect4042(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadSelfDurationBonus' in mod.itemModifiedAttributes,
                                          'overloadSelfDurationBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12824,7 +12825,7 @@ class Effect4043(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadShieldBonus' in mod.itemModifiedAttributes,
                                          'overloadShieldBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12841,7 +12842,7 @@ class Effect4044(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: 'overloadSpeedFactorBonus' in mod.itemModifiedAttributes,
                                          'overloadSpeedFactorBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
@@ -12858,7 +12859,7 @@ class Effect4045(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Smart Bomb',
                                          'empFieldRange', module.getModifiedItemAttr('empFieldRangeMultiplier'), **kwargs)
 
@@ -12875,7 +12876,7 @@ class Effect4046(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Smart Bomb',
                                          'emDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'), **kwargs)
 
@@ -12892,7 +12893,7 @@ class Effect4047(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Smart Bomb',
                                          'thermalDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'), **kwargs)
 
@@ -12909,7 +12910,7 @@ class Effect4048(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Smart Bomb',
                                          'kineticDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'), **kwargs)
 
@@ -12926,7 +12927,7 @@ class Effect4049(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Smart Bomb',
                                          'explosiveDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'), **kwargs)
 
@@ -12943,7 +12944,7 @@ class Effect4054(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                          'damageMultiplier', module.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -12961,7 +12962,7 @@ class Effect4055(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                          'damageMultiplier', module.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -12979,7 +12980,7 @@ class Effect4056(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                          'damageMultiplier', module.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -12997,7 +12998,7 @@ class Effect4057(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Rockets'),
                                            'emDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13015,7 +13016,7 @@ class Effect4058(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Rockets'),
                                            'explosiveDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13033,7 +13034,7 @@ class Effect4059(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Rockets'),
                                            'kineticDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13051,7 +13052,7 @@ class Effect4060(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Rockets'),
                                            'thermalDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13069,7 +13070,7 @@ class Effect4061(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                            'thermalDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13087,7 +13088,7 @@ class Effect4062(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                            'emDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13105,7 +13106,7 @@ class Effect4063(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                            'explosiveDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13123,7 +13124,7 @@ class Effect4086(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Repair Systems') or
                                                      mod.item.requiresSkill('Capital Repair Systems'),
                                          'armorDamageAmount', module.getModifiedItemAttr('armorDamageAmountMultiplier'),
@@ -13142,7 +13143,7 @@ class Effect4088(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                          'armorDamageAmount',
                                          module.getModifiedItemAttr('armorDamageAmountMultiplierRemote'),
@@ -13161,7 +13162,7 @@ class Effect4089(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                          'shieldBonus', module.getModifiedItemAttr('shieldBonusMultiplierRemote'),
                                          stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -13179,7 +13180,7 @@ class Effect4090(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('capacitorCapacity', beacon.getModifiedItemAttr('capacitorCapacityMultiplierSystem'), **kwargs)
 
 
@@ -13196,7 +13197,7 @@ class Effect4091(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('rechargeRate', beacon.getModifiedItemAttr('rechargeRateMultiplier'), **kwargs)
 
 
@@ -13211,7 +13212,7 @@ class Effect4093(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', module.getModifiedItemAttr('subsystemBonusAmarrOffensive'),
                                       skill='Amarr Offensive Systems', **kwargs)
@@ -13228,7 +13229,7 @@ class Effect4104(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', module.getModifiedItemAttr('subsystemBonusCaldariOffensive'),
                                       skill='Caldari Offensive Systems', **kwargs)
@@ -13245,7 +13246,7 @@ class Effect4106(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'falloff', module.getModifiedItemAttr('subsystemBonusGallenteOffensive'),
                                       skill='Gallente Offensive Systems', **kwargs)
@@ -13262,7 +13263,7 @@ class Effect4114(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'falloff', module.getModifiedItemAttr('subsystemBonusMinmatarOffensive'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -13279,7 +13280,7 @@ class Effect4115(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'maxRange', module.getModifiedItemAttr('subsystemBonusMinmatarOffensive'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -13296,7 +13297,7 @@ class Effect4122(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Missile Launcher Heavy', 'Missile Launcher Rapid Light', 'Missile Launcher Heavy Assault')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'speed', src.getModifiedItemAttr('subsystemBonusCaldariOffensive'), skill='Caldari Offensive Systems', **kwargs)
@@ -13314,7 +13315,7 @@ class Effect4135(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', beacon.getModifiedItemAttr('shieldEmDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -13331,7 +13332,7 @@ class Effect4136(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance',
                                beacon.getModifiedItemAttr('shieldExplosiveDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
@@ -13349,7 +13350,7 @@ class Effect4137(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance',
                                beacon.getModifiedItemAttr('shieldKineticDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
@@ -13367,7 +13368,7 @@ class Effect4138(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance',
                                beacon.getModifiedItemAttr('shieldThermalDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
@@ -13384,7 +13385,7 @@ class Effect4152(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       module.getModifiedItemAttr('subsystemBonusAmarrCore'),
                                       skill='Amarr Core Systems', **kwargs)
@@ -13401,7 +13402,7 @@ class Effect4153(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       module.getModifiedItemAttr('subsystemBonusCaldariCore'),
                                       skill='Caldari Core Systems', **kwargs)
@@ -13418,7 +13419,7 @@ class Effect4154(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       module.getModifiedItemAttr('subsystemBonusGallenteCore'),
                                       skill='Gallente Core Systems', **kwargs)
@@ -13435,7 +13436,7 @@ class Effect4155(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       module.getModifiedItemAttr('subsystemBonusMinmatarCore'),
                                       skill='Minmatar Core Systems', **kwargs)
@@ -13452,7 +13453,7 @@ class Effect4158(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacitorCapacity', src.getModifiedItemAttr('subsystemBonusCaldariCore'),
                                skill='Caldari Core Systems', **kwargs)
 
@@ -13468,7 +13469,7 @@ class Effect4159(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacitorCapacity', src.getModifiedItemAttr('subsystemBonusAmarrCore'), skill='Amarr Core Systems', **kwargs)
 
 
@@ -13485,7 +13486,7 @@ class Effect4161(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseMaxScanDeviation',
@@ -13508,7 +13509,7 @@ class Effect4162(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         penalized = False if 'skill' in context or 'implant' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
@@ -13527,7 +13528,7 @@ class Effect4165(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Scanner Probe',
                                         'baseSensorStrength', ship.getModifiedItemAttr('shipBonusCF2'),
                                         skill='Caldari Frigate', **kwargs)
@@ -13544,7 +13545,7 @@ class Effect4166(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Scanner Probe',
                                         'baseSensorStrength', ship.getModifiedItemAttr('shipBonusMF2'),
                                         skill='Minmatar Frigate', **kwargs)
@@ -13561,7 +13562,7 @@ class Effect4167(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Scanner Probe',
                                         'baseSensorStrength', ship.getModifiedItemAttr('shipBonusGF2'),
                                         skill='Gallente Frigate', **kwargs)
@@ -13578,7 +13579,7 @@ class Effect4168(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Scanner Probe',
                                         'baseSensorStrength', ship.getModifiedItemAttr('eliteBonusCovertOps2'),
                                         skill='Covert Ops', **kwargs)
@@ -13595,7 +13596,7 @@ class Effect4187(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserAmarr1'),
                                       skill='Amarr Strategic Cruiser', **kwargs)
@@ -13612,7 +13613,7 @@ class Effect4188(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserCaldari1'),
                                       skill='Caldari Strategic Cruiser', **kwargs)
@@ -13629,7 +13630,7 @@ class Effect4189(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserGallente1'),
                                       skill='Gallente Strategic Cruiser', **kwargs)
@@ -13646,7 +13647,7 @@ class Effect4190(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserMinmatar1'),
                                       skill='Minmatar Strategic Cruiser', **kwargs)
@@ -13663,7 +13664,7 @@ class Effect4215(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'capacitorNeed', module.getModifiedItemAttr('subsystemBonusAmarrOffensive2'),
                                       skill='Amarr Offensive Systems', **kwargs)
@@ -13680,7 +13681,7 @@ class Effect4216(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'powerTransferAmount',
                                       src.getModifiedItemAttr('subsystemBonusAmarrCore2'), skill='Amarr Core Systems', **kwargs)
 
@@ -13696,7 +13697,7 @@ class Effect4217(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'energyNeutralizerAmount',
                                       src.getModifiedItemAttr('subsystemBonusAmarrCore2'), skill='Amarr Core Systems', **kwargs)
 
@@ -13712,7 +13713,7 @@ class Effect4248(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'kineticDamage', src.getModifiedItemAttr('subsystemBonusCaldariOffensive2'),
                                         skill='Caldari Offensive Systems', **kwargs)
@@ -13735,7 +13736,7 @@ class Effect4250(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'),
                                      'armorHP', src.getModifiedItemAttr('subsystemBonusGallenteOffensive'),
                                      skill='Gallente Offensive Systems', **kwargs)
@@ -13761,7 +13762,7 @@ class Effect4251(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', module.getModifiedItemAttr('subsystemBonusMinmatarOffensive2'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -13778,7 +13779,7 @@ class Effect4256(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Missile Launcher Heavy', 'Missile Launcher Rapid Light', 'Missile Launcher Heavy Assault')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'speed', src.getModifiedItemAttr('subsystemBonusMinmatarOffensive2'),
@@ -13796,7 +13797,7 @@ class Effect4264(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('rechargeRate', src.getModifiedItemAttr('subsystemBonusMinmatarCore'),
                                skill='Minmatar Core Systems', **kwargs)
 
@@ -13812,7 +13813,7 @@ class Effect4265(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('rechargeRate', src.getModifiedItemAttr('subsystemBonusGallenteCore'),
                                skill='Gallente Core Systems', **kwargs)
 
@@ -13828,7 +13829,7 @@ class Effect4269(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanResolution', src.getModifiedItemAttr('subsystemBonusAmarrCore3'),
                                skill='Amarr Core Systems', **kwargs)
 
@@ -13844,7 +13845,7 @@ class Effect4270(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanResolution', src.getModifiedItemAttr('subsystemBonusMinmatarCore3'),
                                skill='Minmatar Core Systems', **kwargs)
 
@@ -13860,7 +13861,7 @@ class Effect4271(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', src.getModifiedItemAttr('subsystemBonusCaldariCore2'), skill='Caldari Core Systems', **kwargs)
 
 
@@ -13875,7 +13876,7 @@ class Effect4272(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', src.getModifiedItemAttr('subsystemBonusGallenteCore2'),
                                skill='Gallente Core Systems', **kwargs)
 
@@ -13891,7 +13892,7 @@ class Effect4273(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler', 'maxRange',
                                       src.getModifiedItemAttr('subsystemBonusGallenteCore2'), skill='Gallente Core Systems', **kwargs)
 
@@ -13907,7 +13908,7 @@ class Effect4274(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', src.getModifiedItemAttr('subsystemBonusMinmatarCore2'), skill='Minmatar Core Systems', **kwargs)
 
@@ -13923,7 +13924,7 @@ class Effect4275(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('subsystemBonusCaldariPropulsion2'),
                                skill='Caldari Propulsion Systems', **kwargs)
 
@@ -13939,7 +13940,7 @@ class Effect4277(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpCapacitorNeed', src.getModifiedItemAttr('subsystemBonusGallentePropulsion'),
                                skill='Gallente Propulsion Systems', **kwargs)
 
@@ -13955,7 +13956,7 @@ class Effect4278(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('subsystemBonusGallentePropulsion2'),
                                skill='Gallente Propulsion Systems', **kwargs)
 
@@ -13972,7 +13973,7 @@ class Effect4280(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('agility', beacon.getModifiedItemAttr('agilityMultiplier'), stackingPenalties=True, **kwargs)
 
 
@@ -13987,7 +13988,7 @@ class Effect4282(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', module.getModifiedItemAttr('subsystemBonusGallenteOffensive2'),
                                       skill='Gallente Offensive Systems', **kwargs)
@@ -14004,7 +14005,7 @@ class Effect4283(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', module.getModifiedItemAttr('subsystemBonusCaldariOffensive2'),
                                       skill='Caldari Offensive Systems', **kwargs)
@@ -14021,7 +14022,7 @@ class Effect4286(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('subsystemBonusAmarrOffensive2'), skill='Amarr Offensive Systems', **kwargs)
 
@@ -14037,7 +14038,7 @@ class Effect4288(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('subsystemBonusGallenteOffensive2'), skill='Gallente Offensive Systems', **kwargs)
 
@@ -14053,7 +14054,7 @@ class Effect4290(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'capacitorNeed', src.getModifiedItemAttr('subsystemBonusMinmatarOffensive2'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -14070,7 +14071,7 @@ class Effect4292(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'capacitorNeed', src.getModifiedItemAttr('subsystemBonusCaldariOffensive2'),
                                       skill='Caldari Offensive Systems', **kwargs)
@@ -14087,7 +14088,7 @@ class Effect4321(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'scanLadarStrengthBonus',
                                       src.getModifiedItemAttr('subsystemBonusCaldariCore2'), skill='Caldari Core Systems', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'scanRadarStrengthBonus',
@@ -14111,7 +14112,7 @@ class Effect4327(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'),
                                      'hp', src.getModifiedItemAttr('subsystemBonusAmarrOffensive3'), skill='Amarr Offensive Systems', **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'),
@@ -14133,7 +14134,7 @@ class Effect4330(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'maxRange', module.getModifiedItemAttr('subsystemBonusAmarrOffensive3'),
                                       skill='Amarr Offensive Systems', **kwargs)
@@ -14150,7 +14151,7 @@ class Effect4331(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles') or mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'maxVelocity', src.getModifiedItemAttr('subsystemBonusCaldariOffensive3'),
                                         skill='Caldari Offensive Systems', **kwargs)
@@ -14167,7 +14168,7 @@ class Effect4342(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', src.getModifiedItemAttr('subsystemBonusMinmatarCore2'),
                                skill='Minmatar Core Systems', **kwargs)
 
@@ -14183,7 +14184,7 @@ class Effect4343(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', src.getModifiedItemAttr('subsystemBonusAmarrCore2'),
                                skill='Amarr Core Systems', **kwargs)
 
@@ -14200,7 +14201,7 @@ class Effect4347(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'trackingSpeed', module.getModifiedItemAttr('subsystemBonusGallenteOffensive3'),
                                       skill='Gallente Offensive Systems', **kwargs)
@@ -14217,7 +14218,7 @@ class Effect4351(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'trackingSpeed', module.getModifiedItemAttr('subsystemBonusMinmatarOffensive3'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -14234,7 +14235,7 @@ class Effect4358(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'maxRange', module.getModifiedItemAttr('ecmRangeBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -14251,7 +14252,7 @@ class Effect4360(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Missile Launcher Heavy', 'Missile Launcher Rapid Light', 'Missile Launcher Heavy Assault')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'speed', src.getModifiedItemAttr('subsystemBonusAmarrOffensive'), skill='Amarr Offensive Systems', **kwargs)
@@ -14268,7 +14269,7 @@ class Effect4362(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                         'explosiveDamage', src.getModifiedItemAttr('subsystemBonusAmarrOffensive2'), skill='Amarr Offensive Systems', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
@@ -14290,7 +14291,7 @@ class Effect4366(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -14306,7 +14307,7 @@ class Effect4369(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.forceItemAttr('warpBubbleImmune', module.getModifiedItemAttr('warpBubbleImmuneModifier'), **kwargs)
 
 
@@ -14321,7 +14322,7 @@ class Effect4370(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'falloffEffectiveness', ship.getModifiedItemAttr('shipBonusCC2'),
                                       skill='Caldari Cruiser', **kwargs)
@@ -14338,7 +14339,7 @@ class Effect4372(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'falloffEffectiveness', ship.getModifiedItemAttr('shipBonusCB3'),
                                       skill='Caldari Battleship', **kwargs)
@@ -14355,7 +14356,7 @@ class Effect4373(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: (mod.item.requiresSkill('Skirmish Command') or
                                                        mod.item.requiresSkill('Armored Command') or
@@ -14376,7 +14377,7 @@ class Effect4377(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -14392,7 +14393,7 @@ class Effect4378(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
 
@@ -14408,7 +14409,7 @@ class Effect4379(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -14424,7 +14425,7 @@ class Effect4380(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
@@ -14440,7 +14441,7 @@ class Effect4384(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusReconShip1'),
                                         skill='Recon Ships', **kwargs)
@@ -14457,7 +14458,7 @@ class Effect4385(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusReconShip1'),
                                         skill='Recon Ships', **kwargs)
@@ -14475,7 +14476,7 @@ class Effect4393(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'thermalDamage', ship.getModifiedItemAttr('eliteBonusCovertOps2'),
                                         skill='Covert Ops', **kwargs)
@@ -14492,7 +14493,7 @@ class Effect4394(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'emDamage', ship.getModifiedItemAttr('eliteBonusCovertOps2'), skill='Covert Ops', **kwargs)
 
@@ -14509,7 +14510,7 @@ class Effect4395(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'explosiveDamage', ship.getModifiedItemAttr('eliteBonusCovertOps2'),
                                         skill='Covert Ops', **kwargs)
@@ -14526,7 +14527,7 @@ class Effect4396(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'kineticDamage', ship.getModifiedItemAttr('eliteBonusCovertOps2'),
                                         skill='Covert Ops', **kwargs)
@@ -14543,7 +14544,7 @@ class Effect4397(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -14560,7 +14561,7 @@ class Effect4398(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -14576,7 +14577,7 @@ class Effect4399(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
 
@@ -14592,7 +14593,7 @@ class Effect4400(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
@@ -14608,7 +14609,7 @@ class Effect4413(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -14625,7 +14626,7 @@ class Effect4415(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -14641,7 +14642,7 @@ class Effect4416(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
 
@@ -14657,7 +14658,7 @@ class Effect4417(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
@@ -14673,7 +14674,7 @@ class Effect4451(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('scanRadarStrength', implant.getModifiedItemAttr('scanRadarStrengthModifier'), **kwargs)
 
 
@@ -14688,7 +14689,7 @@ class Effect4452(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('scanLadarStrength', implant.getModifiedItemAttr('scanLadarStrengthModifier'), **kwargs)
 
 
@@ -14703,7 +14704,7 @@ class Effect4453(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('scanGravimetricStrength', implant.getModifiedItemAttr('scanGravimetricStrengthModifier'), **kwargs)
 
 
@@ -14718,7 +14719,7 @@ class Effect4454(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('scanMagnetometricStrength',
                                   implant.getModifiedItemAttr('scanMagnetometricStrengthModifier'), **kwargs)
 
@@ -14735,7 +14736,7 @@ class Effect4456(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanMagnetometricStrengthPercent',
                                                  implant.getModifiedItemAttr('implantSetFederationNavy'), **kwargs)
@@ -14753,7 +14754,7 @@ class Effect4457(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanRadarStrengthPercent',
                                                  implant.getModifiedItemAttr('implantSetImperialNavy'), **kwargs)
@@ -14771,7 +14772,7 @@ class Effect4458(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanLadarStrengthPercent',
                                                  implant.getModifiedItemAttr('implantSetRepublicFleet'), **kwargs)
@@ -14789,7 +14790,7 @@ class Effect4459(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanGravimetricStrengthPercent',
                                                  implant.getModifiedItemAttr('implantSetCaldariNavy'), **kwargs)
@@ -14807,7 +14808,7 @@ class Effect4460(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanRadarStrengthModifier',
                                                  implant.getModifiedItemAttr('implantSetLGImperialNavy'), **kwargs)
@@ -14825,7 +14826,7 @@ class Effect4461(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanMagnetometricStrengthModifier',
                                                  implant.getModifiedItemAttr('implantSetLGFederationNavy'), **kwargs)
@@ -14843,7 +14844,7 @@ class Effect4462(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanGravimetricStrengthModifier',
                                                  implant.getModifiedItemAttr('implantSetLGCaldariNavy'), **kwargs)
@@ -14861,7 +14862,7 @@ class Effect4463(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'scanLadarStrengthModifier',
                                                  implant.getModifiedItemAttr('implantSetLGRepublicFleet'), **kwargs)
@@ -14878,7 +14879,7 @@ class Effect4464(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'speed',
                                       src.getModifiedItemAttr('shipBonusMF'), stackingPenalties=True, skill='Minmatar Frigate', **kwargs)
 
@@ -14896,7 +14897,7 @@ class Effect4471(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
 
@@ -14912,7 +14913,7 @@ class Effect4472(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser', **kwargs)
 
@@ -14929,7 +14930,7 @@ class Effect4473(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusATC1'), **kwargs)
 
 
@@ -14944,7 +14945,7 @@ class Effect4474(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATC2'), **kwargs)
 
@@ -14960,7 +14961,7 @@ class Effect4475(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusATC2'), **kwargs)
 
@@ -14976,7 +14977,7 @@ class Effect4476(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusATF2'), **kwargs)
 
@@ -14992,7 +14993,7 @@ class Effect4477(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATF2'), **kwargs)
 
@@ -15008,7 +15009,7 @@ class Effect4478(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusATF1'), **kwargs)
 
@@ -15024,7 +15025,7 @@ class Effect4479(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Survey Probe',
                                         'explosionDelay', ship.getModifiedItemAttr('eliteBonusCovertOps3'),
                                         skill='Covert Ops', **kwargs)
@@ -15042,7 +15043,7 @@ class Effect4482(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -15058,7 +15059,7 @@ class Effect4484(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship', **kwargs)
 
@@ -15074,7 +15075,7 @@ class Effect4485(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'speedFactor', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -15090,7 +15091,7 @@ class Effect4489(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -15106,7 +15107,7 @@ class Effect4490(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -15122,7 +15123,7 @@ class Effect4491(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -15138,7 +15139,7 @@ class Effect4492(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -15155,7 +15156,7 @@ class Effect4510(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'speedFactor', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -15172,7 +15173,7 @@ class Effect4512(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -15189,7 +15190,7 @@ class Effect4513(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'speedFactor', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
 
@@ -15206,7 +15207,7 @@ class Effect4515(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -15223,7 +15224,7 @@ class Effect4516(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -15239,7 +15240,7 @@ class Effect4527(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -15256,7 +15257,7 @@ class Effect4555(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'),
                                         'emDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -15272,7 +15273,7 @@ class Effect4556(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'),
                                         'explosiveDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -15288,7 +15289,7 @@ class Effect4557(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'),
                                         'kineticDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -15304,7 +15305,7 @@ class Effect4558(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'),
                                         'thermalDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -15320,7 +15321,7 @@ class Effect4559(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for attr in ('maxRange', 'falloff', 'trackingSpeed'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                           attr, module.getModifiedItemAttr('%sBonus' % attr),
@@ -15339,7 +15340,7 @@ class Effect4575(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.multiplyItemAttr('mass', src.getModifiedItemAttr('siegeMassMultiplier'), **kwargs)
         fit.ship.multiplyItemAttr('scanResolution',
@@ -15418,7 +15419,7 @@ class Effect4576(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'falloffBonus', ship.getModifiedItemAttr('eliteBonusLogistics1'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -15435,7 +15436,7 @@ class Effect4577(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Tracking Computer',
                                       'falloffBonus', ship.getModifiedItemAttr('eliteBonusLogistics2'),
                                       skill='Logistics Cruisers', **kwargs)
@@ -15452,7 +15453,7 @@ class Effect4579(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Stasis Webifying Drone',
                                      'speedFactor', module.getModifiedItemAttr('webSpeedFactorBonus'), **kwargs)
 
@@ -15468,7 +15469,7 @@ class Effect4619(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -15485,7 +15486,7 @@ class Effect4620(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -15503,7 +15504,7 @@ class Effect4621(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusATF1'), **kwargs)
 
@@ -15519,7 +15520,7 @@ class Effect4622(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATF2'), **kwargs)
 
@@ -15535,7 +15536,7 @@ class Effect4623(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusATF2'), **kwargs)
 
@@ -15551,7 +15552,7 @@ class Effect4624(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusATC2'), **kwargs)
 
@@ -15567,7 +15568,7 @@ class Effect4625(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusATC2'), **kwargs)
 
@@ -15584,7 +15585,7 @@ class Effect4626(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -15600,7 +15601,7 @@ class Effect4635(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         damageTypes = ('em', 'explosive', 'kinetic', 'thermal')
         for damageType in damageTypes:
             fit.modules.filteredChargeBoost(
@@ -15619,7 +15620,7 @@ class Effect4636(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Cruise Missiles') or mod.charge.requiresSkill('Torpedoes'),
             'aoeVelocity', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship', **kwargs)
@@ -15637,7 +15638,7 @@ class Effect4637(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Cruise Missiles') or mod.charge.requiresSkill('Torpedoes'),
             'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'), skill='Caldari Battleship', **kwargs)
@@ -15656,7 +15657,7 @@ class Effect4640(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
         for damageType in damageTypes:
             fit.ship.boostItemAttr('armor{0}DamageResonance'.format(damageType), ship.getModifiedItemAttr('shipBonusAC2'),
@@ -15674,7 +15675,7 @@ class Effect4643(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         damageTypes = ('em', 'explosive', 'kinetic', 'thermal')
         for damageType in damageTypes:
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
@@ -15693,7 +15694,7 @@ class Effect4645(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         groups = ('Missile Launcher Rapid Light', 'Missile Launcher Heavy Assault', 'Missile Launcher Heavy')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'speed', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
@@ -15711,7 +15712,7 @@ class Effect4648(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         sensorTypes = ('Gravimetric', 'Ladar', 'Magnetometric', 'Radar')
         for type in sensorTypes:
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'scan{0}StrengthBonus'.format(type),
@@ -15729,7 +15730,7 @@ class Effect4649(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         affectedGroups = ('Missile Launcher Cruise', 'Missile Launcher Torpedo')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in affectedGroups,
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship', **kwargs)
@@ -15746,7 +15747,7 @@ class Effect4667(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Salvaging'),
                                       'duration', ship.getModifiedItemAttr('shipBonusOreIndustrial1'),
                                       skill='ORE Industrial', **kwargs)
@@ -15763,7 +15764,7 @@ class Effect4668(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'duration', ship.getModifiedItemAttr('shipBonusOreIndustrial1'),
                                       skill='ORE Industrial', **kwargs)
@@ -15780,7 +15781,7 @@ class Effect4669(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'maxTractorVelocity', ship.getModifiedItemAttr('shipBonusOreIndustrial2'),
                                       skill='ORE Industrial', **kwargs)
@@ -15797,7 +15798,7 @@ class Effect4670(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusOreIndustrial2'),
                                       skill='ORE Industrial', **kwargs)
@@ -15816,7 +15817,7 @@ class Effect4728(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         damages = ('em', 'thermal', 'kinetic', 'explosive')
         for damage in damages:
             # Nerf missile damage
@@ -15852,7 +15853,7 @@ class Effect4760(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpCapacitorNeed', src.getModifiedItemAttr('subsystemBonusCaldariPropulsion'),
                                skill='Caldari Propulsion Systems', **kwargs)
 
@@ -15868,7 +15869,7 @@ class Effect4775(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
                                       'energyNeutralizerAmount', ship.getModifiedItemAttr('shipBonus2AF'),
                                       skill='Amarr Frigate', **kwargs)
@@ -15885,7 +15886,7 @@ class Effect4782(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATF2'), **kwargs)
 
@@ -15901,7 +15902,7 @@ class Effect4789(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusATF1'), **kwargs)
 
@@ -15917,7 +15918,7 @@ class Effect4793(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy',
                                       'speed', ship.getModifiedItemAttr('shipBonusATC1'), **kwargs)
 
@@ -15933,7 +15934,7 @@ class Effect4794(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Light',
                                       'speed', ship.getModifiedItemAttr('shipBonusATC1'), **kwargs)
 
@@ -15949,7 +15950,7 @@ class Effect4795(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy Assault',
                                       'speed', ship.getModifiedItemAttr('shipBonusATC1'), **kwargs)
 
@@ -15965,7 +15966,7 @@ class Effect4799(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         sensorTypes = ('Gravimetric', 'Ladar', 'Magnetometric', 'Radar')
         for type in sensorTypes:
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Jammer',
@@ -15986,7 +15987,7 @@ class Effect4804(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill(skill), 'accessDifficultyBonus',
                                          skill.getModifiedItemAttr('accessDifficultyBonusAbsolutePercent') * skill.level, **kwargs)
 
@@ -16002,7 +16003,7 @@ class Effect4809(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanGravimetricStrengthBonus', module.getModifiedItemAttr('ecmStrengthBonusPercent'),
                                       stackingPenalties=True, **kwargs)
@@ -16019,7 +16020,7 @@ class Effect4810(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanLadarStrengthBonus', module.getModifiedItemAttr('ecmStrengthBonusPercent'),
                                       stackingPenalties=True, **kwargs)
@@ -16036,7 +16037,7 @@ class Effect4811(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanMagnetometricStrengthBonus',
                                       module.getModifiedItemAttr('ecmStrengthBonusPercent'),
@@ -16054,7 +16055,7 @@ class Effect4812(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                       'scanRadarStrengthBonus', module.getModifiedItemAttr('ecmStrengthBonusPercent'),
                                       stackingPenalties=True, **kwargs)
@@ -16071,7 +16072,7 @@ class Effect4814(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill), 'consumptionQuantity',
                                       skill.getModifiedItemAttr('consumptionQuantityBonusPercent') * skill.level, **kwargs)
 
@@ -16087,7 +16088,7 @@ class Effect4817(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Salvager',
                                       'duration', implant.getModifiedItemAttr('durationBonus'), **kwargs)
 
@@ -16103,7 +16104,7 @@ class Effect4820(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                          'power', ship.getModifiedItemAttr('bcLargeTurretPower'), **kwargs)
 
@@ -16120,7 +16121,7 @@ class Effect4821(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                          'power', ship.getModifiedItemAttr('bcLargeTurretPower'), **kwargs)
 
@@ -16136,7 +16137,7 @@ class Effect4822(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                          'power', ship.getModifiedItemAttr('bcLargeTurretPower'), **kwargs)
 
@@ -16152,7 +16153,7 @@ class Effect4823(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                          'cpu', ship.getModifiedItemAttr('bcLargeTurretCPU'), **kwargs)
 
@@ -16169,7 +16170,7 @@ class Effect4824(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                          'cpu', ship.getModifiedItemAttr('bcLargeTurretCPU'), **kwargs)
 
@@ -16185,7 +16186,7 @@ class Effect4825(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                          'cpu', ship.getModifiedItemAttr('bcLargeTurretCPU'), **kwargs)
 
@@ -16201,7 +16202,7 @@ class Effect4826(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                          'capacitorNeed', ship.getModifiedItemAttr('bcLargeTurretCap'), **kwargs)
 
@@ -16218,7 +16219,7 @@ class Effect4827(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                          'capacitorNeed', ship.getModifiedItemAttr('bcLargeTurretCap'), **kwargs)
 
@@ -16235,7 +16236,7 @@ class Effect4867(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'powerEngineeringOutputBonus',
                                                  implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
@@ -16253,7 +16254,7 @@ class Effect4868(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'capacitorCapacityBonus',
                                                  implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
@@ -16271,7 +16272,7 @@ class Effect4869(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'cpuOutputBonus2', implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
 
@@ -16288,7 +16289,7 @@ class Effect4871(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'capRechargeBonus', implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
 
@@ -16304,7 +16305,7 @@ class Effect4896(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'hp', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -16320,7 +16321,7 @@ class Effect4897(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -16336,7 +16337,7 @@ class Effect4898(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -16352,7 +16353,7 @@ class Effect4901(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'speed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -16370,7 +16371,7 @@ class Effect4902(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('MWDSignatureRadiusBonus'), **kwargs)
 
@@ -16387,7 +16388,7 @@ class Effect4906(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.drones.filteredItemMultiply(lambda drone: drone.item.requiresSkill('Fighters'),
                                         'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
                                         stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -16404,7 +16405,7 @@ class Effect4911(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('shieldRechargeRate', module.getModifiedItemAttr('shieldRechargeRateMultiplier'), **kwargs)
 
 
@@ -16419,7 +16420,7 @@ class Effect4921(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonusPercent'), **kwargs)
 
 
@@ -16434,7 +16435,7 @@ class Effect4923(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Micro Jump Drive Operation'),
                                       'duration', skill.getModifiedItemAttr('durationBonus') * skill.level, **kwargs)
 
@@ -16451,7 +16452,7 @@ class Effect4928(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # pyfalog = Logger(__name__)
 
         damagePattern = fit.damagePattern
@@ -16581,7 +16582,7 @@ class Effect4934(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGF2'),
                                       skill='Gallente Frigate', **kwargs)
@@ -16599,7 +16600,7 @@ class Effect4936(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('shieldBonus')
         speed = module.getModifiedItemAttr('duration') / 1000.0
         fit.extraAttributes.increase('shieldRepair', amount / speed, **kwargs)
@@ -16617,7 +16618,7 @@ class Effect4941(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
@@ -16644,7 +16645,7 @@ class Effect4945(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Breaker',
                                       'duration', skill.getModifiedItemAttr('durationBonus') * skill.level, **kwargs)
 
@@ -16660,7 +16661,7 @@ class Effect4946(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Breaker',
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level, **kwargs)
 
@@ -16676,7 +16677,7 @@ class Effect4950(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -16694,7 +16695,7 @@ class Effect4951(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Operation') or mod.item.requiresSkill('Capital Shield Operation'),
             'shieldBonus', container.getModifiedItemAttr('shieldBoostMultiplier'), **kwargs)
@@ -16712,7 +16713,7 @@ class Effect4961(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Shield Operation') or
                                                      mod.item.requiresSkill('Capital Shield Operation'),
                                          'shieldBonus', module.getModifiedItemAttr('shieldBonusMultiplier'),
@@ -16730,7 +16731,7 @@ class Effect4967(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Operation') or mod.item.requiresSkill('Capital Shield Operation'),
             'duration', module.getModifiedItemAttr('durationSkillBonus'), **kwargs)
@@ -16751,7 +16752,7 @@ class Effect4970(BaseEffect):
     type = 'boosterSideEffect'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation') or mod.item.requiresSkill('Capital Shield Operation'),
                                       'shieldBonus', src.getModifiedItemAttr('boosterShieldBoostAmountPenalty'), **kwargs)
 
@@ -16767,7 +16768,7 @@ class Effect4972(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Light',
                                       'speed', ship.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
 
@@ -16783,7 +16784,7 @@ class Effect4973(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rocket',
                                       'speed', ship.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
 
@@ -16800,7 +16801,7 @@ class Effect4974(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('eliteBonusViolators2'), skill='Marauders', **kwargs)
 
@@ -16816,7 +16817,7 @@ class Effect4975(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusATF2'), **kwargs)
 
@@ -16832,7 +16833,7 @@ class Effect4976(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Resistance Shift Hardener', 'duration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -16851,7 +16852,7 @@ class Effect4989(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'aoeCloudSize', implant.getModifiedItemAttr('aoeCloudSizeBonus'), **kwargs)
 
@@ -16868,7 +16869,7 @@ class Effect4990(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('rookieSETCapBonus'), **kwargs)
 
@@ -16886,7 +16887,7 @@ class Effect4991(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('rookieSETDamageBonus'), **kwargs)
 
@@ -16906,7 +16907,7 @@ class Effect4994(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'), **kwargs)
 
 
@@ -16925,7 +16926,7 @@ class Effect4995(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'), **kwargs)
 
 
@@ -16944,7 +16945,7 @@ class Effect4996(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'), **kwargs)
 
 
@@ -16963,7 +16964,7 @@ class Effect4997(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'), **kwargs)
 
 
@@ -16978,7 +16979,7 @@ class Effect4999(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('rookieSHTOptimalBonus'), **kwargs)
 
@@ -16994,7 +16995,7 @@ class Effect5000(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('rookieMissileKinDamageBonus'), **kwargs)
 
@@ -17012,7 +17013,7 @@ class Effect5008(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'), **kwargs)
 
 
@@ -17029,7 +17030,7 @@ class Effect5009(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'), **kwargs)
 
 
@@ -17046,7 +17047,7 @@ class Effect5011(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'), **kwargs)
 
 
@@ -17063,7 +17064,7 @@ class Effect5012(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'), **kwargs)
 
 
@@ -17080,7 +17081,7 @@ class Effect5013(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('rookieSHTDamageBonus'), **kwargs)
 
@@ -17100,7 +17101,7 @@ class Effect5014(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('rookieDroneBonus'), **kwargs)
 
@@ -17116,7 +17117,7 @@ class Effect5015(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'maxTargetRangeBonus', ship.getModifiedItemAttr('rookieDampStrengthBonus'), **kwargs)
 
@@ -17132,7 +17133,7 @@ class Effect5016(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'scanResolutionBonus', ship.getModifiedItemAttr('rookieDampStrengthBonus'), **kwargs)
 
@@ -17148,7 +17149,7 @@ class Effect5017(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('rookieArmorRepBonus'), **kwargs)
 
@@ -17164,7 +17165,7 @@ class Effect5018(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('rookieShipVelocityBonus'), **kwargs)
 
 
@@ -17179,7 +17180,7 @@ class Effect5019(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('rookieTargetPainterStrengthBonus'), **kwargs)
 
@@ -17196,7 +17197,7 @@ class Effect5020(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('rookieSPTDamageBonus'), **kwargs)
 
@@ -17213,7 +17214,7 @@ class Effect5021(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('rookieShieldBoostBonus'), **kwargs)
 
@@ -17229,7 +17230,7 @@ class Effect5028(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('Gravimetric', 'Ladar', 'Radar', 'Magnetometric'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
                                           'scan{0}StrengthBonus'.format(type),
@@ -17247,7 +17248,7 @@ class Effect5029(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
                                      'miningAmount', src.getModifiedItemAttr('roleBonusDroneMiningYield'), **kwargs)
 
@@ -17266,7 +17267,7 @@ class Effect5030(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
                                      'miningAmount', container.getModifiedItemAttr('rookieDroneBonus'), **kwargs)
 
@@ -17287,7 +17288,7 @@ class Effect5035(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for type in ('shieldCapacity', 'armorHP', 'hp'):
             fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                          type, ship.getModifiedItemAttr('rookieDroneBonus'), **kwargs)
@@ -17304,7 +17305,7 @@ class Effect5036(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Salvaging'),
                                       'duration', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
@@ -17320,7 +17321,7 @@ class Effect5045(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Salvaging'),
                                       'duration', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
 
@@ -17336,7 +17337,7 @@ class Effect5048(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Salvaging'),
                                       'duration', ship.getModifiedItemAttr('shipBonusGF'), skill='Amarr Frigate', **kwargs)
 
@@ -17352,7 +17353,7 @@ class Effect5051(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Salvaging'),
                                       'duration', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -17368,7 +17369,7 @@ class Effect5055(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
                                          'duration', ship.getModifiedItemAttr('iceHarvestCycleBonus'), **kwargs)
 
@@ -17384,7 +17385,7 @@ class Effect5058(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Mining'),
                                          'miningAmount', module.getModifiedItemAttr('miningAmountMultiplier'), **kwargs)
 
@@ -17401,7 +17402,7 @@ class Effect5059(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
                                       'duration', container.getModifiedItemAttr('shipBonusORE3'), skill='Mining Barge', **kwargs)
 
@@ -17418,7 +17419,7 @@ class Effect5066(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Target Painting'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -17434,7 +17435,7 @@ class Effect5067(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
 
 
@@ -17449,7 +17450,7 @@ class Effect5068(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
 
 
@@ -17465,7 +17466,7 @@ class Effect5069(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Mercoxit Processing'),
                                         'specialisationAsteroidYieldMultiplier',
                                         module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
@@ -17482,7 +17483,7 @@ class Effect5079(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
@@ -17500,7 +17501,7 @@ class Effect5080(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
 
@@ -17516,7 +17517,7 @@ class Effect5081(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -17534,7 +17535,7 @@ class Effect5087(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for layer in ('shieldCapacity', 'armorHP', 'hp'):
             fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                          layer, ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
@@ -17552,7 +17553,7 @@ class Effect5090(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -17568,7 +17569,7 @@ class Effect5103(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
 
@@ -17584,7 +17585,7 @@ class Effect5104(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
@@ -17600,7 +17601,7 @@ class Effect5105(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -17616,7 +17617,7 @@ class Effect5106(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
 
@@ -17632,7 +17633,7 @@ class Effect5107(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -17648,7 +17649,7 @@ class Effect5108(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonusGF2'),
                                       skill='Gallente Frigate', **kwargs)
@@ -17666,7 +17667,7 @@ class Effect5109(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
@@ -17683,7 +17684,7 @@ class Effect5110(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -17700,7 +17701,7 @@ class Effect5111(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -17716,7 +17717,7 @@ class Effect5119(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Scanner Probe',
                                         'baseSensorStrength', ship.getModifiedItemAttr('shipBonus2AF'),
                                         skill='Amarr Frigate', **kwargs)
@@ -17734,7 +17735,7 @@ class Effect5121(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                       'powerTransferAmount', ship.getModifiedItemAttr('energyTransferAmountBonus'), **kwargs)
 
@@ -17750,7 +17751,7 @@ class Effect5122(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser', **kwargs)
 
@@ -17766,7 +17767,7 @@ class Effect5123(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -17782,7 +17783,7 @@ class Effect5124(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)
 
@@ -17798,7 +17799,7 @@ class Effect5125(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonusGC2'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -17815,7 +17816,7 @@ class Effect5126(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -17831,7 +17832,7 @@ class Effect5127(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -17847,7 +17848,7 @@ class Effect5128(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -17864,7 +17865,7 @@ class Effect5129(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('shipBonusMC'),
                                       skill='Minmatar Cruiser', **kwargs)
@@ -17882,7 +17883,7 @@ class Effect5131(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         groups = ('Missile Launcher Heavy', 'Missile Launcher Rapid Light', 'Missile Launcher Heavy Assault')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'speed', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
@@ -17900,7 +17901,7 @@ class Effect5132(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -17916,7 +17917,7 @@ class Effect5133(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
@@ -17935,7 +17936,7 @@ class Effect5136(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -17951,7 +17952,7 @@ class Effect5139(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'miningAmount', module.getModifiedItemAttr('shipBonusOREfrig1'),
                                       skill='Mining Frigate', **kwargs)
@@ -17969,7 +17970,7 @@ class Effect5142(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
                                          'miningAmount', module.getModifiedItemAttr('miningAmountMultiplier'), **kwargs)
 
@@ -17986,7 +17987,7 @@ class Effect5153(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18003,7 +18004,7 @@ class Effect5156(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
                                       'duration', module.getModifiedItemAttr('shipBonusOREfrig2'), skill='Mining Frigate', **kwargs)
 
@@ -18019,7 +18020,7 @@ class Effect5162(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Resistance Shift Hardener', 'capacitorNeed',
                                       src.getModifiedItemAttr('capNeedBonus') * lvl, **kwargs)
@@ -18039,7 +18040,7 @@ class Effect5165(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18055,7 +18056,7 @@ class Effect5168(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.drones.filteredItemIncrease(lambda drone: drone.item.requiresSkill('Salvage Drone Operation'),
                                         'accessDifficultyBonus',
                                         container.getModifiedItemAttr('accessDifficultyBonus') * container.level, **kwargs)
@@ -18072,7 +18073,7 @@ class Effect5180(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanGravimetricStrength',
                                container.getModifiedItemAttr('sensorStrengthBonus') * container.level, **kwargs)
 
@@ -18088,7 +18089,7 @@ class Effect5181(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanLadarStrength', container.getModifiedItemAttr('sensorStrengthBonus') * container.level, **kwargs)
 
 
@@ -18103,7 +18104,7 @@ class Effect5182(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanMagnetometricStrength',
                                container.getModifiedItemAttr('sensorStrengthBonus') * container.level, **kwargs)
 
@@ -18119,7 +18120,7 @@ class Effect5183(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanRadarStrength', container.getModifiedItemAttr('sensorStrengthBonus') * container.level, **kwargs)
 
 
@@ -18134,7 +18135,7 @@ class Effect5185(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', ship.getModifiedItemAttr('shipBonus2AF'),
                                       skill='Amarr Frigate', **kwargs)
@@ -18151,7 +18152,7 @@ class Effect5187(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Sensor Dampener',
                                       'falloffEffectiveness', ship.getModifiedItemAttr('shipBonusGC'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -18168,7 +18169,7 @@ class Effect5188(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -18185,7 +18186,7 @@ class Effect5189(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -18202,7 +18203,7 @@ class Effect5190(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -18219,7 +18220,7 @@ class Effect5201(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Reinforcer',
                                       'massAddition', container.getModifiedItemAttr('massPenaltyReduction') * level, **kwargs)
@@ -18236,7 +18237,7 @@ class Effect5205(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('rookieSETTracking'), **kwargs)
 
@@ -18252,7 +18253,7 @@ class Effect5206(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('rookieSETOptimal'), **kwargs)
 
@@ -18268,7 +18269,7 @@ class Effect5207(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', ship.getModifiedItemAttr('rookieNosDrain'), **kwargs)
 
@@ -18284,7 +18285,7 @@ class Effect5208(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
                                       'energyNeutralizerAmount', ship.getModifiedItemAttr('rookieNeutDrain'), **kwargs)
 
@@ -18301,7 +18302,7 @@ class Effect5209(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'speedFactor', ship.getModifiedItemAttr('rookieWebAmount'), **kwargs)
 
@@ -18317,7 +18318,7 @@ class Effect5212(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: True,
                                      'maxVelocity', ship.getModifiedItemAttr('rookieDroneMWDspeed'), **kwargs)
 
@@ -18333,7 +18334,7 @@ class Effect5213(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'maxVelocity', ship.getModifiedItemAttr('rookieRocketVelocity'), **kwargs)
 
@@ -18349,7 +18350,7 @@ class Effect5214(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('rookieLightMissileVelocity'), **kwargs)
 
@@ -18365,7 +18366,7 @@ class Effect5215(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('rookieSHTTracking'), **kwargs)
 
@@ -18381,7 +18382,7 @@ class Effect5216(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('rookieSHTFalloff'), **kwargs)
 
@@ -18397,7 +18398,7 @@ class Effect5217(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('rookieSPTTracking'), **kwargs)
 
@@ -18413,7 +18414,7 @@ class Effect5218(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('rookieSPTFalloff'), **kwargs)
 
@@ -18429,7 +18430,7 @@ class Effect5219(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('rookieSPTOptimal'), **kwargs)
 
@@ -18445,7 +18446,7 @@ class Effect5220(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18461,7 +18462,7 @@ class Effect5221(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18477,7 +18478,7 @@ class Effect5222(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18493,7 +18494,7 @@ class Effect5223(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18509,7 +18510,7 @@ class Effect5224(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18525,7 +18526,7 @@ class Effect5225(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18541,7 +18542,7 @@ class Effect5226(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18557,7 +18558,7 @@ class Effect5227(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18573,7 +18574,7 @@ class Effect5228(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -18593,7 +18594,7 @@ class Effect5229(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseSensorStrength', container.getModifiedItemAttr('shipBonusRole8'), **kwargs)
 
@@ -18610,7 +18611,7 @@ class Effect5230(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for damageType in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.ship.boostItemAttr('shield' + damageType.capitalize() + 'DamageResonance',
                                    module.getModifiedItemAttr(damageType + 'DamageResistanceBonus'),
@@ -18629,7 +18630,7 @@ class Effect5231(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for damageType in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.ship.boostItemAttr('armor%sDamageResonance' % damageType.capitalize(),
                                    module.getModifiedItemAttr('%sDamageResistanceBonus' % damageType),
@@ -18648,7 +18649,7 @@ class Effect5234(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
             'explosiveDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
@@ -18665,7 +18666,7 @@ class Effect5237(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
             'kineticDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
@@ -18683,7 +18684,7 @@ class Effect5240(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
             'thermalDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
@@ -18701,7 +18702,7 @@ class Effect5243(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
             'emDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
@@ -18719,7 +18720,7 @@ class Effect5259(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Cloaking Device',
                                       'cpu', ship.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships', **kwargs)
 
@@ -18736,7 +18737,7 @@ class Effect5260(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cloaking'),
                                       'cpu', ship.getModifiedItemAttr('eliteBonusCovertOps1'), skill='Covert Ops', **kwargs)
 
@@ -18753,7 +18754,7 @@ class Effect5261(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.increaseItemAttr('cpu', module.getModifiedItemAttr('covertCloakCPUAdd') or 0, **kwargs)
 
 
@@ -18768,7 +18769,7 @@ class Effect5262(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Cloaking'),
                                          'covertCloakCPUAdd', module.getModifiedItemAttr('covertCloakCPUPenalty'), **kwargs)
 
@@ -18784,7 +18785,7 @@ class Effect5263(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Cynosural Field Theory'),
                                          'covertCloakCPUAdd', module.getModifiedItemAttr('covertCloakCPUPenalty'), **kwargs)
 
@@ -18801,7 +18802,7 @@ class Effect5264(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.increaseItemAttr('cpu', module.getModifiedItemAttr('warfareLinkCPUAdd') or 0, **kwargs)
 
 
@@ -18816,7 +18817,7 @@ class Effect5265(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'),
                                          'warfareLinkCPUAdd', module.getModifiedItemAttr('warfareLinkCPUPenalty'), **kwargs)
 
@@ -18833,7 +18834,7 @@ class Effect5266(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Cloaking Device',
                                       'cpu', ship.getModifiedItemAttr('eliteIndustrialCovertCloakBonus'),
                                       skill='Transport Ships', **kwargs)
@@ -18851,7 +18852,7 @@ class Effect5267(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'power', module.getModifiedItemAttr('drawback'), **kwargs)
 
@@ -18868,7 +18869,7 @@ class Effect5268(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Repair Systems'),
                                       'power', module.getModifiedItemAttr('drawback'), **kwargs)
 
@@ -18885,7 +18886,7 @@ class Effect5275(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if module.charge and module.charge.name == 'Nanite Repair Paste':
             multiplier = 3
         else:
@@ -18910,7 +18911,7 @@ class Effect5293(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
 
@@ -18926,7 +18927,7 @@ class Effect5294(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer', **kwargs)
 
@@ -18942,7 +18943,7 @@ class Effect5295(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'damageMultiplier',
                                      src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
 
@@ -18958,7 +18959,7 @@ class Effect5300(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'shieldCapacity',
                                      src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'hp',
@@ -18978,7 +18979,7 @@ class Effect5303(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer', **kwargs)
 
@@ -18994,7 +18995,7 @@ class Effect5304(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer', **kwargs)
 
@@ -19010,7 +19011,7 @@ class Effect5305(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCD1'),
                                         skill='Caldari Destroyer', **kwargs)
@@ -19027,7 +19028,7 @@ class Effect5306(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCD1'),
                                         skill='Caldari Destroyer', **kwargs)
@@ -19044,7 +19045,7 @@ class Effect5307(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer', **kwargs)
 
@@ -19060,7 +19061,7 @@ class Effect5308(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer', **kwargs)
 
@@ -19076,7 +19077,7 @@ class Effect5309(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
 
@@ -19093,7 +19094,7 @@ class Effect5310(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGD2'), skill='Gallente Destroyer', **kwargs)
 
@@ -19109,7 +19110,7 @@ class Effect5311(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'damageMultiplier',
                                      src.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
 
@@ -19125,7 +19126,7 @@ class Effect5316(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'shieldCapacity',
                                      src.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'armorHP',
@@ -19145,7 +19146,7 @@ class Effect5317(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMD1'),
                                       skill='Minmatar Destroyer', **kwargs)
@@ -19162,7 +19163,7 @@ class Effect5318(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusMD2'), skill='Minmatar Destroyer', **kwargs)
 
@@ -19178,7 +19179,7 @@ class Effect5319(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusMD1'),
                                         skill='Minmatar Destroyer', **kwargs)
@@ -19195,7 +19196,7 @@ class Effect5320(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusMD1'),
                                         skill='Minmatar Destroyer', **kwargs)
@@ -19212,7 +19213,7 @@ class Effect5321(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('shipBonusMD2'),
                                       skill='Minmatar Destroyer', **kwargs)
@@ -19230,7 +19231,7 @@ class Effect5322(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusABC1'),
                                skill='Amarr Battlecruiser', **kwargs)
 
@@ -19247,7 +19248,7 @@ class Effect5323(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusABC1'),
                                skill='Amarr Battlecruiser', **kwargs)
 
@@ -19264,7 +19265,7 @@ class Effect5324(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('shipBonusABC1'),
                                skill='Amarr Battlecruiser', **kwargs)
 
@@ -19281,7 +19282,7 @@ class Effect5325(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('shipBonusABC1'),
                                skill='Amarr Battlecruiser', **kwargs)
 
@@ -19297,7 +19298,7 @@ class Effect5326(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusABC2'),
                                      skill='Amarr Battlecruiser', **kwargs)
@@ -19314,7 +19315,7 @@ class Effect5331(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for layer in ('shieldCapacity', 'armorHP', 'hp'):
             fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                          layer, ship.getModifiedItemAttr('shipBonusABC2'), skill='Amarr Battlecruiser', **kwargs)
@@ -19331,7 +19332,7 @@ class Effect5332(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusABC1'),
                                       skill='Amarr Battlecruiser', **kwargs)
@@ -19348,7 +19349,7 @@ class Effect5333(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusABC2'),
                                       skill='Amarr Battlecruiser', **kwargs)
@@ -19365,7 +19366,7 @@ class Effect5334(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCBC1'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -19383,7 +19384,7 @@ class Effect5335(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('shipBonusCBC2'),
                                skill='Caldari Battlecruiser', **kwargs)
 
@@ -19401,7 +19402,7 @@ class Effect5336(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusCBC2'),
                                skill='Caldari Battlecruiser', **kwargs)
 
@@ -19419,7 +19420,7 @@ class Effect5337(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', ship.getModifiedItemAttr('shipBonusCBC2'),
                                skill='Caldari Battlecruiser', **kwargs)
 
@@ -19437,7 +19438,7 @@ class Effect5338(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', ship.getModifiedItemAttr('shipBonusCBC2'),
                                skill='Caldari Battlecruiser', **kwargs)
 
@@ -19454,7 +19455,7 @@ class Effect5339(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCBC1'),
                                         skill='Caldari Battlecruiser', **kwargs)
@@ -19472,7 +19473,7 @@ class Effect5340(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCBC1'),
                                         skill='Caldari Battlecruiser', **kwargs)
@@ -19489,7 +19490,7 @@ class Effect5341(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusGBC1'),
                                       skill='Gallente Battlecruiser', **kwargs)
@@ -19508,7 +19509,7 @@ class Effect5342(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGBC2'),
                                       skill='Gallente Battlecruiser', **kwargs)
@@ -19525,7 +19526,7 @@ class Effect5343(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGBC1'),
                                      skill='Gallente Battlecruiser', **kwargs)
@@ -19542,7 +19543,7 @@ class Effect5348(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for layer in ('shieldCapacity', 'armorHP', 'hp'):
             fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                          layer, ship.getModifiedItemAttr('shipBonusGBC1'), skill='Gallente Battlecruiser', **kwargs)
@@ -19559,7 +19560,7 @@ class Effect5349(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy',
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser', **kwargs)
 
@@ -19575,7 +19576,7 @@ class Effect5350(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy Assault',
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser', **kwargs)
 
@@ -19592,7 +19593,7 @@ class Effect5351(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMBC1'),
                                       skill='Minmatar Battlecruiser', **kwargs)
@@ -19609,7 +19610,7 @@ class Effect5352(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMBC1'),
                                       skill='Minmatar Battlecruiser', **kwargs)
@@ -19626,7 +19627,7 @@ class Effect5353(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser', **kwargs)
 
@@ -19642,7 +19643,7 @@ class Effect5354(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusABC1'),
                                       skill='Amarr Battlecruiser', **kwargs)
@@ -19659,7 +19660,7 @@ class Effect5355(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusABC2'),
                                       skill='Amarr Battlecruiser', **kwargs)
@@ -19676,7 +19677,7 @@ class Effect5356(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCBC1'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -19692,7 +19693,7 @@ class Effect5357(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCBC2'),
                                       skill='Caldari Battlecruiser', **kwargs)
@@ -19709,7 +19710,7 @@ class Effect5358(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGBC1'),
                                       skill='Gallente Battlecruiser', **kwargs)
@@ -19726,7 +19727,7 @@ class Effect5359(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusGBC2'),
                                       skill='Gallente Battlecruiser', **kwargs)
@@ -19743,7 +19744,7 @@ class Effect5360(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC1'), skill='Minmatar Battlecruiser', **kwargs)
 
@@ -19759,7 +19760,7 @@ class Effect5361(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser', **kwargs)
 
@@ -19777,7 +19778,7 @@ class Effect5364(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, booster, context, **kwargs):
+    def handler(fit, booster, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Repair Systems') or mod.item.requiresSkill('Capital Repair Systems'),
             'armorDamageAmount', booster.getModifiedItemAttr('armorDamageAmountBonus') or 0, **kwargs)
@@ -19795,7 +19796,7 @@ class Effect5365(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('eliteBonusViolators2'),
                                       skill='Marauders', **kwargs)
@@ -19812,7 +19813,7 @@ class Effect5366(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusATC2'), **kwargs)
 
@@ -19828,7 +19829,7 @@ class Effect5367(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGB2'),
                                       skill='Gallente Battleship', **kwargs)
@@ -19845,7 +19846,7 @@ class Effect5378(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCBC1'),
                                         skill='Caldari Battlecruiser', **kwargs)
@@ -19862,7 +19863,7 @@ class Effect5379(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCBC1'),
                                         skill='Caldari Battlecruiser', **kwargs)
@@ -19879,7 +19880,7 @@ class Effect5380(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGBC2'),
                                       skill='Gallente Battlecruiser', **kwargs)
@@ -19896,7 +19897,7 @@ class Effect5381(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusABC1'),
                                       skill='Amarr Battlecruiser', **kwargs)
@@ -19914,7 +19915,7 @@ class Effect5382(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)
 
@@ -19931,7 +19932,7 @@ class Effect5383(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
@@ -19948,7 +19949,7 @@ class Effect5384(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
@@ -19965,7 +19966,7 @@ class Effect5385(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
@@ -19981,7 +19982,7 @@ class Effect5386(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -19997,7 +19998,7 @@ class Effect5387(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -20013,7 +20014,7 @@ class Effect5388(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -20029,7 +20030,7 @@ class Effect5397(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseMaxScanDeviation',
                                         module.getModifiedItemAttr('maxScanDeviationModifierModule'),
@@ -20047,7 +20048,7 @@ class Effect5398(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Astrometrics'),
                                       'duration', module.getModifiedItemAttr('scanDurationBonus'), **kwargs)
 
@@ -20063,7 +20064,7 @@ class Effect5399(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseSensorStrength', module.getModifiedItemAttr('scanStrengthBonusModule'),
                                         stackingPenalties=True, **kwargs)
@@ -20080,7 +20081,7 @@ class Effect5402(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusABC2'),
                                         skill='Amarr Battlecruiser', **kwargs)
@@ -20097,7 +20098,7 @@ class Effect5403(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusABC2'),
                                         skill='Amarr Battlecruiser', **kwargs)
@@ -20114,7 +20115,7 @@ class Effect5410(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusABC2'),
                                       skill='Amarr Battlecruiser', **kwargs)
@@ -20131,7 +20132,7 @@ class Effect5411(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer', **kwargs)
 
@@ -20147,7 +20148,7 @@ class Effect5417(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -20163,7 +20164,7 @@ class Effect5418(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -20179,7 +20180,7 @@ class Effect5419(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -20195,7 +20196,7 @@ class Effect5420(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'hp', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -20212,7 +20213,7 @@ class Effect5424(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship', **kwargs)
 
@@ -20228,7 +20229,7 @@ class Effect5427(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship', **kwargs)
 
@@ -20244,7 +20245,7 @@ class Effect5428(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'maxRange', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship', **kwargs)
 
@@ -20260,7 +20261,7 @@ class Effect5429(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusMB2'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -20277,7 +20278,7 @@ class Effect5430(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusMB2'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -20295,7 +20296,7 @@ class Effect5431(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -20315,7 +20316,7 @@ class Effect5433(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Hacking'),
                                          'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus') * level, **kwargs)
@@ -20335,7 +20336,7 @@ class Effect5437(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Archaeology'),
                                          'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus') * level, **kwargs)
@@ -20353,7 +20354,7 @@ class Effect5440(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                            'kineticDamage', beacon.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -20370,7 +20371,7 @@ class Effect5444(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
 
@@ -20386,7 +20387,7 @@ class Effect5445(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
 
@@ -20402,7 +20403,7 @@ class Effect5456(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Cruise',
                                       'speed', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
 
@@ -20418,7 +20419,7 @@ class Effect5457(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo',
                                       'speed', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
 
@@ -20434,7 +20435,7 @@ class Effect5459(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Hacking'), 'virusStrength', src.getModifiedItemAttr('virusStrengthBonus'), **kwargs)
 
 
@@ -20457,7 +20458,7 @@ class Effect5460(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemIncrease(
             lambda mod: (mod.item.requiresSkill('Hacking') or mod.item.requiresSkill('Archaeology')),
@@ -20475,7 +20476,7 @@ class Effect5461(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldRechargeRate', module.getModifiedItemAttr('rechargeratebonus') or 0, **kwargs)
 
 
@@ -20490,7 +20491,7 @@ class Effect5468(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Industrial', **kwargs)
 
 
@@ -20505,7 +20506,7 @@ class Effect5469(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Industrial', **kwargs)
 
 
@@ -20520,7 +20521,7 @@ class Effect5470(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusGI2'), skill='Gallente Industrial', **kwargs)
 
 
@@ -20535,7 +20536,7 @@ class Effect5471(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusAI2'), skill='Amarr Industrial', **kwargs)
 
 
@@ -20550,7 +20551,7 @@ class Effect5476(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('shipBonusGI2'),
                                skill='Gallente Industrial', **kwargs)
 
@@ -20566,7 +20567,7 @@ class Effect5477(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialAmmoHoldCapacity', ship.getModifiedItemAttr('shipBonusMI2'),
                                skill='Minmatar Industrial', **kwargs)
 
@@ -20582,7 +20583,7 @@ class Effect5478(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialPlanetaryCommoditiesHoldCapacity', ship.getModifiedItemAttr('shipBonusGI2'),
                                skill='Gallente Industrial', **kwargs)
 
@@ -20598,7 +20599,7 @@ class Effect5479(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialMineralHoldCapacity', ship.getModifiedItemAttr('shipBonusGI2'),
                                skill='Gallente Industrial', **kwargs)
 
@@ -20615,7 +20616,7 @@ class Effect5480(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'implantBonusVelocity', implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
 
@@ -20632,7 +20633,7 @@ class Effect5482(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'agilityBonus', implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
 
@@ -20649,7 +20650,7 @@ class Effect5483(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'shieldCapacityBonus', implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
 
@@ -20666,7 +20667,7 @@ class Effect5484(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Special Edition Implant',
                                                  'armorHpBonus2', implant.getModifiedItemAttr('implantSetChristmas'), **kwargs)
 
@@ -20682,7 +20683,7 @@ class Effect5485(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -20698,7 +20699,7 @@ class Effect5486(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMBC2'),
                                       skill='Minmatar Battlecruiser', **kwargs)
@@ -20716,7 +20717,7 @@ class Effect5496(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy Assault',
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships', **kwargs)
 
@@ -20733,7 +20734,7 @@ class Effect5497(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Heavy',
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships', **kwargs)
 
@@ -20749,7 +20750,7 @@ class Effect5498(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'aoeVelocity', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                         skill='Command Ships', **kwargs)
@@ -20766,7 +20767,7 @@ class Effect5499(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                         skill='Command Ships', **kwargs)
@@ -20783,7 +20784,7 @@ class Effect5500(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'aoeCloudSize', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                         skill='Command Ships', **kwargs)
@@ -20800,7 +20801,7 @@ class Effect5501(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                       skill='Command Ships', **kwargs)
@@ -20817,7 +20818,7 @@ class Effect5502(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
                                       skill='Command Ships', **kwargs)
@@ -20834,7 +20835,7 @@ class Effect5503(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                      skill='Command Ships', **kwargs)
@@ -20851,7 +20852,7 @@ class Effect5504(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'maxVelocity', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                      skill='Command Ships', **kwargs)
@@ -20868,7 +20869,7 @@ class Effect5505(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships', **kwargs)
 
@@ -20884,7 +20885,7 @@ class Effect5514(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         damageTypes = ('em', 'explosive', 'kinetic', 'thermal')
         for damageType in damageTypes:
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
@@ -20903,7 +20904,7 @@ class Effect5521(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         damageTypes = ('em', 'explosive', 'kinetic', 'thermal')
         for damageType in damageTypes:
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
@@ -20922,7 +20923,7 @@ class Effect5539(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -20938,7 +20939,7 @@ class Effect5540(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -20954,7 +20955,7 @@ class Effect5541(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -20970,7 +20971,7 @@ class Effect5542(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -20986,7 +20987,7 @@ class Effect5552(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                         skill='Heavy Assault Cruisers', **kwargs)
@@ -21003,7 +21004,7 @@ class Effect5553(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                         skill='Heavy Assault Cruisers', **kwargs)
@@ -21020,7 +21021,7 @@ class Effect5554(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGC2'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -21037,7 +21038,7 @@ class Effect5555(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'maxVelocity', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -21053,7 +21054,7 @@ class Effect5556(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -21069,7 +21070,7 @@ class Effect5557(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                      skill='Heavy Assault Cruisers', **kwargs)
@@ -21086,7 +21087,7 @@ class Effect5558(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'trackingSpeed', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                      skill='Heavy Assault Cruisers', **kwargs)
@@ -21103,7 +21104,7 @@ class Effect5559(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -21119,7 +21120,7 @@ class Effect5560(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Micro Jump Drive',
                                       'moduleReactivationDelay', ship.getModifiedItemAttr('roleBonusMarauder'), **kwargs)
 
@@ -21135,7 +21136,7 @@ class Effect5564(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: (mod.item.requiresSkill('Skirmish Command') or
                                                        mod.item.requiresSkill('Shield Command') or
@@ -21155,7 +21156,7 @@ class Effect5568(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: (mod.item.requiresSkill('Skirmish Command') or
                                                        mod.item.requiresSkill('Armored Command') or
@@ -21175,7 +21176,7 @@ class Effect5570(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: (mod.item.requiresSkill('Skirmish Command') or
                                                        mod.item.requiresSkill('Shield Command') or
@@ -21195,7 +21196,7 @@ class Effect5572(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Armored Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandShips3'),
@@ -21213,7 +21214,7 @@ class Effect5573(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandShips3'),
@@ -21231,7 +21232,7 @@ class Effect5574(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Skirmish Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandShips3'),
@@ -21249,7 +21250,7 @@ class Effect5575(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Information Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandShips3'),
@@ -21269,7 +21270,7 @@ class Effect5607(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capacitor Emission Systems'),
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
@@ -21287,7 +21288,7 @@ class Effect5610(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -21303,7 +21304,7 @@ class Effect5611(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusGB2'), skill='Gallente Battleship', **kwargs)
 
@@ -21320,7 +21321,7 @@ class Effect5618(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Heavy',
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship', **kwargs)
 
@@ -21336,7 +21337,7 @@ class Effect5619(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Heavy',
                                       'speed', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
 
@@ -21352,7 +21353,7 @@ class Effect5620(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Heavy',
                                       'speed', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -21368,7 +21369,7 @@ class Effect5621(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Cruise',
                                       'speed', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -21384,7 +21385,7 @@ class Effect5622(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo',
                                       'speed', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -21400,7 +21401,7 @@ class Effect5628(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -21416,7 +21417,7 @@ class Effect5629(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21433,7 +21434,7 @@ class Effect5630(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21450,7 +21451,7 @@ class Effect5631(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21467,7 +21468,7 @@ class Effect5632(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21484,7 +21485,7 @@ class Effect5633(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -21500,7 +21501,7 @@ class Effect5634(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21517,7 +21518,7 @@ class Effect5635(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21534,7 +21535,7 @@ class Effect5636(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
 
@@ -21550,7 +21551,7 @@ class Effect5637(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21567,7 +21568,7 @@ class Effect5638(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21584,7 +21585,7 @@ class Effect5639(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusMB'),
                                         skill='Minmatar Battleship', **kwargs)
@@ -21601,7 +21602,7 @@ class Effect5644(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -21624,7 +21625,7 @@ class Effect5647(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cloaking'),
                                       'cpu', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -21640,7 +21641,7 @@ class Effect5650(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
         for damageType in damageTypes:
             fit.ship.boostItemAttr('armor{0}DamageResonance'.format(damageType), ship.getModifiedItemAttr('shipBonusAF'),
@@ -21658,7 +21659,7 @@ class Effect5657(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
         for damageType in damageTypes:
             fit.ship.boostItemAttr('shield{0}DamageResonance'.format(damageType),
@@ -21676,7 +21677,7 @@ class Effect5673(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusInterceptor2'),
                                       skill='Interceptors', **kwargs)
@@ -21693,7 +21694,7 @@ class Effect5676(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
             'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer', **kwargs)
@@ -21710,7 +21711,7 @@ class Effect5688(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer', **kwargs)
 
@@ -21726,7 +21727,7 @@ class Effect5695(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('Em', 'Thermal', 'Explosive', 'Kinetic'):
             fit.ship.boostItemAttr('armor%sDamageResonance' % damageType,
                                    ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors', **kwargs)
@@ -21744,7 +21745,7 @@ class Effect5717(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'WarpSBonus', implant.getModifiedItemAttr('implantSetWarpSpeed'), **kwargs)
 
@@ -21760,7 +21761,7 @@ class Effect5721(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -21776,7 +21777,7 @@ class Effect5722(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
 
@@ -21792,7 +21793,7 @@ class Effect5723(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('eliteBonusInterdictors2'),
                                       skill='Interdictors', **kwargs)
@@ -21809,7 +21810,7 @@ class Effect5724(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -21825,7 +21826,7 @@ class Effect5725(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -21841,7 +21842,7 @@ class Effect5726(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -21857,7 +21858,7 @@ class Effect5733(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'explosiveDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'), **kwargs)
 
@@ -21873,7 +21874,7 @@ class Effect5734(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'kineticDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'), **kwargs)
 
@@ -21889,7 +21890,7 @@ class Effect5735(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'emDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'), **kwargs)
 
@@ -21905,7 +21906,7 @@ class Effect5736(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'thermalDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'), **kwargs)
 
@@ -21921,7 +21922,7 @@ class Effect5737(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseSensorStrength', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -21937,7 +21938,7 @@ class Effect5738(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole8'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
@@ -21957,7 +21958,7 @@ class Effect5754(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('maxRangeBonus', module.getModifiedItemAttr('overloadTrackingModuleStrengthBonus'), **kwargs)
         module.boostItemAttr('falloffBonus', module.getModifiedItemAttr('overloadTrackingModuleStrengthBonus'), **kwargs)
         module.boostItemAttr('trackingSpeedBonus', module.getModifiedItemAttr('overloadTrackingModuleStrengthBonus'), **kwargs)
@@ -21976,7 +21977,7 @@ class Effect5757(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('maxTargetRangeBonus', module.getModifiedItemAttr('overloadSensorModuleStrengthBonus'), **kwargs)
         module.boostItemAttr('scanResolutionBonus', module.getModifiedItemAttr('overloadSensorModuleStrengthBonus'),
                              stackingPenalties=True, **kwargs)
@@ -21999,7 +22000,7 @@ class Effect5758(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('signatureRadiusBonus', module.getModifiedItemAttr('overloadPainterStrengthBonus') or 0, **kwargs)
 
 
@@ -22015,7 +22016,7 @@ class Effect5769(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
                                      'structureDamageAmount', container.getModifiedItemAttr('damageHP') * level, **kwargs)
@@ -22033,7 +22034,7 @@ class Effect5778(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'speed', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
 
@@ -22050,7 +22051,7 @@ class Effect5779(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'falloff', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
 
@@ -22067,7 +22068,7 @@ class Effect5793(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         for attr in ('maxRangeBonus', 'falloffBonus'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'),
@@ -22085,7 +22086,7 @@ class Effect5802(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'speedFactor', module.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship', **kwargs)
 
@@ -22101,7 +22102,7 @@ class Effect5803(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22117,7 +22118,7 @@ class Effect5804(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22133,7 +22134,7 @@ class Effect5805(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22149,7 +22150,7 @@ class Effect5806(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22165,7 +22166,7 @@ class Effect5807(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22181,7 +22182,7 @@ class Effect5808(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22197,7 +22198,7 @@ class Effect5809(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22213,7 +22214,7 @@ class Effect5810(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22229,7 +22230,7 @@ class Effect5811(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusGB2'),
                                         skill='Gallente Battleship', **kwargs)
@@ -22246,7 +22247,7 @@ class Effect5812(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusGB2'),
                                         skill='Gallente Battleship', **kwargs)
@@ -22264,7 +22265,7 @@ class Effect5813(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'speedFactor', module.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
@@ -22281,7 +22282,7 @@ class Effect5814(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -22298,7 +22299,7 @@ class Effect5815(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -22315,7 +22316,7 @@ class Effect5816(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22332,7 +22333,7 @@ class Effect5817(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22349,7 +22350,7 @@ class Effect5818(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22366,7 +22367,7 @@ class Effect5819(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22383,7 +22384,7 @@ class Effect5820(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'speedFactor', module.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
@@ -22400,7 +22401,7 @@ class Effect5821(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22416,7 +22417,7 @@ class Effect5822(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22432,7 +22433,7 @@ class Effect5823(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22448,7 +22449,7 @@ class Effect5824(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
@@ -22465,7 +22466,7 @@ class Effect5825(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -22482,7 +22483,7 @@ class Effect5826(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -22498,7 +22499,7 @@ class Effect5827(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
@@ -22515,7 +22516,7 @@ class Effect5829(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'duration', ship.getModifiedItemAttr('shipBonusORE3'), skill='Mining Barge', **kwargs)
 
@@ -22531,7 +22532,7 @@ class Effect5832(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
             'maxRange', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
@@ -22548,7 +22549,7 @@ class Effect5839(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('em', 'thermal', 'explosive', 'kinetic'):
             fit.ship.boostItemAttr('shield{}DamageResonance'.format(damageType.capitalize()),
                                    ship.getModifiedItemAttr('eliteBonusBarge1'), skill='Exhumers', **kwargs)
@@ -22565,7 +22566,7 @@ class Effect5840(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'duration', ship.getModifiedItemAttr('eliteBonusBarge2'), skill='Exhumers', **kwargs)
 
@@ -22581,7 +22582,7 @@ class Effect5852(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'miningAmount', module.getModifiedItemAttr('eliteBonusExpedition1'),
                                       skill='Expedition Frigates', **kwargs)
@@ -22598,7 +22599,7 @@ class Effect5853(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('eliteBonusExpedition2'),
                                skill='Expedition Frigates', **kwargs)
 
@@ -22621,7 +22622,7 @@ class Effect5854(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemForce(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'nosOverride', ship.getModifiedItemAttr('nosOverride'), **kwargs)
 
@@ -22637,7 +22638,7 @@ class Effect5862(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'emDamage', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
 
@@ -22653,7 +22654,7 @@ class Effect5863(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCB'),
                                         skill='Caldari Battleship', **kwargs)
@@ -22670,7 +22671,7 @@ class Effect5864(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusCB'),
                                         skill='Caldari Battleship', **kwargs)
@@ -22687,7 +22688,7 @@ class Effect5865(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusCB'),
                                         skill='Caldari Battleship', **kwargs)
@@ -22704,7 +22705,7 @@ class Effect5866(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship', **kwargs)
 
@@ -22722,7 +22723,7 @@ class Effect5867(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusRole8'), **kwargs)
 
@@ -22738,7 +22739,7 @@ class Effect5868(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', module.getModifiedItemAttr('drawback'), **kwargs)
 
 
@@ -22753,7 +22754,7 @@ class Effect5869(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', ship.getModifiedItemAttr('eliteBonusIndustrial1'),
                                skill='Transport Ships', **kwargs)
 
@@ -22769,7 +22770,7 @@ class Effect5870(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Industrial', **kwargs)
 
@@ -22785,7 +22786,7 @@ class Effect5871(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Industrial', **kwargs)
 
@@ -22801,7 +22802,7 @@ class Effect5872(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusAI2'),
                                       skill='Amarr Industrial', **kwargs)
@@ -22818,7 +22819,7 @@ class Effect5873(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGI2'),
                                       skill='Gallente Industrial', **kwargs)
@@ -22835,7 +22836,7 @@ class Effect5874(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('fleetHangarCapacity', ship.getModifiedItemAttr('eliteBonusIndustrial1'),
                                skill='Transport Ships', **kwargs)
 
@@ -22852,7 +22853,7 @@ class Effect5881(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('em', 'thermal', 'explosive', 'kinetic'):
             fit.ship.boostItemAttr('shield{}DamageResonance'.format(damageType.capitalize()),
                                    ship.getModifiedItemAttr('eliteBonusIndustrial2'), skill='Transport Ships', **kwargs)
@@ -22870,7 +22871,7 @@ class Effect5888(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('em', 'thermal', 'explosive', 'kinetic'):
             fit.ship.boostItemAttr('armor{}DamageResonance'.format(damageType.capitalize()),
                                    ship.getModifiedItemAttr('eliteBonusIndustrial2'), skill='Transport Ships', **kwargs)
@@ -22887,7 +22888,7 @@ class Effect5889(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
                                       'overloadSpeedFactorBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
 
@@ -22903,7 +22904,7 @@ class Effect5890(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'overloadSpeedFactorBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
 
@@ -22919,7 +22920,7 @@ class Effect5891(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'),
                                       'overloadHardeningBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
 
@@ -22935,7 +22936,7 @@ class Effect5892(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'),
                                       'overloadSelfDurationBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
 
@@ -22951,7 +22952,7 @@ class Effect5893(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Tactical Shield Manipulation'),
                                       'overloadHardeningBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
 
@@ -22967,7 +22968,7 @@ class Effect5896(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'overloadShieldBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
@@ -22985,7 +22986,7 @@ class Effect5899(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'overloadArmorDamageAmount', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
@@ -23003,7 +23004,7 @@ class Effect5900(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpSpeedMultiplier', module.getModifiedItemAttr('warpSpeedAdd'), **kwargs)
 
 
@@ -23019,7 +23020,7 @@ class Effect5901(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Reinforced Bulkhead',
                                       'cpu', ship.getModifiedItemAttr('cpuNeedBonus'), **kwargs)
 
@@ -23036,7 +23037,7 @@ class Effect5911(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('jumpDriveConsumptionAmount',
                                module.getModifiedItemAttr('consumptionQuantityBonusPercentage'), stackingPenalties=True, **kwargs)
 
@@ -23053,7 +23054,7 @@ class Effect5912(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                          'powerTransferAmount', beacon.getModifiedItemAttr('energyTransferAmountBonus'),
                                          stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -23071,7 +23072,7 @@ class Effect5913(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('armorHP', beacon.getModifiedItemAttr('armorHPMultiplier'), **kwargs)
 
 
@@ -23087,7 +23088,7 @@ class Effect5914(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Neutralizer',
                                          'energyNeutralizerAmount',
                                          beacon.getModifiedItemAttr('energyWarfareStrengthMultiplier'),
@@ -23106,7 +23107,7 @@ class Effect5915(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                          'powerTransferAmount',
                                          beacon.getModifiedItemAttr('energyWarfareStrengthMultiplier'),
@@ -23125,7 +23126,7 @@ class Effect5916(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'explosiveDamage', beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -23143,7 +23144,7 @@ class Effect5917(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'kineticDamage', beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -23161,7 +23162,7 @@ class Effect5918(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'thermalDamage', beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -23179,7 +23180,7 @@ class Effect5919(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'emDamage', beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
                                            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -23197,7 +23198,7 @@ class Effect5920(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                            'aoeCloudSize', beacon.getModifiedItemAttr('aoeCloudSizeMultiplier'), **kwargs)
 
@@ -23214,7 +23215,7 @@ class Effect5921(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Target Painting'),
                                          'signatureRadiusBonus',
                                          beacon.getModifiedItemAttr('targetPainterStrengthMultiplier'),
@@ -23233,7 +23234,7 @@ class Effect5922(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Stasis Web',
                                          'speedFactor', beacon.getModifiedItemAttr('stasisWebStrengthMultiplier'),
                                          stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -23251,7 +23252,7 @@ class Effect5923(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'energyNeutralizerAmount',
                                            beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
@@ -23270,7 +23271,7 @@ class Effect5924(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'scanGravimetricStrengthBonus',
                                            beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
@@ -23289,7 +23290,7 @@ class Effect5925(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'scanLadarStrengthBonus',
                                            beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
@@ -23308,7 +23309,7 @@ class Effect5926(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'scanMagnetometricStrengthBonus',
                                            beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
@@ -23327,7 +23328,7 @@ class Effect5927(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Bomb Deployment'),
                                            'scanRadarStrengthBonus',
                                            beacon.getModifiedItemAttr('smartbombDamageMultiplier'),
@@ -23346,7 +23347,7 @@ class Effect5929(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.drones.filteredItemMultiply(lambda drone: True,
                                         'trackingSpeed', beacon.getModifiedItemAttr('trackingSpeedMultiplier'),
                                         stackingPenalties=True, penaltyGroup='postMul', **kwargs)
@@ -23364,7 +23365,7 @@ class Effect5934(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
 
@@ -23385,7 +23386,7 @@ class Effect5938(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
             'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
@@ -23402,7 +23403,7 @@ class Effect5939(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rocket',
                                       'speed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -23418,7 +23419,7 @@ class Effect5940(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'speed', ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors', **kwargs)
 
@@ -23434,7 +23435,7 @@ class Effect5944(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'speed', ship.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
 
@@ -23451,7 +23452,7 @@ class Effect5945(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # Set flag which is used to determine if ship is cloaked or not
         # This is used to apply cloak-only bonuses, like Black Ops' speed bonus
         # Doesn't apply to covops cloaks
@@ -23471,7 +23472,7 @@ class Effect5951(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', module.getModifiedItemAttr('drawback'), stackingPenalties=True, **kwargs)
 
 
@@ -23486,7 +23487,7 @@ class Effect5956(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)
 
@@ -23502,7 +23503,7 @@ class Effect5957(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
                                       skill='Heavy Interdiction Cruisers', **kwargs)
@@ -23521,7 +23522,7 @@ class Effect5958(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
@@ -23537,7 +23538,7 @@ class Effect5959(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
                                       skill='Heavy Interdiction Cruisers', **kwargs)
@@ -23554,7 +23555,7 @@ class Effect5994(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
             tgtAttr = '{}DamageResonance'.format(dmgType)
             fit.ship.forceItemAttr(tgtAttr, module.getModifiedItemAttr('resistanceKillerHull'), **kwargs)
@@ -23571,7 +23572,7 @@ class Effect5995(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for layer in ('armor', 'shield'):
             for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
                 tgtAttr = '{}{}DamageResonance'.format(layer, dmgType.capitalize())
@@ -23589,7 +23590,7 @@ class Effect5998(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         # todo: stacking?
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusO2'), skill='ORE Freighter',
                                stackingPenalties=True, **kwargs)
@@ -23606,7 +23607,7 @@ class Effect6001(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shipMaintenanceBayCapacity', ship.getModifiedItemAttr('freighterBonusO1'),
                                skill='ORE Freighter', **kwargs)
 
@@ -23622,7 +23623,7 @@ class Effect6006(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusTacticalDestroyerAmarr1'),
                                       skill='Amarr Tactical Destroyer', **kwargs)
@@ -23639,7 +23640,7 @@ class Effect6007(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusTacticalDestroyerAmarr2'),
                                       skill='Amarr Tactical Destroyer', **kwargs)
@@ -23656,7 +23657,7 @@ class Effect6008(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusTacticalDestroyerAmarr3'),
                                       skill='Amarr Tactical Destroyer', **kwargs)
@@ -23674,7 +23675,7 @@ class Effect6009(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Astrometrics'), 'cpu', src.getModifiedItemAttr('roleBonusT3ProbeCPU'), **kwargs)
 
 
@@ -23689,7 +23690,7 @@ class Effect6010(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr(
             'maxTargetRange',
             1 / module.getModifiedItemAttr('modeMaxTargetRangePostDiv'),
@@ -23709,7 +23710,7 @@ class Effect6011(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('Small Energy Turret'),
             'maxRange',
@@ -23730,7 +23731,7 @@ class Effect6012(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
             fit.ship.multiplyItemAttr(
                 'scan{}Strength'.format(scanType),
@@ -23752,7 +23753,7 @@ class Effect6014(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('signatureRadius', 1 / module.getModifiedItemAttr('modeSignatureRadiusPostDiv'),
                                   stackingPenalties=True, penaltyGroup='postDiv', **kwargs)
 
@@ -23768,7 +23769,7 @@ class Effect6015(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for srcResType, tgtResType in (
                 ('Em', 'Em'),
                 ('Explosive', 'Explosive'),
@@ -23794,7 +23795,7 @@ class Effect6016(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr(
             'agility',
             1 / module.getModifiedItemAttr('modeAgilityPostDiv'),
@@ -23814,7 +23815,7 @@ class Effect6017(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr(
             'maxVelocity',
             1 / module.getModifiedItemAttr('modeVelocityPostDiv'),
@@ -23834,7 +23835,7 @@ class Effect6020(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
 
@@ -23850,7 +23851,7 @@ class Effect6021(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
 
@@ -23866,7 +23867,7 @@ class Effect6025(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships', **kwargs)
 
@@ -23882,7 +23883,7 @@ class Effect6027(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusReconShip1'),
                                       skill='Recon Ships', **kwargs)
@@ -23899,7 +23900,7 @@ class Effect6032(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter',
                                       'power', ship.getModifiedItemAttr('powerTransferPowerNeedBonus'), **kwargs)
 
@@ -23915,7 +23916,7 @@ class Effect6036(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusTacticalDestroyerMinmatar3'),
                                       skill='Minmatar Tactical Destroyer', **kwargs)
@@ -23932,7 +23933,7 @@ class Effect6037(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusTacticalDestroyerMinmatar1'),
                                       skill='Minmatar Tactical Destroyer', **kwargs)
@@ -23949,7 +23950,7 @@ class Effect6038(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusTacticalDestroyerMinmatar2'),
                                       skill='Minmatar Tactical Destroyer', **kwargs)
@@ -23966,7 +23967,7 @@ class Effect6039(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
             'trackingSpeed',
@@ -23987,7 +23988,7 @@ class Effect6040(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
             'signatureRadiusBonus',
@@ -24009,7 +24010,7 @@ class Effect6041(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for srcResType, tgtResType in (
                 ('Em', 'Em'),
                 ('Explosive', 'Explosive'),
@@ -24035,7 +24036,7 @@ class Effect6045(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser', **kwargs)
 
@@ -24051,7 +24052,7 @@ class Effect6046(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'hp', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser', **kwargs)
 
@@ -24067,7 +24068,7 @@ class Effect6047(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser', **kwargs)
 
@@ -24083,7 +24084,7 @@ class Effect6048(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser', **kwargs)
 
@@ -24099,7 +24100,7 @@ class Effect6051(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24115,7 +24116,7 @@ class Effect6052(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24131,7 +24132,7 @@ class Effect6053(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24147,7 +24148,7 @@ class Effect6054(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'hp', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24163,7 +24164,7 @@ class Effect6055(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24179,7 +24180,7 @@ class Effect6056(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24195,7 +24196,7 @@ class Effect6057(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24211,7 +24212,7 @@ class Effect6058(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24227,7 +24228,7 @@ class Effect6059(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'hp', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24243,7 +24244,7 @@ class Effect6060(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'hp', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24259,7 +24260,7 @@ class Effect6061(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24275,7 +24276,7 @@ class Effect6062(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
 
@@ -24291,7 +24292,7 @@ class Effect6063(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.forceItemAttr('disallowAssistance', module.getModifiedItemAttr('disallowAssistance'))
         for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
             fit.ship.boostItemAttr(
@@ -24311,7 +24312,7 @@ class Effect6076(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(
             lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
             'maxVelocity',
@@ -24332,7 +24333,7 @@ class Effect6077(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusTacticalDestroyerCaldari3'),
                                       skill='Caldari Tactical Destroyer', **kwargs)
@@ -24350,7 +24351,7 @@ class Effect6083(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('em', 'explosive', 'kinetic', 'thermal'):
             fit.modules.filteredChargeBoost(
                 lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
@@ -24368,7 +24369,7 @@ class Effect6085(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'speed', ship.getModifiedItemAttr('shipBonusTacticalDestroyerCaldari1'),
                                       skill='Caldari Tactical Destroyer', **kwargs)
@@ -24386,7 +24387,7 @@ class Effect6088(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('em', 'explosive', 'kinetic', 'thermal'):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                             '{0}Damage'.format(damageType), ship.getModifiedItemAttr('shipBonusMC2'),
@@ -24405,7 +24406,7 @@ class Effect6093(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('em', 'explosive', 'kinetic', 'thermal'):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                             '{0}Damage'.format(damageType), ship.getModifiedItemAttr('shipBonusMC2'),
@@ -24424,7 +24425,7 @@ class Effect6096(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         for damageType in ('em', 'explosive', 'kinetic', 'thermal'):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                             '{0}Damage'.format(damageType), ship.getModifiedItemAttr('shipBonusMC2'),
@@ -24442,7 +24443,7 @@ class Effect6098(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
                                       'reloadTime', ship.getModifiedItemAttr('shipBonusTacticalDestroyerCaldari2'),
                                       skill='Caldari Tactical Destroyer', **kwargs)
@@ -24459,7 +24460,7 @@ class Effect6104(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Infomorph Psychology'),
                                          'duration', ship.getModifiedItemAttr('entosisDurationMultiplier') or 1, **kwargs)
 
@@ -24475,7 +24476,7 @@ class Effect6110(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', module.getModifiedItemAttr('missileVelocityBonus'),
                                         stackingPenalties=True, **kwargs)
@@ -24492,7 +24493,7 @@ class Effect6111(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosionDelay', module.getModifiedItemAttr('explosionDelayBonus'),
                                         stackingPenalties=True, **kwargs)
@@ -24509,7 +24510,7 @@ class Effect6112(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'aoeCloudSize', module.getModifiedItemAttr('aoeCloudSizeBonus'),
                                         stackingPenalties=True, **kwargs)
@@ -24527,7 +24528,7 @@ class Effect6113(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'aoeVelocity', module.getModifiedItemAttr('aoeVelocityBonus'),
                                         stackingPenalties=True, **kwargs)
@@ -24545,7 +24546,7 @@ class Effect6128(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('aoeCloudSizeBonus', module.getModifiedChargeAttr('aoeCloudSizeBonusBonus'), **kwargs)
 
 
@@ -24561,7 +24562,7 @@ class Effect6129(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('aoeVelocityBonus', module.getModifiedChargeAttr('aoeVelocityBonusBonus'), **kwargs)
 
 
@@ -24576,7 +24577,7 @@ class Effect6130(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('missileVelocityBonus', module.getModifiedChargeAttr('missileVelocityBonusBonus'), **kwargs)
 
 
@@ -24591,7 +24592,7 @@ class Effect6131(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('explosionDelayBonus', module.getModifiedChargeAttr('explosionDelayBonusBonus'), **kwargs)
 
 
@@ -24606,7 +24607,7 @@ class Effect6135(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         for srcAttr, tgtAttr in (
                 ('aoeCloudSizeBonus', 'aoeCloudSize'),
                 ('aoeVelocityBonus', 'aoeVelocity'),
@@ -24629,7 +24630,7 @@ class Effect6144(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for tgtAttr in (
                 'aoeCloudSizeBonus',
                 'explosionDelayBonus',
@@ -24651,7 +24652,7 @@ class Effect6148(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage',
                                       ship.getModifiedItemAttr('shipBonusTacticalDestroyerGallente3'),
                                       skill='Gallente Tactical Destroyer', **kwargs)
@@ -24668,7 +24669,7 @@ class Effect6149(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusTacticalDestroyerGallente1'),
                                       skill='Gallente Tactical Destroyer', **kwargs)
@@ -24685,7 +24686,7 @@ class Effect6150(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusTacticalDestroyerGallente2'),
                                       skill='Gallente Tactical Destroyer', **kwargs)
@@ -24702,7 +24703,7 @@ class Effect6151(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for srcResType, tgtResType in (
                 ('Em', 'em'),
                 ('Explosive', 'explosive'),
@@ -24725,7 +24726,7 @@ class Effect6152(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
             'maxRange',
@@ -24746,7 +24747,7 @@ class Effect6153(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
             'capacitorNeed',
@@ -24765,7 +24766,7 @@ class Effect6154(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
             'speedFactor',
@@ -24786,7 +24787,7 @@ class Effect6155(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('Repair Systems'),
             'duration',
@@ -24806,7 +24807,7 @@ class Effect6163(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.extraAttributes['speedLimit'] = src.getModifiedItemAttr('speedLimit')
 
 
@@ -24822,7 +24823,7 @@ class Effect6164(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', beacon.getModifiedItemAttr('maxVelocityMultiplier'), stackingPenalties=True, **kwargs)
 
 
@@ -24838,7 +24839,7 @@ class Effect6166(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Propulsion Jamming'),
                                       'speedFactorBonus', ship.getModifiedItemAttr('shipBonusAT'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Propulsion Jamming'),
@@ -24858,7 +24859,7 @@ class Effect6170(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Infomorph Psychology'),
                                          'entosisCPUAdd', ship.getModifiedItemAttr('entosisCPUPenalty'), **kwargs)
 
@@ -24874,7 +24875,7 @@ class Effect6171(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.increaseItemAttr('cpu', module.getModifiedItemAttr('entosisCPUAdd'), **kwargs)
 
 
@@ -24889,7 +24890,7 @@ class Effect6172(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('roleBonusCBC'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
@@ -24908,7 +24909,7 @@ class Effect6173(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'maxRange', ship.getModifiedItemAttr('roleBonusCBC'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
@@ -24926,7 +24927,7 @@ class Effect6174(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'maxRange', ship.getModifiedItemAttr('roleBonusCBC'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
@@ -24945,7 +24946,7 @@ class Effect6175(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', skill.getModifiedItemAttr('roleBonusCBC'), **kwargs)
 
@@ -24962,7 +24963,7 @@ class Effect6176(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'maxVelocity', ship.getModifiedItemAttr('roleBonusCBC'), **kwargs)
 
@@ -24978,7 +24979,7 @@ class Effect6177(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCBC2'),
                                       skill='Caldari Battlecruiser', **kwargs)
@@ -24995,7 +24996,7 @@ class Effect6178(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusMBC2'),
                                       skill='Minmatar Battlecruiser', **kwargs)
@@ -25013,7 +25014,7 @@ class Effect6184(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         if 'projected' in context:
             amount = src.getModifiedItemAttr('powerTransferAmount')
             duration = src.getModifiedItemAttr('duration')
@@ -25037,7 +25038,7 @@ class Effect6185(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         bonus = module.getModifiedItemAttr('structureDamageAmount')
@@ -25056,7 +25057,7 @@ class Effect6186(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             bonus = container.getModifiedItemAttr('shieldBonus')
             duration = container.getModifiedItemAttr('duration') / 1000.0
@@ -25074,7 +25075,7 @@ class Effect6187(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         if 'projected' in context and ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or
                                        hasattr(src, 'amountActive')):
             amount = src.getModifiedItemAttr('energyNeutralizerAmount')
@@ -25100,7 +25101,7 @@ class Effect6188(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             bonus = container.getModifiedItemAttr('armorDamageAmount')
             duration = container.getModifiedItemAttr('duration') / 1000.0
@@ -25121,7 +25122,7 @@ class Effect6195(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for dmgType in ('Em', 'Thermal', 'Kinetic', 'Explosive'):
             fit.ship.boostItemAttr('shield{}DamageResonance'.format(dmgType),
                                    src.getModifiedItemAttr('eliteBonusExpedition1'),
@@ -25139,7 +25140,7 @@ class Effect6196(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
                                       src.getModifiedItemAttr('eliteBonusExpedition2'), skill='Expedition Frigates', **kwargs)
 
@@ -25156,7 +25157,7 @@ class Effect6197(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         amount = src.getModifiedItemAttr('powerTransferAmount')
         time = src.getModifiedItemAttr('duration')
 
@@ -25181,7 +25182,7 @@ class Effect6201(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -25197,7 +25198,7 @@ class Effect6208(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonusPercent'),
                                stackingPenalties=True, **kwargs)
 
@@ -25214,7 +25215,7 @@ class Effect6214(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'power',
                                       src.getModifiedItemAttr('roleBonusCD'), **kwargs)
 
@@ -25230,7 +25231,7 @@ class Effect6216(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         amount = 0
         if 'projected' in context:
             if (hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or hasattr(src, 'amountActive'):
@@ -25257,7 +25258,7 @@ class Effect6222(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
             fit.modules.filteredItemIncrease(
@@ -25276,7 +25277,7 @@ class Effect6230(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships', **kwargs)
 
@@ -25292,7 +25293,7 @@ class Effect6232(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships', **kwargs)
 
@@ -25308,7 +25309,7 @@ class Effect6233(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
 
@@ -25324,7 +25325,7 @@ class Effect6234(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships', **kwargs)
 
@@ -25340,7 +25341,7 @@ class Effect6237(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships', **kwargs)
 
@@ -25356,7 +25357,7 @@ class Effect6238(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
 
@@ -25372,7 +25373,7 @@ class Effect6239(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
                                       src.getModifiedItemAttr('shipBonusOREfrig2'), skill='Mining Frigate', **kwargs)
 
@@ -25388,7 +25389,7 @@ class Effect6241(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
 
@@ -25404,7 +25405,7 @@ class Effect6242(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
                                       src.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer', **kwargs)
 
@@ -25420,7 +25421,7 @@ class Effect6245(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
                                       src.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer', **kwargs)
 
@@ -25436,7 +25437,7 @@ class Effect6246(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
 
@@ -25452,7 +25453,7 @@ class Effect6253(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
                                       src.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -25468,7 +25469,7 @@ class Effect6256(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship', **kwargs)
 
@@ -25484,7 +25485,7 @@ class Effect6257(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
                                       src.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
@@ -25500,7 +25501,7 @@ class Effect6260(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship', **kwargs)
 
@@ -25516,7 +25517,7 @@ class Effect6267(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusElectronicAttackShip1'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -25533,7 +25534,7 @@ class Effect6272(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusElectronicAttackShip3'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -25550,7 +25551,7 @@ class Effect6273(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusElectronicAttackShip1'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -25567,7 +25568,7 @@ class Effect6278(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusElectronicAttackShip3'),
                                       skill='Electronic Attack Ships', **kwargs)
@@ -25584,7 +25585,7 @@ class Effect6281(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
                                       src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -25600,7 +25601,7 @@ class Effect6285(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonus3AF'), skill='Amarr Frigate', **kwargs)
 
@@ -25616,7 +25617,7 @@ class Effect6287(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
                                       src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -25632,7 +25633,7 @@ class Effect6291(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonus3AF'), skill='Amarr Frigate', **kwargs)
 
@@ -25648,7 +25649,7 @@ class Effect6294(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
                                       src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -25664,7 +25665,7 @@ class Effect6299(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusAC3'), skill='Amarr Cruiser', **kwargs)
 
@@ -25680,7 +25681,7 @@ class Effect6300(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
                                       src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
@@ -25696,7 +25697,7 @@ class Effect6301(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
@@ -25714,7 +25715,7 @@ class Effect6305(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusAC3'), skill='Amarr Cruiser', **kwargs)
 
@@ -25730,7 +25731,7 @@ class Effect6307(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'thermalDamage',
                                         src.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer', **kwargs)
 
@@ -25746,7 +25747,7 @@ class Effect6308(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'emDamage',
                                         src.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer', **kwargs)
 
@@ -25762,7 +25763,7 @@ class Effect6309(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'kineticDamage',
                                         src.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer', **kwargs)
 
@@ -25778,7 +25779,7 @@ class Effect6310(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosiveDamage', src.getModifiedItemAttr('shipBonusMD1'),
                                         skill='Minmatar Destroyer', **kwargs)
@@ -25795,7 +25796,7 @@ class Effect6315(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Skirmish Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandDestroyer1'),
@@ -25814,7 +25815,7 @@ class Effect6316(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandDestroyer1'),
@@ -25832,7 +25833,7 @@ class Effect6317(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Micro Jump Drive Operation'), 'duration',
                                       src.getModifiedItemAttr('eliteBonusCommandDestroyer2'), skill='Command Destroyers', **kwargs)
 
@@ -25848,7 +25849,7 @@ class Effect6318(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', src.getModifiedItemAttr('shipBonusMD2'),
                                skill='Minmatar Destroyer', **kwargs)
 
@@ -25864,7 +25865,7 @@ class Effect6319(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', src.getModifiedItemAttr('shipBonusMD2'),
                                skill='Minmatar Destroyer', **kwargs)
 
@@ -25880,7 +25881,7 @@ class Effect6320(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', src.getModifiedItemAttr('shipBonusMD2'),
                                skill='Minmatar Destroyer', **kwargs)
 
@@ -25896,7 +25897,7 @@ class Effect6321(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusMD2'),
                                skill='Minmatar Destroyer', **kwargs)
 
@@ -25913,7 +25914,7 @@ class Effect6322(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         src.boostItemAttr('scanGravimetricStrengthBonus', src.getModifiedChargeAttr('scanGravimetricStrengthBonusBonus'), **kwargs)
 
 
@@ -25929,7 +25930,7 @@ class Effect6323(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         src.boostItemAttr('scanLadarStrengthBonus', src.getModifiedChargeAttr('scanLadarStrengthBonusBonus'), **kwargs)
 
 
@@ -25945,7 +25946,7 @@ class Effect6324(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         src.boostItemAttr('scanMagnetometricStrengthBonus', src.getModifiedChargeAttr('scanMagnetometricStrengthBonusBonus'), **kwargs)
 
 
@@ -25961,7 +25962,7 @@ class Effect6325(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         src.boostItemAttr('scanRadarStrengthBonus', src.getModifiedChargeAttr('scanRadarStrengthBonusBonus'), **kwargs)
 
 
@@ -25976,7 +25977,7 @@ class Effect6326(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'thermalDamage',
                                         src.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer', **kwargs)
 
@@ -25992,7 +25993,7 @@ class Effect6327(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'emDamage',
                                         src.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer', **kwargs)
 
@@ -26008,7 +26009,7 @@ class Effect6328(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'kineticDamage',
                                         src.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer', **kwargs)
 
@@ -26024,7 +26025,7 @@ class Effect6329(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'explosiveDamage', src.getModifiedItemAttr('shipBonusCD1'),
                                         skill='Caldari Destroyer', **kwargs)
@@ -26041,7 +26042,7 @@ class Effect6330(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
                                skill='Caldari Destroyer', **kwargs)
 
@@ -26057,7 +26058,7 @@ class Effect6331(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
                                skill='Caldari Destroyer', **kwargs)
 
@@ -26073,7 +26074,7 @@ class Effect6332(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
                                skill='Caldari Destroyer', **kwargs)
 
@@ -26089,7 +26090,7 @@ class Effect6333(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
                                skill='Caldari Destroyer', **kwargs)
 
@@ -26105,7 +26106,7 @@ class Effect6334(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Information Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandDestroyer1'),
@@ -26123,7 +26124,7 @@ class Effect6335(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusAD2'),
                                skill='Amarr Destroyer', **kwargs)
 
@@ -26139,7 +26140,7 @@ class Effect6336(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', src.getModifiedItemAttr('shipBonusAD2'),
                                skill='Amarr Destroyer', **kwargs)
 
@@ -26155,7 +26156,7 @@ class Effect6337(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer', **kwargs)
 
 
@@ -26170,7 +26171,7 @@ class Effect6338(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusAD2'),
                                skill='Amarr Destroyer', **kwargs)
 
@@ -26187,7 +26188,7 @@ class Effect6339(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Armored Command'),
                                           attrName, src.getModifiedItemAttr('eliteBonusCommandDestroyer1'),
@@ -26205,7 +26206,7 @@ class Effect6340(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusGD2'),
                                skill='Gallente Destroyer', **kwargs)
 
@@ -26221,7 +26222,7 @@ class Effect6341(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusGD2'),
                                skill='Gallente Destroyer', **kwargs)
 
@@ -26237,7 +26238,7 @@ class Effect6342(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', src.getModifiedItemAttr('shipBonusGD2'),
                                skill='Gallente Destroyer', **kwargs)
 
@@ -26253,7 +26254,7 @@ class Effect6343(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusGD2'),
                                skill='Gallente Destroyer', **kwargs)
 
@@ -26269,7 +26270,7 @@ class Effect6350(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'), 'kineticDamage',
             src.getModifiedItemAttr('shipBonus3CF'), skill='Caldari Frigate', **kwargs)
@@ -26286,7 +26287,7 @@ class Effect6351(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'kineticDamage',
                                         src.getModifiedItemAttr('shipBonusCC3'), skill='Caldari Cruiser', **kwargs)
 
@@ -26302,7 +26303,7 @@ class Effect6352(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'), 'falloffEffectiveness',
                                       src.getModifiedItemAttr('roleBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'), 'maxRange',
@@ -26320,7 +26321,7 @@ class Effect6353(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'), 'cpu',
                                       src.getModifiedItemAttr('roleBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'), 'capacitorNeed',
@@ -26338,7 +26339,7 @@ class Effect6354(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in (
             'trackingSpeedBonus', 'explosionDelayBonus', 'maxRangeBonus', 'falloffBonus',
             'missileVelocityBonus', 'aoeVelocityBonus', 'aoeCloudSizeBonus'
@@ -26358,7 +26359,7 @@ class Effect6355(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'capacitorNeed',
                                       src.getModifiedItemAttr('roleBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'cpu', src.getModifiedItemAttr('roleBonus'), **kwargs)
@@ -26375,7 +26376,7 @@ class Effect6356(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('roleBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'maxRange',
@@ -26393,7 +26394,7 @@ class Effect6357(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Navigation'), 'maxRange',
                                       src.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
 
@@ -26409,7 +26410,7 @@ class Effect6358(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Navigation'),
                                          'warpScrambleStrength', ship.getModifiedItemAttr('roleBonus'), **kwargs)
 
@@ -26425,7 +26426,7 @@ class Effect6359(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'), 'aoeVelocity',
                                         src.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -26441,7 +26442,7 @@ class Effect6360(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'), 'emDamage',
                                         src.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'), 'thermalDamage',
@@ -26461,7 +26462,7 @@ class Effect6361(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'), 'explosiveDamage',
                                         src.getModifiedItemAttr('shipBonus3MF'), skill='Minmatar Frigate', **kwargs)
 
@@ -26477,7 +26478,7 @@ class Effect6362(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
                                       src.getModifiedItemAttr('roleBonus'), **kwargs)
 
@@ -26496,7 +26497,7 @@ class Effect6368(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Shield Booster', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('falloffBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Ancillary Remote Shield Booster',
@@ -26514,7 +26515,7 @@ class Effect6369(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -26531,7 +26532,7 @@ class Effect6370(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'falloffEffectiveness',
                                       src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
@@ -26547,7 +26548,7 @@ class Effect6371(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'falloffEffectiveness', src.getModifiedItemAttr('shipBonusGC'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -26564,7 +26565,7 @@ class Effect6372(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'falloffEffectiveness', src.getModifiedItemAttr('shipBonusAC2'),
                                       skill='Amarr Cruiser', **kwargs)
@@ -26585,7 +26586,7 @@ class Effect6373(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Armor Repairer', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('falloffBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Ancillary Remote Armor Repairer',
@@ -26605,7 +26606,7 @@ class Effect6374(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone', 'structureDamageAmount',
                                      src.getModifiedItemAttr('droneArmorDamageAmountBonus'), **kwargs)
 
@@ -26622,7 +26623,7 @@ class Effect6377(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
                                       src.getModifiedItemAttr('eliteBonusLogiFrig1'), skill='Logistics Frigates', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'duration',
@@ -26641,7 +26642,7 @@ class Effect6378(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'duration',
                                       src.getModifiedItemAttr('eliteBonusLogiFrig1'), skill='Logistics Frigates', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'capacitorNeed',
@@ -26659,7 +26660,7 @@ class Effect6379(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', src.getModifiedItemAttr('eliteBonusLogiFrig2'), skill='Logistics Frigates', **kwargs)
 
 
@@ -26674,7 +26675,7 @@ class Effect6380(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', src.getModifiedItemAttr('eliteBonusLogiFrig2'), skill='Logistics Frigates', **kwargs)
 
 
@@ -26690,7 +26691,7 @@ class Effect6381(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', src.getModifiedItemAttr('eliteBonusLogiFrig2'),
                                skill='Logistics Frigates', **kwargs)
 
@@ -26706,7 +26707,7 @@ class Effect6384(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for tgtAttr in (
                 'aoeCloudSizeBonus',
                 'explosionDelayBonus',
@@ -26728,7 +26729,7 @@ class Effect6385(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemForce(lambda mod: mod.item.group.name == 'Cloaking Device',
                                       'maxVelocityModifier', src.getModifiedItemAttr('velocityPenaltyReduction'), **kwargs)
 
@@ -26745,7 +26746,7 @@ class Effect6386(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         level = src.level if 'skill' in context else 1
         for attr in (
                 'explosionDelayBonus',
@@ -26768,7 +26769,7 @@ class Effect6395(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in (
             'missileVelocityBonus', 'aoeVelocityBonus', 'maxRangeBonus', 'explosionDelayBonus',
             'aoeCloudSizeBonus', 'trackingSpeedBonus', 'falloffBonus'
@@ -26788,7 +26789,7 @@ class Effect6396(BaseEffect):
     type = 'passive', 'structure'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure Anti-Capital Missile', 'Structure Anti-Subcapital Missile', 'Structure Guided Bomb')
         for damageType in ('em', 'thermal', 'explosive', 'kinetic'):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name in groups,
@@ -26807,7 +26808,7 @@ class Effect6400(BaseEffect):
     type = 'passive', 'structure'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure Warp Scrambler', 'Structure Disruption Battery', 'Structure Stasis Webifier')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'capacitorNeed', src.getModifiedItemAttr('capNeedBonus'),
@@ -26825,7 +26826,7 @@ class Effect6401(BaseEffect):
     type = 'passive', 'structure'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure Energy Neutralizer', 'Structure Area Denial Module')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'capacitorNeed', src.getModifiedItemAttr('capNeedBonus'),
@@ -26843,7 +26844,7 @@ class Effect6402(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure Anti-Subcapital Missile', 'Structure Anti-Capital Missile')
 
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name in groups,
@@ -26862,7 +26863,7 @@ class Effect6403(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure Anti-Subcapital Missile', 'Structure Anti-Capital Missile')
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name in groups,
                                       'maxVelocity', src.getModifiedItemAttr('structureRigMissileVelocityBonus'),
@@ -26881,7 +26882,7 @@ class Effect6404(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Energy Neutralizer',
                                       'maxRange', src.getModifiedItemAttr('structureRigEwarOptimalBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -26903,7 +26904,7 @@ class Effect6405(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Energy Neutralizer',
                                       'capacitorNeed', src.getModifiedItemAttr('structureRigEwarCapUseBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -26921,7 +26922,7 @@ class Effect6406(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure ECM Battery', 'Structure Disruption Battery')
 
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
@@ -26949,7 +26950,7 @@ class Effect6407(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure ECM Battery', 'Structure Disruption Battery')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'capacitorNeed', src.getModifiedItemAttr('structureRigEwarCapUseBonus'),
@@ -26968,7 +26969,7 @@ class Effect6408(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.extraAttributes.increase('maxTargetsLockedFromSkills', src.getModifiedItemAttr('structureRigMaxTargetBonus'), **kwargs)
 
 
@@ -26985,7 +26986,7 @@ class Effect6409(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanResolution', src.getModifiedItemAttr('structureRigScanResBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -27002,7 +27003,7 @@ class Effect6410(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Structure Guided Bomb',
                                         'aoeCloudSize', src.getModifiedItemAttr('structureRigMissileExplosionRadiusBonus'),
                                         stackingPenalties=True, **kwargs)
@@ -27020,7 +27021,7 @@ class Effect6411(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Structure Guided Bomb',
                                         'maxVelocity', src.getModifiedItemAttr('structureRigMissileVelocityBonus'),
                                         stackingPenalties=True, **kwargs)
@@ -27038,7 +27039,7 @@ class Effect6412(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Area Denial Module',
                                       'empFieldRange', src.getModifiedItemAttr('structureRigPDRangeBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -27056,7 +27057,7 @@ class Effect6413(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Area Denial Module',
                                       'capacitorNeed', src.getModifiedItemAttr('structureRigPDCapUseBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -27073,7 +27074,7 @@ class Effect6417(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == 'Structure Doomsday Weapon',
                                          'lightningWeaponDamageLossTarget',
                                          src.getModifiedItemAttr('structureRigDoomsdayDamageLossTargetBonus'), **kwargs)
@@ -27091,7 +27092,7 @@ class Effect6422(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
 
@@ -27113,7 +27114,7 @@ class Effect6423(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             for srcAttr, tgtAttr in (
                     ('aoeCloudSizeBonus', 'aoeCloudSize'),
@@ -27138,7 +27139,7 @@ class Effect6424(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                           'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
@@ -27162,7 +27163,7 @@ class Effect6425(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
                                    stackingPenalties=True, **kwargs)
@@ -27181,7 +27182,7 @@ class Effect6426(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
@@ -27199,7 +27200,7 @@ class Effect6427(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
 
@@ -27227,7 +27228,7 @@ class Effect6428(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                           'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
@@ -27269,7 +27270,7 @@ class Effect6434(BaseEffect):
     type = 'active', 'projected'
 
     @classmethod
-    def handler(cls, fit, src, context, **kwargs):
+    def handler(cls, fit, src, context, projectionRange, **kwargs):
         if 'projected' in context:
             amount = src.getModifiedItemAttr('{}Amount'.format(cls.prefix)) * src.amount
             time = src.getModifiedItemAttr('{}Duration'.format(cls.prefix))
@@ -27295,7 +27296,7 @@ class Effect6435(BaseEffect):
     type = 'active', 'projected'
 
     @classmethod
-    def handler(cls, fit, src, context, **kwargs):
+    def handler(cls, fit, src, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('{}SpeedPenalty'.format(cls.prefix)) * src.amount,
@@ -27316,7 +27317,7 @@ class Effect6436(BaseEffect):
     type = 'active', 'projected'
 
     @classmethod
-    def handler(cls, fit, src, context, **kwargs):
+    def handler(cls, fit, src, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('{}PointStrength'.format(cls.prefix)) * src.amount, **kwargs)
@@ -27336,7 +27337,7 @@ class Effect6437(BaseEffect):
     type = 'projected', 'active'
 
     @classmethod
-    def handler(cls, fit, src, context, **kwargs):
+    def handler(cls, fit, src, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
@@ -27364,7 +27365,7 @@ class Effect6439(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         container.boostItemAttr('maxVelocity',
                                 container.getModifiedItemAttr('fighterAbilityEvasiveManeuversSpeedBonus'), **kwargs)
         container.boostItemAttr('signatureRadius',
@@ -27400,7 +27401,7 @@ class Effect6441(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.boostItemAttr('maxVelocity', module.getModifiedItemAttr('fighterAbilityMicroWarpDriveSpeedBonus'),
                              stackingPenalties=True, **kwargs)
         module.boostItemAttr('signatureRadius',
@@ -27441,7 +27442,7 @@ class Effect6448(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         missileGroups = ('Structure Anti-Capital Missile', 'Structure Anti-Subcapital Missile')
         for srcAttr, tgtAttr in (
                 ('aoeCloudSizeBonus', 'aoeCloudSize'),
@@ -27465,7 +27466,7 @@ class Effect6449(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         missileGroups = ('Structure Anti-Capital Missile', 'Structure Anti-Subcapital Missile')
 
         for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
@@ -27506,7 +27507,7 @@ class Effect6470(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
             strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
@@ -27529,7 +27530,7 @@ class Effect6472(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -27545,7 +27546,7 @@ class Effect6473(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -27561,7 +27562,7 @@ class Effect6474(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, mod, context, **kwargs):
+    def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
@@ -27577,7 +27578,7 @@ class Effect6475(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == 'Structure Doomsday Weapon',
                                          'lightningWeaponTargetAmount',
                                          src.getModifiedItemAttr('structureRigDoomsdayTargetAmountBonus'), **kwargs)
@@ -27595,7 +27596,7 @@ class Effect6476(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
@@ -27614,7 +27615,7 @@ class Effect6477(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         if 'projected' in context and ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or
                                        hasattr(src, 'amountActive')):
             amount = src.getModifiedItemAttr('energyNeutralizerAmount')
@@ -27640,7 +27641,7 @@ class Effect6478(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
                                    stackingPenalties=True, **kwargs)
@@ -27658,7 +27659,7 @@ class Effect6479(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             for srcAttr, tgtAttr in (
                     ('aoeCloudSizeBonus', 'aoeCloudSize'),
@@ -27693,7 +27694,7 @@ class Effect6481(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
 
@@ -27716,7 +27717,7 @@ class Effect6482(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         return
 
 
@@ -27732,7 +27733,7 @@ class Effect6484(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
             fit.ship.multiplyItemAttr('{}DamageResonance'.format(dmgType),
                                       src.getModifiedItemAttr('hull{}DamageResonance'.format(dmgType.title())),
@@ -27764,7 +27765,7 @@ class Effect6487(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('energyWarfareResistance',
                                module.getModifiedItemAttr('energyWarfareResistanceBonus'),
                                stackingPenalties=True, **kwargs)
@@ -27781,7 +27782,7 @@ class Effect6488(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
             module.boostItemAttr('scan{}StrengthPercent'.format(scanType),
                                  module.getModifiedChargeAttr('sensorStrengthBonusBonus'), **kwargs)
@@ -27798,7 +27799,7 @@ class Effect6501(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtA1'), skill='Amarr Dreadnought', **kwargs)
 
@@ -27814,7 +27815,7 @@ class Effect6502(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
                                skill='Amarr Dreadnought', **kwargs)
         fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
@@ -27836,7 +27837,7 @@ class Effect6503(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret'), 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtA3'), skill='Amarr Dreadnought', **kwargs)
 
@@ -27852,7 +27853,7 @@ class Effect6504(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for attrName in ('emDamage', 'thermalDamage', 'kineticDamage', 'explosiveDamage'):
             fit.modules.filteredChargeBoost(lambda mod: (mod.charge.requiresSkill('XL Torpedoes') or
                                                          mod.charge.requiresSkill('XL Cruise Missiles') or
@@ -27872,7 +27873,7 @@ class Effect6505(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtC2'),
                                skill='Caldari Dreadnought', **kwargs)
         fit.ship.boostItemAttr('shieldKineticDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtC2'),
@@ -27894,7 +27895,7 @@ class Effect6506(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG1'), skill='Gallente Dreadnought', **kwargs)
 
@@ -27910,7 +27911,7 @@ class Effect6507(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'), 'speed',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG2'), skill='Gallente Dreadnought', **kwargs)
 
@@ -27926,7 +27927,7 @@ class Effect6508(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Repair Systems'), 'duration',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG3'), skill='Gallente Dreadnought', **kwargs)
 
@@ -27942,7 +27943,7 @@ class Effect6509(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Projectile Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought', **kwargs)
 
@@ -27958,7 +27959,7 @@ class Effect6510(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Projectile Turret'), 'speed',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM2'), skill='Minmatar Dreadnought', **kwargs)
 
@@ -27974,7 +27975,7 @@ class Effect6511(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'), 'duration',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM2'), skill='Minmatar Dreadnought', **kwargs)
 
@@ -27991,7 +27992,7 @@ class Effect6513(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
             strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
@@ -28014,7 +28015,7 @@ class Effect6526(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capacitor Emission Systems') or
                                                   mod.item.requiresSkill('Capital Capacitor Emission Systems'),
                                       'powerTransferAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryA1'),
@@ -28036,7 +28037,7 @@ class Effect6527(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusForceAuxiliaryA2'),
                                skill='Amarr Carrier', **kwargs)
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusForceAuxiliaryA2'),
@@ -28058,7 +28059,7 @@ class Effect6533(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Armored Command') or
                                                   mod.item.requiresSkill('Information Command'),
                                       'warfareBuff4Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryA4'),
@@ -28092,7 +28093,7 @@ class Effect6534(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Skirmish Command') or mod.item.requiresSkill('Shield Command'),
             'warfareBuff3Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryM4'), skill='Minmatar Carrier', **kwargs)
@@ -28121,7 +28122,7 @@ class Effect6535(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Skirmish Command') or mod.item.requiresSkill('Armored Command'),
             'warfareBuff3Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryG4'), skill='Gallente Carrier', **kwargs)
@@ -28150,7 +28151,7 @@ class Effect6536(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Command') or mod.item.requiresSkill('Information Command'),
             'warfareBuff3Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryC4'), skill='Caldari Carrier', **kwargs)
@@ -28179,7 +28180,7 @@ class Effect6537(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'cpu',
                                       src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -28195,7 +28196,7 @@ class Effect6545(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         if src.getModifiedItemAttr('shipBonusForceAuxiliaryC1') is None:
             return  # See GH Issue 1321
 
@@ -28220,7 +28221,7 @@ class Effect6546(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldEmDamageResonance', src.getModifiedItemAttr('shipBonusForceAuxiliaryC2'),
                                skill='Caldari Carrier', **kwargs)
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusForceAuxiliaryC2'),
@@ -28242,7 +28243,7 @@ class Effect6548(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or
                                                   mod.item.requiresSkill('Capital Shield Emission Systems'),
                                       'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryG1'),
@@ -28264,7 +28265,7 @@ class Effect6549(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
                                       src.getModifiedItemAttr('shipBonusForceAuxiliaryG2'), skill='Gallente Carrier', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Repair Systems'), 'armorDamageAmount',
@@ -28282,7 +28283,7 @@ class Effect6551(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or
                                                   mod.item.requiresSkill('Capital Shield Emission Systems'),
                                       'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryM1'),
@@ -28305,7 +28306,7 @@ class Effect6552(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'), 'shieldBonus',
                                       src.getModifiedItemAttr('shipBonusForceAuxiliaryM2'), skill='Minmatar Carrier', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
@@ -28323,7 +28324,7 @@ class Effect6555(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity',
                                        src.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxVelocity',
@@ -28343,7 +28344,7 @@ class Effect6556(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityMissilesDamageMultiplier',
                                        src.getModifiedItemAttr('droneDamageBonus'), stackingPenalties=True, **kwargs)
@@ -28368,7 +28369,7 @@ class Effect6557(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityAttackTurretRangeFalloff', src.getModifiedItemAttr('falloffBonus'),
                                        stackingPenalties=True, **kwargs)
@@ -28417,7 +28418,7 @@ class Effect6558(BaseEffect):
     type = 'overheat'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         overloadBonus = module.getModifiedItemAttr('overloadTrackingModuleStrengthBonus')
         module.boostItemAttr('maxRangeBonus', overloadBonus, **kwargs)
         module.boostItemAttr('falloffBonus', overloadBonus, **kwargs)
@@ -28437,7 +28438,7 @@ class Effect6559(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityAttackMissileExplosionRadius',
                                        src.getModifiedItemAttr('aoeCloudSizeBonus'), stackingPenalties=True, **kwargs)
@@ -28486,7 +28487,7 @@ class Effect6560(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityAttackMissileDamageMultiplier',
@@ -28510,7 +28511,7 @@ class Effect6561(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Light Fighters'), 'maxVelocity',
                                        src.getModifiedItemAttr('maxVelocityBonus') * lvl, **kwargs)
@@ -28527,7 +28528,7 @@ class Effect6562(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'), 'shieldCapacity',
                                        src.getModifiedItemAttr('shieldBonus') * lvl, **kwargs)
@@ -28544,7 +28545,7 @@ class Effect6563(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Heavy Fighters'),
                                        'fighterAbilityMissilesDamageMultiplier',
@@ -28569,7 +28570,7 @@ class Effect6565(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
 
         for attr in [
             'structureRigDoomsdayDamageLossTargetBonus',
@@ -28598,7 +28599,7 @@ class Effect6566(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Fighters'), 'shieldCapacity',
                                        src.getModifiedItemAttr('fighterBonusShieldCapacityPercent'), **kwargs)
         fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity',
@@ -28625,7 +28626,7 @@ class Effect6567(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('scanResolution', src.getModifiedItemAttr('scanResolutionBonus'), stackingPenalties=True, **kwargs)
 
         for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
@@ -28660,7 +28661,7 @@ class Effect6570(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.ship.boostItemAttr('fighterCapacity', src.getModifiedItemAttr('skillBonusFighterHangarSize') * lvl, **kwargs)
 
@@ -28676,7 +28677,7 @@ class Effect6571(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Autocannon Specialization'),
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
@@ -28693,7 +28694,7 @@ class Effect6572(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Artillery Specialization'),
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
@@ -28710,7 +28711,7 @@ class Effect6573(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Blaster Specialization'),
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
@@ -28727,7 +28728,7 @@ class Effect6574(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Railgun Specialization'),
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
@@ -28744,7 +28745,7 @@ class Effect6575(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Pulse Laser Specialization'),
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
@@ -28761,7 +28762,7 @@ class Effect6576(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Beam Laser Specialization'),
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
@@ -28778,7 +28779,7 @@ class Effect6577(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('XL Cruise Missile Specialization'), 'speed',
                                       src.getModifiedItemAttr('rofBonus') * lvl, **kwargs)
@@ -28795,7 +28796,7 @@ class Effect6578(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('XL Torpedo Specialization'), 'speed',
                                       src.getModifiedItemAttr('rofBonus') * lvl, **kwargs)
@@ -28812,7 +28813,7 @@ class Effect6580(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Drone Operation'), 'structureDamageAmount',
                                      src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Drone Operation'), 'armorDamageAmount',
@@ -28833,7 +28834,7 @@ class Effect6581(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         # Remote effect bonuses (duration / amount / range / falloff)
         for skill, amtAttr, stack in (
                 ('Capital Remote Armor Repair Systems', 'armorDamageAmount', True),
@@ -28916,7 +28917,7 @@ class Effect6582(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         # Turrets
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret') or
                                                   mod.item.requiresSkill('Capital Hybrid Turret') or
@@ -28986,7 +28987,7 @@ class Effect6591(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusSupercarrierA3'),
                                   skill='Amarr Carrier', **kwargs)
 
@@ -29003,7 +29004,7 @@ class Effect6592(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusSupercarrierC3'),
                                   skill='Caldari Carrier', **kwargs)
 
@@ -29019,7 +29020,7 @@ class Effect6593(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusSupercarrierG3'),
                                   skill='Gallente Carrier', **kwargs)
 
@@ -29036,7 +29037,7 @@ class Effect6594(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusSupercarrierM3'),
                                   skill='Minmatar Carrier', **kwargs)
 
@@ -29052,7 +29053,7 @@ class Effect6595(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Armored Command') or mod.item.requiresSkill('Information Command'),
             'buffDuration', src.getModifiedItemAttr('shipBonusCarrierA4'), skill='Amarr Carrier', **kwargs)
@@ -29081,7 +29082,7 @@ class Effect6596(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Command') or mod.item.requiresSkill('Information Command'),
             'warfareBuff2Value', src.getModifiedItemAttr('shipBonusCarrierC4'), skill='Caldari Carrier', **kwargs)
@@ -29110,7 +29111,7 @@ class Effect6597(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Skirmish Command') or mod.item.requiresSkill('Armored Command'),
             'warfareBuff2Value', src.getModifiedItemAttr('shipBonusCarrierG4'), skill='Gallente Carrier', **kwargs)
@@ -29139,7 +29140,7 @@ class Effect6598(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Skirmish Command') or mod.item.requiresSkill('Shield Command'),
             'warfareBuff4Value', src.getModifiedItemAttr('shipBonusCarrierM4'), skill='Minmatar Carrier', **kwargs)
@@ -29168,7 +29169,7 @@ class Effect6599(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusCarrierA1'),
                                skill='Amarr Carrier', **kwargs)
         fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusCarrierA1'),
@@ -29190,7 +29191,7 @@ class Effect6600(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', src.getModifiedItemAttr('shipBonusCarrierC1'),
                                skill='Caldari Carrier', **kwargs)
         fit.ship.boostItemAttr('shieldEmDamageResonance', src.getModifiedItemAttr('shipBonusCarrierC1'),
@@ -29212,7 +29213,7 @@ class Effect6601(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityMissilesDamageMultiplier',
                                        src.getModifiedItemAttr('shipBonusCarrierG1'), skill='Gallente Carrier', **kwargs)
@@ -29235,7 +29236,7 @@ class Effect6602(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityAttackMissileDamageMultiplier',
                                        src.getModifiedItemAttr('shipBonusCarrierM1'), skill='Minmatar Carrier', **kwargs)
@@ -29259,7 +29260,7 @@ class Effect6603(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityMissilesDamageMultiplier',
                                        src.getModifiedItemAttr('shipBonusSupercarrierA1'), skill='Amarr Carrier', **kwargs)
@@ -29283,7 +29284,7 @@ class Effect6604(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityMissilesDamageMultiplier',
                                        src.getModifiedItemAttr('shipBonusSupercarrierC1'), skill='Caldari Carrier', **kwargs)
@@ -29306,7 +29307,7 @@ class Effect6605(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityAttackTurretDamageMultiplier',
                                        src.getModifiedItemAttr('shipBonusSupercarrierG1'), skill='Gallente Carrier', **kwargs)
@@ -29329,7 +29330,7 @@ class Effect6606(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityAttackMissileDamageMultiplier',
                                        src.getModifiedItemAttr('shipBonusSupercarrierM1'), skill='Minmatar Carrier', **kwargs)
@@ -29352,7 +29353,7 @@ class Effect6607(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Armored Command') or mod.item.requiresSkill('Information Command'),
             'warfareBuff4Value', src.getModifiedItemAttr('shipBonusSupercarrierA5'), skill='Amarr Carrier', **kwargs)
@@ -29381,7 +29382,7 @@ class Effect6608(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Command') or mod.item.requiresSkill('Information Command'),
             'buffDuration', src.getModifiedItemAttr('shipBonusSupercarrierC5'), skill='Caldari Carrier', **kwargs)
@@ -29410,7 +29411,7 @@ class Effect6609(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Skirmish Command') or mod.item.requiresSkill('Armored Command'),
             'warfareBuff2Value', src.getModifiedItemAttr('shipBonusSupercarrierG5'), skill='Gallente Carrier', **kwargs)
@@ -29439,7 +29440,7 @@ class Effect6610(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Skirmish Command') or mod.item.requiresSkill('Shield Command'),
             'warfareBuff4Value', src.getModifiedItemAttr('shipBonusSupercarrierM5'), skill='Minmatar Carrier', **kwargs)
@@ -29468,7 +29469,7 @@ class Effect6611(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
                                       src.getModifiedItemAttr('shipBonusSupercarrierC2'), skill='Caldari Carrier', **kwargs)
 
@@ -29484,7 +29485,7 @@ class Effect6612(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityMissilesExplosionVelocity',
                                        src.getModifiedItemAttr('shipBonusSupercarrierA2'), skill='Amarr Carrier', **kwargs)
@@ -29504,7 +29505,7 @@ class Effect6613(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
@@ -29522,7 +29523,7 @@ class Effect6614(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'armorHPBonusAdd',
                                       src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Upgrades'), 'capacityBonus',
@@ -29540,7 +29541,7 @@ class Effect6615(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Burst Projector Operation'),
                                       'durationWeaponDisruptionBurstProjector',
                                       src.getModifiedItemAttr('shipBonusSupercarrierA4'), skill='Amarr Carrier', **kwargs)
@@ -29557,7 +29558,7 @@ class Effect6616(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Burst Projector Operation'),
                                       'durationECMJammerBurstProjector', src.getModifiedItemAttr('shipBonusSupercarrierC4'),
                                       skill='Caldari Carrier', **kwargs)
@@ -29574,7 +29575,7 @@ class Effect6617(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Burst Projector Operation'),
                                       'durationSensorDampeningBurstProjector',
                                       src.getModifiedItemAttr('shipBonusSupercarrierG4'), skill='Gallente Carrier', **kwargs)
@@ -29591,7 +29592,7 @@ class Effect6618(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Burst Projector Operation'),
                                       'durationTargetIlluminationBurstProjector',
                                       src.getModifiedItemAttr('shipBonusSupercarrierM4'), skill='Minmatar Carrier', **kwargs)
@@ -29608,7 +29609,7 @@ class Effect6619(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
@@ -29626,7 +29627,7 @@ class Effect6620(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'), 'reloadTime',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtC3'), skill='Caldari Dreadnought', **kwargs)
 
@@ -29642,7 +29643,7 @@ class Effect6621(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusSupercarrierA2'),
                                skill='Amarr Carrier', **kwargs)
         fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusSupercarrierA2'),
@@ -29664,7 +29665,7 @@ class Effect6622(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', src.getModifiedItemAttr('shipBonusSupercarrierC2'),
                                skill='Caldari Carrier', **kwargs)
         fit.ship.boostItemAttr('shieldEmDamageResonance', src.getModifiedItemAttr('shipBonusSupercarrierC2'),
@@ -29686,7 +29687,7 @@ class Effect6623(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'shieldCapacity',
                                        src.getModifiedItemAttr('shipBonusSupercarrierG2'), skill='Gallente Carrier', **kwargs)
 
@@ -29703,7 +29704,7 @@ class Effect6624(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity',
                                        src.getModifiedItemAttr('shipBonusSupercarrierM2'), skill='Minmatar Carrier', **kwargs)
 
@@ -29719,7 +29720,7 @@ class Effect6625(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'), 'fighterSquadronOrbitRange',
                                        src.getModifiedItemAttr('shipBonusCarrierA2'), skill='Amarr Carrier', **kwargs)
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'),
@@ -29738,7 +29739,7 @@ class Effect6626(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'), 'fighterSquadronOrbitRange',
                                        src.getModifiedItemAttr('shipBonusCarrierC2'), skill='Caldari Carrier', **kwargs)
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'),
@@ -29757,7 +29758,7 @@ class Effect6627(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'), 'fighterSquadronOrbitRange',
                                        src.getModifiedItemAttr('shipBonusCarrierG2'), skill='Gallente Carrier', **kwargs)
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'),
@@ -29776,7 +29777,7 @@ class Effect6628(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'), 'fighterSquadronOrbitRange',
                                        src.getModifiedItemAttr('shipBonusCarrierM2'), skill='Minmatar Carrier', **kwargs)
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Support Fighters'),
@@ -29795,7 +29796,7 @@ class Effect6629(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         src.boostItemAttr('emDamageResistanceBonus', src.getModifiedChargeAttr('emDamageResistanceBonusBonus'), **kwargs)
         src.boostItemAttr('explosiveDamageResistanceBonus',
                           src.getModifiedChargeAttr('explosiveDamageResistanceBonusBonus'), **kwargs)
@@ -29814,7 +29815,7 @@ class Effect6634(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusTitanA1'), skill='Amarr Titan', **kwargs)
 
@@ -29830,7 +29831,7 @@ class Effect6635(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Torpedoes'), 'kineticDamage',
                                         src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'), 'kineticDamage',
@@ -29850,7 +29851,7 @@ class Effect6636(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
 
@@ -29866,7 +29867,7 @@ class Effect6637(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Projectile Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusTitanM1'), skill='Minmatar Titan', **kwargs)
 
@@ -29882,7 +29883,7 @@ class Effect6638(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher XL Cruise', 'speed',
                                       src.getModifiedItemAttr('shipBonusTitanC2'), skill='Caldari Titan', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Torpedo', 'speed',
@@ -29902,7 +29903,7 @@ class Effect6639(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
                                        'fighterAbilityMissilesExplosionRadius',
                                        src.getModifiedItemAttr('shipBonusSupercarrierA4'), skill='Amarr Carrier', **kwargs)
@@ -29922,7 +29923,7 @@ class Effect6640(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
@@ -29940,7 +29941,7 @@ class Effect6641(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'armorHPBonusAdd',
                                       src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Upgrades'), 'capacityBonus',
@@ -29958,7 +29959,7 @@ class Effect6642(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Doomsday Operation'), 'duration',
                                       src.getModifiedItemAttr('rofBonus') * lvl, **kwargs)
@@ -29975,7 +29976,7 @@ class Effect6647(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanA3'), skill='Amarr Titan', **kwargs)
 
 
@@ -29990,7 +29991,7 @@ class Effect6648(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanC3'), skill='Caldari Titan', **kwargs)
 
 
@@ -30006,7 +30007,7 @@ class Effect6649(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanG3'), skill='Gallente Titan', **kwargs)
 
 
@@ -30021,7 +30022,7 @@ class Effect6650(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanM3'), skill='Minmatar Titan', **kwargs)
 
 
@@ -30037,7 +30038,7 @@ class Effect6651(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
 
@@ -30066,7 +30067,7 @@ class Effect6652(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         amount = module.getModifiedItemAttr('shieldBonus')
@@ -30085,7 +30086,7 @@ class Effect6653(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret'), 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusTitanA2'), skill='Amarr Titan', **kwargs)
 
@@ -30101,7 +30102,7 @@ class Effect6654(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'), 'speed',
                                       src.getModifiedItemAttr('shipBonusTitanG2'), skill='Gallente Titan', **kwargs)
 
@@ -30117,7 +30118,7 @@ class Effect6655(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Projectile Turret'), 'speed',
                                       src.getModifiedItemAttr('shipBonusTitanM2'), skill='Minmatar Titan', **kwargs)
 
@@ -30133,7 +30134,7 @@ class Effect6656(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'maxVelocity',
                                         src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
 
@@ -30149,7 +30150,7 @@ class Effect6657(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'emDamage',
                                         src.getModifiedItemAttr('shipBonusTitanC5'), skill='Caldari Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'explosiveDamage',
@@ -30182,7 +30183,7 @@ class Effect6658(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         # Resistances
         for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
             for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
@@ -30256,7 +30257,7 @@ class Effect6661(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity',
                                        src.getModifiedItemAttr('shipBonusCarrierM3'), skill='Minmatar Carrier', **kwargs)
 
@@ -30272,7 +30273,7 @@ class Effect6662(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'shieldCapacity',
                                        src.getModifiedItemAttr('shipBonusCarrierG3'), skill='Gallente Carrier', **kwargs)
 
@@ -30288,7 +30289,7 @@ class Effect6663(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'damageMultiplier',
                                      src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
@@ -30316,7 +30317,7 @@ class Effect6664(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxRange',
                                      src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
@@ -30341,7 +30342,7 @@ class Effect6665(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'hp',
                                      src.getModifiedItemAttr('hullHpBonus') * lvl, **kwargs)
@@ -30364,7 +30365,7 @@ class Effect6667(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxVelocity',
                                      src.getModifiedItemAttr('maxVelocityBonus') * lvl, **kwargs)
@@ -30383,7 +30384,7 @@ class Effect6669(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'armorHP',
                                      src.getModifiedItemAttr('hullHpBonus'), **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'hp',
@@ -30406,7 +30407,7 @@ class Effect6670(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxRange',
                                      src.getModifiedItemAttr('rangeSkillBonus'), stackingPenalties=True, **kwargs)
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityMissilesRange',
@@ -30431,7 +30432,7 @@ class Effect6671(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxVelocity',
                                      src.getModifiedItemAttr('droneMaxVelocityBonus'), stackingPenalties=True, **kwargs)
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity',
@@ -30451,7 +30452,7 @@ class Effect6672(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         secMap = {
             FitSystemSecurity.HISEC: 'hiSecModifier',
             FitSystemSecurity.LOWSEC: 'lowSecModifier',
@@ -30484,7 +30485,7 @@ class Effect6679(BaseEffect):
     type = 'passive', 'structure'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Doomsday Weapon',
                                       'duration', src.getModifiedItemAttr('durationBonus'),
                                       skill='Structure Doomsday Operation', **kwargs)
@@ -30501,7 +30502,7 @@ class Effect6681(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
                                          src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
@@ -30519,7 +30520,7 @@ class Effect6682(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
@@ -30537,7 +30538,7 @@ class Effect6683(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
                                    stackingPenalties=True, **kwargs)
@@ -30554,7 +30555,7 @@ class Effect6684(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
 
@@ -30576,7 +30577,7 @@ class Effect6685(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
             strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
@@ -30595,7 +30596,7 @@ class Effect6686(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             for srcAttr, tgtAttr in (
                     ('aoeCloudSizeBonus', 'aoeCloudSize'),
@@ -30629,7 +30630,7 @@ class Effect6687(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             bonus = container.getModifiedItemAttr('armorDamageAmount')
             duration = container.getModifiedItemAttr('duration') / 1000.0
@@ -30650,7 +30651,7 @@ class Effect6688(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             bonus = container.getModifiedItemAttr('shieldBonus')
             duration = container.getModifiedItemAttr('duration') / 1000.0
@@ -30669,7 +30670,7 @@ class Effect6689(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         bonus = module.getModifiedItemAttr('structureDamageAmount')
@@ -30688,7 +30689,7 @@ class Effect6690(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
@@ -30706,7 +30707,7 @@ class Effect6691(BaseEffect):
     type = 'active', 'projected'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         if 'projected' in context and ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or
                                        hasattr(src, 'amountActive')):
             amount = src.getModifiedItemAttr('energyNeutralizerAmount')
@@ -30730,7 +30731,7 @@ class Effect6692(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
                                    stackingPenalties=True, **kwargs)
@@ -30747,7 +30748,7 @@ class Effect6693(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
 
@@ -30769,7 +30770,7 @@ class Effect6694(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
                                           'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
@@ -30793,7 +30794,7 @@ class Effect6695(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
             strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
@@ -30816,7 +30817,7 @@ class Effect6697(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Armor', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30835,7 +30836,7 @@ class Effect6698(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Navigation', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30854,7 +30855,7 @@ class Effect6699(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Drones', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30871,7 +30872,7 @@ class Effect6700(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Electronic Systems', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30892,7 +30893,7 @@ class Effect6701(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Projectile Weapon', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30909,7 +30910,7 @@ class Effect6702(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Energy Weapon', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30926,7 +30927,7 @@ class Effect6703(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Hybrid Weapon', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30943,7 +30944,7 @@ class Effect6704(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Launcher', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30960,7 +30961,7 @@ class Effect6705(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Shield', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
@@ -30978,7 +30979,7 @@ class Effect6706(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Cybernetics'),
                                                  'armorRepairBonus', src.getModifiedItemAttr('implantSetSerpentis2'), **kwargs)
 
@@ -30994,7 +30995,7 @@ class Effect6708(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('armorRepairBonus'), **kwargs)
 
@@ -31010,7 +31011,7 @@ class Effect6709(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -31026,7 +31027,7 @@ class Effect6710(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'speedFactor',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought', **kwargs)
 
@@ -31042,7 +31043,7 @@ class Effect6711(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
 
@@ -31058,7 +31059,7 @@ class Effect6712(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'speedFactor',
                                       src.getModifiedItemAttr('shipBonusTitanM1'), skill='Minmatar Titan', **kwargs)
 
@@ -31075,7 +31076,7 @@ class Effect6713(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Burst Projector Operation'), 'speedFactor',
                                       src.getModifiedItemAttr('shipBonusSupercarrierM1'), skill='Minmatar Carrier', **kwargs)
 
@@ -31091,7 +31092,7 @@ class Effect6714(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
             # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
             strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
@@ -31114,7 +31115,7 @@ class Effect6717(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'capacitorNeed',
                                       src.getModifiedItemAttr('miningDurationRoleBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'duration',
@@ -31136,7 +31137,7 @@ class Effect6720(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'shieldBonus',
                                      src.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser', **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'structureDamageAmount',
@@ -31156,7 +31157,7 @@ class Effect6721(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusLogistics1'),
@@ -31178,7 +31179,7 @@ class Effect6722(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'falloffEffectiveness',
                                       src.getModifiedItemAttr('roleBonusRepairRange'), **kwargs)
@@ -31198,7 +31199,7 @@ class Effect6723(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cloaking'), 'cpu',
                                       src.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
@@ -31214,7 +31215,7 @@ class Effect6724(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'duration',
                                       src.getModifiedItemAttr('eliteBonusLogistics3'), skill='Logistics Cruisers', **kwargs)
 
@@ -31230,7 +31231,7 @@ class Effect6725(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'falloff',
                                       src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
@@ -31246,7 +31247,7 @@ class Effect6726(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cloaking'), 'cpu',
                                       src.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -31262,7 +31263,7 @@ class Effect6727(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Energy Nosferatu', 'Energy Neutralizer'),
                                       'falloffEffectiveness', src.getModifiedItemAttr('eliteBonusCovertOps1'),
                                       stackingPenalties=True, skill='Covert Ops', **kwargs)
@@ -31280,7 +31281,7 @@ class Effect6730(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('mass', module.getModifiedItemAttr('massAddition'), **kwargs)
         speedBoost = module.getModifiedItemAttr('speedFactor')
         mass = fit.ship.getModifiedItemAttr('mass')
@@ -31302,7 +31303,7 @@ class Effect6731(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('mass', module.getModifiedItemAttr('massAddition'), **kwargs)
         speedBoost = module.getModifiedItemAttr('speedFactor')
         mass = fit.ship.getModifiedItemAttr('mass')
@@ -31321,7 +31322,7 @@ class Effect6732(BaseEffect):
     type = 'active', 'gang'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for x in range(1, 5):
             if module.getModifiedChargeAttr('warfareBuff{}ID'.format(x)):
                 value = module.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -31342,7 +31343,7 @@ class Effect6733(BaseEffect):
     type = 'active', 'gang'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for x in range(1, 5):
             if module.getModifiedChargeAttr('warfareBuff{}ID'.format(x)):
                 value = module.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -31363,7 +31364,7 @@ class Effect6734(BaseEffect):
     type = 'active', 'gang'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for x in range(1, 5):
             if module.getModifiedChargeAttr('warfareBuff{}ID'.format(x)):
                 value = module.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -31384,7 +31385,7 @@ class Effect6735(BaseEffect):
     type = 'active', 'gang'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for x in range(1, 5):
             if module.getModifiedChargeAttr('warfareBuff{}ID'.format(x)):
                 value = module.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -31405,7 +31406,7 @@ class Effect6736(BaseEffect):
     type = 'active', 'gang'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for x in range(1, 5):
             if module.getModifiedChargeAttr('warfareBuff{}ID'.format(x)):
                 value = module.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -31426,7 +31427,7 @@ class Effect6737(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for x in range(1, 4):
             value = module.getModifiedChargeAttr('warfareBuff{}Multiplier'.format(x))
             module.multiplyItemAttr('warfareBuff{}Value'.format(x), value, **kwargs)
@@ -31443,7 +31444,7 @@ class Effect6753(BaseEffect):
     type = 'active', 'gang'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         for x in range(1, 5):
             if module.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = module.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -31464,7 +31465,7 @@ class Effect6762(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Drone Specialization'), 'miningAmount',
                                      src.getModifiedItemAttr('miningAmountBonus') * lvl, **kwargs)
@@ -31484,7 +31485,7 @@ class Effect6763(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level if 'skill' in context else 1
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration', src.getModifiedItemAttr('rofBonus') * lvl, **kwargs)
 
@@ -31500,7 +31501,7 @@ class Effect6764(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting Drone Specialization'), 'duration',
                                      src.getModifiedItemAttr('rofBonus') * lvl, **kwargs)
@@ -31519,7 +31520,7 @@ class Effect6765(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Spatial Phenomena Generation'), 'buffDuration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -31536,7 +31537,7 @@ class Effect6766(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('maxGangModules'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
@@ -31556,7 +31557,7 @@ class Effect6769(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'maxRange',
                                       src.getModifiedItemAttr('areaOfEffectBonus') * src.level, **kwargs)
 
@@ -31572,7 +31573,7 @@ class Effect6770(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Armored Command'), 'buffDuration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -31589,7 +31590,7 @@ class Effect6771(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'buffDuration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -31606,7 +31607,7 @@ class Effect6772(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Information Command'), 'buffDuration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -31623,7 +31624,7 @@ class Effect6773(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Skirmish Command'), 'buffDuration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -31640,7 +31641,7 @@ class Effect6774(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'buffDuration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -31657,7 +31658,7 @@ class Effect6776(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Armored Command'), 'warfareBuff1Multiplier',
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl, **kwargs)
@@ -31680,7 +31681,7 @@ class Effect6777(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'warfareBuff3Multiplier',
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl, **kwargs)
@@ -31703,7 +31704,7 @@ class Effect6778(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Information Command'), 'warfareBuff2Multiplier',
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl, **kwargs)
@@ -31726,7 +31727,7 @@ class Effect6779(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Skirmish Command'), 'warfareBuff3Multiplier',
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl, **kwargs)
@@ -31749,7 +31750,7 @@ class Effect6780(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff4Value', src.getModifiedItemAttr('commandStrengthBonus') * lvl, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff3Value', src.getModifiedItemAttr('commandStrengthBonus') * lvl, **kwargs)
@@ -31768,7 +31769,7 @@ class Effect6782(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'),
                                       'reloadTime',
@@ -31794,7 +31795,7 @@ class Effect6783(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'maxRange',
                                       src.getModifiedItemAttr('roleBonusCommandBurstAoERange'), **kwargs)
 
@@ -31810,7 +31811,7 @@ class Effect6786(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'warfareBuff4Multiplier',
                                       src.getModifiedItemAttr('shipBonusICS3'), skill='Industrial Command Ships', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'warfareBuff1Multiplier',
@@ -31834,7 +31835,7 @@ class Effect6787(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier',
                                      src.getModifiedItemAttr('shipBonusICS4'),
@@ -31872,7 +31873,7 @@ class Effect6788(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'),
                                      'duration',
                                      src.getModifiedItemAttr('shipBonusICS5'),
@@ -31897,7 +31898,7 @@ class Effect6789(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier',
                                      src.getModifiedItemAttr('industrialBonusDroneDamage'), **kwargs)
@@ -31914,7 +31915,7 @@ class Effect6790(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
                                      src.getModifiedItemAttr('roleBonusDroneIceHarvestingSpeed'), **kwargs)
 
@@ -31930,7 +31931,7 @@ class Effect6792(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier',
                                      src.getModifiedItemAttr('shipBonusORECapital4'),
@@ -31968,7 +31969,7 @@ class Effect6793(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff1Value',
                                       src.getModifiedItemAttr('shipBonusORECapital2'), skill='Capital Industrial Ships', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff2Value',
@@ -31992,7 +31993,7 @@ class Effect6794(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'warfareBuff4Value',
                                       src.getModifiedItemAttr('shipBonusORECapital3'), skill='Capital Industrial Ships', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'buffDuration',
@@ -32016,7 +32017,7 @@ class Effect6795(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'),
                                      'duration',
                                      src.getModifiedItemAttr('shipBonusORECapital5'),
@@ -32034,7 +32035,7 @@ class Effect6796(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
             'damageMultiplier',
@@ -32054,7 +32055,7 @@ class Effect6797(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
             'damageMultiplier',
@@ -32074,7 +32075,7 @@ class Effect6798(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('Small Energy Turret'),
             'damageMultiplier',
@@ -32094,7 +32095,7 @@ class Effect6799(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         types = ('thermal', 'em', 'explosive', 'kinetic')
         for type in types:
             fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
@@ -32115,7 +32116,7 @@ class Effect6800(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('weaponDisruptionResistance', 1 / module.getModifiedItemAttr('modeEwarResistancePostDiv'), **kwargs)
         fit.ship.multiplyItemAttr('sensorDampenerResistance', 1 / module.getModifiedItemAttr('modeEwarResistancePostDiv'), **kwargs)
 
@@ -32132,7 +32133,7 @@ class Effect6801(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Afterburner'),
             'speedFactor',
@@ -32152,7 +32153,7 @@ class Effect6807(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Invulnerability Core Operation'), 'buffDuration',
                                       src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
@@ -32171,7 +32172,7 @@ class Effect6844(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Defender Missiles'),
                                         'maxVelocity', skill.getModifiedItemAttr('missileVelocityBonus') * skill.level, **kwargs)
 
@@ -32187,7 +32188,7 @@ class Effect6845(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Defender Missiles'),
                                       'moduleReactivationDelay', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -32204,7 +32205,7 @@ class Effect6851(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret'), 'damageMultiplier', src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
 
 
@@ -32219,7 +32220,7 @@ class Effect6852(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', src.getModifiedItemAttr('shipBonusTitanM1'), skill='Minmatar Titan', **kwargs)
 
@@ -32235,7 +32236,7 @@ class Effect6853(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', src.getModifiedItemAttr('shipBonusTitanA1'), skill='Amarr Titan', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
@@ -32253,7 +32254,7 @@ class Effect6855(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', src.getModifiedItemAttr('shipBonusDreadnoughtA1'), skill='Amarr Dreadnought', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
@@ -32271,7 +32272,7 @@ class Effect6856(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'maxRange', src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought', **kwargs)
 
@@ -32287,7 +32288,7 @@ class Effect6857(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'maxRange', src.getModifiedItemAttr('shipBonusForceAuxiliaryA1'), skill='Amarr Carrier', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
@@ -32305,7 +32306,7 @@ class Effect6858(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
                                       'powerTransferAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryA1'), skill='Amarr Carrier', **kwargs)
 
@@ -32322,7 +32323,7 @@ class Effect6859(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'cpu', src.getModifiedItemAttr('shipBonusRole4'), **kwargs)
 
 
@@ -32337,7 +32338,7 @@ class Effect6860(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'power',
                                       src.getModifiedItemAttr('shipBonusRole5'), **kwargs)
 
@@ -32353,7 +32354,7 @@ class Effect6861(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Remote Armor Repair Systems'), 'power', src.getModifiedItemAttr('shipBonusRole5'), **kwargs)
 
 
@@ -32368,7 +32369,7 @@ class Effect6862(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryM1'), skill='Minmatar Carrier', **kwargs)
 
@@ -32384,7 +32385,7 @@ class Effect6865(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('eliteBonusCovertOps1'), skill='Covert Ops', **kwargs)
 
 
@@ -32399,7 +32400,7 @@ class Effect6866(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'explosionDelay', src.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
@@ -32417,7 +32418,7 @@ class Effect6867(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'speed', src.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
@@ -32435,7 +32436,7 @@ class Effect6871(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
 
         # Get pilot sec status bonus directly here, instead of going through the intermediary effects
         # via https://forums.eveonline.com/default.aspx?g=posts&t=515826
@@ -32462,7 +32463,7 @@ class Effect6872(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange', src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships', **kwargs)
 
 
@@ -32477,7 +32478,7 @@ class Effect6873(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
 
 
@@ -32492,7 +32493,7 @@ class Effect6874(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'explosionDelay', src.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
@@ -32510,7 +32511,7 @@ class Effect6877(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('eliteBonusBlackOps1'), stackingPenalties=True, skill='Black Ops', **kwargs)
 
 
@@ -32525,7 +32526,7 @@ class Effect6878(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusBlackOps4'), stackingPenalties=True, skill='Black Ops', **kwargs)
 
@@ -32541,7 +32542,7 @@ class Effect6879(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
                                       src.getModifiedItemAttr('eliteBonusBlackOps3'), stackingPenalties=True, skill='Black Ops', **kwargs)
 
@@ -32557,7 +32558,7 @@ class Effect6880(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Cruise', 'speed',
                                       src.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo', 'speed',
@@ -32577,7 +32578,7 @@ class Effect6881(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'explosionDelay',
                                         src.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'), 'explosionDelay',
@@ -32595,7 +32596,7 @@ class Effect6883(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryM2'), skill='Minmatar Carrier', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Repair Systems'),
@@ -32613,7 +32614,7 @@ class Effect6894(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Energy Nosferatu', 'Energy Neutralizer'),
         'cpu', src.getModifiedItemAttr('subsystemEnergyNeutFittingReduction'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Energy Nosferatu', 'Energy Neutralizer'),
@@ -32631,7 +32632,7 @@ class Effect6895(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'cpu', src.getModifiedItemAttr('subsystemMETFittingReduction'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
@@ -32651,7 +32652,7 @@ class Effect6896(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'cpu', src.getModifiedItemAttr('subsystemMHTFittingReduction'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
@@ -32669,7 +32670,7 @@ class Effect6897(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
                                       'power', src.getModifiedItemAttr('subsystemMPTFittingReduction'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
@@ -32688,7 +32689,7 @@ class Effect6898(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
             'mediumRemoteRepFittingMultiplier', src.getModifiedItemAttr('subsystemMRARFittingReduction'), **kwargs)
@@ -32706,7 +32707,7 @@ class Effect6899(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
             'mediumRemoteRepFittingMultiplier', src.getModifiedItemAttr('subsystemMRSBFittingReduction'), **kwargs)
@@ -32725,7 +32726,7 @@ class Effect6900(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Missile Launcher Heavy', 'Missile Launcher Rapid Light', 'Missile Launcher Heavy Assault')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'cpu', src.getModifiedItemAttr('subsystemMMissileFittingReduction'), **kwargs)
@@ -32744,7 +32745,7 @@ class Effect6908(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'moduleRepairRate',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserCaldari2'),
                                       skill='Caldari Strategic Cruiser', **kwargs)
@@ -32761,7 +32762,7 @@ class Effect6909(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'moduleRepairRate',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserAmarr2'),
                                       skill='Amarr Strategic Cruiser', **kwargs)
@@ -32778,7 +32779,7 @@ class Effect6910(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'moduleRepairRate',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserGallente2'),
                                       skill='Gallente Strategic Cruiser', **kwargs)
@@ -32795,7 +32796,7 @@ class Effect6911(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: True, 'moduleRepairRate',
                                       ship.getModifiedItemAttr('shipBonusStrategicCruiserMinmatar2'),
                                       skill='Minmatar Strategic Cruiser', **kwargs)
@@ -32813,7 +32814,7 @@ class Effect6920(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('hp', module.getModifiedItemAttr('structureHPBonusAdd') or 0, **kwargs)
 
 
@@ -32828,7 +32829,7 @@ class Effect6921(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseSensorStrength', src.getModifiedItemAttr('subsystemBonusAmarrDefensive2'),
                                         skill='Amarr Defensive Systems', **kwargs)
@@ -32845,7 +32846,7 @@ class Effect6923(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles') or mod.charge.requiresSkill('Heavy Assault Missiles'),
                                       'maxVelocity', container.getModifiedItemAttr('subsystemBonusMinmatarOffensive'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -32862,7 +32863,7 @@ class Effect6924(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                       'aoeVelocity', container.getModifiedItemAttr('subsystemBonusMinmatarOffensive3'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -32879,7 +32880,7 @@ class Effect6925(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'),
                                      'maxVelocity', src.getModifiedItemAttr('subsystemBonusGallenteOffensive2'),
                                      skill='Gallente Offensive Systems', **kwargs)
@@ -32899,7 +32900,7 @@ class Effect6926(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpCapacitorNeed', src.getModifiedItemAttr('subsystemBonusAmarrPropulsion'), skill='Amarr Propulsion Systems', **kwargs)
 
 
@@ -32914,7 +32915,7 @@ class Effect6927(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpCapacitorNeed', src.getModifiedItemAttr('subsystemBonusMinmatarPropulsion'),
                                skill='Minmatar Propulsion Systems', **kwargs)
 
@@ -32930,7 +32931,7 @@ class Effect6928(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner') or mod.item.requiresSkill('High Speed Maneuvering'),
                                       'overloadSpeedFactorBonus', src.getModifiedItemAttr('subsystemBonusCaldariPropulsion2'),
                                       skill='Caldari Propulsion Systems', **kwargs)
@@ -32948,7 +32949,7 @@ class Effect6929(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner') or mod.item.requiresSkill('High Speed Maneuvering'),
                                       'overloadSpeedFactorBonus', src.getModifiedItemAttr('subsystemBonusGallentePropulsion2'),
                                       skill='Gallente Propulsion Systems', **kwargs)
@@ -32965,7 +32966,7 @@ class Effect6930(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('energyWarfareResistance', src.getModifiedItemAttr('subsystemBonusAmarrCore2'), skill='Amarr Core Systems', **kwargs)
 
 
@@ -32980,7 +32981,7 @@ class Effect6931(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('energyWarfareResistance', src.getModifiedItemAttr('subsystemBonusMinmatarCore2'),
                                skill='Minmatar Core Systems', **kwargs)
 
@@ -32996,7 +32997,7 @@ class Effect6932(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('energyWarfareResistance', src.getModifiedItemAttr('subsystemBonusGallenteCore2'),
                                skill='Gallente Core Systems', **kwargs)
 
@@ -33012,7 +33013,7 @@ class Effect6933(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('energyWarfareResistance', src.getModifiedItemAttr('subsystemBonusCaldariCore2'),
                                skill='Caldari Core Systems', **kwargs)
 
@@ -33030,7 +33031,7 @@ class Effect6934(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('maxLockedTargets', src.getModifiedItemAttr('maxLockedTargetsBonus'), **kwargs)
 
 
@@ -33045,7 +33046,7 @@ class Effect6935(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Energy Nosferatu', 'Energy Neutralizer'), 'overloadSelfDurationBonus',
                                       src.getModifiedItemAttr('subsystemBonusAmarrCore3'), skill='Amarr Core Systems', **kwargs)
 
@@ -33061,7 +33062,7 @@ class Effect6936(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web',
                                       'overloadRangeBonus', src.getModifiedItemAttr('subsystemBonusMinmatarCore3'),
                                       skill='Minmatar Core Systems', **kwargs)
@@ -33078,7 +33079,7 @@ class Effect6937(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler', 'overloadRangeBonus',
                                       src.getModifiedItemAttr('subsystemBonusGallenteCore3'), skill='Gallente Core Systems', **kwargs)
 
@@ -33094,7 +33095,7 @@ class Effect6938(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'overloadECMStrengthBonus',
                                       src.getModifiedItemAttr('subsystemBonusCaldariCore3'), skill='Caldari Core Systems', **kwargs)
 
@@ -33110,7 +33111,7 @@ class Effect6939(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'overloadSelfDurationBonus',
                                       src.getModifiedItemAttr('subsystemBonusAmarrDefensive2'), skill='Amarr Defensive Systems', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'overloadHardeningBonus',
@@ -33128,7 +33129,7 @@ class Effect6940(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'overloadHardeningBonus',
                                       src.getModifiedItemAttr('subsystemBonusGallenteDefensive2'), skill='Gallente Defensive Systems', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'overloadSelfDurationBonus',
@@ -33146,7 +33147,7 @@ class Effect6941(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Tactical Shield Manipulation'),
                                       'overloadHardeningBonus', src.getModifiedItemAttr('subsystemBonusCaldariDefensive2'),
                                       skill='Caldari Defensive Systems', **kwargs)
@@ -33163,7 +33164,7 @@ class Effect6942(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'overloadSelfDurationBonus',
                                       src.getModifiedItemAttr('subsystemBonusMinmatarDefensive2'), skill='Minmatar Defensive Systems', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Hull Upgrades'), 'overloadHardeningBonus',
@@ -33184,7 +33185,7 @@ class Effect6943(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusAmarrDefensive3'),
                                       skill='Amarr Defensive Systems', **kwargs)
@@ -33205,7 +33206,7 @@ class Effect6944(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusGallenteDefensive3'),
                                       skill='Gallente Defensive Systems', **kwargs)
@@ -33226,7 +33227,7 @@ class Effect6945(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'overloadShieldBonus', src.getModifiedItemAttr('subsystemBonusCaldariDefensive3'),
                                       skill='Caldari Defensive Systems', **kwargs)
@@ -33247,7 +33248,7 @@ class Effect6946(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems') or mod.item.requiresSkill('Shield Operation'),
                                       'overloadArmorDamageAmount', src.getModifiedItemAttr('subsystemBonusMinmatarDefensive3'),
                                       skill='Minmatar Defensive Systems', **kwargs)
@@ -33267,7 +33268,7 @@ class Effect6947(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseSensorStrength', src.getModifiedItemAttr('subsystemBonusCaldariDefensive2'),
                                         skill='Caldari Defensive Systems', **kwargs)
@@ -33284,7 +33285,7 @@ class Effect6949(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseSensorStrength',
                                         src.getModifiedItemAttr('subsystemBonusGallenteDefensive2'), skill='Gallente Defensive Systems', **kwargs)
 
@@ -33300,7 +33301,7 @@ class Effect6951(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseSensorStrength',
                                         src.getModifiedItemAttr('subsystemBonusMinmatarDefensive2'), skill='Minmatar Defensive Systems', **kwargs)
 
@@ -33319,7 +33320,7 @@ class Effect6953(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         module.multiplyItemAttr('power', module.getModifiedItemAttr('mediumRemoteRepFittingMultiplier'), **kwargs)
         module.multiplyItemAttr('cpu', module.getModifiedItemAttr('mediumRemoteRepFittingMultiplier'), **kwargs)
 
@@ -33335,7 +33336,7 @@ class Effect6954(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'power',
                                       src.getModifiedItemAttr('subsystemCommandBurstFittingReduction'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'cpu',
@@ -33354,7 +33355,7 @@ class Effect6955(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Remote Shield Booster', 'Ancillary Remote Shield Booster'),
                                       'falloffEffectiveness', src.getModifiedItemAttr('remoteShieldBoosterFalloffBonus'), **kwargs)
 
@@ -33370,7 +33371,7 @@ class Effect6956(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Remote Armor Repairer', 'Ancillary Remote Armor Repairer'),
                                       'maxRange', src.getModifiedItemAttr('remoteArmorRepairerOptimalBonus'), **kwargs)
 
@@ -33386,7 +33387,7 @@ class Effect6957(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Remote Armor Repairer', 'Ancillary Remote Armor Repairer'),
                                       'falloffEffectiveness', src.getModifiedItemAttr('remoteArmorRepairerFalloffBonus'), **kwargs)
 
@@ -33402,7 +33403,7 @@ class Effect6958(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'overloadSelfDurationBonus',
                                       src.getModifiedItemAttr('subsystemBonusAmarrOffensive3'), skill='Amarr Offensive Systems', **kwargs)
 
@@ -33418,7 +33419,7 @@ class Effect6959(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'overloadSelfDurationBonus',
                                       src.getModifiedItemAttr('subsystemBonusGallenteOffensive3'), skill='Gallente Offensive Systems', **kwargs)
 
@@ -33434,7 +33435,7 @@ class Effect6960(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
                                       'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusCaldariOffensive3'),
                                       skill='Caldari Offensive Systems', **kwargs)
@@ -33451,7 +33452,7 @@ class Effect6961(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusMinmatarOffensive3'),
                                       skill='Minmatar Offensive Systems', **kwargs)
@@ -33468,7 +33469,7 @@ class Effect6962(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('subsystemBonusAmarrPropulsion2'),
                                skill='Amarr Propulsion Systems', **kwargs)
 
@@ -33484,7 +33485,7 @@ class Effect6963(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('subsystemBonusMinmatarPropulsion2'),
                                skill='Minmatar Propulsion Systems', **kwargs)
 
@@ -33500,7 +33501,7 @@ class Effect6964(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('baseWarpSpeed', module.getModifiedItemAttr('subsystemBonusGallentePropulsion'),
                                skill='Gallente Propulsion Systems', **kwargs)
 
@@ -33516,7 +33517,7 @@ class Effect6981(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'thermalDamage',
                                       src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'kineticDamage',
@@ -33542,7 +33543,7 @@ class Effect6982(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'explosiveDamage',
                                       src.getModifiedItemAttr('shipBonusTitanG2'), skill='Gallente Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'emDamage',
@@ -33568,7 +33569,7 @@ class Effect6983(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan', **kwargs)
         fit.ship.boostItemAttr('shieldEmDamageResonance', src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan', **kwargs)
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan', **kwargs)
@@ -33587,7 +33588,7 @@ class Effect6984(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'shieldCapacity',
                                        src.getModifiedItemAttr('shipBonusRole4'), **kwargs)
         fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityAttackTurretDamageMultiplier',
@@ -33609,7 +33610,7 @@ class Effect6985(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'kineticDamage',
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG1'), skill='Gallente Dreadnought', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'thermalDamage',
@@ -33635,7 +33636,7 @@ class Effect6986(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems'), 'shieldBonus',
                                       src.getModifiedItemAttr('shipBonusForceAuxiliaryG1'), skill='Gallente Carrier', **kwargs)
 
@@ -33651,7 +33652,7 @@ class Effect6987(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Drone Operation'),
                                         'structureDamageAmount', src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Drone Operation'),
@@ -33677,7 +33678,7 @@ class Effect6992(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'damageMultiplier', src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
 
@@ -33693,7 +33694,7 @@ class Effect6993(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.boosters.filteredItemBoost(lambda mod: mod.item.group.name == 'Booster', 'boosterMissileAOECloudPenalty', src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
         fit.boosters.filteredItemBoost(lambda mod: mod.item.group.name == 'Booster', 'boosterCapacitorCapacityPenalty', src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
         fit.boosters.filteredItemBoost(lambda mod: mod.item.group.name == 'Booster', 'boosterAOEVelocityPenalty', src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
@@ -33719,7 +33720,7 @@ class Effect6994(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships', **kwargs)
 
@@ -33735,7 +33736,7 @@ class Effect6995(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         # Set reload time to 1 second
         module.reloadTime = 1000
 
@@ -33751,7 +33752,7 @@ class Effect6996(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
 
@@ -33767,7 +33768,7 @@ class Effect6997(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
                                       src.getModifiedItemAttr('eliteBonusCovertOps4'), skill='Covert Ops', **kwargs)
 
@@ -33783,7 +33784,7 @@ class Effect6999(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo',
                                          'cpu', ship.getModifiedItemAttr('stealthBomberLauncherCPU'), **kwargs)
 
@@ -33799,7 +33800,7 @@ class Effect7000(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'falloff',
                                       src.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
 
@@ -33815,7 +33816,7 @@ class Effect7001(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo', 'speed', src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
 
@@ -33830,7 +33831,7 @@ class Effect7002(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Bomb Deployment'), 'power', src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Bomb Deployment'), 'cpu', src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
 
@@ -33846,7 +33847,7 @@ class Effect7003(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('eliteBonusCovertOps3'), skill='Covert Ops', **kwargs)
 
@@ -33862,7 +33863,7 @@ class Effect7008(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('shieldCapacity', src.getModifiedItemAttr('structureFullPowerStateHitpointMultiplier') or 0, **kwargs)
         fit.ship.multiplyItemAttr('armorHP', src.getModifiedItemAttr('structureFullPowerStateHitpointMultiplier') or 0, **kwargs)
 
@@ -33883,7 +33884,7 @@ class Effect7009(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.forceItemAttr('structureFullPowerStateHitpointMultiplier', src.getModifiedItemAttr('serviceModuleFullPowerStateHitpointMultiplier'), **kwargs)
 
 
@@ -33900,7 +33901,7 @@ class Effect7012(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
             for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
                 booster = '%s%sDamageResonance' % (layer, damageType)
@@ -33919,7 +33920,7 @@ class Effect7013(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'kineticDamage',
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
 
@@ -33935,7 +33936,7 @@ class Effect7014(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'thermalDamage',
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
 
@@ -33951,7 +33952,7 @@ class Effect7015(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'emDamage',
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
 
@@ -33967,7 +33968,7 @@ class Effect7016(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'explosiveDamage',
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
 
@@ -33983,7 +33984,7 @@ class Effect7017(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'aoeVelocity',
                                         src.getModifiedItemAttr('eliteBonusGunship2'), stackingPenalties=True, skill='Assault Frigates', **kwargs)
 
@@ -33999,7 +34000,7 @@ class Effect7018(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'speed',
                                       src.getModifiedItemAttr('shipBonusAF'), stackingPenalties=False, skill='Amarr Frigate', **kwargs)
 
@@ -34016,7 +34017,7 @@ class Effect7020(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
                                       src.getModifiedItemAttr('stasisWebRangeBonus'), stackingPenalties=False, **kwargs)
 
@@ -34034,7 +34035,7 @@ class Effect7021(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('structureRigMaxTargetRangeBonus'), **kwargs)
 
 
@@ -34049,7 +34050,7 @@ class Effect7024(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'trackingSpeed',
                                      src.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates', **kwargs)
 
@@ -34066,7 +34067,7 @@ class Effect7026(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         src.boostItemAttr('maxRange', src.getModifiedChargeAttr('warpScrambleRangeBonus'), **kwargs)
         src.forceItemAttr('activationBlockedStrenght', src.getModifiedChargeAttr('activationBlockedStrenght'), **kwargs)
 
@@ -34082,7 +34083,7 @@ class Effect7027(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('capacitorCapacity', ship.getModifiedItemAttr('capacitorBonus'), **kwargs)
 
 
@@ -34097,7 +34098,7 @@ class Effect7028(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('rechargeRate', module.getModifiedItemAttr('capacitorRechargeRateMultiplier'), **kwargs)
 
 
@@ -34113,7 +34114,7 @@ class Effect7029(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('hiddenArmorHPMultiplier', src.getModifiedItemAttr('armorHpBonus'), stackingPenalties=True, **kwargs)
 
 
@@ -34129,7 +34130,7 @@ class Effect7030(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Guided Bomb Launcher',
                                       'speed', ship.getModifiedItemAttr('structureAoERoFRoleBonus'), **kwargs)
         for attr in ['duration', 'durationTargetIlluminationBurstProjector', 'durationWeaponDisruptionBurstProjector',
@@ -34149,7 +34150,7 @@ class Effect7031(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'), 'kineticDamage',
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34165,7 +34166,7 @@ class Effect7032(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'), 'thermalDamage',
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34181,7 +34182,7 @@ class Effect7033(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
                                         'emDamage', src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34197,7 +34198,7 @@ class Effect7034(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'), 'explosiveDamage',
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34213,7 +34214,7 @@ class Effect7035(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'), 'explosiveDamage',
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34229,7 +34230,7 @@ class Effect7036(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'), 'emDamage',
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34245,7 +34246,7 @@ class Effect7037(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'thermalDamage', src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34261,7 +34262,7 @@ class Effect7038(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'kineticDamage', src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
 
@@ -34277,7 +34278,7 @@ class Effect7039(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure Anti-Subcapital Missile', 'Structure Anti-Capital Missile')
         for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
             fit.modules.filteredChargeMultiply(lambda mod: mod.item.group.name in groups,
@@ -34296,7 +34297,7 @@ class Effect7040(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('armorHP', src.getModifiedItemAttr('hiddenArmorHPMultiplier') or 0, **kwargs)
 
 
@@ -34311,7 +34312,7 @@ class Effect7042(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser', **kwargs)
 
 
@@ -34326,7 +34327,7 @@ class Effect7043(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser', **kwargs)
 
 
@@ -34341,7 +34342,7 @@ class Effect7044(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', src.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
 
 
@@ -34356,7 +34357,7 @@ class Effect7045(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('signatureRadius', src.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser', **kwargs)
 
 
@@ -34371,7 +34372,7 @@ class Effect7046(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('explosiveDamageResonance', src.getModifiedItemAttr('eliteBonusFlagCruisers1'), skill='Flag Cruisers', **kwargs)
         fit.ship.boostItemAttr('shieldKineticDamageResonance', src.getModifiedItemAttr('eliteBonusFlagCruisers1'), skill='Flag Cruisers', **kwargs)
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', src.getModifiedItemAttr('eliteBonusFlagCruisers1'), skill='Flag Cruisers', **kwargs)
@@ -34397,7 +34398,7 @@ class Effect7047(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Propulsion Module', 'Micro Jump Drive'),
                                       'power', src.getModifiedItemAttr('flagCruiserFittingBonusPropMods'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Propulsion Module', 'Micro Jump Drive'),
@@ -34421,7 +34422,7 @@ class Effect7050(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 3):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34443,7 +34444,7 @@ class Effect7051(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 3):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34464,7 +34465,7 @@ class Effect7052(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter', 'signatureRadiusBonus',
                                       src.getModifiedItemAttr('targetPainterStrengthModifierFlagCruisers'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter', 'maxRange',
@@ -34482,7 +34483,7 @@ class Effect7055(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'), 'damageMultiplier',
                                       src.getModifiedItemAttr('shipBonusRole7'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'), 'damageMultiplier',
@@ -34527,7 +34528,7 @@ class Effect7058(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 3):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34551,7 +34552,7 @@ class Effect7059(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 3):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34576,7 +34577,7 @@ class Effect7060(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 5):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34599,7 +34600,7 @@ class Effect7061(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 3):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34623,7 +34624,7 @@ class Effect7062(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 3):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34647,7 +34648,7 @@ class Effect7063(BaseEffect):
     type = ('projected', 'passive', 'gang')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         for x in range(1, 3):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
@@ -34680,7 +34681,7 @@ class Effect7071(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -34697,7 +34698,7 @@ class Effect7072(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -34714,7 +34715,7 @@ class Effect7073(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Precursor Weapon'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -34731,7 +34732,7 @@ class Effect7074(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Disintegrator Specialization'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -34748,7 +34749,7 @@ class Effect7075(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Disintegrator Specialization'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -34765,7 +34766,7 @@ class Effect7076(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Disintegrator Specialization'),
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
@@ -34782,7 +34783,7 @@ class Effect7077(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Precursor Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -34799,7 +34800,7 @@ class Effect7078(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Precursor Weapon',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -34816,7 +34817,7 @@ class Effect7079(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Precursor Weapon'),
                                       'speed', ship.getModifiedItemAttr('shipBonusPBS1'), skill='Precursor Battleship', **kwargs)
 
@@ -34832,7 +34833,7 @@ class Effect7080(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Precursor Weapon'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPBS2'), skill='Precursor Battleship', **kwargs)
 
@@ -34849,7 +34850,7 @@ class Effect7085(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPC1'), skill='Precursor Cruiser', **kwargs)
 
@@ -34866,7 +34867,7 @@ class Effect7086(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusPC2'), skill='Precursor Cruiser', **kwargs)
 
@@ -34882,7 +34883,7 @@ class Effect7087(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate', **kwargs)
 
@@ -34899,7 +34900,7 @@ class Effect7088(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPF1'), skill='Precursor Frigate', **kwargs)
 
@@ -34915,7 +34916,7 @@ class Effect7091(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capacitor Emission Systems'), 'capacitorNeed', src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
 
 
@@ -34936,7 +34937,7 @@ class Effect7092(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
 
@@ -34959,7 +34960,7 @@ class Effect7093(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Energy Pulse Weapons'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
 
@@ -34981,7 +34982,7 @@ class Effect7094(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -34997,7 +34998,7 @@ class Effect7097(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, **kwargs):
+    def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Precursor Weapon',
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
@@ -35014,7 +35015,7 @@ class Effect7111(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                          'damageMultiplier', module.getModifiedItemAttr('smallWeaponDamageMultiplier'),
                                          stackingPenalties=True, **kwargs)
@@ -35037,7 +35038,7 @@ class Effect7112(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer', 'capacitorNeed',
                                       src.getModifiedItemAttr('shipBonusRole2'), **kwargs)
 
@@ -35053,7 +35054,7 @@ class Effect7116(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseSensorStrength',
                                         src.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships', **kwargs)
 
@@ -35073,7 +35074,7 @@ class Effect7117(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('shipRoleBonusWarpSpeed'), **kwargs)
 
 
@@ -35088,7 +35089,7 @@ class Effect7118(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'), 'damageMultiplierBonusPerCycle',
                                          src.getModifiedItemAttr('eliteBonusCovertOps3'), skill='Covert Ops', **kwargs)
 
@@ -35104,7 +35105,7 @@ class Effect7119(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'), 'damageMultiplierBonusPerCycle',
                                          src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
 
@@ -35120,7 +35121,7 @@ class Effect7142(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
         fit.ship.boostItemAttr('mass', src.getModifiedItemAttr('massBonusPercentage'), stackingPenalties=True, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
@@ -35143,7 +35144,7 @@ class Effect7154(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPD1'),
                                       skill='Precursor Destroyer', **kwargs)
@@ -35160,7 +35161,7 @@ class Effect7155(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPBC1'),
                                       skill='Precursor Battlecruiser', **kwargs)
@@ -35177,7 +35178,7 @@ class Effect7156(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
@@ -35193,7 +35194,7 @@ class Effect7157(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusPD2'),
                                       skill='Precursor Destroyer', **kwargs)
@@ -35210,7 +35211,7 @@ class Effect7158(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('shipBonusPBC2'),
                                skill='Precursor Battlecruiser', **kwargs)
 
@@ -35226,7 +35227,7 @@ class Effect7159(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('shipBonusPBC2'),
                                skill='Precursor Battlecruiser', **kwargs)
 
@@ -35242,7 +35243,7 @@ class Effect7160(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusPBC2'),
                                skill='Precursor Battlecruiser', **kwargs)
 
@@ -35258,7 +35259,7 @@ class Effect7161(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusPBC2'),
                                skill='Precursor Battlecruiser', **kwargs)
 
@@ -35274,7 +35275,7 @@ class Effect7162(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'maxRange', ship.getModifiedItemAttr('roleBonusCBC'), **kwargs)
 
@@ -35291,7 +35292,7 @@ class Effect7166(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, container, context, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
             repAmountBase = container.getModifiedItemAttr('armorDamageAmount')
             cycleTime = container.getModifiedItemAttr('duration') / 1000.0
@@ -35318,7 +35319,7 @@ class Effect7167(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter', 'maxRange', src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
 
@@ -35333,7 +35334,7 @@ class Effect7168(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'maxRange', src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
 
 
@@ -35348,7 +35349,7 @@ class Effect7169(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'armorDamageAmount', src.getModifiedItemAttr('shipBonusPC1'), skill='Precursor Cruiser', **kwargs)
 
 
@@ -35363,7 +35364,7 @@ class Effect7170(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'capacitorNeed', src.getModifiedItemAttr('shipBonusPC2'), skill='Precursor Cruiser', **kwargs)
 
 
@@ -35378,7 +35379,7 @@ class Effect7171(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'maxRange', src.getModifiedItemAttr('shipBonusPC1'), skill='Precursor Cruiser', **kwargs)
 
 
@@ -35393,7 +35394,7 @@ class Effect7172(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'capacitorNeed', src.getModifiedItemAttr('eliteBonusLogistics1'), skill='Logistics Cruisers', **kwargs)
 
 
@@ -35408,7 +35409,7 @@ class Effect7173(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'armorDamageAmount', src.getModifiedItemAttr('eliteBonusLogistics2'), skill='Logistics Cruisers', **kwargs)
 
 
@@ -35424,7 +35425,7 @@ class Effect7176(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'damageMultiplier',
                                      src.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
@@ -35440,7 +35441,7 @@ class Effect7177(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'hp',
                                      src.getModifiedItemAttr('hullHpBonus'))
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'armorHP',
@@ -35460,7 +35461,7 @@ class Effect7179(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Strip Miner',
                                       'duration', module.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
 
@@ -35476,7 +35477,7 @@ class Effect7180(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mining Laser',
                                       'duration', module.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
 
@@ -35492,7 +35493,7 @@ class Effect7183(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
                                       'maxRange', src.getModifiedItemAttr('warpScrambleRangeBonus'),
                                       stackingPenalties=False, **kwargs)
@@ -35509,7 +35510,7 @@ class Effect7184(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'hp', ship.getModifiedItemAttr('shipBonusRole8'), **kwargs)
 
@@ -35525,7 +35526,7 @@ class Effect7185(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole8'), **kwargs)
 
@@ -35541,7 +35542,7 @@ class Effect7186(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole8'), **kwargs)
 
@@ -35558,7 +35559,7 @@ class Effect7193(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
                                       'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
 
@@ -35575,7 +35576,7 @@ class Effect7202(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'maxVelocity', beacon.getModifiedItemAttr('droneMaxVelocityBonus'),
                                      stackingPenalties=True, **kwargs)
@@ -35593,7 +35594,7 @@ class Effect7203(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier', beacon.getModifiedItemAttr('droneDamageBonus'),
                                      stackingPenalties=True, **kwargs)
@@ -35610,7 +35611,7 @@ class Effect7204(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate', **kwargs)
 
 
@@ -35625,7 +35626,7 @@ class Effect7205(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate', **kwargs)
 
 
@@ -35640,7 +35641,7 @@ class Effect7206(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate', **kwargs)
 
 
@@ -35655,7 +35656,7 @@ class Effect7207(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate', **kwargs)
 
 
@@ -35670,7 +35671,7 @@ class Effect7209(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                       skill='Assault Frigates', **kwargs)
@@ -35687,7 +35688,7 @@ class Effect7210(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Defender Missiles'),
                                       'moduleReactivationDelay', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
 
@@ -35703,7 +35704,7 @@ class Effect7211(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'damageMultiplierBonusMax', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -35720,7 +35721,7 @@ class Effect7216(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
                                       'damageMultiplierBonusMax', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                       skill='Assault Frigates', **kwargs)
@@ -35738,7 +35739,7 @@ class Effect7223(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', beacon.getModifiedItemAttr('agilityBonus'), stackingPenalties=True, **kwargs)
 
 
@@ -35754,7 +35755,7 @@ class Effect7227(BaseEffect):
     type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, beacon, context, **kwargs):
+    def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('hp', beacon.getModifiedItemAttr('hullHpBonus'), **kwargs)
 
 
@@ -35769,7 +35770,7 @@ class Effect7228(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers', **kwargs)
@@ -35786,7 +35787,7 @@ class Effect7230(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'),
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC2'),
                                      skill='Gallente Cruiser', **kwargs)
@@ -35803,7 +35804,7 @@ class Effect7231(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGC3'),
                                       skill='Gallente Cruiser', **kwargs)
@@ -35820,7 +35821,7 @@ class Effect7232(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Precursor Weapon', 'damageMultiplierBonusMax',
             implant.getModifiedItemAttr('damageMultiplierBonusMaxModifier'), **kwargs)
@@ -35837,7 +35838,7 @@ class Effect7233(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Precursor Weapon', 'damageMultiplierBonusPerCycle',
             implant.getModifiedItemAttr('damageMultiplierBonusPerCycleModifier'), **kwargs)
@@ -35855,7 +35856,7 @@ class Effect7234(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, implant, context, **kwargs):
+    def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(
             lambda imp: imp.item.group.name == 'Cyberimplant', 'damageMultiplierBonusMaxModifier',
             implant.getModifiedItemAttr('setBonusMimesis'), **kwargs)

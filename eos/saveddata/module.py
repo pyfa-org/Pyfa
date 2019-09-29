@@ -90,6 +90,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__charge = None
 
         self.projected = False
+        self.projectionRange = None
         self.state = FittingModuleState.ONLINE
         self.build()
 
@@ -867,13 +868,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         (not gang or (gang and effect.isType("gang")))
                     ):
                         contexts = ("moduleCharge",)
-                        # For gang effects, we pass in the effect itself as an argument. However, to avoid going through all
-                        # the effect definitions and defining this argument, do a simple try/catch here and be done with it.
-                        # @todo: possibly fix this
-                        try:
-                            effect.handler(fit, self, contexts, effect=effect)
-                        except:
-                            effect.handler(fit, self, contexts)
+                        effect.handler(fit, self, contexts, self.projectionRange, effect=effect)
 
         if self.item:
             if self.state >= FittingModuleState.OVERHEATED:
@@ -883,7 +878,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             and not forceProjected \
                             and effect.activeByDefault \
                             and ((gang and effect.isType("gang")) or not gang):
-                        effect.handler(fit, self, context)
+                        effect.handler(fit, self, context, self.projectionRange)
 
             for effect in self.item.effects.values():
                 if effect.runTime == runTime and \
@@ -893,10 +888,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                          (effect.isType("active") and self.state >= FittingModuleState.ACTIVE)) \
                         and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
-                    try:
-                        effect.handler(fit, self, context, effect=effect)
-                    except:
-                        effect.handler(fit, self, context)
+                    effect.handler(fit, self, context, self.projectionRange, effect=effect)
 
     def getCycleParameters(self, reloadOverride=None):
         """Copied from new eos as well"""

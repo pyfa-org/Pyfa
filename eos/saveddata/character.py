@@ -422,7 +422,7 @@ class Skill(HandledItem):
                     (not fit.isStructure or effect.isType("structure")) and \
                     effect.activeByDefault:
                 try:
-                    effect.handler(fit, self, ("skill",))
+                    effect.handler(fit, self, ("skill",), None)
                 except AttributeError:
                     continue
 

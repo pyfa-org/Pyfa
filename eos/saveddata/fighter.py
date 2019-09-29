@@ -47,6 +47,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.itemID = item.ID if item is not None else None
         self.projected = False
+        self.projectionRange = None
         self.active = True
 
         # -1 is a placeholder that represents max squadron size, which we may not know yet as ships may modify this with
@@ -399,17 +400,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if effect.runTime == runTime and effect.activeByDefault and \
                     ((projected and effect.isType("projected")) or not projected):
                 if ability.grouped:
-                    try:
-                        effect.handler(fit, self, context, effect=effect)
-                    except:
-                        effect.handler(fit, self, context)
+                    effect.handler(fit, self, context, self.projectionRange, effect=effect)
                 else:
                     i = 0
                     while i != self.amount:
-                        try:
-                            effect.handler(fit, self, context, effect=effect)
-                        except:
-                            effect.handler(fit, self, context)
+                        effect.handler(fit, self, context, self.projectionRange, effect=effect)
                         i += 1
 
     def __deepcopy__(self, memo):

@@ -98,7 +98,7 @@ class Ship(ItemAttrShortcut, HandledItem):
                 # skillbook modifiers will use the stale modifier value
                 # GH issue #351
                 fit.register(self)
-                effect.handler(fit, self, ("ship",))
+                effect.handler(fit, self, ("ship",), None)
 
     def validateModeItem(self, item, owner=None):
         """ Checks if provided item is a valid mode """

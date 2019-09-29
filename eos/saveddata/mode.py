@@ -54,7 +54,7 @@ class Mode(ItemAttrShortcut, HandledItem):
         if self.item:
             for effect in self.item.effects.values():
                 if effect.runTime == runTime and effect.activeByDefault:
-                    effect.handler(fit, self, context=("module",))
+                    effect.handler(fit, self, ("module",), None)
 
     def __deepcopy__(self, memo):
         copy = Mode(self.item)
