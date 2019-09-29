@@ -65,6 +65,7 @@ from .gui.projectedFighter.abilityToggleState import GuiToggleProjectedFighterAb
 from .gui.projectedFighter.add import GuiAddProjectedFighterCommand
 from .gui.projectedFighter.changeAmount import GuiChangeProjectedFighterAmountCommand
 from .gui.projectedFighter.changeMetas import GuiChangeProjectedFighterMetasCommand
+from .gui.projectedFighter.changeProjectionRange import GuiChangeProjectedFighterProjectionRangeCommand
 from .gui.projectedFit.add import GuiAddProjectedFitsCommand
 from .gui.projectedFit.changeAmount import GuiChangeProjectedFitAmountCommand
 from .gui.projectedFit.changeProjectionRange import GuiChangeProjectedFitProjectionRangeCommand

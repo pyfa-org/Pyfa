@@ -68,7 +68,8 @@ class ChangeItemProjectionRange(ContextMenuSingle):
                 elif isinstance(mainItem, Fighter):
                     if mainItem in fit.projectedFighters:
                         position = fit.projectedFighters.index(mainItem)
-                        pass
+                        self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterProjectionRangeCommand(
+                            fitID=fitID, position=position, projectionRange=newRange))
 
 
 ChangeItemProjectionRange.register()
