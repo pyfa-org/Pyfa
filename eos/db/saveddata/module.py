@@ -42,6 +42,7 @@ modules_table = Table("modules", saveddata_meta,
                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                       Column("spoolType", Integer, nullable=True),
                       Column("spoolAmount", Float, nullable=True),
+                      Column("projectionRange", Float, nullable=True),
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
 mapper(Module, modules_table,

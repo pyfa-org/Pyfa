@@ -19,7 +19,7 @@
 
 import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Table
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, Float, String, Table
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import mapper, reconstructor, relation, relationship
 from sqlalchemy.orm.collections import attribute_mapped_collection
@@ -70,7 +70,8 @@ projectedFits_table = Table("projectedFits", saveddata_meta,
                             Column("amount", Integer, nullable=False, default=1),
                             Column("active", Boolean, nullable=False, default=1),
                             Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                            Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
+                            Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                            Column("projectionRange", Float, nullable=True),
                             )
 
 commandFits_table = Table("commandFits", saveddata_meta,

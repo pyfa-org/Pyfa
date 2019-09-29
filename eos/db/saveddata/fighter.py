@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
+from sqlalchemy import Table, Column, Integer, Float, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import mapper, relation
 import datetime
 
@@ -34,7 +34,8 @@ fighters_table = Table("fighters", saveddata_meta,
                        Column("amount", Integer, nullable=False),
                        Column("projected", Boolean, default=False),
                        Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
+                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                       Column("projectionRange", Float, nullable=True),
                        )
 
 fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
