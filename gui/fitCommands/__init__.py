@@ -66,10 +66,11 @@ from .gui.projectedFighter.changeAmount import GuiChangeProjectedFighterAmountCo
 from .gui.projectedFighter.changeMetas import GuiChangeProjectedFighterMetasCommand
 from .gui.projectedFit.add import GuiAddProjectedFitsCommand
 from .gui.projectedFit.changeAmount import GuiChangeProjectedFitAmountCommand
-from .gui.projectedFit.changeRange import GuiChangeProjectedFitRangeCommand
+from .gui.projectedFit.changeProjectionRange import GuiChangeProjectedFitProjectionRangeCommand
 from .gui.projectedModule.add import GuiAddProjectedModuleCommand
 from .gui.projectedModule.changeCharges import GuiChangeProjectedModuleChargesCommand
 from .gui.projectedModule.changeMetas import GuiChangeProjectedModuleMetasCommand
+from .gui.projectedModule.changeProjectionRange import GuiChangeProjectedModuleProjectionRangeCommand
 from .gui.projectedModule.changeSpool import GuiChangeProjectedModuleSpoolCommand
 from .gui.projectedRemove import GuiRemoveProjectedItemsCommand
 from .gui.shipModeChange import GuiChangeShipModeCommand

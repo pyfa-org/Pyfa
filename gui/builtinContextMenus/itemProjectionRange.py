@@ -55,12 +55,13 @@ class ChangeItemProjectionRange(ContextMenuSingle):
                     newRange = None
 
                 if isinstance(mainItem, es_Fit):
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitRangeCommand(
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitProjectionRangeCommand(
                         fitID=fitID, projectedFitID=mainItem.ID, projectionRange=newRange))
                 elif isinstance(mainItem, Module):
                     if mainItem in fit.projectedModules:
                         position = fit.projectedModules.index(mainItem)
-                        pass
+                        self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleProjectionRangeCommand(
+                            fitID=fitID, position=position, projectionRange=newRange))
                 elif isinstance(mainItem, Drone):
                     pass
                 elif isinstance(mainItem, Fighter):

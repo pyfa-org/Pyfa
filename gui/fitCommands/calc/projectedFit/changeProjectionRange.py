@@ -31,9 +31,9 @@ class CalcChangeProjectedFitProjectionRangeCommand(wx.Command):
         if projectionInfo is None:
             pyfalog.warning('Fit projection info is not available')
             return False
-        self.savedProjectionRange = projectionInfo.projectionRange
-        if self.projectionRange == self.savedProjectionRange:
+        if projectionInfo.projectionRange == self.projectionRange:
             return False
+        self.savedProjectionRange = projectionInfo.projectionRange
         projectionInfo.projectionRange = self.projectionRange
 
         sFit.recalc(fit)
