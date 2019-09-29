@@ -9,28 +9,29 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit as es_Fit
 from eos.saveddata.module import Module
-from gui.contextMenu import ContextMenuSingle
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 
 
-class ChangeItemProjectionRange(ContextMenuSingle):
+class ChangeItemProjectionRange(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, callingWindow, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext not in ('projectedFit', 'projectedModule', 'projectedDrone', 'projectedFighter'):
             return False
         if mainItem is None:
             return False
+        if getattr(mainItem, 'isExclusiveSystemEffect', False):
+            return False
         return True
 
-    def getText(self, callingWindow, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem, selection):
         return 'Change {} Range'.format(itmContext)
 
-    def activate(self, callingWindow, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
-        srcContext = fullContext[0]
         if isinstance(mainItem, es_Fit):
             try:
                 value = mainItem.getProjectionInfo(fitID).projectionRange
