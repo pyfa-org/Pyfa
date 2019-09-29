@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import math
+
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
@@ -27,8 +28,9 @@ from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.fighterAbility import FighterAbility
 from eos.utils.cycles import CycleInfo, CycleSequence
-from eos.utils.stats import DmgTypes
+from eos.utils.default import DEFAULT
 from eos.utils.float import floatUnerr
+from eos.utils.stats import DmgTypes
 
 
 pyfalog = Logger(__name__)
@@ -381,7 +383,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return True
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, forcedProjRange=DEFAULT):
         if not self.active:
             return
 
@@ -392,6 +394,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             context = ("fighter",)
             projected = False
 
+        projectionRange = self.projectionRange if forcedProjRange is DEFAULT else forcedProjRange
+
         for ability in self.abilities:
             if not ability.active:
                 continue
@@ -400,11 +404,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if effect.runTime == runTime and effect.activeByDefault and \
                     ((projected and effect.isType("projected")) or not projected):
                 if ability.grouped:
-                    effect.handler(fit, self, context, self.projectionRange, effect=effect)
+                    effect.handler(fit, self, context, projectionRange, effect=effect)
                 else:
                     i = 0
                     while i != self.amount:
-                        effect.handler(fit, self, context, self.projectionRange, effect=effect)
+                        effect.handler(fit, self, context, projectionRange, effect=effect)
                         i += 1
 
     def __deepcopy__(self, memo):

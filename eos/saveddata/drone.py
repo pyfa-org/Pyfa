@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import math
+
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
@@ -25,6 +26,7 @@ import eos.db
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.utils.cycles import CycleInfo
+from eos.utils.default import DEFAULT
 from eos.utils.stats import DmgTypes, RRTypes
 
 
@@ -305,13 +307,15 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return True
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, forcedProjRange=DEFAULT):
         if self.projected or forceProjected:
             context = "projected", "drone"
             projected = True
         else:
             context = ("drone",)
             projected = False
+
+        projectionRange = self.projectionRange if forcedProjRange is DEFAULT else forcedProjRange
 
         for effect in self.item.effects.values():
             if effect.runTime == runTime and \
@@ -320,17 +324,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                                  projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
-                    effect.handler(fit, self, context, self.projectionRange, effect=effect)
+                    effect.handler(fit, self, context, projectionRange, effect=effect)
                 else:
                     i = 0
                     while i != self.amountActive:
-                        effect.handler(fit, self, context, self.projectionRange, effect=effect)
+                        effect.handler(fit, self, context, projectionRange, effect=effect)
                         i += 1
 
         if self.charge:
             for effect in self.charge.effects.values():
                 if effect.runTime == runTime and effect.activeByDefault:
-                    effect.handler(fit, self, ("droneCharge",), self.projectionRange)
+                    effect.handler(fit, self, ("droneCharge",), projectionRange)
 
     def __deepcopy__(self, memo):
         copy = Drone(self.item)

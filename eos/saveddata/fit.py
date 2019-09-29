@@ -938,7 +938,9 @@ class Fit:
                 # apply effects onto target fit x amount of times
                 for _ in range(projectionInfo.amount):
                     targetFit.register(item, origin=self)
-                    item.calculateModifiedAttributes(targetFit, runTime, True)
+                    item.calculateModifiedAttributes(
+                        targetFit, runTime, forceProjected=True,
+                        forcedProjRange=projectionInfo.projectionRange)
 
     def fill(self):
         """
@@ -1669,6 +1671,8 @@ class Fit:
             copyProjectionInfo = fit.getProjectionInfo(fitCopy.ID)
             originalProjectionInfo = fit.getProjectionInfo(self.ID)
             copyProjectionInfo.active = originalProjectionInfo.active
+            copyProjectionInfo.amount = originalProjectionInfo.amount
+            copyProjectionInfo.projectionRange = originalProjectionInfo.projectionRange
             forceUpdateSavedata(fit)
 
         return fitCopy

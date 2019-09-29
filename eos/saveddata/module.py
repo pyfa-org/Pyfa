@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from logbook import Logger
 import math
+
+from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
@@ -28,6 +29,7 @@ from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, Modi
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
 from eos.utils.cycles import CycleInfo, CycleSequence
+from eos.utils.default import DEFAULT
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
 from eos.utils.stats import DmgTypes, RRTypes
@@ -838,7 +840,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, gang=False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, gang=False, forcedProjRange=DEFAULT):
         # We will run the effect when two conditions are met:
         # 1: It makes sense to run the effect
         #    The effect is either offline
@@ -855,6 +857,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             context = ("module",)
             projected = False
 
+        projectionRange = self.projectionRange if forcedProjRange is DEFAULT else forcedProjRange
+
         if self.charge is not None:
             # fix for #82 and it's regression #106
             if not projected or (self.projected and not forceProjected) or gang:
@@ -868,7 +872,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         (not gang or (gang and effect.isType("gang")))
                     ):
                         contexts = ("moduleCharge",)
-                        effect.handler(fit, self, contexts, self.projectionRange, effect=effect)
+                        effect.handler(fit, self, contexts, projectionRange, effect=effect)
 
         if self.item:
             if self.state >= FittingModuleState.OVERHEATED:
@@ -878,7 +882,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             and not forceProjected \
                             and effect.activeByDefault \
                             and ((gang and effect.isType("gang")) or not gang):
-                        effect.handler(fit, self, context, self.projectionRange)
+                        effect.handler(fit, self, context, projectionRange)
 
             for effect in self.item.effects.values():
                 if effect.runTime == runTime and \
@@ -888,7 +892,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                          (effect.isType("active") and self.state >= FittingModuleState.ACTIVE)) \
                         and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
-                    effect.handler(fit, self, context, self.projectionRange, effect=effect)
+                    effect.handler(fit, self, context, projectionRange, effect=effect)
 
     def getCycleParameters(self, reloadOverride=None):
         """Copied from new eos as well"""
