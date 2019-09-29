@@ -36,7 +36,6 @@ class RechargeViewFull(StatsView):
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.mainFrame.Bind(GE.EFFECTIVE_HP_TOGGLED, self.toggleEffective)
-        self.effective = True
 
     def getHeaderText(self, fit):
         return "Recharge rates"
@@ -45,9 +44,15 @@ class RechargeViewFull(StatsView):
         width, height = self.parent.GetTextExtent(text)
         return width
 
+    @property
+    def effective(self):
+        try:
+            return self.parent.nameViewMap['resistancesViewFull'].showEffective
+        except KeyError:
+            return False
+
     def toggleEffective(self, event):
         event.Skip()
-        self.effective = event.effective
         sFit = Fit.getInstance()
         self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
 
@@ -104,8 +109,7 @@ class RechargeViewFull(StatsView):
 
     def refreshPanel(self, fit):
         # If we did anything interesting, we'd update our labels to reflect the new fit's stats here
-
-        unit = " EHP/s" if self.parent.nameViewMap['resistancesViewFull'].showEffective else " HP/s"
+        unit = " EHP/s" if self.effective else " HP/s"
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit is not None:

@@ -612,7 +612,10 @@ class Miscellanea(ViewColumn):
             fit = Fit.getInstance().getFit(self.fittingView.getActiveFit())
             ehpTotal = fit.ehp
             hpTotal = fit.hp
-            useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+            try:
+                useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+            except KeyError:
+                useEhp = False
             tooltip = "{0} restored over duration using charges (plus reload)".format(boosted_attribute)
 
             if useEhp and boosted_attribute == "HP" and "Remote" not in itemGroup:
