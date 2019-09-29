@@ -22,6 +22,7 @@ from gui.builtinContextMenus import shipJump
 # Generic item manipulations
 from gui.builtinContextMenus import itemRemove
 from gui.builtinContextMenus import itemAmountChange
+from gui.builtinContextMenus import itemProjectionRange
 from gui.builtinContextMenus import droneSplitStack
 from gui.builtinContextMenus import itemVariationChange
 from gui.builtinContextMenus import moduleMutations

@@ -204,7 +204,7 @@ class Effect39(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context and module.maxRange >= (projectionRange or 0):
+        if 'projected' in context and module.getModifiedItemAttr('maxRange', 0) >= (projectionRange or 0):
             fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
 
 
@@ -23368,7 +23368,8 @@ class Effect5934(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-
+        if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
         fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'))
         fit.modules.filteredItemIncrease(
             lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),

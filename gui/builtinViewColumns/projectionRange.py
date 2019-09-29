@@ -23,6 +23,7 @@ import wx
 from logbook import Logger
 
 import gui.mainFrame
+from eos.saveddata.fit import Fit
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
@@ -41,10 +42,14 @@ class ProjectionRangeColumn(ViewColumn):
         self.imageId = fittingView.imageList.GetImageIndex(1391, "icons")
         self.bitmap = BitmapLoader.getBitmap(1391, "icons")
         self.mask = wx.LIST_MASK_IMAGE
-        self.projectedView = isinstance(fittingView, gui.builtinAdditionPanes.projectedView.ProjectedView)
 
     def getText(self, stuff):
-        projRange = getattr(stuff, 'projectionRange', None)
+        if isinstance(stuff, Fit):
+            fitID = self.mainFrame.getActiveFit()
+            info = stuff.getProjectionInfo(fitID)
+            projRange = info.projectionRange
+        else:
+            projRange = getattr(stuff, 'projectionRange', None)
         if projRange is None:
             return ''
         return formatAmount(projRange, 3, 0, 3, unitName='m')

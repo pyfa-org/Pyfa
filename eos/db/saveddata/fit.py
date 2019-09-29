@@ -84,6 +84,7 @@ commandFits_table = Table("commandFits", saveddata_meta,
 
 
 class ProjectedFit:
+
     def __init__(self, sourceID, source_fit, amount=1, active=True):
         self.sourceID = sourceID
         self.source_fit = source_fit
