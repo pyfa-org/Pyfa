@@ -21,9 +21,10 @@
 import math
 from functools import lru_cache
 
+from eos.calc import calculateRangeFactor
 from eos.const import FittingHardpoint
 from eos.utils.float import floatUnerr
-from graphs.calc import calculateRangeFactor, checkLockRange, checkDroneControlRange
+from graphs.calc import checkLockRange, checkDroneControlRange
 from service.attribute import Attribute
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings

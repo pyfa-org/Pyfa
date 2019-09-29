@@ -20,8 +20,9 @@
 
 import math
 
+from eos.calc import calculateRangeFactor
 from eos.utils.float import floatUnerr
-from graphs.calc import calculateRangeFactor, checkLockRange, checkDroneControlRange
+from graphs.calc import checkLockRange, checkDroneControlRange
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 

@@ -18,8 +18,9 @@
 # =============================================================================
 
 
+from eos.calc import calculateRangeFactor
 from eos.utils.float import floatUnerr
-from graphs.calc import calculateRangeFactor, checkLockRange, checkDroneControlRange
+from graphs.calc import checkLockRange, checkDroneControlRange
 
 
 def getApplicationPerKey(src, distance):

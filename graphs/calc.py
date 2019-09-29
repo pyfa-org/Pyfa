@@ -23,21 +23,6 @@ import math
 from service.settings import GraphSettings
 
 
-def calculateRangeFactor(srcOptimalRange, srcFalloffRange, distance, restrictedRange=True):
-    """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
-    if distance is None:
-        return 1
-    if srcFalloffRange > 0:
-        # Most modules cannot be activated when at 3x falloff range, with few exceptions like guns
-        if restrictedRange and distance > srcOptimalRange + 3 * srcFalloffRange:
-            return 0
-        return 0.5 ** ((max(0, distance - srcOptimalRange) / srcFalloffRange) ** 2)
-    elif distance <= srcOptimalRange:
-        return 1
-    else:
-        return 0
-
-
 # Just copy-paste penalization chain calculation code (with some modifications,
 # as multipliers arrive in different form) in here to not make actual attribute
 # calculations slower than they already are due to extra function calls
