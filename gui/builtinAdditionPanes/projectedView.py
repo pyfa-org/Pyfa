@@ -74,7 +74,8 @@ class ProjectedView(d.Display):
                     'Ammo Icon',
                     'Base Icon',
                     'Base Name',
-                    'Ammo']
+                    'Ammo',
+                    'Projection Range']
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.BORDER_NONE)
