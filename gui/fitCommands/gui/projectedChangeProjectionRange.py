@@ -7,21 +7,21 @@ from eos.saveddata.fighter import Fighter as EosFighter
 from eos.saveddata.fit import Fit as EosFit
 from eos.saveddata.module import Module as EosModule
 from gui import globalEvents as GE
-from gui.fitCommands.calc.drone.projectedRemove import CalcRemoveProjectedDroneCommand
-from gui.fitCommands.calc.fighter.projectedRemove import CalcRemoveProjectedFighterCommand
-from gui.fitCommands.calc.module.projectedRemove import CalcRemoveProjectedModuleCommand
-from gui.fitCommands.calc.projectedFit.remove import CalcRemoveProjectedFitCommand
+from gui.fitCommands.calc.drone.projectedChangeProjectionRange import CalcChangeProjectedDroneProjectionRangeCommand
+from gui.fitCommands.calc.fighter.projectedChangeProjectionRange import CalcChangeProjectedFighterProjectionRangeCommand
+from gui.fitCommands.calc.module.projectedChangeProjectionRange import CalcChangeProjectedModuleProjectionRangeCommand
+from gui.fitCommands.calc.projectedFit.changeProjectionRange import CalcChangeProjectedFitProjectionRangeCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiRemoveProjectedItemsCommand(wx.Command):
+class GuiChangeProjectedItemsProjectionRangeCommand(wx.Command):
 
-    def __init__(self, fitID, items, amount):
-        wx.Command.__init__(self, True, 'Remove Projected Items')
+    def __init__(self, fitID, items, projectionRange):
+        wx.Command.__init__(self, True, 'Change Projected Items Projection Range')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.amount = amount
+        self.projectionRange = projectionRange
         self.pModPositions = []
         self.pDroneItemIDs = []
         self.pFighterPositions = []
@@ -29,7 +29,7 @@ class GuiRemoveProjectedItemsCommand(wx.Command):
         fit = Fit.getInstance().getFit(fitID)
         for item in items:
             if isinstance(item, EosModule):
-                if item in fit.projectedModules:
+                if item in fit.projectedModules and not getattr(item, 'isExclusiveSystemEffect', False):
                     self.pModPositions.append(fit.projectedModules.index(item))
             elif isinstance(item, EosDrone):
                 self.pDroneItemIDs.append(item.itemID)
@@ -42,18 +42,30 @@ class GuiRemoveProjectedItemsCommand(wx.Command):
     def Do(self):
         results = []
         needRecalc = True
-        for pModPosition in sorted(self.pModPositions, reverse=True):
-            cmd = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=pModPosition)
+        for pModPosition in self.pModPositions:
+            cmd = CalcChangeProjectedModuleProjectionRangeCommand(
+                fitID=self.fitID,
+                position=pModPosition,
+                projectionRange=self.projectionRange)
             results.append(self.internalHistory.submit(cmd))
             needRecalc = cmd.needsGuiRecalc
         for pDroneItemID in self.pDroneItemIDs:
-            cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=pDroneItemID, amount=self.amount)
+            cmd = CalcChangeProjectedDroneProjectionRangeCommand(
+                fitID=self.fitID,
+                itemID=pDroneItemID,
+                projectionRange=self.projectionRange)
             results.append(self.internalHistory.submit(cmd))
-        for pFighterPosition in sorted(self.pFighterPositions, reverse=True):
-            cmd = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=pFighterPosition)
+        for pFighterPosition in self.pFighterPositions:
+            cmd = CalcChangeProjectedFighterProjectionRangeCommand(
+                fitID=self.fitID,
+                position=pFighterPosition,
+                projectionRange=self.projectionRange)
             results.append(self.internalHistory.submit(cmd))
         for pFitID in self.pFitIDs:
-            cmd = CalcRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=pFitID, amount=self.amount)
+            cmd = CalcChangeProjectedFitProjectionRangeCommand(
+                fitID=self.fitID,
+                projectedFitID=pFitID,
+                projectionRange=self.projectionRange)
             results.append(self.internalHistory.submit(cmd))
             needRecalc = cmd.needsGuiRecalc
         success = any(results)

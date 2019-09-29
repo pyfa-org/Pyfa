@@ -5,11 +5,11 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from eos.saveddata.drone import Drone
-from eos.saveddata.fighter import Fighter
-from eos.saveddata.fit import Fit as es_Fit
-from eos.saveddata.module import Module
+from eos.saveddata.fighter import Fighter as EosFighter
+from eos.saveddata.fit import Fit as EosFit
+from eos.saveddata.module import Module as EosModule
 from gui.contextMenu import ContextMenuCombined
+from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
 from service.fit import Fit
 
 
@@ -32,7 +32,7 @@ class ChangeItemProjectionRange(ContextMenuCombined):
 
     def activate(self, callingWindow, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
-        if isinstance(mainItem, es_Fit):
+        if isinstance(mainItem, EosFit):
             try:
                 value = mainItem.getProjectionInfo(fitID).projectionRange
             except AttributeError:
@@ -43,8 +43,6 @@ class ChangeItemProjectionRange(ContextMenuCombined):
             value /= 1000
         with RangeChanger(self.mainFrame, value) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
-                sFit = Fit.getInstance()
-                fit = sFit.getFit(fitID)
                 cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
                 if cleanInput:
                     try:
@@ -55,22 +53,18 @@ class ChangeItemProjectionRange(ContextMenuCombined):
                 else:
                     newRange = None
 
-                if isinstance(mainItem, es_Fit):
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitProjectionRangeCommand(
-                        fitID=fitID, projectedFitID=mainItem.ID, projectionRange=newRange))
-                elif isinstance(mainItem, Module):
-                    if mainItem in fit.projectedModules:
-                        position = fit.projectedModules.index(mainItem)
-                        self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleProjectionRangeCommand(
-                            fitID=fitID, position=position, projectionRange=newRange))
-                elif isinstance(mainItem, Drone):
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneProjectionRangeCommand(
-                        fitID=fitID, itemID=mainItem.itemID, projectionRange=newRange))
-                elif isinstance(mainItem, Fighter):
-                    if mainItem in fit.projectedFighters:
-                        position = fit.projectedFighters.index(mainItem)
-                        self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterProjectionRangeCommand(
-                            fitID=fitID, position=position, projectionRange=newRange))
+        fitID = self.mainFrame.getActiveFit()
+        items = selection
+        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+            if isinstance(mainItem, EosModule):
+                fit = Fit.getInstance().getFit(fitID)
+                positions = getSimilarModPositions(fit.projectedModules, mainItem)
+                items = [fit.projectedModules[p] for p in positions]
+            elif isinstance(mainItem, EosFighter):
+                fit = Fit.getInstance().getFit(fitID)
+                items = getSimilarFighters(fit.projectedFighters, mainItem)
+        self.mainFrame.command.Submit(cmd.GuiChangeProjectedItemsProjectionRangeCommand(
+            fitID=fitID, items=items, projectionRange=newRange))
 
 
 ChangeItemProjectionRange.register()
