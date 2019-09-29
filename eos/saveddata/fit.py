@@ -932,15 +932,20 @@ class Fit:
         To support a simpler way of doing self projections (so that we don't have to make a copy of the fit and
         recalculate), this function was developed to be a common source of projected effect application.
         """
-        c = chain(self.drones, self.fighters, self.modules)
-        for item in c:
+        for item in chain(self.drones, self.fighters):
             if item is not None:
                 # apply effects onto target fit x amount of times
                 for _ in range(projectionInfo.amount):
                     targetFit.register(item, origin=self)
                     item.calculateModifiedAttributes(
                         targetFit, runTime, forceProjected=True,
-                        forcedProjRange=projectionInfo.projectionRange)
+                        forcedProjRange=0)
+        for mod in self.modules:
+            for _ in range(projectionInfo.amount):
+                targetFit.register(mod, origin=self)
+                mod.calculateModifiedAttributes(
+                    targetFit, runTime, forceProjected=True,
+                    forcedProjRange=projectionInfo.projectionRange)
 
     def fill(self):
         """
