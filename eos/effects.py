@@ -563,7 +563,7 @@ class Effect101(BaseEffect):
             # Lockbreaker Bombs
             ecmStrengthBonus = src.getModifiedChargeAttr('scan{0}StrengthBonus'.format(fit.scanType))
             if ecmStrengthBonus:
-                strModifier = 1 - ecmStrengthBonus / fit.scanStrength
+                strModifier = 1 - min(1, ecmStrengthBonus / fit.scanStrength)
                 fit.ecmProjectedStr *= strModifier
 
 
@@ -27449,7 +27449,7 @@ class Effect6437(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - strength / fit.scanStrength
+        chanceModifier = 1 - min(1, strength / fit.scanStrength)
         fit.ecmProjectedStr *= chanceModifier
 
 
@@ -27623,7 +27623,7 @@ class Effect6470(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - strength / fit.scanStrength
+        chanceModifier = 1 - min(1, strength / fit.scanStrength)
         fit.ecmProjectedStr *= chanceModifier
 
 
@@ -28114,7 +28114,7 @@ class Effect6513(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - strength / fit.scanStrength
+        chanceModifier = 1 - min(1, strength / fit.scanStrength)
         fit.ecmProjectedStr *= chanceModifier
 
 
@@ -30731,7 +30731,7 @@ class Effect6685(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - strength / fit.scanStrength
+        chanceModifier = 1 - min(1, strength / fit.scanStrength)
         fit.ecmProjectedStr *= chanceModifier
 
 
@@ -30991,7 +30991,7 @@ class Effect6695(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - strength / fit.scanStrength
+        chanceModifier = 1 - min(1, strength / fit.scanStrength)
         fit.ecmProjectedStr *= chanceModifier
 
 
@@ -31292,7 +31292,7 @@ class Effect6714(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - strength / fit.scanStrength
+        chanceModifier = 1 - min(1, strength / fit.scanStrength)
         fit.ecmProjectedStr *= chanceModifier
 
 
