@@ -43,6 +43,7 @@ class ChangeItemToVariation(ContextMenuCombined):
 
         self.mainItem = mainItem
         self.selection = selection
+        self.srcContext = srcContext
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
@@ -126,7 +127,7 @@ class ChangeItemToVariation(ContextMenuCombined):
 
             self.moduleLookup[id] = item, context
             m.Append(mitem)
-            mitem.Enable(fit.canFit(item))
+            mitem.Enable(self.srcContext in ('projectedModule', 'projectedDrone', 'projectedFighter') or fit.canFit(item))
 
         return m
 
