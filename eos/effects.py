@@ -206,6 +206,8 @@ class Effect39(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
         if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
             return
         fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
@@ -23038,7 +23040,7 @@ class Effect5911(BaseEffect):
     """
 
     runTime = 'early'
-    type = ('projected', 'passive')
+    type = 'passive'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -23371,6 +23373,8 @@ class Effect5934(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
             return
         if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
             return
@@ -25020,15 +25024,18 @@ class Effect6184(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            amount = src.getModifiedItemAttr('powerTransferAmount')
-            duration = src.getModifiedItemAttr('duration')
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            fit.addDrain(src, duration, -amount, 0)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        if src.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        amount = src.getModifiedItemAttr('powerTransferAmount')
+        duration = src.getModifiedItemAttr('duration')
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        fit.addDrain(src, duration, -amount, 0)
 
 
 class Effect6185(BaseEffect):
@@ -25046,7 +25053,13 @@ class Effect6185(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
         bonus = module.getModifiedItemAttr('structureDamageAmount')
+        bonus *= calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
         duration = module.getModifiedItemAttr('duration') / 1000.0
         fit.extraAttributes.increase('hullRepair', bonus / duration, **kwargs)
 
@@ -25063,10 +25076,17 @@ class Effect6186(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            bonus = container.getModifiedItemAttr('shieldBonus')
-            duration = container.getModifiedItemAttr('duration') / 1000.0
-            fit.extraAttributes.increase('shieldRepair', bonus / duration, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        bonus = container.getModifiedItemAttr('shieldBonus')
+        bonus *= calculateRangeFactor(
+            srcOptimalRange=container.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        duration = container.getModifiedItemAttr('duration') / 1000.0
+        fit.extraAttributes.increase('shieldRepair', bonus / duration, **kwargs)
 
 
 class Effect6187(BaseEffect):
@@ -25081,17 +25101,20 @@ class Effect6187(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        if 'projected' in context and ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or
-                                       hasattr(src, 'amountActive')):
-            amount = src.getModifiedItemAttr('energyNeutralizerAmount')
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            time = src.getModifiedItemAttr('duration')
-
-            fit.addDrain(src, time, amount, 0)
+        if 'projected' not in context:
+            return
+        if not ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or hasattr(src, 'amountActive')):
+            return
+        amount = src.getModifiedItemAttr('energyNeutralizerAmount')
+        amount *= calculateRangeFactor(
+            srcOptimalRange=src.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=src.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        time = src.getModifiedItemAttr('duration')
+        fit.addDrain(src, time, amount, 0)
 
 
 class Effect6188(BaseEffect):
@@ -25107,13 +25130,20 @@ class Effect6188(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            bonus = container.getModifiedItemAttr('armorDamageAmount')
-            duration = container.getModifiedItemAttr('duration') / 1000.0
-            rps = bonus / duration
-            fit.extraAttributes.increase('armorRepair', rps, **kwargs)
-            fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
-            fit.extraAttributes.increase('armorRepairFullSpool', rps, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        bonus = container.getModifiedItemAttr('armorDamageAmount')
+        bonus *= calculateRangeFactor(
+            srcOptimalRange=container.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        duration = container.getModifiedItemAttr('duration') / 1000.0
+        rps = bonus / duration
+        fit.extraAttributes.increase('armorRepair', rps, **kwargs)
+        fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
+        fit.extraAttributes.increase('armorRepairFullSpool', rps, **kwargs)
 
 
 class Effect6195(BaseEffect):
@@ -25165,12 +25195,14 @@ class Effect6197(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         amount = src.getModifiedItemAttr('powerTransferAmount')
         time = src.getModifiedItemAttr('duration')
-
-        if 'effect' in kwargs and 'projected' in context:
-            from eos.modifiedAttributeDict import ModifiedAttributeDict
-            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
         if 'projected' in context:
+            if 'effect' in kwargs:
+                from eos.modifiedAttributeDict import ModifiedAttributeDict
+                amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+            amount *= calculateRangeFactor(
+                srcOptimalRange=src.getModifiedItemAttr('maxRange'),
+                srcFalloffRange=src.getModifiedItemAttr('falloffEffectiveness'),
+                distance=projectionRange)
             fit.addDrain(src, time, amount, 0)
         elif 'module' in context:
             src.itemModifiedAttributes.force('capacitorNeed', -amount, **kwargs)
@@ -25238,17 +25270,20 @@ class Effect6216(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         amount = 0
-        if 'projected' in context:
-            if (hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or hasattr(src, 'amountActive'):
-                amount = src.getModifiedItemAttr('energyNeutralizerAmount')
-
-                if 'effect' in kwargs:
-                    from eos.modifiedAttributeDict import ModifiedAttributeDict
-                    amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-                time = src.getModifiedItemAttr('duration')
-
-                fit.addDrain(src, time, amount, 0)
+        if 'projected' not in context:
+            return
+        if not ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or hasattr(src, 'amountActive')):
+            return
+        amount = src.getModifiedItemAttr('energyNeutralizerAmount')
+        amount *= calculateRangeFactor(
+            srcOptimalRange=src.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=src.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        time = src.getModifiedItemAttr('duration')
+        fit.addDrain(src, time, amount, 0)
 
 
 class Effect6222(BaseEffect):
@@ -25264,11 +25299,16 @@ class Effect6222(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
-            fit.modules.filteredItemIncrease(
-                lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
-                'activationBlocked', module.getModifiedItemAttr('activationBlockedStrenght'), **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
+            'activationBlocked', module.getModifiedItemAttr('activationBlockedStrenght'), **kwargs)
 
 
 class Effect6230(BaseEffect):
@@ -27100,11 +27140,15 @@ class Effect6422(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-
-        fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus') * rangeFactor,
                                stackingPenalties=True, **kwargs)
-
-        fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus'),
+        fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus') * rangeFactor,
                                stackingPenalties=True, **kwargs)
 
 
@@ -27120,16 +27164,23 @@ class Effect6423(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            for srcAttr, tgtAttr in (
-                    ('aoeCloudSizeBonus', 'aoeCloudSize'),
-                    ('aoeVelocityBonus', 'aoeVelocity'),
-                    ('missileVelocityBonus', 'maxVelocity'),
-                    ('explosionDelayBonus', 'explosionDelay'),
-            ):
-                fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                                tgtAttr, module.getModifiedItemAttr(srcAttr),
-                                                stackingPenalties=True, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        for srcAttr, tgtAttr in (
+            ('aoeCloudSizeBonus', 'aoeCloudSize'),
+            ('aoeVelocityBonus', 'aoeVelocity'),
+            ('missileVelocityBonus', 'maxVelocity'),
+            ('explosionDelayBonus', 'explosionDelay')
+        ):
+            fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                            tgtAttr, module.getModifiedItemAttr(srcAttr) * rangeFactor,
+                                            stackingPenalties=True, **kwargs)
 
 
 class Effect6424(BaseEffect):
@@ -27145,15 +27196,21 @@ class Effect6424(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        for srcAttr, tgtAttr in (
+            ('trackingSpeedBonus', 'trackingSpeed'),
+            ('maxRangeBonus', 'maxRange'),
+            ('falloffBonus', 'falloff')
+        ):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'falloff', module.getModifiedItemAttr('falloffBonus'),
+                                          tgtAttr, module.getModifiedItemAttr(srcAttr) * rangeFactor,
                                           stackingPenalties=True, **kwargs)
 
 
@@ -27169,12 +27226,15 @@ class Effect6425(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            appliedBoost = container.getModifiedItemAttr('signatureRadiusBonus') * calculateRangeFactor(
-                srcOptimalRange=container.getModifiedItemAttr('maxRange'),
-                srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
-                distance=projectionRange)
-            fit.ship.boostItemAttr('signatureRadius', appliedBoost, stackingPenalties=True, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        appliedBoost = container.getModifiedItemAttr('signatureRadiusBonus') * calculateRangeFactor(
+            srcOptimalRange=container.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        fit.ship.boostItemAttr('signatureRadius', appliedBoost, stackingPenalties=True, **kwargs)
 
 
 class Effect6426(BaseEffect):
@@ -27193,8 +27253,13 @@ class Effect6426(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-        fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
-                               stackingPenalties=True, **kwargs)
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        appliedBoost = module.getModifiedItemAttr('speedFactor') * calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        fit.ship.boostItemAttr('maxVelocity', appliedBoost, stackingPenalties=True, **kwargs)
 
 
 class Effect6427(BaseEffect):
@@ -27211,18 +27276,22 @@ class Effect6427(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-
-        fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
-                               stackingPenalties=True, **kwargs)
-        fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus'),
-                               stackingPenalties=True, **kwargs)
-
-        for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
-            fit.ship.boostItemAttr(
-                'scan{}Strength'.format(scanType),
-                module.getModifiedItemAttr('scan{}StrengthPercent'.format(scanType)),
-                stackingPenalties=True,
-                **kwargs)
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        for srcAttr, tgtAttr in (
+            ('maxTargetRangeBonus', 'maxTargetRange'),
+            ('scanResolutionBonus', 'scanResolution'),
+            ('scanGravimetricStrengthPercent', 'scanGravimetricStrength'),
+            ('scanMagnetometricStrengthPercent', 'scanMagnetometricStrength'),
+            ('scanRadarStrengthPercent', 'scanRadarStrength'),
+            ('scanLadarStrengthPercent', 'scanLadarStrength')
+        ):
+            fit.ship.boostItemAttr(tgtAttr, module.getModifiedItemAttr(srcAttr) * rangeFactor,
+                                   stackingPenalties=True, **kwargs)
 
 
 class Effect6428(BaseEffect):
@@ -27237,15 +27306,21 @@ class Effect6428(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        for srcAttr, tgtAttr in (
+            ('trackingSpeedBonus', 'trackingSpeed'),
+            ('maxRangeBonus', 'maxRange'),
+            ('falloffBonus', 'falloff')
+        ):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'falloff', module.getModifiedItemAttr('falloffBonus'),
+                                          tgtAttr, module.getModifiedItemAttr(srcAttr) * rangeFactor,
                                           stackingPenalties=True, **kwargs)
 
 
@@ -27279,15 +27354,18 @@ class Effect6434(BaseEffect):
 
     @classmethod
     def handler(cls, fit, src, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            amount = src.getModifiedItemAttr('{}Amount'.format(cls.prefix)) * src.amount
-            time = src.getModifiedItemAttr('{}Duration'.format(cls.prefix))
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            fit.addDrain(src, time, amount, 0)
+        if 'projected' not in context:
+            return
+        amount = src.getModifiedItemAttr('{}Amount'.format(cls.prefix)) * src.amount
+        amount *= calculateRangeFactor(
+            srcOptimalRange=src.getModifiedItemAttr('{}OptimalRange'.format(cls.prefix)),
+            srcFalloffRange=src.getModifiedItemAttr('{}FalloffRange'.format(cls.prefix)),
+            distance=projectionRange)
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        time = src.getModifiedItemAttr('{}Duration'.format(cls.prefix))
+        fit.addDrain(src, time, amount, 0)
 
 
 class Effect6435(BaseEffect):
@@ -27307,8 +27385,14 @@ class Effect6435(BaseEffect):
     def handler(cls, fit, src, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-        fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('{}SpeedPenalty'.format(cls.prefix)) * src.amount,
-                               stackingPenalties=True, **kwargs)
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        speedBoost = src.getModifiedItemAttr('{}SpeedPenalty'.format(cls.prefix)) * src.amount
+        speedBoost *= calculateRangeFactor(
+            srcOptimalRange=src.getModifiedItemAttr('{}OptimalRange'.format(cls.prefix)),
+            srcFalloffRange=src.getModifiedItemAttr('{}FalloffRange'.format(cls.prefix)),
+            distance=projectionRange)
+        fit.ship.boostItemAttr('maxVelocity', speedBoost, stackingPenalties=True, **kwargs)
 
 
 class Effect6436(BaseEffect):
@@ -27328,7 +27412,14 @@ class Effect6436(BaseEffect):
     def handler(cls, fit, src, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-        fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('{}PointStrength'.format(cls.prefix)) * src.amount, **kwargs)
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if src.getModifiedItemAttr('{}Range'.format(cls.prefix), 0) < (projectionRange or 0):
+            return
+        fit.ship.increaseItemAttr(
+            'warpScrambleStatus',
+            src.getModifiedItemAttr('{}PointStrength'.format(cls.prefix)) * src.amount,
+            **kwargs)
 
 
 class Effect6437(BaseEffect):
@@ -27348,14 +27439,18 @@ class Effect6437(BaseEffect):
     def handler(cls, fit, src, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-        # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-        strModifier = 1 - (src.getModifiedItemAttr('{}Strength{}'.format(cls.prefix, fit.scanType)) * src.amount) / fit.scanStrength
-
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        strength = src.getModifiedItemAttr('{}Strength{}'.format(cls.prefix, fit.scanType)) * src.amount
+        strength *= calculateRangeFactor(
+            srcOptimalRange=src.getModifiedItemAttr('{}RangeOptimal'.format(cls.prefix)),
+            srcFalloffRange=src.getModifiedItemAttr('{}RangeFalloff'.format(cls.prefix)),
+            distance=projectionRange)
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
-            strModifier *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-        fit.ecmProjectedStr *= strModifier
+            strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        chanceModifier = 1 - strength / fit.scanStrength
+        fit.ecmProjectedStr *= chanceModifier
 
 
 class Effect6439(BaseEffect):
@@ -27516,15 +27611,20 @@ class Effect6470(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-            strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                strModifier *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            fit.ecmProjectedStr *= strModifier
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        strength = module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType))
+        strength *= calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        chanceModifier = 1 - strength / fit.scanStrength
+        fit.ecmProjectedStr *= chanceModifier
 
 
 class Effect6472(BaseEffect):
@@ -27607,6 +27707,8 @@ class Effect6476(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
                                stackingPenalties=True, **kwargs)
 
@@ -27624,17 +27726,16 @@ class Effect6477(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        if 'projected' in context and ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or
-                                       hasattr(src, 'amountActive')):
-            amount = src.getModifiedItemAttr('energyNeutralizerAmount')
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            time = src.getModifiedItemAttr('duration')
-
-            fit.addDrain(src, time, amount, 0)
+        if 'projected' not in context:
+            return
+        if not ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or hasattr(src, 'amountActive')):
+            return
+        amount = src.getModifiedItemAttr('energyNeutralizerAmount')
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        time = src.getModifiedItemAttr('duration')
+        fit.addDrain(src, time, amount, 0)
 
 
 class Effect6478(BaseEffect):
@@ -27650,9 +27751,12 @@ class Effect6478(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
-                                   stackingPenalties=True, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
+                               stackingPenalties=True, **kwargs)
 
 
 class Effect6479(BaseEffect):
@@ -27668,25 +27772,26 @@ class Effect6479(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            for srcAttr, tgtAttr in (
-                    ('aoeCloudSizeBonus', 'aoeCloudSize'),
-                    ('aoeVelocityBonus', 'aoeVelocity'),
-                    ('missileVelocityBonus', 'maxVelocity'),
-                    ('explosionDelayBonus', 'explosionDelay'),
-            ):
-                fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                                tgtAttr, module.getModifiedItemAttr(srcAttr),
-                                                stackingPenalties=True, **kwargs)
-
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        for srcAttr, tgtAttr in (
+            ('aoeCloudSizeBonus', 'aoeCloudSize'),
+            ('aoeVelocityBonus', 'aoeVelocity'),
+            ('missileVelocityBonus', 'maxVelocity'),
+            ('explosionDelayBonus', 'explosionDelay')
+        ):
+            fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                            tgtAttr, module.getModifiedItemAttr(srcAttr),
+                                            stackingPenalties=True, **kwargs)
+        for srcAttr, tgtAttr in (
+            ('trackingSpeedBonus', 'trackingSpeed'),
+            ('maxRangeBonus', 'maxRange'),
+            ('falloffBonus', 'falloff')
+        ):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'falloff', module.getModifiedItemAttr('falloffBonus'),
+                                          tgtAttr, module.getModifiedItemAttr(srcAttr),
                                           stackingPenalties=True, **kwargs)
 
 
@@ -27705,10 +27810,10 @@ class Effect6481(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
                                stackingPenalties=True, **kwargs)
-
         fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -28001,15 +28106,16 @@ class Effect6513(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-            strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                strModifier *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            fit.ecmProjectedStr *= strModifier
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        strength = module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType))
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        chanceModifier = 1 - strength / fit.scanStrength
+        fit.ecmProjectedStr *= chanceModifier
 
 
 class Effect6526(BaseEffect):
@@ -30049,13 +30155,17 @@ class Effect6651(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
         if module.charge and module.charge.name == 'Nanite Repair Paste':
             multiplier = 3
         else:
             multiplier = 1
-
         amount = module.getModifiedItemAttr('armorDamageAmount') * multiplier
+        amount *= calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
         speed = module.getModifiedItemAttr('duration') / 1000.0
         rps = amount / speed
         fit.extraAttributes.increase('armorRepair', rps, **kwargs)
@@ -30078,7 +30188,13 @@ class Effect6652(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
         amount = module.getModifiedItemAttr('shieldBonus')
+        amount *= calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
         speed = module.getModifiedItemAttr('duration') / 1000.0
         fit.extraAttributes.increase('shieldRepair', amount / speed, **kwargs)
 
@@ -30531,8 +30647,14 @@ class Effect6682(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-        fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
-                               stackingPenalties=True, **kwargs)
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        speedBoost = module.getModifiedItemAttr('speedFactor')
+        speedBoost *= calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        fit.ship.boostItemAttr('maxVelocity', speedBoost, stackingPenalties=True, **kwargs)
 
 
 class Effect6683(BaseEffect):
@@ -30547,12 +30669,16 @@ class Effect6683(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            appliedBoost = container.getModifiedItemAttr('signatureRadiusBonus') * calculateRangeFactor(
-                srcOptimalRange=container.getModifiedItemAttr('maxRange'),
-                srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
-                distance=projectionRange)
-            fit.ship.boostItemAttr('signatureRadius', appliedBoost, stackingPenalties=True, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        appliedBoost = container.getModifiedItemAttr('signatureRadiusBonus')
+        appliedBoost *= calculateRangeFactor(
+            srcOptimalRange=container.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        fit.ship.boostItemAttr('signatureRadius', appliedBoost, stackingPenalties=True, **kwargs)
 
 
 class Effect6684(BaseEffect):
@@ -30569,11 +30695,15 @@ class Effect6684(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-
-        fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus') * rangeFactor,
                                stackingPenalties=True, **kwargs)
-
-        fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus'),
+        fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus') * rangeFactor,
                                stackingPenalties=True, **kwargs)
 
 
@@ -30589,11 +30719,20 @@ class Effect6685(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-            strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
-
-            fit.ecmProjectedStr *= strModifier
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        strength = module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType))
+        strength *= calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        chanceModifier = 1 - strength / fit.scanStrength
+        fit.ecmProjectedStr *= chanceModifier
 
 
 class Effect6686(BaseEffect):
@@ -30608,25 +30747,30 @@ class Effect6686(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            for srcAttr, tgtAttr in (
-                    ('aoeCloudSizeBonus', 'aoeCloudSize'),
-                    ('aoeVelocityBonus', 'aoeVelocity'),
-                    ('missileVelocityBonus', 'maxVelocity'),
-                    ('explosionDelayBonus', 'explosionDelay'),
-            ):
-                fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                                tgtAttr, module.getModifiedItemAttr(srcAttr),
-                                                stackingPenalties=True, **kwargs)
-
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=module.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        for srcAttr, tgtAttr in (
+            ('aoeCloudSizeBonus', 'aoeCloudSize'),
+            ('aoeVelocityBonus', 'aoeVelocity'),
+            ('missileVelocityBonus', 'maxVelocity'),
+            ('explosionDelayBonus', 'explosionDelay')
+        ):
+            fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                            tgtAttr, module.getModifiedItemAttr(srcAttr) * rangeFactor,
+                                            stackingPenalties=True, **kwargs)
+        for srcAttr, tgtAttr in (
+            ('trackingSpeedBonus', 'trackingSpeed'),
+            ('maxRangeBonus', 'maxRange'),
+            ('falloffBonus', 'falloff')
+        ):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'falloff', module.getModifiedItemAttr('falloffBonus'),
+                                          tgtAttr, module.getModifiedItemAttr(srcAttr) * rangeFactor,
                                           stackingPenalties=True, **kwargs)
 
 
@@ -30642,13 +30786,18 @@ class Effect6687(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            bonus = container.getModifiedItemAttr('armorDamageAmount')
-            duration = container.getModifiedItemAttr('duration') / 1000.0
-            rps = bonus / duration
-            fit.extraAttributes.increase('armorRepair', rps, **kwargs)
-            fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
-            fit.extraAttributes.increase('armorRepairFullSpool', rps, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        if container.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        bonus = container.getModifiedItemAttr('armorDamageAmount')
+        duration = container.getModifiedItemAttr('duration') / 1000.0
+        rps = bonus / duration
+        fit.extraAttributes.increase('armorRepair', rps, **kwargs)
+        fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
+        fit.extraAttributes.increase('armorRepairFullSpool', rps, **kwargs)
 
 
 class Effect6688(BaseEffect):
@@ -30663,10 +30812,15 @@ class Effect6688(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            bonus = container.getModifiedItemAttr('shieldBonus')
-            duration = container.getModifiedItemAttr('duration') / 1000.0
-            fit.extraAttributes.increase('shieldRepair', bonus / duration, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        if container.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        bonus = container.getModifiedItemAttr('shieldBonus')
+        duration = container.getModifiedItemAttr('duration') / 1000.0
+        fit.extraAttributes.increase('shieldRepair', bonus / duration, **kwargs)
 
 
 class Effect6689(BaseEffect):
@@ -30683,6 +30837,10 @@ class Effect6689(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
             return
         bonus = module.getModifiedItemAttr('structureDamageAmount')
         duration = module.getModifiedItemAttr('duration') / 1000.0
@@ -30703,6 +30861,10 @@ class Effect6690(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
                                stackingPenalties=True, **kwargs)
 
@@ -30719,16 +30881,18 @@ class Effect6691(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        if 'projected' in context and ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or
-                                       hasattr(src, 'amountActive')):
-            amount = src.getModifiedItemAttr('energyNeutralizerAmount')
-            time = src.getModifiedItemAttr('energyNeutralizerDuration')
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            fit.addDrain(src, time, amount, 0)
+        if 'projected' not in context:
+            return
+        if not ((hasattr(src, 'state') and src.state >= FittingModuleState.ACTIVE) or hasattr(src, 'amountActive')):
+            return
+        if src.getModifiedItemAttr('energyNeutralizerRangeOptimal', 0) < (projectionRange or 0):
+            return
+        amount = src.getModifiedItemAttr('energyNeutralizerAmount')
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        time = src.getModifiedItemAttr('energyNeutralizerDuration')
+        fit.addDrain(src, time, amount, 0)
 
 
 class Effect6692(BaseEffect):
@@ -30743,9 +30907,14 @@ class Effect6692(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
-                                   stackingPenalties=True, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if container.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
+                               stackingPenalties=True, **kwargs)
 
 
 class Effect6693(BaseEffect):
@@ -30759,14 +30928,16 @@ class Effect6693(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' not in context:
             return
-
-        fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRangeBonus'),
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if container.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        fit.ship.boostItemAttr('maxTargetRange', container.getModifiedItemAttr('maxTargetRangeBonus'),
                                stackingPenalties=True, **kwargs)
-
-        fit.ship.boostItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionBonus'),
+        fit.ship.boostItemAttr('scanResolution', container.getModifiedItemAttr('scanResolutionBonus'),
                                stackingPenalties=True, **kwargs)
 
 
@@ -30781,16 +30952,20 @@ class Effect6694(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
+    def handler(fit, container, context, projectionRange, **kwargs):
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if container.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        for srcAttr, tgtAttr in (
+            ('trackingSpeedBonus', 'trackingSpeed'),
+            ('maxRangeBonus', 'maxRange'),
+            ('falloffBonus', 'falloff')
+        ):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                          stackingPenalties=True, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                          'falloff', module.getModifiedItemAttr('falloffBonus'),
+                                          tgtAttr, container.getModifiedItemAttr(srcAttr),
                                           stackingPenalties=True, **kwargs)
 
 
@@ -30805,16 +30980,19 @@ class Effect6695(BaseEffect):
     type = 'projected', 'active'
 
     @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-            strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                strModifier *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            fit.ecmProjectedStr *= strModifier
+    def handler(fit, container, context, projectionRange, **kwargs):
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if container.getModifiedItemAttr('ECMRangeOptimal', 0) < (projectionRange or 0):
+            return
+        strength = container.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType))
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        chanceModifier = 1 - strength / fit.scanStrength
+        fit.ecmProjectedStr *= chanceModifier
 
 
 class Effect6697(BaseEffect):
@@ -31104,15 +31282,18 @@ class Effect6714(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-            strModifier = 1 - module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType)) / fit.scanStrength
-
-            if 'effect' in kwargs:
-                from eos.modifiedAttributeDict import ModifiedAttributeDict
-                strModifier *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
-            fit.ecmProjectedStr *= strModifier
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        if module.getModifiedItemAttr('ecmBurstRange', 0) < (projectionRange or 0):
+            return
+        strength = module.getModifiedItemAttr('scan{0}StrengthBonus'.format(fit.scanType))
+        if 'effect' in kwargs:
+            from eos.modifiedAttributeDict import ModifiedAttributeDict
+            strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
+        chanceModifier = 1 - strength / fit.scanStrength
+        fit.ecmProjectedStr *= chanceModifier
 
 
 class Effect6717(BaseEffect):
@@ -34438,7 +34619,6 @@ class Effect7050(BaseEffect):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
                 id = beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x))
-
                 if id:
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
@@ -34460,7 +34640,6 @@ class Effect7051(BaseEffect):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
                 id = beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x))
-
                 if id:
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
@@ -34544,7 +34723,6 @@ class Effect7058(BaseEffect):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
                 id = beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x))
-
                 if id:
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
@@ -34568,7 +34746,6 @@ class Effect7059(BaseEffect):
             if beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x)):
                 value = beacon.getModifiedItemAttr('warfareBuff{}Value'.format(x))
                 id = beacon.getModifiedItemAttr('warfareBuff{}ID'.format(x))
-
                 if id:
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
@@ -35304,19 +35481,26 @@ class Effect7166(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        if 'projected' in context:
-            repAmountBase = container.getModifiedItemAttr('armorDamageAmount')
-            cycleTime = container.getModifiedItemAttr('duration') / 1000.0
-            repSpoolMax = container.getModifiedItemAttr('repairMultiplierBonusMax')
-            repSpoolPerCycle = container.getModifiedItemAttr('repairMultiplierBonusPerCycle')
-            defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-            spoolType, spoolAmount = resolveSpoolOptions(SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False), container)
-            rps = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, spoolType, spoolAmount)[0]) / cycleTime
-            rpsPreSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 0)[0]) / cycleTime
-            rpsFullSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 1)[0]) / cycleTime
-            fit.extraAttributes.increase('armorRepair', rps, **kwargs)
-            fit.extraAttributes.increase('armorRepairPreSpool', rpsPreSpool, **kwargs)
-            fit.extraAttributes.increase('armorRepairFullSpool', rpsFullSpool, **kwargs)
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowAssistance'):
+            return
+        repAmountBase = container.getModifiedItemAttr('armorDamageAmount')
+        repAmountBase *= calculateRangeFactor(
+            srcOptimalRange=container.getModifiedItemAttr('maxRange'),
+            srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
+            distance=projectionRange)
+        cycleTime = container.getModifiedItemAttr('duration') / 1000.0
+        repSpoolMax = container.getModifiedItemAttr('repairMultiplierBonusMax')
+        repSpoolPerCycle = container.getModifiedItemAttr('repairMultiplierBonusPerCycle')
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
+        spoolType, spoolAmount = resolveSpoolOptions(SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False), container)
+        rps = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, spoolType, spoolAmount)[0]) / cycleTime
+        rpsPreSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 0)[0]) / cycleTime
+        rpsFullSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 1)[0]) / cycleTime
+        fit.extraAttributes.increase('armorRepair', rps, **kwargs)
+        fit.extraAttributes.increase('armorRepairPreSpool', rpsPreSpool, **kwargs)
+        fit.extraAttributes.increase('armorRepairFullSpool', rpsFullSpool, **kwargs)
 
 
 class Effect7167(BaseEffect):
