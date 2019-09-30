@@ -204,8 +204,11 @@ class Effect39(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' in context and module.getModifiedItemAttr('maxRange', 0) >= (projectionRange or 0):
-            fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
+        if 'projected' not in context:
+            return
+        if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
+            return
+        fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
 
 
 class Effect48(BaseEffect):
@@ -545,25 +548,21 @@ class Effect101(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         # Set reload time to 10 seconds
         src.reloadTime = 10000
-
-        if 'projected' in context:
-            if src.item.group.name == 'Missile Launcher Bomb':
-                # Bomb Launcher Cooldown Timer
-                moduleReactivationDelay = src.getModifiedItemAttr('moduleReactivationDelay')
-                speed = src.getModifiedItemAttr('speed')
-
-                # Void and Focused Void Bombs
-                neutAmount = src.getModifiedChargeAttr('energyNeutralizerAmount')
-
-                if moduleReactivationDelay and neutAmount and speed:
-                    fit.addDrain(src, speed + moduleReactivationDelay, neutAmount, 0)
-
-                # Lockbreaker Bombs
-                ecmStrengthBonus = src.getModifiedChargeAttr('scan{0}StrengthBonus'.format(fit.scanType))
-
-                if ecmStrengthBonus:
-                    strModifier = 1 - ecmStrengthBonus / fit.scanStrength
-                    fit.ecmProjectedStr *= strModifier
+        if 'projected' not in context:
+            return
+        if src.item.group.name == 'Missile Launcher Bomb':
+            # Bomb Launcher Cooldown Timer
+            moduleReactivationDelay = src.getModifiedItemAttr('moduleReactivationDelay')
+            speed = src.getModifiedItemAttr('speed')
+            # Void and Focused Void Bombs
+            neutAmount = src.getModifiedChargeAttr('energyNeutralizerAmount')
+            if moduleReactivationDelay and neutAmount and speed:
+                fit.addDrain(src, speed + moduleReactivationDelay, neutAmount, 0)
+            # Lockbreaker Bombs
+            ecmStrengthBonus = src.getModifiedChargeAttr('scan{0}StrengthBonus'.format(fit.scanType))
+            if ecmStrengthBonus:
+                strModifier = 1 - ecmStrengthBonus / fit.scanStrength
+                fit.ecmProjectedStr *= strModifier
 
 
 class Effect118(BaseEffect):
@@ -10135,22 +10134,26 @@ class Effect3380(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         if 'projected' in context:
-            if module.charge is not None:
-                if module.charge.ID in (29003, 45010):
-                    fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
-                if module.charge.ID == 45010:
-                    fit.modules.filteredItemIncrease(
-                        lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
-                        'activationBlocked', 1, **kwargs)
+            if module.charge is None:
+                return
+            if module.getModifiedItemAttr('warpScrambleRange', 0) < (projectionRange or 0):
+                return
+            if module.charge.ID in (29003, 45010):
+                fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
+            if module.charge.ID == 45010:
+                fit.modules.filteredItemIncrease(
+                    lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
+                    'activationBlocked', 1, **kwargs)
         else:
             fit.ship.forceItemAttr('disallowAssistance', 1, **kwargs)
-            if module.charge is None:
-                fit.ship.boostItemAttr('mass', module.getModifiedItemAttr('massBonusPercentage'), **kwargs)
-                fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonus'), **kwargs)
-                fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
-                                              'speedBoostFactor', module.getModifiedItemAttr('speedBoostFactorBonus'), **kwargs)
-                fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
-                                          'speedFactor', module.getModifiedItemAttr('speedFactorBonus'), **kwargs)
+            if module.charge is not None:
+                return
+            fit.ship.boostItemAttr('mass', module.getModifiedItemAttr('massBonusPercentage'), **kwargs)
+            fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonus'), **kwargs)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
+                                          'speedBoostFactor', module.getModifiedItemAttr('speedBoostFactorBonus'), **kwargs)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
+                                      'speedFactor', module.getModifiedItemAttr('speedFactorBonus'), **kwargs)
 
 
 class Effect3392(BaseEffect):
@@ -11116,6 +11119,7 @@ class Effect3648(BaseEffect):
     Charges from group: Warp Disruption Script (2 of 2)
     """
 
+    runTime = 'early'
     type = 'passive'
 
     @staticmethod
@@ -27166,8 +27170,11 @@ class Effect6425(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
-            fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
-                                   stackingPenalties=True, **kwargs)
+            appliedBoost = container.getModifiedItemAttr('signatureRadiusBonus') * calculateRangeFactor(
+                srcOptimalRange=container.getModifiedItemAttr('maxRange'),
+                srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
+                distance=projectionRange)
+            fit.ship.boostItemAttr('signatureRadius', appliedBoost, stackingPenalties=True, **kwargs)
 
 
 class Effect6426(BaseEffect):
@@ -30541,8 +30548,11 @@ class Effect6683(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         if 'projected' in context:
-            fit.ship.boostItemAttr('signatureRadius', container.getModifiedItemAttr('signatureRadiusBonus'),
-                                   stackingPenalties=True, **kwargs)
+            appliedBoost = container.getModifiedItemAttr('signatureRadiusBonus') * calculateRangeFactor(
+                srcOptimalRange=container.getModifiedItemAttr('maxRange'),
+                srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
+                distance=projectionRange)
+            fit.ship.boostItemAttr('signatureRadius', appliedBoost, stackingPenalties=True, **kwargs)
 
 
 class Effect6684(BaseEffect):
