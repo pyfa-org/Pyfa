@@ -1224,8 +1224,8 @@ class Fit:
         # Signature reduction, uses the bomb formula as per CCP Larrikin
         if energyNeutralizerSignatureResolution:
             capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
-
-        self.__extraDrains.append((cycleTime, capNeed, clipSize, reloadTime))
+        if capNeed:
+            self.__extraDrains.append((cycleTime, capNeed, clipSize, reloadTime))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]
