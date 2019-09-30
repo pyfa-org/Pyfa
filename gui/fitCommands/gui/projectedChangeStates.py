@@ -72,18 +72,21 @@ class GuiChangeProjectedItemStatesCommand(wx.Command):
                 itemID=pDroneItemID,
                 state=False if self.proposedState == 'inactive' else True)
             results.append(self.internalHistory.submit(cmd))
+            needRecalc = True
         for pFighterPosition in self.pFighterPositions:
             cmd = CalcChangeProjectedFighterStateCommand(
                 fitID=self.fitID,
                 position=pFighterPosition,
                 state=False if self.proposedState == 'inactive' else True)
             results.append(self.internalHistory.submit(cmd))
+            needRecalc = True
         for pFitID in self.pFitIDs:
             cmd = CalcChangeProjectedFitStateCommand(
                 fitID=self.fitID,
                 projectedFitID=pFitID,
                 state=False if self.proposedState == 'inactive' else True)
             results.append(self.internalHistory.submit(cmd))
+            needRecalc = cmd.needsGuiRecalc
         success = any(results)
         sFit = Fit.getInstance()
         if needRecalc:

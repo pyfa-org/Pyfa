@@ -55,12 +55,14 @@ class GuiChangeProjectedItemsProjectionRangeCommand(wx.Command):
                 itemID=pDroneItemID,
                 projectionRange=self.projectionRange)
             results.append(self.internalHistory.submit(cmd))
+            needRecalc = True
         for pFighterPosition in self.pFighterPositions:
             cmd = CalcChangeProjectedFighterProjectionRangeCommand(
                 fitID=self.fitID,
                 position=pFighterPosition,
                 projectionRange=self.projectionRange)
             results.append(self.internalHistory.submit(cmd))
+            needRecalc = True
         for pFitID in self.pFitIDs:
             cmd = CalcChangeProjectedFitProjectionRangeCommand(
                 fitID=self.fitID,
