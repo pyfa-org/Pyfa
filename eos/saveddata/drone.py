@@ -340,14 +340,18 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy = Drone(self.item)
         copy.amount = self.amount
         copy.amountActive = self.amountActive
+        copy.projectionRange = self.projectionRange
         return copy
 
     def rebase(self, item):
         amount = self.amount
         amountActive = self.amountActive
+        projectionRange = self.projectionRange
+
         Drone.__init__(self, item)
         self.amount = amount
         self.amountActive = amountActive
+        self.projectionRange = projectionRange
 
     def fits(self, fit):
         fitDroneGroupLimits = set()

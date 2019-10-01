@@ -1023,6 +1023,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy.state = self.state
         copy.spoolType = self.spoolType
         copy.spoolAmount = self.spoolAmount
+        copy.projectionRange = self.projectionRange
 
         for x in self.mutators.values():
             Mutator(copy, x.attribute, x.value)
@@ -1032,10 +1033,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def rebase(self, item):
         state = self.state
         charge = self.charge
+        spoolType = self.spoolType
+        spoolAmount = self.spoolAmount
+        projectionRange = self.projectionRange
+
         Module.__init__(self, item, self.baseItem, self.mutaplasmid)
         self.state = state
         if self.isValidCharge(charge):
             self.charge = charge
+        self.spoolType = spoolType
+        self.spoolAmount = spoolAmount
+        self.projectionRange = projectionRange
         for x in self.mutators.values():
             Mutator(self, x.attribute, x.value)
 

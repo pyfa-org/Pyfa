@@ -418,18 +418,22 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for ability in self.abilities:
             copyAbility = next(filter(lambda a: a.effectID == ability.effectID, copy.abilities))
             copyAbility.active = ability.active
+        copy.projectionRange = self.projectionRange
         return copy
 
     def rebase(self, item):
         amount = self._amount
         active = self.active
         abilityEffectStates = {a.effectID: a.active for a in self.abilities}
+        projectionRange = self.projectionRange
+
         Fighter.__init__(self, item)
         self._amount = amount
         self.active = active
         for ability in self.abilities:
             if ability.effectID in abilityEffectStates:
                 ability.active = abilityEffectStates[ability.effectID]
+        self.projectionRange = projectionRange
 
     def fits(self, fit):
         # If ships doesn't support this type of fighter, don't add it
