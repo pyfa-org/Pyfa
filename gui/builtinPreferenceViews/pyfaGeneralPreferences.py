@@ -194,6 +194,10 @@ class PFGeneralPref(PreferenceView):
 
     def OnAddLabelsChange(self, event):
         self.sFit.serviceFittingOptions["additionsLabels"] = event.GetInt()
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
+        event.Skip()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
