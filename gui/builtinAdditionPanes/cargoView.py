@@ -214,3 +214,18 @@ class CargoView(d.Display):
                 continue
             cargos.append(cargo)
         return cargos
+
+    def getTabExtraText(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return None
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit is None:
+            return None
+        opt = sFit.serviceFittingOptions["additionsLabels"]
+        # Total amount of cargo items
+        if opt in (1, 2):
+            return ' ({})'.format(len(fit.cargo))
+        else:
+            return None

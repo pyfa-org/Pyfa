@@ -20,6 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinAdditionPanes.boosterView import BoosterView
 from gui.builtinAdditionPanes.cargoView import CargoView
@@ -35,9 +36,10 @@ from gui.toggle_panel import TogglePanel
 
 class AdditionsPane(TogglePanel):
 
-    def __init__(self, parent):
+    def __init__(self, parent, mainFrame):
 
         TogglePanel.__init__(self, parent, force_layout=1)
+        self.mainFrame = mainFrame
 
         self.SetLabel("Additions")
         pane = self.GetContentPanel()
@@ -83,6 +85,8 @@ class AdditionsPane(TogglePanel):
         self.notes = NotesView(self.notebook)
         self.notebook.AddPage(self.notes, "Notes", image=notesImg, closeable=False)
 
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
+
         self.notebook.SetSelection(0)
 
     PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Command", "Notes"]
@@ -106,3 +110,21 @@ class AdditionsPane(TogglePanel):
             self.parent.SetSashInvisible(False)
             self.parent.SetMinimumPaneSize(200)
             self.parent.SetSashPosition(self.old_pos, True)
+
+    def OnFitChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and activeFitID not in event.fitIDs:
+            return
+        self.updateExtraText()
+
+    def updateExtraText(self):
+        refresh = False
+        for i in range(self.notebook.GetPageCount()):
+            page = self.notebook.GetPage(i)
+            if hasattr(page, 'getTabExtraText'):
+                refresh = True
+                self.notebook.SetPageTitleExtra(i, page.getTabExtraText() or '', refresh=False)
+        if refresh:
+            self.notebook.tabs_container.AdjustTabsSize()
+            self.notebook.Refresh()

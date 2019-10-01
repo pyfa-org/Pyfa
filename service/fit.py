@@ -92,6 +92,7 @@ class Fit:
             "showShipBrowserTooltip": True,
             "marketSearchDelay": 250,
             "ammoChangeAll": False,
+            "additionsLabels": 1,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(

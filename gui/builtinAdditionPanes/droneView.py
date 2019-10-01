@@ -337,3 +337,27 @@ class DroneView(Display):
                 continue
             drones.append(drone)
         return drones
+
+    def getTabExtraText(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return None
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit is None:
+            return None
+        opt = sFit.serviceFittingOptions["additionsLabels"]
+        # Amount of active drones
+        if opt == 1:
+            amount = 0
+            for droneStack in fit.drones:
+                amount += droneStack.amountActive
+            return ' ({})'.format(int(amount))
+        # Total amount of drones
+        elif opt == 2:
+            amount = 0
+            for droneStack in fit.drones:
+                amount += droneStack.amount
+            return ' ({})'.format(int(amount))
+        else:
+            return None

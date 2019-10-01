@@ -27,6 +27,7 @@ import gui.builtinAdditionPanes.droneView
 import gui.display as d
 import gui.fitCommands as cmd
 import gui.globalEvents as GE
+from eos.const import FittingModuleState
 from eos.saveddata.drone import Drone as EosDrone
 from eos.saveddata.fighter import Fighter as EosFighter
 from eos.saveddata.fit import Fit as EosFit
@@ -397,3 +398,34 @@ class ProjectedView(d.Display):
             fitID=self.mainFrame.getActiveFit(),
             projectedFitIDs=fitIDs,
             amount=1))
+
+    def getTabExtraText(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return None
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit is None:
+            return None
+        opt = sFit.serviceFittingOptions["additionsLabels"]
+        # Amount of active projected items
+        if opt == 1:
+            amount = 0
+            for projectedFit in fit.projectedFits:
+                info = projectedFit.getProjectionInfo(fitID)
+                if info is not None and info.active:
+                    amount += 1
+            amount += len([m for m in fit.projectedModules if m.state > FittingModuleState.OFFLINE])
+            amount += len([d for d in fit.projectedDrones if d.amountActive > 0])
+            amount += len([f for f in fit.projectedFighters if f.active])
+            return ' ({})'.format(amount)
+        # Total amount of projected items
+        elif opt == 2:
+            amount = 0
+            amount += len(fit.projectedFits)
+            amount += len(fit.projectedModules)
+            amount += len(fit.projectedDrones)
+            amount += len(fit.projectedFighters)
+            return ' ({})'.format(amount)
+        else:
+            return None

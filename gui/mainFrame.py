@@ -162,7 +162,7 @@ class MainFrame(wx.Frame):
         mainSizer.Add(self.browser_fitting_split, 1, wx.EXPAND | wx.LEFT, 2)
 
         self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
-        self.additionsPane = AdditionsPane(self.fitting_additions_split)
+        self.additionsPane = AdditionsPane(self.fitting_additions_split, self)
 
         self.notebookBrowsers = ChromeNotebook(self.browser_fitting_split, False)
 

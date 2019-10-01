@@ -296,7 +296,14 @@ class ChromeNotebook(wx.Panel):
 
     def SetPageTitle(self, i, text, refresh=True):
         tab = self.tabs_container.tabs[i]
-        tab.text = text
+        tab.baseText = text
+        if refresh:
+            self.tabs_container.AdjustTabsSize()
+            self.Refresh()
+
+    def SetPageTitleExtra(self, i, text, refresh=True):
+        tab = self.tabs_container.tabs[i]
+        tab.extraText = text
         if refresh:
             self.tabs_container.AdjustTabsSize()
             self.Refresh()
@@ -354,7 +361,8 @@ class _TabRenderer:
         height = max(height, self.min_height)
 
         self.disabled = False
-        self.text = text
+        self.baseText = text
+        self.extraText = ''
         self.tab_size = (width, height)
         self.closeable = closeable
         self.selected = False
@@ -367,6 +375,10 @@ class _TabRenderer:
         self.tab_img = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
         self.InitTab()
+
+    @property
+    def text(self):
+        return self.baseText + self.extraText
 
     def SetPosition(self, position):
         self.position = position

@@ -247,3 +247,26 @@ class CommandView(d.Display):
         self.mainFrame.command.Submit(cmd.GuiAddCommandFitsCommand(
             fitID=self.mainFrame.getActiveFit(),
             commandFitIDs=fitIDs))
+
+    def getTabExtraText(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return None
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit is None:
+            return None
+        opt = sFit.serviceFittingOptions["additionsLabels"]
+        # Amount of active command fits
+        if opt == 1:
+            amount = 0
+            for commandFit in fit.commandFits:
+                info = commandFit.getCommandInfo(fitID)
+                if info is not None and info.active:
+                    amount += 1
+            return ' ({})'.format(amount)
+        # Total amount of command fits
+        elif opt == 2:
+            return ' ({})'.format(len(fit.commandFits))
+        else:
+            return None

@@ -117,6 +117,24 @@ class FighterView(wx.Panel):
 
             self.Refresh()
 
+    def getTabExtraText(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return None
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit is None:
+            return None
+        opt = sFit.serviceFittingOptions["additionsLabels"]
+        # Amount of active fighter squads
+        if opt == 1:
+            return ' ({})'.format(len([f for f in fit.fighters if f.active]))
+        # Total amount of fighter squads
+        elif opt == 2:
+            return ' ({})'.format(len(fit.fighters))
+        else:
+            return None
+
 
 class FighterDisplay(d.Display):
 

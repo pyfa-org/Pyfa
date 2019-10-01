@@ -101,6 +101,23 @@ class ImplantView(wx.Panel):
             self.mainFrame.command.Submit(cmd.GuiChangeImplantLocationCommand(
                 fitID=fitID, source=ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER))
 
+    def getTabExtraText(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return None
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit is None:
+            return None
+        opt = sFit.serviceFittingOptions["additionsLabels"]
+        # Amount of active implants
+        if opt == 1:
+            return ' ({})'.format(len([i for i in fit.appliedImplants if i.active]))
+        # Total amount of implants
+        elif opt == 2:
+            return ' ({})'.format(len(fit.appliedImplants))
+        else:
+            return None
 
 class ImplantDisplay(d.Display):
 

@@ -226,3 +226,21 @@ class BoosterView(d.Display):
                 continue
             boosters.append(booster)
         return boosters
+
+    def getTabExtraText(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return None
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit is None:
+            return None
+        opt = sFit.serviceFittingOptions["additionsLabels"]
+        # Amount of active boosters
+        if opt == 1:
+            return ' ({})'.format(len([b for b in fit.boosters if b.active]))
+        # Total amount of boosters
+        elif opt == 2:
+            return ' ({})'.format(len(fit.boosters))
+        else:
+            return None

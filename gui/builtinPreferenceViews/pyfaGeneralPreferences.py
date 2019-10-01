@@ -86,6 +86,10 @@ class PFGeneralPref(PreferenceView):
             'When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge.'))
         mainSizer.Add(self.cbReloadAll, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.rbAddLabels = wx.RadioBox(panel, -1, "Extra info in Additions panel tab names", wx.DefaultPosition, wx.DefaultSize, ["None", "Quantity of active items", "Quantity of all items"], 1, wx.RA_SPECIFY_COLS)
+        mainSizer.Add(self.rbAddLabels, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
+        self.rbAddLabels.Bind(wx.EVT_RADIOBOX, self.OnAddLabelsChange)
+
         self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
@@ -101,6 +105,7 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
         self.cbReloadAll.SetValue(self.sFit.serviceFittingOptions["ammoChangeAll"])
+        self.rbAddLabels.SetSelection(self.sFit.serviceFittingOptions["additionsLabels"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbDefaultCharImplants.Bind(wx.EVT_CHECKBOX, self.OnCBDefaultCharImplantsStateChange)
@@ -186,6 +191,9 @@ class PFGeneralPref(PreferenceView):
 
     def onCBReloadAll(self, event):
         self.sFit.serviceFittingOptions["ammoChangeAll"] = self.cbReloadAll.GetValue()
+
+    def OnAddLabelsChange(self, event):
+        self.sFit.serviceFittingOptions["additionsLabels"] = event.GetInt()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
