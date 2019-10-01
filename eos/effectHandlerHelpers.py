@@ -19,6 +19,7 @@
 
 
 from logbook import Logger
+from sqlalchemy.orm.collections import collection
 
 
 pyfalog = Logger(__name__)
@@ -138,9 +139,10 @@ class HandledModuleList(HandledList):
         else:
             self.appendIgnoreEmpty(mod)
 
+    @collection.appender
     def appendIgnoreEmpty(self, mod):
         mod.position = len(self)
-        HandledList.append(self, mod)
+        super().append(mod)
         if mod.isInvalid:
             self.remove(mod)
 

@@ -21,9 +21,9 @@ import datetime
 import time
 from copy import deepcopy
 from itertools import chain
+from math import asinh, log, sqrt
 
 from logbook import Logger
-from math import asinh, log, sqrt
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
