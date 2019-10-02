@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+
 import eos.db
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.targetProfile import TargetProfile as es_TargetProfile
@@ -34,55 +35,57 @@ class DefaultDatabaseValues:
 
     @classmethod
     def importDamageProfileDefaults(cls):
-        damageProfileList = [["Uniform", "25", "25", "25", "25"], ["[Generic]EM", "100", "0", "0", "0"],
-                             ["[Generic]Thermal", "0", "100", "0", "0"], ["[Generic]Kinetic", "0", "0", "100", "0"],
-                             ["[Generic]Explosive", "0", "0", "0", "100"],
+        damageProfileList = [["Uniform", "25", "25", "25", "25"],
+                             ["[Generic]EM", "1", "0", "0", "0"],
+                             ["[Generic]Thermal", "0", "1", "0", "0"],
+                             ["[Generic]Kinetic", "0", "0", "1", "0"],
+                             ["[Generic]Explosive", "0", "0", "0", "1"],
                              ["[NPC][Asteroid] Blood Raiders", "5067", "4214", "0", "0"],
                              ["[Bombs]Electron Bomb", "6400", "0", "0", "0"],
                              ["[Bombs]Scorch Bomb", "0", "6400", "0", "0"],
                              ["[Bombs]Concussion Bomb", "0", "0", "6400", "0"],
                              ["[Bombs]Shrapnel Bomb", "0", "0", "0", "6400"],
-                             ["[Frequency Crystals][T2] Conflagration", "61.6", "61.6", "0", "0"],
-                             ["[Frequency Crystals][T2] Scorch", "72", "16", "0", "0"],
-                             ["[Frequency Crystals][T2] Gleam", "56", "56", "0", "0"],
-                             ["[Frequency Crystals][T2] Aurora", "40", "24", "0", "0"],
-                             ["[Frequency Crystals]Multifrequency", "61.6", "44", "0", "0"],
-                             ["[Frequency Crystals]Gamma", "61.6", "35.2", "0", "0"],
-                             ["[Frequency Crystals]Xray", "52.8", "35.2", "0", "0"],
-                             ["[Frequency Crystals]Ultraviolet", "52.8", "26.4", "0", "0"],
-                             ["[Frequency Crystals]Standard", "44", "26.4", "0", "0"],
-                             ["[Frequency Crystals]Infrared", "44", "17.6", "0", "0"],
-                             ["[Frequency Crystals]Microwave", "35.2", "17.6", "0", "0"],
-                             ["[Frequency Crystals]Radio", "44", "0", "0", "0"],
-                             ["[Hybrid Charges][T2] Void", "0", "61.6", "61.6", "0"],
-                             ["[Hybrid Charges][T2] Null", "0", "48", "40", "0"],
-                             ["[Hybrid Charges][T2] Javelin", "0", "64", "48", "0"],
-                             ["[Hybrid Charges][T2] Spike", "0", "32", "32", "0"],
-                             ["[Hybrid Charges]Antimatter", "0", "48", "67.2", "0"],
-                             ["[Hybrid Charges]Plutonium", "0", "48", "57.6", "0"],
-                             ["[Hybrid Charges]Uranium", "0", "38.4", "57.6", "0"],
-                             ["[Hybrid Charges]Thorium", "0", "38.4", "48", "0"],
-                             ["[Hybrid Charges]Lead", "0", "28.8", "48", "0"],
-                             ["[Hybrid Charges]Iridium", "0", "28.8", "38.4", "0"],
-                             ["[Hybrid Charges]Tungsten", "0", "19.2", "38.4", "0"],
-                             ["[Hybrid Charges]Iron", "0", "19.2", "28.8", "0"],
-                             ["[Missiles]Mjolnir", "100", "0", "0", "0"],
-                             ["[Missiles]Inferno", "0", "100", "0", "0"],
-                             ["[Missiles]Scourge", "0", "0", "100", "0"],
-                             ["[Missiles]Nova", "0", "0", "0", "100"],
-                             ["[Missiles][Structure] Standup Missile", "100", "100", "100", "100"],
-                             ["[Projectile Ammo][T2] Hail", "0", "0", "26.4", "96.8"],
-                             ["[Projectile Ammo][T2] Barrage", "0", "0", "40", "48"],
-                             ["[Projectile Ammo][T2] Quake", "0", "0", "40", "72"],
-                             ["[Projectile Ammo][T2] Tremor", "0", "0", "24", "40"],
-                             ["[Projectile Ammo]EMP", "79.2", "0", "8.8", "17.6"],
-                             ["[Projectile Ammo]Phased Plasma", "0", "88", "17.6", "0"],
-                             ["[Projectile Ammo]Fusion", "0", "0", "17.6", "88"],
-                             ["[Projectile Ammo]Depleted Uranium", "0", "26.4", "17.6", "26.4"],
-                             ["[Projectile Ammo]Titanium Sabot", "0", "0", "52.8", "176"],
-                             ["[Projectile Ammo]Proton", "26.4", "0", "17.6", "0"],
-                             ["[Projectile Ammo]Carbonized Lead", "0", "0", "35.2", "8.8"],
-                             ["[Projectile Ammo]Nuclear", "0", "0", "8.8", "35.2"],
+                             ["[Frequency Crystals][T2] Conflagration", "7.7", "7.7", "0", "0"],
+                             ["[Frequency Crystals][T2] Scorch", "9", "2", "0", "0"],
+                             ["[Frequency Crystals][T2] Gleam", "7", "7", "0", "0"],
+                             ["[Frequency Crystals][T2] Aurora", "5", "3", "0", "0"],
+                             ["[Frequency Crystals]Multifrequency", "7", "5", "0", "0"],
+                             ["[Frequency Crystals]Gamma", "7", "4", "0", "0"],
+                             ["[Frequency Crystals]Xray", "6", "4", "0", "0"],
+                             ["[Frequency Crystals]Ultraviolet", "6", "3", "0", "0"],
+                             ["[Frequency Crystals]Standard", "5", "3", "0", "0"],
+                             ["[Frequency Crystals]Infrared", "5", "2", "0", "0"],
+                             ["[Frequency Crystals]Microwave", "4", "2", "0", "0"],
+                             ["[Frequency Crystals]Radio", "5", "0", "0", "0"],
+                             ["[Hybrid Charges][T2] Void", "0", "7.7", "7.7", "0"],
+                             ["[Hybrid Charges][T2] Null", "0", "6", "5", "0"],
+                             ["[Hybrid Charges][T2] Javelin", "0", "8", "6", "0"],
+                             ["[Hybrid Charges][T2] Spike", "0", "4", "4", "0"],
+                             ["[Hybrid Charges]Antimatter", "0", "5", "7", "0"],
+                             ["[Hybrid Charges]Plutonium", "0", "5", "6", "0"],
+                             ["[Hybrid Charges]Uranium", "0", "4", "6", "0"],
+                             ["[Hybrid Charges]Thorium", "0", "4", "5", "0"],
+                             ["[Hybrid Charges]Lead", "0", "3", "5", "0"],
+                             ["[Hybrid Charges]Iridium", "0", "3", "4", "0"],
+                             ["[Hybrid Charges]Tungsten", "0", "2", "4", "0"],
+                             ["[Hybrid Charges]Iron", "0", "2", "3", "0"],
+                             ["[Missiles]Mjolnir", "1", "0", "0", "0"],
+                             ["[Missiles]Inferno", "0", "1", "0", "0"],
+                             ["[Missiles]Scourge", "0", "0", "1", "0"],
+                             ["[Missiles]Nova", "0", "0", "0", "1"],
+                             ["[Missiles][Structure] Standup Missile", "1", "1", "1", "1"],
+                             ["[Projectile Ammo][T2] Hail", "0", "0", "3.3", "12.1"],
+                             ["[Projectile Ammo][T2] Barrage", "0", "0", "5", "6"],
+                             ["[Projectile Ammo][T2] Quake", "0", "0", "5", "9"],
+                             ["[Projectile Ammo][T2] Tremor", "0", "0", "3", "5"],
+                             ["[Projectile Ammo]EMP", "9", "0", "1", "2"],
+                             ["[Projectile Ammo]Phased Plasma", "0", "10", "2", "0"],
+                             ["[Projectile Ammo]Fusion", "0", "0", "2", "10"],
+                             ["[Projectile Ammo]Depleted Uranium", "0", "3", "2", "3"],
+                             ["[Projectile Ammo]Titanium Sabot", "0", "0", "6", "2"],
+                             ["[Projectile Ammo]Proton", "3", "0", "2", "0"],
+                             ["[Projectile Ammo]Carbonized Lead", "0", "0", "4", "1"],
+                             ["[Projectile Ammo]Nuclear", "0", "0", "1", "4"],
                              # Different sizes of plasma do different damage, the values here are
                              # average of proportions across sizes
                              ["[Exotic Plasma][T2] Occult", "0", "55863", "0", "44137"],
@@ -130,7 +133,13 @@ class DefaultDatabaseValues:
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
-                eos.db.save(damageProfile)
+                eos.db.add(damageProfile)
+            else:
+                damageProfile.emAmount = em
+                damageProfile.thermalAmount = therm
+                damageProfile.kineticAmount = kin
+                damageProfile.explosiveAmount = exp
+        eos.db.commit()
 
     @classmethod
     def importTargetProfileDefaults(cls):
@@ -204,11 +213,21 @@ class DefaultDatabaseValues:
                 radius = targetProfileRow[7]
             except:
                 radius = None
-            targetProfile = eos.db.eos.db.getTargetProfile(name)
+            targetProfile = eos.db.getTargetProfile(name)
             if targetProfile is None:
                 targetProfile = es_TargetProfile(em, therm, kin, exp, maxVel, sigRad, radius)
                 targetProfile.name = name
-                eos.db.save(targetProfile)
+                eos.db.add(targetProfile)
+            else:
+                targetProfile.emAmount = em
+                targetProfile.thermalAmount = therm
+                targetProfile.kineticAmount = kin
+                targetProfile.explosiveAmount = exp
+                targetProfile.maxVelocity = maxVel
+                targetProfile.signatureRadius = sigRad
+                targetProfile.radius = radius
+        eos.db.commit()
+
 
     @classmethod
     def importRequiredDefaults(cls):
@@ -220,4 +239,10 @@ class DefaultDatabaseValues:
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
-                eos.db.save(damageProfile)
+                eos.db.add(damageProfile)
+            else:
+                damageProfile.emAmount = em
+                damageProfile.thermalAmount = therm
+                damageProfile.kineticAmount = kin
+                damageProfile.explosiveAmount = exp
+        eos.db.commit()
