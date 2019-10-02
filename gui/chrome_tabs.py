@@ -15,6 +15,7 @@
 
 
 import math
+from functools import lru_cache
 
 import wx
 import wx.lib.newevent
@@ -738,8 +739,7 @@ class _TabsContainer(wx.Panel):
         self.show_add_button = can_add
 
         self.tab_container_width = self.width - self.reserved
-        self.tab_min_width = self.width
-        self.tab_shadow = _TabRenderer((self.tab_min_width, self.height + 1))
+        self.fxBmps = {}
 
         self.add_button = _AddRenderer()
         self.add_bitmap = self.add_button.Render()
@@ -1191,7 +1191,7 @@ class _TabsContainer(wx.Panel):
 
             if not tab.IsSelected():
                 # drop shadow first
-                mdc.DrawBitmap(self.fx_bmp, posx, posy, True)
+                mdc.DrawBitmap(self.fxBmps[tab], posx, posy, True)
                 bmp = tab.Render()
                 img = bmp.ConvertToImage()
                 img = img.AdjustChannels(1, 1, 1, 0.85)
@@ -1209,7 +1209,7 @@ class _TabsContainer(wx.Panel):
         if selected:
             posx, posy = selected.GetPosition()
             # drop shadow first
-            mdc.DrawBitmap(self.fx_bmp, posx, posy, True)
+            mdc.DrawBitmap(self.fxBmps[selected], posx, posy, True)
 
             bmp = selected.Render()
 
@@ -1229,16 +1229,21 @@ class _TabsContainer(wx.Panel):
 
     def UpdateTabFX(self):
         """ Updates tab drop shadow bitmap """
-        self.tab_shadow.SetSize((self.tab_min_width, self.height + 1))
-        fx_bmp = self.tab_shadow.Render()
+        self.fxBmps.clear()
+        for tab in self.tabs:
+            tabW, tabH = tab.tab_size
+            self.fxBmps[tab] = self.GetTabFx(tabW, self.height + 1)
 
+    @lru_cache(maxsize=50)
+    def GetTabFx(self, width, height):
+        renderer = _TabRenderer((width, height))
+        fx_bmp = renderer.Render()
         img = fx_bmp.ConvertToImage()
         if not img.HasAlpha():
             img.InitAlpha()
         img = img.Blur(2)
         img = img.AdjustChannels(0.3, 0.3, 0.3, 0.35)
-
-        self.fx_bmp = wx.Bitmap(img)
+        return wx.Bitmap(img)
 
     def AddTab(self, title=wx.EmptyString, img=None, closeable=False):
         self.ClearTabsSelected()
@@ -1338,15 +1343,16 @@ class _TabsContainer(wx.Panel):
                 mw, _ = tab.GetMinSize()  # Tab min size includes tab contents
                 max_width = max(mw, max_width)
 
+            tabWidth = 0
             # Divide tab container by number of tabs and add inclination. This will
             # return the ideal max size for the containers size
             if self.GetTabsCount() > 0:
                 dx = self.tab_container_width / self.GetTabsCount() + self.inclination * 2
-                self.tab_min_width = min(dx, max_width)
+                tabWidth = min(dx, max_width)
 
             # Apply new size to all tabs
             for tab in self.tabs:
-                tab.SetSize((self.tab_min_width, self.height))
+                tab.SetSize((tabWidth, self.height))
 
             if self.GetTabsCount() > 0:
                 # update drop shadow based on new sizes
