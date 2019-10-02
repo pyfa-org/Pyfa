@@ -55,7 +55,7 @@ class ChangeItemProjectionRange(ContextMenuCombined):
 
         fitID = self.mainFrame.getActiveFit()
         items = selection
-        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
             if isinstance(mainItem, EosModule):
                 fit = Fit.getInstance().getFit(fitID)
                 positions = getSimilarModPositions(fit.projectedModules, mainItem)

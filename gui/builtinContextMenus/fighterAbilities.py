@@ -69,7 +69,7 @@ class FighterAbilities(ContextMenuCombined):
             command = cmd.GuiToggleLocalFighterAbilityStateCommand
         if self.fighter in container:
             mainPosition = container.index(self.fighter)
-            if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+            if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
                 fighters = getSimilarFighters(container, self.fighter)
             else:
                 fighters = self.selection

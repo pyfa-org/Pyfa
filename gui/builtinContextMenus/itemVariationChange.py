@@ -154,7 +154,7 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
             positions = getSimilarModPositions(fit.modules, self.mainItem)
         else:
             sMkt = Market.getInstance()
@@ -193,7 +193,7 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
             fighters = getSimilarFighters(fit.fighters, self.mainItem)
         else:
             fighters = self.selection
@@ -246,7 +246,7 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleProjectedModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
             positions = getSimilarModPositions(fit.projectedModules, self.mainItem)
         else:
             sMkt = Market.getInstance()
@@ -283,7 +283,7 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleProjectedFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
             fighters = getSimilarFighters(fit.projectedFighters, self.mainItem)
         else:
             fighters = self.selection

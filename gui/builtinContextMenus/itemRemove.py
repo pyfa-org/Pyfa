@@ -65,7 +65,7 @@ class RemoveItem(ContextMenuCombined):
     def __handleModule(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
             positions = getSimilarModPositions(fit.modules, mainItem)
         else:
             positions = []
@@ -88,7 +88,7 @@ class RemoveItem(ContextMenuCombined):
     def __handleFighter(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
             fighters = getSimilarFighters(fit.fighters, mainItem)
         else:
             fighters = selection
@@ -131,7 +131,7 @@ class RemoveItem(ContextMenuCombined):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
                 fitID=fitID, items=selection, amount=math.inf))
         elif isinstance(mainItem, EosModule):
-            if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+            if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
                 fit = Fit.getInstance().getFit(fitID)
                 positions = getSimilarModPositions(fit.projectedModules, mainItem)
                 items = [fit.projectedModules[p] for p in positions]
@@ -143,7 +143,7 @@ class RemoveItem(ContextMenuCombined):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
                 fitID=fitID, items=selection, amount=math.inf))
         elif isinstance(mainItem, EosFighter):
-            if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+            if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
                 fit = Fit.getInstance().getFit(fitID)
                 items = getSimilarFighters(fit.projectedFighters, mainItem)
             else:
