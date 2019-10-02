@@ -33,6 +33,7 @@ pyfaPath = None
 savePath = None
 saveDB = None
 gameDB = None
+imgsZIP = None
 logPath = None
 loggingLevel = None
 logging_setup = None
@@ -96,6 +97,7 @@ def defPaths(customSavePath=None):
     global savePath
     global saveDB
     global gameDB
+    global imgsZIP
     global saveInRoot
     global logPath
     global cipher
@@ -154,6 +156,10 @@ def defPaths(customSavePath=None):
     gameDB = getattr(configforced, "gameDB", gameDB)
     if not gameDB:
         gameDB = os.path.join(pyfaPath, "eve.db")
+
+    imgsZIP = getattr(configforced, "imgsZIP", imgsZIP)
+    if not imgsZIP:
+        imgsZIP = os.path.join(pyfaPath, "imgs.zip")
 
     if debug:
         logFile = "pyfa_debug.log"
