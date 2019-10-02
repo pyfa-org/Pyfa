@@ -13,14 +13,16 @@
 #
 # ===============================================================================
 
+
+import math
+
 import wx
 import wx.lib.newevent
 
 from gui.bitmap_loader import BitmapLoader
-from gui.utils import draw
-from gui.utils import color as color_utils
+from gui.utils import color as color_utils, draw, fonts
 from service.fit import Fit
-from gui.utils import fonts
+
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -89,11 +91,15 @@ class PageAdding(_PageAdding, VetoAble):
 
 class ChromeNotebook(wx.Panel):
 
-    def __init__(self, parent, can_add=True):
+    def __init__(self, parent, can_add=True, tabWidthMode=0):
         """
         Instance of Notebook. Initializes general layout, includes methods
         for setting current page, replacing pages, any public function for the
         notebook
+
+        width modes:
+        - 0: legacy (all tabs have equal width)
+        - 1: all tabs take just enough space to fit text
         """
         super().__init__(parent, wx.ID_ANY, size=(-1, -1))
 
@@ -103,7 +109,7 @@ class ChromeNotebook(wx.Panel):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
         tabs_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.tabs_container = _TabsContainer(self, can_add=can_add)
+        self.tabs_container = _TabsContainer(self, can_add=can_add, tabWidthMode=tabWidthMode)
         tabs_sizer.Add(self.tabs_container, 0, wx.EXPAND)
 
         if 'wxMSW' in wx.PlatformInfo:
@@ -697,15 +703,15 @@ class _AddRenderer:
 
 class _TabsContainer(wx.Panel):
     def __init__(self, parent, pos=(50, 0), size=(100, 22), id=wx.ID_ANY,
-                 can_add=True):
+                 can_add=True, tabWidthMode=0):
         """
         Defines the tab container. Handles functions such as tab selection and
         dragging, and defines minimum width of tabs (all tabs are of equal
         width, which is determined via widest tab). Also handles the tab
         preview, if any.
         """
-
         super().__init__(parent, id, pos, size)
+        self.tabWidthMode = tabWidthMode
 
         self.tabs = []
         self.width, self.height = size
@@ -1274,30 +1280,79 @@ class _TabsContainer(wx.Panel):
         Adjust tab sizes to ensure that they are all consistent and can fit into
         the tab container.
         """
+        if self.tabWidthMode == 1:
+            if self.GetTabsCount() > 0:
+                availableW = self.tab_container_width
+                overlapSavedW = max(0, len(self.tabs)) * self.inclination * 2
+                tabsGrouped = {}
+                for tab in self.tabs:
+                    tabW, _ = tab.GetMinSize()
+                    tabsGrouped.setdefault(math.ceil(tabW), []).append(tab)
+                clippedTabs = []
+                clipW = max(tabsGrouped, default=0)
 
-        # first we loop through our tabs and calculate the the largest tab. This
-        # is the size that we will base our calculations off
+                def getUnclippedW():
+                    unclippedW = 0
+                    for w, tabs in tabsGrouped.items():
+                        unclippedW += w * len(tabs)
+                    return unclippedW
+                while tabsGrouped:
+                    # Check if we're within width limit
+                    neededW = 0
+                    for w, tabs in tabsGrouped.items():
+                        neededW += w * len(tabs)
+                    if clippedTabs:
+                        neededW += clipW * len(clippedTabs)
+                    if neededW <= availableW + overlapSavedW:
+                        break
+                    # If we're not, extract widest tab group and mark it for clipping
+                    currentTabs = tabsGrouped.pop(max(tabsGrouped))
+                    clippedTabs.extend(currentTabs)
+                    proposedClipWidth = math.floor((availableW + overlapSavedW - getUnclippedW()) / len(clippedTabs))
+                    if not tabsGrouped or proposedClipWidth >= max(tabsGrouped, default=0):
+                        clipW = max(0, proposedClipWidth)
+                        break
+                    else:
+                        clipW = max(tabsGrouped)
+                # Assign width for unclipped tabs
+                for w, tabs in tabsGrouped.items():
+                    for tab in tabs:
+                        tab.SetSize((w, self.height))
+                if clippedTabs:
+                    # Some width remains to be used due to rounding to integer
+                    extraWTotal = availableW + overlapSavedW - getUnclippedW() - clipW * len(clippedTabs)
+                    extraWPerTab = math.ceil(extraWTotal / len(clippedTabs))
+                    # Assign width for clipped tabs
+                    for tab in clippedTabs:
+                        extraW = min(extraWTotal, extraWPerTab)
+                        extraWTotal -= extraW
+                        tab.SetSize((clipW + extraW, self.height))
+                # update drop shadow based on new sizes
+                self.UpdateTabFX()
+            self.UpdateTabsPosition()
+        else:
+            # first we loop through our tabs and calculate the the largest tab. This
+            # is the size that we will base our calculations off
+            max_width = 100  # Tab should be at least 100
+            for tab in self.tabs:
+                mw, _ = tab.GetMinSize()  # Tab min size includes tab contents
+                max_width = max(mw, max_width)
 
-        max_width = 100  # Tab should be at least 100
-        for tab in self.tabs:
-            mw, _ = tab.GetMinSize()  # Tab min size includes tab contents
-            max_width = max(mw, max_width)
+            # Divide tab container by number of tabs and add inclination. This will
+            # return the ideal max size for the containers size
+            if self.GetTabsCount() > 0:
+                dx = self.tab_container_width / self.GetTabsCount() + self.inclination * 2
+                self.tab_min_width = min(dx, max_width)
 
-        # Divide tab container by number of tabs and add inclination. This will
-        # return the ideal max size for the containers size
-        if self.GetTabsCount() > 0:
-            dx = self.tab_container_width / self.GetTabsCount() + self.inclination * 2
-            self.tab_min_width = min(dx, max_width)
+            # Apply new size to all tabs
+            for tab in self.tabs:
+                tab.SetSize((self.tab_min_width, self.height))
 
-        # Apply new size to all tabs
-        for tab in self.tabs:
-            tab.SetSize((self.tab_min_width, self.height))
+            if self.GetTabsCount() > 0:
+                # update drop shadow based on new sizes
+                self.UpdateTabFX()
 
-        if self.GetTabsCount() > 0:
-            # update drop shadow based on new sizes
-            self.UpdateTabFX()
-
-        self.UpdateTabsPosition()
+            self.UpdateTabsPosition()
 
     def UpdateTabsPosition(self, skip_tab=None):
         tabsWidth = 0

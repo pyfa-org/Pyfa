@@ -47,7 +47,7 @@ class AdditionsPane(TogglePanel):
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
 
-        self.notebook = ChromeNotebook(pane, False)
+        self.notebook = ChromeNotebook(pane, can_add=False, tabWidthMode=1)
         self.notebook.SetMinSize((-1, 1000))
 
         baseSizer.Add(self.notebook, 1, wx.EXPAND)

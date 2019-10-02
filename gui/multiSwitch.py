@@ -23,7 +23,7 @@ import gui.builtinViews.emptyView
 
 class MultiSwitch(ChromeNotebook):
     def __init__(self, parent):
-        ChromeNotebook.__init__(self, parent)
+        ChromeNotebook.__init__(self, parent, can_add=True, tabWidthMode=1)
         # self.AddPage() # now handled by mainFrame
         self.handlers = handlers = []
         for type in TabSpawner.tabTypes:
