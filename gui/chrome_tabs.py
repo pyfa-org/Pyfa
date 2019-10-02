@@ -1332,9 +1332,6 @@ class _TabsContainer(wx.Panel):
                         extraW = min(extraWTotal, extraWPerTab)
                         extraWTotal -= extraW
                         tab.SetSize((clipW + extraW, self.height))
-                # update drop shadow based on new sizes
-                self.UpdateTabFX()
-            self.UpdateTabsPosition()
         else:
             # first we loop through our tabs and calculate the the largest tab. This
             # is the size that we will base our calculations off
@@ -1354,11 +1351,9 @@ class _TabsContainer(wx.Panel):
             for tab in self.tabs:
                 tab.SetSize((tabWidth, self.height))
 
-            if self.GetTabsCount() > 0:
-                # update drop shadow based on new sizes
-                self.UpdateTabFX()
-
-            self.UpdateTabsPosition()
+        # update drop shadow based on new sizes
+        self.UpdateTabFX()
+        self.UpdateTabsPosition()
 
     def UpdateTabsPosition(self, skip_tab=None):
         tabsWidth = 0
