@@ -301,10 +301,13 @@ class Display(wx.ListCtrl):
 
     def ensureSelection(self, clickedPos):
         """
-        On mac, when right-click on any item happens, it doesn't get selected.
-        This method ensures that selection actually happens.
+        On windows with Ctrl is pressed, or on Mac, when right-click on any item happens,
+        the item doesn't get selected. This method ensures that only clicked item is selected.
         """
-        if 'wxMac' in wx.PlatformInfo:
+        if (
+            'wxMac' in wx.PlatformInfo or
+            ('wxMSW' in wx.PlatformInfo and wx.GetMouseState().GetModifiers() == wx.MOD_CONTROL)
+        ):
             if clickedPos != -1:
                 selectedPoss = self.getSelectedRows()
                 if clickedPos not in selectedPoss:
