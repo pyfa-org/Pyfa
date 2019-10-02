@@ -112,10 +112,12 @@ class ImplantView(wx.Panel):
         opt = sFit.serviceFittingOptions["additionsLabels"]
         # Amount of active implants
         if opt == 1:
-            return ' ({})'.format(len([i for i in fit.appliedImplants if i.active]))
+            amount = len([i for i in fit.appliedImplants if i.active])
+            return ' ({})'.format(amount) if amount else None
         # Total amount of implants
         elif opt == 2:
-            return ' ({})'.format(len(fit.appliedImplants))
+            amount = len(fit.appliedImplants)
+            return ' ({})'.format(amount) if amount else None
         else:
             return None
 

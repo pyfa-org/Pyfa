@@ -128,10 +128,12 @@ class FighterView(wx.Panel):
         opt = sFit.serviceFittingOptions["additionsLabels"]
         # Amount of active fighter squads
         if opt == 1:
-            return ' ({})'.format(len([f for f in fit.fighters if f.active]))
+            amount = len([f for f in fit.fighters if f.active])
+            return ' ({})'.format(amount) if amount else None
         # Total amount of fighter squads
         elif opt == 2:
-            return ' ({})'.format(len(fit.fighters))
+            amount = len(fit.fighters)
+            return ' ({})'.format(amount) if amount else None
         else:
             return None
 

@@ -352,12 +352,12 @@ class DroneView(Display):
             amount = 0
             for droneStack in fit.drones:
                 amount += droneStack.amountActive
-            return ' ({})'.format(int(amount))
+            return ' ({})'.format(amount) if amount else None
         # Total amount of drones
         elif opt == 2:
             amount = 0
             for droneStack in fit.drones:
                 amount += droneStack.amount
-            return ' ({})'.format(int(amount))
+            return ' ({})'.format(amount) if amount else None
         else:
             return None

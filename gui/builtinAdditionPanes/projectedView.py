@@ -418,7 +418,7 @@ class ProjectedView(d.Display):
             amount += len([m for m in fit.projectedModules if m.state > FittingModuleState.OFFLINE])
             amount += len([d for d in fit.projectedDrones if d.amountActive > 0])
             amount += len([f for f in fit.projectedFighters if f.active])
-            return ' ({})'.format(amount)
+            return ' ({})'.format(amount) if amount else None
         # Total amount of projected items
         elif opt == 2:
             amount = 0
@@ -426,6 +426,6 @@ class ProjectedView(d.Display):
             amount += len(fit.projectedModules)
             amount += len(fit.projectedDrones)
             amount += len(fit.projectedFighters)
-            return ' ({})'.format(amount)
+            return ' ({})'.format(amount) if amount else None
         else:
             return None

@@ -226,6 +226,7 @@ class CargoView(d.Display):
         opt = sFit.serviceFittingOptions["additionsLabels"]
         # Total amount of cargo items
         if opt in (1, 2):
-            return ' ({})'.format(len(fit.cargo))
+            amount = len(fit.cargo)
+            return ' ({})'.format(amount) if amount else None
         else:
             return None

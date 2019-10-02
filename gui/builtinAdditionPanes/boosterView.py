@@ -238,9 +238,11 @@ class BoosterView(d.Display):
         opt = sFit.serviceFittingOptions["additionsLabels"]
         # Amount of active boosters
         if opt == 1:
-            return ' ({})'.format(len([b for b in fit.boosters if b.active]))
+            amount = len([b for b in fit.boosters if b.active])
+            return ' ({})'.format(amount) if amount else None
         # Total amount of boosters
         elif opt == 2:
-            return ' ({})'.format(len(fit.boosters))
+            amount = len(fit.boosters)
+            return ' ({})'.format(amount) if amount else None
         else:
             return None

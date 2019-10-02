@@ -264,9 +264,10 @@ class CommandView(d.Display):
                 info = commandFit.getCommandInfo(fitID)
                 if info is not None and info.active:
                     amount += 1
-            return ' ({})'.format(amount)
+            return ' ({})'.format(amount) if amount else None
         # Total amount of command fits
         elif opt == 2:
-            return ' ({})'.format(len(fit.commandFits))
+            amount = len(fit.commandFits)
+            return ' ({})'.format(amount) if amount else None
         else:
             return None
