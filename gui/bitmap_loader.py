@@ -19,6 +19,7 @@
 
 import io
 import os.path
+import zipfile
 from collections import OrderedDict
 
 # noinspection PyPackageRequirements
@@ -32,15 +33,12 @@ pyfalog = Logger(__name__)
 
 
 class BitmapLoader:
-    # try:
-    #     archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
-    #     logging.info("Using zipped image files.")
-    # except (IOError, TypeError):
-    #     logging.info("Using local image files.")
-    #     archive = None
-
-    pyfalog.info("Using local image files.")
-    archive = None
+    try:
+        archive = zipfile.ZipFile(config.imgsZIP, 'r')
+        pyfalog.info("Using zipped image files.")
+    except (IOError, TypeError):
+        pyfalog.info("Using local image files.")
+        archive = None
 
     cached_bitmaps = OrderedDict()
     dont_use_cached_bitmaps = False
@@ -131,8 +129,8 @@ class BitmapLoader:
 
             try:
                 img_data = cls.archive.read(path)
-                sbuf = io.StringIO(img_data)
-                return wx.ImageFromStream(sbuf)
+                bbuf = io.BytesIO(img_data)
+                return wx.Image(bbuf)
             except KeyError:
                 pyfalog.warning("Missing icon file from zip: {0}".format(path))
         else:
