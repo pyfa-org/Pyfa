@@ -19,7 +19,7 @@ class PFGeneralPref(PreferenceView):
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
-        mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
+        mainSizer.Add(self.stTitle, 0, wx.EXPAND | wx.ALL, 5)
 
         self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, "(Cannot be changed while pyfa is running. Set via command line switches.)",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
