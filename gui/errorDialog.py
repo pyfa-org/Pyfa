@@ -65,9 +65,7 @@ class ErrorHandler:
 class ErrorFrame(AuxiliaryFrame):
 
     def __init__(self, parent=None, error_title='Error!'):
-        super().__init__(
-            parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition,
-            size=wx.Size(500, 600))
+        super().__init__(parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600))
 
         from eos.config import gamedata_version, gamedata_date
 
