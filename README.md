@@ -1,4 +1,4 @@
-# Pyfa
+# pyfa
 
 [![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/) [![Build Status](https://travis-ci.org/pyfa-org/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-org/Pyfa)
 
@@ -9,7 +9,7 @@
 Pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 3 and wxWidgets are available, including Windows, Mac OS X, and Linux.
 
 ## Latest Version and Changelogs
-The latest version along with release notes can always be found on the project's [Releases](https://github.com/pyfa-org/Pyfa/releases) page. Pyfa will notify you if you are running an outdated version.
+The latest version along with release notes can always be found on the project's [releases](https://github.com/pyfa-org/Pyfa/releases) page. Pyfa will notify you if you are running an outdated version.
 
 ## Installation
 Windows and OS X users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/pyfa-org/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux, however, there are a number of third-party packages available through distribution-specific repositories.
@@ -34,13 +34,13 @@ If you wish to help with development or simply need to run pyfa through a Python
 * Requirements as listed in `requirements.txt`
 
 ## Bug Reporting
-The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](https://forums.eveonline.com/t/pyfa-the-python-fitting-assistant/27156) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/pyfa-org/Pyfa/wiki/Bug-Reporting). 
+The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](https://forums.eveonline.com/t/27156) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/pyfa-org/Pyfa/wiki/Bug-Reporting). 
 
 ## License
 Pyfa is licensed under the GNU GPL v3.0, see LICENSE
 
 ## Resources
-* Development repository: [https://github.com/pyfa-org/Pyfa](https://github.com/pyfa-org/Pyfa)
+* [Development repository](https://github.com/pyfa-org/Pyfa)
 * [EVE forum thread](https://forums.eveonline.com/t/27156)
 * [EVE University guide using pyfa](https://wiki.eveuniversity.org/PYFA)
 * [EVE Online website](http://www.eveonline.com/)
