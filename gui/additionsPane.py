@@ -86,6 +86,7 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(self.notes, "Notes", image=notesImg, closeable=False)
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
+        self.mainFrame.Bind(GE.FIT_NOTES_CHANGED, self.OnNotesChanged)
 
         self.notebook.SetSelection(0)
 
@@ -116,6 +117,10 @@ class AdditionsPane(TogglePanel):
         activeFitID = self.mainFrame.getActiveFit()
         if activeFitID is not None and activeFitID not in event.fitIDs:
             return
+        self.updateExtraText()
+
+    def OnNotesChanged(self, event):
+        event.Skip()
         self.updateExtraText()
 
     def updateExtraText(self):
