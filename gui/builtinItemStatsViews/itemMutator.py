@@ -21,6 +21,7 @@ class ItemMutatorPanel(wx.Panel):
     def __init__(self, parent, mod):
         wx.Panel.__init__(self, parent)
         self.stuff = mod
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -72,6 +73,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.SetScrollRate(0, 15)
         self.carryingFitID = gui.mainFrame.MainFrame.getInstance().getActiveFit()
         self.initialMutations = {}
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         self.mod = mod
         self.timer = None
 

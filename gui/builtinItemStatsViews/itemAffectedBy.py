@@ -38,6 +38,7 @@ class ItemAffectedBy(wx.Panel):
 
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
         self.stuff = stuff
         self.item = item
 
@@ -52,6 +53,7 @@ class ItemAffectedBy(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.affectedBy = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+        self.affectedBy.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         mainSizer.Add(self.affectedBy, 1, wx.ALL | wx.EXPAND, 0)
 
         self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)

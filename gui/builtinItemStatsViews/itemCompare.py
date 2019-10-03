@@ -19,6 +19,7 @@ class ItemCompare(wx.Panel):
         sPrice.getPrices(items, self.UpdateList, fetchTimeout=90)
 
         wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
