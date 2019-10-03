@@ -2,7 +2,7 @@
 
 [![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/) [![Build Status](https://travis-ci.org/pyfa-org/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-org/Pyfa)
 
-![pyfa](https://cloud.githubusercontent.com/assets/3904767/10271512/af385ef2-6ade-11e5-8f67-52b8b1e4c797.PNG)
+![pyfa](https://user-images.githubusercontent.com/275209/66119737-f3ab4180-e5e1-11e9-9d0a-b88052b8a329.png)
 
 ## What is it?
 
