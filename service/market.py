@@ -174,8 +174,8 @@ class Market:
         self.les_grp.description = ""
         self.les_grp.icon = None
         self.ITEMS_FORCEGROUP = {
-            "Opux Luxury Yacht"           : self.les_grp,
-            # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
+            "Capsule"                     : self.getGroup("Shuttle"),
+            "Opux Luxury Yacht"           : self.les_grp,  # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
             "Silver Magnate"              : self.les_grp,  # Amarr Championship prize
             "Gold Magnate"                : self.les_grp,  # Amarr Championship prize
             "Armageddon Imperial Issue"   : self.les_grp,  # Amarr Championship prize

@@ -300,6 +300,7 @@ def main(db, json_path):
     for row in data['evetypes']:
         if (
             row['published'] or
+            row['typeName'] == 'Capsule' or
             # group Ship Modifiers, for items like tactical t3 ship modes
             row['groupID'] == 1306 or
             # Civilian weapons
@@ -313,7 +314,7 @@ def main(db, json_path):
                 1971,
                 # the "container" for the abyssal environments
                 1983) or
-            # Dark Blood Tracking Disruptor (rarely but drops)
+            # Dark Blood Tracking Disruptor (drops, but rarely)
             row['typeID'] == 32416
         ):
             eveTypes.add(row['typeID'])
@@ -338,7 +339,7 @@ def main(db, json_path):
                     jsonName == 'evetypes' and (
                         # Apparently people really want Civilian modules available
                         row['typeName'].startswith('Civilian') or
-                        row['typeName'] == 'Dark Blood Tracking Disruptor')
+                        row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor'))
                 ):
                     row['published'] = True
 
