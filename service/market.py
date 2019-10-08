@@ -173,7 +173,6 @@ class Market:
         self.les_grp.categoryID = ships.ID
         self.les_grp.description = ""
         self.les_grp.icon = None
-        print(self.getGroup("Shuttle"))
         self.ITEMS_FORCEGROUP = {
             "Capsule"                     : self.getGroup("Shuttle"),
             "Opux Luxury Yacht"           : self.les_grp,  # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
@@ -218,7 +217,8 @@ class Market:
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
-        self.les_grp.addItems = list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
+        for grp, itemNames in self.ITEMS_FORCEGROUP_R.items():
+            grp.addItems = list(self.getItem(i) for i in itemNames)
         self.customGroups.add(self.les_grp)
 
         # List of items which are forcibly published or hidden
