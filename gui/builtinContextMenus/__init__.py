@@ -6,6 +6,7 @@ from gui.builtinContextMenus import fitAddCurrentlyOpen
 from gui.builtinContextMenus import envEffectAdd
 from gui.builtinContextMenus import commandFitAdd
 from gui.builtinContextMenus.targetProfile import adder
+from gui.builtinContextMenus import graphFitAmmoPicker
 # Often-used item manipulations
 from gui.builtinContextMenus import shipModeChange
 from gui.builtinContextMenus import moduleAmmoChange
