@@ -205,12 +205,12 @@ class FighterDisplay(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
+        modifiers = event.GetModifiers()
+        if keycode == wx.WXK_ESCAPE and modifiers == wx.MOD_NONE:
             self.unselectAll()
-        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
+        elif keycode == 65 and modifiers == wx.MOD_CONTROL:
             self.selectAll()
-        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and modifiers == wx.MOD_NONE:
             fighters = self.getSelectedFighters()
             self.removeFighters(fighters)
         event.Skip()
@@ -315,12 +315,11 @@ class FighterDisplay(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                mstate = wx.GetMouseState()
                 try:
                     fighter = self.fighters[row]
                 except IndexError:
                     return
-                if mstate.GetModifiers() == wx.MOD_ALT:
+                if event.GetModifiers() == wx.MOD_ALT:
                     fighters = getSimilarFighters(self.original, fighter)
                 else:
                     fighters = [fighter]

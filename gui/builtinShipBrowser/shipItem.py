@@ -176,9 +176,7 @@ class ShipItem(SFItem.SFBrowserItem):
         self.Refresh()
 
     def editCheckEsc(self, event):
-        keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
+        if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:
             self.tcFitName.Show(False)
         else:
             event.Skip()

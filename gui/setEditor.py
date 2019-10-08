@@ -185,9 +185,7 @@ class ImplantSetEditor(AuxiliaryFrame):
             return
 
     def kbEvent(self, event):
-        keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
+        if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:
             self.Close()
             return
         event.Skip()

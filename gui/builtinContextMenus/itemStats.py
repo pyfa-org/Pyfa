@@ -48,10 +48,9 @@ class ItemStats(ContextMenuSingle):
         if srcContext == "fittingModule" and stuff.isEmpty:
             return
 
-        mstate = wx.GetMouseState()
         reuse = False
 
-        if mstate.GetModifiers() == wx.MOD_SHIFT:
+        if wx.GetMouseState().GetModifiers() == wx.MOD_SHIFT:
             reuse = True
 
         if self.mainFrame.GetActiveStatsWindow() is None and reuse:
