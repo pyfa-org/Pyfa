@@ -9,7 +9,7 @@ from gui.utils.numberFormatter import formatAmount
 
 
 def defaultSort(item):
-    return (item.attributes['metaLevel'].value if 'metaLevel' in item.attributes else 0, item.name)
+    return (item.metaLevel or 0, item.name)
 
 
 class ItemCompare(wx.Panel):

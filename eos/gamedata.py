@@ -609,10 +609,6 @@ class MetaGroup(EqBase):
     pass
 
 
-class MetaType(EqBase):
-    pass
-
-
 class Unit(EqBase):
 
     def __init__(self):

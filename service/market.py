@@ -29,7 +29,7 @@ from sqlalchemy.sql import or_
 import config
 import eos.db
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
-    MetaGroup as types_MetaGroup, MetaType as types_MetaType
+    MetaGroup as types_MetaGroup
 from service import conversions
 from service.jargon import JargonLoader
 from service.settings import SettingsProvider
@@ -118,13 +118,13 @@ class SearchWorkerThread(threading.Thread):
             if len(request) >= config.minItemSearchLength:
                 results = eos.db.searchItems(request, where=filter_,
                                              join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup", "metaGroup.parent"))
+                                             eager=("group.category", "metaGroup"))
 
             jargon_results = []
             if len(jargon_request) >= config.minItemSearchLength:
                 jargon_results = eos.db.searchItems(jargon_request, where=filter_,
                                              join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup", "metaGroup.parent"))
+                                             eager=("group.category", "metaGroup"))
 
             items = set()
             # Return only published items, consult with Market service this time
@@ -173,6 +173,7 @@ class Market:
         self.les_grp.categoryID = ships.ID
         self.les_grp.description = ""
         self.les_grp.icon = None
+        print(self.getGroup("Shuttle"))
         self.ITEMS_FORCEGROUP = {
             "Capsule"                     : self.getGroup("Shuttle"),
             "Opux Luxury Yacht"           : self.les_grp,  # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
@@ -461,19 +462,8 @@ class Market:
         """Get meta group by item"""
         # Check if item is in forced metagroup map
         if item.name in self.ITEMS_FORCEDMETAGROUP:
-            # Create meta group from scratch
-            metaGroup = types_MetaType()
-            # Get meta group info object based on meta group name
-            metaGroupInfo = self.getMetaGroup(self.ITEMS_FORCEDMETAGROUP[item.name][0])
-            # Get parent item based on its name
-            parent = self.getItem(self.ITEMS_FORCEDMETAGROUP[item.name][1])
-            # Assign all required for metaGroup variables
-            metaGroup.info = metaGroupInfo
-            metaGroup.items = item
-            metaGroup.parent = parent
-            metaGroup.metaGroupID = metaGroupInfo.ID
-            metaGroup.parentTypeID = parent.ID
-            metaGroup.typeID = item.ID
+            metaGroupName = self.ITEMS_FORCEDMETAGROUP[item.name][0]
+            metaGroup = eos.db.getMetaGroup(metaGroupName)
         # If no forced meta group is provided, try to use item's
         # meta group if any
         else:
@@ -513,14 +503,15 @@ class Market:
 
     def getParentItemByItem(self, item, selfparent=True):
         """Get parent item by item"""
-        mg = self.getMetaGroupByItem(item)
-        if mg:
-            parent = mg.parent
+        parent = None
+        if item.name in self.ITEMS_FORCEDMETAGROUP:
+            parentName = self.ITEMS_FORCEDMETAGROUP[item.name][1]
+            parent = self.getItem(parentName)
+        if parent is None:
+            parent = item.varParent
         # Consider self as parent if item has no parent in database
-        elif selfparent is True:
+        if parent is None and selfparent is True:
             parent = item
-        else:
-            parent = None
         return parent
 
     def getVariationsByItems(self, items, alreadyparent=False):
@@ -756,7 +747,7 @@ class Market:
         filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
-                                     eager=("group.category", "metaGroup", "metaGroup.parent"))
+                                     eager=("group.category", "metaGroup"))
         ships = set()
         for item in results:
             if self.getPublicityByItem(item):

@@ -56,15 +56,14 @@ def main(db, json_path):
     # Config dict
     tables = {
         'clonegrades': ('fsd_lite', eos.gamedata.AlphaCloneSkill),
-        'dgmattribs': ('bulkdata', eos.gamedata.AttributeInfo),
-        'dgmeffects': ('bulkdata', eos.gamedata.Effect),
-        'dgmtypeattribs': ('bulkdata', eos.gamedata.Attribute),
-        'dgmtypeeffects': ('bulkdata', eos.gamedata.ItemEffect),
-        'dgmunits': ('bulkdata', eos.gamedata.Unit),
+        'dogmaattributes': ('bulkdata', eos.gamedata.AttributeInfo),
+        'dogmaeffects': ('bulkdata', eos.gamedata.Effect),
+        'dogmatypeattributes': ('bulkdata', eos.gamedata.Attribute),
+        'dogmatypeeffects': ('bulkdata', eos.gamedata.ItemEffect),
+        'dogmaunits': ('bulkdata', eos.gamedata.Unit),
         'evecategories': ('fsd_lite', eos.gamedata.Category),
         'evegroups': ('fsd_lite', eos.gamedata.Group),
-        'invmetagroups': ('bulkdata', eos.gamedata.MetaGroup),
-        'invmetatypes': ('bulkdata', eos.gamedata.MetaType),
+        'metagroups': ('fsd_binary', eos.gamedata.MetaGroup),
         'evetypes': ('fsd_lite', eos.gamedata.Item),
         'traits': ('phobos', eos.gamedata.Traits),
         'metadata': ('phobos', eos.gamedata.MetaData),
@@ -73,13 +72,16 @@ def main(db, json_path):
     fieldMapping = {
         'marketgroups': {
             'id': 'marketGroupID',
-            'name': 'marketGroupName'}}
+            'name': 'marketGroupName'},
+        'metagroups': {
+            'id': 'metaGroupID'}}
 
     rowsInValues = (
         'evetypes',
         'evegroups',
         'evecategories',
-        'marketgroups')
+        'marketgroups',
+        'metagroups')
 
     def convertIcons(data):
         new = []
@@ -176,13 +178,13 @@ def main(db, json_path):
         # Get data on item effects
         # Format: {type ID: set(effect, IDs)}
         typesEffects = {}
-        for row in tables['dgmtypeeffects']:
+        for row in tables['dogmatypeeffects']:
             typesEffects.setdefault(row['typeID'], set()).add(row['effectID'])
         # Get data on type attributes
         # Format: {type ID: {attribute ID: attribute value}}
         typesNormalAttribs = {}
         typesSkillAttribs = {}
-        for row in tables['dgmtypeattribs']:
+        for row in tables['dogmatypeattributes']:
             attributeID = row['attributeID']
             if attributeID in skillReqAttribsFlat:
                 typeSkillAttribs = typesSkillAttribs.setdefault(row['typeID'], {})
@@ -304,7 +306,7 @@ def main(db, json_path):
             # group Ship Modifiers, for items like tactical t3 ship modes
             row['groupID'] == 1306 or
             # Civilian weapons
-            row['typeName'].startswith('Civilian') or
+            (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
             # Micro Bombs (Fighters)
             row['typeID'] in (41549, 41548, 41551, 41550) or
             # Abyssal weather (environment)
@@ -321,7 +323,7 @@ def main(db, json_path):
 
     # ignore checker
     def isIgnored(file, row):
-        if file in ('evetypes', 'dgmtypeeffects', 'dgmtypeattribs', 'invmetatypes') and row['typeID'] not in eveTypes:
+        if file in ('evetypes', 'dogmatypeeffects', 'dogmatypeattributes') and row['typeID'] not in eveTypes:
             return True
         return False
 
@@ -338,7 +340,7 @@ def main(db, json_path):
                 if (
                     jsonName == 'evetypes' and (
                         # Apparently people really want Civilian modules available
-                        row['typeName'].startswith('Civilian') or
+                        (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
                         row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor'))
                 ):
                     row['published'] = True

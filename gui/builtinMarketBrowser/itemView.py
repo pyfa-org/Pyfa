@@ -215,7 +215,7 @@ class ItemView(Display):
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
         metatab = self.metaMap.get(metagrpid)
-        metalvl = self.metalvls.get(item.ID, 0)
+        metalvl = item.metaLevel or 0
 
         return catname, mktgrpid, parentname, metatab, metalvl, item.name
 
@@ -237,11 +237,6 @@ class ItemView(Display):
 
     def populate(self, items):
         if len(items) > 0:
-            # Get dictionary with meta level attribute
-            sAttr = Attribute.getInstance()
-            attrs = sAttr.getAttributeInfo("metaLevel")
-            sMkt = self.sMkt
-            self.metalvls = sMkt.directAttrRequest(items, attrs)
             # Clear selection
             self.unselectAll()
             # Perform sorting, using item's meta levels besides other stuff
@@ -254,11 +249,6 @@ class ItemView(Display):
 
     def refresh(self, items):
         if len(items) > 1:
-            # Get dictionary with meta level attribute
-            sAttr = Attribute.getInstance()
-            attrs = sAttr.getAttributeInfo("metaLevel")
-            sMkt = self.sMkt
-            self.metalvls = sMkt.directAttrRequest(items, attrs)
             # Re-sort stuff
             if self.marketBrowser.mode != 'recent':
                 items.sort(key=self.itemSort)

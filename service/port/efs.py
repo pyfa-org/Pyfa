@@ -460,13 +460,11 @@ class EfsPort:
         def getT2ItemsWhere(additionalFilter, mustBeOffensive=False, category="Module"):
             # Used to obtain a smaller subset of items while still containing examples of each group.
             T2_META_LEVEL = 5
-            metaLevelAttrID = getAttributeInfo("metaLevel").attributeID
             categoryID = getCategory(category).categoryID
             result = gamedata_session.query(Item).join(ItemEffect, Group, Attribute).\
                       filter(
                           additionalFilter,
-                          Attribute.attributeID == metaLevelAttrID,
-                          Attribute.value == T2_META_LEVEL,
+                          Item.metaLevel == T2_META_LEVEL,
                           Group.categoryID == categoryID,
                       ).all()
             if mustBeOffensive:

@@ -56,9 +56,7 @@ class ChangeItemToVariation(ContextMenuCombined):
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         def get_metalevel(x):
-            if 'metaLevel' not in x.attributes:
-                return 0
-            return x.attributes['metaLevel'].value
+            return x.metaLevel or 0
 
         def get_metagroup(x):
             # We want deadspace before officer mods

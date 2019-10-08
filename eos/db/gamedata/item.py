@@ -25,7 +25,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from eos.db import gamedata_meta
 from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table
 from eos.db.gamedata.effect import typeeffects_table
-from eos.gamedata import Attribute, DynamicItem, Effect, Group, Item, MetaType, Traits
+from eos.gamedata import Attribute, DynamicItem, Effect, Group, Item, Traits, MetaGroup
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
@@ -41,9 +41,11 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("iconID", Integer),
                     Column("graphicID", Integer),
                     Column("groupID", Integer, ForeignKey("invgroups.groupID"), index=True),
+                    Column("metaLevel", Integer),
+                    Column("metaGroupID", Integer, ForeignKey("invmetagroups.metaGroupID"), index=True),
+                    Column("variationParentTypeID", Integer, ForeignKey("invtypes.typeID"), index=True),
                     Column("replacements", String))
 
-from .metaGroup import metatypes_table  # noqa
 from .traits import traits_table  # noqa
 
 mapper(Item, items_table,
@@ -51,9 +53,8 @@ mapper(Item, items_table,
            "group"            : relation(Group, backref=backref("items", cascade="all,delete")),
            "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
-           "metaGroup"        : relation(MetaType,
-                                         primaryjoin=metatypes_table.c.typeID == items_table.c.typeID,
-                                         uselist=False),
+           "metaGroup"        : relation(MetaGroup, backref=backref("items", cascade="all,delete")),
+           "varParent"        : relation(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
            "ID"               : synonym("typeID"),
            "name"             : synonym("typeName"),
            "description"      : deferred(items_table.c.description),
@@ -64,7 +65,6 @@ mapper(Item, items_table,
                    primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
                    secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
                    secondary=dynamicApplicable_table,
-                   backref="applicableItems")
-       })
+                   backref="applicableItems")})
 
 Item.category = association_proxy("group", "category")

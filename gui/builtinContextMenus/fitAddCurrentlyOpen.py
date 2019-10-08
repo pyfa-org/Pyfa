@@ -1,7 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
 
-import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.builtinViews.emptyView import BlankPage
 from gui.contextMenu import ContextMenuUnconditional
