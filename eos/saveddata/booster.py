@@ -122,7 +122,7 @@ class Booster(HandledItem, ItemAttrShortcut):
                     (effect.isType("passive") or effect.isType("boosterSideEffect")):
                 if effect.isType("boosterSideEffect") and effect not in self.activeSideEffectEffects:
                     continue
-                effect.handler(fit, self, ("booster",), None)
+                effect.handler(fit, self, ("booster",), None, effect=effect)
 
     @validates("ID", "itemID", "ammoID", "active")
     def validator(self, key, val):

@@ -589,18 +589,18 @@ class EfsPort:
         preTraitMultipliers = getCurrentMultipliers(tf)
         for effect in fit.ship.item.effects.values():
             if effect.isImplemented:
-                effect.handler(tf, tf.ship, [], None)
+                effect.handler(tf, tf.ship, [], None, effect=effect)
         # Factor in mode effects for T3 Destroyers
         if fit.mode is not None:
             for effect in fit.mode.item.effects.values():
                 if effect.isImplemented:
-                    effect.handler(tf, fit.mode, [], None)
+                    effect.handler(tf, fit.mode, [], None, effect=effect)
         if fit.ship.item.groupID == getGroup("Strategic Cruiser").ID:
             subSystems = list(filter(lambda mod: mod.slot == FittingSlot.SUBSYSTEM and mod.item, fit.modules))
             for sub in subSystems:
                 for effect in sub.item.effects.values():
                     if effect.isImplemented:
-                        effect.handler(tf, sub, [], None)
+                        effect.handler(tf, sub, [], None, effect=effect)
         postTraitMultipliers = getCurrentMultipliers(tf)
         getMaxRatio = lambda dictA, dictB, key: max(map(lambda a, b: b / a, dictA[key], dictB[key]))
         multipliers["turret"] = round(getMaxRatio(preTraitMultipliers, postTraitMultipliers, "turrets"), 6)

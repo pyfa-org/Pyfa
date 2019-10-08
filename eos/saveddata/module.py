@@ -882,7 +882,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             and not forceProjected \
                             and effect.activeByDefault \
                             and ((gang and effect.isType("gang")) or not gang):
-                        effect.handler(fit, self, context, projectionRange)
+                        effect.handler(fit, self, context, projectionRange, effect=effect)
 
             for effect in self.item.effects.values():
                 if effect.runTime == runTime and \
