@@ -152,7 +152,7 @@ ig.categoryID = ic.categoryID'
 QUERY_TYPEID_GROUPID = 'SELECT groupID FROM invtypes WHERE typeID = ? LIMIT 1'
 QUERY_GROUPID_CATEGORYID = 'SELECT categoryID FROM invgroups WHERE \
 groupID = ? LIMIT 1'
-QUERY_TYPEID_PARENTTYPEID = 'SELECT parentTypeID FROM invmetatypes WHERE \
+QUERY_TYPEID_PARENTTYPEID = 'SELECT variationParentTypeID FROM invtypes WHERE \
 typeID = ? LIMIT 1'
 QUERY_TYPEID_MARKETGROUPID = 'SELECT marketGroupID FROM invtypes WHERE \
 typeID = ? LIMIT 1'

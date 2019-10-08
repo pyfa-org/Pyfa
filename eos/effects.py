@@ -11746,7 +11746,7 @@ class Effect3771(BaseEffect):
     armorHPBonusAddPassive
 
     Used by:
-    Subsystems from group: Defensive Systems (9 of 12)
+    Subsystems from group: Defensive Subsystem (9 of 12)
     """
 
     type = 'passive'
@@ -11761,7 +11761,7 @@ class Effect3773(BaseEffect):
     hardPointModifierEffect
 
     Used by:
-    Subsystems from group: Offensive Systems (12 of 12)
+    Subsystems from group: Offensive Subsystem (12 of 12)
     """
 
     type = 'passive'
@@ -11794,7 +11794,7 @@ class Effect3782(BaseEffect):
     powerOutputAddPassive
 
     Used by:
-    Subsystems from group: Offensive Systems (8 of 12)
+    Subsystems from group: Offensive Subsystem (8 of 12)
     """
 
     type = 'passive'
@@ -11809,7 +11809,7 @@ class Effect3783(BaseEffect):
     cpuOutputAddCpuOutputPassive
 
     Used by:
-    Subsystems from group: Offensive Systems (8 of 12)
+    Subsystems from group: Offensive Subsystem (8 of 12)
     """
 
     type = 'passive'
@@ -11824,7 +11824,7 @@ class Effect3797(BaseEffect):
     droneBandwidthAddPassive
 
     Used by:
-    Subsystems from group: Offensive Systems (12 of 12)
+    Subsystems from group: Offensive Subsystem (12 of 12)
     """
 
     type = 'passive'
@@ -11839,7 +11839,7 @@ class Effect3799(BaseEffect):
     droneCapacityAdddroneCapacityPassive
 
     Used by:
-    Subsystems from group: Offensive Systems (12 of 12)
+    Subsystems from group: Offensive Subsystem (12 of 12)
     """
 
     type = 'passive'
@@ -11869,7 +11869,7 @@ class Effect3808(BaseEffect):
     signatureRadiusAddPassive
 
     Used by:
-    Subsystems from group: Defensive Systems (8 of 12)
+    Subsystems from group: Defensive Subsystem (8 of 12)
     Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
     """
 
@@ -11916,7 +11916,7 @@ class Effect3831(BaseEffect):
     shieldCapacityAddPassive
 
     Used by:
-    Subsystems from group: Defensive Systems (8 of 12)
+    Subsystems from group: Defensive Subsystem (8 of 12)
     """
 
     type = 'passive'
@@ -18769,7 +18769,7 @@ class Effect5262(BaseEffect):
     covertOpsCloakCpuPenalty
 
     Used by:
-    Subsystems from group: Defensive Systems (8 of 12)
+    Subsystems from group: Defensive Subsystem (8 of 12)
     """
 
     type = 'passive'
@@ -18785,7 +18785,7 @@ class Effect5263(BaseEffect):
     covertCynoCpuPenalty
 
     Used by:
-    Subsystems from group: Defensive Systems (8 of 12)
+    Subsystems from group: Defensive Subsystem (8 of 12)
     """
 
     type = 'passive'
@@ -18817,7 +18817,7 @@ class Effect5265(BaseEffect):
     warfareLinkCpuPenalty
 
     Used by:
-    Subsystems from group: Offensive Systems (8 of 12)
+    Subsystems from group: Offensive Subsystem (8 of 12)
     """
 
     type = 'passive'
@@ -36010,7 +36010,7 @@ class Effect7232(BaseEffect):
     modifyDamageMultiplierBonusMax
 
     Used by:
-    Implants named like: Low Grade Mimesis (5 of 6)
+    Implants named like: Grade Mimesis (10 of 12)
     """
 
     type = 'passive'
@@ -36027,7 +36027,7 @@ class Effect7233(BaseEffect):
     modifyDamageMultiplierBonusPerCycle
 
     Used by:
-    Implants named like: Low Grade Mimesis (5 of 6)
+    Implants named like: Grade Mimesis (10 of 12)
     """
 
     type = 'passive'
@@ -36044,7 +36044,7 @@ class Effect7234(BaseEffect):
     implantSetMimesis
 
     Used by:
-    Implants named like: Low Grade Mimesis (6 of 6)
+    Implants named like: Grade Mimesis (12 of 12)
     """
 
     runTime = 'early'
