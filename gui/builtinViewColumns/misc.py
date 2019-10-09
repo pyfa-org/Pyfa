@@ -689,9 +689,8 @@ class Miscellanea(ViewColumn):
                 baseRange = stuff.getModifiedChargeAttr("baseScanRange")
                 if not scanStr or not baseRange:
                     return "", None
-                strTwoAu = scanStr / (2.0 / baseRange)
-                text = "{0}".format(formatAmount(strTwoAu, 3, 0, 3))
-                tooltip = "Scan strength with 2 AU scan range"
+                text = "{}".format(formatAmount(scanStr, 4, 0, 3))
+                tooltip = "Scan strength at {} AU scan range".format(formatAmount(baseRange, 3, 0, 0))
                 return text, tooltip
             else:
                 return "", None
