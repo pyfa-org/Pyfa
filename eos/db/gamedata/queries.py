@@ -259,6 +259,10 @@ def getMetaGroup(lookfor, eager=None):
     return metaGroup
 
 
+def getMetaGroups():
+    return gamedata_session.query(MetaGroup).all()
+
+
 @cachedQuery(1, "lookfor")
 def getMarketGroup(lookfor, eager=None):
     if isinstance(lookfor, int):

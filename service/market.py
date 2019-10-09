@@ -20,6 +20,7 @@
 import queue
 import threading
 from collections import OrderedDict
+from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -314,10 +315,12 @@ class Market:
 
         # Misc definitions
         # 0 is for items w/o meta group
-        self.META_MAP = OrderedDict([("normal", frozenset((0, 1, 2, 14))),
-                                     ("faction", frozenset((4, 3))),
+        self.META_MAP = OrderedDict([("faction", frozenset((4, 3, 52))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
+        nonNormalMetas = set(chain(*self.META_MAP.values()))
+        self.META_MAP["normal"] = frozenset((0, *(mg.ID for mg in eos.db.getMetaGroups() if mg.ID not in nonNormalMetas)))
+        self.META_MAP.move_to_end("normal", last=False)
         self.META_MAP_REVERSE = {sv: k for k, v in self.META_MAP.items() for sv in v}
         self.SEARCH_CATEGORIES = (
             "Drone",
