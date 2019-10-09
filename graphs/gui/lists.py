@@ -297,7 +297,7 @@ class SourceWrapperList(BaseWrapperList):
 
     def spawnMenu(self, event):
         clickedPos = self.getRowByAbs(event.Position)
-        self.ensureSelection(clickedPos, event)
+        self.ensureSelection(clickedPos)
 
         selection = self.getSelectedWrappers()
         mainItem = self.getWrapper(clickedPos)
