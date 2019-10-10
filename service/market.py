@@ -20,6 +20,7 @@
 import queue
 import threading
 from collections import OrderedDict
+from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -29,7 +30,7 @@ from sqlalchemy.sql import or_
 import config
 import eos.db
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
-    MetaGroup as types_MetaGroup, MetaType as types_MetaType
+    MetaGroup as types_MetaGroup
 from service import conversions
 from service.jargon import JargonLoader
 from service.settings import SettingsProvider
@@ -118,13 +119,13 @@ class SearchWorkerThread(threading.Thread):
             if len(request) >= config.minItemSearchLength:
                 results = eos.db.searchItems(request, where=filter_,
                                              join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup", "metaGroup.parent"))
+                                             eager=("group.category", "metaGroup"))
 
             jargon_results = []
             if len(jargon_request) >= config.minItemSearchLength:
                 jargon_results = eos.db.searchItems(jargon_request, where=filter_,
                                              join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup", "metaGroup.parent"))
+                                             eager=("group.category", "metaGroup"))
 
             items = set()
             # Return only published items, consult with Market service this time
@@ -217,7 +218,8 @@ class Market:
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
-        self.les_grp.addItems = list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
+        for grp, itemNames in self.ITEMS_FORCEGROUP_R.items():
+            grp.addItems = list(self.getItem(i) for i in itemNames)
         self.customGroups.add(self.les_grp)
 
         # List of items which are forcibly published or hidden
@@ -313,10 +315,12 @@ class Market:
 
         # Misc definitions
         # 0 is for items w/o meta group
-        self.META_MAP = OrderedDict([("normal", frozenset((0, 1, 2, 14))),
-                                     ("faction", frozenset((4, 3))),
+        self.META_MAP = OrderedDict([("faction", frozenset((4, 3, 52))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
+        nonNormalMetas = set(chain(*self.META_MAP.values()))
+        self.META_MAP["normal"] = frozenset((0, *(mg.ID for mg in eos.db.getMetaGroups() if mg.ID not in nonNormalMetas)))
+        self.META_MAP.move_to_end("normal", last=False)
         self.META_MAP_REVERSE = {sv: k for k, v in self.META_MAP.items() for sv in v}
         self.SEARCH_CATEGORIES = (
             "Drone",
@@ -461,19 +465,8 @@ class Market:
         """Get meta group by item"""
         # Check if item is in forced metagroup map
         if item.name in self.ITEMS_FORCEDMETAGROUP:
-            # Create meta group from scratch
-            metaGroup = types_MetaType()
-            # Get meta group info object based on meta group name
-            metaGroupInfo = self.getMetaGroup(self.ITEMS_FORCEDMETAGROUP[item.name][0])
-            # Get parent item based on its name
-            parent = self.getItem(self.ITEMS_FORCEDMETAGROUP[item.name][1])
-            # Assign all required for metaGroup variables
-            metaGroup.info = metaGroupInfo
-            metaGroup.items = item
-            metaGroup.parent = parent
-            metaGroup.metaGroupID = metaGroupInfo.ID
-            metaGroup.parentTypeID = parent.ID
-            metaGroup.typeID = item.ID
+            metaGroupName = self.ITEMS_FORCEDMETAGROUP[item.name][0]
+            metaGroup = eos.db.getMetaGroup(metaGroupName)
         # If no forced meta group is provided, try to use item's
         # meta group if any
         else:
@@ -513,14 +506,15 @@ class Market:
 
     def getParentItemByItem(self, item, selfparent=True):
         """Get parent item by item"""
-        mg = self.getMetaGroupByItem(item)
-        if mg:
-            parent = mg.parent
+        parent = None
+        if item.name in self.ITEMS_FORCEDMETAGROUP:
+            parentName = self.ITEMS_FORCEDMETAGROUP[item.name][1]
+            parent = self.getItem(parentName)
+        if parent is None:
+            parent = item.varParent
         # Consider self as parent if item has no parent in database
-        elif selfparent is True:
+        if parent is None and selfparent is True:
             parent = item
-        else:
-            parent = None
         return parent
 
     def getVariationsByItems(self, items, alreadyparent=False):
@@ -756,7 +750,7 @@ class Market:
         filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
-                                     eager=("group.category", "metaGroup", "metaGroup.parent"))
+                                     eager=("group.category", "metaGroup"))
         ships = set()
         for item in results:
             if self.getPublicityByItem(item):

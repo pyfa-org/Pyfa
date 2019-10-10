@@ -152,10 +152,10 @@ class BaseWrapperList(gui.display.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
+        modifiers = event.GetModifiers()
+        if keycode == 65 and modifiers == wx.MOD_CONTROL:
             self.selectAll()
-        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and modifiers == wx.MOD_NONE:
             self.removeWrappers(self.getSelectedWrappers())
         event.Skip()
 

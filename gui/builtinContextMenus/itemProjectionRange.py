@@ -52,19 +52,18 @@ class ChangeItemProjectionRange(ContextMenuCombined):
                     newRange = cleanInputFloat * 1000
                 else:
                     newRange = None
-
-        fitID = self.mainFrame.getActiveFit()
-        items = selection
-        if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
-            if isinstance(mainItem, EosModule):
-                fit = Fit.getInstance().getFit(fitID)
-                positions = getSimilarModPositions(fit.projectedModules, mainItem)
-                items = [fit.projectedModules[p] for p in positions]
-            elif isinstance(mainItem, EosFighter):
-                fit = Fit.getInstance().getFit(fitID)
-                items = getSimilarFighters(fit.projectedFighters, mainItem)
-        self.mainFrame.command.Submit(cmd.GuiChangeProjectedItemsProjectionRangeCommand(
-            fitID=fitID, items=items, projectionRange=newRange))
+                fitID = self.mainFrame.getActiveFit()
+                items = selection
+                if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
+                    if isinstance(mainItem, EosModule):
+                        fit = Fit.getInstance().getFit(fitID)
+                        positions = getSimilarModPositions(fit.projectedModules, mainItem)
+                        items = [fit.projectedModules[p] for p in positions]
+                    elif isinstance(mainItem, EosFighter):
+                        fit = Fit.getInstance().getFit(fitID)
+                        items = getSimilarFighters(fit.projectedFighters, mainItem)
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedItemsProjectionRangeCommand(
+                    fitID=fitID, items=items, projectionRange=newRange))
 
 
 ChangeItemProjectionRange.register()

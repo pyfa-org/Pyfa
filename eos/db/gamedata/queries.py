@@ -23,8 +23,8 @@ from sqlalchemy.sql import and_, or_, select
 
 import eos.config
 from eos.db import gamedata_session
+from eos.db.gamedata.item import items_table
 from eos.db.gamedata.group import groups_table
-from eos.db.gamedata.metaGroup import items_table, metatypes_table
 from eos.db.util import processEager, processWhere
 from eos.gamedata import AlphaClone, Attribute, AttributeInfo, Category, DynamicItem, Group, Item, MarketGroup, MetaData, MetaGroup
 
@@ -259,6 +259,10 @@ def getMetaGroup(lookfor, eager=None):
     return metaGroup
 
 
+def getMetaGroups():
+    return gamedata_session.query(MetaGroup).all()
+
+
 @cachedQuery(1, "lookfor")
 def getMarketGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -342,11 +346,9 @@ def getVariations(itemids, groupIDs=None, where=None, eager=None):
     if len(itemids) == 0:
         return []
 
-    itemfilter = or_(*(metatypes_table.c.parentTypeID == itemid for itemid in itemids))
+    itemfilter = or_(*(items_table.c.variationParentTypeID == itemid for itemid in itemids))
     filter = processWhere(itemfilter, where)
-    joinon = items_table.c.typeID == metatypes_table.c.typeID
-    vars = gamedata_session.query(Item).options(*processEager(eager)).join((metatypes_table, joinon)).filter(
-            filter).all()
+    vars = gamedata_session.query(Item).options(*processEager(eager)).filter(filter).all()
 
     if vars:
         return vars

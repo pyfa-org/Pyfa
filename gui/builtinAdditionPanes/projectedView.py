@@ -129,12 +129,12 @@ class ProjectedView(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
+        modifiers = event.GetModifiers()
+        if keycode == wx.WXK_ESCAPE and modifiers == wx.MOD_NONE:
             self.unselectAll()
-        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
+        elif keycode == 65 and modifiers == wx.MOD_CONTROL:
             self.selectAll()
-        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and modifiers == wx.MOD_NONE:
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
                 fitID=self.mainFrame.getActiveFit(),
                 items=self.getSelectedProjectors(),
@@ -267,7 +267,7 @@ class ProjectedView(d.Display):
                 selection = self.getSelectedProjectors()
                 if mainItem not in selection:
                     selection = [mainItem]
-                modPressed = wx.GetMouseState().GetModifiers() == wx.MOD_ALT
+                modPressed = event.GetModifiers() == wx.MOD_ALT
                 fitID = self.mainFrame.getActiveFit()
                 if isinstance(mainItem, EosModule) and modPressed:
                     fit = Fit.getInstance().getFit(fitID)
@@ -342,7 +342,7 @@ class ProjectedView(d.Display):
                 if mainItem is None:
                     return
                 fitID = self.mainFrame.getActiveFit()
-                modPressed = wx.GetMouseState().GetModifiers() == wx.MOD_ALT
+                modPressed = event.GetModifiers() == wx.MOD_ALT
                 if isinstance(mainItem, EosFit):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
                         fitID=fitID, items=[mainItem], amount=math.inf if modPressed else 1))

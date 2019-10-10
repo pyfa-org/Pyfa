@@ -109,10 +109,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
     def OnBrowserSearchBoxKeyPress(self, event):
         keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
+        modifiers = event.GetModifiers()
+        if keycode == wx.WXK_ESCAPE and modifiers == wx.MOD_NONE:
             self.BrowserSearchBox.Show(False)
-        elif event.RawControlDown() and event.GetKeyCode() == wx.WXK_BACK:
+        elif keycode == wx.WXK_BACK and modifiers == wx.MOD_CONTROL:
             HandleCtrlBackspace(self.BrowserSearchBox)
         else:
             event.Skip()

@@ -95,7 +95,7 @@ class Implant(HandledItem, ItemAttrShortcut):
             return
         for effect in self.item.effects.values():
             if effect.runTime == runTime and effect.isType("passive") and effect.activeByDefault:
-                effect.handler(fit, self, ("implant",), None)
+                effect.handler(fit, self, ("implant",), None, effect=effect)
 
     @validates("fitID", "itemID", "active")
     def validator(self, key, val):

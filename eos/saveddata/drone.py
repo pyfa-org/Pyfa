@@ -334,7 +334,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.charge:
             for effect in self.charge.effects.values():
                 if effect.runTime == runTime and effect.activeByDefault:
-                    effect.handler(fit, self, ("droneCharge",), projectionRange)
+                    effect.handler(fit, self, ("droneCharge",), projectionRange, effect=effect)
 
     def __deepcopy__(self, memo):
         copy = Drone(self.item)
