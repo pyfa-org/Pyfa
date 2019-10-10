@@ -40,10 +40,10 @@ class AmmoPicker(wx.Dialog):
         super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE)
 
         mods = self.getMods(fit)
+        drones = self.getDrones(fit)
+        fighters = self.getFighters(fit)
 
         self.SetMinSize((346, 156))
-
-
 
     def getMods(self, fit):
         sMkt = Market.getInstance()
@@ -62,6 +62,40 @@ class AmmoPicker(wx.Dialog):
                     for charge in mod.getValidCharges():
                         if sMkt.getPublicityByItem(charge):
                             charges.add(charge)
+                # We're not interested in modules which contain no charges
                 if charges:
                     mods.setdefault(frozenset(charges), []).append(mod)
         return mods
+
+    def getDrones(self, fit):
+        drones = set()
+        if fit is not None:
+            for drone in fit.drones:
+                if drone.item is None:
+                    continue
+                # Drones are our "ammo", so we want to pick even those which are inactive
+                if drone.canDealDamage(ignoreState=True):
+                    drones.add(drone)
+                    continue
+                if {'remoteWebifierEntity', 'remoteTargetPaintEntity'}.intersection(drone.item.effects):
+                    drones.add(drone)
+                    continue
+        return drones
+
+    def getFighters(self, fit):
+        fighters = set()
+        if fit is not None:
+            for fighter in fit.fighters:
+                if fighter.item is None:
+                    continue
+                # Fighters are our "ammo" as well
+                if fighter.canDealDamage(ignoreState=True):
+                    fighters.add(fighter)
+                    continue
+                for ability in fighter.abilities:
+                    if not ability.active:
+                        continue
+                    if ability.effect.name == 'fighterAbilityStasisWebifier':
+                        fighters.add(fighter)
+                        break
+        return fighters

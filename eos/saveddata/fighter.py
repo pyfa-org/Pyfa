@@ -441,3 +441,15 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
 
         return True
+
+    def canDealDamage(self, ignoreState=False, ignoreAbilityState=False):
+        if self.item is None:
+            return False
+        if not self.active and not ignoreState:
+            return False
+        for ability in self.abilities:
+            if not ability.active and not ignoreAbilityState:
+                continue
+            if ability.effect.dealsDamage:
+                return True
+        return False

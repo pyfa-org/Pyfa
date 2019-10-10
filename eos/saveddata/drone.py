@@ -364,3 +364,11 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.item.groupID in fitDroneGroupLimits:
             return True
         return False
+
+    def canDealDamage(self, ignoreState=False):
+        if self.item is None:
+            return False
+        for effect in self.item.effects.values():
+            if effect.dealsDamage and (ignoreState or self.amountActive > 0):
+                return True
+        return False
