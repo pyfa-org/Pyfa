@@ -164,7 +164,7 @@ class FittingView(d.Display):
         self.hoveredRow = None
         self.hoveredColumn = None
 
-        self.Bind(wx.EVT_KEY_DOWN, self.kbEvent)
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_MIDDLE_DOWN, self.click)

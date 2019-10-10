@@ -2,6 +2,7 @@
 import wx
 
 import gui.mainFrame
+from gui.auxFrame import AuxiliaryFrame
 from gui.contextMenu import ContextMenuSingle
 from service.market import Market
 
@@ -24,17 +25,14 @@ class GraphFitAmmoPicker(ContextMenuSingle):
         return 'Plot with Different Ammo...'
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        with AmmoPicker(self.mainFrame, mainItem.item) as dlg:
-            if dlg.ShowModal() == wx.ID_OK:
-                pass
-            else:
-                pass
+        window = AmmoPicker(self.mainFrame, mainItem.item)
+        window.Show()
 
 
 GraphFitAmmoPicker.register()
 
 
-class AmmoPicker(wx.Dialog):
+class AmmoPicker(AuxiliaryFrame):
 
     def __init__(self, parent, fit):
         super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE)
@@ -44,6 +42,13 @@ class AmmoPicker(wx.Dialog):
         fighters = self.getFighters(fit)
 
         self.SetMinSize((346, 156))
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+
+    def kbEvent(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:
+            self.Close()
+            return
+        event.Skip()
 
     def getMods(self, fit):
         sMkt = Market.getInstance()
