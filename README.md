@@ -27,7 +27,7 @@ The following is a list of pyfa packages available for certain distributions. Pl
 * Gentoo: https://github.com/ZeroPointEnergy/gentoo-pyfa-overlay
 
 ## Contribution
-If you wish to help with development or you need to run pyfa through a Python interpreter, check out [the instructions](https://github.com/pyfa-org/Pyfa/blob/master/ISSUE_TEMPLATE.md).
+If you wish to help with development or you need to run pyfa through a Python interpreter, check out [the instructions](https://github.com/pyfa-org/Pyfa/blob/master/CONTRIBUTING.md).
 
 ## Bug Reporting
 The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](https://forums.eveonline.com/t/27156) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/pyfa-org/Pyfa/wiki/Bug-Reporting). 
