@@ -429,6 +429,20 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return True
         return False
 
+    def canDealDamage(self, ignoreState=False):
+        if self.isEmpty:
+            return False
+        for effect in self.item.effects.values():
+            if effect.dealsDamage and (
+                ignoreState or
+                effect.isType('offline') or
+                (effect.isType('passive') and self.state >= FittingModuleState.ONLINE) or
+                (effect.isType('active') and self.state >= FittingModuleState.ACTIVE) or
+                (effect.isType('overheat') and self.state >= FittingModuleState.OVERHEATED)
+            ):
+                return True
+        return False
+
     def getVolleyParameters(self, spoolOptions=None, targetProfile=None, ignoreState=False):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return {0: DmgTypes(0, 0, 0, 0)}

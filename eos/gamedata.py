@@ -145,6 +145,12 @@ class Effect(EqBase):
 
         return self.__effectDef is not None
 
+    @property
+    def dealsDamage(self):
+        if not self.__generated:
+            self.__generateHandler()
+        return self.__dealsDamage
+
     def isType(self, type):
         """
         Check if this effect is of the passed type
@@ -166,6 +172,7 @@ class Effect(EqBase):
             self.__handler = getattr(effectDef, "handler", eos.effects.BaseEffect.handler)
             self.__runTime = getattr(effectDef, "runTime", "normal")
             self.__activeByDefault = getattr(effectDef, "activeByDefault", True)
+            self.__dealsDamage = effectDef.dealsDamage
             effectType = getattr(effectDef, "type", None)
             effectType = effectType if isinstance(effectType, tuple) or effectType is None else (effectType,)
             self.__type = effectType
@@ -174,6 +181,7 @@ class Effect(EqBase):
             self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
+            self.__dealsDamage = False
             self.__type = None
             pyfalog.debug("ImportError generating handler: {0}", e)
         except AttributeError as e:
@@ -181,12 +189,14 @@ class Effect(EqBase):
             self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
+            self.__dealsDamage = False
             self.__type = None
             pyfalog.error("AttributeError generating handler: {0}", e)
         except Exception as e:
             self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
+            self.__dealsDamage = False
             self.__type = None
             pyfalog.critical("Exception generating handler:")
             pyfalog.critical(e)

@@ -26,6 +26,8 @@ from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, re
 
 class BaseEffect:
 
+    dealsDamage = False
+
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         pass
@@ -62,6 +64,7 @@ class Effect10(BaseEffect):
     Modules from group: Energy Weapon (212 of 214)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -169,6 +172,7 @@ class Effect34(BaseEffect):
     Modules from group: Projectile Weapon (165 of 165)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -189,6 +193,7 @@ class Effect38(BaseEffect):
     Modules from group: Smart Bomb (118 of 118)
     """
 
+    dealsDamage = True
     type = 'active'
 
 
@@ -544,6 +549,7 @@ class Effect101(BaseEffect):
     Structure Modules named like: Standup Launcher (7 of 7)
     """
 
+    dealsDamage = True
     type = 'active', 'projected'
 
     @staticmethod
@@ -15094,6 +15100,7 @@ class Effect4489(BaseEffect):
     Module: 'Judgment' Electromagnetic Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -15110,6 +15117,7 @@ class Effect4490(BaseEffect):
     Module: 'Oblivion' Kinetic Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -15126,6 +15134,7 @@ class Effect4491(BaseEffect):
     Module: 'Aurora Ominae' Thermal Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -15142,6 +15151,7 @@ class Effect4492(BaseEffect):
     Module: 'Gjallarhorn' Explosive Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -27333,6 +27343,7 @@ class Effect6431(BaseEffect):
     Fighters from group: Light Fighter (32 of 32)
     """
 
+    dealsDamage = True
     displayName = 'Missile Attack'
     hasCharges = True
     prefix = 'fighterAbilityMissiles'
@@ -27593,6 +27604,7 @@ class Effect6465(BaseEffect):
     Fighters from group: Heavy Fighter (34 of 34)
     """
 
+    dealsDamage = True
     displayName = 'Turret Attack'
     prefix = 'fighterAbilityAttackMissile'
     type = 'active'
@@ -27635,6 +27647,7 @@ class Effect6472(BaseEffect):
     Modules named like: Lance (4 of 4)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -27651,6 +27664,7 @@ class Effect6473(BaseEffect):
     Module: Bosonic Field Generator
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -27861,6 +27875,7 @@ class Effect6485(BaseEffect):
     Fighters from group: Heavy Fighter (16 of 34)
     """
 
+    dealsDamage = True
     displayName = 'Bomb'
     hasCharges = True
     prefix = 'fighterAbilityLaunchBomb'
@@ -33925,6 +33940,7 @@ class Effect6995(BaseEffect):
     Modules from group: Precursor Weapon (18 of 18)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
