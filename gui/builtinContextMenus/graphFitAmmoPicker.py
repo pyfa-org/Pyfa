@@ -41,6 +41,35 @@ class AmmoPicker(AuxiliaryFrame):
         drones = self.getDrones(fit)
         fighters = self.getFighters(fit)
 
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        firstRadio = True
+
+        def addRadioButton(text):
+            nonlocal firstRadio
+            if not firstRadio:
+                rb = wx.RadioButton(self, wx.ID_ANY, text, style=wx.RB_GROUP)
+                rb.SetValue(True)
+                firstRadio = True
+            else:
+                rb = wx.RadioButton(self, wx.ID_ANY, text)
+                rb.SetValue(False)
+            mainSizer.Add(rb, 0, wx.EXPAND | wx.ALL, 5)
+
+        for ammos, mods in mods.items():
+            modCounts = {}
+            for mod in mods:
+                if mod.item.name not in modCounts:
+                    modCounts[mod.item.name] = 0
+                modCounts[mod.item.name] += 1
+            text = '\n'.join('{}x {}'.format(a, n) for n, a in modCounts.items())
+            addRadioButton(text)
+        if drones:
+            addRadioButton('Drones')
+        if fighters:
+            addRadioButton('Fighters')
+
+        self.SetSizer(mainSizer)
         self.SetMinSize((346, 156))
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
