@@ -52,7 +52,7 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   - ECHO "Install pip requirements:"
-  - "python -m ip install -r requirements.txt"
+  - "python -m pip install -r requirements.txt"
   - "python -m pip install PyInstaller"
 
 before_build:
