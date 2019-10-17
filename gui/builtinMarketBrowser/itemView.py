@@ -7,7 +7,6 @@ from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
-from service.attribute import Attribute
 from service.fit import Fit
 from config import slotColourMap
 
@@ -50,7 +49,6 @@ class ItemView(Display):
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
         # Make reverse map, used by sorter
-        self.metaMap = self.makeReverseMetaMap()
         self.active = []
 
     def delaySearch(self, evt):
@@ -203,21 +201,6 @@ class ItemView(Display):
         self.setToggles()
         self.filterItemStore()
 
-    def itemSort(self, item):
-        sMkt = self.sMkt
-        catname = sMkt.getCategoryByItem(item).name
-        try:
-            mktgrpid = sMkt.getMarketGroupByItem(item).ID
-        except AttributeError:
-            mktgrpid = -1
-            pyfalog.warning("unable to find market group for {}".format(item.name))
-        parentname = sMkt.getParentItemByItem(item).name
-        # Get position of market group
-        metagrpid = sMkt.getMetaGroupIdByItem(item)
-        metatab = self.metaMap.get(metagrpid)
-        metalvl = item.metaLevel or 0
-
-        return catname, mktgrpid, parentname, metatab, metalvl, item.name
 
     def contextMenu(self, event):
         clickedPos = self.getRowByAbs(event.Position)
@@ -241,7 +224,7 @@ class ItemView(Display):
             self.unselectAll()
             # Perform sorting, using item's meta levels besides other stuff
             if self.marketBrowser.mode != 'recent':
-                items.sort(key=self.itemSort)
+                items.sort(key=self.sMkt.itemSort)
         # Mark current item list as active
         self.active = items
         # Show them
@@ -251,25 +234,13 @@ class ItemView(Display):
         if len(items) > 1:
             # Re-sort stuff
             if self.marketBrowser.mode != 'recent':
-                items.sort(key=self.itemSort)
+                items.sort(key=self.sMkt.itemSort)
 
         for i, item in enumerate(items[:9]):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
 
         Display.refresh(self, items)
-
-    def makeReverseMetaMap(self):
-        """
-        Form map which tells in which tab items of given metagroup are located
-        """
-        revmap = {}
-        i = 0
-        for mgids in self.sMkt.META_MAP.values():
-            for mgid in mgids:
-                revmap[mgid] = i
-            i += 1
-        return revmap
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
