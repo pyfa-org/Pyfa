@@ -14,8 +14,7 @@ The latest version along with release notes can always be found on the project's
 ## Installation
 Windows and OS X users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/pyfa-org/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux, however, there are a number of third-party packages available through distribution-specific repositories.
 
-#### OS X
-
+### OS X
 Apart from the official release, there is also a [Homebrew](http://brew.sh) option for installing pyfa on OS X. Please note this is maintained by a third-party and is not tested by pyfa developers. Simply fire up in terminal:
 ```
 $ brew install Caskroom/cask/pyfa
@@ -27,11 +26,8 @@ The following is a list of pyfa packages available for certain distributions. Pl
 * Arch: https://aur.archlinux.org/packages/pyfa/
 * Gentoo: https://github.com/ZeroPointEnergy/gentoo-pyfa-overlay
 
-### Dependencies
-If you wish to help with development or simply need to run pyfa through a Python interpreter, the following software is required:
-
-* Python 3.6
-* Requirements as listed in `requirements.txt`
+## Contribution
+If you wish to help with development or you need to run pyfa through a Python interpreter, check out [the instructions](https://github.com/pyfa-org/Pyfa/blob/master/CONTRIBUTING.md).
 
 ## Bug Reporting
 The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](https://forums.eveonline.com/t/27156) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/pyfa-org/Pyfa/wiki/Bug-Reporting). 
