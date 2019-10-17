@@ -8,13 +8,19 @@
 
 Virtual environment will be created in *PyfaEnv* folder. Project will be cloned and run from the *PyfaDEV* folder. Separate virtual environment will be created so required libraries won't clutter the main python installation.
 
+> Commands and screens were created on Windows 10. Please, update all the paths according to your OS.
+
 ## Setting up the project manually
 
 Clone the repo 
-`git clone <repo> PyfaDEV`
+```
+git clone <repo> PyfaDEV
+```
 
 Create virtual environment
-`python -m venv PyfaEnv`
+```
+python -m venv PyfaEnv
+```
 
 Activate virtual environment
 
@@ -25,13 +31,20 @@ For bash: source <venv>/bin/activate
 > For other OS check [Python documentation](https://docs.python.org/3/library/venv.html)
 
 Install requirements for the project from *requirements.txt*
-`pip install -r PyfaDEV\requirements.txt`
+```
+pip install -r PyfaDEV\requirements.txt
+```
+> For some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`
 
 Check that libs from *requirements.txt* are installed
-`pip list`
+```
+pip list
+```
 
 Test that the project is starting properly
-`python PyfaDEV\pyfa.py`
+```
+python PyfaDEV\pyfa.py
+```
 
 
 
