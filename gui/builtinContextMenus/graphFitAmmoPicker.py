@@ -56,13 +56,8 @@ class AmmoPicker(AuxiliaryFrame):
                 rb.SetValue(False)
             mainSizer.Add(rb, 0, wx.EXPAND | wx.ALL, 5)
 
-        for ammos, mods in mods.items():
-            modCounts = {}
-            for mod in mods:
-                if mod.item.name not in modCounts:
-                    modCounts[mod.item.name] = 0
-                modCounts[mod.item.name] += 1
-            text = '\n'.join('{}x {}'.format(a, n) for n, a in modCounts.items())
+        for modInfo, ammo in mods:
+            text = '\n'.join('{}x {}'.format(amount, item.name) for item, amount in modInfo)
             addRadioButton(text)
         if drones:
             addRadioButton('Drones')
@@ -82,8 +77,8 @@ class AmmoPicker(AuxiliaryFrame):
     def getMods(self, fit):
         sMkt = Market.getInstance()
         loadableCharges = {}
-        # Modules, Format: {frozenset(ammo): [module list]}
-        mods = {}
+        # Modules, format: {frozenset(ammo): {item: count}}
+        modsPrelim = {}
         if fit is not None:
             for mod in fit.modules:
                 if not mod.canDealDamage():
@@ -98,8 +93,20 @@ class AmmoPicker(AuxiliaryFrame):
                             charges.add(charge)
                 # We're not interested in modules which contain no charges
                 if charges:
-                    mods.setdefault(frozenset(charges), []).append(mod)
-        return mods
+                    data = modsPrelim.setdefault(frozenset(charges), {})
+                    if mod.item not in data:
+                        data[mod.item] = 0
+                    data[mod.item] += 1
+        # Format: [([(item, count), ...], frozenset(ammo)), ...]
+        modsFinal = []
+        for charges, itemCounts in modsPrelim.items():
+            modsFinal.append((
+                # Sort items within group
+                sorted(itemCounts.items(), key=lambda i: sMkt.itemSort(i[0]), reverse=True),
+                charges))
+        # Sort item groups
+        modsFinal.sort(key=lambda i: sMkt.itemSort(i[0][0][0]), reverse=True)
+        return modsFinal
 
     def getDrones(self, fit):
         drones = set()
