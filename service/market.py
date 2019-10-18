@@ -842,13 +842,15 @@ class Market:
             recentlyUsedModules.pop(-1)
         recentlyUsedModules.insert(0, itemID)
 
-    def itemSort(self, item):
+    def itemSort(self, item, reverseMktGrp=False):
         catname = self.getCategoryByItem(item).name
         try:
             mktgrpid = self.getMarketGroupByItem(item).ID
         except AttributeError:
             mktgrpid = -1
             pyfalog.warning("unable to find market group for {}".format(item.name))
+        if reverseMktGrp:
+            mktgrpid = -mktgrpid
         parentname = self.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = self.getMetaGroupIdByItem(item)

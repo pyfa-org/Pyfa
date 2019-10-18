@@ -102,10 +102,10 @@ class AmmoPicker(AuxiliaryFrame):
         for charges, itemCounts in modsPrelim.items():
             modsFinal.append((
                 # Sort items within group
-                sorted(itemCounts.items(), key=lambda i: sMkt.itemSort(i[0]), reverse=True),
+                sorted(itemCounts.items(), key=lambda i: sMkt.itemSort(i[0], reverseMktGrp=True), reverse=True),
                 charges))
         # Sort item groups
-        modsFinal.sort(key=lambda i: sMkt.itemSort(i[0][0][0]), reverse=True)
+        modsFinal.sort(key=lambda i: sMkt.itemSort(i[0][0][0], reverseMktGrp=True), reverse=True)
         return modsFinal
 
     def getDrones(self, fit):
