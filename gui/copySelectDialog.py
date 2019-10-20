@@ -40,6 +40,7 @@ class CopySelectDialog(wx.Dialog):
     copyFormatEsi = 3
     copyFormatMultiBuy = 4
     copyFormatEfs = 5
+    copyFormatFitStats = 6
 
     def __init__(self, parent):
         super().__init__(parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
@@ -50,7 +51,8 @@ class CopySelectDialog(wx.Dialog):
             CopySelectDialog.copyFormatDna     : self.exportDna,
             CopySelectDialog.copyFormatEsi     : self.exportEsi,
             CopySelectDialog.copyFormatMultiBuy: self.exportMultiBuy,
-            CopySelectDialog.copyFormatEfs     : self.exportEfs
+            CopySelectDialog.copyFormatEfs     : self.exportEfs,
+            CopySelectDialog.copyFormatFitStats: self.exportFitStats
         }
 
         self.mainFrame = parent
@@ -62,6 +64,7 @@ class CopySelectDialog(wx.Dialog):
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
             ("DNA", (CopySelectDialog.copyFormatDna, DNA_OPTIONS)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
+            ("Fit Stats", (CopySelectDialog.copyFormatFitStats, None)),
             # ("XML", (CopySelectDialog.copyFormatXml, None)),
         ))
 
@@ -117,7 +120,7 @@ class CopySelectDialog(wx.Dialog):
         self.Center()
 
     def Validate(self):
-        # Since this dialog is shown through aa ShowModal(), we hook into the Validate function to veto the closing of the dialog until we're ready.
+        # Since this dialog is shown through as ShowModal(), we hook into the Validate function to veto the closing of the dialog until we're ready.
         # This always returns False, and when we're ready will EndModal()
         selected = self.GetSelected()
         options = self.GetOptions()
@@ -185,3 +188,9 @@ class CopySelectDialog(wx.Dialog):
     def exportEfs(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())
         EfsPort.exportEfs(fit, 0, callback)
+
+    """
+    Puts fit stats in textual format into the clipboard
+    """
+    def exportFitStats(self, options, callback):
+        pass
