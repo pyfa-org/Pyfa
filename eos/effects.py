@@ -1731,7 +1731,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (587 of 951)
+    Items from category: Charge (588 of 952)
     """
 
     type = 'passive'
@@ -1783,7 +1783,7 @@ class Effect600(BaseEffect):
     ammoTrackingMultiplier
 
     Used by:
-    Items from category: Charge (182 of 951)
+    Items from category: Charge (182 of 952)
     Charges from group: Projectile Ammo (128 of 128)
     """
 
@@ -2310,7 +2310,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (493 of 951)
+    Items from category: Charge (494 of 952)
     """
 
     type = 'passive'
@@ -9215,7 +9215,7 @@ class Effect3025(BaseEffect):
     Used by:
     Modules from group: Energy Weapon (101 of 214)
     Modules from group: Hybrid Weapon (105 of 221)
-    Modules from group: Precursor Weapon (18 of 18)
+    Modules from group: Precursor Weapon (19 of 19)
     Modules from group: Projectile Weapon (99 of 165)
     """
 
@@ -29035,7 +29035,8 @@ class Effect6582(BaseEffect):
         # Turrets
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret') or
                                                   mod.item.requiresSkill('Capital Hybrid Turret') or
-                                                  mod.item.requiresSkill('Capital Projectile Turret'),
+                                                  mod.item.requiresSkill('Capital Projectile Turret') or
+                                                  mod.item.requiresSkill('Capital Precursor Weapon'),
                                       'damageMultiplier', src.getModifiedItemAttr('siegeTurretDamageBonus'), **kwargs)
 
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Motion Prediction'),
@@ -33922,7 +33923,7 @@ class Effect6995(BaseEffect):
     targetDisintegratorAttack
 
     Used by:
-    Modules from group: Precursor Weapon (18 of 18)
+    Modules from group: Precursor Weapon (19 of 19)
     """
 
     type = 'active'
@@ -35120,6 +35121,7 @@ class Effect7092(BaseEffect):
     Ship: Hydra
     Ship: Leshak
     Ship: Tiamat
+    Ship: Triglavian Dreadnought
     """
 
     type = 'passive'
@@ -35143,6 +35145,7 @@ class Effect7093(BaseEffect):
     Ship: Hydra
     Ship: Leshak
     Ship: Tiamat
+    Ship: Triglavian Dreadnought
     """
 
     type = 'passive'
@@ -35165,6 +35168,7 @@ class Effect7094(BaseEffect):
     Ship: Hydra
     Ship: Leshak
     Ship: Tiamat
+    Ship: Triglavian Dreadnought
     """
 
     type = 'passive'
@@ -35221,6 +35225,7 @@ class Effect7112(BaseEffect):
     Ship: Hydra
     Ship: Leshak
     Ship: Tiamat
+    Ship: Triglavian Dreadnought
     """
 
     type = 'passive'
@@ -36010,7 +36015,7 @@ class Effect7232(BaseEffect):
     modifyDamageMultiplierBonusMax
 
     Used by:
-    Implants named like: Grade Mimesis (10 of 12)
+    Implants named like: Grade Mimesis (10 of 18)
     """
 
     type = 'passive'
@@ -36027,7 +36032,7 @@ class Effect7233(BaseEffect):
     modifyDamageMultiplierBonusPerCycle
 
     Used by:
-    Implants named like: Grade Mimesis (10 of 12)
+    Implants named like: Grade Mimesis (10 of 18)
     """
 
     type = 'passive'
@@ -36044,7 +36049,7 @@ class Effect7234(BaseEffect):
     implantSetMimesis
 
     Used by:
-    Implants named like: Grade Mimesis (12 of 12)
+    Implants named like: Grade Mimesis (12 of 18)
     """
 
     runTime = 'early'
@@ -36058,3 +36063,69 @@ class Effect7234(BaseEffect):
         fit.appliedImplants.filteredItemMultiply(
             lambda imp: imp.item.group.name == 'Cyberimplant', 'damageMultiplierBonusPerCycleModifier',
             implant.getModifiedItemAttr('setBonusMimesis'), **kwargs)
+
+
+class Effect7238(BaseEffect):
+    """
+    shipBonusDreadnoughtPC1DamageMultMax
+
+    Used by:
+    Ship: Triglavian Dreadnought
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Precursor Weapon'), 'damageMultiplier',
+                                      src.getModifiedItemAttr('shipBonusDreadnoughtPC1'), skill='Precursor Dreadnought', **kwargs)
+
+
+class Effect7239(BaseEffect):
+    """
+    shipBonusDreadnoughtPC2ArmorResists
+
+    Used by:
+    Ship: Triglavian Dreadnought
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
+            fit.ship.boostItemAttr('armor{0}DamageResonance'.format(type), src.getModifiedItemAttr('shipBonusDreadnoughtPC2'),
+                                   skill='Precursor Dreadnought', **kwargs)
+
+
+class Effect7240(BaseEffect):
+    """
+    shipBonusDreadnoughtPC3WeaponSpeed
+
+    Used by:
+    Ship: Triglavian Dreadnought
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Precursor Weapon'), 'speed',
+                                      src.getModifiedItemAttr('shipBonusDreadnoughtPC3'), skill='Precursor Dreadnought', **kwargs)
+
+
+class Effect7242(BaseEffect):
+    """
+    capitalPrecursorTurretDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Capital Precursor Weapon
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Precursor Weapon'),
+                                      'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
