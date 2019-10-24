@@ -29,9 +29,9 @@ class FitLockTimeIncomingGraph(FitGraph):
     # UI stuff
     internalName = 'lockTimeIncomingGraph'
     name = 'Lock Time (Incoming)'
-    xDefs = [XDef(handle='scanRes', unit='mm', label='Scan Resolution', mainInput=('scanRes', 'mm'))]
+    xDefs = [XDef(handle='scanRes', unit='mm', label='Scan resolution', mainInput=('scanRes', 'mm'))]
     yDefs = [YDef(handle='time', unit='s', label='Lock time')]
-    inputs = [Input(handle='scanRes', unit='mm', label='Scan Resolution', iconID=74, defaultValue=None, defaultRange=(100, 1000))]
+    inputs = [Input(handle='scanRes', unit='mm', label='Scan resolution', iconID=74, defaultValue=None, defaultRange=(100, 1000))]
     checkboxes = [InputCheckbox(handle='applyDamps', label='Apply sensor dampeners', defaultValue=True)]
     srcExtraCols = ('SigRadius', 'Damp ScanRes')
 
