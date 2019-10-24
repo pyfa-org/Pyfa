@@ -112,11 +112,14 @@ class Fit:
             ship = eos.db.getItem(shipID)
             if ship is not None:
                 shipMap[shipID] = (ship.name, ship.getShortName())
+        fitsToPurge = set()
         for fit in fits:
             try:
                 fit.shipName, fit.shipNameShort = shipMap[fit.shipID]
-            except KeyError:
-                pass
+            except (KeyError, TypeError):
+                fitsToPurge.add(fit)
+        for fit in fitsToPurge:
+            fits.remove(fit)
         return fits
 
     @staticmethod
