@@ -20,8 +20,8 @@
 
 import math
 
-from eos.calc import calculateRangeFactor
-from graphs.calc import calculateMultiplier, checkLockRange, checkDroneControlRange
+from eos.calc import calculateMultiplier, calculateRangeFactor
+from graphs.calc import checkLockRange, checkDroneControlRange
 from graphs.data.base import SmoothPointGetter
 
 

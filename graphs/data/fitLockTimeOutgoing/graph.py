@@ -18,20 +18,22 @@
 # =============================================================================
 
 
-from service.settings import GraphSettings
+import math
+
+from graphs.data.base import FitGraph, XDef, YDef, Input
+from .getter import TgtSigRadius2LockTimeGetter
 
 
-def checkLockRange(src, distance):
-    if distance is None:
-        return True
-    if GraphSettings.getInstance().get('ignoreLockRange'):
-        return True
-    return distance <= src.item.maxTargetRange
+class FitLockTimeOutgoingGraph(FitGraph):
 
+    # UI stuff
+    internalName = 'lockTimeOutgoingGraph'
+    name = 'Lock Time'
+    xDefs = [XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', 'm'))]
+    yDefs = [YDef(handle='time', unit='s', label='Lock time')]
+    inputs = [Input(handle='tgtSigRad', unit='m', label='Target signature', iconID=1390, defaultValue=None, defaultRange=(25, 500))]
+    srcExtraCols = ('ScanResolution',)
 
-def checkDroneControlRange(src, distance):
-    if distance is None:
-        return True
-    if GraphSettings.getInstance().get('ignoreDCR'):
-        return True
-    return distance <= src.item.extraAttributes['droneControlRange']
+    # Calculation stuff
+    _limiters = {'tgtSigRad': lambda src, tgt: (1, math.inf)}
+    _getters = {('tgtSigRad', 'time'): TgtSigRadius2LockTimeGetter}

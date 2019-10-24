@@ -21,13 +21,14 @@ import datetime
 import time
 from copy import deepcopy
 from itertools import chain
-from math import asinh, log, sqrt
+from math import log, sqrt
 
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
 from eos import capSim
+from eos.calc import calculateMultiplier, calculateLockTime
 from eos.const import CalcType, FitSystemSecurity, FittingHardpoint, FittingModuleState, FittingSlot, ImplantLocation
 from eos.effectHandlerHelpers import (
     HandledBoosterList, HandledDroneCargoList, HandledImplantList,
@@ -1529,9 +1530,7 @@ class Fit:
     def calculateLockTime(self, radius):
         scanRes = self.ship.getModifiedItemAttr("scanResolution")
         if scanRes is not None and scanRes > 0:
-            # Yes, this function returns time in seconds, not miliseconds.
-            # 40,000 is indeed the correct constant here.
-            return min(40000 / scanRes / asinh(radius) ** 2, 30 * 60)
+            return calculateLockTime(srcScanRes=scanRes, tgtSigRadius=radius)
         else:
             return self.ship.getModifiedItemAttr("scanSpeed") / 1000.0
 
@@ -1625,6 +1624,22 @@ class Fit:
             for ability in fighter.abilities:
                 if ability.active:
                     yield fighter, ability
+
+    def getDampMultScanRes(self):
+        damps = []
+        for mod in self.activeModulesIter():
+            for effectName in ('remoteSensorDampFalloff', 'structureModuleEffectRemoteSensorDampener'):
+                if effectName in mod.item.effects:
+                    damps.append((mod.getModifiedItemAttr('scanResolutionBonus'), 'default'))
+            if 'doomsdayAOEDamp' in mod.item.effects:
+                damps.append((mod.getModifiedItemAttr('scanResolutionBonus'), 'default'))
+        for drone in self.activeDronesIter():
+            if 'remoteSensorDampEntity' in drone.item.effects:
+                damps.extend(drone.amountActive * ((drone.getModifiedItemAttr('scanResolutionBonus'), 'default'),))
+        mults = {}
+        for strength, stackingGroup in damps:
+            mults.setdefault(stackingGroup, []).append((1 + strength / 100, None))
+        return calculateMultiplier(mults)
 
     def __deepcopy__(self, memo=None):
         fitCopy = Fit()

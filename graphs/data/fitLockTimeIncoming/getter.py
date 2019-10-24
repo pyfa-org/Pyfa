@@ -18,20 +18,22 @@
 # =============================================================================
 
 
-from service.settings import GraphSettings
+from eos.calc import calculateLockTime
+from graphs.data.base import SmoothPointGetter
 
 
-def checkLockRange(src, distance):
-    if distance is None:
-        return True
-    if GraphSettings.getInstance().get('ignoreLockRange'):
-        return True
-    return distance <= src.item.maxTargetRange
+class ScanRes2LockTimeGetter(SmoothPointGetter):
 
+    def _getCommonData(self, miscParams, src, tgt):
+        if miscParams['applyDamps']:
+            scanResMult = src.item.getDampMultScanRes()
+        else:
+            scanResMult = 1
+        return {'scanResMult': scanResMult}
 
-def checkDroneControlRange(src, distance):
-    if distance is None:
-        return True
-    if GraphSettings.getInstance().get('ignoreDCR'):
-        return True
-    return distance <= src.item.extraAttributes['droneControlRange']
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        scanRes = x
+        time = calculateLockTime(
+            srcScanRes=scanRes * commonData['scanResMult'],
+            tgtSigRadius=src.item.ship.getModifiedItemAttr('signatureRadius'))
+        return time

@@ -18,6 +18,9 @@
 # =============================================================================
 
 
+import config as _config
+
+
 from . import fitDamageStats
 from . import fitEwarStats
 from . import fitRemoteReps
@@ -25,4 +28,7 @@ from . import fitShieldRegen
 from . import fitCapacitor
 from . import fitMobility
 from . import fitWarpTime
-from . import fitLockTime
+from . import fitLockTimeOutgoing
+
+if _config.experimentalFeatures:
+    from . import fitLockTimeIncoming
