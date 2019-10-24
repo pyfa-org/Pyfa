@@ -22,7 +22,7 @@ from eos.calc import calculateLockTime
 from graphs.data.base import SmoothPointGetter
 
 
-class ScanRes2LockTimeGetter(SmoothPointGetter):
+class ScanRes2LockingTimeGetter(SmoothPointGetter):
 
     def _getCommonData(self, miscParams, src, tgt):
         if miscParams['applyDamps']:
@@ -37,3 +37,13 @@ class ScanRes2LockTimeGetter(SmoothPointGetter):
             srcScanRes=scanRes * commonData['scanResMult'],
             tgtSigRadius=src.item.ship.getModifiedItemAttr('signatureRadius'))
         return time
+
+
+class ScanRes2LockedTimeGetter(ScanRes2LockingTimeGetter):
+
+    def _calculatePoint(self, *args, **kwargs):
+        # Assuming you ECM burst every 30 seconds, find out how long you
+        # will be locked before you burst another time
+        lockTime = super()._calculatePoint(*args, **kwargs)
+        lockedTime = max(0, 30 - lockTime)
+        return lockedTime

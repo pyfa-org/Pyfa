@@ -18,10 +18,17 @@
 # =============================================================================
 
 
+"""
+Disclaimer by kadesh: this graph was made to analyze my ECM burst + damp frig
+concept. I do not think it is useful for regular player, so it is disabled.
+Enable by setting config.experimentalFeatures = True.
+"""
+
+
 import math
 
 from graphs.data.base import FitGraph, XDef, YDef, Input, InputCheckbox
-from .getter import ScanRes2LockTimeGetter
+from .getter import ScanRes2LockingTimeGetter, ScanRes2LockedTimeGetter
 
 
 class FitLockTimeIncomingGraph(FitGraph):
@@ -30,11 +37,15 @@ class FitLockTimeIncomingGraph(FitGraph):
     internalName = 'lockTimeIncomingGraph'
     name = 'Lock Time (Incoming)'
     xDefs = [XDef(handle='scanRes', unit='mm', label='Scan resolution', mainInput=('scanRes', 'mm'))]
-    yDefs = [YDef(handle='time', unit='s', label='Lock time')]
+    yDefs = [
+        YDef(handle='lockingTime', unit='s', label='Locking time'),
+        YDef(handle='lockedTime', unit='s', label='Locked time')]
     inputs = [Input(handle='scanRes', unit='mm', label='Scan resolution', iconID=74, defaultValue=None, defaultRange=(100, 1000))]
     checkboxes = [InputCheckbox(handle='applyDamps', label='Apply sensor dampeners', defaultValue=True)]
     srcExtraCols = ('SigRadius', 'Damp ScanRes')
 
     # Calculation stuff
     _limiters = {'scanRes': lambda src, tgt: (1, math.inf)}
-    _getters = {('scanRes', 'time'): ScanRes2LockTimeGetter}
+    _getters = {
+        ('scanRes', 'lockingTime'): ScanRes2LockingTimeGetter,
+        ('scanRes', 'lockedTime'): ScanRes2LockedTimeGetter}
