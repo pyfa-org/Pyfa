@@ -28,7 +28,7 @@ Enable by setting config.experimentalFeatures = True.
 import math
 
 from graphs.data.base import FitGraph, XDef, YDef, Input, InputCheckbox
-from .getter import ScanRes2LockingTimeGetter, ScanRes2LockedTimeGetter
+from .getter import ScanRes2LockTimeGetter, ScanRes2LockUptimeGetter
 
 
 class FitLockTimeIncomingGraph(FitGraph):
@@ -38,8 +38,8 @@ class FitLockTimeIncomingGraph(FitGraph):
     name = 'Lock Time (Incoming)'
     xDefs = [XDef(handle='scanRes', unit='mm', label='Scan resolution', mainInput=('scanRes', 'mm'))]
     yDefs = [
-        YDef(handle='lockingTime', unit='s', label='Locking time'),
-        YDef(handle='lockedTime', unit='s', label='Locked time')]
+        YDef(handle='lockTime', unit='s', label='Lock time'),
+        YDef(handle='lockUptime', unit='s', label='Lock uptime')]
     inputs = [Input(handle='scanRes', unit='mm', label='Scan resolution', iconID=74, defaultValue=None, defaultRange=(100, 1000))]
     checkboxes = [InputCheckbox(handle='applyDamps', label='Apply sensor dampeners', defaultValue=True)]
     srcExtraCols = ('SigRadius', 'Damp ScanRes')
@@ -47,5 +47,5 @@ class FitLockTimeIncomingGraph(FitGraph):
     # Calculation stuff
     _limiters = {'scanRes': lambda src, tgt: (1, math.inf)}
     _getters = {
-        ('scanRes', 'lockingTime'): ScanRes2LockingTimeGetter,
-        ('scanRes', 'lockedTime'): ScanRes2LockedTimeGetter}
+        ('scanRes', 'lockTime'): ScanRes2LockTimeGetter,
+        ('scanRes', 'lockUptime'): ScanRes2LockUptimeGetter}
