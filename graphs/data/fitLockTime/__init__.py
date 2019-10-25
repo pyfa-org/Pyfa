@@ -18,7 +18,7 @@
 # =============================================================================
 
 
-from .graph import FitLockTimeOutgoingGraph
+from .graph import FitLockTimeGraph
 
 
-FitLockTimeOutgoingGraph.register()
+FitLockTimeGraph.register()

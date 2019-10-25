@@ -18,22 +18,7 @@
 # =============================================================================
 
 
-import math
-
-from graphs.data.base import FitGraph, XDef, YDef, Input
-from .getter import TgtSigRadius2LockTimeGetter
+from .graph import FitEcmBurstScanresDampsGraph
 
 
-class FitLockTimeOutgoingGraph(FitGraph):
-
-    # UI stuff
-    internalName = 'lockTimeOutgoingGraph'
-    name = 'Lock Time'
-    xDefs = [XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', 'm'))]
-    yDefs = [YDef(handle='time', unit='s', label='Lock time')]
-    inputs = [Input(handle='tgtSigRad', unit='m', label='Target signature', iconID=1390, defaultValue=None, defaultRange=(25, 500))]
-    srcExtraCols = ('ScanResolution',)
-
-    # Calculation stuff
-    _limiters = {'tgtSigRad': lambda src, tgt: (1, math.inf)}
-    _getters = {('tgtSigRad', 'time'): TgtSigRadius2LockTimeGetter}
+FitEcmBurstScanresDampsGraph.register()

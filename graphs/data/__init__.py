@@ -28,7 +28,7 @@ from . import fitShieldRegen
 from . import fitCapacitor
 from . import fitMobility
 from . import fitWarpTime
-from . import fitLockTimeOutgoing
+from . import fitLockTime
 
 if _config.experimentalFeatures:
-    from . import fitLockTimeIncoming
+    from . import fitEcmBurstScanresDamps
