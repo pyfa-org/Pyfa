@@ -64,7 +64,7 @@ class CopySelectDialog(wx.Dialog):
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
             ("DNA", (CopySelectDialog.copyFormatDna, DNA_OPTIONS)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
-            ("Fit Stats", (CopySelectDialog.copyFormatFitStats, None)),
+            ("Fit stats", (CopySelectDialog.copyFormatFitStats, None)),
             # ("XML", (CopySelectDialog.copyFormatXml, None)),
         ))
 
@@ -120,7 +120,8 @@ class CopySelectDialog(wx.Dialog):
         self.Center()
 
     def Validate(self):
-        # Since this dialog is shown through as ShowModal(), we hook into the Validate function to veto the closing of the dialog until we're ready.
+        # Since this dialog is shown through as ShowModal(),
+        # we hook into the Validate function to veto the closing of the dialog until we're ready.
         # This always returns False, and when we're ready will EndModal()
         selected = self.GetSelected()
         options = self.GetOptions()
@@ -192,5 +193,8 @@ class CopySelectDialog(wx.Dialog):
     """
     Puts fit stats in textual format into the clipboard
     """
+    # noinspection PyUnusedLocal
     def exportFitStats(self, options, callback):
-        pass
+        fit = getFit(self.mainFrame.getActiveFit())
+        Port.exportFitStats(fit, callback)
+

@@ -1,10 +1,8 @@
 from functools import reduce
-
 from eos.saveddata.damagePattern import DamagePattern
-
 from gui.utils.numberFormatter import formatAmount
 
-
+#todo remove these enums. Not sure they are not needed
 tankTypes = ("shield", "armor", "hull")
 damageTypes = ("em", "thermal", "kinetic", "explosive")
 damagePatterns = [DamagePattern.oneType(damageType) for damageType in damageTypes]
@@ -16,13 +14,19 @@ resonanceNames = {"shield": ["shield" + s for s in damageTypeResonanceNames],
 
 def firepowerSection(fit):
     """ Returns the text of the firepower section"""
-    firepower = [fit.totalDPS, fit.weaponDPS, fit.droneDPS, fit.totalVolley]
+    totalDps = fit.getTotalDps().total
+    weaponDps = fit.getWeaponDps().total
+    droneDps = fit.getDroneDps().total
+    totalVolley = fit.getTotalVolley().total
+    firepower = [totalDps, weaponDps, droneDps, totalVolley]
+
     firepowerStr = [formatAmount(dps, 3, 0, 0) for dps in firepower]
-    showWeaponAndDroneDps = (fit.weaponDPS > 0) and (fit.droneDPS > 0)
+    # showWeaponAndDroneDps = (weaponDps > 0) and (droneDps > 0)
     if sum(firepower) == 0:
         return ""
+
     return "DPS: {} (".format(firepowerStr[0]) + \
-           ("Weapon: {}, Drone: {}, ".format(*firepowerStr[1:3]) if showWeaponAndDroneDps else "") + \
+           ("Weapon: {}, Drone: {}, ".format(*firepowerStr[1:3])) + \
            ("Volley: {})\n".format(firepowerStr[3]))
 
 
@@ -47,7 +51,8 @@ def repsSection(fit):
     """ Returns the text of the repairs section"""
     selfRep = [fit.effectiveTank[tankType + "Repair"] for tankType in tankTypes]
     sustainRep = [fit.effectiveSustainableTank[tankType + "Repair"] for tankType in tankTypes]
-    remoteRep = [fit.remoteReps[tankType.capitalize()] for tankType in tankTypes]
+    remoteRepObj = fit.getRemoteReps()
+    remoteRep = [remoteRepObj.shield, remoteRepObj.armor, remoteRepObj.hull]
     shieldRegen = [fit.effectiveSustainableTank["passiveShield"], 0, 0]
     shieldRechargeModuleMultipliers = [module.item.attributes["shieldRechargeRateMultiplier"].value for module in
                                        fit.modules if
@@ -158,8 +163,10 @@ def miscSection(fit):
     return text
 
 
-def statsExportText(fit):
-    """ Returns the text of the stats export of the given fit"""
+def exportFitStats(fit, callback):
+    """
+    Returns the text of the stats export of the given fit
+    """
     sections = filter(None, (firepowerSection(fit),  # Prune empty sections
                              tankSection(fit),
                              repsSection(fit),
@@ -168,4 +175,7 @@ def statsExportText(fit):
     text = "{} ({})\n".format(fit.name, fit.ship.name) + "\n"
     text += "\n".join(sections)
 
-    return text
+    if callback:
+        callback(text)
+    else:
+        return text
