@@ -468,6 +468,8 @@ class FittingView(d.Display):
         elif item.isModule:
             if mstate.GetModifiers() == wx.MOD_ALT:
                 self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
+            elif dstPos is not None:
+                self.mainFrame.command.Submit(cmd.GuiReplaceLocalModuleCommand(fitID=fitID, itemID=itemID, positions=[dstPos]))
             else:
                 self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
         elif item.isSubsystem:
