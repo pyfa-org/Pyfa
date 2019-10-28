@@ -204,6 +204,7 @@ class MainFrame(wx.Frame):
         self.addPageId = wx.NewId()
         self.closePageId = wx.NewId()
         self.closeAllPagesId = wx.NewId()
+        self.hiddenGraphsId = wx.NewId()
 
         self.widgetInspectMenuID = wx.NewId()
         self.SetMenuBar(MainMenuBar(self))
@@ -423,6 +424,9 @@ class MainFrame(wx.Frame):
     def OnShowGraphFrame(self, event):
         GraphFrame.openOne(self)
 
+    def OnShowGraphFrameHidden(self, event):
+        GraphFrame.openOne(self, includeHidden=True)
+
     def OnShowDevTools(self, event):
         DevTools.openOne(parent=self)
 
@@ -551,6 +555,7 @@ class MainFrame(wx.Frame):
 
         # Graphs
         self.Bind(wx.EVT_MENU, self.OnShowGraphFrame, id=menuBar.graphFrameId)
+        self.Bind(wx.EVT_MENU, self.OnShowGraphFrameHidden, id=self.hiddenGraphsId)
 
         toggleSearchBoxId = wx.NewId()
         toggleShipMarketId = wx.NewId()
@@ -575,6 +580,9 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CTRL, ord("W"), self.closePageId),
                 (wx.ACCEL_CTRL, wx.WXK_F4, self.closePageId),
                 (wx.ACCEL_CMD, ord("W"), self.closePageId),
+
+                (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("G"), self.hiddenGraphsId),
+                (wx.ACCEL_CMD | wx.ACCEL_ALT, ord("G"), self.hiddenGraphsId),
 
                 (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("W"), self.closeAllPagesId),
                 (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_F4, self.closeAllPagesId),

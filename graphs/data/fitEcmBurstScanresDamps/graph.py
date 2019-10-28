@@ -36,15 +36,16 @@ from .getter import (
 class FitEcmBurstScanresDampsGraph(FitGraph):
 
     # UI stuff
+    hidden = True
     internalName = 'ecmBurstScanresDamps'
     name = 'ECM Burst + Scanres Damps'
     xDefs = [
-        XDef(handle='tgtScanRes', unit='mm', label='Enemy scanres', mainInput=('tgtScanRes', 'mm')),
-        XDef(handle='tgtDps', unit=None, label='Enemy DPS', mainInput=('tgtDps', None))]
+        XDef(handle='tgtDps', unit=None, label='Enemy DPS', mainInput=('tgtDps', None)),
+        XDef(handle='tgtScanRes', unit='mm', label='Enemy scanres', mainInput=('tgtScanRes', 'mm'))]
     yDefs = [
+        YDef(handle='srcDmg', unit=None, label='Damage inflicted'),
         YDef(handle='tgtLockTime', unit='s', label='Lock time'),
-        YDef(handle='tgtLockUptime', unit='s', label='Lock uptime'),
-        YDef(handle='srcDmg', unit=None, label='Damage done')]
+        YDef(handle='tgtLockUptime', unit='s', label='Lock uptime')]
     inputs = [
         Input(handle='tgtScanRes', unit='mm', label='Enemy scanres', iconID=74, defaultValue=700, defaultRange=(100, 1000)),
         Input(handle='tgtDps', unit=None, label='Enemy DPS', iconID=1432, defaultValue=200, defaultRange=(100, 600)),

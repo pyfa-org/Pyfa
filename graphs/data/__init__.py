@@ -18,9 +18,6 @@
 # =============================================================================
 
 
-import config as _config
-
-
 from . import fitDamageStats
 from . import fitEwarStats
 from . import fitRemoteReps
@@ -29,6 +26,5 @@ from . import fitCapacitor
 from . import fitMobility
 from . import fitWarpTime
 from . import fitLockTime
-
-if _config.experimentalFeatures:
-    from . import fitEcmBurstScanresDamps
+# Hidden graphs, available via ctrl-alt-g
+from . import fitEcmBurstScanresDamps
