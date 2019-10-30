@@ -76,6 +76,7 @@ parser.add_option("-p", "--profile", action="store", dest="profile_path", help="
 
 (options, args) = parser.parse_args()
 
+
 if __name__ == "__main__":
 
     try:
@@ -118,7 +119,6 @@ if __name__ == "__main__":
             pyfalog.info("Running in a thawed state.")
 
         if db_needs_update() is True:
-            pyfalog.info("Gamedata needs an update")
             update_db()
 
         # Lets get to the good stuff, shall we?

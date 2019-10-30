@@ -51,6 +51,7 @@ def db_needs_update():
     except:
         return None
     if not os.path.isfile(DB_PATH):
+        print('Gamedata DB not found')
         return True
     db_data_version = None
     db_schema_version = None
@@ -68,11 +69,20 @@ def db_needs_update():
     except KeyboardInterrupt:
         raise
     except:
+        print('Error when fetching gamedata DB metadata')
         return True
-    return data_version != db_data_version or GAMEDATA_SCHEMA_VERSION != db_schema_version
+    if data_version != db_data_version:
+        print('Gamedata DB data version mismatch: needed {}, DB has {}'.format(data_version, db_data_version))
+        return True
+    if GAMEDATA_SCHEMA_VERSION != db_schema_version:
+        print('Gamedata DB schema version mismatch: needed {}, DB has {}'.format(GAMEDATA_SCHEMA_VERSION, db_schema_version))
+        return True
+    return False
 
 
 def update_db():
+
+    print('Building gamedata DB...')
 
     if os.path.isfile(DB_PATH):
         os.remove(DB_PATH)
