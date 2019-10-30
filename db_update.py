@@ -35,11 +35,6 @@ if ROOT_DIR not in sys.path:
 GAMEDATA_SCHEMA_VERSION = 1
 
 
-CATEGORIES_TO_REMOVE = [
-    30  # Apparel
-]
-
-
 def db_needs_update():
     """True if needs, false if it does not, none if we cannot check it."""
     try:
@@ -446,7 +441,9 @@ def update_db():
 
 
     print()
-    for x in CATEGORIES_TO_REMOVE:
+    for x in [
+        30  # Apparel
+    ]:
         cat = eos.db.gamedata_session.query(eos.gamedata.Category).filter(eos.gamedata.Category.ID == x).first()
         print ('Removing Category: {}'.format(cat.name))
         eos.db.gamedata_session.delete(cat)
