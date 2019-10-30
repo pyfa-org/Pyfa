@@ -81,8 +81,6 @@ except ImportError as e:
     pyfalog.warning("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
     disableOverrideEditor = True
 
-pyfalog = Logger(__name__)
-
 pyfalog.debug("Done loading mainframe imports")
 
 
@@ -551,7 +549,6 @@ class MainFrame(wx.Frame):
 
         # Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
-        self.Bind(wx.EVT_MENU, self.exportFitStatsToClipboard, id=menuBar.fitStatsToClipboardId)
 
         # Fitting Restrictions
         self.Bind(wx.EVT_MENU, self.toggleIgnoreRestriction, id=menuBar.toggleIgnoreRestrictionID)
@@ -782,12 +779,6 @@ class MainFrame(wx.Frame):
     def exportToClipboard(self, event):
         with CopySelectDialog(self) as dlg:
             dlg.ShowModal()
-
-    def exportFitStatsToClipboard(self, event):
-        """ Puts fit stats in textual format into the clipboard"""
-        fit = db_getFit(self.getActiveFit())
-        if fit:
-            toClipboard(statsExportText(fit))
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
