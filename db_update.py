@@ -430,6 +430,7 @@ def update_db():
                 attr.max = attrData['max']
                 eos.db.gamedata_session.add(attr)
 
+    # Add schema version to prevent further updates
     metadata_schema_version = eos.gamedata.MetaData()
     metadata_schema_version.field_name = 'schema_version'
     metadata_schema_version.field_value = GAMEDATA_SCHEMA_VERSION
@@ -440,12 +441,11 @@ def update_db():
     # CCP still has 5 subsystems assigned to T3Cs, even though only 4 are available / usable. They probably have some
     # old legacy requirement or assumption that makes it difficult for them to change this value in the data. But for
     # pyfa, we can do it here as a post-processing step
-    eos.db.gamedata_engine.execute('UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?', (1367,))
+    for attr in eos.db.gamedata_session.query(eos.gamedata.Attribute).filter(eos.gamedata.Attribute.ID == 1367).all():
+        attr.value = 4.0
+    for item in eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.name.like('%abyssal%')).all():
+        item.published = False
 
-    eos.db.gamedata_engine.execute('UPDATE invtypes SET published = 0 WHERE typeName LIKE \'%abyssal%\'')
-
-
-    print()
     for x in [
         30  # Apparel
     ]:
