@@ -39,13 +39,13 @@ def tankSection(fit):
     ehpAgainstDamageTypeStr = [formatAmount(ehpVal, 3, 0, 9) for ehpVal in ehpAgainstDamageType]
 
     # not used for now.  maybe will be improved later
-    def formattedOutput():
-        return \
-            "        {:>7} {:>7} {:>7} {:>7} {:>7}\n".format("TOTAL", "EM", "THERM", "KIN", "EXP") + \
-            "EHP     {:>7} {:>7} {:>7} {:>7} {:>7}\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
-            "Shield  {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[0], *resists["shield"]) + \
-            "Armor   {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[1], *resists["armor"]) + \
-            "Hull    {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[2], *resists["hull"])
+    # def formattedOutput():
+    #     return \
+    #         "        {:>7} {:>7} {:>7} {:>7} {:>7}\n".format("TOTAL", "EM", "THERM", "KIN", "EXP") + \
+    #         "EHP     {:>7} {:>7} {:>7} {:>7} {:>7}\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
+    #         "Shield  {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[0], *resists["shield"]) + \
+    #         "Armor   {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[1], *resists["armor"]) + \
+    #         "Hull    {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[2], *resists["hull"])
 
     def generalOutput():
         return \

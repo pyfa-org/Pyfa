@@ -190,11 +190,9 @@ class CopySelectDialog(wx.Dialog):
         fit = getFit(self.mainFrame.getActiveFit())
         EfsPort.exportEfs(fit, 0, callback)
 
-    """
-    Puts fit stats in textual format into the clipboard
-    """
     # noinspection PyUnusedLocal
     def exportFitStats(self, options, callback):
+        """ Puts fit stats in textual format into the clipboard """
         fit = getFit(self.mainFrame.getActiveFit())
         Port.exportFitStats(fit, callback)
 
