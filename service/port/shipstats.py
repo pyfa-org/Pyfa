@@ -49,10 +49,10 @@ def tankSection(fit):
 
     def generalOutput():
         return \
-            "EHP: {:>} (Em: {:>}, Th: {:>}, Kin: {:>}, Exp: {:>}\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
-            "Shield: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%}\n".format(ehpStr[0], *resists["shield"]) + \
-            "Armor: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%}\n".format(ehpStr[1], *resists["armor"]) + \
-            "Hull: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%}\n".format(ehpStr[2], *resists["hull"])
+            "EHP: {:>} (Em: {:>}, Th: {:>}, Kin: {:>}, Exp: {:>})\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
+            "Shield: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[0], *resists["shield"]) + \
+            "Armor: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[1], *resists["armor"]) + \
+            "Hull: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[2], *resists["hull"])
 
     return generalOutput()
 
