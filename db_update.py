@@ -430,6 +430,11 @@ def update_db():
                 attr.max = attrData['max']
                 eos.db.gamedata_session.add(attr)
 
+    metadata_schema_version = eos.gamedata.MetaData()
+    metadata_schema_version.field_name = 'schema_version'
+    metadata_schema_version.field_value = GAMEDATA_SCHEMA_VERSION
+    eos.db.gamedata_session.add(metadata_schema_version)
+
     eos.db.gamedata_session.commit()
 
     # CCP still has 5 subsystems assigned to T3Cs, even though only 4 are available / usable. They probably have some
