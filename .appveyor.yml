@@ -65,6 +65,8 @@ before_build:
 build_script:
   - ECHO "Build pyfa:"
 
+  # Build gamedata DB
+  - "python db_update.py"
   ##########
   # PyInstaller - create binaries for pyfa
   ##########
