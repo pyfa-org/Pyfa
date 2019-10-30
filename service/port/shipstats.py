@@ -2,7 +2,6 @@ from functools import reduce
 from eos.saveddata.damagePattern import DamagePattern
 from gui.utils.numberFormatter import formatAmount
 
-#todo remove these enums. Not sure they are not needed
 tankTypes = ("shield", "armor", "hull")
 damageTypes = ("em", "thermal", "kinetic", "explosive")
 damagePatterns = [DamagePattern.oneType(damageType) for damageType in damageTypes]
@@ -39,12 +38,23 @@ def tankSection(fit):
     ehpAgainstDamageType = [sum(pattern.calculateEhp(fit).values()) for pattern in damagePatterns]
     ehpAgainstDamageTypeStr = [formatAmount(ehpVal, 3, 0, 9) for ehpVal in ehpAgainstDamageType]
 
-    return \
-        "        {:>7} {:>7} {:>7} {:>7} {:>7}\n".format("TOTAL", "EM", "THERM", "KIN", "EXP") + \
-        "EHP     {:>7} {:>7} {:>7} {:>7} {:>7}\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
-        "Shield  {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[0], *resists["shield"]) + \
-        "Armor   {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[1], *resists["armor"]) + \
-        "Hull    {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[2], *resists["hull"])
+    # not used for now.  maybe will be improved later
+    def formattedOutput():
+        return \
+            "        {:>7} {:>7} {:>7} {:>7} {:>7}\n".format("TOTAL", "EM", "THERM", "KIN", "EXP") + \
+            "EHP     {:>7} {:>7} {:>7} {:>7} {:>7}\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
+            "Shield  {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[0], *resists["shield"]) + \
+            "Armor   {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[1], *resists["armor"]) + \
+            "Hull    {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[2], *resists["hull"])
+
+    def generalOutput():
+        return \
+            "EHP: {:>} (Em: {:>}, Th: {:>}, Kin: {:>}, Exp: {:>}\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
+            "Shield: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%}\n".format(ehpStr[0], *resists["shield"]) + \
+            "Armor: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%}\n".format(ehpStr[1], *resists["armor"]) + \
+            "Hull: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%}\n".format(ehpStr[2], *resists["hull"])
+
+    return generalOutput()
 
 
 def repsSection(fit):
