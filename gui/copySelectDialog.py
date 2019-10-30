@@ -64,7 +64,7 @@ class CopySelectDialog(wx.Dialog):
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
             ("DNA", (CopySelectDialog.copyFormatDna, DNA_OPTIONS)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
-            ("Fit stats", (CopySelectDialog.copyFormatFitStats, None)),
+            ("Stats", (CopySelectDialog.copyFormatFitStats, None)),
             # ("XML", (CopySelectDialog.copyFormatXml, None)),
         ))
 
