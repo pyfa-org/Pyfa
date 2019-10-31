@@ -20,7 +20,7 @@
 
 import math
 
-from graphs.data.base import FitGraph, Input, XDef, YDef
+from graphs.data.base import FitGraph, XDef, YDef, Input
 from .getter import TgtSigRadius2LockTimeGetter
 
 

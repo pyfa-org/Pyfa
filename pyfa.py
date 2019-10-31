@@ -26,6 +26,7 @@ from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 
 import config
 from service.prereqsCheck import PreCheckException, PreCheckMessage, version_block, version_precheck
+from db_update import db_needs_update, update_db
 
 
 # ascii_text = '''
@@ -75,6 +76,7 @@ parser.add_option("-p", "--profile", action="store", dest="profile_path", help="
 
 (options, args) = parser.parse_args()
 
+
 if __name__ == "__main__":
 
     try:
@@ -115,6 +117,9 @@ if __name__ == "__main__":
             pyfalog.info("Running in a frozen state.")
         else:
             pyfalog.info("Running in a thawed state.")
+
+        if db_needs_update() is True:
+            update_db()
 
         # Lets get to the good stuff, shall we?
         import eos.db

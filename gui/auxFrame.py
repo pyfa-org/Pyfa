@@ -53,10 +53,10 @@ class AuxiliaryFrame(wx.Frame):
             self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
     @classmethod
-    def openOne(cls, parent):
+    def openOne(cls, parent, *args, **kwargs):
         """If window is open and alive - raise it, open otherwise"""
         if not cls._instance:
-            frame = cls(parent)
+            frame = cls(parent, *args, **kwargs)
             cls._instance = frame
             frame.Show()
         else:

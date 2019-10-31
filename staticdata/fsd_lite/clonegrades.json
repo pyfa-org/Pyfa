@@ -1,0 +1,2774 @@
+{
+  "1": {
+    "internalDescription": "Alpha Caldari", 
+    "skills": [
+      {
+        "level": 1, 
+        "typeID": 3340
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3341
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3342
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3343
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3363
+      }, 
+      {
+        "level": 1, 
+        "typeID": 11584
+      }, 
+      {
+        "level": 1, 
+        "typeID": 24242
+      }, 
+      {
+        "level": 1, 
+        "typeID": 33078
+      }, 
+      {
+        "level": 1, 
+        "typeID": 45746
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3356
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3359
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3361
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3421
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3439
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3446
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3893
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3894
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3895
+      }, 
+      {
+        "level": 2, 
+        "typeID": 11566
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12365
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12366
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12367
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12442
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12484
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12485
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12486
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12487
+      }, 
+      {
+        "level": 2, 
+        "typeID": 16598
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22806
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22807
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22808
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22809
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25544
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25739
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25811
+      }, 
+      {
+        "level": 2, 
+        "typeID": 27902
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3348
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3355
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3357
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3385
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3387
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3405
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3411
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3412
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3417
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3422
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3428
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3431
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3433
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3443
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3450
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3452
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3453
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3454
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3455
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3551
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11082
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11083
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11084
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11207
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12201
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12202
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12204
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12206
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12208
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12213
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12214
+      }, 
+      {
+        "level": 3, 
+        "typeID": 13278
+      }, 
+      {
+        "level": 3, 
+        "typeID": 16069
+      }, 
+      {
+        "level": 3, 
+        "typeID": 19921
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20209
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20312
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20314
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20315
+      }, 
+      {
+        "level": 3, 
+        "typeID": 21718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25863
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26252
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26253
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26254
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26255
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26256
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26257
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26258
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26259
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26260
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26261
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3442
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3307
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3308
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3309
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3310
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3311
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3312
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3315
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3316
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3317
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3325
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3326
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3327
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3328
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3329
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3330
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3331
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3332
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3333
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3334
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3335
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3336
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3337
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3338
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3339
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3386
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3402
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3416
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3418
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3419
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3420
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3423
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3425
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3427
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3429
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3434
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3435
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3437
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3449
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12305
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21059
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21071
+      }, 
+      {
+        "level": 4, 
+        "typeID": 22578
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23606
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23618
+      }, 
+      {
+        "level": 4, 
+        "typeID": 28164
+      }, 
+      {
+        "level": 4, 
+        "typeID": 32918
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33091
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33092
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33093
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33094
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33095
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33096
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33097
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33098
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33699
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3300
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3301
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3302
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3303
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3304
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3305
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3306
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3318
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3319
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3320
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3321
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3324
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3380
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3392
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3393
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3394
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3413
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3424
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3426
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3432
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3436
+      }, 
+      {
+        "level": 5, 
+        "typeID": 24241
+      }, 
+      {
+        "level": 5, 
+        "typeID": 25719
+      }
+    ]
+  }, 
+  "2": {
+    "internalDescription": "Alpha Minmatar", 
+    "skills": [
+      {
+        "level": 1, 
+        "typeID": 3340
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3341
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3342
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3343
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3363
+      }, 
+      {
+        "level": 1, 
+        "typeID": 11584
+      }, 
+      {
+        "level": 1, 
+        "typeID": 24242
+      }, 
+      {
+        "level": 1, 
+        "typeID": 33078
+      }, 
+      {
+        "level": 1, 
+        "typeID": 45746
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3356
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3359
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3361
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3421
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3439
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3446
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3893
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3894
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3895
+      }, 
+      {
+        "level": 2, 
+        "typeID": 11566
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12365
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12366
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12367
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12442
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12484
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12485
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12486
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12487
+      }, 
+      {
+        "level": 2, 
+        "typeID": 16598
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22806
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22807
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22808
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22809
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25544
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25739
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25811
+      }, 
+      {
+        "level": 2, 
+        "typeID": 27902
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3348
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3355
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3357
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3385
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3387
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3405
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3411
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3412
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3417
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3422
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3428
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3431
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3433
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3443
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3450
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3452
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3453
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3454
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3455
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3551
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11082
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11083
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11084
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11207
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12201
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12202
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12204
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12206
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12208
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12213
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12214
+      }, 
+      {
+        "level": 3, 
+        "typeID": 13278
+      }, 
+      {
+        "level": 3, 
+        "typeID": 16069
+      }, 
+      {
+        "level": 3, 
+        "typeID": 19921
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20209
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20312
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20314
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20315
+      }, 
+      {
+        "level": 3, 
+        "typeID": 21718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25863
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26252
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26253
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26254
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26255
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26256
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26257
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26258
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26259
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26260
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26261
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3442
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3307
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3308
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3309
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3310
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3311
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3312
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3315
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3316
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3317
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3325
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3326
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3327
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3328
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3329
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3330
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3331
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3332
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3333
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3334
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3335
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3336
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3337
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3338
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3339
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3386
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3402
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3416
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3418
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3419
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3420
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3423
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3425
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3427
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3429
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3434
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3435
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3437
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3449
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12305
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21059
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21071
+      }, 
+      {
+        "level": 4, 
+        "typeID": 22578
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23606
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23618
+      }, 
+      {
+        "level": 4, 
+        "typeID": 28164
+      }, 
+      {
+        "level": 4, 
+        "typeID": 32918
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33091
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33092
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33093
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33094
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33095
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33096
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33097
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33098
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33699
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3300
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3301
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3302
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3303
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3304
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3305
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3306
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3318
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3319
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3320
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3321
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3324
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3380
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3392
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3393
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3394
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3413
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3424
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3426
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3432
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3436
+      }, 
+      {
+        "level": 5, 
+        "typeID": 24241
+      }, 
+      {
+        "level": 5, 
+        "typeID": 25719
+      }
+    ]
+  }, 
+  "4": {
+    "internalDescription": "Alpha Amarr", 
+    "skills": [
+      {
+        "level": 1, 
+        "typeID": 3340
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3341
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3342
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3343
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3363
+      }, 
+      {
+        "level": 1, 
+        "typeID": 11584
+      }, 
+      {
+        "level": 1, 
+        "typeID": 24242
+      }, 
+      {
+        "level": 1, 
+        "typeID": 33078
+      }, 
+      {
+        "level": 1, 
+        "typeID": 45746
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3356
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3359
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3361
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3421
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3439
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3446
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3893
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3894
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3895
+      }, 
+      {
+        "level": 2, 
+        "typeID": 11566
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12365
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12366
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12367
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12442
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12484
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12485
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12486
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12487
+      }, 
+      {
+        "level": 2, 
+        "typeID": 16598
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22806
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22807
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22808
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22809
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25544
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25739
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25811
+      }, 
+      {
+        "level": 2, 
+        "typeID": 27902
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3348
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3355
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3357
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3385
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3387
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3405
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3411
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3412
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3417
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3422
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3428
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3431
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3433
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3443
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3450
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3452
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3453
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3454
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3455
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3551
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11082
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11083
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11084
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11207
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12201
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12202
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12204
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12206
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12208
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12213
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12214
+      }, 
+      {
+        "level": 3, 
+        "typeID": 13278
+      }, 
+      {
+        "level": 3, 
+        "typeID": 16069
+      }, 
+      {
+        "level": 3, 
+        "typeID": 19921
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20209
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20312
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20314
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20315
+      }, 
+      {
+        "level": 3, 
+        "typeID": 21718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25863
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26252
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26253
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26254
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26255
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26256
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26257
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26258
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26259
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26260
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26261
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3442
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3307
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3308
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3309
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3310
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3311
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3312
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3315
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3316
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3317
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3325
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3326
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3327
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3328
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3329
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3330
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3331
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3332
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3333
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3334
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3335
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3336
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3337
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3338
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3339
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3386
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3402
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3416
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3418
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3419
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3420
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3423
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3425
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3427
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3429
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3434
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3435
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3437
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3449
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12305
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21059
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21071
+      }, 
+      {
+        "level": 4, 
+        "typeID": 22578
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23606
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23618
+      }, 
+      {
+        "level": 4, 
+        "typeID": 28164
+      }, 
+      {
+        "level": 4, 
+        "typeID": 32918
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33091
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33092
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33093
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33094
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33095
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33096
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33097
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33098
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33699
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3300
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3301
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3302
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3303
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3304
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3305
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3306
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3318
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3319
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3320
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3321
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3324
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3380
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3392
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3393
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3394
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3413
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3424
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3426
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3432
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3436
+      }, 
+      {
+        "level": 5, 
+        "typeID": 24241
+      }, 
+      {
+        "level": 5, 
+        "typeID": 25719
+      }
+    ]
+  }, 
+  "8": {
+    "internalDescription": "Alpha Gallente", 
+    "skills": [
+      {
+        "level": 1, 
+        "typeID": 3340
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3341
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3342
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3343
+      }, 
+      {
+        "level": 1, 
+        "typeID": 3363
+      }, 
+      {
+        "level": 1, 
+        "typeID": 11584
+      }, 
+      {
+        "level": 1, 
+        "typeID": 24242
+      }, 
+      {
+        "level": 1, 
+        "typeID": 33078
+      }, 
+      {
+        "level": 1, 
+        "typeID": 45746
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3356
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3359
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3361
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3421
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3439
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3446
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3893
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3894
+      }, 
+      {
+        "level": 2, 
+        "typeID": 3895
+      }, 
+      {
+        "level": 2, 
+        "typeID": 11566
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12365
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12366
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12367
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12442
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12484
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12485
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12486
+      }, 
+      {
+        "level": 2, 
+        "typeID": 12487
+      }, 
+      {
+        "level": 2, 
+        "typeID": 16598
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22806
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22807
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22808
+      }, 
+      {
+        "level": 2, 
+        "typeID": 22809
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25544
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25739
+      }, 
+      {
+        "level": 2, 
+        "typeID": 25811
+      }, 
+      {
+        "level": 2, 
+        "typeID": 27902
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3348
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3355
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3357
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3385
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3387
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3405
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3411
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3412
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3417
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3422
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3428
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3431
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3433
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3443
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3450
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3452
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3453
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3454
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3455
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3551
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11082
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11083
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11084
+      }, 
+      {
+        "level": 3, 
+        "typeID": 11207
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12201
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12202
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12204
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12206
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12208
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12213
+      }, 
+      {
+        "level": 3, 
+        "typeID": 12214
+      }, 
+      {
+        "level": 3, 
+        "typeID": 13278
+      }, 
+      {
+        "level": 3, 
+        "typeID": 16069
+      }, 
+      {
+        "level": 3, 
+        "typeID": 19921
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20209
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20210
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20211
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20312
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20314
+      }, 
+      {
+        "level": 3, 
+        "typeID": 20315
+      }, 
+      {
+        "level": 3, 
+        "typeID": 21718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25718
+      }, 
+      {
+        "level": 3, 
+        "typeID": 25863
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26252
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26253
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26254
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26255
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26256
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26257
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26258
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26259
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26260
+      }, 
+      {
+        "level": 3, 
+        "typeID": 26261
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3442
+      }, 
+      {
+        "level": 3, 
+        "typeID": 3441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3307
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3308
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3309
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3310
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3311
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3312
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3315
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3316
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3317
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3325
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3326
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3327
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3328
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3329
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3330
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3331
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3332
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3333
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3334
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3335
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3336
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3337
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3338
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3339
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3386
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3402
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3416
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3418
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3419
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3420
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3423
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3425
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3427
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3429
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3434
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3435
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3437
+      }, 
+      {
+        "level": 4, 
+        "typeID": 3449
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12305
+      }, 
+      {
+        "level": 4, 
+        "typeID": 12441
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21059
+      }, 
+      {
+        "level": 4, 
+        "typeID": 21071
+      }, 
+      {
+        "level": 4, 
+        "typeID": 22578
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23606
+      }, 
+      {
+        "level": 4, 
+        "typeID": 23618
+      }, 
+      {
+        "level": 4, 
+        "typeID": 28164
+      }, 
+      {
+        "level": 4, 
+        "typeID": 32918
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33091
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33092
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33093
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33094
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33095
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33096
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33097
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33098
+      }, 
+      {
+        "level": 4, 
+        "typeID": 33699
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3300
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3301
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3302
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3303
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3304
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3305
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3306
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3318
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3319
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3320
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3321
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3324
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3380
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3392
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3393
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3394
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3413
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3424
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3426
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3432
+      }, 
+      {
+        "level": 5, 
+        "typeID": 3436
+      }, 
+      {
+        "level": 5, 
+        "typeID": 24241
+      }, 
+      {
+        "level": 5, 
+        "typeID": 25719
+      }
+    ]
+  }
+}

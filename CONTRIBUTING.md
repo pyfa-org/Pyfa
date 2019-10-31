@@ -12,7 +12,7 @@ Virtual environment will be created in *PyfaEnv* folder. Project will be cloned 
 
 ## Setting up the project manually
 
-Clone the repo 
+Clone the repository
 ```
 git clone <repo> PyfaDEV
 ```
@@ -36,7 +36,7 @@ pip install -r PyfaDEV\requirements.txt
 ```
 > For some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`
 
-Check that libs from *requirements.txt* are installed
+Check that the libs from *requirements.txt* are installed
 ```
 pip list
 ```

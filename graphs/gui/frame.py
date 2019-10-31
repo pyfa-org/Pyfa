@@ -43,7 +43,7 @@ REDRAW_DELAY = 500
 
 class GraphFrame(AuxiliaryFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, includeHidden=False):
         if not canvasPanel.graphFrame_enabled:
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
@@ -74,6 +74,8 @@ class GraphFrame(AuxiliaryFrame):
 
         # Setup - graph selector
         for view in FitGraph.views:
+            if view.hidden and not includeHidden:
+                continue
             self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)
         self.ctrlPanel.updateControls(layout=False)
@@ -101,9 +103,9 @@ class GraphFrame(AuxiliaryFrame):
         self.draw()
 
     @classmethod
-    def openOne(cls, parent):
+    def openOne(cls, parent, *args, **kwargs):
         if canvasPanel.graphFrame_enabled:
-            super().openOne(parent)
+            super().openOne(parent, *args, **kwargs)
 
     def UpdateWindowSize(self):
         curW, curH = self.GetSize()

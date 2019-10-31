@@ -26,3 +26,5 @@ from . import fitCapacitor
 from . import fitMobility
 from . import fitWarpTime
 from . import fitLockTime
+# Hidden graphs, available via ctrl-alt-g
+from . import fitEcmBurstScanresDamps

@@ -18,11 +18,11 @@
 # =============================================================================
 
 
+from eos.calc import calculateMultiplier
 from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
 from service.const import TargetResistMode
-from .calc import calculateMultiplier
 
 
 class BaseWrapper:

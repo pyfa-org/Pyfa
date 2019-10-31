@@ -29,6 +29,7 @@ from service.const import GraphCacheCleanupReason
 class FitGraph(metaclass=ABCMeta):
 
     # UI stuff
+    hidden = False
     views = []
     viewMap = {}
 

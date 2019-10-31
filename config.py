@@ -39,6 +39,7 @@ loggingLevel = None
 logging_setup = None
 cipher = None
 clientHash = None
+experimentalFeatures = None
 
 ESI_CACHE = 'esi_cache'
 
@@ -103,6 +104,7 @@ def defPaths(customSavePath=None):
     global cipher
     global clientHash
     global version
+    global experimentalFeatures
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -167,6 +169,10 @@ def defPaths(customSavePath=None):
         logFile = "pyfa.log"
 
     logPath = os.path.join(savePath, logFile)
+
+    experimentalFeatures = getattr(configforced, "experimentalFeatures", experimentalFeatures)
+    if experimentalFeatures is None:
+        experimentalFeatures = False
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config
