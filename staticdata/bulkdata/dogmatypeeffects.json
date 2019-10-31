@@ -212823,5 +212823,30 @@
     "effectID": 310, 
     "isDefault": false, 
     "typeID": 52814
+  }, 
+  {
+    "effectID": 302, 
+    "isDefault": false, 
+    "typeID": 53287
+  }, 
+  {
+    "effectID": 304, 
+    "isDefault": false, 
+    "typeID": 53287
+  }, 
+  {
+    "effectID": 306, 
+    "isDefault": false, 
+    "typeID": 53287
+  }, 
+  {
+    "effectID": 308, 
+    "isDefault": false, 
+    "typeID": 53287
+  }, 
+  {
+    "effectID": 310, 
+    "isDefault": false, 
+    "typeID": 53287
   }
 ]
