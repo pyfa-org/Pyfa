@@ -26,7 +26,7 @@ Activate the virtual environment
 
 ```
 For cmd.exe: PyfaEnv\scripts\activate.bat
-For bash: source <venv>/bin/activate
+For bash: source <venv>/Scripts/activate
 ```
 > For other OS check [Python documentation](https://docs.python.org/3/library/venv.html)
 
@@ -83,7 +83,7 @@ Check that the project is starting properly.
 Switch to the proper virtual environment
 ```
 For cmd.exe: PyfaEnv\scripts\activate.bat
-For bash: source <venv>/bin/activate
+For bash: source <venv>/Scripts/activate
 ```
 
 Install pytest 
