@@ -18,8 +18,8 @@
 # =============================================================================
 
 
-import collections
 import json
+from collections import defaultdict
 
 from logbook import Logger
 
@@ -61,7 +61,7 @@ def exportESI(ofit, callback):
     # max fit name length is 50 characters
     # Most keys are created simply because they are required, but bogus data is okay
 
-    nested_dict = lambda: collections.defaultdict(nested_dict)
+    nested_dict = lambda: defaultdict(nested_dict)
     fit = nested_dict()
     sFit = svcFit.getInstance()
 
