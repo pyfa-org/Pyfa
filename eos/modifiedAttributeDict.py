@@ -17,7 +17,8 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import collections
+
+from collections import MutableMapping
 from copy import copy
 from math import exp
 
@@ -96,7 +97,7 @@ class ChargeAttrShortcut:
         return return_value or default
 
 
-class ModifiedAttributeDict(collections.MutableMapping):
+class ModifiedAttributeDict(MutableMapping):
     overrides_enabled = False
 
     class CalculationPlaceholder:

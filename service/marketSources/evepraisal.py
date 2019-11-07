@@ -66,10 +66,14 @@ class EvePraisal:
             try:
                 typeID = int(itemData['typeID'])
                 price = itemData['prices']['sell']['min']
+                orderCount = itemData['prices']['sell']['order_count']
             except (KeyError, TypeError):
                 continue
             # evepraisal returns 0 if price data doesn't even exist for the item
             if price == 0:
+                continue
+            # evepraisal seems to provide price for some items despite having no orders up
+            if orderCount < 1:
                 continue
             priceMap[typeID].update(PriceStatus.fetchSuccess, price)
             del priceMap[typeID]
