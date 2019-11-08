@@ -46,11 +46,11 @@ class DmgTypes:
         # Round for comparison's sake because often damage profiles are
         # generated from data which includes float errors
         return (
-            floatUnerr(self.em) == floatUnerr(other.em) and
-            floatUnerr(self.thermal) == floatUnerr(other.thermal) and
-            floatUnerr(self.kinetic) == floatUnerr(other.kinetic) and
-            floatUnerr(self.explosive) == floatUnerr(other.explosive) and
-            floatUnerr(self.total) == floatUnerr(other.total))
+                floatUnerr(self.em) == floatUnerr(other.em) and
+                floatUnerr(self.thermal) == floatUnerr(other.thermal) and
+                floatUnerr(self.kinetic) == floatUnerr(other.kinetic) and
+                floatUnerr(self.explosive) == floatUnerr(other.explosive) and
+                floatUnerr(self.total) == floatUnerr(other.total))
 
     def __bool__(self):
         return any((
@@ -110,8 +110,19 @@ class DmgTypes:
         return self
 
     def __repr__(self):
-        spec = ['em', 'thermal', 'kinetic', 'explosive', 'total']
+        spec = DmgTypes.Names()
+        spec.append('total')
         return makeReprStr(self, spec)
+
+    @staticmethod
+    def Names(short=None, postProcessor=None):
+        value = ['em', 'th', 'kin', 'exp'] if short else ['em', 'thermal', 'kinetic', 'explosive']
+
+        if postProcessor:
+            value = [postProcessor(x) for x in value]
+            print(value)
+
+        return value
 
 
 class RRTypes:
@@ -136,10 +147,10 @@ class RRTypes:
         # Round for comparison's sake because often tanking numbers are
         # generated from data which includes float errors
         return (
-            floatUnerr(self.shield) == floatUnerr(other.shield) and
-            floatUnerr(self.armor) == floatUnerr(other.armor) and
-            floatUnerr(self.hull) == floatUnerr(other.hull) and
-            floatUnerr(self.capacitor) == floatUnerr(other.capacitor))
+                floatUnerr(self.shield) == floatUnerr(other.shield) and
+                floatUnerr(self.armor) == floatUnerr(other.armor) and
+                floatUnerr(self.hull) == floatUnerr(other.hull) and
+                floatUnerr(self.capacitor) == floatUnerr(other.capacitor))
 
     def __bool__(self):
         return any((self.shield, self.armor, self.hull, self.capacitor))
@@ -191,5 +202,18 @@ class RRTypes:
         return self
 
     def __repr__(self):
-        spec = ['shield', 'armor', 'hull', 'capacitor']
+        spec = RRTypes.Names(False)
         return makeReprStr(self, spec)
+
+    @staticmethod
+    def Names(ehpOnly=True, postProcessor=None):
+        value = ['shield', 'armor', 'hull']
+
+        if not ehpOnly:
+            value.append('capacitor')
+
+        if postProcessor:
+            value = [postProcessor(x) for x in value]
+            print(value)
+
+        return value
