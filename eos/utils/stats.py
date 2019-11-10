@@ -120,7 +120,6 @@ class DmgTypes:
 
         if postProcessor:
             value = [postProcessor(x) for x in value]
-            print(value)
 
         return value
 
@@ -214,6 +213,5 @@ class RRTypes:
 
         if postProcessor:
             value = [postProcessor(x) for x in value]
-            print(value)
 
         return value
