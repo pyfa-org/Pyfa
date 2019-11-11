@@ -16,9 +16,9 @@ def setup_damage_types():
 
 
 def test_dmgtypes_names():
-    assert DmgTypes.Names() == ['em', 'thermal', 'kinetic', 'explosive']
-    assert DmgTypes.Names(True) == ['em', 'th', 'kin', 'exp']
-    assert DmgTypes.Names(short=True) == ['em', 'th', 'kin', 'exp']
+    assert DmgTypes.names() == ['em', 'thermal', 'kinetic', 'explosive']
+    assert DmgTypes.names(True) == ['em', 'th', 'kin', 'exp']
+    assert DmgTypes.names(short=True) == ['em', 'th', 'kin', 'exp']
 
 
 def test_dmgtypes__repr(setup_damage_types):
@@ -26,8 +26,8 @@ def test_dmgtypes__repr(setup_damage_types):
 
 
 def test_dmgtypes_names_lambda():
-    assert DmgTypes.Names(False, lambda v: v.capitalize()) == ['Em', 'Thermal', 'Kinetic', 'Explosive']
-    assert DmgTypes.Names(True, lambda v: v.upper()) == ['EM', 'TH', 'KIN', 'EXP']
+    assert DmgTypes.names(False, lambda v: v.capitalize()) == ['Em', 'Thermal', 'Kinetic', 'Explosive']
+    assert DmgTypes.names(True, lambda v: v.upper()) == ['EM', 'TH', 'KIN', 'EXP']
 
 
 @pytest.fixture()
@@ -36,10 +36,10 @@ def setup_rr_types():
 
 
 def test_rrtypes_names():
-    assert RRTypes.Names() == ['shield', 'armor', 'hull']
-    assert RRTypes.Names(True) == ['shield', 'armor', 'hull']
-    assert RRTypes.Names(ehpOnly=True) == ['shield', 'armor', 'hull']
-    assert RRTypes.Names(False) == ['shield', 'armor', 'hull', 'capacitor']
+    assert RRTypes.names() == ['shield', 'armor', 'hull']
+    assert RRTypes.names(True) == ['shield', 'armor', 'hull']
+    assert RRTypes.names(ehpOnly=True) == ['shield', 'armor', 'hull']
+    assert RRTypes.names(False) == ['shield', 'armor', 'hull', 'capacitor']
 
 
 def test_rrtypes__repr(setup_rr_types):
@@ -47,7 +47,7 @@ def test_rrtypes__repr(setup_rr_types):
 
 
 def test_rrtypes_names_lambda():
-    assert RRTypes.Names(True, lambda v: v.capitalize()) == ['Shield', 'Armor', 'Hull']
-    assert RRTypes.Names(postProcessor=lambda v: v.upper(), ehpOnly=False) == ['SHIELD', 'ARMOR', 'HULL', 'CAPACITOR']
+    assert RRTypes.names(True, lambda v: v.capitalize()) == ['Shield', 'Armor', 'Hull']
+    assert RRTypes.names(postProcessor=lambda v: v.upper(), ehpOnly=False) == ['SHIELD', 'ARMOR', 'HULL', 'CAPACITOR']
 
 
