@@ -110,12 +110,12 @@ class DmgTypes:
         return self
 
     def __repr__(self):
-        spec = DmgTypes.Names()
+        spec = DmgTypes.names()
         spec.append('total')
         return makeReprStr(self, spec)
 
     @staticmethod
-    def Names(short=None, postProcessor=None):
+    def names(short=None, postProcessor=None):
         value = ['em', 'th', 'kin', 'exp'] if short else ['em', 'thermal', 'kinetic', 'explosive']
 
         if postProcessor:
@@ -201,11 +201,11 @@ class RRTypes:
         return self
 
     def __repr__(self):
-        spec = RRTypes.Names(False)
+        spec = RRTypes.names(False)
         return makeReprStr(self, spec)
 
     @staticmethod
-    def Names(ehpOnly=True, postProcessor=None):
+    def names(ehpOnly=True, postProcessor=None):
         value = ['shield', 'armor', 'hull']
 
         if not ehpOnly:

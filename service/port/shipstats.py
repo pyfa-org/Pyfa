@@ -3,8 +3,8 @@ from eos.saveddata.damagePattern import DamagePattern
 from eos.utils.stats import RRTypes, DmgTypes
 from gui.utils.numberFormatter import formatAmount
 
-tankTypes = RRTypes.Names()
-damageTypes = DmgTypes.Names()
+tankTypes = RRTypes.names()
+damageTypes = DmgTypes.names()
 damagePatterns = [DamagePattern.oneType(damageType) for damageType in damageTypes]
 damageTypeResonanceNames = [damageType.capitalize() + "DamageResonance" for damageType in damageTypes]
 resonanceNames = {tankTypes[0]: [tankTypes[0] + s for s in damageTypeResonanceNames],
@@ -50,8 +50,8 @@ def tankSection(fit):
 
     def generalOutput():
         rowNames = ["EHP"]
-        rowNames.extend(RRTypes.Names(postProcessor=lambda v: v.capitalize()))
-        colNames = DmgTypes.Names(short=True, postProcessor=lambda v: " " + v.capitalize())
+        rowNames.extend(RRTypes.names(postProcessor=lambda v: v.capitalize()))
+        colNames = DmgTypes.names(short=True, postProcessor=lambda v: " " + v.capitalize())
         colNames[0] = colNames[0][1::]
 
         outputScheme = []
@@ -144,7 +144,7 @@ def repsSection(fit):
             shieldRegenStr = [formatAmount(rep, 3, 0, 9) if rep != 0 else "" for rep in shieldRegen]
             totalRepStr = [formatAmount(rep, 3, 0, 9) for rep in totalRep]
 
-            lines = RRTypes.Names(postProcessor=lambda v: v.capitalize())
+            lines = RRTypes.names(postProcessor=lambda v: v.capitalize())
             lines.append("Total")
             lines = ["{:<8}".format(line) for line in lines]
 
