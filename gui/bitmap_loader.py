@@ -33,12 +33,17 @@ pyfalog = Logger(__name__)
 
 
 class BitmapLoader:
-    try:
-        archive = zipfile.ZipFile(config.imgsZIP, 'r')
-        pyfalog.info("Using zipped image files.")
-    except (IOError, TypeError):
+    # Can be None if we're running from tests
+    if config.imgsZIP is None:
         pyfalog.info("Using local image files.")
         archive = None
+    else:
+        try:
+            archive = zipfile.ZipFile(config.imgsZIP, 'r')
+            pyfalog.info("Using zipped image files.")
+        except (IOError, TypeError):
+            pyfalog.info("Using local image files.")
+            archive = None
 
     cached_bitmaps = OrderedDict()
     dont_use_cached_bitmaps = False

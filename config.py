@@ -40,6 +40,7 @@ logging_setup = None
 cipher = None
 clientHash = None
 experimentalFeatures = None
+version = None
 
 ESI_CACHE = 'esi_cache'
 

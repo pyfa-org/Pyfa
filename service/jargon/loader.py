@@ -24,7 +24,7 @@ import yaml
 from .jargon import Jargon
 from .resources import DEFAULT_DATA, DEFAULT_HEADER
 
-JARGON_PATH = os.path.join(config.savePath, 'jargon.yaml')
+JARGON_PATH = os.path.join(config.savePath, 'jargon.yaml') if config.savePath is not None else None
 
 
 class JargonLoader:
@@ -44,14 +44,15 @@ class JargonLoader:
 
     def _load_jargon(self):
         jargondata = yaml.load(DEFAULT_DATA, Loader=yaml.SafeLoader)
-        with open(JARGON_PATH) as f:
-            userdata = yaml.load(f, Loader=yaml.SafeLoader)
-        jargondata.update(userdata)
+        if JARGON_PATH is not None:
+            with open(JARGON_PATH) as f:
+                userdata = yaml.load(f, Loader=yaml.SafeLoader)
+            jargondata.update(userdata)
         self.jargon_mtime = self._get_jargon_file_mtime()
         self._jargon = Jargon(jargondata)
 
     def _get_jargon_file_mtime(self) -> int:
-        if not os.path.exists(self.jargon_path):
+        if self.jargon_path is None or not os.path.exists(self.jargon_path):
             return 0
         return os.stat(self.jargon_path).st_mtime
 
@@ -82,4 +83,5 @@ class JargonLoader:
         return JargonLoader._instance
 
 
-JargonLoader.init_user_jargon(JARGON_PATH)
+if JARGON_PATH is not None:
+    JargonLoader.init_user_jargon(JARGON_PATH)
