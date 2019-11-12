@@ -1,14 +1,15 @@
 from functools import reduce
 from eos.saveddata.damagePattern import DamagePattern
+from eos.utils.stats import RRTypes, DmgTypes
 from gui.utils.numberFormatter import formatAmount
 
-tankTypes = ("shield", "armor", "hull")
-damageTypes = ("em", "thermal", "kinetic", "explosive")
+tankTypes = RRTypes.names()
+damageTypes = DmgTypes.names()
 damagePatterns = [DamagePattern.oneType(damageType) for damageType in damageTypes]
 damageTypeResonanceNames = [damageType.capitalize() + "DamageResonance" for damageType in damageTypes]
-resonanceNames = {"shield": ["shield" + s for s in damageTypeResonanceNames],
-                  "armor": ["armor" + s for s in damageTypeResonanceNames],
-                  "hull": [s[0].lower() + s[1:] for s in damageTypeResonanceNames]}
+resonanceNames = {tankTypes[0]: [tankTypes[0] + s for s in damageTypeResonanceNames],
+                  tankTypes[1]: [tankTypes[1] + s for s in damageTypeResonanceNames],
+                  tankTypes[2]: [s[0].lower() + s[1:] for s in damageTypeResonanceNames]}
 
 
 def firepowerSection(fit):
@@ -48,14 +49,42 @@ def tankSection(fit):
     #         "Hull    {:>7} {:>7.0%} {:>7.0%} {:>7.0%} {:>7.0%}\n".format(ehpStr[2], *resists["hull"])
 
     def generalOutput():
+        rowNames = ["EHP"]
+        rowNames.extend(RRTypes.names(postProcessor=lambda v: v.capitalize()))
+        colNames = DmgTypes.names(short=True, postProcessor=lambda v: " " + v.capitalize())
+        colNames[0] = colNames[0][1::]
+
+        outputScheme = []
+        for index, rowName in enumerate(rowNames):
+            row = rowName + ": {:>} ("
+            subsValue = " {:.0%}," if index > 0 else " {:>},"
+
+            row += ''.join([(colName + ":" + subsValue) for colName in colNames])
+            row = row[:-1:] + ")\n"
+
+            outputScheme.append(row)
+
         return \
-            "EHP: {:>} (Em: {:>}, Th: {:>}, Kin: {:>}, Exp: {:>})\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
-            "Shield: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[0], *resists["shield"]) + \
-            "Armor: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[1], *resists["armor"]) + \
-            "Hull: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[2], *resists["hull"])
+            outputScheme[0].format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
+            outputScheme[1].format(ehpStr[0], *resists["shield"]) + \
+            outputScheme[2].format(ehpStr[1], *resists["armor"]) + \
+            outputScheme[3].format(ehpStr[2], *resists["hull"])
+
+        # return \
+        #     "EHP: {:>} (Em: {:>}, Th: {:>}, Kin: {:>}, Exp: {:>})\n".format(ehpStr[3], *ehpAgainstDamageTypeStr) + \
+        #     "Shield: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[0], *resists["shield"]) + \
+        #     "Armor: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[1], *resists["armor"]) + \
+        #     "Hull: {:>} (Em: {:.0%}, Th: {:.0%}, Kin: {:.0%}, Exp: {:.0%})\n".format(ehpStr[2], *resists["hull"])
 
     return generalOutput()
 
+
+def _addFormattedColumn(value, name, header, linesList, repStr):
+    if value:
+        header += "{:>7} ".format(name)
+        linesList = [line + "{:>7} ".format(rep) for line, rep in zip(linesList, repStr)]
+
+    return header, linesList
 
 def repsSection(fit):
     """ Returns the text of the repairs section"""
@@ -115,34 +144,23 @@ def repsSection(fit):
             shieldRegenStr = [formatAmount(rep, 3, 0, 9) if rep != 0 else "" for rep in shieldRegen]
             totalRepStr = [formatAmount(rep, 3, 0, 9) for rep in totalRep]
 
-            header = "REPS    "
-            lines = [
-                "Shield  ",
-                "Armor   ",
-                "Hull    ",
-                "Total   "
-            ]
+            lines = RRTypes.names(postProcessor=lambda v: v.capitalize())
+            lines.append("Total")
+            lines = ["{:<8}".format(line) for line in lines]
 
             showSelfRepColumn = totalSelfRep > 0
             showSustainRepColumn = sustainRep != selfRep
             showRemoteRepColumn = totalRemoteRep > 0
             showShieldRegenColumn = totalShieldRegen > 0
 
-            if showSelfRepColumn + showSustainRepColumn + showRemoteRepColumn + showShieldRegenColumn > 1:
-                header += "{:>7} ".format("TOTAL")
-                lines = [line + "{:>7} ".format(rep) for line, rep in zip(lines, totalRepStr)]
-            if showSelfRepColumn:
-                header += "{:>7} ".format("SELF")
-                lines = [line + "{:>7} ".format(rep) for line, rep in zip(lines, selfRepStr)]
-            if showSustainRepColumn:
-                header += "{:>7} ".format("SUST")
-                lines = [line + "{:>7} ".format(rep) for line, rep in zip(lines, sustainRepStr)]
-            if showRemoteRepColumn:
-                header += "{:>7} ".format("REMOTE")
-                lines = [line + "{:>7} ".format(rep) for line, rep in zip(lines, remoteRepStr)]
-            if showShieldRegenColumn:
-                header += "{:>7} ".format("REGEN")
-                lines = [line + "{:>7} ".format(rep) for line, rep in zip(lines, shieldRegenStr)]
+            header = "REPS    "
+            header, lines = _addFormattedColumn(
+                (showSelfRepColumn + showSustainRepColumn + showRemoteRepColumn + showShieldRegenColumn > 1),
+                "TOTAL", header, lines, totalRepStr)
+            header, lines = _addFormattedColumn(showSelfRepColumn, "SELF", header, lines, selfRepStr)
+            header, lines = _addFormattedColumn(showSustainRepColumn, "SUST", header, lines, sustainRepStr)
+            header, lines = _addFormattedColumn(showRemoteRepColumn, "REMOTE", header, lines, remoteRepStr)
+            header, lines = _addFormattedColumn(showShieldRegenColumn, "REGEN", header, lines, shieldRegenStr)
 
             text += header + "\n"
             repsByTank = zip(totalRep, selfRep, sustainRep, remoteRep, shieldRegen)

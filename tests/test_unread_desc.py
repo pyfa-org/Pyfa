@@ -9,17 +9,15 @@ import os
 import sys
 # nopep8
 import re
-# from utils.strfunctions import sequential_rep, replace_ltgt
-#from utils.stopwatch import Stopwatch
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..')))
 sys._called_from_test = True  # need db open for tests. (see eos/config.py#17
+
+# This import is here to hack around circular import issues
+import gui.mainFrame
 # noinspection PyPep8
 from service.port import Port, IPortUser
-#
-# noinspection PyPackageRequirements
-# from _development.helpers import DBInMemory as DB
 
 """
 NOTE:

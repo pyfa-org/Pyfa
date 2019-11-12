@@ -5,7 +5,7 @@ from numbers import Number
 from logbook import Logger
 
 import eos.db
-from config import version as pyfaVersion
+from config import getVersion
 from service.fit import Fit
 from service.market import Market
 from eos.const import FittingModuleState, FittingHardpoint, FittingSlot
@@ -23,6 +23,7 @@ from gui.fitCommands.helpers import ModuleInfo
 
 
 pyfalog = Logger(__name__)
+pyfaVersion = getVersion()
 
 
 class EfsPort:

@@ -212670,6 +212670,31 @@
     "typeID": 52694
   }, 
   {
+    "effectID": 7235, 
+    "isDefault": false, 
+    "typeID": 52700
+  }, 
+  {
+    "effectID": 10, 
+    "isDefault": false, 
+    "typeID": 52701
+  }, 
+  {
+    "effectID": 6882, 
+    "isDefault": false, 
+    "typeID": 52701
+  }, 
+  {
+    "effectID": 6884, 
+    "isDefault": false, 
+    "typeID": 52701
+  }, 
+  {
+    "effectID": 6885, 
+    "isDefault": false, 
+    "typeID": 52701
+  }, 
+  {
     "effectID": 310, 
     "isDefault": false, 
     "typeID": 52785
@@ -212775,6 +212800,16 @@
     "typeID": 52790
   }, 
   {
+    "effectID": 10, 
+    "isDefault": true, 
+    "typeID": 52797
+  }, 
+  {
+    "effectID": 878, 
+    "isDefault": false, 
+    "typeID": 52797
+  }, 
+  {
     "effectID": 302, 
     "isDefault": false, 
     "typeID": 52813
@@ -212823,6 +212858,131 @@
     "effectID": 310, 
     "isDefault": false, 
     "typeID": 52814
+  }, 
+  {
+    "effectID": 10, 
+    "isDefault": false, 
+    "typeID": 52815
+  }, 
+  {
+    "effectID": 6882, 
+    "isDefault": false, 
+    "typeID": 52815
+  }, 
+  {
+    "effectID": 6884, 
+    "isDefault": false, 
+    "typeID": 52815
+  }, 
+  {
+    "effectID": 6885, 
+    "isDefault": false, 
+    "typeID": 52815
+  }, 
+  {
+    "effectID": 6743, 
+    "isDefault": false, 
+    "typeID": 52842
+  }, 
+  {
+    "effectID": 7092, 
+    "isDefault": false, 
+    "typeID": 52907
+  }, 
+  {
+    "effectID": 7093, 
+    "isDefault": false, 
+    "typeID": 52907
+  }, 
+  {
+    "effectID": 7094, 
+    "isDefault": false, 
+    "typeID": 52907
+  }, 
+  {
+    "effectID": 7112, 
+    "isDefault": false, 
+    "typeID": 52907
+  }, 
+  {
+    "effectID": 7238, 
+    "isDefault": false, 
+    "typeID": 52907
+  }, 
+  {
+    "effectID": 7239, 
+    "isDefault": false, 
+    "typeID": 52907
+  }, 
+  {
+    "effectID": 7240, 
+    "isDefault": false, 
+    "typeID": 52907
+  }, 
+  {
+    "effectID": 12, 
+    "isDefault": false, 
+    "typeID": 52915
+  }, 
+  {
+    "effectID": 16, 
+    "isDefault": false, 
+    "typeID": 52915
+  }, 
+  {
+    "effectID": 42, 
+    "isDefault": false, 
+    "typeID": 52915
+  }, 
+  {
+    "effectID": 3025, 
+    "isDefault": false, 
+    "typeID": 52915
+  }, 
+  {
+    "effectID": 6995, 
+    "isDefault": true, 
+    "typeID": 52915
+  }, 
+  {
+    "effectID": 596, 
+    "isDefault": false, 
+    "typeID": 52916
+  }, 
+  {
+    "effectID": 804, 
+    "isDefault": false, 
+    "typeID": 52916
+  }, 
+  {
+    "effectID": 1173, 
+    "isDefault": false, 
+    "typeID": 52916
+  }, 
+  {
+    "effectID": 132, 
+    "isDefault": true, 
+    "typeID": 52997
+  }, 
+  {
+    "effectID": 7241, 
+    "isDefault": false, 
+    "typeID": 52997
+  }, 
+  {
+    "effectID": 132, 
+    "isDefault": true, 
+    "typeID": 52998
+  }, 
+  {
+    "effectID": 152, 
+    "isDefault": false, 
+    "typeID": 52998
+  }, 
+  {
+    "effectID": 7242, 
+    "isDefault": false, 
+    "typeID": 52998
   }, 
   {
     "effectID": 302, 

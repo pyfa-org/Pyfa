@@ -733,7 +733,7 @@
               "text": "reduction in Small Energy Turret activation cost"
             }, 
             {
-              "number": "10%", 
+              "number": "5%", 
               "text": "bonus to Small Energy Turret damage"
             }
           ], 
@@ -10405,7 +10405,7 @@
         {
           "bonuses": [
             {
-              "number": "15%", 
+              "number": "10%", 
               "text": "bonus to Small Hybrid Turret damage"
             }
           ], 
@@ -14922,7 +14922,7 @@
               "text": "reduction in Microwarpdrive signature radius penalty"
             }, 
             {
-              "number": "10%", 
+              "number": "5%", 
               "text": "bonus to Small Projectile Turret damage"
             }
           ], 
@@ -17676,6 +17676,58 @@
   }, 
   {
     "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "text": "·Can fit a Siege module"
+          }, 
+          {
+            "number": "5x", 
+            "text": "penalty to Entosis Link cycle time"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to Remote Armor Repairer range"
+          }, 
+          {
+            "number": "50%", 
+            "text": "reduced Energy Neutralizer capacitor need"
+          }, 
+          {
+            "number": "50%", 
+            "text": "reduced Remote Armor Repairer capacitor need"
+          }, 
+          {
+            "number": "50%", 
+            "text": "reduced Smart Bomb capacitor need"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "5%", 
+              "text": "bonus to XL Disintegrator damage"
+            }, 
+            {
+              "number": "4%", 
+              "text": "bonus to all armor resistances"
+            }, 
+            {
+              "number": "3%", 
+              "text": "bonus to XL Disintegrator rate of fire"
+            }
+          ], 
+          "header": "Zirnitra bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 52907
+  }, 
+  {
+    "traits": {
       "skills": [
         {
           "bonuses": [
@@ -18758,7 +18810,7 @@
         {
           "bonuses": [
             {
-              "number": "10%", 
+              "number": "5%", 
               "text": "bonus to Small Hybrid Turret damage"
             }, 
             {

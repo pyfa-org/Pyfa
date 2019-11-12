@@ -5,7 +5,8 @@ import sys
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..')))
 
-# noinspection PyPackageRequirements
+# This import is here to hack around circular import issues
+import gui.mainFrame
 # noinspection PyPackageRequirements
 from service.fit import Fit
 
