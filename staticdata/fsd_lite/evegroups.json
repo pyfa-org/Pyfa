@@ -9477,6 +9477,50 @@
     "published": false, 
     "useBasePrice": false
   }, 
+  "4034": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4034, 
+    "groupName": "Retaliating Amarr Entities", 
+    "groupNameID": 552396, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4035": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4035, 
+    "groupName": "Retaliating Caldari Entities", 
+    "groupNameID": 552397, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4036": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4036, 
+    "groupName": "Retaliating Gallente Entities", 
+    "groupNameID": 552398, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4037": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4037, 
+    "groupName": "Retaliating Minmatar Entities", 
+    "groupNameID": 552399, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
   "404": {
     "anchorable": true, 
     "anchored": false, 

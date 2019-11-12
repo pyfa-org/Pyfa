@@ -5,7 +5,7 @@
   }, 
   "2": {
     "iconID": 24150, 
-    "iconSuffix": "tech2", 
+    "iconSuffix": "t2", 
     "name": "Tech II", 
     "nameID": 66673
   }, 
@@ -65,7 +65,7 @@
   }, 
   "14": {
     "iconID": 24151, 
-    "iconSuffix": "tech3", 
+    "iconSuffix": "t3", 
     "name": "Tech III", 
     "nameID": 66685
   }, 
@@ -93,19 +93,19 @@
   }, 
   "52": {
     "iconID": 24155, 
-    "iconSuffix": "structureFaction", 
+    "iconSuffix": "struct_faction", 
     "name": "Structure Faction", 
     "nameID": 550638
   }, 
   "53": {
     "iconID": 24156, 
-    "iconSuffix": "structureTech2", 
+    "iconSuffix": "struct_t2", 
     "name": "Structure Tech II", 
     "nameID": 550639
   }, 
   "54": {
     "iconID": 24157, 
-    "iconSuffix": "structureTech1", 
+    "iconSuffix": "struct", 
     "name": "Structure Tech I", 
     "nameID": 550644
   }
