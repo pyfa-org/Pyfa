@@ -26,17 +26,44 @@ class GraphFitAmmoPicker(ContextMenuSingle):
         return 'Plot with Different Ammo...'
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        window = AmmoPicker(callingWindow, mainItem.item)
+        window = AmmoPickerFrame(callingWindow, mainItem.item)
         window.Show()
 
 
 GraphFitAmmoPicker.register()
 
 
-class AmmoPicker(AuxiliaryFrame):
+class AmmoPickerFrame(AuxiliaryFrame):
 
     def __init__(self, parent, fit):
-        super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE, resizeable=True)
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        contents = AmmoPickerContents(self, fit)
+        mainSizer.Add(contents, 1, wx.EXPAND | wx.ALL, 5)
+
+        self.SetSizer(mainSizer)
+        self.Layout()
+        self.Fit()
+        w, h = self.GetSize()
+        self.SetSize(wx.Size(min(w, 1000), min(h, 700)))
+        self.CenterOnParent()
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+
+    def kbEvent(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:
+            self.Close()
+            return
+        event.Skip()
+
+
+class AmmoPickerContents(wx.ScrolledCanvas):
+
+    def __init__(self, parent, fit):
+        wx.ScrolledCanvas.__init__(self, parent)
+        self.SetScrollRate(0, 15)
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         indent = 15
         mods = self.getMods(fit)
@@ -56,45 +83,42 @@ class AmmoPicker(AuxiliaryFrame):
             else:
                 rb = wx.RadioButton(self, wx.ID_ANY, text)
                 rb.SetValue(False)
-            mainSizer.Add(rb, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 5)
+            mainSizer.Add(rb, 0, wx.EXPAND | wx.ALL, 0)
 
         def addCheckbox(text, indentLvl=0):
             cb = wx.CheckBox(self, -1, text)
-            mainSizer.Add(cb, 0, wx.EXPAND | wx.LEFT, 5 + indent * indentLvl)
+            mainSizer.Add(cb, 0, wx.EXPAND | wx.LEFT, indent * indentLvl)
 
         def addLabel(text, indentLvl=0):
+            text = text[0].capitalize() + text[1:]
             label = wx.StaticText(self, wx.ID_ANY, text)
-            mainSizer.Add(label, 0, wx.EXPAND | wx.LEFT, 5 + indent * indentLvl)
+            mainSizer.Add(label, 0, wx.EXPAND | wx.LEFT, indent * indentLvl)
 
-        for modInfo, ammo in mods:
+        for modInfo, modAmmo in mods:
             text = '\n'.join('{}x {}'.format(amount, item.name) for item, amount in modInfo)
             addRadioButton(text)
             # Get actual module, as ammo getters need it
             mod = next((m for m in fit.modules if m.itemID == next(iter(modInfo))[0].ID), None)
-            modType, ammoTree = Ammo.getInstance().getModuleStructuredAmmo(mod)
-            if modType in ('ddTurret', 'ddMissile'):
-                for ammoCatName, ammos in ammoTree.items():
-                    addLabel('{}:'.format(ammoCatName.capitalize()), indentLvl=1)
-                    for ammo in ammos:
-                        addCheckbox(ammo.name, indentLvl=2)
-            else:
+            _, ammoTree = Ammo.getInstance().getModuleStructuredAmmo(mod)
+            if len(ammoTree) == 1:
                 for ammoCatName, ammos in ammoTree.items():
                     for ammo in ammos:
                         addCheckbox(ammo.name, indentLvl=1)
+            else:
+                for ammoCatName, ammos in ammoTree.items():
+                    if len(ammos) == 1:
+                        ammo = next(iter(ammos))
+                        addCheckbox(ammo.name, indentLvl=1)
+                    else:
+                        addLabel('{}:'.format(ammoCatName), indentLvl=1)
+                        for ammo in ammos:
+                            addCheckbox(ammo.name, indentLvl=2)
         if drones:
             addRadioButton('Drones')
         if fighters:
             addRadioButton('Fighters')
 
         self.SetSizer(mainSizer)
-        self.SetMinSize((346, 156))
-        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
-
-    def kbEvent(self, event):
-        if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:
-            self.Close()
-            return
-        event.Skip()
 
     def getMods(self, fit):
         sMkt = Market.getInstance()
