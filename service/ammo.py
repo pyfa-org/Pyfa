@@ -19,6 +19,7 @@
 
 
 import math
+from collections import OrderedDict
 
 from eos.const import FittingHardpoint
 from eos.saveddata.module import Module
@@ -52,95 +53,99 @@ class Ammo:
 
     @classmethod
     def getModuleStructuredAmmo(cls, mod):
-
-        def getChargeDamageInfo(charge):
-            # Set up data storage for missile damage stuff
-            damageMap = {}
-            totalDamage = 0
-            # Fill them with the data about charge
-            for damageType in DmgTypes.names():
-                currentDamage = charge.getAttribute('{}Damage'.format(damageType)) or 0
-                damageMap[damageType] = currentDamage
-                totalDamage += currentDamage
-            # Detect type of ammo
-            chargeDamageType = None
-            for damageType in damageMap:
-                # If all damage belongs to certain type purely, set appropriate
-                # ammoType
-                if damageMap[damageType] == totalDamage:
-                    chargeDamageType = damageType
-                    break
-            # Else consider ammo as mixed damage
-            if chargeDamageType is None:
-                chargeDamageType = 'mixed'
-            return chargeDamageType, totalDamage
-
-        def turretSorter(mod, charge):
-            damage = 0
-            range_ = (mod.item.getAttribute('maxRange')) * \
-                     (charge.getAttribute('weaponRangeMultiplier') or 1)
-            falloff = (mod.item.getAttribute('falloff') or 0) * \
-                      (charge.getAttribute('fallofMultiplier') or 1)
-            for type_ in DmgTypes.names():
-                d = charge.getAttribute('%sDamage' % type_)
-                if d > 0:
-                    damage += d
-            # Take optimal and falloff as range factor
-            rangeFactor = range_ + falloff
-            return -rangeFactor, charge.name.rsplit()[-2:], damage, charge.name
-
-        def missileSorter(mod, charge):
-            # Get charge damage type and total damage
-            chargeDamageType, totalDamage = getChargeDamageInfo(charge)
-            # Find its position in sort list
-            try:
-                position = DmgTypes.names().index(chargeDamageType)
-            # Put charges which have non-standard damage type after charges with
-            # standard damage type
-            except ValueError:
-                position = math.inf
-            return position, totalDamage, charge.name
-
-        def nameSorter(charge):
-            parts = charge.name.split(" ")
-            return [int(p) if p.isdigit() else p for p in parts]
-
         chargesFlat = cls.getModuleFlatAmmo(mod)
         # Make sure we do not consider mining turrets as combat turrets
         if mod.hardpoint == FittingHardpoint.TURRET and mod.getModifiedItemAttr('miningAmount', None) is None:
-            all = []
+
+            def turretSorter(charge):
+                damage = 0
+                range_ = (mod.item.getAttribute('maxRange')) * \
+                         (charge.getAttribute('weaponRangeMultiplier') or 1)
+                falloff = (mod.item.getAttribute('falloff') or 0) * \
+                          (charge.getAttribute('fallofMultiplier') or 1)
+                for type_ in DmgTypes.names():
+                    d = charge.getAttribute('%sDamage' % type_)
+                    if d > 0:
+                        damage += d
+                # Take optimal and falloff as range factor
+                rangeFactor = range_ + falloff
+                return -rangeFactor, charge.name.rsplit()[-2:], damage, charge.name
+
+            all = OrderedDict()
             sub = []
             prevNameBase = None
             prevRange = None
             for charge in sorted(chargesFlat, key=turretSorter):
                 if 'civilian' in charge.name.lower():
                     continue
-                currNameBase = charge.name.rsplit()[-2:]
+                currNameBase = ' '.join(charge.name.rsplit()[-2:])
                 currRange = charge.getAttribute('weaponRangeMultiplier')
-                if prevNameBase is None or currRange != prevRange or currNameBase != prevNameBase:
-                    if sub:
-                        all.append(sub)
-                        sub = []
-                    sub.append(charge)
-                    prevNameBase = currNameBase
-                    prevRange = currRange
-                else:
-                    sub.append(charge)
+                if sub and (currRange != prevRange or currNameBase != prevNameBase):
+                    all[prevNameBase] = sub
+                    sub = []
+                sub.append(charge)
+                prevNameBase = currNameBase
+                prevRange = currRange
+            else:
+                if sub:
+                    all[prevNameBase] = sub
             return 'ddTurret', all
+
         elif mod.hardpoint == FittingHardpoint.MISSILE and mod.item.name != 'Festival Launcher':
-            all = []
+
+            def getChargeDamageInfo(charge):
+                # Set up data storage for missile damage stuff
+                damageMap = {}
+                totalDamage = 0
+                # Fill them with the data about charge
+                for damageType in DmgTypes.names():
+                    currentDamage = charge.getAttribute('{}Damage'.format(damageType)) or 0
+                    damageMap[damageType] = currentDamage
+                    totalDamage += currentDamage
+                # Detect type of ammo
+                chargeDamageType = None
+                for damageType in damageMap:
+                    # If all damage belongs to certain type purely, set appropriate
+                    # ammoType
+                    if damageMap[damageType] == totalDamage:
+                        chargeDamageType = damageType
+                        break
+                # Else consider ammo as mixed damage
+                if chargeDamageType is None:
+                    chargeDamageType = 'mixed'
+                return chargeDamageType, totalDamage
+
+            def missileSorter(charge):
+                # Get charge damage type and total damage
+                chargeDamageType, totalDamage = getChargeDamageInfo(charge)
+                # Find its position in sort list
+                try:
+                    position = DmgTypes.names().index(chargeDamageType)
+                # Put charges which have non-standard damage type after charges with
+                # standard damage type
+                except ValueError:
+                    position = math.inf
+                return position, totalDamage, charge.name
+
+            all = OrderedDict()
             sub = []
             prevType = None
             for charge in sorted(chargesFlat, key=missileSorter):
                 currType = getChargeDamageInfo(charge)[0]
-                if prevType is None or currType != prevType:
-                    if sub:
-                        all.append(sub)
-                        sub = []
-                    sub.append(charge)
-                    prevType = currType
-                else:
-                    sub.append(charge)
+                if sub and currType != prevType:
+                    all[prevType] = sub
+                    sub = []
+                sub.append(charge)
+                prevType = currType
+            else:
+                if sub:
+                    all[prevType] = sub
             return 'ddMissile', all
+
         else:
-            return 'general', sorted(chargesFlat, key=nameSorter)
+
+            def nameSorter(charge):
+                parts = charge.name.split(" ")
+                return [int(p) if p.isdigit() else p for p in parts]
+
+            return 'general', {'general': sorted(chargesFlat, key=nameSorter)}
