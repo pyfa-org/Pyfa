@@ -152,18 +152,23 @@ def getTurretMult(mod, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngl
 
 
 def getLauncherMult(mod, src, distance, tgtSpeed, tgtSigRadius):
-    modRange = mod.maxRange
-    if modRange is None:
+    missileMaxRangeData = mod.missileMaxRangeData
+    if missileMaxRangeData is None:
         return 0
-    if distance is not None and distance + src.getRadius() > modRange:
-        return 0
-    mult = _calcMissileFactor(
+    lowerRange, higherRange, higherChance = missileMaxRangeData
+    if distance is None or distance + src.getRadius() <= lowerRange:
+        distanceFactor = 1
+    elif lowerRange < distance + src.getRadius() <= higherRange:
+        distanceFactor = higherChance
+    else:
+        distanceFactor = 0
+    applicationFactor = _calcMissileFactor(
         atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
         atkEv=mod.getModifiedChargeAttr('aoeVelocity'),
         atkDrf=mod.getModifiedChargeAttr('aoeDamageReductionFactor'),
         tgtSpeed=tgtSpeed,
         tgtSigRadius=tgtSigRadius)
-    return mult
+    return distanceFactor * applicationFactor
 
 
 def getSmartbombMult(mod, distance):
