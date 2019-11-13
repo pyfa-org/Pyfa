@@ -26,8 +26,7 @@ class GraphFitAmmoPicker(ContextMenuSingle):
         return 'Plot with Different Ammo...'
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        window = AmmoPickerFrame(callingWindow, mainItem.item)
-        window.Show()
+        AmmoPickerFrame.openOne(callingWindow, mainItem.item, forceReopen=True)
 
 
 GraphFitAmmoPicker.register()
