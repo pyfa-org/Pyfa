@@ -48,7 +48,10 @@ class AmmoPickerFrame(AuxiliaryFrame):
         self.Layout()
 
         contW, contH = contents.GetVirtualSize()
-        self.SetSize(min(1000, contW + padding * 2), min(700, contH + padding * 2))
+        bestW = min(1000, contW + padding * 2)
+        bestH = min(700, contH + padding * 2)
+        self.SetSize(bestW, bestH)
+        self.SetMinSize(wx.Size(int(bestW * 0.7), int(bestH * 0.7)))
         self.CenterOnParent()
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
