@@ -4,6 +4,7 @@ import wx
 import gui.mainFrame
 from gui.auxFrame import AuxiliaryFrame
 from gui.contextMenu import ContextMenuSingle
+from service.ammo import Ammo
 from service.market import Market
 
 
@@ -25,7 +26,7 @@ class GraphFitAmmoPicker(ContextMenuSingle):
         return 'Plot with Different Ammo...'
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        window = AmmoPicker(self.mainFrame, mainItem.item)
+        window = AmmoPicker(callingWindow, mainItem.item)
         window.Show()
 
 
@@ -37,6 +38,7 @@ class AmmoPicker(AuxiliaryFrame):
     def __init__(self, parent, fit):
         super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE)
 
+        indent = 15
         mods = self.getMods(fit)
         drones = self.getDrones(fit)
         fighters = self.getFighters(fit)
@@ -54,11 +56,31 @@ class AmmoPicker(AuxiliaryFrame):
             else:
                 rb = wx.RadioButton(self, wx.ID_ANY, text)
                 rb.SetValue(False)
-            mainSizer.Add(rb, 0, wx.EXPAND | wx.ALL, 5)
+            mainSizer.Add(rb, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 5)
+
+        def addCheckbox(text, indentLvl=0):
+            cb = wx.CheckBox(self, -1, text)
+            mainSizer.Add(cb, 0, wx.EXPAND | wx.LEFT, 5 + indent * indentLvl)
+
+        def addLabel(text, indentLvl=0):
+            label = wx.StaticText(self, wx.ID_ANY, text)
+            mainSizer.Add(label, 0, wx.EXPAND | wx.LEFT, 5 + indent * indentLvl)
 
         for modInfo, ammo in mods:
             text = '\n'.join('{}x {}'.format(amount, item.name) for item, amount in modInfo)
             addRadioButton(text)
+            # Get actual module, as ammo getters need it
+            mod = next((m for m in fit.modules if m.itemID == next(iter(modInfo))[0].ID), None)
+            modType, ammoTree = Ammo.getInstance().getModuleStructuredAmmo(mod)
+            if modType in ('ddTurret', 'ddMissile'):
+                for ammoCatName, ammos in ammoTree.items():
+                    addLabel('{}:'.format(ammoCatName.capitalize()), indentLvl=1)
+                    for ammo in ammos:
+                        addCheckbox(ammo.name, indentLvl=2)
+            else:
+                for ammoCatName, ammos in ammoTree.items():
+                    for ammo in ammos:
+                        addCheckbox(ammo.name, indentLvl=1)
         if drones:
             addRadioButton('Drones')
         if fighters:
@@ -66,7 +88,7 @@ class AmmoPicker(AuxiliaryFrame):
 
         self.SetSizer(mainSizer)
         self.SetMinSize((346, 156))
-        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
     def kbEvent(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:
@@ -76,7 +98,8 @@ class AmmoPicker(AuxiliaryFrame):
 
     def getMods(self, fit):
         sMkt = Market.getInstance()
-        loadableCharges = {}
+        sAmmo = Ammo.getInstance()
+        loadableChargesCache = {}
         # Modules, format: {frozenset(ammo): {item: count}}
         modsPrelim = {}
         if fit is not None:
@@ -84,13 +107,9 @@ class AmmoPicker(AuxiliaryFrame):
                 if not mod.canDealDamage():
                     continue
                 typeID = mod.item.ID
-                if typeID in loadableCharges:
-                    charges = loadableCharges[typeID]
-                else:
-                    charges = loadableCharges.setdefault(typeID, set())
-                    for charge in mod.getValidCharges():
-                        if sMkt.getPublicityByItem(charge):
-                            charges.add(charge)
+                if typeID not in loadableChargesCache:
+                    loadableChargesCache[typeID] = sAmmo.getModuleFlatAmmo(mod)
+                charges = loadableChargesCache[typeID]
                 # We're not interested in modules which contain no charges
                 if charges:
                     data = modsPrelim.setdefault(frozenset(charges), {})

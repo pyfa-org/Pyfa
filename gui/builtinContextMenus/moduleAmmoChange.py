@@ -1,5 +1,3 @@
-from itertools import chain
-
 # noinspection PyPackageRequirements
 import wx
 
