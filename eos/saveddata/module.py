@@ -330,24 +330,56 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             else:
                 if chargeName in ("Scanner Probe", "Survey Probe"):
                     return None
+                missileMaxRangeData = self.missileMaxRangeData
+                if missileMaxRangeData is None:
+                    return None
+                lowerRange, higherRange, higherChance = missileMaxRangeData
+                maxRange = lowerRange * (1 - higherChance) + higherRange * higherChance
+                return maxRange
+
+    @property
+    def missileMaxRangeData(self):
+        if self.charge is None:
+            return None
+        try:
+            chargeName = self.charge.group.name
+        except AttributeError:
+            pass
+        else:
+            if chargeName in ("Scanner Probe", "Survey Probe"):
+                return None
+
+        def calculateRange(maxVelocity, mass, agility, flightTime):
             # Source: http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1307419&page=1#15
             # D_m = V_m * (T_m + T_0*[exp(- T_m/T_0)-1])
-            maxVelocity = self.getModifiedChargeAttr("maxVelocity")
-            flightTime = self.getModifiedChargeAttr("explosionDelay") / 1000.0
-            mass = self.getModifiedChargeAttr("mass")
-            agility = self.getModifiedChargeAttr("agility")
-            if maxVelocity and (flightTime or mass or agility):
-                accelTime = min(flightTime, mass * agility / 1000000)
-                # Average distance done during acceleration
-                duringAcceleration = maxVelocity / 2 * accelTime
-                # Distance done after being at full speed
-                fullSpeed = maxVelocity * (flightTime - accelTime)
-                maxRange = duringAcceleration + fullSpeed
-                if 'fofMissileLaunching' in self.charge.effects:
-                    rangeLimit = self.getModifiedChargeAttr("maxFOFTargetRange")
-                    if rangeLimit:
-                        maxRange = min(maxRange, rangeLimit)
-                return maxRange
+            accelTime = min(flightTime, mass * agility / 1000000)
+            # Average distance done during acceleration
+            duringAcceleration = maxVelocity / 2 * accelTime
+            # Distance done after being at full speed
+            fullSpeed = maxVelocity * (flightTime - accelTime)
+            maxRange = duringAcceleration + fullSpeed
+            return maxRange
+
+        maxVelocity = self.getModifiedChargeAttr("maxVelocity")
+        flightTime = floatUnerr(self.getModifiedChargeAttr("explosionDelay") / 1000.0)
+        mass = self.getModifiedChargeAttr("mass")
+        agility = self.getModifiedChargeAttr("agility")
+        lowerTime = math.floor(flightTime)
+        higherTime = math.ceil(flightTime)
+        lowerRange = calculateRange(maxVelocity, mass, agility, lowerTime)
+        higherRange = calculateRange(maxVelocity, mass, agility, higherTime)
+        # Fof range limit is supposedly calculated based on overview (surface-to-surface) range
+        if 'fofMissileLaunching' in self.charge.effects:
+            rangeLimit = self.getModifiedChargeAttr("maxFOFTargetRange")
+            if rangeLimit:
+                lowerRange = min(lowerRange, rangeLimit)
+                higherRange = min(higherRange, rangeLimit)
+        # Make range center-to-surface, as missiles spawn in the center of the ship
+        shipRadius = self.owner.ship.getModifiedItemAttr("radius")
+        lowerRange = max(0, lowerRange - shipRadius)
+        higherRange = max(0, higherRange - shipRadius)
+        higherChance = flightTime - lowerTime
+        return lowerRange, higherRange, higherChance
 
     @property
     def falloff(self):
