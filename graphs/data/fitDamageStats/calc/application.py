@@ -155,10 +155,11 @@ def getLauncherMult(mod, src, distance, tgtSpeed, tgtSigRadius):
     missileMaxRangeData = mod.missileMaxRangeData
     if missileMaxRangeData is None:
         return 0
+    # The ranges already consider ship radius
     lowerRange, higherRange, higherChance = missileMaxRangeData
-    if distance is None or distance + src.getRadius() <= lowerRange:
+    if distance is None or distance <= lowerRange:
         distanceFactor = 1
-    elif lowerRange < distance + src.getRadius() <= higherRange:
+    elif lowerRange < distance <= higherRange:
         distanceFactor = higherChance
     else:
         distanceFactor = 0

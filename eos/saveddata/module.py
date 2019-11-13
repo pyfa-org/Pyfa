@@ -368,11 +368,16 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         higherTime = math.ceil(flightTime)
         lowerRange = calculateRange(maxVelocity, mass, agility, lowerTime)
         higherRange = calculateRange(maxVelocity, mass, agility, higherTime)
+        # Fof range limit is supposedly calculated based on overview (surface-to-surface) range
         if 'fofMissileLaunching' in self.charge.effects:
             rangeLimit = self.getModifiedChargeAttr("maxFOFTargetRange")
             if rangeLimit:
                 lowerRange = min(lowerRange, rangeLimit)
                 higherRange = min(higherRange, rangeLimit)
+        # Make range center-to-surface, as missiles spawn in the center of the ship
+        shipRadius = self.owner.ship.getModifiedItemAttr("radius")
+        lowerRange = max(0, lowerRange - shipRadius)
+        higherRange = max(0, higherRange - shipRadius)
         higherChance = flightTime - lowerTime
         return lowerRange, higherRange, higherChance
 
