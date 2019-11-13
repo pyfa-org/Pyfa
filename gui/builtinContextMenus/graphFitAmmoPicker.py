@@ -38,16 +38,17 @@ class AmmoPickerFrame(AuxiliaryFrame):
     def __init__(self, parent, fit):
         super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE, resizeable=True)
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        padding = 5
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         contents = AmmoPickerContents(self, fit)
-        mainSizer.Add(contents, 1, wx.EXPAND | wx.ALL, 5)
+        mainSizer.Add(contents, 1, wx.EXPAND | wx.ALL, padding)
 
         self.SetSizer(mainSizer)
         self.Layout()
 
-        bestW, bestH = contents.GetVirtualSize()
-        self.SetSize(min(1000, bestW), min(700, bestH))
+        contW, contH = contents.GetVirtualSize()
+        self.SetSize(min(1000, contW + padding * 2), min(700, contH + padding * 2))
         self.CenterOnParent()
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
