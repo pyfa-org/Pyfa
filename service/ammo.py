@@ -81,14 +81,14 @@ class Ammo:
                 currNameBase = ' '.join(charge.name.rsplit()[-2:])
                 currRange = charge.getAttribute('weaponRangeMultiplier')
                 if sub and (currRange != prevRange or currNameBase != prevNameBase):
-                    all[prevNameBase] = sub
+                    all[sub[0].name] = sub
                     sub = []
                 sub.append(charge)
                 prevNameBase = currNameBase
                 prevRange = currRange
             else:
                 if sub:
-                    all[prevNameBase] = sub
+                    all[sub[0].name] = sub
             return 'ddTurret', all
 
         elif mod.hardpoint == FittingHardpoint.MISSILE and mod.item.name != 'Festival Launcher':
