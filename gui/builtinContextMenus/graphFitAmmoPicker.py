@@ -37,7 +37,7 @@ class AmmoPickerFrame(AuxiliaryFrame):
 
     def __init__(self, parent, fit):
         super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE, resizeable=True)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         contents = AmmoPickerContents(self, fit)
@@ -45,9 +45,9 @@ class AmmoPickerFrame(AuxiliaryFrame):
 
         self.SetSizer(mainSizer)
         self.Layout()
-        self.Fit()
-        w, h = self.GetSize()
-        self.SetSize(wx.Size(min(w, 1000), min(h, 700)))
+
+        bestW, bestH = contents.GetVirtualSize()
+        self.SetSize(min(1000, bestW), min(700, bestH))
         self.CenterOnParent()
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
@@ -63,7 +63,7 @@ class AmmoPickerContents(wx.ScrolledCanvas):
     def __init__(self, parent, fit):
         wx.ScrolledCanvas.__init__(self, parent)
         self.SetScrollRate(0, 15)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         indent = 15
         mods = self.getMods(fit)
