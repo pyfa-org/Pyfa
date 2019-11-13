@@ -69,13 +69,16 @@ class AmmoPickerContents(wx.ScrolledCanvas):
         mods = self.getMods(fit)
         drones = self.getDrones(fit)
         fighters = self.getFighters(fit)
+        self.rbLabelMap = {}
+        self.rbCheckboxMap = {}
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         firstRadio = True
+        currentRb = None
 
         def addRadioButton(text):
-            nonlocal firstRadio
+            nonlocal firstRadio, currentRb
             if not firstRadio:
                 rb = wx.RadioButton(self, wx.ID_ANY, text, style=wx.RB_GROUP)
                 rb.SetValue(True)
@@ -83,16 +86,22 @@ class AmmoPickerContents(wx.ScrolledCanvas):
             else:
                 rb = wx.RadioButton(self, wx.ID_ANY, text)
                 rb.SetValue(False)
+            rb.Bind(wx.EVT_RADIOBUTTON, self.rbSelected)
+            currentRb = rb
             mainSizer.Add(rb, 0, wx.EXPAND | wx.ALL, 0)
 
         def addCheckbox(text, indentLvl=0):
             cb = wx.CheckBox(self, -1, text)
             mainSizer.Add(cb, 0, wx.EXPAND | wx.LEFT, indent * indentLvl)
+            if currentRb is not None:
+                self.rbCheckboxMap.setdefault(currentRb, []).append(cb)
 
         def addLabel(text, indentLvl=0):
             text = text[0].capitalize() + text[1:]
             label = wx.StaticText(self, wx.ID_ANY, text)
             mainSizer.Add(label, 0, wx.EXPAND | wx.LEFT, indent * indentLvl)
+            if currentRb is not None:
+                self.rbLabelMap.setdefault(currentRb, []).append(label)
 
         for modInfo, modAmmo in mods:
             text = '\n'.join('{}x {}'.format(amount, item.name) for item, amount in modInfo)
@@ -119,6 +128,7 @@ class AmmoPickerContents(wx.ScrolledCanvas):
             addRadioButton('Fighters')
 
         self.SetSizer(mainSizer)
+        self.refreshStatus()
 
     def getMods(self, fit):
         sMkt = Market.getInstance()
@@ -183,3 +193,13 @@ class AmmoPickerContents(wx.ScrolledCanvas):
                         fighters.add(fighter)
                         break
         return fighters
+
+    def refreshStatus(self):
+        for map in (self.rbLabelMap, self.rbCheckboxMap):
+            for rb, items in map.items():
+                for item in items:
+                    item.Enable(rb.GetValue())
+
+    def rbSelected(self, event):
+        event.Skip()
+        self.refreshStatus()
