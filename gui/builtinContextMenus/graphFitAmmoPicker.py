@@ -124,8 +124,14 @@ class AmmoPickerContents(wx.ScrolledCanvas):
                             addCheckbox(ammo.name, indentLvl=2)
         if drones:
             addRadioButton('Drones')
+            from gui.builtinAdditionPanes.droneView import DroneView
+            for drone in sorted(drones, key=DroneView.droneKey):
+                addCheckbox('{}x {}'.format(drone.amount, drone.item.name), indentLvl=1)
         if fighters:
             addRadioButton('Fighters')
+            from gui.builtinAdditionPanes.fighterView import FighterDisplay
+            for fighter in sorted(fighters, key=FighterDisplay.fighterKey):
+                addCheckbox('{}x {}'.format(fighter.amount, fighter.item.name), indentLvl=1)
 
         self.SetSizer(mainSizer)
         self.refreshStatus()
@@ -162,35 +168,35 @@ class AmmoPickerContents(wx.ScrolledCanvas):
         return modsFinal
 
     def getDrones(self, fit):
-        drones = set()
+        drones = []
         if fit is not None:
             for drone in fit.drones:
                 if drone.item is None:
                     continue
                 # Drones are our "ammo", so we want to pick even those which are inactive
                 if drone.canDealDamage(ignoreState=True):
-                    drones.add(drone)
+                    drones.append(drone)
                     continue
                 if {'remoteWebifierEntity', 'remoteTargetPaintEntity'}.intersection(drone.item.effects):
-                    drones.add(drone)
+                    drones.append(drone)
                     continue
         return drones
 
     def getFighters(self, fit):
-        fighters = set()
+        fighters = []
         if fit is not None:
             for fighter in fit.fighters:
                 if fighter.item is None:
                     continue
                 # Fighters are our "ammo" as well
                 if fighter.canDealDamage(ignoreState=True):
-                    fighters.add(fighter)
+                    fighters.append(fighter)
                     continue
                 for ability in fighter.abilities:
                     if not ability.active:
                         continue
                     if ability.effect.name == 'fighterAbilityStasisWebifier':
-                        fighters.add(fighter)
+                        fighters.append(fighter)
                         break
         return fighters
 
