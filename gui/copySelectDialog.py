@@ -83,6 +83,7 @@ class CopySelectDialog(wx.Dialog):
         self.options = {}
 
         initialized = False
+        self.copyFormat = 0
         for formatName, formatData in self.copyFormats.items():
             formatId, formatOptions = formatData
             if not initialized:
