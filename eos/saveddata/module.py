@@ -361,7 +361,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return maxRange
 
         maxVelocity = self.getModifiedChargeAttr("maxVelocity")
-        flightTime = floatUnerr(self.getModifiedChargeAttr("explosionDelay") / 1000.0)
+        if not maxVelocity:
+            return 0, 0, 0
+        shipRadius = self.owner.ship.getModifiedItemAttr("radius")
+        # Flight time has bonus based on ship radius, see https://github.com/pyfa-org/Pyfa/issues/2083
+        flightTime = floatUnerr(self.getModifiedChargeAttr("explosionDelay") / 1000 + shipRadius / maxVelocity)
         mass = self.getModifiedChargeAttr("mass")
         agility = self.getModifiedChargeAttr("agility")
         lowerTime = math.floor(flightTime)
@@ -375,7 +379,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 lowerRange = min(lowerRange, rangeLimit)
                 higherRange = min(higherRange, rangeLimit)
         # Make range center-to-surface, as missiles spawn in the center of the ship
-        shipRadius = self.owner.ship.getModifiedItemAttr("radius")
         lowerRange = max(0, lowerRange - shipRadius)
         higherRange = max(0, higherRange - shipRadius)
         higherChance = flightTime - lowerTime
