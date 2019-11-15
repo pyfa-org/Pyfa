@@ -24,7 +24,7 @@ from eos.saveddata.mode import Mode
 from service.attribute import Attribute
 from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
+from gui.utils.numberFormatter import formatAmount, roundToPrec
 
 
 class MaxRange(ViewColumn):
@@ -77,7 +77,21 @@ class MaxRange(ViewColumn):
         return ("displayName", bool, False), ("showIcon", bool, True)
 
     def getToolTip(self, mod):
-        return "Optimal + Falloff"
+        lines = []
+        missileRangeData = mod.missileMaxRangeData if hasattr(mod, "missileMaxRangeData") else None
+        if missileRangeData is not None:
+            lines.append('Missile flight range')
+            lowerRange, higherRange, higherChance = missileRangeData
+            if roundToPrec(higherChance, 3) not in (0, 1):
+                lines.append('{}% chance to fly {}'.format(
+                    formatAmount((1 - higherChance) * 100, prec=3, lowest=0, highest=0),
+                    formatAmount(lowerRange, prec=3, lowest=0, highest=3, unitName='m')))
+                lines.append('{}% chance to fly {}'.format(
+                    formatAmount(higherChance * 100, prec=3, lowest=0, highest=0),
+                    formatAmount(higherRange, prec=3, lowest=0, highest=3, unitName='m')))
+        else:
+            lines.append("Optimal + Falloff")
+        return '\n'.join(lines)
 
 
 MaxRange.register()
