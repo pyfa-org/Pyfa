@@ -322,20 +322,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             maxRange = self.getModifiedItemAttr(attr, None)
             if maxRange is not None:
                 return maxRange
-        if self.charge is not None:
-            try:
-                chargeName = self.charge.group.name
-            except AttributeError:
-                pass
-            else:
-                if chargeName in ("Scanner Probe", "Survey Probe"):
-                    return None
-                missileMaxRangeData = self.missileMaxRangeData
-                if missileMaxRangeData is None:
-                    return None
-                lowerRange, higherRange, higherChance = missileMaxRangeData
-                maxRange = lowerRange * (1 - higherChance) + higherRange * higherChance
-                return maxRange
+        missileMaxRangeData = self.missileMaxRangeData
+        if missileMaxRangeData is None:
+            return None
+        lowerRange, higherRange, higherChance = missileMaxRangeData
+        maxRange = lowerRange * (1 - higherChance) + higherRange * higherChance
+        return maxRange
 
     @property
     def missileMaxRangeData(self):
@@ -362,7 +354,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         maxVelocity = self.getModifiedChargeAttr("maxVelocity")
         if not maxVelocity:
-            return 0, 0, 0
+            return None
         shipRadius = self.owner.ship.getModifiedItemAttr("radius")
         # Flight time has bonus based on ship radius, see https://github.com/pyfa-org/Pyfa/issues/2083
         flightTime = floatUnerr(self.getModifiedChargeAttr("explosionDelay") / 1000 + shipRadius / maxVelocity)
