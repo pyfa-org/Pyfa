@@ -47,7 +47,7 @@ from service.port.muta import parseMutant
 pyfalog = Logger(__name__)
 
 # 2017/04/05 NOTE: simple validation, for xml file
-RE_XML_START = r'<\?xml\s+version="1.0"\s*\?>'
+RE_XML_START = r'<\?xml\s+version="1.0"[^<>]*\?>'
 
 
 class Port:
