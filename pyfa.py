@@ -121,6 +121,13 @@ if __name__ == "__main__":
         if db_needs_update() is True:
             update_db()
 
+        try:
+            from ctypes import windll
+        except ImportError:
+            pass
+        else:
+            windll.shcore.SetProcessDpiAwareness(1)
+
         # Lets get to the good stuff, shall we?
         import eos.db
         import eos.events  # todo: move this to eos initialization?
