@@ -182,7 +182,8 @@ class Port:
             pyfalog.critical(e)
             # TypeError: not all arguments converted during string formatting
 #                 return False, "Unknown Error while processing {0}" % path
-            return False, "Unknown error while processing %s\n\n Error: %s" % (path, e.message)
+            return False, "Unknown error while processing {}\n\n Error: {} {}".format(
+                path, type(e).__name__, getattr(e, 'message', ''))
 
         return True, fit_list
 
