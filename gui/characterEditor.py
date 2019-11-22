@@ -434,21 +434,24 @@ class SkillTreeView(wx.Panel):
         self.Bind(CHANGE_LEVEL_EVENT, self.changeLevel)
 
     def kbEvent(self, event):
-        selection = self.skillTreeListCtrl.GetSelection()
-        if not selection:
-            return
-        dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
-        if dataType != 'skill':
-            return
-        keyCode = event.GetKeyCode()
-        if 48 <= keyCode <= 53 or 324 <= keyCode <= 329:
-            if keyCode <= 53:
-                level = keyCode - 48
-            else:
-                level = keyCode - 324
-            event = self.ChangeLevelEvent()
-            event.SetId(self.idLevels[level])
-            wx.PostEvent(self, event)
+        keyLevelMap = {
+            # Regular number keys
+            48: 0, 49: 1, 50: 2, 51: 3, 52: 4, 53: 5,
+            # Numpad keys
+            wx.WXK_NUMPAD0: 0, wx.WXK_NUMPAD1: 1, wx.WXK_NUMPAD2: 2,
+            wx.WXK_NUMPAD3: 3, wx.WXK_NUMPAD4: 4, wx.WXK_NUMPAD5: 5}
+        keycode = event.GetKeyCode()
+        if keycode in keyLevelMap and event.GetModifiers() == wx.MOD_NONE:
+            level = keyLevelMap[keycode]
+            selection = self.skillTreeListCtrl.GetSelection()
+            if selection:
+                dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
+                if dataType == 'skill':
+                    event = self.ChangeLevelEvent()
+                    event.SetId(self.idLevels[level])
+                    wx.PostEvent(self, event)
+                    return
+        event.Skip()
 
     def importSkills(self, evt):
 
