@@ -636,6 +636,8 @@ class SkillTreeView(wx.Panel):
 
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
+        if char.name in ("All 0", "All 5"):
+            return
         selection = self.skillTreeListCtrl.GetSelection()
         dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
 
