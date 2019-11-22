@@ -428,6 +428,28 @@ class SkillTreeView(wx.Panel):
         # This cuases issues with GTK, see #1866
         # self.Layout()
 
+        # For level keyboard shortcuts
+        self.ChangeLevelEvent, CHANGE_LEVEL_EVENT = wx.lib.newevent.NewEvent()
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(CHANGE_LEVEL_EVENT, self.changeLevel)
+
+    def kbEvent(self, event):
+        selection = self.skillTreeListCtrl.GetSelection()
+        if not selection:
+            return
+        dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
+        if dataType != 'skill':
+            return
+        keyCode = event.GetKeyCode()
+        if 48 <= keyCode <= 53 or 324 <= keyCode <= 329:
+            if keyCode <= 53:
+                level = keyCode - 48
+            else:
+                level = keyCode - 324
+            event = self.ChangeLevelEvent()
+            event.SetId(self.idLevels[level])
+            wx.PostEvent(self, event)
+
     def importSkills(self, evt):
 
         with wx.MessageDialog(
