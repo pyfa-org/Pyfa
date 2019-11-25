@@ -733,7 +733,7 @@
               "text": "reduction in Small Energy Turret activation cost"
             }, 
             {
-              "number": "5%", 
+              "number": "10%", 
               "text": "bonus to Small Energy Turret damage"
             }
           ], 
@@ -10287,6 +10287,10 @@
           {
             "number": "2+", 
             "text": "bonus to ship warp core strength"
+          }, 
+          {
+            "number": "50%", 
+            "text": "reduction in Industrial Cynosural Field Generator liquid ozone consumption"
           }
         ], 
         "header": "Role Bonus:"
@@ -10405,7 +10409,7 @@
         {
           "bonuses": [
             {
-              "number": "10%", 
+              "number": "15%", 
               "text": "bonus to Small Hybrid Turret damage"
             }
           ], 
@@ -14922,7 +14926,7 @@
               "text": "reduction in Microwarpdrive signature radius penalty"
             }, 
             {
-              "number": "5%", 
+              "number": "10%", 
               "text": "bonus to Small Projectile Turret damage"
             }
           ], 
@@ -18810,7 +18814,7 @@
         {
           "bonuses": [
             {
-              "number": "5%", 
+              "number": "10%", 
               "text": "bonus to Small Hybrid Turret damage"
             }, 
             {

@@ -167470,6 +167470,11 @@
     "typeID": 32878
   }, 
   {
+    "effectID": 3526, 
+    "isDefault": false, 
+    "typeID": 32880
+  }, 
+  {
     "effectID": 5058, 
     "isDefault": false, 
     "typeID": 32880

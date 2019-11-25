@@ -89,7 +89,7 @@ class BitmapLoader:
     @classmethod
     def loadBitmap(cls, name, location):
         if cls.scaling_factor is None:
-            cls.scaling_factor = int(wx.GetApp().GetTopWindow().GetContentScaleFactor())
+            cls.scaling_factor = 1 if 'wxGTK' in wx.PlatformInfo else int(wx.GetApp().GetTopWindow().GetContentScaleFactor())
         scale = cls.scaling_factor
 
         filename, img = cls.loadScaledBitmap(name, location, scale)

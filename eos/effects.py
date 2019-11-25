@@ -10689,6 +10689,7 @@ class Effect3526(BaseEffect):
 
     Used by:
     Ships from group: Force Recon Ship (8 of 9)
+    Ship: Venture
     Skill: Cynosural Field Theory
     """
 
