@@ -22,7 +22,7 @@
 import wx
 
 
-class AuxiliaryFrame(wx.Frame):
+class AuxiliaryMixin:
 
     _instance = None
 
@@ -68,3 +68,11 @@ class AuxiliaryFrame(wx.Frame):
 
     def OnSuppressedAction(self, event):
         return
+
+
+class AuxiliaryFrame(AuxiliaryMixin, wx.Frame):
+    pass
+
+
+class AuxiliaryDialog(AuxiliaryMixin, wx.Dialog):
+    pass

@@ -23,7 +23,7 @@ import wx
 import config
 import gui.mainFrame
 from eos.saveddata.module import Module
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
 from gui.builtinItemStatsViews.itemAttributes import ItemParams

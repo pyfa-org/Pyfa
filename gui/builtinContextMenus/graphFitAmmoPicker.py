@@ -2,7 +2,7 @@
 import wx
 
 import gui.mainFrame
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryDialog
 from gui.contextMenu import ContextMenuSingle
 from service.ammo import Ammo
 from service.market import Market
@@ -32,22 +32,34 @@ class GraphFitAmmoPicker(ContextMenuSingle):
 GraphFitAmmoPicker.register()
 
 
-class AmmoPickerFrame(AuxiliaryFrame):
+class AmmoPickerFrame(AuxiliaryDialog):
 
     def __init__(self, parent, fit):
         super().__init__(parent, title='Choose Different Ammo', style=wx.DEFAULT_DIALOG_STYLE, resizeable=True)
         padding = 5
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
         contents = AmmoPickerContents(self, fit)
         mainSizer.Add(contents, 1, wx.EXPAND | wx.ALL, padding)
+
+        buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
+        if buttonSizer:
+            mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, padding)
 
         self.SetSizer(mainSizer)
         self.Layout()
 
         contW, contH = contents.GetVirtualSize()
-        bestW = min(1000, contW + padding * 2)
-        bestH = min(700, contH + padding * 2)
+        bestW = contW + padding * 2
+        bestH = contH + padding * 2
+        if buttonSizer:
+            # Yeah right... whatever
+            buttW, buttH = buttonSizer.GetSize()
+            bestW = max(bestW, buttW + padding * 2)
+            bestH += buttH + padding * 2
+        bestW = min(1000, bestW)
+        bestH = min(700, bestH)
         self.SetSize(bestW, bestH)
         self.SetMinSize(wx.Size(int(bestW * 0.7), int(bestH * 0.7)))
         self.CenterOnParent()

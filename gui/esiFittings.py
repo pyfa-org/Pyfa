@@ -8,7 +8,7 @@ from logbook import Logger
 import gui.globalEvents as GE
 from eos.db import getItem
 from eos.saveddata.cargo import Cargo
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.display import Display
 from service.esi import Esi
 from service.esiAccess import APIException
