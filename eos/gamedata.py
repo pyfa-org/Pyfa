@@ -373,7 +373,8 @@ class Item(EqBase):
         500016: "sisters",
         500018: "mordu",
         500019: "sansha",
-        500020: "serpentis"
+        500020: "serpentis",
+        500026: "triglavian"
     }
 
     @property
