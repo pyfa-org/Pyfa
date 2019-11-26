@@ -15988,5 +15988,39 @@
     "name": "Triglavian", 
     "nameID": 551112, 
     "parentGroupID": 65
+  }, 
+  "2690": {
+    "description": "Triglavian Dreadnoughts", 
+    "descriptionID": 553051, 
+    "hasTypes": 1, 
+    "iconID": 24135, 
+    "name": "Precursor Dreadnoughts", 
+    "nameID": 553050, 
+    "parentGroupID": 761
+  }, 
+  "2691": {
+    "description": "Capital ship entropic disintegrators, for use on dreadnoughts and titans.", 
+    "descriptionID": 553053, 
+    "hasTypes": 1, 
+    "iconID": 21921, 
+    "name": "Extra Large", 
+    "nameID": 553052, 
+    "parentGroupID": 2432
+  }, 
+  "2692": {
+    "description": "For use with dreadnought-sized entropic disintegrators.", 
+    "descriptionID": 553055, 
+    "hasTypes": 1, 
+    "iconID": 21918, 
+    "name": "Extra Large", 
+    "nameID": 553054, 
+    "parentGroupID": 2463
+  }, 
+  "2693": {
+    "hasTypes": 1, 
+    "iconID": 24135, 
+    "name": "Triglavian", 
+    "nameID": 553059, 
+    "parentGroupID": 1883
   }
 }

@@ -1703,7 +1703,7 @@
         {
           "bonuses": [
             {
-              "number": "10%", 
+              "number": "7.5%", 
               "text": "bonus to Medium Projectile Turret optimal range"
             }, 
             {
@@ -2354,7 +2354,7 @@
               "text": "bonus to Rapid Heavy Missile, Cruise Missile and Torpedo Launcher rate of fire"
             }, 
             {
-              "number": "5%", 
+              "number": "7.5%", 
               "text": "bonus to Cruise Missile and Torpedo explosion velocity"
             }
           ], 
@@ -2636,7 +2636,7 @@
             "text": "bonus to Medium Projectile Turret rate of fire"
           }, 
           {
-            "number": "50%", 
+            "number": "25%", 
             "text": "bonus to warp speed and warp acceleration"
           }
         ], 
@@ -5849,7 +5849,7 @@
         {
           "bonuses": [
             {
-              "number": "5%", 
+              "number": "7.5%", 
               "text": "bonus to Medium Projectile Turret rate of fire"
             }, 
             {
@@ -6679,7 +6679,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Small Projectile Turret damage"
+              "text": "bonus to Small Projectile Turret rate of fire"
             }, 
             {
               "number": "10%", 
@@ -8658,7 +8658,7 @@
             "text": "bonus to Small Projectile Turret damage"
           }, 
           {
-            "number": "50%", 
+            "number": "25%", 
             "text": "bonus to warp speed and warp acceleration"
           }
         ], 
@@ -12520,6 +12520,10 @@
             {
               "number": "7.5%", 
               "text": "bonus to Target Painter effectiveness"
+            }, 
+            {
+              "number": "7.5%", 
+              "text": "bonus to  Heavy Missile and Heavy Assault Missile explosion velocity"
             }
           ], 
           "header": "Minmatar Cruiser bonuses (per skill level):"
@@ -16464,7 +16468,7 @@
         {
           "bonuses": [
             {
-              "number": "5%", 
+              "number": "7.5%", 
               "text": "bonus to Large Projectile Turret rate of fire"
             }, 
             {
@@ -16565,7 +16569,7 @@
             "text": "bonus to Large Projectile Turret rate of fire"
           }, 
           {
-            "number": "50%", 
+            "number": "25%", 
             "text": "bonus to warp speed and warp acceleration"
           }
         ], 
@@ -17713,7 +17717,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to XL Disintegrator damage"
+              "text": "bonus to Ultratidal Entropic Disintegrator damage"
             }, 
             {
               "number": "4%", 
@@ -17721,7 +17725,7 @@
             }, 
             {
               "number": "3%", 
-              "text": "bonus to XL Disintegrator rate of fire"
+              "text": "bonus to Ultratidal Entropic Disintegrator rate of fire"
             }
           ], 
           "header": "Zirnitra bonuses (per skill level):"
