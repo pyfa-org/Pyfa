@@ -91,8 +91,8 @@ class AmmoPickerContents(wx.ScrolledCanvas):
         moduleSizer = wx.BoxSizer(wx.VERTICAL)
         mainSizer.Add(moduleSizer, 0, wx.ALL, 0)
 
-        droneSizer = wx.BoxSizer(wx.VERTICAL)
-        mainSizer.Add(droneSizer, 0, wx.ALL, 0)
+        self.droneSizer = wx.BoxSizer(wx.VERTICAL)
+        mainSizer.Add(self.droneSizer, 0, wx.ALL, 0)
 
         fighterSizer = wx.BoxSizer(wx.VERTICAL)
         mainSizer.Add(fighterSizer, 0, wx.ALL, 0)
@@ -101,7 +101,7 @@ class AmmoPickerContents(wx.ScrolledCanvas):
 
         for modInfo, modAmmo in mods:
             text = '\n'.join('{}x {}'.format(amount, item.name) for item, amount in modInfo)
-            currentRb = self.addRadioButton(moduleSizer, text, firstRadio)
+            modRb = self.addRadioButton(moduleSizer, text, firstRadio)
             firstRadio = False
             # Get actual module, as ammo getters need it
             mod = next((m for m in fit.modules if m.itemID == next(iter(modInfo))[0].ID), None)
@@ -109,26 +109,29 @@ class AmmoPickerContents(wx.ScrolledCanvas):
             if len(ammoTree) == 1:
                 for ammoCatName, ammos in ammoTree.items():
                     for ammo in ammos:
-                        self.addCheckbox(moduleSizer, ammo.name, currentRb, indentLvl=1)
+                        self.addCheckbox(moduleSizer, ammo.name, modRb, indentLvl=1)
             else:
                 for ammoCatName, ammos in ammoTree.items():
                     if len(ammos) == 1:
                         ammo = next(iter(ammos))
-                        self.addCheckbox(moduleSizer, ammo.name, currentRb, indentLvl=1)
+                        self.addCheckbox(moduleSizer, ammo.name, modRb, indentLvl=1)
                     else:
-                        self.addLabel(moduleSizer, '{}:'.format(ammoCatName), currentRb, indentLvl=1)
+                        self.addLabel(moduleSizer, '{}:'.format(ammoCatName), modRb, indentLvl=1)
                         for ammo in ammos:
-                            self.addCheckbox(moduleSizer, ammo.name, currentRb, indentLvl=2)
+                            self.addCheckbox(moduleSizer, ammo.name, modRb, indentLvl=2)
         if drones:
-            currentRb = self.addRadioButton(droneSizer, 'Drones', firstRadio)
+            droneRb = self.addRadioButton(self.droneSizer, 'Drones', firstRadio)
             from gui.builtinAdditionPanes.droneView import DroneView
             for drone in sorted(drones, key=DroneView.droneKey):
-                self.addCheckbox(droneSizer, '{}x {}'.format(drone.amount, drone.item.name), currentRb, indentLvl=1)
+                self.addCheckbox(self.droneSizer, '{}x {}'.format(drone.amount, drone.item.name), droneRb, indentLvl=1)
+            addBtn = wx.Button(self, wx.ID_ANY, '+', style=wx.BU_EXACTFIT)
+            addBtn.Bind(wx.EVT_BUTTON, self.OnDroneGroupAdd)
+            mainSizer.Add(addBtn, 0, wx.LEFT, self.indent)
         if fighters:
-            currentRb = self.addRadioButton(fighterSizer, 'Fighters', firstRadio)
+            fighterRb = self.addRadioButton(fighterSizer, 'Fighters', firstRadio)
             from gui.builtinAdditionPanes.fighterView import FighterDisplay
             for fighter in sorted(fighters, key=FighterDisplay.fighterKey):
-                self.addCheckbox(fighterSizer, '{}x {}'.format(fighter.amount, fighter.item.name), currentRb, indentLvl=1)
+                self.addCheckbox(fighterSizer, '{}x {}'.format(fighter.amount, fighter.item.name), fighterRb, indentLvl=1)
 
         self.SetSizer(mainSizer)
         self.refreshStatus()
@@ -220,6 +223,12 @@ class AmmoPickerContents(wx.ScrolledCanvas):
                         fighters.append(fighter)
                         break
         return fighters
+
+    def OnDroneGroupAdd(self, event):
+        event.Skip()
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        label = wx.StaticText()
+        self.droneSizer.Add(sizer, 0, wx.EXPAND | wx.LEFT, self.indent)
 
     def refreshStatus(self):
         for map in (self.rbLabelMap, self.rbCheckboxMap):
