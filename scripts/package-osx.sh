@@ -6,6 +6,6 @@ cat version.yml
 python3 -m PyInstaller -y --clean --windowed dist_assets/mac/pyfa.spec
 cd dist
 zip -r "pyfa-$PYFA_VERSION-mac.zip" pyfa.app
-curl --upload-file "pyfa-$PYFA_VERSION-mac.zip" https://transfer.sh/
+timeout 300 curl --upload-file "pyfa-$PYFA_VERSION-mac.zip" https://transfer.sh/ || echo 'upload to transfer.sh failed\n'
 echo -e "\n"
 md5 -r "pyfa-$PYFA_VERSION-mac.zip"
