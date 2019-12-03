@@ -298,8 +298,13 @@ class ImplantDisplay(d.Display):
         fit = Fit.getInstance().getFit(fitID)
         sourceContext1 = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
         sourceContext2 = "implantItemMisc" if fit.implantSource == ImplantLocation.FIT else "implantItemMiscChar"
+        sourceContext3 = "implantSetAdd"
         itemContext = None if mainImplant is None else Market.getInstance().getCategoryByItem(mainImplant.item).name
-        menu = ContextMenu.getMenu(self, mainImplant, selection, (sourceContext1, itemContext), (sourceContext2, itemContext))
+        menu = ContextMenu.getMenu(self, mainImplant, selection,
+                                   (sourceContext1, itemContext),
+                                   (sourceContext2, itemContext),
+                                   (sourceContext3, itemContext)
+                                   )
         if menu:
             self.PopupMenu(menu)
 

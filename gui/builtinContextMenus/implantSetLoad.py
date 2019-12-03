@@ -5,7 +5,7 @@ from gui.contextMenu import ContextMenuUnconditional
 from service.implantSet import ImplantSets as s_ImplantSets
 
 
-class ImplantSetAdd(ContextMenuUnconditional):
+class ImplantSetLoad(ContextMenuUnconditional):
 
     def display(self, callingWindow, srcContext):
 
@@ -14,10 +14,10 @@ class ImplantSetAdd(ContextMenuUnconditional):
 
         if len(implantSets) == 0:
             return False
-        return srcContext in ("implantSetAdd", "implantEditor")
+        return srcContext in ("implantItemMisc", "implantEditor")
 
     def getText(self, callingWindow, itmContext):
-        return "Add As New Implant Set"
+        return "Load Implant Set"
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         m = wx.Menu()
@@ -49,4 +49,4 @@ class ImplantSetAdd(ContextMenuUnconditional):
         self.callingWindow.addImplantSet(impSet)
 
 
-ImplantSetAdd.register()
+ImplantSetLoad.register()
