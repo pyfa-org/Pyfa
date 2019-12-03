@@ -151,6 +151,11 @@ class FirepowerViewFull(StatsView):
         else:
             self.stEff.Hide()
 
+        def hasSpoolUp(preSpool, fullSpool):
+            if preSpool is None or fullSpool is None:
+                return False
+            return roundToPrec(preSpool.total, prec) != roundToPrec(fullSpool.total, prec)
+
         def dpsToolTip(normal, preSpool, fullSpool, prec, lowest, highest):
             if normal is None or preSpool is None or fullSpool is None:
                 return ""
@@ -160,7 +165,7 @@ class FirepowerViewFull(StatsView):
                     val = getattr(normal, dmgType, None)
                     if val:
                         lines.append("{}: {}%".format(dmgType.capitalize(), formatAmount(val / normal.total * 100, 3, 0, 0)))
-            if roundToPrec(preSpool.total, prec) != roundToPrec(fullSpool.total, prec):
+            if hasSpoolUp(preSpool, fullSpool):
                 lines.append("Spool up: {}-{}".format(
                     formatAmount(preSpool.total, prec, lowest, highest),
                     formatAmount(fullSpool.total, prec, lowest, highest)))
@@ -203,7 +208,7 @@ class FirepowerViewFull(StatsView):
                 tooltipText = dpsToolTip(val, preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetLabel(valueFormat.format(
                     formatAmount(0 if val is None else val.total, prec, lowest, highest),
-                    "\u02e2" if tooltipText else ""))
+                    "\u02e2" if hasSpoolUp(preSpoolVal, fullSpoolVal) else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1
