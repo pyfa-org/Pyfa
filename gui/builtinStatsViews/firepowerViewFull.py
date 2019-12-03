@@ -160,18 +160,18 @@ class FirepowerViewFull(StatsView):
             if normal is None or preSpool is None or fullSpool is None:
                 return ""
             lines = []
+            if hasSpoolUp(preSpool, fullSpool):
+                lines.append("Spool up: {}-{}".format(
+                    formatAmount(preSpool.total, prec, lowest, highest),
+                    formatAmount(fullSpool.total, prec, lowest, highest)))
             if getattr(normal, 'total', None):
-                lines.append("Current: {}".format(formatAmount(normal.total, prec, lowest, highest)))
+                if lines:
+                    lines.append("")
+                    lines.append("Current: {}".format(formatAmount(normal.total, prec, lowest, highest)))
                 for dmgType in normal.names():
                     val = getattr(normal, dmgType, None)
                     if val:
                         lines.append("  {}: {}%".format(dmgType.capitalize(), formatAmount(val / normal.total * 100, 3, 0, 0)))
-            if hasSpoolUp(preSpool, fullSpool):
-                if lines:
-                    lines.append("")
-                lines.append("Spool up: {}-{}".format(
-                    formatAmount(preSpool.total, prec, lowest, highest),
-                    formatAmount(fullSpool.total, prec, lowest, highest)))
             return "\n".join(lines)
 
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
