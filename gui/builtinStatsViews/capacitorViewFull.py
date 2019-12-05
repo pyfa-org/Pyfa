@@ -133,7 +133,7 @@ class CapacitorViewFull(StatsView):
                 label.SetLabel('{}{}'.format(formatAmount(value, prec, lowest, highest, forceSign=forceSign), unit))
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
-            if labelName == 'label%sCapacitorDelta' and cap_recharge and cap_use:
+            if labelName == 'label%sCapacitorDelta' and (cap_recharge or cap_use):
                 lines = []
                 lines.append('Capacitor delta:')
                 lines.append('  +{} GJ/s'.format(formatAmount(cap_recharge, 3, 0, 3)))
