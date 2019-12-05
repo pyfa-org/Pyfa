@@ -10,7 +10,7 @@ import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
 import gui.globalEvents as GE
 from eos.db.gamedata.queries import getAttributeInfo, getItem
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
 from service.market import Market

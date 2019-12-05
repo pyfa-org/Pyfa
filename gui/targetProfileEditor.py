@@ -27,7 +27,7 @@ from logbook import Logger
 
 import gui.mainFrame
 import gui.globalEvents as GE
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from gui.utils.clipboard import toClipboard, fromClipboard

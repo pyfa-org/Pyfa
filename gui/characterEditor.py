@@ -34,7 +34,7 @@ from wx.lib.agw.floatspin import FloatSpin
 
 import config
 import gui.globalEvents as GE
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor, TextEntryValidatedDialog
 from gui.builtinViews.implantEditor import BaseImplantEditorView
@@ -428,6 +428,31 @@ class SkillTreeView(wx.Panel):
         # This cuases issues with GTK, see #1866
         # self.Layout()
 
+        # For level keyboard shortcuts
+        self.ChangeLevelEvent, CHANGE_LEVEL_EVENT = wx.lib.newevent.NewEvent()
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(CHANGE_LEVEL_EVENT, self.changeLevel)
+
+    def kbEvent(self, event):
+        keyLevelMap = {
+            # Regular number keys
+            48: 0, 49: 1, 50: 2, 51: 3, 52: 4, 53: 5,
+            # Numpad keys
+            wx.WXK_NUMPAD0: 0, wx.WXK_NUMPAD1: 1, wx.WXK_NUMPAD2: 2,
+            wx.WXK_NUMPAD3: 3, wx.WXK_NUMPAD4: 4, wx.WXK_NUMPAD5: 5}
+        keycode = event.GetKeyCode()
+        if keycode in keyLevelMap and event.GetModifiers() == wx.MOD_NONE:
+            level = keyLevelMap[keycode]
+            selection = self.skillTreeListCtrl.GetSelection()
+            if selection:
+                dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
+                if dataType == 'skill':
+                    event = self.ChangeLevelEvent()
+                    event.SetId(self.idLevels[level])
+                    wx.PostEvent(self, event)
+                    return
+        event.Skip()
+
     def importSkills(self, evt):
 
         with wx.MessageDialog(
@@ -611,6 +636,8 @@ class SkillTreeView(wx.Panel):
 
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
+        if char.name in ("All 0", "All 5"):
+            return
         selection = self.skillTreeListCtrl.GetSelection()
         dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
 

@@ -47,7 +47,7 @@ from service.port.muta import parseMutant
 pyfalog = Logger(__name__)
 
 # 2017/04/05 NOTE: simple validation, for xml file
-RE_XML_START = r'<\?xml\s+version="1.0"\s*\?>'
+RE_XML_START = r'<\?xml\s+version="1.0"[^<>]*\?>'
 
 
 class Port:
@@ -182,7 +182,8 @@ class Port:
             pyfalog.critical(e)
             # TypeError: not all arguments converted during string formatting
 #                 return False, "Unknown Error while processing {0}" % path
-            return False, "Unknown error while processing %s\n\n Error: %s" % (path, e.message)
+            return False, "Unknown error while processing {}\n\n Error: {} {}".format(
+                path, type(e).__name__, getattr(e, 'message', ''))
 
         return True, fit_list
 

@@ -318,10 +318,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "energyDestabilizationRange", "empFieldRange",
                  "ecmBurstRange", "warpScrambleRange", "cargoScanRange",
                  "shipScanRange", "surveyScanRange")
+        maxRange = None
         for attr in attrs:
             maxRange = self.getModifiedItemAttr(attr, None)
             if maxRange is not None:
-                return maxRange
+                break
+        if maxRange is not None:
+            if 'burst projector' in self.item.name.lower():
+                maxRange -= self.owner.ship.getModifiedItemAttr("radius")
+            return maxRange
         missileMaxRangeData = self.missileMaxRangeData
         if missileMaxRangeData is None:
             return None

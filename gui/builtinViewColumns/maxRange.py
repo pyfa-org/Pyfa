@@ -83,12 +83,12 @@ class MaxRange(ViewColumn):
             lines.append('Missile flight range')
             lowerRange, higherRange, higherChance = missileRangeData
             if roundToPrec(higherChance, 3) not in (0, 1):
-                lines.append('{}% chance to fly {}'.format(
+                lines.append('{}% chance to fly {}m'.format(
                     formatAmount((1 - higherChance) * 100, prec=3, lowest=0, highest=0),
-                    formatAmount(lowerRange, prec=3, lowest=0, highest=3, unitName='m')))
-                lines.append('{}% chance to fly {}'.format(
+                    formatAmount(lowerRange, prec=3, lowest=0, highest=3)))
+                lines.append('{}% chance to fly {}m'.format(
                     formatAmount(higherChance * 100, prec=3, lowest=0, highest=0),
-                    formatAmount(higherRange, prec=3, lowest=0, highest=3, unitName='m')))
+                    formatAmount(higherRange, prec=3, lowest=0, highest=3)))
         else:
             lines.append("Optimal + Falloff")
         return '\n'.join(lines)

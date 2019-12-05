@@ -82,8 +82,12 @@ def fetchItem(typeName, eagerCat=False):
     eager = 'group.category' if eagerCat else None
     try:
         item = sMkt.getItem(typeName, eager=eager)
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         pyfalog.warning('service.port.shared: unable to fetch item "{}"'.format(typeName))
+        return None
+    if item is None:
         return None
     if sMkt.getPublicityByItem(item):
         return item
