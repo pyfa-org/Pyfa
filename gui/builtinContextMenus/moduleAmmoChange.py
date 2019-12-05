@@ -74,8 +74,6 @@ class ChangeModuleAmmo(ContextMenuCombined):
                 if len(charges) == 1:
                     menuItems.append(self._addCharge(rootMenu if msw else menu, charges[0]))
                 else:
-                    subMenu = wx.Menu()
-                    subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                     baseCharge = charges[0]
                     menuItem = self._addCharge(rootMenu if msw else menu, baseCharge)
                     menuItems.append(menuItem)
@@ -92,8 +90,6 @@ class ChangeModuleAmmo(ContextMenuCombined):
         elif modType == 'ddMissile':
             menuItems = []
             for chargeCatName, charges in chargeDict.items():
-                subMenu = wx.Menu()
-                subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                 menuItem = wx.MenuItem(menu, wx.ID_ANY, chargeCatName.capitalize())
                 menuItems.append(menuItem)
                 subMenu = wx.Menu()
