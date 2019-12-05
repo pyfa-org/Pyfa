@@ -47,14 +47,11 @@ class ChangeDamagePattern(ContextMenuUnconditional):
 
         return [i[0] for i in self.items[0]] + list(self.items[1].keys())
 
-    def addPattern(self, rootMenu, pattern, name):
+    def _addPattern(self, parentMenu, pattern, name):
         id = ContextMenuUnconditional.nextID()
         self.patternEventMap[id] = pattern
-        menuItem = wx.MenuItem(rootMenu, id, name, kind=wx.ITEM_CHECK)
-        rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
-
-        # set pattern attr to menu item
-        menuItem.pattern = pattern
+        menuItem = wx.MenuItem(parentMenu, id, name, kind=wx.ITEM_CHECK)
+        parentMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
 
         # determine active pattern
         sFit = Fit.getInstance()
@@ -63,9 +60,15 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         checked = fit.damagePattern is pattern if fit else False
         return menuItem, checked
 
+    def _addCategory(self, parentMenu, name):
+        id = ContextMenuUnconditional.nextID()
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
+        return menuItem
+
     def isChecked(self, i):
         try:
-            single = self.items[0][i]
+            single = self.items[0][i][1]
         except IndexError:
             return super().isChecked(i)
         if self.fit and single is self.fit.damagePattern:
@@ -74,25 +77,33 @@ class ChangeDamagePattern(ContextMenuUnconditional):
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
 
+        # Pattern as menu item
         if i < len(self.items[0]):
-            # if we're trying to get submenu to something that shouldn't have one,
-            # redirect event of the item to handlePatternSwitch and put pattern in
-            # our patternIds mapping, then return None for no submenu
             id = pitem.GetId()
             self.patternEventMap[id] = self.items[0][i][1]
             rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
             return False
 
+        # Category as menu item - expands further
         msw = "wxMSW" in wx.PlatformInfo
-        sub = wx.Menu()
 
-        mitemName = list(self.items[1].keys())[i - len(self.items[0])]
-        for name, pattern in self.items[1][mitemName][0]:
-            mitem, checked = self.addPattern(rootMenu if msw else sub, pattern, name)
-            sub.Append(mitem)
-            mitem.Check(checked)
+        def makeMenu(container, parentMenu):
+            menu = wx.Menu()
+            for name, subcontainer in container[1].items():
+                menuItem = self._addCategory(rootMenu if msw else parentMenu, name)
+                subMenu = makeMenu(subcontainer, menu)
+                menuItem.SetSubMenu(subMenu)
+                menu.Append(menuItem)
+            for name, pattern in container[0]:
+                menuItem, checked = self._addPattern(rootMenu if msw else parentMenu, pattern, name)
+                menu.Append(menuItem)
+                menuItem.Check(checked)
+            menu.Bind(wx.EVT_MENU, self.handlePatternSwitch)
+            return menu
 
-        return sub
+        container = list(self.items[1].values())[i - len(self.items[0])]
+        subMenu = makeMenu(container, rootMenu)
+        return subMenu
 
     def handlePatternSwitch(self, event):
         pattern = self.patternEventMap.get(event.Id, False)
