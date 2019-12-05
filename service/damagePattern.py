@@ -17,8 +17,8 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+
 import copy
-from itertools import chain
 
 import eos.db
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
@@ -39,8 +39,12 @@ class DamagePattern:
         return cls.instance
 
     @staticmethod
-    def getDamagePatternList():
-        return list(chain(es_DamagePattern.getBuiltins(), eos.db.getDamagePatternList()))
+    def getUserDamagePatternList():
+        return eos.db.getDamagePatternList()
+
+    @staticmethod
+    def getBuiltinDamagePatternList():
+        return es_DamagePattern.getBuiltins()
 
     @staticmethod
     def getDamagePattern(name):
@@ -82,7 +86,7 @@ class DamagePattern:
             raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
-        patterns = self.getDamagePatternList()
+        patterns = self.getUserDamagePatternList()
         for i in range(len(patterns) - 1, -1, -1):
             if patterns[i].name in ("Uniform", "Selected Ammo"):
                 del patterns[i]

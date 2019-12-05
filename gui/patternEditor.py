@@ -66,7 +66,7 @@ class DmgPatternEntityEditor(EntityEditor):
 
     def getEntitiesFromContext(self):
         sDP = DamagePattern.getInstance()
-        choices = sorted(sDP.getDamagePatternList(), key=lambda p: p.name)
+        choices = sorted(sDP.getUserDamagePatternList(), key=lambda p: p.name)
         return [c for c in choices if c.name != "Selected Ammo"]
 
     def DoNew(self, name):

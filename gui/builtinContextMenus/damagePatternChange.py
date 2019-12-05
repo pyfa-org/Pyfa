@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -28,11 +29,13 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         fitID = self.mainFrame.getActiveFit()
         self.fit = sFit.getFit(fitID)
 
-        self.patterns = sDP.getDamagePatternList()
+        # Order here is important: patterns with duplicate names from the latter will overwrite
+        # patterns from the former
+        self.patterns = list(chain(sDP.getBuiltinDamagePatternList(), sDP.getUserDamagePatternList()))
         self.patterns.sort(key=lambda p: (p.name not in ["Uniform", "Selected Ammo"], p.name))
 
         self.patternEventMap = {}
-        self.items = ([], OrderedDict())
+        self.items = (OrderedDict(), OrderedDict())
 
         for pattern in self.patterns:
             remainingName = pattern.name.strip()
@@ -40,12 +43,12 @@ class ChangeDamagePattern(ContextMenuUnconditional):
             while True:
                 start, end = remainingName.find('['), remainingName.find(']')
                 if start == -1 or end == -1:
-                    container[0].append((remainingName, pattern))
+                    container[0][remainingName] = pattern
                     break
-                container = container[1].setdefault(remainingName[start + 1:end], ([], OrderedDict()))
+                container = container[1].setdefault(remainingName[start + 1:end], (OrderedDict(), OrderedDict()))
                 remainingName = remainingName[end + 1:].strip()
 
-        return [i[0] for i in self.items[0]] + list(self.items[1].keys())
+        return list(self.items[0].keys()) + list(self.items[1].keys())
 
     def _addPattern(self, parentMenu, pattern, name):
         id = ContextMenuUnconditional.nextID()
@@ -68,10 +71,11 @@ class ChangeDamagePattern(ContextMenuUnconditional):
 
     def isChecked(self, i):
         try:
-            single = self.items[0][i][1]
+            patternName = list(self.items[0].keys())[i]
         except IndexError:
             return super().isChecked(i)
-        if self.fit and single is self.fit.damagePattern:
+        pattern = self.items[0][patternName]
+        if self.fit and pattern is self.fit.damagePattern:
             return True
         return False
 
@@ -80,7 +84,7 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         # Pattern as menu item
         if i < len(self.items[0]):
             id = pitem.GetId()
-            self.patternEventMap[id] = self.items[0][i][1]
+            self.patternEventMap[id] = list(self.items[0].values())[i]
             rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
             return False
 
@@ -94,7 +98,7 @@ class ChangeDamagePattern(ContextMenuUnconditional):
                 subMenu = makeMenu(subcontainer, menu)
                 menuItem.SetSubMenu(subMenu)
                 menu.Append(menuItem)
-            for name, pattern in container[0]:
+            for name, pattern in container[0].items():
                 menuItem, checked = self._addPattern(rootMenu if msw else parentMenu, pattern, name)
                 menu.Append(menuItem)
                 menuItem.Check(checked)
