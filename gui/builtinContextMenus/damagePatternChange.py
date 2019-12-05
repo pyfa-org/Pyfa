@@ -34,6 +34,18 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         self.patternIds = {}
         self.subMenus = OrderedDict()
         self.singles = []
+        self.items = OrderedDict()
+
+        for pattern in self.patterns:
+            remainingName = pattern.name.strip()
+            container = self.items
+            while True:
+                start, end = remainingName.find('['), remainingName.find(']')
+                if start == -1 or end == -1:
+                    container[remainingName] = pattern
+                    break
+                container = container.setdefault(remainingName[start + 1:end], OrderedDict())
+                remainingName = remainingName[end + 1:].strip()
 
         # iterate and separate damage patterns based on "[Parent] Child"
         for pattern in self.patterns:

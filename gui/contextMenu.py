@@ -182,12 +182,12 @@ class ContextMenu(metaclass=ABCMeta):
         return ContextMenu._ids[ContextMenu._idxid]
 
     def isChecked(self, i):
-        '''If menu item is toggleable, this should return bool value'''
+        """If menu item is toggleable, this should return bool value"""
         return None
 
     @property
     def enabled(self):
-        '''If menu item is enabled. Allows an item to display, but not be selected'''
+        """If menu item is enabled. Allows an item to display, but not be selected"""
         return True
 
     @abstractmethod
