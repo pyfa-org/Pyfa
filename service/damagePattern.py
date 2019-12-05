@@ -18,6 +18,7 @@
 # =============================================================================
 
 import copy
+from itertools import chain
 
 import eos.db
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
@@ -39,7 +40,7 @@ class DamagePattern:
 
     @staticmethod
     def getDamagePatternList():
-        return eos.db.getDamagePatternList()
+        return list(chain(es_DamagePattern.getBuiltins(), eos.db.getDamagePatternList()))
 
     @staticmethod
     def getDamagePattern(name):
