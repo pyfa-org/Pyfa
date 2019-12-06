@@ -128,11 +128,11 @@ class DefaultDatabaseValues:
                              ["[NPC][Other] Sansha Incursion", 1682, 1347, 3678, 3678]]
 
         for damageProfileRow in damageProfileList:
-            name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eos.db.getDamagePattern(name)
+            rawName, em, therm, kin, exp = damageProfileRow
+            damageProfile = eos.db.getDamagePattern(rawName)
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
-                damageProfile.name = name
+                damageProfile.rawName = rawName
                 eos.db.add(damageProfile)
             else:
                 damageProfile.emAmount = em
@@ -196,7 +196,7 @@ class DefaultDatabaseValues:
                              ["[NPC][Burner] Sentinel", 0.58, 0.45, 0.52, 0.66]]
 
         for targetProfileRow in targetProfileList:
-            name = targetProfileRow[0]
+            rawName = targetProfileRow[0]
             em = targetProfileRow[1]
             therm = targetProfileRow[2]
             kin = targetProfileRow[3]
@@ -213,10 +213,10 @@ class DefaultDatabaseValues:
                 radius = targetProfileRow[7]
             except:
                 radius = None
-            targetProfile = eos.db.getTargetProfile(name)
+            targetProfile = eos.db.getTargetProfile(rawName)
             if targetProfile is None:
                 targetProfile = es_TargetProfile(em, therm, kin, exp, maxVel, sigRad, radius)
-                targetProfile.name = name
+                targetProfile.rawName = rawName
                 eos.db.add(targetProfile)
             else:
                 targetProfile.emAmount = em

@@ -141,10 +141,10 @@ class DamagePattern:
     @classmethod
     def __generateBuiltins(cls):
         cls._builtins = OrderedDict()
-        for id, (name, em, therm, kin, explo) in BUILTINS.items():
+        for id, (rawName, em, therm, kin, explo) in BUILTINS.items():
             pattern = DamagePattern(emAmount=em, thermalAmount=therm, kineticAmount=kin, explosiveAmount=explo)
             pattern.ID = id
-            pattern.name = name
+            pattern.rawName = rawName
             pattern.builtin = True
             cls._builtins[id] = pattern
 
@@ -213,7 +213,7 @@ class DamagePattern:
         lookup = {}
         current = eos.db.getDamagePatternList()
         for pattern in current:
-            lookup[pattern.name] = pattern
+            lookup[pattern.rawName] = pattern
 
         for line in lines:
             try:
@@ -246,7 +246,7 @@ class DamagePattern:
                     eos.db.save(pattern)
                 else:
                     pattern = DamagePattern(**fields)
-                    pattern.name = name.strip()
+                    pattern.rawName = name.strip()
                     eos.db.save(pattern)
                 patterns.append(pattern)
 
@@ -262,11 +262,33 @@ class DamagePattern:
         out += "# Values are in following format:\n"
         out += "# DamageProfile = [name],[EM amount],[Thermal amount],[Kinetic amount],[Explosive amount]\n\n"
         for dp in patterns:
-            out += cls.EXPORT_FORMAT % (dp.name, dp.emAmount, dp.thermalAmount, dp.kineticAmount, dp.explosiveAmount)
+            out += cls.EXPORT_FORMAT % (dp.rawName, dp.emAmount, dp.thermalAmount, dp.kineticAmount, dp.explosiveAmount)
 
         return out.strip()
 
+    @property
+    def name(self):
+        return self.rawName
+
+    @property
+    def shortName(self):
+        return self.__parseRawName()[1]
+
+    @property
+    def hierarchy(self):
+        return self.__parseRawName()[0]
+
+    def __parseRawName(self):
+        hierarchy = []
+        remainingName = self.rawName.strip() if self.rawName else ''
+        while True:
+            start, end = remainingName.find('['), remainingName.find(']')
+            if start == -1 or end == -1:
+                return hierarchy, remainingName
+            hierarchy.append(remainingName[start + 1:end])
+            remainingName = remainingName[end + 1:].strip()
+
     def __deepcopy__(self, memo):
         p = DamagePattern(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
-        p.name = "%s copy" % self.name
+        p.rawName = "%s copy" % self.rawName
         return p

@@ -65,15 +65,10 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         self.profileEventMap = {}
         items = (OrderedDict(), OrderedDict())
         for profile in profiles:
-            remainingName = profile.name.strip()
             container = items
-            while True:
-                start, end = remainingName.find('['), remainingName.find(']')
-                if start == -1 or end == -1:
-                    container[0][remainingName] = profile
-                    break
-                container = container[1].setdefault(remainingName[start + 1:end], (OrderedDict(), OrderedDict()))
-                remainingName = remainingName[end + 1:].strip()
+            for categoryName in profile.hierarchy:
+                container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
+            container[0][profile.shortName] = profile
 
         # Category as menu item - expands further
         msw = "wxMSW" in wx.PlatformInfo

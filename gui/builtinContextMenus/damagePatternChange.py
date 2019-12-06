@@ -38,15 +38,10 @@ class ChangeDamagePattern(ContextMenuUnconditional):
 
         self.items = (OrderedDict(), OrderedDict())
         for pattern in self.patterns:
-            remainingName = pattern.name.strip()
             container = self.items
-            while True:
-                start, end = remainingName.find('['), remainingName.find(']')
-                if start == -1 or end == -1:
-                    container[0][remainingName] = pattern
-                    break
-                container = container[1].setdefault(remainingName[start + 1:end], (OrderedDict(), OrderedDict()))
-                remainingName = remainingName[end + 1:].strip()
+            for categoryName in pattern.hierarchy:
+                container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
+            container[0][pattern.shortName] = pattern
 
         return list(self.items[0].keys()) + list(self.items[1].keys())
 

@@ -114,11 +114,11 @@ class TargetProfile:
     def __generateBuiltins(cls):
         cls._builtins = OrderedDict()
         for id, data in BUILTINS.items():
-            name = data[0]
+            rawName = data[0]
             data = data[1:]
             profile = TargetProfile(*data)
             profile.ID = id
-            profile.name = name
+            profile.rawName = rawName
             profile.builtin = True
             cls._builtins[id] = profile
 
@@ -133,7 +133,7 @@ class TargetProfile:
                 maxVelocity=0,
                 signatureRadius=None,
                 radius=0)
-            cls._idealTarget.name = 'Ideal Target'
+            cls._idealTarget.rawName = 'Ideal Target'
             cls._idealTarget.ID = 0
             cls._idealTarget.builtin = True
         return cls._idealTarget
@@ -177,7 +177,7 @@ class TargetProfile:
         lookup = {}
         current = eos.db.getTargetProfileList()
         for pattern in current:
-            lookup[pattern.name] = pattern
+            lookup[pattern.rawName] = pattern
 
         for line in lines:
             try:
@@ -226,7 +226,7 @@ class TargetProfile:
                     eos.db.save(pattern)
                 else:
                     pattern = TargetProfile(**fields)
-                    pattern.name = name.strip()
+                    pattern.rawName = name.strip()
                     eos.db.save(pattern)
                 patterns.append(pattern)
 
@@ -243,7 +243,7 @@ class TargetProfile:
         out += "# TargetProfile = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %],[Max velocity m/s],[Signature radius m],[Radius m]\n\n"
         for dp in patterns:
             out += cls.EXPORT_FORMAT % (
-                dp.name,
+                dp.rawName,
                 dp.emAmount * 100,
                 dp.thermalAmount * 100,
                 dp.kineticAmount * 100,
@@ -255,9 +255,31 @@ class TargetProfile:
 
         return out.strip()
 
+    @property
+    def name(self):
+        return self.rawName
+
+    @property
+    def shortName(self):
+        return self.__parseRawName()[1]
+
+    @property
+    def hierarchy(self):
+        return self.__parseRawName()[0]
+
+    def __parseRawName(self):
+        hierarchy = []
+        remainingName = self.rawName.strip() if self.rawName else ''
+        while True:
+            start, end = remainingName.find('['), remainingName.find(']')
+            if start == -1 or end == -1:
+                return hierarchy, remainingName
+            hierarchy.append(remainingName[start + 1:end])
+            remainingName = remainingName[end + 1:].strip()
+
     def __deepcopy__(self, memo):
         p = TargetProfile(
             self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount,
             self._maxVelocity, self._signatureRadius, self._radius)
-        p.name = "%s copy" % self.name
+        p.rawName = "%s copy" % self.rawName
         return p

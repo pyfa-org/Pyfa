@@ -413,7 +413,7 @@ def getDamagePattern(lookfor, eager=None):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
-                    DamagePattern.name == lookfor).first()
+                    DamagePattern.rawName == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return pattern
@@ -434,7 +434,7 @@ def getTargetProfile(lookfor, eager=None):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(TargetProfile).options(*eager).filter(
-                TargetProfile.name == lookfor).first()
+                TargetProfile.rawName == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return pattern

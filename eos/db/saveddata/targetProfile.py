@@ -24,23 +24,28 @@ import datetime
 from eos.db import saveddata_meta
 from eos.saveddata.targetProfile import TargetProfile
 
-targetProfiles_table = Table("targetResists", saveddata_meta,
-                             Column("ID", Integer, primary_key=True),
-                             Column("name", String),
-                             Column("emAmount", Float),
-                             Column("thermalAmount", Float),
-                             Column("kineticAmount", Float),
-                             Column("explosiveAmount", Float),
-                             Column("maxVelocity", Float, nullable=True),
-                             Column("signatureRadius", Float, nullable=True),
-                             Column("radius", Float, nullable=True),
-                             Column("ownerID", ForeignKey("users.ID"), nullable=True),
-                             Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                             Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
-                             )
 
-mapper(TargetProfile, targetProfiles_table,
-       properties={
-           "_maxVelocity": targetProfiles_table.c.maxVelocity,
-           "_signatureRadius": targetProfiles_table.c.signatureRadius,
-           "_radius": targetProfiles_table.c.radius})
+targetProfiles_table = Table(
+    'targetResists',
+    saveddata_meta,
+    Column('ID', Integer, primary_key=True),
+    Column('name', String),
+    Column('emAmount', Float),
+    Column('thermalAmount', Float),
+    Column('kineticAmount', Float),
+    Column('explosiveAmount', Float),
+    Column('maxVelocity', Float, nullable=True),
+    Column('signatureRadius', Float, nullable=True),
+    Column('radius', Float, nullable=True),
+    Column('ownerID', ForeignKey('users.ID'), nullable=True),
+    Column('created', DateTime, nullable=True, default=datetime.datetime.now),
+    Column('modified', DateTime, nullable=True, onupdate=datetime.datetime.now))
+
+mapper(
+    TargetProfile,
+    targetProfiles_table,
+    properties={
+        'rawName': targetProfiles_table.c.name,
+        '_maxVelocity': targetProfiles_table.c.maxVelocity,
+        '_signatureRadius': targetProfiles_table.c.signatureRadius,
+        '_radius': targetProfiles_table.c.radius})
