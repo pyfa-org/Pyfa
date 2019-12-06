@@ -84,8 +84,11 @@ BUILTINS = OrderedDict([
 
 
 class TargetProfile:
+
     # also determined import/export order - VERY IMPORTANT
-    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
+    DAMAGE_TYPES = ('em', 'thermal', 'kinetic', 'explosive')
+    _idealTarget = None
+    _builtins = None
 
     def __init__(self, *args, **kwargs):
         self.update(*args, **kwargs)
@@ -99,7 +102,18 @@ class TargetProfile:
         self._signatureRadius = signatureRadius
         self._radius = radius
 
-    _idealTarget = None
+    @classmethod
+    def getBuiltins(cls):
+        if cls._builtins is None:
+            cls._builtins = OrderedDict()
+            for id, data in BUILTINS.items():
+                name = data[0]
+                data = data[1:]
+                profile = TargetProfile(*data)
+                profile.ID = id
+                profile.name = name
+                cls._builtins[id] = profile
+        return list(cls._builtins.values())
 
     @classmethod
     def getIdeal(cls):

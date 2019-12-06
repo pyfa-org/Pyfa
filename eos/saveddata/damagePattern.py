@@ -134,13 +134,13 @@ class DamagePattern:
     @classmethod
     def getBuiltins(cls):
         if cls._builtins is None:
-            cls._builtins = []
+            cls._builtins = OrderedDict()
             for id, (name, em, therm, kin, explo) in BUILTINS.items():
                 pattern = DamagePattern(emAmount=em, thermalAmount=therm, kineticAmount=kin, explosiveAmount=explo)
                 pattern.ID = id
                 pattern.name = name
-                cls._builtins.append(pattern)
-        return cls._builtins
+                cls._builtins[id] = pattern
+        return list(cls._builtins.values())
 
     def calculateEhp(self, fit):
         ehp = {}
