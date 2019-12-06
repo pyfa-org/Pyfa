@@ -63,10 +63,10 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         profiles.sort(key=lambda p: (p.name in ['None'], p.name))
 
         self.profileEventMap = {}
-        self.items = (OrderedDict(), OrderedDict())
+        items = (OrderedDict(), OrderedDict())
         for profile in profiles:
             remainingName = profile.name.strip()
-            container = self.items
+            container = items
             while True:
                 start, end = remainingName.find('['), remainingName.find(']')
                 if start == -1 or end == -1:
@@ -98,7 +98,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
             menu.Bind(wx.EVT_MENU, self.handleResistSwitch)
             return menu
 
-        subMenu = makeMenu(self.items, rootMenu, first=True)
+        subMenu = makeMenu(items, rootMenu, first=True)
         return subMenu
 
 

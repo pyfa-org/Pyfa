@@ -18,74 +18,73 @@ class TargetProfileAdder(ContextMenuUnconditional):
     def display(self, callingWindow, srcContext):
         if srcContext != 'graphTgtList':
             return False
-
-        sTR = svc_TargetProfile.getInstance()
-        self.callingWindow = callingWindow
-        self.profiles = sTR.getUserTargetProfileList()
-        self.profiles.sort(key=lambda p: (p.name in ['None'], p.name))
-
-        return len(self.profiles) > 0
+        # We always show "Ideal Profile" anyway
+        return True
 
     def getText(self, callingWindow, itmContext):
         return 'Add Target Profile'
 
     def handleProfileAdd(self, event):
-        profile = self.profileIds.get(event.Id, False)
+        profile = self.profileEventMap.get(event.Id, False)
         if profile is False:
             event.Skip()
             return
-        self.callingWindow._addProfile(profile)
+        self.callingWindow.addProfile(profile)
 
-    def addProfile(self, rootMenu, profile):
+    def _addProfile(self, parentMenu, profile, name):
         id = ContextMenuUnconditional.nextID()
-        name = getattr(profile, '_name', profile.name)
+        self.profileEventMap[id] = profile
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handleProfileAdd, menuItem)
+        return menuItem
 
-        self.profileIds[id] = profile
-        item = wx.MenuItem(rootMenu, id, name)
-        rootMenu.Bind(wx.EVT_MENU, self.handleProfileAdd, item)
-
-        return item
+    def _addCategory(self, parentMenu, name):
+        id = ContextMenuUnconditional.nextID()
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handleProfileAdd, menuItem)
+        return menuItem
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
-        self.profileIds = {}
-        self.subMenus = OrderedDict()
-        self.singles = []
+        self.callingWindow = callingWindow
+        sTR = svc_TargetProfile.getInstance()
+        profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
+        profiles.sort(key=lambda p: (p.name in ['None'], p.name))
 
-        sub = wx.Menu()
-        for profile in chain([TargetProfile.getIdeal()], self.profiles):
-            start, end = profile.name.find('['), profile.name.find(']')
-            if start is not -1 and end is not -1:
-                currBase = profile.name[start + 1:end]
-                # set helper attr
-                setattr(profile, '_name', profile.name[end + 1:].strip())
-                if currBase not in self.subMenus:
-                    self.subMenus[currBase] = []
-                self.subMenus[currBase].append(profile)
-            else:
-                self.singles.append(profile)
+        self.profileEventMap = {}
+        items = (OrderedDict(), OrderedDict())
+        for profile in profiles:
+            remainingName = profile.name.strip()
+            container = items
+            while True:
+                start, end = remainingName.find('['), remainingName.find(']')
+                if start == -1 or end == -1:
+                    container[0][remainingName] = profile
+                    break
+                container = container[1].setdefault(remainingName[start + 1:end], (OrderedDict(), OrderedDict()))
+                remainingName = remainingName[end + 1:].strip()
 
-        # Single items, no parent
-        msw = 'wxMSW' in wx.PlatformInfo
-        for profile in self.singles:
-            sub.Append(self.addProfile(rootMenu if msw else sub, profile))
+        # Category as menu item - expands further
+        msw = "wxMSW" in wx.PlatformInfo
 
-        # Items that have a parent
-        for menuName, profiles in list(self.subMenus.items()):
-            # Create parent item for root menu that is simply name of parent
-            item = wx.MenuItem(rootMenu, ContextMenuUnconditional.nextID(), menuName)
+        def makeMenu(container, parentMenu, first=False):
+            menu = wx.Menu()
+            if first:
+                idealProfile = TargetProfile.getIdeal()
+                mitem = self._addProfile(rootMenu if msw else parentMenu, idealProfile, idealProfile.name)
+                menu.Append(mitem)
+            for name, pattern in container[0].items():
+                menuItem = self._addProfile(rootMenu if msw else parentMenu, pattern, name)
+                menu.Append(menuItem)
+            for name, subcontainer in container[1].items():
+                menuItem = self._addCategory(rootMenu if msw else parentMenu, name)
+                subMenu = makeMenu(subcontainer, menu)
+                menuItem.SetSubMenu(subMenu)
+                menu.Append(menuItem)
+            menu.Bind(wx.EVT_MENU, self.handleProfileAdd)
+            return menu
 
-            # Create menu for child items
-            grandSub = wx.Menu()
-
-            # Apply child menu to parent item
-            item.SetSubMenu(grandSub)
-
-            # Append child items to child menu
-            for profile in profiles:
-                grandSub.Append(self.addProfile(rootMenu if msw else grandSub, profile))
-            sub.Append(item)  # finally, append parent item to root menu
-
-        return sub
+        subMenu = makeMenu(items, rootMenu, first=True)
+        return subMenu
 
 
 TargetProfileAdder.register()
