@@ -20,6 +20,8 @@
 import re
 from collections import OrderedDict
 
+from sqlalchemy.orm import reconstructor
+
 import eos.db
 
 
@@ -125,6 +127,10 @@ class DamagePattern:
     def __init__(self, *args, **kwargs):
         self.builtin = False
         self.update(*args, **kwargs)
+
+    @reconstructor
+    def init(self):
+        self.builtin = False
 
     def update(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):
         self.emAmount = emAmount

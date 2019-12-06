@@ -22,6 +22,7 @@ import re
 from collections import OrderedDict
 
 from logbook import Logger
+from sqlalchemy.orm import reconstructor
 
 import eos.db
 
@@ -94,6 +95,10 @@ class TargetProfile:
     def __init__(self, *args, **kwargs):
         self.builtin = False
         self.update(*args, **kwargs)
+
+    @reconstructor
+    def init(self):
+        self.builtin = False
 
     def update(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0, maxVelocity=None, signatureRadius=None, radius=None):
         self.emAmount = emAmount
