@@ -30,6 +30,7 @@ pyfalog = Logger(__name__)
 
 
 BUILTINS = OrderedDict([
+    # 0 is taken by ideal target profile, composed manually in one of TargetProfile methods
     (-1, ('Uniform (25%)', 0.25, 0.25, 0.25, 0.25)),
     (-2, ('Uniform (50%)', 0.50, 0.50, 0.50, 0.50)),
     (-3, ('Uniform (75%)', 0.75, 0.75, 0.75, 0.75)),
