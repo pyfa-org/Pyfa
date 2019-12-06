@@ -49,39 +49,39 @@ BUILTINS = OrderedDict([
     (-16, ('[T2 Resist]Gallente (Armor)', 0.50, 0.675, 0.8375, 0.10)),
     (-17, ('[T2 Resist]Minmatar (Shield)', 0.75, 0.60, 0.40, 0.50)),
     (-18, ('[T2 Resist]Minmatar (Armor)', 0.90, 0.675, 0.25, 0.10)),
-    (-19, ('[NPC][Asteroid] Angel Cartel', 0.54, 0.42, 0.37, 0.32)),
-    (-20, ('[NPC][Asteroid] Blood Raiders', 0.34, 0.39, 0.45, 0.52)),
-    (-21, ('[NPC][Asteroid] Guristas', 0.55, 0.35, 0.3, 0.48)),
-    (-22, ('[NPC][Asteroid] Rogue Drones', 0.35, 0.38, 0.44, 0.49)),
-    (-23, ('[NPC][Asteroid] Sanshas Nation', 0.35, 0.4, 0.47, 0.53)),
-    (-24, ('[NPC][Asteroid] Serpentis', 0.49, 0.38, 0.29, 0.51)),
-    (-25, ('[NPC][Deadspace] Angel Cartel', 0.59, 0.48, 0.4, 0.32)),
-    (-26, ('[NPC][Deadspace] Blood Raiders', 0.31, 0.39, 0.47, 0.56)),
-    (-27, ('[NPC][Deadspace] Guristas', 0.57, 0.39, 0.31, 0.5)),
-    (-28, ('[NPC][Deadspace] Rogue Drones', 0.42, 0.42, 0.47, 0.49)),
-    (-29, ('[NPC][Deadspace] Sanshas Nation', 0.31, 0.39, 0.47, 0.56)),
-    (-30, ('[NPC][Deadspace] Serpentis', 0.49, 0.38, 0.29, 0.56)),
-    (-31, ('[NPC][Mission] Amarr Empire', 0.34, 0.38, 0.42, 0.46)),
-    (-32, ('[NPC][Mission] Caldari State', 0.51, 0.38, 0.3, 0.51)),
-    (-33, ('[NPC][Mission] CONCORD', 0.47, 0.46, 0.47, 0.47)),
-    (-34, ('[NPC][Mission] Gallente Federation', 0.51, 0.38, 0.31, 0.52)),
-    (-35, ('[NPC][Mission] Khanid', 0.51, 0.42, 0.36, 0.4)),
-    (-36, ('[NPC][Mission] Minmatar Republic', 0.51, 0.46, 0.41, 0.35)),
-    (-37, ('[NPC][Mission] Mordus Legion', 0.32, 0.48, 0.4, 0.62)),
-    (-38, ('[NPC][Other] Sleeper', 0.61, 0.61, 0.61, 0.61)),
-    (-39, ('[NPC][Other] Sansha Incursion', 0.65, 0.63, 0.64, 0.65)),
-    (-40, ('[NPC][Burner] Cruor (Blood Raiders)', 0.8, 0.73, 0.69, 0.67)),
-    (-41, ('[NPC][Burner] Dramiel (Angel)', 0.35, 0.48, 0.61, 0.68)),
-    (-42, ('[NPC][Burner] Daredevil (Serpentis)', 0.69, 0.59, 0.59, 0.43)),
-    (-43, ('[NPC][Burner] Succubus (Sanshas Nation)', 0.35, 0.48, 0.61, 0.68)),
-    (-44, ('[NPC][Burner] Worm (Guristas)', 0.48, 0.58, 0.69, 0.74)),
-    (-45, ('[NPC][Burner] Enyo', 0.58, 0.72, 0.86, 0.24)),
-    (-46, ('[NPC][Burner] Hawk', 0.3, 0.86, 0.79, 0.65)),
-    (-47, ('[NPC][Burner] Jaguar', 0.78, 0.65, 0.48, 0.56)),
-    (-48, ('[NPC][Burner] Vengeance', 0.66, 0.56, 0.75, 0.86)),
-    (-49, ('[NPC][Burner] Ashimmu (Blood Raiders)', 0.8, 0.76, 0.68, 0.7)),
-    (-50, ('[NPC][Burner] Talos', 0.68, 0.59, 0.59, 0.43)),
-    (-51, ('[NPC][Burner] Sentinel', 0.58, 0.45, 0.52, 0.66))])
+    (-19, ('[NPC][Asteroid]Angel Cartel', 0.54, 0.42, 0.37, 0.32)),
+    (-20, ('[NPC][Asteroid]Blood Raiders', 0.34, 0.39, 0.45, 0.52)),
+    (-21, ('[NPC][Asteroid]Guristas', 0.55, 0.35, 0.3, 0.48)),
+    (-22, ('[NPC][Asteroid]Rogue Drones', 0.35, 0.38, 0.44, 0.49)),
+    (-23, ('[NPC][Asteroid]Sanshas Nation', 0.35, 0.4, 0.47, 0.53)),
+    (-24, ('[NPC][Asteroid]Serpentis', 0.49, 0.38, 0.29, 0.51)),
+    (-25, ('[NPC][Deadspace]Angel Cartel', 0.59, 0.48, 0.4, 0.32)),
+    (-26, ('[NPC][Deadspace]Blood Raiders', 0.31, 0.39, 0.47, 0.56)),
+    (-27, ('[NPC][Deadspace]Guristas', 0.57, 0.39, 0.31, 0.5)),
+    (-28, ('[NPC][Deadspace]Rogue Drones', 0.42, 0.42, 0.47, 0.49)),
+    (-29, ('[NPC][Deadspace]Sanshas Nation', 0.31, 0.39, 0.47, 0.56)),
+    (-30, ('[NPC][Deadspace]Serpentis', 0.49, 0.38, 0.29, 0.56)),
+    (-31, ('[NPC][Mission]Amarr Empire', 0.34, 0.38, 0.42, 0.46)),
+    (-32, ('[NPC][Mission]Caldari State', 0.51, 0.38, 0.3, 0.51)),
+    (-33, ('[NPC][Mission]CONCORD', 0.47, 0.46, 0.47, 0.47)),
+    (-34, ('[NPC][Mission]Gallente Federation', 0.51, 0.38, 0.31, 0.52)),
+    (-35, ('[NPC][Mission]Khanid', 0.51, 0.42, 0.36, 0.4)),
+    (-36, ('[NPC][Mission]Minmatar Republic', 0.51, 0.46, 0.41, 0.35)),
+    (-37, ('[NPC][Mission]Mordus Legion', 0.32, 0.48, 0.4, 0.62)),
+    (-38, ('[NPC][Other]Sleeper', 0.61, 0.61, 0.61, 0.61)),
+    (-39, ('[NPC][Other]Sansha Incursion', 0.65, 0.63, 0.64, 0.65)),
+    (-40, ('[NPC][Burner]Cruor (Blood Raiders)', 0.8, 0.73, 0.69, 0.67)),
+    (-41, ('[NPC][Burner]Dramiel (Angel)', 0.35, 0.48, 0.61, 0.68)),
+    (-42, ('[NPC][Burner]Daredevil (Serpentis)', 0.69, 0.59, 0.59, 0.43)),
+    (-43, ('[NPC][Burner]Succubus (Sanshas Nation)', 0.35, 0.48, 0.61, 0.68)),
+    (-44, ('[NPC][Burner]Worm (Guristas)', 0.48, 0.58, 0.69, 0.74)),
+    (-45, ('[NPC][Burner]Enyo', 0.58, 0.72, 0.86, 0.24)),
+    (-46, ('[NPC][Burner]Hawk', 0.3, 0.86, 0.79, 0.65)),
+    (-47, ('[NPC][Burner]Jaguar', 0.78, 0.65, 0.48, 0.56)),
+    (-48, ('[NPC][Burner]Vengeance', 0.66, 0.56, 0.75, 0.86)),
+    (-49, ('[NPC][Burner]Ashimmu (Blood Raiders)', 0.8, 0.76, 0.68, 0.7)),
+    (-50, ('[NPC][Burner]Talos', 0.68, 0.59, 0.59, 0.43)),
+    (-51, ('[NPC][Burner]Sentinel', 0.58, 0.45, 0.52, 0.66))])
 
 
 class TargetProfile:
@@ -280,6 +280,9 @@ class TargetProfile:
             start, end = remainingName.find('['), remainingName.find(']')
             if start == -1 or end == -1:
                 return hierarchy, remainingName
+            splitter = remainingName.find('|')
+            if splitter != -1 and splitter == start - 1:
+                return hierarchy, remainingName[1:]
             hierarchy.append(remainingName[start + 1:end])
             remainingName = remainingName[end + 1:].strip()
 
