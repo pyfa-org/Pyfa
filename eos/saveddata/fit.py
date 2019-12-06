@@ -179,7 +179,7 @@ class Fit:
         if targetProfile is None:
             self.__userTargetProfile = None
             self.__builtinTargetProfileID = None
-        if targetProfile.builtin:
+        elif targetProfile.builtin:
             self.__userTargetProfile = None
             self.__builtinTargetProfileID = targetProfile.ID
         else:
@@ -195,15 +195,17 @@ class Fit:
         if self.__userDamagePattern is not None:
             return self.__userDamagePattern
         if self.__builtinDamagePatternID is not None:
-            return DamagePattern.getBuiltinById(self.__builtinDamagePatternID)
-        return None
+            pattern = DamagePattern.getBuiltinById(self.__builtinDamagePatternID)
+            if pattern is not None:
+                return pattern
+        return DamagePattern.getDefaultBuiltin()
 
     @damagePattern.setter
     def damagePattern(self, damagePattern):
         if damagePattern is None:
             self.__userDamagePattern = None
             self.__builtinDamagePatternID = None
-        if damagePattern.builtin:
+        elif damagePattern.builtin:
             self.__userDamagePattern = None
             self.__builtinDamagePatternID = damagePattern.ID
         else:

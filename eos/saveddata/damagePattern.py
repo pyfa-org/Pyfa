@@ -145,6 +145,12 @@ class DamagePattern:
         return cls._builtins.get(id)
 
     @classmethod
+    def getDefaultBuiltin(cls):
+        if cls._builtins is None:
+            cls.__generateBuiltins()
+        return cls._builtins.get(-1)
+
+    @classmethod
     def __generateBuiltins(cls):
         cls._builtins = OrderedDict()
         for id, (rawName, em, therm, kin, explo) in BUILTINS.items():
