@@ -22,7 +22,6 @@ import os
 import config
 from eos import db
 from eos.db import migration
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.databaseRepair import DatabaseCleanup
 
 from logbook import Logger
@@ -38,10 +37,6 @@ if config.saveDB and os.path.isfile(config.saveDB):
     pyfalog.debug("Run database migration.")
     db.saveddata_meta.create_all()
     migration.update(db.saveddata_engine)
-    # Import default database values
-    # Import values that must exist otherwise Pyfa breaks
-    pyfalog.debug("Import Required Database Values.")
-    DefaultDatabaseValues.importRequiredDefaults()
 
     # Finds and fixes database corruption issues.
     pyfalog.debug("Starting database validation.")
@@ -62,10 +57,3 @@ else:
     pyfalog.debug("Existing database not found, creating new database.")
     db.saveddata_meta.create_all()
     db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
-    # Import default database values
-    # Import values that must exist otherwise Pyfa breaks
-    DefaultDatabaseValues.importRequiredDefaults()
-    # Import default values for damage profiles
-    DefaultDatabaseValues.importDamageProfileDefaults()
-    # Import default values for target resist profiles
-    DefaultDatabaseValues.importTargetProfileDefaults()
