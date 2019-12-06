@@ -43,7 +43,7 @@ class TargetProfile:
 
     @staticmethod
     def getBuiltinTargetProfileList():
-        return es_TargetProfile.getBuiltins()
+        return es_TargetProfile.getBuiltinList()
 
     @staticmethod
     def newPattern(name):

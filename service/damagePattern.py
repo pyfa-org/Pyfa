@@ -44,7 +44,7 @@ class DamagePattern:
 
     @staticmethod
     def getBuiltinDamagePatternList():
-        return es_DamagePattern.getBuiltins()
+        return es_DamagePattern.getBuiltinList()
 
     @staticmethod
     def getDamagePattern(name):

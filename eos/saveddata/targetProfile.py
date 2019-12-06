@@ -105,10 +105,16 @@ class TargetProfile:
         self._radius = radius
 
     @classmethod
-    def getBuiltins(cls):
+    def getBuiltinList(cls):
         if cls._builtins is None:
             cls.__generateBuiltins()
         return list(cls._builtins.values())
+
+    @classmethod
+    def getBuiltinById(cls, id):
+        if cls._builtins is None:
+            cls.__generateBuiltins()
+        return cls._builtins.get(id)
 
     @classmethod
     def __generateBuiltins(cls):

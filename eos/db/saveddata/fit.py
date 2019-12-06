@@ -235,8 +235,10 @@ mapper(es_Fit, fits_table,
            "_Fit__character": relation(
                    Character,
                    backref="fits"),
-           "_Fit__damagePattern": relation(DamagePattern),
-           "_Fit__targetProfile": relation(TargetProfile),
+           "_Fit__userDamagePattern": relation(DamagePattern),
+           "_Fit__builtinDamagePatternID": fits_table.c.builtinDamagePatternID,
+           "_Fit__userTargetProfile": relation(TargetProfile),
+           "_Fit__builtinTargetProfileID": fits_table.c.builtinTargetResistsID,
            "projectedOnto": projectedFitSourceRel,
            "victimOf": relationship(
                    ProjectedFit,
