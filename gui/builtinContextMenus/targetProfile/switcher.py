@@ -17,14 +17,12 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, callingWindow, srcContext):
-        if self.mainFrame.getActiveFit() is None or srcContext != 'firepowerViewFull':
+        if srcContext != 'firepowerViewFull':
             return False
-
-        sTR = svc_TargetProfile.getInstance()
-        self.profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
-        self.profiles.sort(key=lambda p: (p.name in ['None'], p.name))
-
-        return len(self.profiles) > 0
+        if self.mainFrame.getActiveFit() is None:
+            return False
+        # We always show "No Profile" anyway
+        return True
 
     def getText(self, callingWindow, itmContext):
         # We take into consideration just target resists, so call menu item accordingly
@@ -60,10 +58,13 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         return menuItem
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
-        self.profileEventMap = {}
+        sTR = svc_TargetProfile.getInstance()
+        profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
+        profiles.sort(key=lambda p: (p.name in ['None'], p.name))
 
+        self.profileEventMap = {}
         self.items = (OrderedDict(), OrderedDict())
-        for profile in self.profiles:
+        for profile in profiles:
             remainingName = profile.name.strip()
             container = self.items
             while True:
@@ -83,7 +84,8 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
                 mitem, checked = self._addProfile(rootMenu if msw else parentMenu, None, 'No Profile')
                 menu.Append(mitem)
                 mitem.Check(checked)
-                menu.AppendSeparator()
+                if len(container[0]) > 0 or len(container[1]) > 0:
+                    menu.AppendSeparator()
             for name, pattern in container[0].items():
                 menuItem, checked = self._addProfile(rootMenu if msw else parentMenu, pattern, name)
                 menu.Append(menuItem)
