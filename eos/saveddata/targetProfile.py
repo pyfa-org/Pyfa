@@ -105,15 +105,19 @@ class TargetProfile:
     @classmethod
     def getBuiltins(cls):
         if cls._builtins is None:
-            cls._builtins = OrderedDict()
-            for id, data in BUILTINS.items():
-                name = data[0]
-                data = data[1:]
-                profile = TargetProfile(*data)
-                profile.ID = id
-                profile.name = name
-                cls._builtins[id] = profile
+            cls.__generateBuiltins()
         return list(cls._builtins.values())
+
+    @classmethod
+    def __generateBuiltins(cls):
+        cls._builtins = OrderedDict()
+        for id, data in BUILTINS.items():
+            name = data[0]
+            data = data[1:]
+            profile = TargetProfile(*data)
+            profile.ID = id
+            profile.name = name
+            cls._builtins[id] = profile
 
     @classmethod
     def getIdeal(cls):

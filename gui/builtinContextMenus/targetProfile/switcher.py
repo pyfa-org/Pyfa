@@ -20,7 +20,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
             return False
 
         sTR = svc_TargetProfile.getInstance()
-        self.profiles = sTR.getTargetProfileList()
+        self.profiles = sTR.getUserTargetProfileList()
         self.profiles.sort(key=lambda p: (p.name in ['None'], p.name))
 
         return len(self.profiles) > 0

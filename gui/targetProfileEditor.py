@@ -88,7 +88,7 @@ class TargetProfileEntityEditor(EntityEditor):
 
     def getEntitiesFromContext(self):
         sTR = TargetProfile.getInstance()
-        choices = sorted(sTR.getTargetProfileList(), key=lambda p: p.name)
+        choices = sorted(sTR.getUserTargetProfileList(), key=lambda p: p.name)
         return choices
 
     def DoNew(self, name):

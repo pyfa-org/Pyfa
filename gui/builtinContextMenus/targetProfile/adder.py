@@ -21,7 +21,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
 
         sTR = svc_TargetProfile.getInstance()
         self.callingWindow = callingWindow
-        self.profiles = sTR.getTargetProfileList()
+        self.profiles = sTR.getUserTargetProfileList()
         self.profiles.sort(key=lambda p: (p.name in ['None'], p.name))
 
         return len(self.profiles) > 0
