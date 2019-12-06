@@ -34,7 +34,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
         if profile is False:
             event.Skip()
             return
-        self.callingWindow.addProfile(profile)
+        self.callingWindow._addProfile(profile)
 
     def addProfile(self, rootMenu, profile):
         id = ContextMenuUnconditional.nextID()

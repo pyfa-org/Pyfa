@@ -91,6 +91,7 @@ class TargetProfile:
     _builtins = None
 
     def __init__(self, *args, **kwargs):
+        self.builtin = False
         self.update(*args, **kwargs)
 
     def update(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0, maxVelocity=None, signatureRadius=None, radius=None):
@@ -117,6 +118,7 @@ class TargetProfile:
             profile = TargetProfile(*data)
             profile.ID = id
             profile.name = name
+            profile.builtin = True
             cls._builtins[id] = profile
 
     @classmethod
@@ -132,6 +134,7 @@ class TargetProfile:
                 radius=0)
             cls._idealTarget.name = 'Ideal Target'
             cls._idealTarget.ID = -1
+            cls._idealTarget.builtin = True
         return cls._idealTarget
 
     @property

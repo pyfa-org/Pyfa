@@ -123,6 +123,7 @@ class DamagePattern:
     _builtins = None
 
     def __init__(self, *args, **kwargs):
+        self.builtin = False
         self.update(*args, **kwargs)
 
     def update(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):
@@ -144,6 +145,7 @@ class DamagePattern:
             pattern = DamagePattern(emAmount=em, thermalAmount=therm, kineticAmount=kin, explosiveAmount=explo)
             pattern.ID = id
             pattern.name = name
+            pattern.builtin = True
             cls._builtins[id] = pattern
 
     def calculateEhp(self, fit):

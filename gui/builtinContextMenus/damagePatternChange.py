@@ -35,8 +35,8 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         self.patterns.sort(key=lambda p: (p.name not in ["Uniform", "Selected Ammo"], p.name))
 
         self.patternEventMap = {}
-        self.items = (OrderedDict(), OrderedDict())
 
+        self.items = (OrderedDict(), OrderedDict())
         for pattern in self.patterns:
             remainingName = pattern.name.strip()
             container = self.items
