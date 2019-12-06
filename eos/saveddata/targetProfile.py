@@ -266,6 +266,11 @@ class TargetProfile:
         return self.rawName
 
     @property
+    def fullName(self):
+        categories, tail = self.__parseRawName()
+        return '{}{}'.format(''.join('[{}]'.format(c) for c in categories), tail)
+
+    @property
     def shortName(self):
         return self.__parseRawName()[1]
 

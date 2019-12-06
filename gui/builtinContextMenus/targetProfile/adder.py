@@ -48,20 +48,9 @@ class TargetProfileAdder(ContextMenuUnconditional):
         self.callingWindow = callingWindow
         sTR = svc_TargetProfile.getInstance()
         profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
-        profiles.sort(key=lambda p: (p.name in ['None'], p.name))
+        profiles.sort(key=lambda p: p.fullName)
 
         self.profileEventMap = {}
-        items = (OrderedDict(), OrderedDict())
-        for profile in profiles:
-            remainingName = profile.name.strip()
-            container = items
-            while True:
-                start, end = remainingName.find('['), remainingName.find(']')
-                if start == -1 or end == -1:
-                    container[0][remainingName] = profile
-                    break
-                container = container[1].setdefault(remainingName[start + 1:end], (OrderedDict(), OrderedDict()))
-                remainingName = remainingName[end + 1:].strip()
         items = (OrderedDict(), OrderedDict())
         for profile in profiles:
             container = items
@@ -76,7 +65,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
             menu = wx.Menu()
             if first:
                 idealProfile = TargetProfile.getIdeal()
-                mitem = self._addProfile(rootMenu if msw else parentMenu, idealProfile, idealProfile.name)
+                mitem = self._addProfile(rootMenu if msw else parentMenu, idealProfile, idealProfile.fullName)
                 menu.Append(mitem)
             for name, pattern in container[0].items():
                 menuItem = self._addProfile(rootMenu if msw else parentMenu, pattern, name)

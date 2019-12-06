@@ -60,7 +60,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         sTR = svc_TargetProfile.getInstance()
         profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
-        profiles.sort(key=lambda p: (p.name in ['None'], p.name))
+        profiles.sort(key=lambda p: p.fullName)
 
         self.profileEventMap = {}
         items = (OrderedDict(), OrderedDict())

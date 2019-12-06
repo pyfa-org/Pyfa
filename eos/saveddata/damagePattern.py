@@ -74,8 +74,8 @@ BUILTINS = OrderedDict([
     (-48, ('[Projectile Ammo]Proton', 3, 0, 2, 0)),
     (-49, ('[Projectile Ammo]Carbonized Lead', 0, 0, 4, 1)),
     (-50, ('[Projectile Ammo]Nuclear', 0, 0, 1, 4)),
-    # Different sizes of plasma do different damage, the values here are
-    # average of proportions across sizes
+    # Different sizes of plasma do different damage ratios, the values here
+    # are average of ratios across sizes
     (-51, ('[Exotic Plasma]|[T2] Occult', 0, 55863, 0, 44137)),
     (-52, ('[Exotic Plasma]|[T2] Mystic', 0, 66319, 0, 33681)),
     (-53, ('[Exotic Plasma]Tetryon', 0, 69208, 0, 30792)),
@@ -283,6 +283,11 @@ class DamagePattern:
         return self.rawName
 
     @property
+    def fullName(self):
+        categories, tail = self.__parseRawName()
+        return '{}{}'.format(''.join('[{}]'.format(c) for c in categories), tail)
+
+    @property
     def shortName(self):
         return self.__parseRawName()[1]
 
@@ -291,16 +296,16 @@ class DamagePattern:
         return self.__parseRawName()[0]
 
     def __parseRawName(self):
-        hierarchy = []
+        categories = []
         remainingName = self.rawName.strip() if self.rawName else ''
         while True:
             start, end = remainingName.find('['), remainingName.find(']')
             if start == -1 or end == -1:
-                return hierarchy, remainingName
+                return categories, remainingName
             splitter = remainingName.find('|')
             if splitter != -1 and splitter == start - 1:
-                return hierarchy, remainingName[1:]
-            hierarchy.append(remainingName[start + 1:end])
+                return categories, remainingName[1:]
+            categories.append(remainingName[start + 1:end])
             remainingName = remainingName[end + 1:].strip()
 
     def __deepcopy__(self, memo):
