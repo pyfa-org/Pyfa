@@ -234,11 +234,11 @@ class DefaultDatabaseValues:
         damageProfileList = [["Uniform", 25, 25, 25, 25]]
 
         for damageProfileRow in damageProfileList:
-            name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eos.db.getDamagePattern(name)
+            rawName, em, therm, kin, exp = damageProfileRow
+            damageProfile = eos.db.getDamagePattern(rawName)
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
-                damageProfile.name = name
+                damageProfile.rawName = rawName
                 eos.db.add(damageProfile)
             else:
                 damageProfile.emAmount = em
