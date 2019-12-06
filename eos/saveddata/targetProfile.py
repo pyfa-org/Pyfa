@@ -82,7 +82,13 @@ BUILTINS = OrderedDict([
     (-48, ('[NPC][Burner]Vengeance', 0.66, 0.56, 0.75, 0.86)),
     (-49, ('[NPC][Burner]Ashimmu (Blood Raiders)', 0.8, 0.76, 0.68, 0.7)),
     (-50, ('[NPC][Burner]Talos', 0.68, 0.59, 0.59, 0.43)),
-    (-51, ('[NPC][Burner]Sentinel', 0.58, 0.45, 0.52, 0.66))])
+    (-51, ('[NPC][Burner]Sentinel', 0.58, 0.45, 0.52, 0.66)),
+    # Source: ticket #2067
+    (-52, ('[NPC][Invasion]Invading Precursor Entities', 0.46, 0.39, 0.48, 0.42)),
+    (-53, ('[NPC][Invasion]Retaliating Amarr Entities', 0.36, 0.31, 0.44, 0.60)),
+    (-54, ('[NPC][Invasion]Retaliating Caldari Entities', 0.28, 0.61, 0.48, 0.39)),
+    (-55, ('[NPC][Invasion]Retaliating Gallente Entities', 0.36, 0.39, 0.56, 0.50)),
+    (-56, ('[NPC][Invasion]Retaliating Minmatar Entities', 0.62, 0.42, 0.35, 0.40))])
 
 
 class TargetProfile:

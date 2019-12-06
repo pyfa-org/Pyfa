@@ -116,7 +116,15 @@ BUILTINS = OrderedDict([
     (-86, ('[NPC][Burner]Talos', 0, 413, 413, 0)),
     (-87, ('[NPC][Burner]Sentinel', 0, 75, 0, 90)),
     (-88, ('[NPC][Other]Sleepers', 1472, 1472, 1384, 1384)),
-    (-89, ('[NPC][Other]Sansha Incursion', 1682, 1347, 3678, 3678))])
+    (-89, ('[NPC][Other]Sansha Incursion', 1682, 1347, 3678, 3678)),
+    # Source: ticket #2067
+    (-90, ('[NPC][Invasion][Invading Precursor Entities]0% spool up', 31, 29, 24, 16)),
+    (-91, ('[NPC][Invasion][Invading Precursor Entities]50% spool up', 29, 37, 15, 19)),
+    (-92, ('[NPC][Invasion][Invading Precursor Entities]100% spool up', 28, 41, 11, 20)),
+    (-93, ('[NPC][Invasion]Retaliating Amarr Entities', 58, 42, 0, 0)),
+    (-94, ('[NPC][Invasion]Retaliating Caldari Entities', 30, 43, 2, 25)),
+    (-95, ('[NPC][Invasion]Retaliating Gallente Entities', 0, 42, 58, 0)),
+    (-96, ('[NPC][Invasion]Retaliating Minmatar Entities', 17, 8, 44, 31))])
 
 
 class DamagePattern:
