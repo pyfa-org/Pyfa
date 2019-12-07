@@ -1,5 +1,4 @@
 import gui.mainFrame
-from eos.saveddata.targetProfile import TargetProfile
 from graphs.wrapper import TargetWrapper
 from gui.contextMenu import ContextMenuSingle
 from gui.targetProfileEditor import TargetProfileEditor
@@ -17,7 +16,7 @@ class TargetProfileEditorMenu(ContextMenuSingle):
             return False
         if not mainItem.isProfile:
             return False
-        if mainItem.item is TargetProfile.getIdeal():
+        if mainItem.item.builtin:
             return False
         return True
 

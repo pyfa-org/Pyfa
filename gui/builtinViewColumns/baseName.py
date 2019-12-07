@@ -111,7 +111,7 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Implant):
             return stuff.item.name
         elif isinstance(stuff, TargetProfile):
-            return stuff.name
+            return stuff.shortName
         else:
             item = getattr(stuff, "item", stuff)
 

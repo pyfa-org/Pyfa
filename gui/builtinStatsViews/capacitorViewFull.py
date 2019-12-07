@@ -133,11 +133,17 @@ class CapacitorViewFull(StatsView):
                 label.SetLabel('{}{}'.format(formatAmount(value, prec, lowest, highest, forceSign=forceSign), unit))
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
-            if labelName == 'label%sCapacitorDelta':
-                label_tooltip = 'Capacitor delta:\n+{} GJ/s\n-{} GJ/s'.format(
-                    formatAmount(cap_recharge, 3, 0, 3),
-                    formatAmount(cap_use, 3, 0, 3))
-                label.SetToolTip(wx.ToolTip(label_tooltip))
+            if labelName == 'label%sCapacitorDelta' and (cap_recharge or cap_use):
+                lines = []
+                lines.append('Capacitor delta:')
+                lines.append('  +{} GJ/s'.format(formatAmount(cap_recharge, 3, 0, 3)))
+                lines.append('  -{} GJ/s'.format(formatAmount(cap_use, 3, 0, 3)))
+                delta = round(cap_recharge - cap_use, 3)
+                if delta > 0 and neut_res < 1:
+                    lines.append('')
+                    lines.append('Effective excessive gain:')
+                    lines.append('  +{} GJ/s'.format(formatAmount(delta / neut_res, 3, 0, 3)))
+                label.SetToolTip(wx.ToolTip('\n'.join(lines)))
             if labelName == 'label%sCapacitorResist':
                 texts = ['Neutralizer resistance']
                 if cap_amount > 0 and neut_res < 1:

@@ -1,7 +1,6 @@
 import wx
 
 import config
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetProfiles
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
@@ -75,10 +74,6 @@ class PFGeneralPref(PreferenceView):
         btnSizer = wx.BoxSizer(wx.VERTICAL)
         btnSizer.AddStretchSpacer()
 
-        self.btnImportDefaults = wx.Button(panel, wx.ID_ANY, "Reimport Database Defaults", wx.DefaultPosition, wx.DefaultSize, 0)
-        btnSizer.Add(self.btnImportDefaults, 0, wx.ALL, 5)
-        self.btnImportDefaults.Bind(wx.EVT_BUTTON, self.loadDatabaseDefaults)
-
         self.btnDeleteDamagePatterns = wx.Button(panel, wx.ID_ANY, "Delete All Damage Pattern Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL, 5)
         self.btnDeleteDamagePatterns.Bind(wx.EVT_BUTTON, self.DeleteDamagePatterns)
@@ -96,14 +91,6 @@ class PFGeneralPref(PreferenceView):
 
         panel.SetSizer(mainSizer)
         panel.Layout()
-
-    def loadDatabaseDefaults(self, event):
-        # Import values that must exist otherwise Pyfa breaks
-        DefaultDatabaseValues.importRequiredDefaults()
-        # Import default values for damage profiles
-        DefaultDatabaseValues.importDamageProfileDefaults()
-        # Import default values for target resist profiles
-        DefaultDatabaseValues.importTargetProfileDefaults()
 
     def DeleteDamagePatterns(self, event):
         question = "This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"

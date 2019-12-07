@@ -321,7 +321,7 @@ def activeStateLimit(itemIdentity):
     item = Market.getInstance().getItem(itemIdentity)
     if {
         'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability',
-        'microJumpDrive', 'microJumpPortalDrive'
+        'microJumpDrive', 'microJumpPortalDrive', 'emergencyHullEnergizer'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE

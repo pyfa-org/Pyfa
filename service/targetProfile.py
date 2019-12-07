@@ -38,12 +38,12 @@ class TargetProfile:
         return cls.instance
 
     @staticmethod
-    def getTargetProfileList():
+    def getUserTargetProfileList():
         return db.getTargetProfileList()
 
     @staticmethod
-    def getTargetProfile(name):
-        return db.getTargetProfile(name)
+    def getBuiltinTargetProfileList():
+        return es_TargetProfile.getBuiltinList()
 
     @staticmethod
     def newPattern(name):
@@ -81,6 +81,6 @@ class TargetProfile:
             raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
-        patterns = self.getTargetProfileList()
+        patterns = self.getUserTargetProfileList()
         patterns.sort(key=lambda p: p.name)
         return es_TargetProfile.exportPatterns(*patterns)

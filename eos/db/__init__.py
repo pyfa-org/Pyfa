@@ -85,7 +85,7 @@ pyfalog.debug('Importing gamedata DB scheme')
 from eos.db.gamedata import alphaClones, attribute, category, effect, group, item, marketGroup, metaData, metaGroup, queries, traits, unit, dynamicAttributes
 pyfalog.debug('Importing saveddata DB scheme')
 # noinspection PyPep8
-from eos.db.saveddata import booster, cargo, character, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, loadDefaultDatabaseValues, \
+from eos.db.saveddata import booster, cargo, character, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, \
     miscData, mutator, module, override, price, queries, skill, targetProfile, user
 
 pyfalog.debug('Importing gamedata queries')

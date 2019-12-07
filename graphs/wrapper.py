@@ -43,7 +43,7 @@ class BaseWrapper:
         if self.isFit:
             return '{} ({})'.format(self.item.name, self.item.ship.item.name)
         elif self.isProfile:
-            return self.item.name
+            return self.item.fullName
         return ''
 
     @property
@@ -51,7 +51,7 @@ class BaseWrapper:
         if self.isFit:
             return '{} ({})'.format(self.item.name, self.item.ship.item.getShortName())
         elif self.isProfile:
-            return self.item.name
+            return self.item.shortName
         return ''
 
     def getMaxVelocity(self, extraMultipliers=None, ignoreAfflictors=()):

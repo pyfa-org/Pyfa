@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -6,7 +7,8 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
-from service.damagePattern import DamagePattern as import_DamagePattern
+from gui.utils.sorter import smartSort
+from service.damagePattern import DamagePattern as DmgPatternSvc
 from service.fit import Fit
 
 
@@ -23,97 +25,88 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         return self.mainFrame.getActiveFit() is not None
 
     def getText(self, callingWindow, itmContext):
-        sDP = import_DamagePattern.getInstance()
+        sDP = DmgPatternSvc.getInstance()
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         self.fit = sFit.getFit(fitID)
 
-        self.patterns = sDP.getDamagePatternList()
-        self.patterns.sort(key=lambda p: (p.name not in ["Uniform", "Selected Ammo"], p.name))
+        # Order here is important: patterns with duplicate names from the latter will overwrite
+        # patterns from the former
+        self.patterns = list(chain(sDP.getBuiltinDamagePatternList(), sDP.getUserDamagePatternList()))
+        self.patterns.sort(key=lambda p: (p.fullName not in ["Uniform", "Selected Ammo"], smartSort(p.fullName)))
 
-        self.patternIds = {}
-        self.subMenus = OrderedDict()
-        self.singles = []
+        self.patternEventMap = {}
 
-        # iterate and separate damage patterns based on "[Parent] Child"
+        self.items = (OrderedDict(), OrderedDict())
         for pattern in self.patterns:
-            start, end = pattern.name.find('['), pattern.name.find(']')
-            if start is not -1 and end is not -1:
-                currBase = pattern.name[start + 1:end]
-                name = pattern.name[end + 1:].strip()
-                if not name:
-                    self.singles.append(pattern)
-                    continue
-                # set helper attr
-                setattr(pattern, "_name", name)
-                if currBase not in self.subMenus:
-                    self.subMenus[currBase] = []
-                self.subMenus[currBase].append(pattern)
-            else:
-                self.singles.append(pattern)
+            container = self.items
+            for categoryName in pattern.hierarchy:
+                container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
+            container[0][pattern.shortName] = pattern
 
-        # return list of names, with singles first followed by submenu names
-        self.m = [p.name for p in self.singles] + list(self.subMenus.keys())
-        return self.m
+        return list(self.items[0].keys()) + list(self.items[1].keys())
 
-    def addPattern(self, rootMenu, pattern):
+    def _addPattern(self, parentMenu, pattern, name):
         id = ContextMenuUnconditional.nextID()
-        name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
-
-        self.patternIds[id] = pattern
-        menuItem = wx.MenuItem(rootMenu, id, name, kind=wx.ITEM_CHECK)
-        rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
-
-        # set pattern attr to menu item
-        menuItem.pattern = pattern
+        self.patternEventMap[id] = pattern
+        menuItem = wx.MenuItem(parentMenu, id, name, kind=wx.ITEM_CHECK)
+        parentMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
 
         # determine active pattern
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
-        if fit:
-            dp = fit.damagePattern
-            checked = dp is pattern
-        else:
-            checked = False
+        checked = fit.damagePattern is pattern if fit else False
         return menuItem, checked
+
+    def _addCategory(self, parentMenu, name):
+        id = ContextMenuUnconditional.nextID()
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
+        return menuItem
 
     def isChecked(self, i):
         try:
-            single = self.singles[i]
+            patternName = list(self.items[0].keys())[i]
         except IndexError:
             return super().isChecked(i)
-        if self.fit and single is self.fit.damagePattern:
+        pattern = self.items[0][patternName]
+        if self.fit and pattern is self.fit.damagePattern:
             return True
         return False
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
-        # Attempt to remove attribute which carries info if non-sub-items should
-        # be checked or not
-        self.checked = None
 
-        if self.m[i] not in self.subMenus:
-            # if we're trying to get submenu to something that shouldn't have one,
-            # redirect event of the item to handlePatternSwitch and put pattern in
-            # our patternIds mapping, then return None for no submenu
+        # Pattern as menu item
+        if i < len(self.items[0]):
             id = pitem.GetId()
-            self.patternIds[id] = self.singles[i]
+            self.patternEventMap[id] = list(self.items[0].values())[i]
             rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
             return False
 
-        sub = wx.Menu()
-
-        # Items that have a parent
+        # Category as menu item - expands further
         msw = "wxMSW" in wx.PlatformInfo
-        for pattern in self.subMenus[self.m[i]]:
-            mitem, checked = self.addPattern(rootMenu if msw else sub, pattern)
-            sub.Append(mitem)
-            mitem.Check(checked)
 
-        return sub
+        def makeMenu(container, parentMenu):
+            menu = wx.Menu()
+            for name, subcontainer in container[1].items():
+                menuItem = self._addCategory(rootMenu if msw else parentMenu, name)
+                subMenu = makeMenu(subcontainer, menu)
+                menuItem.SetSubMenu(subMenu)
+                menu.Append(menuItem)
+            for name, pattern in container[0].items():
+                menuItem, checked = self._addPattern(rootMenu if msw else parentMenu, pattern, name)
+                menu.Append(menuItem)
+                menuItem.Check(checked)
+            menu.Bind(wx.EVT_MENU, self.handlePatternSwitch)
+            return menu
+
+        container = list(self.items[1].values())[i - len(self.items[0])]
+        subMenu = makeMenu(container, rootMenu)
+        return subMenu
 
     def handlePatternSwitch(self, event):
-        pattern = self.patternIds.get(event.Id, False)
+        pattern = self.patternEventMap.get(event.Id, False)
         if pattern is False:
             event.Skip()
             return

@@ -28,15 +28,17 @@ from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
 from eos import capSim
-from eos.calc import calculateMultiplier, calculateLockTime
+from eos.calc import calculateLockTime, calculateMultiplier
 from eos.const import CalcType, FitSystemSecurity, FittingHardpoint, FittingModuleState, FittingSlot, ImplantLocation
 from eos.effectHandlerHelpers import (
     HandledBoosterList, HandledDroneCargoList, HandledImplantList,
     HandledModuleList, HandledProjectedDroneList, HandledProjectedModList)
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
+from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
+from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.stats import DmgTypes, RRTypes
 
 
@@ -166,11 +168,23 @@ class Fit:
 
     @property
     def targetProfile(self):
-        return self.__targetProfile
+        if self.__userTargetProfile is not None:
+            return self.__userTargetProfile
+        if self.__builtinTargetProfileID is not None:
+            return TargetProfile.getBuiltinById(self.__builtinTargetProfileID)
+        return None
 
     @targetProfile.setter
     def targetProfile(self, targetProfile):
-        self.__targetProfile = targetProfile
+        if targetProfile is None:
+            self.__userTargetProfile = None
+            self.__builtinTargetProfileID = None
+        elif targetProfile.builtin:
+            self.__userTargetProfile = None
+            self.__builtinTargetProfileID = targetProfile.ID
+        else:
+            self.__userTargetProfile = targetProfile
+            self.__builtinTargetProfileID = None
         self.__weaponDpsMap = {}
         self.__weaponVolleyMap = {}
         self.__droneDps = None
@@ -178,11 +192,25 @@ class Fit:
 
     @property
     def damagePattern(self):
-        return self.__damagePattern
+        if self.__userDamagePattern is not None:
+            return self.__userDamagePattern
+        if self.__builtinDamagePatternID is not None:
+            pattern = DamagePattern.getBuiltinById(self.__builtinDamagePatternID)
+            if pattern is not None:
+                return pattern
+        return DamagePattern.getDefaultBuiltin()
 
     @damagePattern.setter
     def damagePattern(self, damagePattern):
-        self.__damagePattern = damagePattern
+        if damagePattern is None:
+            self.__userDamagePattern = None
+            self.__builtinDamagePatternID = None
+        elif damagePattern.builtin:
+            self.__userDamagePattern = None
+            self.__builtinDamagePatternID = damagePattern.ID
+        else:
+            self.__userDamagePattern = damagePattern
+            self.__builtinDamagePatternID = None
         self.__ehp = None
         self.__effectiveTank = None
 

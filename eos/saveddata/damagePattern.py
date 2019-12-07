@@ -18,20 +18,161 @@
 # ===============================================================================
 
 import re
+from collections import OrderedDict
+
+from sqlalchemy.orm import reconstructor
+
 import eos.db
 
 
+BUILTINS = OrderedDict([
+    (-1, ('Uniform', 25, 25, 25, 25)),
+    (-2, ('[Generic]EM', 1, 0, 0, 0)),
+    (-3, ('[Generic]Thermal', 0, 1, 0, 0)),
+    (-4, ('[Generic]Kinetic', 0, 0, 1, 0)),
+    (-5, ('[Generic]Explosive', 0, 0, 0, 1)),
+    (-6, ('[Bombs]Electron Bomb', 6400, 0, 0, 0)),
+    (-7, ('[Bombs]Scorch Bomb', 0, 6400, 0, 0)),
+    (-8, ('[Bombs]Concussion Bomb', 0, 0, 6400, 0)),
+    (-9, ('[Bombs]Shrapnel Bomb', 0, 0, 0, 6400)),
+    (-10, ('[Frequency Crystals]|[T2] Conflagration', 7.7, 7.7, 0, 0)),
+    (-11, ('[Frequency Crystals]|[T2] Scorch', 9, 2, 0, 0)),
+    (-12, ('[Frequency Crystals]|[T2] Gleam', 7, 7, 0, 0)),
+    (-13, ('[Frequency Crystals]|[T2] Aurora', 5, 3, 0, 0)),
+    (-14, ('[Frequency Crystals]Multifrequency', 7, 5, 0, 0)),
+    (-15, ('[Frequency Crystals]Gamma', 7, 4, 0, 0)),
+    (-16, ('[Frequency Crystals]Xray', 6, 4, 0, 0)),
+    (-17, ('[Frequency Crystals]Ultraviolet', 6, 3, 0, 0)),
+    (-18, ('[Frequency Crystals]Standard', 5, 3, 0, 0)),
+    (-19, ('[Frequency Crystals]Infrared', 5, 2, 0, 0)),
+    (-20, ('[Frequency Crystals]Microwave', 4, 2, 0, 0)),
+    (-21, ('[Frequency Crystals]Radio', 5, 0, 0, 0)),
+    (-22, ('[Hybrid Charges]|[T2] Void', 0, 7.7, 7.7, 0)),
+    (-23, ('[Hybrid Charges]|[T2] Null', 0, 6, 5, 0)),
+    (-24, ('[Hybrid Charges]|[T2] Javelin', 0, 8, 6, 0)),
+    (-25, ('[Hybrid Charges]|[T2] Spike', 0, 4, 4, 0)),
+    (-26, ('[Hybrid Charges]Antimatter', 0, 5, 7, 0)),
+    (-27, ('[Hybrid Charges]Plutonium', 0, 5, 6, 0)),
+    (-28, ('[Hybrid Charges]Uranium', 0, 4, 6, 0)),
+    (-29, ('[Hybrid Charges]Thorium', 0, 4, 5, 0)),
+    (-30, ('[Hybrid Charges]Lead', 0, 3, 5, 0)),
+    (-31, ('[Hybrid Charges]Iridium', 0, 3, 4, 0)),
+    (-32, ('[Hybrid Charges]Tungsten', 0, 2, 4, 0)),
+    (-33, ('[Hybrid Charges]Iron', 0, 2, 3, 0)),
+    (-34, ('[Missiles]Mjolnir', 1, 0, 0, 0)),
+    (-35, ('[Missiles]Inferno', 0, 1, 0, 0)),
+    (-36, ('[Missiles]Scourge', 0, 0, 1, 0)),
+    (-37, ('[Missiles]Nova', 0, 0, 0, 1)),
+    (-38, ('[Missiles]|[Structure] Standup Missile', 1, 1, 1, 1)),
+    (-39, ('[Projectile Ammo]|[T2] Hail', 0, 0, 3.3, 12.1)),
+    (-40, ('[Projectile Ammo]|[T2] Barrage', 0, 0, 5, 6)),
+    (-41, ('[Projectile Ammo]|[T2] Quake', 0, 0, 5, 9)),
+    (-42, ('[Projectile Ammo]|[T2] Tremor', 0, 0, 3, 5)),
+    (-43, ('[Projectile Ammo]EMP', 9, 0, 1, 2)),
+    (-44, ('[Projectile Ammo]Phased Plasma', 0, 10, 2, 0)),
+    (-45, ('[Projectile Ammo]Fusion', 0, 0, 2, 10)),
+    (-46, ('[Projectile Ammo]Depleted Uranium', 0, 3, 2, 3)),
+    (-47, ('[Projectile Ammo]Titanium Sabot', 0, 0, 6, 2)),
+    (-48, ('[Projectile Ammo]Proton', 3, 0, 2, 0)),
+    (-49, ('[Projectile Ammo]Carbonized Lead', 0, 0, 4, 1)),
+    (-50, ('[Projectile Ammo]Nuclear', 0, 0, 1, 4)),
+    # Different sizes of plasma do different damage ratios, the values here
+    # are average of ratios across sizes
+    (-51, ('[Exotic Plasma]|[T2] Occult', 0, 55863, 0, 44137)),
+    (-52, ('[Exotic Plasma]|[T2] Mystic', 0, 66319, 0, 33681)),
+    (-53, ('[Exotic Plasma]Tetryon', 0, 69208, 0, 30792)),
+    (-54, ('[Exotic Plasma]Baryon', 0, 59737, 0, 40263)),
+    (-55, ('[Exotic Plasma]Meson', 0, 60519, 0, 39481)),
+    (-56, ('[NPC][Asteroid]Angel Cartel', 1838, 562, 2215, 3838)),
+    (-57, ('[NPC][Asteroid]Blood Raiders', 5067, 4214, 0, 0)),
+    (-58, ('[NPC][Asteroid]Guristas', 0, 1828, 7413, 0)),
+    (-59, ('[NPC][Asteroid]Rogue Drone', 394, 666, 1090, 1687)),
+    (-60, ('[NPC][Asteroid]Sanshas Nation', 5586, 4112, 0, 0)),
+    (-61, ('[NPC][Asteroid]Serpentis', 0, 5373, 4813, 0)),
+    (-62, ('[NPC][Deadspace]Angel Cartel', 369, 533, 1395, 3302)),
+    (-63, ('[NPC][Deadspace]Blood Raiders', 6040, 5052, 10, 15)),
+    (-64, ('[NPC][Deadspace]Guristas', 0, 1531, 9680, 0)),
+    (-65, ('[NPC][Deadspace]Rogue Drone', 276, 1071, 1069, 871)),
+    (-66, ('[NPC][Deadspace]Sanshas Nation', 3009, 2237, 0, 0)),
+    (-67, ('[NPC][Deadspace]Serpentis', 0, 3110, 1929, 0)),
+    (-68, ('[NPC][Mission]Amarr Empire', 4464, 3546, 97, 0)),
+    (-69, ('[NPC][Mission]Caldari State', 0, 2139, 4867, 0)),
+    (-70, ('[NPC][Mission]CONCORD', 336, 134, 212, 412)),
+    (-71, ('[NPC][Mission]Gallente Federation', 9, 3712, 2758, 0)),
+    (-72, ('[NPC][Mission]Khanid', 612, 483, 43, 6)),
+    (-73, ('[NPC][Mission]Minmatar Republic', 1024, 388, 1655, 4285)),
+    (-74, ('[NPC][Mission]Mordus Legion', 25, 262, 625, 0)),
+    (-75, ('[NPC][Mission]Thukker', 0, 52, 10, 79)),
+    (-76, ('[NPC][Burner]Cruor (Blood Raiders)', 90, 90, 0, 0)),
+    (-77, ('[NPC][Burner]Dramiel (Angel)', 55, 0, 20, 96)),
+    (-78, ('[NPC][Burner]Daredevil (Serpentis)', 0, 110, 154, 0)),
+    (-79, ('[NPC][Burner]Succubus (Sanshas Nation)', 135, 30, 0, 0)),
+    (-80, ('[NPC][Burner]Worm (Guristas)', 0, 0, 228, 0)),
+    (-81, ('[NPC][Burner]Enyo', 0, 147, 147, 0)),
+    (-82, ('[NPC][Burner]Hawk', 0, 0, 247, 0)),
+    (-83, ('[NPC][Burner]Jaguar', 36, 0, 50, 182)),
+    (-84, ('[NPC][Burner]Vengeance', 232, 0, 0, 0)),
+    (-85, ('[NPC][Burner]Ashimmu (Blood Raiders)', 260, 100, 0, 0)),
+    (-86, ('[NPC][Burner]Talos', 0, 413, 413, 0)),
+    (-87, ('[NPC][Burner]Sentinel', 0, 75, 0, 90)),
+    (-88, ('[NPC][Other]Sleepers', 1472, 1472, 1384, 1384)),
+    (-89, ('[NPC][Other]Sansha Incursion', 1682, 1347, 3678, 3678)),
+    # Source: ticket #2067
+    (-90, ('[NPC][Invasion][Invading Precursor Entities]0% spool up', 31, 29, 24, 16)),
+    (-91, ('[NPC][Invasion][Invading Precursor Entities]50% spool up', 29, 37, 15, 19)),
+    (-92, ('[NPC][Invasion][Invading Precursor Entities]100% spool up', 28, 41, 11, 20)),
+    (-93, ('[NPC][Invasion]Retaliating Amarr Entities', 58, 42, 0, 0)),
+    (-94, ('[NPC][Invasion]Retaliating Caldari Entities', 30, 43, 2, 25)),
+    (-95, ('[NPC][Invasion]Retaliating Gallente Entities', 0, 42, 58, 0)),
+    (-96, ('[NPC][Invasion]Retaliating Minmatar Entities', 17, 8, 44, 31))])
+
+
 class DamagePattern:
-    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
+
+    DAMAGE_TYPES = ('em', 'thermal', 'kinetic', 'explosive')
+    _builtins = None
 
     def __init__(self, *args, **kwargs):
+        self.builtin = False
         self.update(*args, **kwargs)
+
+    @reconstructor
+    def init(self):
+        self.builtin = False
 
     def update(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
         self.explosiveAmount = explosiveAmount
+
+    @classmethod
+    def getBuiltinList(cls):
+        if cls._builtins is None:
+            cls.__generateBuiltins()
+        return list(cls._builtins.values())
+
+    @classmethod
+    def getBuiltinById(cls, id):
+        if cls._builtins is None:
+            cls.__generateBuiltins()
+        return cls._builtins.get(id)
+
+    @classmethod
+    def getDefaultBuiltin(cls):
+        if cls._builtins is None:
+            cls.__generateBuiltins()
+        return cls._builtins.get(-1)
+
+    @classmethod
+    def __generateBuiltins(cls):
+        cls._builtins = OrderedDict()
+        for id, (rawName, em, therm, kin, explo) in BUILTINS.items():
+            pattern = DamagePattern(emAmount=em, thermalAmount=therm, kineticAmount=kin, explosiveAmount=explo)
+            pattern.ID = id
+            pattern.rawName = rawName
+            pattern.builtin = True
+            cls._builtins[id] = pattern
 
     def calculateEhp(self, fit):
         ehp = {}
@@ -98,7 +239,7 @@ class DamagePattern:
         lookup = {}
         current = eos.db.getDamagePatternList()
         for pattern in current:
-            lookup[pattern.name] = pattern
+            lookup[pattern.rawName] = pattern
 
         for line in lines:
             try:
@@ -131,7 +272,7 @@ class DamagePattern:
                     eos.db.save(pattern)
                 else:
                     pattern = DamagePattern(**fields)
-                    pattern.name = name.strip()
+                    pattern.rawName = name.strip()
                     eos.db.save(pattern)
                 patterns.append(pattern)
 
@@ -147,11 +288,41 @@ class DamagePattern:
         out += "# Values are in following format:\n"
         out += "# DamageProfile = [name],[EM amount],[Thermal amount],[Kinetic amount],[Explosive amount]\n\n"
         for dp in patterns:
-            out += cls.EXPORT_FORMAT % (dp.name, dp.emAmount, dp.thermalAmount, dp.kineticAmount, dp.explosiveAmount)
+            out += cls.EXPORT_FORMAT % (dp.rawName, dp.emAmount, dp.thermalAmount, dp.kineticAmount, dp.explosiveAmount)
 
         return out.strip()
 
+    @property
+    def name(self):
+        return self.rawName
+
+    @property
+    def fullName(self):
+        categories, tail = self.__parseRawName()
+        return '{}{}'.format(''.join('[{}]'.format(c) for c in categories), tail)
+
+    @property
+    def shortName(self):
+        return self.__parseRawName()[1]
+
+    @property
+    def hierarchy(self):
+        return self.__parseRawName()[0]
+
+    def __parseRawName(self):
+        categories = []
+        remainingName = self.rawName.strip() if self.rawName else ''
+        while True:
+            start, end = remainingName.find('['), remainingName.find(']')
+            if start == -1 or end == -1:
+                return categories, remainingName
+            splitter = remainingName.find('|')
+            if splitter != -1 and splitter == start - 1:
+                return categories, remainingName[1:]
+            categories.append(remainingName[start + 1:end])
+            remainingName = remainingName[end + 1:].strip()
+
     def __deepcopy__(self, memo):
         p = DamagePattern(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
-        p.name = "%s copy" % self.name
+        p.rawName = "%s copy" % self.rawName
         return p

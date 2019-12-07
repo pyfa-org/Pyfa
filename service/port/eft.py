@@ -864,7 +864,6 @@ class AbstractFit:
         self.cargo[itemSpec.item].amount += itemSpec.amount
 
 
-
 def _lineIter(text):
     """Iterate over non-blank lines."""
     for line in text.splitlines():

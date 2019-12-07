@@ -68,7 +68,7 @@ class TargetProfileNameValidator(BaseValidator):
         try:
             if len(text) == 0:
                 raise ValueError("You must supply a name for your Target Profile!")
-            elif text in [x.name for x in entityEditor.choices]:
+            elif text in [x.rawName for x in entityEditor.choices]:
                 raise ValueError("Target Profile name already in use, please choose another.")
 
             return True
@@ -88,7 +88,7 @@ class TargetProfileEntityEditor(EntityEditor):
 
     def getEntitiesFromContext(self):
         sTR = TargetProfile.getInstance()
-        choices = sorted(sTR.getTargetProfileList(), key=lambda p: p.name)
+        choices = sorted(sTR.getUserTargetProfileList(), key=lambda p: p.rawName)
         return choices
 
     def DoNew(self, name):
