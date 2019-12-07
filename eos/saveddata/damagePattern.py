@@ -25,6 +25,7 @@ from sqlalchemy.orm import reconstructor
 import eos.db
 
 
+# Order is significant here - UI uses order as-is for built-in patterns
 BUILTINS = OrderedDict([
     (-1, ('Uniform', 25, 25, 25, 25)),
     (-2, ('[Generic]EM', 1, 0, 0, 0)),
