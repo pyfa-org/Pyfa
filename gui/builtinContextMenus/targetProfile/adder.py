@@ -7,6 +7,7 @@ import wx
 import gui.mainFrame
 from eos.saveddata.targetProfile import TargetProfile
 from gui.contextMenu import ContextMenuUnconditional
+from gui.utils.sorter import smartSort
 from service.targetProfile import TargetProfile as svc_TargetProfile
 
 
@@ -48,7 +49,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
         self.callingWindow = callingWindow
         sTR = svc_TargetProfile.getInstance()
         profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
-        profiles.sort(key=lambda p: p.fullName)
+        profiles.sort(key=lambda p: smartSort(p.fullName))
 
         self.profileEventMap = {}
         items = (OrderedDict(), OrderedDict())

@@ -7,6 +7,7 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
+from gui.utils.sorter import smartSort
 from service.fit import Fit
 from service.targetProfile import TargetProfile as svc_TargetProfile
 
@@ -60,7 +61,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         sTR = svc_TargetProfile.getInstance()
         profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
-        profiles.sort(key=lambda p: p.fullName)
+        profiles.sort(key=lambda p: smartSort(p.fullName))
 
         self.profileEventMap = {}
         items = (OrderedDict(), OrderedDict())
