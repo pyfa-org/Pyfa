@@ -84,11 +84,11 @@ BUILTINS = OrderedDict([
     (-50, ('[NPC][Burner]Talos', 0.68, 0.59, 0.59, 0.43)),
     (-51, ('[NPC][Burner]Sentinel', 0.58, 0.45, 0.52, 0.66)),
     # Source: ticket #2067
-    (-52, ('[NPC][Invasion]Invading Precursor Entities', 0.46, 0.39, 0.48, 0.42)),
-    (-53, ('[NPC][Invasion]Retaliating Amarr Entities', 0.36, 0.31, 0.44, 0.60)),
-    (-54, ('[NPC][Invasion]Retaliating Caldari Entities', 0.28, 0.61, 0.48, 0.39)),
-    (-55, ('[NPC][Invasion]Retaliating Gallente Entities', 0.36, 0.39, 0.56, 0.50)),
-    (-56, ('[NPC][Invasion]Retaliating Minmatar Entities', 0.62, 0.42, 0.35, 0.40))])
+    (-52, ('[NPC][Invasion]Invading Precursor Entities', 0.414, 0.363, 0.449, 0.412)),
+    (-53, ('[NPC][Invasion]Retaliating Amarr Entities', 0.360, 0.310, 0.441, 0.602)),
+    (-54, ('[NPC][Invasion]Retaliating Caldari Entities', 0.287, 0.610, 0.487, 0.401)),
+    (-55, ('[NPC][Invasion]Retaliating Gallente Entities', 0.383, 0.414, 0.578, 0.513)),
+    (-56, ('[NPC][Invasion]Retaliating Minmatar Entities', 0.620, 0.422, 0.355, 0.399))])
 
 
 class TargetProfile:
