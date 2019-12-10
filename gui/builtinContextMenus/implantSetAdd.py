@@ -1,18 +1,15 @@
-# noinspection PyPackageRequirements
-import wx
-
 from gui.contextMenu import ContextMenuUnconditional
-from service.implantSet import ImplantSets as s_ImplantSets
 
 
 class ImplantSetAdd(ContextMenuUnconditional):
 
     def display(self, callingWindow, srcContext):
 
-        sIS = s_ImplantSets.getInstance()
-        implantSets = sIS.getImplantSetList()
+        if not hasattr(callingWindow, 'implants'):
+            return False
 
-        if len(implantSets) == 0:
+        implantList = callingWindow.implants
+        if not implantList or len(implantList) == 0:
             return False
 
         return srcContext in ("implantSetAdd", "implantEditor")
@@ -21,9 +18,8 @@ class ImplantSetAdd(ContextMenuUnconditional):
         return "Add As New Implant Set"
 
     def activate(self, callingWindow, fullContext, i):
-        sIS = s_ImplantSets.getInstance()
-        implantSets = sIS.getImplantSetList()
-        callingWindow.mainFrame.OnShowImplantSetEditor(None, implantSets)
+        implantList = callingWindow.implants
+        callingWindow.mainFrame.OnShowImplantSetEditor(None, implantList)
 
 
 ImplantSetAdd.register()

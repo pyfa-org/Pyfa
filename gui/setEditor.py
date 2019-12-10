@@ -84,6 +84,14 @@ class ImplantSetEntityEditor(EntityEditor):
         sIS = ImplantSets.getInstance()
         sIS.deleteSet(entity)
 
+    def addExternalDataToSet(self, dataToAdd):
+        """ Add new set and fill it with data from the current fit """
+        if self.enterNewEntity():
+            sIS = ImplantSets.getInstance()
+            set_ = self.Parent.entityEditor.getActiveEntity()
+            for item in dataToAdd:
+                sIS.addImplant(set_.ID, item.item.ID)
+
 
 class ImplantSetEditorView(BaseImplantEditorView):
 
@@ -167,8 +175,8 @@ class ImplantSetEditor(AuxiliaryFrame):
         self.Layout()
 
         if dataToAdd:
-            # add elements passed from outside
-            pass
+            # add an implant set using data passed from outside
+            self.entityEditor.addExternalDataToSet(dataToAdd)
         elif not self.entityEditor.checkEntitiesExist():
             self.Close()
             return
