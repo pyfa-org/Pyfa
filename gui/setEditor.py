@@ -117,7 +117,7 @@ class ImplantSetEditorView(BaseImplantEditorView):
 
 class ImplantSetEditor(AuxiliaryFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, dataToAdd=None):
         super().__init__(
             parent, id=wx.ID_ANY, title="Implant Set Editor", resizeable=True,
             size=wx.Size(950, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
@@ -166,7 +166,10 @@ class ImplantSetEditor(AuxiliaryFrame):
         self.SetSizer(mainSizer)
         self.Layout()
 
-        if not self.entityEditor.checkEntitiesExist():
+        if dataToAdd:
+            # add elements passed from outside
+            pass
+        elif not self.entityEditor.checkEntitiesExist():
             self.Close()
             return
 

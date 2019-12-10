@@ -14,6 +14,7 @@ class ImplantSetLoad(ContextMenuUnconditional):
 
         if len(implantSets) == 0:
             return False
+
         return srcContext in ("implantItemMisc", "implantEditor")
 
     def getText(self, callingWindow, itmContext):

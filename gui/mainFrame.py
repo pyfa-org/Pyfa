@@ -442,8 +442,8 @@ class MainFrame(wx.Frame):
     def OnShowDamagePatternEditor(self, event):
         DmgPatternEditor.openOne(parent=self)
 
-    def OnShowImplantSetEditor(self, event):
-        ImplantSetEditor.openOne(parent=self)
+    def OnShowImplantSetEditor(self, event, dataToAdd=None):
+        ImplantSetEditor.openOne(parent=self, dataToAdd=dataToAdd)
 
     def OnShowExportDialog(self, event):
         """ Export active fit """
