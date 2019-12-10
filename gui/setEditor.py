@@ -47,7 +47,7 @@ class ImplantTextValidor(BaseValidator):
             if len(text) == 0:
                 raise ValueError("You must supply a name for the Implant Set!")
             elif text in [x.name for x in entityEditor.choices]:
-                raise ValueError("Imlplant Set name already in use, please choose another.")
+                raise ValueError("Implant Set name already in use, please choose another.")
 
             return True
         except ValueError as e:
