@@ -12,7 +12,7 @@ class ImplantSetAdd(ContextMenuUnconditional):
         if not implantList or len(implantList) == 0:
             return False
 
-        return srcContext in ("implantSetAdd", "implantEditor")
+        return srcContext in ("implantItemMisc", "implantItemMiscChar", "implantEditor")
 
     def getText(self, callingWindow, itmContext):
         return "Add As New Implant Set"
