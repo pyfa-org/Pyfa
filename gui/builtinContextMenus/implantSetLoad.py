@@ -17,7 +17,7 @@ class ImplantSetLoad(ContextMenuUnconditional):
 
         return srcContext in ("implantItemMisc", "implantEditor")
 
-    def getText(self, callingWindow, itmContext):
+    def getText(self, callingWindow, context):
         return "Load Implant Set"
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):

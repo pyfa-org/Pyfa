@@ -14,7 +14,7 @@ class ImplantSetAdd(ContextMenuUnconditional):
 
         return srcContext in ("implantItemMisc", "implantItemMiscChar", "implantEditor")
 
-    def getText(self, callingWindow, itmContext):
+    def getText(self, callingWindow, context):
         return "Add As New Implant Set"
 
     def activate(self, callingWindow, fullContext, i):
