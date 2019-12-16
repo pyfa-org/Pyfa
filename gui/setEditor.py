@@ -84,14 +84,6 @@ class ImplantSetEntityEditor(EntityEditor):
         sIS = ImplantSets.getInstance()
         sIS.deleteSet(entity)
 
-    def addExternalDataToSet(self, dataToAdd):
-        """ Add new set and fill it with data from the current fit """
-        if self.enterNewEntity():
-            sIS = ImplantSets.getInstance()
-            set_ = self.Parent.entityEditor.getActiveEntity()
-            for item in dataToAdd:
-                sIS.addImplant(set_.ID, item.item.ID)
-
 
 class ImplantSetEditorView(BaseImplantEditorView):
 
@@ -114,7 +106,7 @@ class ImplantSetEditorView(BaseImplantEditorView):
         sIS = ImplantSets.getInstance()
         set_ = self.Parent.entityEditor.getActiveEntity()
 
-        sIS.addImplant(set_.ID, item.ID)
+        sIS.addImplants(set_.ID, item.ID)
 
     def removeImplantFromContext(self, implant):
         sIS = ImplantSets.getInstance()
@@ -175,8 +167,11 @@ class ImplantSetEditor(AuxiliaryFrame):
         self.Layout()
 
         if dataToAdd:
-            # add an implant set using data passed from outside
-            self.entityEditor.addExternalDataToSet(dataToAdd)
+            name, implants = dataToAdd
+            newSet = self.entityEditor.DoNew(name)
+            ImplantSets.getInstance().addImplants(newSet.ID, *[i.item.ID for i in implants])
+            self.entityEditor.refreshEntityList(newSet)
+            wx.PostEvent(self.entityEditor.entityChoices, wx.CommandEvent(wx.wxEVT_COMMAND_CHOICE_SELECTED))
         elif not self.entityEditor.checkEntitiesExist():
             self.Close()
             return
