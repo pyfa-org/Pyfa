@@ -47,7 +47,7 @@ class ImplantTextValidor(BaseValidator):
             if len(text) == 0:
                 raise ValueError("You must supply a name for the Implant Set!")
             elif text in [x.name for x in entityEditor.choices]:
-                raise ValueError("Imlplant Set name already in use, please choose another.")
+                raise ValueError("Implant Set name already in use, please choose another.")
 
             return True
         except ValueError as e:
@@ -84,6 +84,14 @@ class ImplantSetEntityEditor(EntityEditor):
         sIS = ImplantSets.getInstance()
         sIS.deleteSet(entity)
 
+    def addExternalDataToSet(self, dataToAdd):
+        """ Add new set and fill it with data from the current fit """
+        if self.enterNewEntity():
+            sIS = ImplantSets.getInstance()
+            set_ = self.Parent.entityEditor.getActiveEntity()
+            for item in dataToAdd:
+                sIS.addImplant(set_.ID, item.item.ID)
+
 
 class ImplantSetEditorView(BaseImplantEditorView):
 
@@ -117,7 +125,7 @@ class ImplantSetEditorView(BaseImplantEditorView):
 
 class ImplantSetEditor(AuxiliaryFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, dataToAdd=None):
         super().__init__(
             parent, id=wx.ID_ANY, title="Implant Set Editor", resizeable=True,
             size=wx.Size(950, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
@@ -166,7 +174,10 @@ class ImplantSetEditor(AuxiliaryFrame):
         self.SetSizer(mainSizer)
         self.Layout()
 
-        if not self.entityEditor.checkEntitiesExist():
+        if dataToAdd:
+            # add an implant set using data passed from outside
+            self.entityEditor.addExternalDataToSet(dataToAdd)
+        elif not self.entityEditor.checkEntitiesExist():
             self.Close()
             return
 

@@ -36,6 +36,7 @@ from gui.builtinContextMenus import cargoAdd
 from gui.builtinContextMenus import cargoAddAmmo
 from gui.builtinContextMenus import itemProject
 from gui.builtinContextMenus import ammoToDmgPattern
+from gui.builtinContextMenus import implantSetLoad
 from gui.builtinContextMenus import implantSetAdd
 # Price
 from gui.builtinContextMenus import priceOptions
