@@ -3,7 +3,6 @@ from gui.contextMenu import ContextMenuSelection
 from gui.utils.clipboard import toClipboard
 from service.fit import Fit
 from service.port.eft import exportDrones, exportFighters, exportCargo, exportImplants, exportBoosters
-from service.settings import ContextMenuSettings
 
 
 viewSpecMap = {
@@ -17,12 +16,12 @@ viewSpecMap = {
 
 class AdditionsExportAll(ContextMenuSelection):
 
+    visibilitySetting = 'additionsCopyPaste'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, callingWindow, srcContext, selection):
-        if not ContextMenuSettings.getInstance().get('additionsCopyPaste'):
-            return False
         if srcContext not in viewSpecMap:
             return False
         if not selection:

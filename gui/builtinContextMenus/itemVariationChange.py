@@ -7,19 +7,16 @@ from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarModPositions, getSimilarFighters
 from service.fit import Fit
 from service.market import Market
-from service.settings import ContextMenuSettings
 
 
 class ChangeItemToVariation(ContextMenuCombined):
 
+    visibilitySetting = 'metaSwap'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, callingWindow, srcContext, mainItem, selection):
-        if not self.settings.get('metaSwap'):
-            return False
-
         if self.mainFrame.getActiveFit() is None or srcContext not in (
             'fittingModule',
             'droneItem',

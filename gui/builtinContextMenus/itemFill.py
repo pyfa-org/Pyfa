@@ -1,19 +1,16 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
-from service.settings import ContextMenuSettings
 
 
 class FillWithItem(ContextMenuSingle):
 
+    visibilitySetting = 'moduleFill'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, callingWindow, srcContext, mainItem):
-        if not self.settings.get('moduleFill'):
-            return False
-
         if srcContext not in ('marketItemGroup', 'marketItemMisc'):
             return False
 
