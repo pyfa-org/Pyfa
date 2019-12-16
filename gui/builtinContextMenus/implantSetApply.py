@@ -5,7 +5,7 @@ from gui.contextMenu import ContextMenuUnconditional
 from service.implantSet import ImplantSets as s_ImplantSets
 
 
-class ImplantSetLoad(ContextMenuUnconditional):
+class ImplantSetApply(ContextMenuUnconditional):
 
     def display(self, callingWindow, srcContext):
 
@@ -50,4 +50,4 @@ class ImplantSetLoad(ContextMenuUnconditional):
         self.callingWindow.addImplantSet(impSet)
 
 
-ImplantSetLoad.register()
+ImplantSetApply.register()

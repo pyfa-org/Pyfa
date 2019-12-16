@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenuUnconditional
 
 
-class ImplantSetAdd(ContextMenuUnconditional):
+class ImplantSetSave(ContextMenuUnconditional):
 
     def display(self, callingWindow, srcContext):
 
@@ -15,11 +15,11 @@ class ImplantSetAdd(ContextMenuUnconditional):
         return srcContext in ("implantItemMisc", "implantItemMiscChar")
 
     def getText(self, callingWindow, context):
-        return "Add As New Implant Set"
+        return "Save as New Implant Set"
 
     def activate(self, callingWindow, fullContext, i):
         implantList = callingWindow.implants
         callingWindow.mainFrame.OnShowImplantSetEditor(None, implantList)
 
 
-ImplantSetAdd.register()
+ImplantSetSave.register()
