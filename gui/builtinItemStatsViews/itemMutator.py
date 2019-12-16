@@ -172,7 +172,8 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.SetSizer(sizer)
 
     def changeMutatedValue(self, evt):
-        self.isModified = True
+        if evt.AffectsModifiedFlag:
+            self.isModified = True
         m = self.event_mapping[evt.Object]
         value = evt.Value
         value = m.attribute.unit.ComplicateValue(value)
@@ -195,7 +196,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         for slider, m in self.event_mapping.items():
             value = sFit.changeMutatedValuePrelim(m, m.baseValue)
             value = m.attribute.unit.SimplifyValue(value)
-            slider.SetValue(value)
+            slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
     def randomMutatedValues(self, evt):
@@ -205,7 +206,7 @@ class ItemMutatorList(wx.ScrolledWindow):
             value = random.uniform(m.minValue, m.maxValue)
             value = sFit.changeMutatedValuePrelim(m, value)
             value = m.attribute.unit.SimplifyValue(value)
-            slider.SetValue(value)
+            slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
     def revertChanges(self, evt):
@@ -215,23 +216,26 @@ class ItemMutatorList(wx.ScrolledWindow):
             if m.attrID in self.initialMutations:
                 value = sFit.changeMutatedValuePrelim(m, self.initialMutations[m.attrID])
                 value = m.attribute.unit.SimplifyValue(value)
-                slider.SetValue(value)
+                slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
     def OnWindowClose(self):
         # Submit mutation changes
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.carryingFitID)
-        if self.isModified and self.mod in fit.modules:
-            currentMutation = {}
-            for slider, m in self.event_mapping.items():
-                # Sliders may have more up-to-date info than mutator in case we changed
-                # value in slider and without confirming it, decided to close window
-                value = slider.GetValue()
-                value = m.attribute.unit.ComplicateValue(value)
-                if value != m.value:
-                    value = sFit.changeMutatedValuePrelim(m, value)
-                currentMutation[m.attrID] = value
+        if self.mod in fit.modules:
+            if self.isModified:
+                currentMutation = {}
+                for slider, m in self.event_mapping.items():
+                    # Sliders may have more up-to-date info than mutator in case we changed
+                    # value in slider and without confirming it, decided to close window
+                    value = slider.GetValue()
+                    value = m.attribute.unit.ComplicateValue(value)
+                    if value != m.value:
+                        value = sFit.changeMutatedValuePrelim(m, value)
+                    currentMutation[m.attrID] = value
+            else:
+                currentMutation = self.initialMutations
             mainFrame = gui.mainFrame.MainFrame.getInstance()
             mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
                 fitID=self.carryingFitID,
