@@ -53,13 +53,13 @@ class DamagePattern:
     @staticmethod
     def newPattern(name):
         p = es_DamagePattern(0, 0, 0, 0)
-        p.name = name
+        p.rawName = name
         eos.db.save(p)
         return p
 
     @staticmethod
     def renamePattern(p, newName):
-        p.name = newName
+        p.rawName = newName
         eos.db.save(p)
 
     @staticmethod
@@ -91,5 +91,5 @@ class DamagePattern:
             if patterns[i].name in ("Uniform", "Selected Ammo"):
                 del patterns[i]
 
-        patterns.sort(key=lambda p: p.name)
+        patterns.sort(key=lambda p: p.fullName)
         return es_DamagePattern.exportPatterns(*patterns)

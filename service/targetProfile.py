@@ -48,13 +48,13 @@ class TargetProfile:
     @staticmethod
     def newPattern(name):
         p = es_TargetProfile()
-        p.name = name
+        p.rawName = name
         db.save(p)
         return p
 
     @staticmethod
     def renamePattern(p, newName):
-        p.name = newName
+        p.rawName = newName
         db.save(p)
 
     @staticmethod
@@ -82,5 +82,5 @@ class TargetProfile:
 
     def exportPatterns(self):
         patterns = self.getUserTargetProfileList()
-        patterns.sort(key=lambda p: p.name)
+        patterns.sort(key=lambda p: p.fullName)
         return es_TargetProfile.exportPatterns(*patterns)
