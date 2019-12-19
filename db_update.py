@@ -454,6 +454,8 @@ def update_db():
     processCloneGrades()
     processTraits()
     processMetadata()
+
+    eos.db.gamedata_session.flush()
     processReplacements(eveTypesData, eveGroupsData, dogmaTypeAttributesData, dogmaTypeEffectsData)
 
     # Add schema version to prevent further updates
@@ -462,7 +464,7 @@ def update_db():
     metadata_schema_version.field_value = GAMEDATA_SCHEMA_VERSION
     eos.db.gamedata_session.add(metadata_schema_version)
 
-    eos.db.gamedata_session.commit()
+    eos.db.gamedata_session.flush()
 
     # CCP still has 5 subsystems assigned to T3Cs, even though only 4 are available / usable. They probably have some
     # old legacy requirement or assumption that makes it difficult for them to change this value in the data. But for
