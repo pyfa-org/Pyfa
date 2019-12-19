@@ -3945,11 +3945,11 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Light Missile and Rocket Launcher explosion velocity"
+              "text": "bonus to Light Missile and Rocket explosion velocity"
             }, 
             {
               "number": "5%", 
-              "text": "bonus to Light Missile and Rocket Launcher damage"
+              "text": "bonus to Light Missile and Rocket damage"
             }
           ], 
           "header": "Assault Frigates bonuses (per skill level):"
@@ -17728,7 +17728,7 @@
               "text": "bonus to Ultratidal Entropic Disintegrator rate of fire"
             }
           ], 
-          "header": "Zirnitra bonuses (per skill level):"
+          "header": "Precursor Dreadnought bonuses (per skill level):"
         }
       ]
     }, 
