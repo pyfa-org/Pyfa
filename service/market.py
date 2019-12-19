@@ -802,7 +802,7 @@ class Market:
     def getReplacements(self, identity):
         item = self.getItem(identity)
         # We already store needed type IDs in database
-        replTypeIDs = {int(i) for i in item.replacements.split(",") if i}
+        replTypeIDs = {int(i) for i in item.replacements.split(",") if i} if item.replacements is not None else {}
         if not replTypeIDs:
             return ()
         # As replacements were generated without keeping track which items were published,

@@ -33,7 +33,7 @@ DB_PATH = os.path.join(ROOT_DIR, 'eve.db')
 JSON_DIR = os.path.join(ROOT_DIR, 'staticdata')
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
-GAMEDATA_SCHEMA_VERSION = 1
+GAMEDATA_SCHEMA_VERSION = 2
 
 
 def db_needs_update():
@@ -319,6 +319,32 @@ def update_db():
         data = _readData('phobos', 'metadata')
         _addRows(data, eos.gamedata.MetaData)
 
+    def processReqSkills(eveTypesData):
+        print('processing requiredskillsfortypes')
+
+        def composeReqSkills(raw):
+            reqSkills = {}
+            for skillTypeID, skillLevels in raw.items():
+                reqSkills[int(skillTypeID)] = skillLevels[0]
+            return reqSkills
+
+        eveTypeIds = set(r['typeID'] for r in eveTypesData)
+        data = _readData('fsd_binary', 'requiredskillsfortypes')
+        reqsByItem = {}
+        itemsByReq = {}
+        for typeID, skillreqData in data.items():
+            typeID = int(typeID)
+            if typeID not in eveTypeIds:
+                continue
+            for skillTypeID, skillLevel in composeReqSkills(skillreqData).items():
+                reqsByItem.setdefault(typeID, {})[skillTypeID] = skillLevel
+                itemsByReq.setdefault(skillTypeID, {})[typeID] = skillLevel
+        for item in eos.db.gamedata_session.query(eos.gamedata.Item).all():
+            if item.typeID in reqsByItem:
+                item.reqskills = json.dumps(reqsByItem[item.typeID])
+            if item.typeID in itemsByReq:
+                item.requiredfor = json.dumps(itemsByReq[item.typeID])
+
     def processReplacements(eveTypesData, eveGroupsData, dogmaTypeAttributesData, dogmaTypeEffectsData):
         print('finding item replacements')
 
@@ -438,7 +464,9 @@ def update_db():
                     replacements.setdefault(type2[0], set()).add(type1[0])
         # Update DB session with data we generated
         for item in eos.db.gamedata_session.query(eos.gamedata.Item).all():
-            item.replacements = ','.join('{}'.format(tid) for tid in sorted(replacements.get(item.typeID, ())))
+            itemReplacements = replacements.get(item.typeID)
+            if itemReplacements is not None:
+                item.replacements = ','.join('{}'.format(tid) for tid in sorted(itemReplacements))
 
     eveTypesData = processEveTypes()
     eveGroupsData = processEveGroups()
@@ -456,6 +484,7 @@ def update_db():
     processMetadata()
 
     eos.db.gamedata_session.flush()
+    processReqSkills(eveTypesData)
     processReplacements(eveTypesData, eveGroupsData, dogmaTypeAttributesData, dogmaTypeEffectsData)
 
     # Add schema version to prevent further updates

@@ -424,25 +424,3 @@ def getDynamicItem(itemID, eager=None):
     except exc.NoResultFound:
         result = None
     return result
-
-
-def getRequiredFor(itemID, attrMapping):
-    Attribute1 = aliased(Attribute)
-    Attribute2 = aliased(Attribute)
-
-    skillToLevelClauses = []
-
-    for attrSkill, attrLevel in attrMapping.items():
-        skillToLevelClauses.append(and_(Attribute1.attributeID == attrSkill, Attribute2.attributeID == attrLevel))
-
-    queryOr = or_(*skillToLevelClauses)
-
-    q = select((Attribute2.typeID, Attribute2.value),
-               and_(Attribute1.value == itemID, queryOr),
-               from_obj=[
-                   join(Attribute1, Attribute2, Attribute1.typeID == Attribute2.typeID)
-               ])
-
-    result = gamedata_session.execute(q).fetchall()
-
-    return result
