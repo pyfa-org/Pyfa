@@ -400,6 +400,7 @@ class Item(EqBase):
                     9  : "guristas",  # Caldari + Gallente
                     10 : "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
                     12 : "sisters",  # Amarr + Gallente
+                    15 : "concord",
                     16 : "jove",
                     32 : "sansha",  # Incrusion Sansha
                     128: "ore",

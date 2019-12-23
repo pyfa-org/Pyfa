@@ -189,7 +189,7 @@ class ShipBrowser(wx.Panel):
 
     RACE_ORDER = [
         "amarr", "caldari", "gallente", "minmatar",
-        "sisters", "ore",
+        "sisters", "ore", "concord",
         "serpentis", "angel", "blood", "sansha", "guristas", "mordu",
         "jove", "upwell", "triglavian", None
     ]
