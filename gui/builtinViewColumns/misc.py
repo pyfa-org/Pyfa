@@ -588,7 +588,7 @@ class Miscellanea(ViewColumn):
         ):
             if "Armor" in itemGroup or "Shield" in itemGroup:
                 boosted_attribute = "HP"
-                reload_time = item.getAttribute("reloadTime", 0) / 1000
+                reload_time = stuff.getModifiedItemAttr("reloadTime", 0) / 1000
             elif "Capacitor" in itemGroup:
                 boosted_attribute = "Cap"
                 reload_time = 10
