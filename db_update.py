@@ -235,12 +235,12 @@ def update_db():
     def processDogmaUnits():
         print('processing dogmaunits')
         data = _readData('fsd_binary', 'dogmaunits', keyIdName='unitID')
-        _addRows(data, eos.gamedata.Unit, fieldMap={'name': 'marketGroupName'})
+        _addRows(data, eos.gamedata.Unit, fieldMap={'name': 'unitName'})
 
     def processMarketGroups():
         print('processing marketgroups')
         data = _readData('fsd_binary', 'marketgroups', keyIdName='marketGroupID')
-        _addRows(data, eos.gamedata.MarketGroup)
+        _addRows(data, eos.gamedata.MarketGroup, fieldMap={'name': 'marketGroupName'})
 
     def processMetaGroups():
         print('processing metagroups')
