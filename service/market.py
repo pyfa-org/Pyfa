@@ -267,7 +267,8 @@ class Market:
             "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
-            "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I")}
+            "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
+            "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I")}
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in list(self.ITEMS_FORCEDMETAGROUP.items()):
