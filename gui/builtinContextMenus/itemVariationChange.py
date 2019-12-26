@@ -56,8 +56,11 @@ class ChangeItemToVariation(ContextMenuCombined):
             return x.metaLevel or 0
 
         def get_metagroup(x):
-            # We want deadspace before officer mods
-            remap = {5: 6, 6: 5}
+            remap = {
+                # We want deadspace before officer mods
+                5: 6, 6: 5,
+                # For structures we want t1-t2-faction
+                54: 52, 52: 54}
             metaGroup = sMkt.getMetaGroupByItem(x)
             return remap.get(metaGroup.ID, metaGroup.ID) if metaGroup is not None else 0
 
