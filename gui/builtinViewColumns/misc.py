@@ -339,23 +339,25 @@ class Miscellanea(ViewColumn):
                 formatAmount(radar, 3, 0, 3),
             )
             return text, tooltip
-        elif itemGroup in ("Remote Sensor Booster", "Sensor Booster", "Signal Amplifier"):
+        elif itemGroup in ("Remote Sensor Booster", "Sensor Booster", "Signal Amplifier", "Structure Signal Amplifier"):
+            textLines = []
+            tooltipLines = []
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
+            if scanResBonus:
+                textLines.append("{}%".format(formatAmount(scanResBonus, 3, 0, 3)))
+                tooltipLines.append("{}% scan resolution".format(formatAmount(scanResBonus, 3, 0, 3)))
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
+            if lockRangeBonus:
+                textLines.append("{}%".format(formatAmount(lockRangeBonus, 3, 0, 3)))
+                tooltipLines.append("{}% lock range".format(formatAmount(lockRangeBonus, 3, 0, 3)))
             gravBonus = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
-            if scanResBonus is None or lockRangeBonus is None or gravBonus is None:
+            if gravBonus:
+                textLines.append("{}%".format(formatAmount(gravBonus, 3, 0, 3)))
+                tooltipLines.append("{}% sensor strength".format(formatAmount(gravBonus, 3, 0, 3)))
+            if not textLines:
                 return "", None
-
-            text = "{0}% | {1}% | {2}%".format(
-                formatAmount(scanResBonus, 3, 0, 3),
-                formatAmount(lockRangeBonus, 3, 0, 3),
-                formatAmount(gravBonus, 3, 0, 3),
-            )
-            tooltip = "Applied bonuses:\n{0}% scan resolution | {1}% lock range | {2}% sensor strength".format(
-                formatAmount(scanResBonus, 3, 0, 3),
-                formatAmount(lockRangeBonus, 3, 0, 3),
-                formatAmount(gravBonus, 3, 0, 3),
-            )
+            text = " | ".join(textLines)
+            tooltip = "Applied bonuses:\n{}".format(" | ".join(tooltipLines))
             return text, tooltip
         elif itemGroup in ("Projected ECCM", "ECCM", "Sensor Backup Array"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
