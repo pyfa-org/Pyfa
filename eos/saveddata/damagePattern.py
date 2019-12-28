@@ -135,8 +135,8 @@ BUILTINS = OrderedDict([
     (-102, ('[NPC][Mission]Minmatar Republic', 1024, 388, 1655, 4285)),
     (-103, ('[NPC][Mission]Mordus Legion', 25, 262, 625, 0)),
     (-104, ('[NPC][Mission]Thukker', 0, 52, 10, 79)),
-    (-105, ('[NPC][Other]Sansha Incursion', 1682, 1347, 3678, 3678)),
-    (-106, ('[NPC][Other]Sleepers', 1472, 1472, 1384, 1384))])
+    (-105, ('[NPC]Sansha Incursion', 1682, 1347, 3678, 3678)),
+    (-106, ('[NPC]Sleepers', 1472, 1472, 1384, 1384))])
 
 
 class DamagePattern:
