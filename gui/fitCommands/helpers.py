@@ -323,7 +323,8 @@ def activeStateLimit(itemIdentity):
         'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability',
         'microJumpDrive', 'microJumpPortalDrive', 'emergencyHullEnergizer',
         'cynosuralGeneration', 'jumpPortalGeneration', 'jumpPortalGenerationBO',
-        'cloneJumpAccepting'
+        'cloneJumpAccepting', 'cloakingWarpSafe', 'cloakingPrototype', 'cloaking',
+        'massEntanglerEffect5'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
