@@ -12753,8 +12753,8 @@ class Effect4038(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemMultiply(lambda mod: 'overloadECMStrenghtBonus' in mod.itemModifiedAttributes,
-                                         'overloadECMStrenghtBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
+        fit.modules.filteredItemMultiply(lambda mod: 'overloadECMStrengthBonus' in mod.itemModifiedAttributes,
+                                         'overloadECMStrengthBonus', module.getModifiedItemAttr('overloadBonusMultiplier'), **kwargs)
 
 
 class Effect4039(BaseEffect):
