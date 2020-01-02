@@ -27898,7 +27898,7 @@ class Effect6488(BaseEffect):
     Charges from group: Sensor Booster Script (3 of 3)
     """
 
-    type = 'active'
+    type = 'passive'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
