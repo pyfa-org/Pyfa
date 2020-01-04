@@ -324,7 +324,7 @@ def activeStateLimit(itemIdentity):
         'microJumpDrive', 'microJumpPortalDrive', 'emergencyHullEnergizer',
         'cynosuralGeneration', 'jumpPortalGeneration', 'jumpPortalGenerationBO',
         'cloneJumpAccepting', 'cloakingWarpSafe', 'cloakingPrototype', 'cloaking',
-        'massEntanglerEffect5'
+        'massEntanglerEffect5', 'electronicAttributeModifyOnline', 'targetPassively'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE

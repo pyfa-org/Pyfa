@@ -275,6 +275,17 @@ class Effect51(BaseEffect):
         fit.ship.multiplyItemAttr('rechargeRate', module.getModifiedItemAttr('capacitorRechargeRateMultiplier'), **kwargs)
 
 
+class Effect54(BaseEffect):
+    """
+    targetPassively
+
+    Used by:
+    Modules from group: Passive Targeting System (6 of 6)
+    """
+
+    type = 'active'
+
+
 class Effect55(BaseEffect):
     """
     targetHostiles
