@@ -268,7 +268,8 @@ class Market:
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
             "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
-            "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I")}
+            "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I"),
+            "Dark Blood Standup Heavy Energy Neutralizer": ("Structure Faction", "Standup Heavy Energy Neutralizer I")}
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in list(self.ITEMS_FORCEDMETAGROUP.items()):
