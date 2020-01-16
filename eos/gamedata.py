@@ -18,6 +18,7 @@
 # ===============================================================================
 
 
+import json
 from collections import OrderedDict
 
 from logbook import Logger
@@ -314,50 +315,26 @@ class Item(EqBase):
         eos.db.saveddata_session.delete(override)
         eos.db.commit()
 
-    srqIDMap = {182: 277, 183: 278, 184: 279, 1285: 1286, 1289: 1287, 1290: 1288}
-
     @property
     def requiredSkills(self):
         if self.__requiredSkills is None:
-            requiredSkills = OrderedDict()
-            self.__requiredSkills = requiredSkills
-            # Map containing attribute IDs we may need for required skills
-            # { requiredSkillX : requiredSkillXLevel }
-            combinedAttrIDs = set(self.srqIDMap.keys()).union(set(self.srqIDMap.values()))
-            # Map containing result of the request
-            # { attributeID : attributeValue }
-            skillAttrs = {}
-            # Get relevant attribute values from db (required skill IDs and levels) for our item
-            for attrInfo in eos.db.directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
-                attrID = attrInfo[1]
-                attrVal = attrInfo[2]
-                skillAttrs[attrID] = attrVal
-            # Go through all attributeID pairs
-            for srqIDAtrr, srqLvlAttr in self.srqIDMap.items():
-                # Check if we have both in returned result
-                if srqIDAtrr in skillAttrs and srqLvlAttr in skillAttrs:
-                    skillID = int(skillAttrs[srqIDAtrr])
-                    skillLvl = skillAttrs[srqLvlAttr]
-                    # Fetch item from database and fill map
-                    item = eos.db.getItem(skillID)
-                    requiredSkills[item] = skillLvl
+            self.__requiredSkills = {}
+            if self.reqskills:
+                for skillTypeID, skillLevel in json.loads(self.reqskills).items():
+                    skillItem = eos.db.getItem(int(skillTypeID))
+                    if skillItem:
+                        self.__requiredSkills[skillItem] = skillLevel
         return self.__requiredSkills
 
     @property
     def requiredFor(self):
         if self.__requiredFor is None:
-            self.__requiredFor = dict()
-
-            # Map containing attribute IDs we may need for required skills
-
-            # Get relevant attribute values from db (required skill IDs and levels) for our item
-            q = eos.db.getRequiredFor(self.ID, self.srqIDMap)
-
-            for itemID, lvl in q:
-                # Fetch item from database and fill map
-                item = eos.db.getItem(itemID)
-                self.__requiredFor[item] = lvl
-
+            self.__requiredFor = {}
+            if self.requiredfor:
+                for typeID, skillLevel in json.loads(self.requiredfor).items():
+                    requiredForItem = eos.db.getItem(int(typeID))
+                    if requiredForItem:
+                        self.__requiredFor[requiredForItem] = skillLevel
         return self.__requiredFor
 
     factionMap = {
