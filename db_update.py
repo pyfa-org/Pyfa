@@ -22,7 +22,6 @@
 import functools
 import itertools
 import json
-import math
 import os
 import sqlite3
 import sys
@@ -115,12 +114,6 @@ def update_db():
                 setattr(instance, fieldMap.get(k, k), v)
             eos.db.gamedata_session.add(instance)
 
-    def _roundToPrec(val, prec):
-        if int(val) == val:
-            return val
-        roundFactor = int(prec - math.floor(math.log10(abs(val))) - 1)
-        return round(val, roundFactor)
-
     def processEveTypes():
         print('processing evetypes')
         data = _readData('fsd_lite', 'evetypes', keyIdName='typeID')
@@ -183,9 +176,6 @@ def update_db():
                 continue
             for row in typeData.get('dogmaAttributes', ()):
                 row['typeID'] = typeData['typeID']
-                # As of dec 2019, CCP uses single-precision floats in their loader which results
-                # in 'ugly' numbers. Temporarily work around it by rounding here
-                row['value'] = _roundToPrec(row['value'], 7)
                 newData.append(row)
         _addRows(newData, eos.gamedata.Attribute)
         return newData

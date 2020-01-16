@@ -32198,5 +32198,34 @@
     "name": "mjdShipJumpCap", 
     "published": 1, 
     "stackable": 1
+  }, 
+  "3015": {
+    "attributeID": 3015, 
+    "categoryID": 2, 
+    "dataType": 4, 
+    "defaultValue": 1.0, 
+    "description": "Shield HP Bonus used for nirvana implants", 
+    "displayName": "Shield Hitpoint Bonus", 
+    "displayNameID": 555494, 
+    "highIsGood": 1, 
+    "iconID": 1384, 
+    "name": "shieldHpBonus", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 105
+  }, 
+  "3017": {
+    "attributeID": 3017, 
+    "categoryID": 7, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "description": "Implant Set Nirvana", 
+    "displayName": "Nirvana Set Bonus", 
+    "displayNameID": 555503, 
+    "highIsGood": 1, 
+    "name": "ImplantSetNirvana", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 104
   }
 }

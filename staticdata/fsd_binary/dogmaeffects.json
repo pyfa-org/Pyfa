@@ -77951,5 +77951,50 @@
     "propulsionChance": 0, 
     "published": 1, 
     "rangeChance": 0
+  }, 
+  "8011": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8011, 
+    "effectName": "shieldHpBonusPostPercentHpLocationShip", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 3015, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8013": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8013, 
+    "effectName": "setBonusNirvana", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3015, 
+        "modifyingAttributeID": 3017, 
+        "operation": 0, 
+        "skillTypeID": 3411
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }
