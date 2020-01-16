@@ -27511,6 +27511,26 @@ class Effect6439(BaseEffect):
                                    stackingPenalties=True, **kwargs)
 
 
+class Effect6440(BaseEffect):
+    """
+    fighterAbilityAfterburner
+
+    Used by:
+    Fighters named like: Shadow (2 of 2)
+    Fighters named like: Siren (4 of 4)
+    """
+
+    displayName = 'Afterburner'
+    grouped = True
+    runTime = 'late'
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.boostItemAttr('maxVelocity', module.getModifiedItemAttr('fighterAbilityAfterburnerSpeedBonus'),
+                             stackingPenalties=True, **kwargs)
+
+
 class Effect6441(BaseEffect):
     """
     fighterAbilityMicroWarpDrive
