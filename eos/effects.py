@@ -1756,9 +1756,10 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (28 of 28)
+    Charges from group: Festival Charges (27 of 28)
     Charges from group: Interdiction Probe (2 of 2)
-    Items from market group: Special Edition Assets > Special Edition Festival Assets (32 of 35)
+    Charges from group: Structure Festival Charges (2 of 2)
+    Special Edition Assetss from group: Festival Charges Expired (4 of 4)
     """
 
     type = 'passive'
@@ -6813,7 +6814,10 @@ class Effect2298(BaseEffect):
     scanStrengthBonusPercentPassive
 
     Used by:
-    Implants named like: High grade (20 of 66)
+    Implants named like: High grade Grail (5 of 6)
+    Implants named like: High grade Jackal (5 of 6)
+    Implants named like: High grade Spur (5 of 6)
+    Implants named like: High grade Talon (5 of 6)
     """
 
     type = 'passive'
@@ -9168,7 +9172,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Bays (429 of 889)
+    Items from market group: Ship Equipment > Turrets & Launchers (429 of 889)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -27512,7 +27516,7 @@ class Effect6441(BaseEffect):
     fighterAbilityMicroWarpDrive
 
     Used by:
-    Items from category: Fighter (48 of 82)
+    Items from category: Fighter (44 of 82)
     """
 
     displayName = 'Microwarpdrive'
@@ -36180,3 +36184,35 @@ class Effect7248(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
                                       'speed', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
+
+
+class Effect8011(BaseEffect):
+    """
+    shieldHpBonusPostPercentHpLocationShip
+
+    Used by:
+    Implants named like: grade Nirvana (10 of 12)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldCapacity', container.getModifiedItemAttr('shieldHpBonus'), **kwargs)
+
+
+class Effect8013(BaseEffect):
+    """
+    setBonusNirvana
+
+    Used by:
+    Implants named like: grade Nirvana (12 of 12)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
+                                                 'shieldHpBonus', implant.getModifiedItemAttr('ImplantSetNirvana') or 1, **kwargs)
