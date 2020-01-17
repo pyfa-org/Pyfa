@@ -11,4 +11,4 @@ packaging == 16.8
 roman == 2.0.0
 beautifulsoup4 == 4.6.0
 pyyaml >= 5.1
-PyInstaller == 3.3
+PyInstaller >= 3.6
