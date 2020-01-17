@@ -32,7 +32,7 @@ DB_PATH = os.path.join(ROOT_DIR, 'eve.db')
 JSON_DIR = os.path.join(ROOT_DIR, 'staticdata')
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
-GAMEDATA_SCHEMA_VERSION = 2
+GAMEDATA_SCHEMA_VERSION = 3
 
 
 def db_needs_update():
@@ -206,7 +206,7 @@ def update_db():
     def processDogmaEffects():
         print('processing dogmaeffects')
         data = _readData('fsd_binary', 'dogmaeffects', keyIdName='effectID')
-        _addRows(data, eos.gamedata.Effect)
+        _addRows(data, eos.gamedata.Effect, fieldMap={'resistanceAttributeID': 'resistanceID'})
 
     def processDogmaTypeEffects(eveTypesData):
         print('processing dogmatypeeffects')
