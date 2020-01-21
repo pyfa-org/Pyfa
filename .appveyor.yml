@@ -53,7 +53,7 @@ install:
   # target Python version and architecture
   - ECHO "Install pip requirements:"
   - "python -m pip install -r requirements.txt"
-  - "python -m pip install PyInstaller"
+  - "python -m pip install PyInstaller==3.3"
 
 before_build:
     # directory that will contain the built files
