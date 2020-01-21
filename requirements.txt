@@ -1,4 +1,4 @@
-wxPython == 4.0.6
+wxPython == 4.0.7.post2
 logbook >= 1.0.0
 matplotlib == 3.0.3
 numpy==1.16.4
@@ -11,4 +11,3 @@ packaging == 16.8
 roman == 2.0.0
 beautifulsoup4 == 4.6.0
 pyyaml >= 5.1
-PyInstaller == 3.3

@@ -23,6 +23,8 @@ from abc import ABCMeta, abstractmethod
 import wx
 from logbook import Logger
 
+from service.settings import ContextMenuSettings
+
 
 pyfalog = Logger(__name__)
 
@@ -32,6 +34,7 @@ class ContextMenu(metaclass=ABCMeta):
     menus = []
     _ids = []  # [wx.NewId() for x in xrange(200)]  # init with decent amount
     _idxid = -1
+    visibilitySetting = None
 
     @classmethod
     def register(cls):
@@ -72,6 +75,10 @@ class ContextMenu(metaclass=ABCMeta):
         ContextMenu._idxid = -1
         debug_start = len(ContextMenu._ids)
 
+        # Control being pressed forces all hidden menu items to be shown
+        visibilitySettingOverride = wx.GetMouseState().GetModifiers() == wx.MOD_CONTROL
+        cmSettings = ContextMenuSettings.getInstance()
+
         rootMenu = wx.Menu()
         rootMenu.info = {}
         rootMenu.selection = (selection,) if not hasattr(selection, "__iter__") else selection
@@ -87,7 +94,11 @@ class ContextMenu(metaclass=ABCMeta):
             for menuHandler in cls.menus:
                 # loop through registered menus
                 m = menuHandler()
-                if m._baseDisplay(callingWindow, srcContext, mainItem, selection):
+                if m.visibilitySetting:
+                    visible = visibilitySettingOverride or cmSettings.get(m.visibilitySetting)
+                else:
+                    visible = True
+                if visible and m._baseDisplay(callingWindow, srcContext, mainItem, selection):
                     display_amount += 1
                     texts = m._baseGetText(callingWindow, itemContext, mainItem, selection)
 

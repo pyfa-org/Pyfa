@@ -32,7 +32,7 @@ DB_PATH = os.path.join(ROOT_DIR, 'eve.db')
 JSON_DIR = os.path.join(ROOT_DIR, 'staticdata')
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
-GAMEDATA_SCHEMA_VERSION = 1
+GAMEDATA_SCHEMA_VERSION = 3
 
 
 def db_needs_update():
@@ -88,52 +88,164 @@ def update_db():
     # Create the database tables
     eos.db.gamedata_meta.create_all()
 
-    # Config dict
-    tables = {
-        'clonegrades': ('fsd_lite', eos.gamedata.AlphaCloneSkill),
-        'dogmaattributes': ('bulkdata', eos.gamedata.AttributeInfo),
-        'dogmaeffects': ('bulkdata', eos.gamedata.Effect),
-        'dogmatypeattributes': ('bulkdata', eos.gamedata.Attribute),
-        'dogmatypeeffects': ('bulkdata', eos.gamedata.ItemEffect),
-        'dogmaunits': ('bulkdata', eos.gamedata.Unit),
-        'evecategories': ('fsd_lite', eos.gamedata.Category),
-        'evegroups': ('fsd_lite', eos.gamedata.Group),
-        'metagroups': ('fsd_binary', eos.gamedata.MetaGroup),
-        'evetypes': ('fsd_lite', eos.gamedata.Item),
-        'traits': ('phobos', eos.gamedata.Traits),
-        'metadata': ('phobos', eos.gamedata.MetaData),
-        'marketgroups': ('fsd_binary', eos.gamedata.MarketGroup)}
+    def _readData(minerName, jsonName, keyIdName=None):
+        with open(os.path.join(JSON_DIR, minerName, '{}.json'.format(jsonName)), encoding='utf-8') as f:
+            rawData = json.load(f)
+        if not keyIdName:
+            return rawData
+        # IDs in keys, rows in values
+        data = []
+        for k, v in rawData.items():
+            row = {}
+            row.update(v)
+            if keyIdName not in row:
+                row[keyIdName] = int(k)
+            data.append(row)
+        return data
 
-    fieldMapping = {
-        'marketgroups': {
-            'id': 'marketGroupID',
-            'name': 'marketGroupName'},
-        'metagroups': {
-            'id': 'metaGroupID'}}
+    def _addRows(data, cls, fieldMap=None):
+        if fieldMap is None:
+            fieldMap = {}
+        for row in data:
+            instance = cls()
+            for k, v in row.items():
+                if isinstance(v, str):
+                    v = v.strip()
+                setattr(instance, fieldMap.get(k, k), v)
+            eos.db.gamedata_session.add(instance)
 
-    rowsInValues = (
-        'evetypes',
-        'evegroups',
-        'evecategories',
-        'marketgroups',
-        'metagroups')
+    def processEveTypes():
+        print('processing evetypes')
+        data = _readData('fsd_lite', 'evetypes', keyIdName='typeID')
+        for row in data:
+            if (
+                # Apparently people really want Civilian modules available
+                (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
+                row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor')
+            ):
+                row['published'] = True
 
-    def convertIcons(data):
-        new = []
-        for k, v in list(data.items()):
-            v['iconID'] = k
-            new.append(v)
-        return new
-
-    def convertClones(data):
         newData = []
+        for row in data:
+            if (
+                row['published'] or
+                # group Ship Modifiers, for items like tactical t3 ship modes
+                row['groupID'] == 1306 or
+                # Micro Bombs (Fighters)
+                row['typeID'] in (41549, 41548, 41551, 41550) or
+                # Abyssal weather (environment)
+                row['groupID'] in (
+                1882,
+                1975,
+                1971,
+                # the "container" for the abyssal environments
+                1983)
+            ):
+                newData.append(row)
 
+        _addRows(newData, eos.gamedata.Item)
+        return newData
+
+    def processEveGroups():
+        print('processing evegroups')
+        data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
+        _addRows(data, eos.gamedata.Group)
+        return data
+
+    def processEveCategories():
+        print('processing evecategories')
+        data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
+        _addRows(data, eos.gamedata.Category)
+
+    def processDogmaAttributes():
+        print('processing dogmaattributes')
+        data = _readData('fsd_binary', 'dogmaattributes', keyIdName='attributeID')
+        _addRows(data, eos.gamedata.AttributeInfo)
+
+    def processDogmaTypeAttributes(eveTypesData):
+        print('processing dogmatypeattributes')
+        data = _readData('fsd_binary', 'typedogma', keyIdName='typeID')
+        eveTypeIds = set(r['typeID'] for r in eveTypesData)
+        newData = []
+        for row in eveTypesData:
+            for attrId, attrName in {4: 'mass', 38: 'capacity', 161: 'volume', 162: 'radius'}.items():
+                if attrName in row:
+                    newData.append({'typeID': row['typeID'], 'attributeID': attrId, 'value': row[attrName]})
+        for typeData in data:
+            if typeData['typeID'] not in eveTypeIds:
+                continue
+            for row in typeData.get('dogmaAttributes', ()):
+                row['typeID'] = typeData['typeID']
+                newData.append(row)
+        _addRows(newData, eos.gamedata.Attribute)
+        return newData
+
+    def processDynamicItemAttributes():
+        print('processing dynamicitemattributes')
+        data = _readData('fsd_binary', 'dynamicitemattributes')
+        for mutaID, mutaData in data.items():
+            muta = eos.gamedata.DynamicItem()
+            muta.typeID = mutaID
+            muta.resultingTypeID = mutaData['inputOutputMapping'][0]['resultingType']
+            eos.db.gamedata_session.add(muta)
+
+            for x in mutaData['inputOutputMapping'][0]['applicableTypes']:
+                item = eos.gamedata.DynamicItemItem()
+                item.typeID = mutaID
+                item.applicableTypeID = x
+                eos.db.gamedata_session.add(item)
+
+            for attrID, attrData in mutaData['attributeIDs'].items():
+                attr = eos.gamedata.DynamicItemAttribute()
+                attr.typeID = mutaID
+                attr.attributeID = attrID
+                attr.min = attrData['min']
+                attr.max = attrData['max']
+                eos.db.gamedata_session.add(attr)
+
+    def processDogmaEffects():
+        print('processing dogmaeffects')
+        data = _readData('fsd_binary', 'dogmaeffects', keyIdName='effectID')
+        _addRows(data, eos.gamedata.Effect, fieldMap={'resistanceAttributeID': 'resistanceID'})
+
+    def processDogmaTypeEffects(eveTypesData):
+        print('processing dogmatypeeffects')
+        data = _readData('fsd_binary', 'typedogma', keyIdName='typeID')
+        eveTypeIds = set(r['typeID'] for r in eveTypesData)
+        newData = []
+        for typeData in data:
+            if typeData['typeID'] not in eveTypeIds:
+                continue
+            for row in typeData.get('dogmaEffects', ()):
+                row['typeID'] = typeData['typeID']
+                newData.append(row)
+        _addRows(newData, eos.gamedata.ItemEffect)
+        return newData
+
+    def processDogmaUnits():
+        print('processing dogmaunits')
+        data = _readData('fsd_binary', 'dogmaunits', keyIdName='unitID')
+        _addRows(data, eos.gamedata.Unit, fieldMap={'name': 'unitName'})
+
+    def processMarketGroups():
+        print('processing marketgroups')
+        data = _readData('fsd_binary', 'marketgroups', keyIdName='marketGroupID')
+        _addRows(data, eos.gamedata.MarketGroup, fieldMap={'name': 'marketGroupName'})
+
+    def processMetaGroups():
+        print('processing metagroups')
+        data = _readData('fsd_binary', 'metagroups', keyIdName='metaGroupID')
+        _addRows(data, eos.gamedata.MetaGroup)
+
+    def processCloneGrades():
+        print('processing clonegrades')
+        data = _readData('fsd_lite', 'clonegrades')
+
+        newData = []
         # December, 2017 - CCP decided to use only one set of skill levels for alpha clones. However, this is still
         # represented in the data as a skillset per race. To ensure that all skills are the same, we store them in a way
         # that we can check to make sure all races have the same skills, as well as skill levels
-
         check = {}
-
         for ID in data:
             for skill in data[ID]['skills']:
                 newData.append({
@@ -144,18 +256,25 @@ def update_db():
                 if ID not in check:
                     check[ID] = {}
                 check[ID][int(skill['typeID'])] = int(skill['level'])
-
         if not functools.reduce(lambda a, b: a if a == b else False, [v for _, v in check.items()]):
             raise Exception('Alpha Clones not all equal')
-
         newData = [x for x in newData if x['alphaCloneID'] == 1]
-
         if len(newData) == 0:
             raise Exception('Alpha Clone processing failed')
 
-        return newData
+        tmp = []
+        for row in newData:
+            if row['alphaCloneID'] not in tmp:
+                cloneParent = eos.gamedata.AlphaClone()
+                setattr(cloneParent, 'alphaCloneID', row['alphaCloneID'])
+                setattr(cloneParent, 'alphaCloneName', row['alphaCloneName'])
+                eos.db.gamedata_session.add(cloneParent)
+                tmp.append(row['alphaCloneID'])
+        _addRows(newData, eos.gamedata.AlphaCloneSkill)
 
-    def convertTraits(data):
+    def processTraits():
+        print('processing traits')
+        data = _readData('phobos', 'traits')
 
         def convertSection(sectionData):
             sectionLines = []
@@ -182,9 +301,42 @@ def update_db():
             traitLine = '<br />\n<br />\n'.join(typeLines)
             newRow = {'typeID': typeId, 'traitText': traitLine}
             newData.append(newRow)
-        return newData
 
-    def fillReplacements(tables):
+        _addRows(newData, eos.gamedata.Traits)
+
+    def processMetadata():
+        print('processing metadata')
+        data = _readData('phobos', 'metadata')
+        _addRows(data, eos.gamedata.MetaData)
+
+    def processReqSkills(eveTypesData):
+        print('processing requiredskillsfortypes')
+
+        def composeReqSkills(raw):
+            reqSkills = {}
+            for skillTypeID, skillLevels in raw.items():
+                reqSkills[int(skillTypeID)] = skillLevels[0]
+            return reqSkills
+
+        eveTypeIds = set(r['typeID'] for r in eveTypesData)
+        data = _readData('fsd_binary', 'requiredskillsfortypes')
+        reqsByItem = {}
+        itemsByReq = {}
+        for typeID, skillreqData in data.items():
+            typeID = int(typeID)
+            if typeID not in eveTypeIds:
+                continue
+            for skillTypeID, skillLevel in composeReqSkills(skillreqData).items():
+                reqsByItem.setdefault(typeID, {})[skillTypeID] = skillLevel
+                itemsByReq.setdefault(skillTypeID, {})[typeID] = skillLevel
+        for item in eos.db.gamedata_session.query(eos.gamedata.Item).all():
+            if item.typeID in reqsByItem:
+                item.reqskills = json.dumps(reqsByItem[item.typeID])
+            if item.typeID in itemsByReq:
+                item.requiredfor = json.dumps(itemsByReq[item.typeID])
+
+    def processReplacements(eveTypesData, eveGroupsData, dogmaTypeAttributesData, dogmaTypeEffectsData):
+        print('finding item replacements')
 
         def compareAttrs(attrs1, attrs2):
             # Consider items as different if they have no attrs
@@ -196,7 +348,6 @@ def update_db():
                 return True
             return False
 
-        print('finding replacements')
         skillReqAttribs = {
             182: 277,
             183: 278,
@@ -208,18 +359,18 @@ def update_db():
         # Get data on type groups
         # Format: {type ID: group ID}
         typesGroups = {}
-        for row in tables['evetypes']:
+        for row in eveTypesData:
             typesGroups[row['typeID']] = row['groupID']
         # Get data on item effects
         # Format: {type ID: set(effect, IDs)}
         typesEffects = {}
-        for row in tables['dogmatypeeffects']:
+        for row in dogmaTypeEffectsData:
             typesEffects.setdefault(row['typeID'], set()).add(row['effectID'])
         # Get data on type attributes
         # Format: {type ID: {attribute ID: attribute value}}
         typesNormalAttribs = {}
         typesSkillAttribs = {}
-        for row in tables['dogmatypeattributes']:
+        for row in dogmaTypeAttributesData:
             attributeID = row['attributeID']
             if attributeID in skillReqAttribsFlat:
                 typeSkillAttribs = typesSkillAttribs.setdefault(row['typeID'], {})
@@ -258,13 +409,13 @@ def update_db():
                 typeSkillReqs[skillType] = skillLevel
         # Format: {group ID: category ID}
         groupCategories = {}
-        for row in tables['evegroups']:
+        for row in eveGroupsData:
             groupCategories[row['groupID']] = row['categoryID']
         # As EVE affects various types mostly depending on their group or skill requirements,
         # we're going to group various types up this way
         # Format: {(group ID, frozenset(skillreq, type, IDs), frozenset(type, effect, IDs): [type ID, {attribute ID: attribute value}]}
         groupedData = {}
-        for row in tables['evetypes']:
+        for row in eveTypesData:
             typeID = row['typeID']
             # Ignore items outside of categories we need
             if groupCategories[typesGroups[typeID]] not in (
@@ -301,134 +452,30 @@ def update_db():
                 if compareAttrs(type1[1], type2[1]):
                     replacements.setdefault(type1[0], set()).add(type2[0])
                     replacements.setdefault(type2[0], set()).add(type1[0])
-        # Put this data into types table so that normal process hooks it up
-        for row in tables['evetypes']:
-            row['replacements'] = ','.join('{}'.format(tid) for tid in sorted(replacements.get(row['typeID'], ())))
+        # Update DB session with data we generated
+        for item in eos.db.gamedata_session.query(eos.gamedata.Item).all():
+            itemReplacements = replacements.get(item.typeID)
+            if itemReplacements is not None:
+                item.replacements = ','.join('{}'.format(tid) for tid in sorted(itemReplacements))
 
-    data = {}
+    eveTypesData = processEveTypes()
+    eveGroupsData = processEveGroups()
+    processEveCategories()
+    processDogmaAttributes()
+    dogmaTypeAttributesData = processDogmaTypeAttributes(eveTypesData)
+    processDynamicItemAttributes()
+    processDogmaEffects()
+    dogmaTypeEffectsData = processDogmaTypeEffects(eveTypesData)
+    processDogmaUnits()
+    processMarketGroups()
+    processMetaGroups()
+    processCloneGrades()
+    processTraits()
+    processMetadata()
 
-    # Dump all data to memory so we can easely cross check ignored rows
-    for jsonName, (minerName, cls) in tables.items():
-        with open(os.path.join(JSON_DIR, minerName, '{}.json'.format(jsonName)), encoding='utf-8') as f:
-            tableData = json.load(f)
-        if jsonName in rowsInValues:
-            newTableData = []
-            for k, v in tableData.items():
-                row = {}
-                row.update(v)
-                if 'id' not in row:
-                    row['id'] = int(k)
-                newTableData.append(row)
-            tableData = newTableData
-        if jsonName == 'icons':
-            tableData = convertIcons(tableData)
-        if jsonName == 'traits':
-            tableData = convertTraits(tableData)
-        if jsonName == 'clonegrades':
-            tableData = convertClones(tableData)
-        data[jsonName] = tableData
-
-    fillReplacements(data)
-
-    # Set with typeIDs which we will have in our database
-    # Sometimes CCP unpublishes some items we want to have published, we
-    # can do it here - just add them to initial set
-    eveTypes = set()
-    for row in data['evetypes']:
-        if (
-            row['published'] or
-            row['typeName'] == 'Capsule' or
-            # group Ship Modifiers, for items like tactical t3 ship modes
-            row['groupID'] == 1306 or
-            # Civilian weapons
-            (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
-            # Micro Bombs (Fighters)
-            row['typeID'] in (41549, 41548, 41551, 41550) or
-            # Abyssal weather (environment)
-            row['groupID'] in (
-                1882,
-                1975,
-                1971,
-                # the "container" for the abyssal environments
-                1983) or
-            # Dark Blood Tracking Disruptor (drops, but rarely)
-            row['typeID'] == 32416
-        ):
-            eveTypes.add(row['typeID'])
-
-    # ignore checker
-    def isIgnored(file, row):
-        if file in ('evetypes', 'dogmatypeeffects', 'dogmatypeattributes') and row['typeID'] not in eveTypes:
-            return True
-        return False
-
-    # Loop through each json file and write it away, checking ignored rows
-    for jsonName, table in data.items():
-        fieldMap = fieldMapping.get(jsonName, {})
-        tmp = []
-
-        print('processing {}'.format(jsonName))
-
-        for row in table:
-            # We don't care about some kind of rows, filter it out if so
-            if not isIgnored(jsonName, row):
-                if (
-                    jsonName == 'evetypes' and (
-                        # Apparently people really want Civilian modules available
-                        (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
-                        row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor'))
-                ):
-                    row['published'] = True
-
-                instance = tables[jsonName][1]()
-                # fix for issue 80
-                if jsonName is 'icons' and 'res:/ui/texture/icons/' in str(row['iconFile']).lower():
-                    row['iconFile'] = row['iconFile'].lower().replace('res:/ui/texture/icons/', '').replace('.png', '')
-                    # with res:/ui... references, it points to the actual icon file (including it's size variation of #_size_#)
-                    # strip this info out and get the identifying info
-                    split = row['iconFile'].split('_')
-                    if len(split) == 3:
-                        row['iconFile'] = '{}_{}'.format(split[0], split[2])
-                if jsonName is 'icons' and 'modules/' in str(row['iconFile']).lower():
-                    row['iconFile'] = row['iconFile'].lower().replace('modules/', '').replace('.png', '')
-
-                if jsonName is 'clonegrades':
-                    if row['alphaCloneID'] not in tmp:
-                        cloneParent = eos.gamedata.AlphaClone()
-                        setattr(cloneParent, 'alphaCloneID', row['alphaCloneID'])
-                        setattr(cloneParent, 'alphaCloneName', row['alphaCloneName'])
-                        eos.db.gamedata_session.add(cloneParent)
-                        tmp.append(row['alphaCloneID'])
-
-                for k, v in row.items():
-                    if isinstance(v, str):
-                        v = v.strip()
-                    setattr(instance, fieldMap.get(k, k), v)
-
-                eos.db.gamedata_session.add(instance)
-
-    # quick and dirty hack to get this data in
-    with open(os.path.join(JSON_DIR, 'fsd_binary', 'dynamicitemattributes.json'), encoding='utf-8') as f:
-        bulkdata = json.load(f)
-        for mutaID, data in bulkdata.items():
-            muta = eos.gamedata.DynamicItem()
-            muta.typeID = mutaID
-            muta.resultingTypeID = data['inputOutputMapping'][0]['resultingType']
-            eos.db.gamedata_session.add(muta)
-
-            for x in data['inputOutputMapping'][0]['applicableTypes']:
-                item = eos.gamedata.DynamicItemItem()
-                item.typeID = mutaID
-                item.applicableTypeID = x
-                eos.db.gamedata_session.add(item)
-
-            for attrID, attrData in data['attributeIDs'].items():
-                attr = eos.gamedata.DynamicItemAttribute()
-                attr.typeID = mutaID
-                attr.attributeID = attrID
-                attr.min = attrData['min']
-                attr.max = attrData['max']
-                eos.db.gamedata_session.add(attr)
+    eos.db.gamedata_session.flush()
+    processReqSkills(eveTypesData)
+    processReplacements(eveTypesData, eveGroupsData, dogmaTypeAttributesData, dogmaTypeEffectsData)
 
     # Add schema version to prevent further updates
     metadata_schema_version = eos.gamedata.MetaData()
@@ -436,7 +483,7 @@ def update_db():
     metadata_schema_version.field_value = GAMEDATA_SCHEMA_VERSION
     eos.db.gamedata_session.add(metadata_schema_version)
 
-    eos.db.gamedata_session.commit()
+    eos.db.gamedata_session.flush()
 
     # CCP still has 5 subsystems assigned to T3Cs, even though only 4 are available / usable. They probably have some
     # old legacy requirement or assumption that makes it difficult for them to change this value in the data. But for

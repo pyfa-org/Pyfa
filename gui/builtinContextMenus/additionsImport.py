@@ -4,7 +4,6 @@ from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.clipboard import fromClipboard
 from service.fit import Fit
 from service.port.eft import parseAdditions
-from service.settings import ContextMenuSettings
 
 
 viewSpecMap = {
@@ -18,12 +17,12 @@ viewSpecMap = {
 
 class AdditionsImport(ContextMenuUnconditional):
 
+    visibilitySetting = 'additionsCopyPaste'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, callingWindow, srcContext):
-        if not ContextMenuSettings.getInstance().get('additionsCopyPaste'):
-            return False
         if srcContext not in viewSpecMap:
             return False
         fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())

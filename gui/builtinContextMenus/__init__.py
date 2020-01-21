@@ -37,7 +37,8 @@ from gui.builtinContextMenus import cargoAdd
 from gui.builtinContextMenus import cargoAddAmmo
 from gui.builtinContextMenus import itemProject
 from gui.builtinContextMenus import ammoToDmgPattern
-from gui.builtinContextMenus import implantSetAdd
+from gui.builtinContextMenus import implantSetApply
+from gui.builtinContextMenus import implantSetSave
 # Price
 from gui.builtinContextMenus import priceOptions
 # Resistance panel

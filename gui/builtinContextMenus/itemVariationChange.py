@@ -7,19 +7,16 @@ from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarModPositions, getSimilarFighters
 from service.fit import Fit
 from service.market import Market
-from service.settings import ContextMenuSettings
 
 
 class ChangeItemToVariation(ContextMenuCombined):
 
+    visibilitySetting = 'metaSwap'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, callingWindow, srcContext, mainItem, selection):
-        if not self.settings.get('metaSwap'):
-            return False
-
         if self.mainFrame.getActiveFit() is None or srcContext not in (
             'fittingModule',
             'droneItem',
@@ -59,8 +56,11 @@ class ChangeItemToVariation(ContextMenuCombined):
             return x.metaLevel or 0
 
         def get_metagroup(x):
-            # We want deadspace before officer mods
-            remap = {5: 6, 6: 5}
+            remap = {
+                # We want deadspace before officer mods
+                5: 6, 6: 5,
+                # For structures we want t1-t2-faction
+                54: 52, 52: 54}
             metaGroup = sMkt.getMetaGroupByItem(x)
             return remap.get(metaGroup.ID, metaGroup.ID) if metaGroup is not None else 0
 

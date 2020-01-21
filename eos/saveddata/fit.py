@@ -165,6 +165,9 @@ class Fit:
         self.__capUsed = None
         self.__capRecharge = None
         self.__savedCapSimData.clear()
+        # Ancillary tank modules affect this
+        self.__sustainableTank = None
+        self.__effectiveSustainableTank = None
 
     @property
     def targetProfile(self):

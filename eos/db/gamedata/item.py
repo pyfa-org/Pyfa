@@ -44,7 +44,9 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("metaLevel", Integer),
                     Column("metaGroupID", Integer, ForeignKey("invmetagroups.metaGroupID"), index=True),
                     Column("variationParentTypeID", Integer, ForeignKey("invtypes.typeID"), index=True),
-                    Column("replacements", String))
+                    Column("replacements", String),
+                    Column("reqskills", String),
+                    Column("requiredfor", String))
 
 from .traits import traits_table  # noqa
 

@@ -5,19 +5,16 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class AmmoToDmgPattern(ContextMenuSingle):
 
+    visibilitySetting = 'ammoPattern'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, callingWindow, srcContext, mainItem):
-        if not self.settings.get('ammoPattern'):
-            return False
-
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 

@@ -10,12 +10,13 @@ _ValueChanged, EVT_VALUE_CHANGED = wx.lib.newevent.NewEvent()
 
 
 class AttributeSliderChangeEvent:
-    def __init__(self, obj, old_value, new_value, old_percentage, new_percentage):
+    def __init__(self, obj, old_value, new_value, old_percentage, new_percentage, affect_modified_flag=True):
         self.__obj = obj
         self.__old = old_value
         self.__new = new_value
         self.__old_percent = old_percentage
         self.__new_percent = new_percentage
+        self.__affect_modified_flag = affect_modified_flag
 
     def GetObj(self):
         return self.__obj
@@ -32,6 +33,10 @@ class AttributeSliderChangeEvent:
     def GetPercentage(self):
         return self.__new_percent
 
+    @property
+    def AffectsModifiedFlag(self):
+        return self.__affect_modified_flag
+
     Object = property(GetObj)
     OldValue = property(GetOldValue)
     Value = property(GetValue)
@@ -40,9 +45,9 @@ class AttributeSliderChangeEvent:
 
 
 class ValueChanged(_ValueChanged, AttributeSliderChangeEvent):
-    def __init__(self, obj, old_value, new_value, old_percentage, new_percentage):
+    def __init__(self, obj, old_value, new_value, old_percentage, new_percentage, affect_modified_flag=True):
         _ValueChanged.__init__(self)
-        AttributeSliderChangeEvent.__init__(self, obj, old_value, new_value, old_percentage, new_percentage)
+        AttributeSliderChangeEvent.__init__(self, obj, old_value, new_value, old_percentage, new_percentage, affect_modified_flag=affect_modified_flag)
 
 
 class AttributeSlider(wx.Panel):
@@ -118,7 +123,7 @@ class AttributeSlider(wx.Panel):
         self.SetValue(self.GetValue())
         evt.Skip()
 
-    def SetValue(self, value, post_event=True):
+    def SetValue(self, value, post_event=True, affect_modified_flag=True):
         self.ctrl.SetValue(value)
         invert_factor = -1 if self.inverse else 1
         if value >= self.base_value:
@@ -127,7 +132,7 @@ class AttributeSlider(wx.Panel):
             slider_percentage = (value - self.base_value) / (self.base_value - self.UserMinValue) * 100 * invert_factor
         self.slider.SetValue(slider_percentage)
         if post_event:
-            wx.PostEvent(self, ValueChanged(self, None, value, None, slider_percentage))
+            wx.PostEvent(self, ValueChanged(self, None, value, None, slider_percentage, affect_modified_flag=affect_modified_flag))
 
     def OnMouseWheel(self, evt):
         if evt.GetWheelRotation() > 0 and evt.GetWheelAxis() == wx.MOUSE_WHEEL_VERTICAL:

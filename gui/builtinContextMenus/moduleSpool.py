@@ -9,20 +9,17 @@ import gui.mainFrame
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class ChangeModuleSpool(ContextMenuSingle):
 
+    visibilitySetting = 'spoolup'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
         self.resetId = None
 
     def display(self, callingWindow, srcContext, mainItem):
-        if not self.settings.get('spoolup'):
-            return False
-
         if srcContext not in ('fittingModule', 'projectedModule') or self.mainFrame.getActiveFit() is None:
             return False
 

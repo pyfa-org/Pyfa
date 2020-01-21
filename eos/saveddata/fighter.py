@@ -99,7 +99,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
 
-        if len(self.abilities) != len(self.item.effects):
+        if {a.effectID for a in self.abilities} != {e.ID for e in self.item.effects.values()}:
             self.__abilities = []
             for ability in self.__getAbilities():
                 self.__abilities.append(ability)

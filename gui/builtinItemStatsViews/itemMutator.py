@@ -76,6 +76,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         self.mod = mod
         self.timer = None
+        self.isModified = False
 
         goodColor = wx.Colour(96, 191, 0)
         badColor = wx.Colour(255, 64, 0)
@@ -171,6 +172,8 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.SetSizer(sizer)
 
     def changeMutatedValue(self, evt):
+        if evt.AffectsModifiedFlag:
+            self.isModified = True
         m = self.event_mapping[evt.Object]
         value = evt.Value
         value = m.attribute.unit.ComplicateValue(value)
@@ -188,29 +191,32 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.timer = wx.CallLater(1000, self.callLater)
 
     def resetMutatedValues(self, evt):
+        self.isModified = True
         sFit = Fit.getInstance()
         for slider, m in self.event_mapping.items():
             value = sFit.changeMutatedValuePrelim(m, m.baseValue)
             value = m.attribute.unit.SimplifyValue(value)
-            slider.SetValue(value)
+            slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
     def randomMutatedValues(self, evt):
+        self.isModified = True
         sFit = Fit.getInstance()
         for slider, m in self.event_mapping.items():
             value = random.uniform(m.minValue, m.maxValue)
             value = sFit.changeMutatedValuePrelim(m, value)
             value = m.attribute.unit.SimplifyValue(value)
-            slider.SetValue(value)
+            slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
     def revertChanges(self, evt):
+        self.isModified = False
         sFit = Fit.getInstance()
         for slider, m in self.event_mapping.items():
             if m.attrID in self.initialMutations:
                 value = sFit.changeMutatedValuePrelim(m, self.initialMutations[m.attrID])
                 value = m.attribute.unit.SimplifyValue(value)
-                slider.SetValue(value)
+                slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
     def OnWindowClose(self):
@@ -218,15 +224,18 @@ class ItemMutatorList(wx.ScrolledWindow):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.carryingFitID)
         if self.mod in fit.modules:
-            currentMutation = {}
-            for slider, m in self.event_mapping.items():
-                # Sliders may have more up-to-date info than mutator in case we changed
-                # value in slider and without confirming it, decided to close window
-                value = slider.GetValue()
-                value = m.attribute.unit.ComplicateValue(value)
-                if value != m.value:
-                    value = sFit.changeMutatedValuePrelim(m, value)
-                currentMutation[m.attrID] = value
+            if self.isModified:
+                currentMutation = {}
+                for slider, m in self.event_mapping.items():
+                    # Sliders may have more up-to-date info than mutator in case we changed
+                    # value in slider and without confirming it, decided to close window
+                    value = slider.GetValue()
+                    value = m.attribute.unit.ComplicateValue(value)
+                    if value != m.value:
+                        value = sFit.changeMutatedValuePrelim(m, value)
+                    currentMutation[m.attrID] = value
+            else:
+                currentMutation = self.initialMutations
             mainFrame = gui.mainFrame.MainFrame.getInstance()
             mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
                 fitID=self.carryingFitID,

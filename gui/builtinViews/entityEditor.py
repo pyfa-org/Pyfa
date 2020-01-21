@@ -178,10 +178,17 @@ class EntityEditor(wx.Panel):
         return True
 
     def checkEntitiesExist(self):
-        if len(self.choices) == 0:
-            self.Parent.Hide()
-            if self.OnNew(None) is False:
-                return False
-            self.Parent.Show()
+        if len(self.choices) > 0:
+            return True
+        else:
+            return self.enterNewEntity()
+
+    def enterNewEntity(self):
+        self.Parent.Hide()
+        if self.OnNew(None) is False:
+            return False
+        self.Parent.Show()
 
         return True
+
+
