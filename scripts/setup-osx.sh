@@ -5,3 +5,4 @@ sudo python3 -m ensurepip --upgrade
 # A manual check that the correct version of Python is running.
 python3 --version
 python3 -m pip install -r requirements.txt
+python3 -m pip install PyInstaller
