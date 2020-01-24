@@ -442,13 +442,13 @@ class Character:
                 if subThing is not None:
                     if isinstance(thing, es_Fighter) and attr == "charge":
                         continue
-                    self._checkRequirements(fit, fit.character, subThing, subReqs)
+                    self._checkRequirements(fit.character, subThing, subReqs)
                     if subReqs:
                         reqs[subThing] = subReqs
 
         return reqs
 
-    def _checkRequirements(self, fit, char, subThing, reqs):
+    def _checkRequirements(self, char, subThing, reqs):
         for req, level in subThing.requiredSkills.items():
             name = req.name
             ID = req.ID
@@ -456,9 +456,19 @@ class Character:
             currLevel, subs = info if info is not None else 0, {}
             if level > currLevel and (char is None or char.getSkill(req).level < level):
                 reqs[name] = (level, ID, subs)
-                self._checkRequirements(fit, char, req, subs)
+                self._checkRequirements(char, req, subs)
 
         return reqs
+
+    def getShit(self, reqs, condensed=None):
+        if condensed is None:
+            condensed = {}
+        for name, (level, ID, subs) in reqs:
+            if name not in condensed or condensed[name] < level:
+                condensed[name] = level
+
+
+
 
 
 class UpdateAPIThread(threading.Thread):
