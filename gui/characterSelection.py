@@ -232,8 +232,6 @@ class CharacterSelection(wx.Panel):
             sCharacter = Character.getInstance()
             self.reqs = sCharacter.checkRequirements(fit)
 
-
-
             sCharacter.skillReqsDict = {'charname': fit.character.name, 'skills': []}
             if len(self.reqs) == 0:
                 self.needsSkills = False

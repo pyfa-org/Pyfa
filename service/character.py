@@ -376,8 +376,8 @@ class Character:
         char.apiUpdateCharSheet(skills, securitystatus)
         eos.db.commit()
 
-    @staticmethod
-    def changeLevel(charID, skillID, level, persist=False, ifHigher=False):
+    @classmethod
+    def changeLevel(cls, charID, skillID, level, persist=False, ifHigher=False):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
 
@@ -386,10 +386,19 @@ class Character:
 
         if isinstance(level, str) or level > 5 or level < 0:
             skill.setLevel(None, persist)
-        else:
+            eos.db.commit()
+        elif skill.level != level:
+            cls._trainSkillReqs(char, skill, persist)
             skill.setLevel(level, persist)
+            eos.db.commit()
 
-        eos.db.commit()
+    @classmethod
+    def _trainSkillReqs(cls, char, skill, persist):
+        for childSkillItem, neededSkillLevel in skill.item.requiredSkills.items():
+            childSkill = char.getSkill(childSkillItem.ID)
+            if childSkill.level < neededSkillLevel:
+                childSkill.setLevel(neededSkillLevel, persist)
+                cls._trainSkillReqs(char, childSkill, persist)
 
     @staticmethod
     def revertLevel(charID, skillID):
@@ -457,18 +466,7 @@ class Character:
             if level > currLevel and (char is None or char.getSkill(req).level < level):
                 reqs[name] = (level, ID, subs)
                 self._checkRequirements(char, req, subs)
-
         return reqs
-
-    def getShit(self, reqs, condensed=None):
-        if condensed is None:
-            condensed = {}
-        for name, (level, ID, subs) in reqs:
-            if name not in condensed or condensed[name] < level:
-                condensed[name] = level
-
-
-
 
 
 class UpdateAPIThread(threading.Thread):
