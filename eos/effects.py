@@ -40,7 +40,7 @@ class Effect4(BaseEffect):
     shieldBoosting
 
     Used by:
-    Modules from group: Shield Booster (97 of 97)
+    Modules from group: Shield Booster (89 of 89)
     """
 
     runTime = 'late'
@@ -144,7 +144,7 @@ class Effect27(BaseEffect):
     armorRepair
 
     Used by:
-    Modules from group: Armor Repair Unit (108 of 108)
+    Modules from group: Armor Repair Unit (100 of 100)
     """
 
     runTime = 'late'
@@ -1756,7 +1756,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (27 of 28)
+    Charges from group: Festival Charges (28 of 28)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -9578,7 +9578,7 @@ class Effect3200(BaseEffect):
 
     Used by:
     Modules from group: Ancillary Armor Repairer (7 of 7)
-    Modules from group: Armor Repair Unit (108 of 108)
+    Modules from group: Armor Repair Unit (100 of 100)
     """
 
     type = 'overheat'
@@ -9596,7 +9596,7 @@ class Effect3201(BaseEffect):
 
     Used by:
     Modules from group: Ancillary Shield Booster (8 of 8)
-    Modules from group: Shield Booster (97 of 97)
+    Modules from group: Shield Booster (89 of 89)
     """
 
     type = 'overheat'
@@ -23579,7 +23579,7 @@ class Effect5994(BaseEffect):
     resistanceKillerHullAll
 
     Used by:
-    Modules named like: Polarized (12 of 18)
+    Modules named like: Polarized (12 of 15)
     """
 
     type = 'passive'
@@ -23596,7 +23596,7 @@ class Effect5995(BaseEffect):
     resistanceKillerShieldArmorAll
 
     Used by:
-    Modules named like: Polarized (12 of 18)
+    Modules named like: Polarized (12 of 15)
     """
 
     type = 'passive'
@@ -36211,7 +36211,7 @@ class Effect8011(BaseEffect):
     shieldHpBonusPostPercentHpLocationShip
 
     Used by:
-    Implants named like: grade Nirvana (10 of 12)
+    Implants named like: grade Nirvana (15 of 18)
     """
 
     type = 'passive'
@@ -36226,7 +36226,7 @@ class Effect8013(BaseEffect):
     setBonusNirvana
 
     Used by:
-    Implants named like: grade Nirvana (12 of 12)
+    Implants named like: grade Nirvana (18 of 18)
     """
 
     runTime = 'early'
