@@ -171,7 +171,7 @@ class ItemAffectedBy(wx.Panel):
 
     def sortAttrDisplayName(self, attr):
         info = self.stuff.item.attributes.get(attr)
-        if info and info.displayName != "":
+        if info and info.displayName:
             return info.displayName
 
         return attr
@@ -251,7 +251,7 @@ class ItemAffectedBy(wx.Panel):
 
             for attrName in attrOrder:
                 attrInfo = self.stuff.item.attributes.get(attrName)
-                displayName = attrInfo.displayName if attrInfo and attrInfo.displayName != "" else attrName
+                displayName = attrInfo.displayName if attrInfo and attrInfo.displayName else attrName
 
                 if attrInfo:
                     if attrInfo.iconID is not None:
@@ -444,7 +444,7 @@ class ItemAffectedBy(wx.Panel):
                             attrModifier = "-"
                             attrAmount = -attrAmount
 
-                        attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
+                        attributes.append((attrName, (displayName if displayName else attrName), attrModifier,
                                            attrAmount, penalized, attrIcon))
 
                     attrSorted = sorted(attributes, key=lambda attribName: attribName[0])
@@ -454,14 +454,14 @@ class ItemAffectedBy(wx.Panel):
                         if self.showRealNames:
                             display = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
                             saved = "%s %s %.2f %s" % (
-                                displayName if displayName != "" else attrName,
+                                displayName if displayName else attrName,
                                 attrModifier,
                                 attrAmount,
                                 penalized
                             )
                         else:
                             display = "%s %s %.2f %s" % (
-                                displayName if displayName != "" else attrName,
+                                displayName if displayName else attrName,
                                 attrModifier,
                                 attrAmount,
                                 penalized
