@@ -264,8 +264,6 @@ class Market:
         self.ITEMS_FORCEDMETAGROUP = {
             "'Habitat' Miner I": ("Storyline", "Miner I"),
             "'Wild' Miner I": ("Storyline", "Miner I"),
-            "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
-            "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
             "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I"),
