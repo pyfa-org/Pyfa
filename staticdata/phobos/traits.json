@@ -991,56 +991,71 @@
   }, 
   {
     "traits": {
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "10%", 
-              "text": "reduction in Small Energy Turret activation cost"
-            }, 
-            {
-              "number": "5%", 
-              "text": "bonus to Small Energy Turret damage"
-            }
-          ], 
-          "header": "Amarr Frigate bonuses (per skill level):"
-        }
-      ]
+      "misc": {
+        "bonuses": [
+          {
+            "number": "58%", 
+            "text": "bonus to ship velocity"
+          }, 
+          {
+            "number": "58%", 
+            "text": "bonus to maximum targeting range"
+          }, 
+          {
+            "number": "29%", 
+            "text": "bonus to missile velocity"
+          }, 
+          {
+            "number": "58%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to ship agility"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to stasis webifier strength"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 591
+    "typeID": 30851
   }, 
   {
     "traits": {
-      "role": {
+      "misc": {
         "bonuses": [
           {
-            "number": "50%", 
-            "text": "bonus to Remote Armor Repairer optimal range"
+            "number": "44%", 
+            "text": "bonus to ship velocity"
           }, 
           {
-            "number": "600%", 
-            "text": "bonus to Remote Armor Repairer falloff"
+            "number": "44%", 
+            "text": "bonus to maximum targeting range"
+          }, 
+          {
+            "number": "22%", 
+            "text": "bonus to missile velocity"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to ship agility"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to stasis webifier strength"
           }
         ], 
-        "header": "Role Bonus:"
-      }, 
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "10%", 
-              "text": "bonus to Remote Armor Repairer amount"
-            }, 
-            {
-              "number": "10%", 
-              "text": "reduction in Remote Armor Repairer activation cost"
-            }
-          ], 
-          "header": "Amarr Frigate bonuses (per skill level):"
-        }
-      ]
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 590
+    "typeID": 30850
   }, 
   {
     "traits": {
@@ -1097,23 +1112,37 @@
   }, 
   {
     "traits": {
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "7.5%", 
-              "text": "bonus to Armor Repairer amount"
-            }, 
-            {
-              "number": "5%", 
-              "text": "bonus to Small Hybrid Turret damage"
-            }
-          ], 
-          "header": "Gallente Frigate bonuses (per skill level):"
-        }
-      ]
+      "misc": {
+        "bonuses": [
+          {
+            "number": "100%", 
+            "text": "bonus to ship velocity"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to maximum targeting range"
+          }, 
+          {
+            "number": "50%", 
+            "text": "bonus to missile velocity"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to ship agility"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to stasis webifier strength"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 594
+    "typeID": 30854
   }, 
   {
     "traits": {
@@ -1380,6 +1409,36 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "30%", 
+            "text": "bonus to remote armor repairer and remote shield booster effectiveness"
+          }, 
+          {
+            "number": "30%", 
+            "text": "bonus to capacitor capacity"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to capacitor recharge time"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to remote capacitor transmitter effectiveness"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to local armor repairer and shield booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30846
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -1626,6 +1685,36 @@
       ]
     }, 
     "typeID": 44995
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "30%", 
+            "text": "bonus to turret, missile, and drone damage"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to turret and drone tracking speed"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to missile explosion radius"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to target painter effectiveness"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to maximum targeting range"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30847
   }, 
   {
     "traits": {
@@ -2089,6 +2178,73 @@
   }, 
   {
     "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "number": "99%", 
+            "text": "reduction in Scan Probe Launcher CPU requirements"
+          }, 
+          {
+            "text": "·Rigs may be removed from this ship without being destroyed"
+          }, 
+          {
+            "text": "·Warning: On ship destruction the pilot will lose one random subsystem skill level"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "text": "·bonus to all Amarr Offensive Systems effectiveness"
+            }
+          ], 
+          "header": "Amarr Offensive Systems bonuses (per skill level):"
+        }, 
+        {
+          "bonuses": [
+            {
+              "number": "5%", 
+              "text": "reduction in module damage from overheating"
+            }, 
+            {
+              "number": "10%", 
+              "text": "bonus to nanite repair paste repair speed"
+            }
+          ], 
+          "header": "Amarr Strategic Cruiser bonuses (per skill level):"
+        }, 
+        {
+          "bonuses": [
+            {
+              "text": "·bonus to all Amarr Defensive Systems effectiveness"
+            }
+          ], 
+          "header": "Amarr Defensive Systems bonuses (per skill level):"
+        }, 
+        {
+          "bonuses": [
+            {
+              "text": "·bonus to all Amarr Propulsion Systems effectiveness"
+            }
+          ], 
+          "header": "Amarr Propulsion Systems bonuses (per skill level):"
+        }, 
+        {
+          "bonuses": [
+            {
+              "text": "·bonus to all Amarr Core Systems effectiveness"
+            }
+          ], 
+          "header": "Amarr Core Systems bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 29986
+  }, 
+  {
+    "traits": {
       "skills": [
         {
           "bonuses": [
@@ -2186,6 +2342,26 @@
       ]
     }, 
     "typeID": 34343
+  }, 
+  {
+    "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "5%", 
+              "text": "bonus to Rapid Light Missile, Heavy Missile and Heavy Assault Missile Launcher rate of fire"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Heavy Missile and Heavy Assault Missile explosion radius"
+            }
+          ], 
+          "header": "Caldari Cruiser bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 17634
   }, 
   {
     "traits": {
@@ -2531,21 +2707,7 @@
         "bonuses": [
           {
             "number": "50%", 
-            "text": "bonus to Medium Energy Turret optimal range"
-          }, 
-          {
-            "number": "37.5%", 
-            "text": "bonus to Core and Combat Scanner Probe strength"
-          }, 
-          {
-            "number": "10+", 
-            "text": "bonus to Relic and Data Analyzer virus strength"
-          }, 
-          {
-            "text": "·Can fit Covert Ops Cloaking Device"
-          }, 
-          {
-            "text": "·Cloak reactivation delay reduced to 15 seconds"
+            "text": "bonus to drone damage and hitpoints"
           }
         ], 
         "header": "Role Bonus:"
@@ -2554,24 +2716,32 @@
         {
           "bonuses": [
             {
-              "number": "10%", 
-              "text": "bonus to Drone hitpoints and damage"
+              "number": "5%", 
+              "text": "bonus to ship shield hitpoints"
+            }, 
+            {
+              "number": "2%", 
+              "text": "reduction in Strip Miner and Ice Harvester duration"
             }
           ], 
-          "header": "Gallente Cruiser bonuses (per skill level):"
+          "header": "Mining Barge bonuses (per skill level):"
         }, 
         {
           "bonuses": [
             {
               "number": "4%", 
-              "text": "bonus to all armor resistances"
+              "text": "bonus to all shield resistances"
+            }, 
+            {
+              "number": "2%", 
+              "text": "reduction in Strip Miner and Ice Harvester duration"
             }
           ], 
-          "header": "Amarr Cruiser bonuses (per skill level):"
+          "header": "Exhumers bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 33470
+    "typeID": 22546
   }, 
   {
     "traits": {
@@ -3928,6 +4098,29 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "50%", 
+            "text": "reduction in CONCORD bounties"
+          }, 
+          {
+            "text": "·Up to 10% reduction in shield and armor resistances"
+          }, 
+          {
+            "text": "·Up to 10% reduction in turret, launcher, drone and smartbomb damage"
+          }, 
+          {
+            "text": "·System-wide cynosural field jammers are in effect"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 3069
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -4105,6 +4298,20 @@
       ]
     }, 
     "typeID": 4310
+  }, 
+  {
+    "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "number": "90%", 
+            "text": "reduction to effective distance traveled for jump fatigue"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }
+    }, 
+    "typeID": 21628
   }, 
   {
     "traits": {
@@ -6797,6 +7004,70 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "30%", 
+            "text": "bonus to shield hitpoints"
+          }, 
+          {
+            "number": "15%", 
+            "text": "reduction in capacitor recharge time"
+          }, 
+          {
+            "number": "30%", 
+            "text": "bonus to Energy Nosferatu and Neutralizer drain amount"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to armor resistances"
+          }, 
+          {
+            "number": "30%", 
+            "text": "increase in ship signature radius"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30844
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "30%", 
+            "text": "bonus to ship velocity"
+          }, 
+          {
+            "number": "30%", 
+            "text": "bonus to maximum targeting range"
+          }, 
+          {
+            "number": "15%", 
+            "text": "bonus to missile velocity"
+          }, 
+          {
+            "number": "30%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to ship agility"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to stasis webifier strength"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30845
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -6833,23 +7104,91 @@
   }, 
   {
     "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "text": "·Can fit a Siege module"
+          }, 
+          {
+            "number": "5x", 
+            "text": "penalty to Entosis Link cycle time"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
       "skills": [
         {
           "bonuses": [
             {
-              "number": "10%", 
-              "text": "bonus to Large Hybrid Turret optimal range"
+              "number": "5%", 
+              "text": "bonus to Capital Projectile Turret damage"
             }, 
             {
-              "number": "4%", 
-              "text": "bonus to all shield resistances"
+              "number": "5%", 
+              "text": "bonus to Capital Projectile Turret rate of fire"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Shield Booster cycle time"
             }
           ], 
-          "header": "Caldari Battleship bonuses (per skill level):"
+          "header": "Minmatar Dreadnought bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 33627
+    "typeID": 19722
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "30%", 
+            "text": "bonus to the benefits of overloading modules"
+          }, 
+          {
+            "number": "30%", 
+            "text": "bonus to smartbomb damage and range"
+          }, 
+          {
+            "number": "30%", 
+            "text": "bonus to bomb damage"
+          }, 
+          {
+            "number": "15%", 
+            "text": "increased heat damage from overloading modules"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30848
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "60%", 
+            "text": "bonus to small weapon damage"
+          }, 
+          {
+            "number": "30%", 
+            "text": "bonus to armor hitpoints"
+          }, 
+          {
+            "number": "15%", 
+            "text": "reduction in ship signature radius"
+          }, 
+          {
+            "number": "15%", 
+            "text": "penalty to shield resistances"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30849
   }, 
   {
     "traits": {
@@ -6972,23 +7311,39 @@
   }, 
   {
     "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "text": "·Can fit a Siege module"
+          }, 
+          {
+            "number": "5x", 
+            "text": "penalty to Entosis Link cycle time"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
       "skills": [
         {
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Large Energy Turret damage"
+              "text": "bonus to Capital Energy Turret damage"
             }, 
             {
               "number": "4%", 
               "text": "bonus to all armor resistances"
+            }, 
+            {
+              "number": "10%", 
+              "text": "reduction in Capital Energy Turret activation cost"
             }
           ], 
-          "header": "Amarr Battleship bonuses (per skill level):"
+          "header": "Amarr Dreadnought bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 33625
+    "typeID": 19720
   }, 
   {
     "traits": {
@@ -7690,6 +8045,94 @@
       ]
     }, 
     "typeID": 628
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "86%", 
+            "text": "bonus to ship velocity"
+          }, 
+          {
+            "number": "86%", 
+            "text": "bonus to maximum targeting range"
+          }, 
+          {
+            "number": "43%", 
+            "text": "bonus to missile velocity"
+          }, 
+          {
+            "number": "86%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to ship agility"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to stasis webifier strength"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30853
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "72%", 
+            "text": "bonus to ship velocity"
+          }, 
+          {
+            "number": "72%", 
+            "text": "bonus to maximum targeting range"
+          }, 
+          {
+            "number": "36%", 
+            "text": "bonus to missile velocity"
+          }, 
+          {
+            "number": "72%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to ship agility"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to stasis webifier strength"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30852
+  }, 
+  {
+    "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "7.5%", 
+              "text": "bonus to Armor Repairer amount"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Small Hybrid Turret damage"
+            }
+          ], 
+          "header": "Gallente Frigate bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 594
   }, 
   {
     "traits": {
@@ -8523,23 +8966,75 @@
   }, 
   {
     "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "text": "·Can fit a Doomsday module"
+          }, 
+          {
+            "text": "·Can fit a Phenomena Generator module"
+          }, 
+          {
+            "text": "·Can fit a Jump Portal Generator module"
+          }, 
+          {
+            "text": "·Can fit a Clone Vat Bay module"
+          }, 
+          {
+            "text": "·Can use three Command Burst modules"
+          }, 
+          {
+            "number": "200%", 
+            "text": "bonus to Command Burst area of effect range"
+          }, 
+          {
+            "number": "500%", 
+            "text": "bonus to Armor Plates and Shield Extenders"
+          }, 
+          {
+            "number": "80%", 
+            "text": "bonus to Sensor Dampener resistance"
+          }, 
+          {
+            "number": "80%", 
+            "text": "bonus to Weapon Disruption resistance"
+          }, 
+          {
+            "number": "80%", 
+            "text": "bonus to Stasis effect resistance"
+          }, 
+          {
+            "number": "80%", 
+            "text": "increase to Remote Electronic Assistance impedance"
+          }, 
+          {
+            "number": "5x", 
+            "text": "penalty to Entosis Link duration"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
       "skills": [
         {
           "bonuses": [
             {
-              "number": "10%", 
-              "text": "bonus to Medium Energy Turret damage"
+              "number": "180%", 
+              "text": "bonus to Capital Energy Turret damage"
             }, 
             {
               "number": "10%", 
-              "text": "bonus to Medium Energy Turret optimal range"
+              "text": "reduction in Capital Energy Turret activation cost"
+            }, 
+            {
+              "number": "10+", 
+              "text": "bonus to ship warp core strength"
             }
           ], 
-          "header": "Amarr Cruiser bonuses (per skill level):"
+          "header": "Amarr Titan bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 17709
+    "typeID": 11567
   }, 
   {
     "traits": {
@@ -8569,6 +9064,35 @@
       ]
     }, 
     "typeID": 19744
+  }, 
+  {
+    "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "number": "50%", 
+            "text": "bonus to Small Hybrid Turret optimal range"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "10%", 
+              "text": "bonus to Small Hybrid Turret tracking speed"
+            }, 
+            {
+              "number": "10%", 
+              "text": "bonus to Small Hybrid Turret falloff"
+            }
+          ], 
+          "header": "Gallente Destroyer bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 32848
   }, 
   {
     "traits": {
@@ -8782,7 +9306,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Remote Capacitor Transmitter and Remote Shield Booster amount"
+              "text": "bonus to Remote Capacitor Transmitter and Capital Remote Shield Booster amount"
             }, 
             {
               "number": "4%", 
@@ -8833,7 +9357,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Remote Capacitor Transmitter and Remote Armor Repairer amount"
+              "text": "bonus to Remote Capacitor Transmitter and Capital Remote Armor Repairer amount"
             }, 
             {
               "number": "4%", 
@@ -8884,7 +9408,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Remote Armor Repairer and Remote Shield Booster cycle time"
+              "text": "bonus to Capital Remote Armor Repairer and Capital Remote Shield Booster cycle time"
             }, 
             {
               "number": "7.5%", 
@@ -8935,7 +9459,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Remote Armor Repairer and Remote Shield Booster cycle time"
+              "text": "bonus to Capital Remote Armor Repairer and Capital Remote Shield Booster cycle time"
             }, 
             {
               "number": "7.5%", 
@@ -9048,6 +9572,29 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "50%", 
+            "text": "reduction in CONCORD bounties"
+          }, 
+          {
+            "text": "·Up to 50% reduction in shield and armor resistances"
+          }, 
+          {
+            "text": "·Up to 50% reduction in turret, launcher, drone and smartbomb damage"
+          }, 
+          {
+            "text": "·System-wide cynosural field jammers are in effect"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 3494
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -9082,6 +9629,29 @@
       ]
     }, 
     "typeID": 4308
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "50%", 
+            "text": "reduction in CONCORD bounties"
+          }, 
+          {
+            "text": "·Up to 25% reduction in shield and armor resistances"
+          }, 
+          {
+            "text": "·Up to 25% reduction in turret, launcher, drone and smartbomb damage"
+          }, 
+          {
+            "text": "·System-wide cynosural field jammers are in effect"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 3493
   }, 
   {
     "traits": {
@@ -9274,17 +9844,47 @@
   }, 
   {
     "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "10%", 
+              "text": "reduction in Small Energy Turret activation cost"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Small Energy Turret damage"
+            }
+          ], 
+          "header": "Amarr Frigate bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 591
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
-            "number": "99%", 
-            "text": "reduction in Scan Probe Launcher CPU requirements"
+            "text": "·Can fit Networked Sensor Array"
           }, 
           {
-            "text": "·Rigs may be removed from this ship without being destroyed"
+            "text": "·Can fit two Command Burst modules"
           }, 
           {
-            "text": "·Warning: On ship destruction the pilot will lose one random subsystem skill level"
+            "number": "200%", 
+            "text": "bonus to Command Burst area of effect range"
+          }, 
+          {
+            "text": "·Can launch Light and Support Fighters"
+          }, 
+          {
+            "text": "·Can lock at extended ranges"
+          }, 
+          {
+            "number": "5x", 
+            "text": "penalty to Entosis Link duration"
           }
         ], 
         "header": "Role Bonus:"
@@ -9293,51 +9893,23 @@
         {
           "bonuses": [
             {
-              "text": "·bonus to all Amarr Offensive Systems effectiveness"
-            }
-          ], 
-          "header": "Amarr Offensive Systems bonuses (per skill level):"
-        }, 
-        {
-          "bonuses": [
-            {
-              "number": "5%", 
-              "text": "reduction in module damage from overheating"
+              "number": "4%", 
+              "text": "bonus to all armor resistances"
             }, 
             {
-              "number": "10%", 
-              "text": "bonus to nanite repair paste repair speed"
-            }
-          ], 
-          "header": "Amarr Strategic Cruiser bonuses (per skill level):"
-        }, 
-        {
-          "bonuses": [
+              "number": "5%", 
+              "text": "bonus to Cenobite Support Fighter neutralization optimal range"
+            }, 
             {
-              "text": "·bonus to all Amarr Defensive Systems effectiveness"
+              "number": "1%", 
+              "text": "bonus to Armored Command and Information Command burst strength and duration"
             }
           ], 
-          "header": "Amarr Defensive Systems bonuses (per skill level):"
-        }, 
-        {
-          "bonuses": [
-            {
-              "text": "·bonus to all Amarr Propulsion Systems effectiveness"
-            }
-          ], 
-          "header": "Amarr Propulsion Systems bonuses (per skill level):"
-        }, 
-        {
-          "bonuses": [
-            {
-              "text": "·bonus to all Amarr Core Systems effectiveness"
-            }
-          ], 
-          "header": "Amarr Core Systems bonuses (per skill level):"
+          "header": "Amarr Carrier bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 29986
+    "typeID": 23757
   }, 
   {
     "traits": {
@@ -10499,75 +11071,23 @@
   }, 
   {
     "traits": {
-      "role": {
-        "bonuses": [
-          {
-            "text": "·Can fit a Doomsday module"
-          }, 
-          {
-            "text": "·Can fit a Phenomena Generator module"
-          }, 
-          {
-            "text": "·Can fit a Jump Portal Generator module"
-          }, 
-          {
-            "text": "·Can fit a Clone Vat Bay module"
-          }, 
-          {
-            "text": "·Can use three Command Burst modules"
-          }, 
-          {
-            "number": "200%", 
-            "text": "bonus to Command Burst area of effect range"
-          }, 
-          {
-            "number": "500%", 
-            "text": "bonus to Armor Plates and Shield Extenders"
-          }, 
-          {
-            "number": "80%", 
-            "text": "bonus to Sensor Dampener resistance"
-          }, 
-          {
-            "number": "80%", 
-            "text": "bonus to Weapon Disruption resistance"
-          }, 
-          {
-            "number": "80%", 
-            "text": "bonus to Stasis effect resistance"
-          }, 
-          {
-            "number": "80%", 
-            "text": "increase to Remote Electronic Assistance impedance"
-          }, 
-          {
-            "number": "5x", 
-            "text": "penalty to Entosis Link duration"
-          }
-        ], 
-        "header": "Role Bonus:"
-      }, 
       "skills": [
         {
           "bonuses": [
             {
-              "number": "180%", 
-              "text": "bonus to Capital Energy Turret damage"
+              "number": "10%", 
+              "text": "bonus to Medium Energy Turret damage"
             }, 
             {
               "number": "10%", 
-              "text": "reduction in Capital Energy Turret activation cost"
-            }, 
-            {
-              "number": "10+", 
-              "text": "bonus to ship warp core strength"
+              "text": "bonus to Medium Energy Turret optimal range"
             }
           ], 
-          "header": "Amarr Titan bonuses (per skill level):"
+          "header": "Amarr Cruiser bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 11567
+    "typeID": 17709
   }, 
   {
     "traits": {
@@ -11797,64 +12317,263 @@
   }, 
   {
     "traits": {
-      "role": {
+      "misc": {
         "bonuses": [
           {
-            "number": "25%", 
-            "text": "bonus to all structure combat rig effects"
+            "number": "200%", 
+            "text": "bonus to small weapon damage"
           }, 
           {
-            "number": "25%", 
-            "text": "reduction in citadel service module fuel consumption"
+            "number": "100%", 
+            "text": "bonus to armor hitpoints"
           }, 
           {
-            "number": "35%", 
-            "text": "bonus to the rate of fire and capacitor consumption of Standup Burst Projectors and Guided Bomb Launchers"
+            "number": "50%", 
+            "text": "reduction in ship signature radius"
           }, 
           {
-            "text": "·While this structure has at least one online service module it enters full power mode and will gain increased shield and armor hitpoints and an extra reinforcement cycle"
-          }, 
-          {
-            "text": "·Only one Upwell Palatine Keepstar may be deployed at a time in New Eden"
+            "number": "50%", 
+            "text": "penalty to shield resistances"
           }
         ], 
-        "header": "Role Bonus:"
+        "header": "Misc bonus:"
       }
     }, 
-    "typeID": 40340
+    "typeID": 30879
   }, 
   {
     "traits": {
-      "role": {
+      "misc": {
         "bonuses": [
           {
-            "number": "25%", 
-            "text": "bonus to Medium Energy Turret, Medium Hybrid Turret and Medium Projectile Turret damage"
+            "number": "172%", 
+            "text": "bonus to small weapon damage"
           }, 
           {
-            "number": "50%", 
-            "text": "bonus to Command Burst area of effect range"
+            "number": "86%", 
+            "text": "bonus to armor hitpoints"
           }, 
           {
-            "number": "25%", 
-            "text": "bonus to Heavy Missile and Heavy Assault Missile damage"
+            "number": "43%", 
+            "text": "reduction in ship signature radius"
           }, 
           {
-            "number": "50%", 
-            "text": "bonus to Drone hitpoints and damage"
-          }, 
-          {
-            "number": "37.5%", 
-            "text": "bonus to Core and Combat Scanner Probe strength"
-          }, 
-          {
-            "text": "·Can use one Command Burst module"
+            "number": "43%", 
+            "text": "penalty to shield resistances"
           }
         ], 
-        "header": "Role Bonus:"
+        "header": "Misc bonus:"
       }
     }, 
-    "typeID": 3756
+    "typeID": 30878
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "144%", 
+            "text": "bonus to small weapon damage"
+          }, 
+          {
+            "number": "72%", 
+            "text": "bonus to armor hitpoints"
+          }, 
+          {
+            "number": "36%", 
+            "text": "reduction in ship signature radius"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to shield resistances"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30877
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "116%", 
+            "text": "bonus to small weapon damage"
+          }, 
+          {
+            "number": "58%", 
+            "text": "bonus to armor hitpoints"
+          }, 
+          {
+            "number": "29%", 
+            "text": "reduction in ship signature radius"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to shield resistances"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30876
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "88%", 
+            "text": "bonus to small weapon damage"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to armor hitpoints"
+          }, 
+          {
+            "number": "22%", 
+            "text": "reduction in ship signature radius"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to shield resistances"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30875
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "100%", 
+            "text": "bonus to the benefits of overloading modules"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to smartbomb damage and range"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to bomb damage"
+          }, 
+          {
+            "number": "50%", 
+            "text": "increased heat damage from overloading modules"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30874
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "86%", 
+            "text": "bonus to the benefits of overloading modules"
+          }, 
+          {
+            "number": "86%", 
+            "text": "bonus to smartbomb damage and range"
+          }, 
+          {
+            "number": "86%", 
+            "text": "bonus to bomb damage"
+          }, 
+          {
+            "number": "43%", 
+            "text": "increased heat damage from overloading modules"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30873
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "72%", 
+            "text": "bonus to the benefits of overloading modules"
+          }, 
+          {
+            "number": "72%", 
+            "text": "bonus to smartbomb damage and range"
+          }, 
+          {
+            "number": "72%", 
+            "text": "bonus to bomb damage"
+          }, 
+          {
+            "number": "36%", 
+            "text": "increased heat damage from overloading modules"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30872
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "58%", 
+            "text": "bonus to the benefits of overloading modules"
+          }, 
+          {
+            "number": "58%", 
+            "text": "bonus to smartbomb damage and range"
+          }, 
+          {
+            "number": "58%", 
+            "text": "bonus to bomb damage"
+          }, 
+          {
+            "number": "29%", 
+            "text": "increased heat damage from overloading modules"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30871
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "44%", 
+            "text": "bonus to the benefits of overloading modules"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to smartbomb damage and range"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to bomb damage"
+          }, 
+          {
+            "number": "22%", 
+            "text": "increased heat damage from overloading modules"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30870
   }, 
   {
     "traits": {
@@ -12243,55 +12962,6 @@
       "role": {
         "bonuses": [
           {
-            "text": "·Can fit Networked Sensor Array"
-          }, 
-          {
-            "text": "·Can fit two Command Burst modules"
-          }, 
-          {
-            "number": "200%", 
-            "text": "bonus to Command Burst area of effect range"
-          }, 
-          {
-            "text": "·Can launch Light and Support Fighters"
-          }, 
-          {
-            "text": "·Can lock at extended ranges"
-          }, 
-          {
-            "number": "5x", 
-            "text": "penalty to Entosis Link duration"
-          }
-        ], 
-        "header": "Role Bonus:"
-      }, 
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "4%", 
-              "text": "bonus to all armor resistances"
-            }, 
-            {
-              "number": "5%", 
-              "text": "bonus to Cenobite Support Fighter neutralization optimal range"
-            }, 
-            {
-              "number": "1%", 
-              "text": "bonus to Armored Command and Information Command burst strength and duration"
-            }
-          ], 
-          "header": "Amarr Carrier bonuses (per skill level):"
-        }
-      ]
-    }, 
-    "typeID": 23757
-  }, 
-  {
-    "traits": {
-      "role": {
-        "bonuses": [
-          {
             "number": "99.65%", 
             "text": "reduction in Torpedo Launcher powergrid requirement"
           }, 
@@ -12397,56 +13067,29 @@
   }, 
   {
     "traits": {
-      "role": {
+      "misc": {
         "bonuses": [
           {
-            "number": "100%", 
-            "text": "bonus to Large Energy Turret damage"
+            "number": "20%", 
+            "text": "penalty to drone damage and speed"
           }, 
           {
-            "number": "100%", 
-            "text": "bonus to Tractor Beams range and velocity"
+            "number": "15%", 
+            "text": "penalty to ship hull hitpoints"
           }, 
           {
-            "number": "70%", 
-            "text": "reduction in Micro Jump Drive reactivation delay"
+            "number": "10%", 
+            "text": "bonus to ship agility"
           }, 
           {
-            "text": "·Can fit Bastion modules"
+            "number": "10%", 
+            "text": "bonus to mining laser cycle time"
           }
         ], 
-        "header": "Role Bonus:"
-      }, 
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "5%", 
-              "text": "bonus to ship capacitor capacity"
-            }, 
-            {
-              "number": "7.5%", 
-              "text": "bonus to Large Energy Turret optimal range"
-            }
-          ], 
-          "header": "Amarr Battleship bonuses (per skill level):"
-        }, 
-        {
-          "bonuses": [
-            {
-              "number": "7.5%", 
-              "text": "bonus to Armor Repairer amount"
-            }, 
-            {
-              "number": "5%", 
-              "text": "bonus to Large Energy Turret damage"
-            }
-          ], 
-          "header": "Marauders bonuses (per skill level):"
-        }
-      ]
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 34221
+    "typeID": 52247
   }, 
   {
     "traits": {
@@ -12507,6 +13150,58 @@
       ]
     }, 
     "typeID": 34229
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "35%", 
+            "text": "penalty to drone damage and speed"
+          }, 
+          {
+            "number": "25%", 
+            "text": "penalty to ship hull hitpoints"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to ship agility"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to mining laser cycle time"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 52248
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "50%", 
+            "text": "penalty to drone damage and speed"
+          }, 
+          {
+            "number": "40%", 
+            "text": "penalty to ship hull hitpoints"
+          }, 
+          {
+            "number": "45%", 
+            "text": "bonus to ship agility"
+          }, 
+          {
+            "number": "45%", 
+            "text": "bonus to mining laser cycle time"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 52249
   }, 
   {
     "traits": {
@@ -12665,18 +13360,18 @@
           "bonuses": [
             {
               "number": "7.5%", 
-              "text": "bonus to Remote Sensor Dampener effectiveness"
+              "text": "bonus to Large Projectile Turret rate of fire"
             }, 
             {
-              "number": "10%", 
-              "text": "reduction in Remote Sensor Dampener activation cost"
+              "number": "5%", 
+              "text": "bonus to Large Projectile Turret damage"
             }
           ], 
-          "header": "Gallente Frigate bonuses (per skill level):"
+          "header": "Minmatar Battleship bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 609
+    "typeID": 639
   }, 
   {
     "traits": {
@@ -12862,7 +13557,7 @@
           }, 
           {
             "number": "90%", 
-            "text": "reduction in Remote Armor Repairer powergrid requirement"
+            "text": "reduction in Capital Remote Armor Repairer powergrid requirement"
           }, 
           {
             "number": "90%", 
@@ -12884,7 +13579,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Remote Armor Repairer cycle time"
+              "text": "bonus to Capital Remote Armor Repairer cycle time"
             }
           ], 
           "header": "Minmatar Carrier bonuses (per skill level):"
@@ -13333,7 +14028,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Remote Shield Booster amount"
+              "text": "bonus to Capital Remote Shield Booster amount"
             }
           ], 
           "header": "Gallente Carrier bonuses (per skill level):"
@@ -14145,75 +14840,43 @@
   }, 
   {
     "traits": {
-      "role": {
-        "bonuses": [
-          {
-            "text": "·Can fit a Siege module"
-          }, 
-          {
-            "number": "5x", 
-            "text": "penalty to Entosis Link cycle time"
-          }
-        ], 
-        "header": "Role Bonus:"
-      }, 
       "skills": [
         {
           "bonuses": [
             {
-              "number": "5%", 
-              "text": "bonus to Capital Projectile Turret damage"
+              "number": "10%", 
+              "text": "bonus to Large Hybrid Turret optimal range"
             }, 
             {
-              "number": "5%", 
-              "text": "bonus to Capital Projectile Turret rate of fire"
-            }, 
-            {
-              "number": "5%", 
-              "text": "bonus to Shield Booster cycle time"
+              "number": "4%", 
+              "text": "bonus to all shield resistances"
             }
           ], 
-          "header": "Minmatar Dreadnought bonuses (per skill level):"
+          "header": "Caldari Battleship bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 19722
+    "typeID": 33627
   }, 
   {
     "traits": {
-      "role": {
-        "bonuses": [
-          {
-            "text": "·Can fit a Siege module"
-          }, 
-          {
-            "number": "5x", 
-            "text": "penalty to Entosis Link cycle time"
-          }
-        ], 
-        "header": "Role Bonus:"
-      }, 
       "skills": [
         {
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Capital Energy Turret damage"
+              "text": "bonus to Large Energy Turret damage"
             }, 
             {
               "number": "4%", 
               "text": "bonus to all armor resistances"
-            }, 
-            {
-              "number": "10%", 
-              "text": "reduction in Capital Energy Turret activation cost"
             }
           ], 
-          "header": "Amarr Dreadnought bonuses (per skill level):"
+          "header": "Amarr Battleship bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 19720
+    "typeID": 33625
   }, 
   {
     "traits": {
@@ -15345,23 +16008,31 @@
   }, 
   {
     "traits": {
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "5%", 
-              "text": "bonus to Rapid Light Missile, Heavy Missile and Heavy Assault Missile Launcher rate of fire"
-            }, 
-            {
-              "number": "5%", 
-              "text": "bonus to Heavy Missile and Heavy Assault Missile explosion radius"
-            }
-          ], 
-          "header": "Caldari Cruiser bonuses (per skill level):"
-        }
-      ]
+      "role": {
+        "bonuses": [
+          {
+            "number": "25%", 
+            "text": "bonus to all structure combat rig effects"
+          }, 
+          {
+            "number": "25%", 
+            "text": "reduction in citadel service module fuel consumption"
+          }, 
+          {
+            "number": "35%", 
+            "text": "bonus to the rate of fire and capacitor consumption of Standup Burst Projectors and Guided Bomb Launchers"
+          }, 
+          {
+            "text": "·While this structure has at least one online service module it enters full power mode and will gain increased shield and armor hitpoints and an extra reinforcement cycle"
+          }, 
+          {
+            "text": "·Only one Upwell Palatine Keepstar may be deployed at a time in New Eden"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }
     }, 
-    "typeID": 17634
+    "typeID": 40340
   }, 
   {
     "traits": {
@@ -15761,26 +16432,6 @@
   }, 
   {
     "traits": {
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "5%", 
-              "text": "bonus to Medium Hybrid Turret damage"
-            }, 
-            {
-              "number": "10%", 
-              "text": "bonus to Drone hitpoints, damage and mining yield"
-            }
-          ], 
-          "header": "Gallente Cruiser bonuses (per skill level):"
-        }
-      ]
-    }, 
-    "typeID": 34445
-  }, 
-  {
-    "traits": {
       "role": {
         "bonuses": [
           {
@@ -15885,7 +16536,21 @@
         "bonuses": [
           {
             "number": "50%", 
-            "text": "bonus to drone damage and hitpoints"
+            "text": "bonus to Medium Energy Turret optimal range"
+          }, 
+          {
+            "number": "37.5%", 
+            "text": "bonus to Core and Combat Scanner Probe strength"
+          }, 
+          {
+            "number": "10+", 
+            "text": "bonus to Relic and Data Analyzer virus strength"
+          }, 
+          {
+            "text": "·Can fit Covert Ops Cloaking Device"
+          }, 
+          {
+            "text": "·Cloak reactivation delay reduced to 15 seconds"
           }
         ], 
         "header": "Role Bonus:"
@@ -15894,32 +16559,24 @@
         {
           "bonuses": [
             {
-              "number": "5%", 
-              "text": "bonus to ship shield hitpoints"
-            }, 
-            {
-              "number": "2%", 
-              "text": "reduction in Strip Miner and Ice Harvester duration"
+              "number": "10%", 
+              "text": "bonus to Drone hitpoints and damage"
             }
           ], 
-          "header": "Mining Barge bonuses (per skill level):"
+          "header": "Gallente Cruiser bonuses (per skill level):"
         }, 
         {
           "bonuses": [
             {
               "number": "4%", 
-              "text": "bonus to all shield resistances"
-            }, 
-            {
-              "number": "2%", 
-              "text": "reduction in Strip Miner and Ice Harvester duration"
+              "text": "bonus to all armor resistances"
             }
           ], 
-          "header": "Exhumers bonuses (per skill level):"
+          "header": "Amarr Cruiser bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 22546
+    "typeID": 33470
   }, 
   {
     "traits": {
@@ -15987,6 +16644,39 @@
       ]
     }, 
     "typeID": 29990
+  }, 
+  {
+    "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "number": "25%", 
+            "text": "bonus to Medium Energy Turret, Medium Hybrid Turret and Medium Projectile Turret damage"
+          }, 
+          {
+            "number": "50%", 
+            "text": "bonus to Command Burst area of effect range"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to Heavy Missile and Heavy Assault Missile damage"
+          }, 
+          {
+            "number": "50%", 
+            "text": "bonus to Drone hitpoints and damage"
+          }, 
+          {
+            "number": "37.5%", 
+            "text": "bonus to Core and Combat Scanner Probe strength"
+          }, 
+          {
+            "text": "·Can use one Command Burst module"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }
+    }, 
+    "typeID": 3756
   }, 
   {
     "traits": {
@@ -17736,6 +18426,59 @@
   }, 
   {
     "traits": {
+      "role": {
+        "bonuses": [
+          {
+            "number": "100%", 
+            "text": "bonus to Large Energy Turret damage"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to Tractor Beams range and velocity"
+          }, 
+          {
+            "number": "70%", 
+            "text": "reduction in Micro Jump Drive reactivation delay"
+          }, 
+          {
+            "text": "·Can fit Bastion modules"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "5%", 
+              "text": "bonus to ship capacitor capacity"
+            }, 
+            {
+              "number": "7.5%", 
+              "text": "bonus to Large Energy Turret optimal range"
+            }
+          ], 
+          "header": "Amarr Battleship bonuses (per skill level):"
+        }, 
+        {
+          "bonuses": [
+            {
+              "number": "7.5%", 
+              "text": "bonus to Armor Repairer amount"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Large Energy Turret damage"
+            }
+          ], 
+          "header": "Marauders bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 34221
+  }, 
+  {
+    "traits": {
       "skills": [
         {
           "bonuses": [
@@ -17836,32 +18579,63 @@
   }, 
   {
     "traits": {
-      "role": {
+      "misc": {
         "bonuses": [
           {
-            "number": "50%", 
-            "text": "bonus to Small Hybrid Turret optimal range"
+            "number": "86%", 
+            "text": "bonus to shield hitpoints"
+          }, 
+          {
+            "number": "43%", 
+            "text": "reduction in capacitor recharge time"
+          }, 
+          {
+            "number": "86%", 
+            "text": "bonus to Energy Nosferatu and Neutralizer drain amount"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to armor resistances"
+          }, 
+          {
+            "number": "86%", 
+            "text": "increase in ship signature radius"
           }
         ], 
-        "header": "Role Bonus:"
-      }, 
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "10%", 
-              "text": "bonus to Small Hybrid Turret tracking speed"
-            }, 
-            {
-              "number": "10%", 
-              "text": "bonus to Small Hybrid Turret falloff"
-            }
-          ], 
-          "header": "Gallente Destroyer bonuses (per skill level):"
-        }
-      ]
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 32848
+    "typeID": 30868
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "100%", 
+            "text": "bonus to shield hitpoints"
+          }, 
+          {
+            "number": "50%", 
+            "text": "reduction in capacitor recharge time"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to Energy Nosferatu and Neutralizer drain amount"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to armor resistances"
+          }, 
+          {
+            "number": "100%", 
+            "text": "increase in ship signature radius"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30869
   }, 
   {
     "traits": {
@@ -17880,6 +18654,246 @@
       }
     }, 
     "typeID": 33513
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "44%", 
+            "text": "bonus to turret, missile, and drone damage"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to turret and drone tracking speed"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to missile explosion radius"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to target painter effectiveness"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to maximum targeting range"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30860
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "58%", 
+            "text": "bonus to turret, missile, and drone damage"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to turret and drone tracking speed"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to missile explosion radius"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to target painter effectiveness"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to maximum targeting range"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30861
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "72%", 
+            "text": "bonus to turret, missile, and drone damage"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to turret and drone tracking speed"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to missile explosion radius"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to target painter effectiveness"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to maximum targeting range"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30862
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "86%", 
+            "text": "bonus to turret, missile, and drone damage"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to turret and drone tracking speed"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to missile explosion radius"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to target painter effectiveness"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to maximum targeting range"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30863
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "100%", 
+            "text": "bonus to turret, missile, and drone damage"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to turret and drone tracking speed"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to missile explosion radius"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to target painter effectiveness"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to maximum targeting range"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30864
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "44%", 
+            "text": "bonus to shield hitpoints"
+          }, 
+          {
+            "number": "22%", 
+            "text": "reduction in capacitor recharge time"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to Energy Nosferatu and Neutralizer drain amount"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to armor resistances"
+          }, 
+          {
+            "number": "44%", 
+            "text": "increase in ship signature radius"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30865
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "58%", 
+            "text": "bonus to shield hitpoints"
+          }, 
+          {
+            "number": "29%", 
+            "text": "reduction in capacitor recharge time"
+          }, 
+          {
+            "number": "58%", 
+            "text": "bonus to Energy Nosferatu and Neutralizer drain amount"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to armor resistances"
+          }, 
+          {
+            "number": "58%", 
+            "text": "increase in ship signature radius"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30866
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "72%", 
+            "text": "bonus to shield hitpoints"
+          }, 
+          {
+            "number": "36%", 
+            "text": "reduction in capacitor recharge time"
+          }, 
+          {
+            "number": "72%", 
+            "text": "bonus to Energy Nosferatu and Neutralizer drain amount"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to armor resistances"
+          }, 
+          {
+            "number": "72%", 
+            "text": "increase in ship signature radius"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30867
   }, 
   {
     "traits": {
@@ -18372,6 +19386,35 @@
       "role": {
         "bonuses": [
           {
+            "number": "50%", 
+            "text": "bonus to Small Hybrid Turret optimal range"
+          }
+        ], 
+        "header": "Role Bonus:"
+      }, 
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "10%", 
+              "text": "bonus to Small Hybrid Turret tracking speed"
+            }, 
+            {
+              "number": "10%", 
+              "text": "bonus to Small Hybrid Turret falloff"
+            }
+          ], 
+          "header": "Gallente Destroyer bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 32840
+  }, 
+  {
+    "traits": {
+      "role": {
+        "bonuses": [
+          {
             "number": "100%", 
             "text": "bonus to Large Energy Turret damage"
           }, 
@@ -18511,6 +19554,36 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "72%", 
+            "text": "bonus to remote armor repairer and remote shield booster effectiveness"
+          }, 
+          {
+            "number": "72%", 
+            "text": "bonus to capacitor capacity"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to capacitor recharge time"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to remote capacitor transmitter effectiveness"
+          }, 
+          {
+            "number": "36%", 
+            "text": "penalty to local armor repairer and shield booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30884
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -18632,17 +19705,49 @@
   }, 
   {
     "traits": {
-      "role": {
+      "misc": {
         "bonuses": [
           {
-            "number": "90%", 
-            "text": "reduction to effective distance traveled for jump fatigue"
+            "number": "15%", 
+            "text": "bonus to turret tracking speed"
+          }, 
+          {
+            "number": "15%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to mining speed"
+          }, 
+          {
+            "number": "30%", 
+            "text": "penalty to warp speed"
           }
         ], 
-        "header": "Role Bonus:"
+        "header": "Misc bonus:"
       }
     }, 
-    "typeID": 21628
+    "typeID": 52693
+  }, 
+  {
+    "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "7.5%", 
+              "text": "bonus to Remote Sensor Dampener effectiveness"
+            }, 
+            {
+              "number": "10%", 
+              "text": "reduction in Remote Sensor Dampener activation cost"
+            }
+          ], 
+          "header": "Gallente Frigate bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 609
   }, 
   {
     "traits": {
@@ -18891,19 +19996,19 @@
         {
           "bonuses": [
             {
-              "number": "7.5%", 
-              "text": "bonus to Large Projectile Turret rate of fire"
+              "number": "5%", 
+              "text": "bonus to Medium Hybrid Turret damage"
             }, 
             {
-              "number": "5%", 
-              "text": "bonus to Large Projectile Turret damage"
+              "number": "10%", 
+              "text": "bonus to Drone hitpoints, damage and mining yield"
             }
           ], 
-          "header": "Minmatar Battleship bonuses (per skill level):"
+          "header": "Gallente Cruiser bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 639
+    "typeID": 34445
   }, 
   {
     "traits": {
@@ -19366,11 +20471,135 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "100%", 
+            "text": "bonus to remote armor repairer and remote shield booster effectiveness"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to capacitor capacity"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to capacitor recharge time"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to remote capacitor transmitter effectiveness"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to local armor repairer and shield booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30882
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "86%", 
+            "text": "bonus to remote armor repairer and remote shield booster effectiveness"
+          }, 
+          {
+            "number": "86%", 
+            "text": "bonus to capacitor capacity"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to capacitor recharge time"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to remote capacitor transmitter effectiveness"
+          }, 
+          {
+            "number": "43%", 
+            "text": "penalty to local armor repairer and shield booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30883
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "44%", 
+            "text": "bonus to remote armor repairer and remote shield booster effectiveness"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to capacitor capacity"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to capacitor recharge time"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to remote capacitor transmitter effectiveness"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to local armor repairer and shield booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30880
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "58%", 
+            "text": "bonus to remote armor repairer and remote shield booster effectiveness"
+          }, 
+          {
+            "number": "58%", 
+            "text": "bonus to capacitor capacity"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to capacitor recharge time"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to remote capacitor transmitter effectiveness"
+          }, 
+          {
+            "number": "29%", 
+            "text": "penalty to local armor repairer and shield booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30881
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
             "number": "50%", 
-            "text": "bonus to Small Hybrid Turret optimal range"
+            "text": "bonus to Remote Armor Repairer optimal range"
+          }, 
+          {
+            "number": "600%", 
+            "text": "bonus to Remote Armor Repairer falloff"
           }
         ], 
         "header": "Role Bonus:"
@@ -19380,18 +20609,18 @@
           "bonuses": [
             {
               "number": "10%", 
-              "text": "bonus to Small Hybrid Turret tracking speed"
+              "text": "bonus to Remote Armor Repairer amount"
             }, 
             {
               "number": "10%", 
-              "text": "bonus to Small Hybrid Turret falloff"
+              "text": "reduction in Remote Armor Repairer activation cost"
             }
           ], 
-          "header": "Gallente Destroyer bonuses (per skill level):"
+          "header": "Amarr Frigate bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 32840
+    "typeID": 590
   }, 
   {
     "traits": {
