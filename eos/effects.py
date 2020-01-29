@@ -28175,12 +28175,10 @@ class Effect6526(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capacitor Emission Systems') or
-                                                  mod.item.requiresSkill('Capital Capacitor Emission Systems'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Capacitor Emission Systems'),
                                       'powerTransferAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryA1'),
                                       skill='Amarr Carrier', **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or
-                                                  mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryA1'),
                                       skill='Amarr Carrier', **kwargs)
 
@@ -28359,12 +28357,10 @@ class Effect6545(BaseEffect):
         if src.getModifiedItemAttr('shipBonusForceAuxiliaryC1') is None:
             return  # See GH Issue 1321
 
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capacitor Emission Systems') or
-                                                  mod.item.requiresSkill('Capital Capacitor Emission Systems'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Capacitor Emission Systems'),
                                       'powerTransferAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryC1'),
                                       skill='Caldari Carrier', **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or
-                                                  mod.item.requiresSkill('Capital Shield Emission Systems'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems'),
                                       'shieldBonus', src.getModifiedItemAttr('shipBonusForceAuxiliaryC1'),
                                       skill='Caldari Carrier', **kwargs)
 
