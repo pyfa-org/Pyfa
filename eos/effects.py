@@ -961,8 +961,9 @@ class Effect279(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
-                                      'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Capital Shield Emission Systems'),
+            'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
 
 
 class Effect287(BaseEffect):
@@ -3224,8 +3225,9 @@ class Effect1030(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
-                                      'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+            'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level, **kwargs)
 
 
 class Effect1033(BaseEffect):
@@ -3694,6 +3696,7 @@ class Effect1185(BaseEffect):
     Used by:
     Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
+    Implants named like: grade Savior (15 of 18)
     """
 
     type = 'passive'
@@ -4557,6 +4560,7 @@ class Effect1577(BaseEffect):
 
     Used by:
     Implants named like: grade Halo (18 of 18)
+    Implants named like: grade Savior (18 of 18)
     """
 
     runTime = 'early'
@@ -4578,6 +4582,7 @@ class Effect1579(BaseEffect):
     Used by:
     Implants named like: grade Amulet (18 of 18)
     Implant: High-grade Halo Omega
+    Implant: High-grade Savior Omega
     """
 
     runTime = 'early'
@@ -12370,7 +12375,7 @@ class Effect3992(BaseEffect):
     systemShieldHP
 
     Used by:
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Pulsar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12386,8 +12391,8 @@ class Effect3993(BaseEffect):
     systemTargetingRange
 
     Used by:
-    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Black Hole Effects (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12404,8 +12409,8 @@ class Effect3995(BaseEffect):
     systemSignatureRadius
 
     Used by:
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12422,8 +12427,8 @@ class Effect3996(BaseEffect):
     systemArmorEmResistance
 
     Used by:
+    Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
     """
 
     runTime = 'early'
@@ -12440,8 +12445,8 @@ class Effect3997(BaseEffect):
     systemArmorExplosiveResistance
 
     Used by:
+    Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
     """
 
     runTime = 'early'
@@ -12459,8 +12464,8 @@ class Effect3998(BaseEffect):
     systemArmorKineticResistance
 
     Used by:
+    Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
     """
 
     runTime = 'early'
@@ -12478,8 +12483,8 @@ class Effect3999(BaseEffect):
     systemArmorThermalResistance
 
     Used by:
+    Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
     """
 
     runTime = 'early'
@@ -12497,7 +12502,7 @@ class Effect4002(BaseEffect):
     systemMissileVelocity
 
     Used by:
-    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    Celestials named like: Class Black Hole Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12515,7 +12520,7 @@ class Effect4003(BaseEffect):
     systemMaxVelocity
 
     Used by:
-    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    Celestials named like: Class Black Hole Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12532,7 +12537,7 @@ class Effect4016(BaseEffect):
     systemDamageMultiplierGunnery
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12550,7 +12555,7 @@ class Effect4017(BaseEffect):
     systemDamageThermalMissiles
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12568,7 +12573,7 @@ class Effect4018(BaseEffect):
     systemDamageEmMissiles
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12586,7 +12591,7 @@ class Effect4019(BaseEffect):
     systemDamageExplosiveMissiles
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12604,7 +12609,7 @@ class Effect4020(BaseEffect):
     systemDamageKineticMissiles
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12622,7 +12627,7 @@ class Effect4021(BaseEffect):
     systemDamageDrones
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12640,7 +12645,7 @@ class Effect4022(BaseEffect):
     systemTracking
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12658,7 +12663,7 @@ class Effect4023(BaseEffect):
     systemAoeVelocity
 
     Used by:
-    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    Celestials named like: Class Black Hole Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12675,7 +12680,7 @@ class Effect4033(BaseEffect):
     systemHeatDamage
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12692,7 +12697,7 @@ class Effect4034(BaseEffect):
     systemOverloadArmor
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12709,7 +12714,7 @@ class Effect4035(BaseEffect):
     systemOverloadDamageModifier
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12726,7 +12731,7 @@ class Effect4036(BaseEffect):
     systemOverloadDurationBonus
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12743,7 +12748,7 @@ class Effect4037(BaseEffect):
     systemOverloadEccmStrength
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12760,7 +12765,7 @@ class Effect4038(BaseEffect):
     systemOverloadEcmStrength
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12777,7 +12782,7 @@ class Effect4039(BaseEffect):
     systemOverloadHardening
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12794,7 +12799,7 @@ class Effect4040(BaseEffect):
     systemOverloadRange
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12811,7 +12816,7 @@ class Effect4041(BaseEffect):
     systemOverloadRof
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12828,7 +12833,7 @@ class Effect4042(BaseEffect):
     systemOverloadSelfDuration
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12845,7 +12850,7 @@ class Effect4043(BaseEffect):
     systemOverloadShieldBonus
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12862,7 +12867,7 @@ class Effect4044(BaseEffect):
     systemOverloadSpeedFactor
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12879,7 +12884,7 @@ class Effect4045(BaseEffect):
     systemSmartBombRange
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12896,7 +12901,7 @@ class Effect4046(BaseEffect):
     systemSmartBombEmDamage
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12913,7 +12918,7 @@ class Effect4047(BaseEffect):
     systemSmartBombThermalDamage
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12930,7 +12935,7 @@ class Effect4048(BaseEffect):
     systemSmartBombKineticDamage
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12947,7 +12952,7 @@ class Effect4049(BaseEffect):
     systemSmartBombExplosiveDamage
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12964,7 +12969,7 @@ class Effect4054(BaseEffect):
     systemSmallEnergyDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -12982,7 +12987,7 @@ class Effect4055(BaseEffect):
     systemSmallProjectileDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13000,7 +13005,7 @@ class Effect4056(BaseEffect):
     systemSmallHybridDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13018,7 +13023,7 @@ class Effect4057(BaseEffect):
     systemRocketEmDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13036,7 +13041,7 @@ class Effect4058(BaseEffect):
     systemRocketExplosiveDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13054,7 +13059,7 @@ class Effect4059(BaseEffect):
     systemRocketKineticDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13072,7 +13077,7 @@ class Effect4060(BaseEffect):
     systemRocketThermalDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13090,7 +13095,7 @@ class Effect4061(BaseEffect):
     systemStandardMissileThermalDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13108,7 +13113,7 @@ class Effect4062(BaseEffect):
     systemStandardMissileEmDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13126,7 +13131,7 @@ class Effect4063(BaseEffect):
     systemStandardMissileExplosiveDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13144,7 +13149,7 @@ class Effect4086(BaseEffect):
     systemArmorRepairAmount
 
     Used by:
-    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13163,7 +13168,7 @@ class Effect4088(BaseEffect):
     systemArmorRemoteRepairAmount
 
     Used by:
-    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13171,10 +13176,9 @@ class Effect4088(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
-                                         'armorDamageAmount',
-                                         module.getModifiedItemAttr('armorDamageAmountMultiplierRemote'),
-                                         stackingPenalties=True, **kwargs)
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+            'armorDamageAmount', module.getModifiedItemAttr('armorDamageAmountMultiplierRemote'), stackingPenalties=True, **kwargs)
 
 
 class Effect4089(BaseEffect):
@@ -13182,7 +13186,7 @@ class Effect4089(BaseEffect):
     systemShieldRemoteRepairAmount
 
     Used by:
-    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13190,9 +13194,9 @@ class Effect4089(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
-                                         'shieldBonus', module.getModifiedItemAttr('shieldBonusMultiplierRemote'),
-                                         stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Capital Shield Emission Systems'),
+            'shieldBonus', module.getModifiedItemAttr('shieldBonusMultiplierRemote'), stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect4090(BaseEffect):
@@ -13200,7 +13204,7 @@ class Effect4090(BaseEffect):
     systemCapacitorCapacity
 
     Used by:
-    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13216,8 +13220,8 @@ class Effect4091(BaseEffect):
     systemCapacitorRecharge
 
     Used by:
-    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
+    Celestials named like: Class Pulsar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13335,7 +13339,7 @@ class Effect4135(BaseEffect):
     systemShieldEmResistance
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13352,7 +13356,7 @@ class Effect4136(BaseEffect):
     systemShieldExplosiveResistance
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13370,7 +13374,7 @@ class Effect4137(BaseEffect):
     systemShieldKineticResistance
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13388,7 +13392,7 @@ class Effect4138(BaseEffect):
     systemShieldThermalResistance
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -13993,7 +13997,7 @@ class Effect4280(BaseEffect):
     systemAgility
 
     Used by:
-    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    Celestials named like: Class Black Hole Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -15837,7 +15841,7 @@ class Effect4728(BaseEffect):
 
     Used by:
     Celestials named like: Drifter Incursion (6 of 6)
-    Celestials named like: Incursion ship attributes effects (3 of 3)
+    Celestials named like: Sansha Incursion System Effects (3 of 3)
     """
 
     runTime = 'early'
@@ -16408,7 +16412,7 @@ class Effect4906(BaseEffect):
     systemDamageFighters
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -16733,7 +16737,7 @@ class Effect4961(BaseEffect):
     systemShieldRepairAmountShieldSkills
 
     Used by:
-    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -20374,7 +20378,7 @@ class Effect5440(BaseEffect):
     systemStandardMissileKineticDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23074,7 +23078,7 @@ class Effect5912(BaseEffect):
     systemRemoteCapTransmitterAmount
 
     Used by:
-    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23092,7 +23096,7 @@ class Effect5913(BaseEffect):
     systemArmorHP
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23108,7 +23112,7 @@ class Effect5914(BaseEffect):
     systemEnergyNeutMultiplier
 
     Used by:
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Pulsar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23127,7 +23131,7 @@ class Effect5915(BaseEffect):
     systemEnergyVampireMultiplier
 
     Used by:
-    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Pulsar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23146,7 +23150,7 @@ class Effect5916(BaseEffect):
     systemDamageExplosiveBombs
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23164,7 +23168,7 @@ class Effect5917(BaseEffect):
     systemDamageKineticBombs
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23182,7 +23186,7 @@ class Effect5918(BaseEffect):
     systemDamageThermalBombs
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23200,7 +23204,7 @@ class Effect5919(BaseEffect):
     systemDamageEMBombs
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23218,7 +23222,7 @@ class Effect5920(BaseEffect):
     systemAoeCloudSize
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23235,7 +23239,7 @@ class Effect5921(BaseEffect):
     systemTargetPainterMultiplier
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23254,7 +23258,7 @@ class Effect5922(BaseEffect):
     systemWebifierStrengthMultiplier
 
     Used by:
-    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    Celestials named like: Class Black Hole Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23272,7 +23276,7 @@ class Effect5923(BaseEffect):
     systemNeutBombs
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23291,7 +23295,7 @@ class Effect5924(BaseEffect):
     systemGravimetricECMBomb
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23310,7 +23314,7 @@ class Effect5925(BaseEffect):
     systemLadarECMBomb
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23329,7 +23333,7 @@ class Effect5926(BaseEffect):
     systemMagnetrometricECMBomb
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23348,7 +23352,7 @@ class Effect5927(BaseEffect):
     systemRadarECMBomb
 
     Used by:
-    Celestials named like: Red Giant Beacon Class (6 of 6)
+    Celestials named like: Class Red Giant Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -23367,7 +23371,7 @@ class Effect5929(BaseEffect):
     systemDroneTracking
 
     Used by:
-    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    Celestials named like: Class Magnetar Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -28399,14 +28403,9 @@ class Effect6548(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or
-                                                  mod.item.requiresSkill('Capital Shield Emission Systems'),
-                                      'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryG1'),
-                                      skill='Gallente Carrier', **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or
-                                                  mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
-                                      'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryG1'),
-                                      skill='Gallente Carrier', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Remote Armor Repair Systems') or mod.item.requiresSkill('Capital Shield Emission Systems'),
+            'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryG1'), skill='Gallente Carrier', **kwargs)
 
 
 class Effect6549(BaseEffect):
@@ -28439,15 +28438,9 @@ class Effect6551(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or
-                                                  mod.item.requiresSkill('Capital Shield Emission Systems'),
-                                      'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryM1'),
-                                      skill='Minmatar Carrier', **kwargs)
-
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or
-                                                  mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
-                                      'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryM1'),
-                                      skill='Minmatar Carrier', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems') or mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+            'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryM1'), skill='Minmatar Carrier', **kwargs)
 
 
 class Effect6552(BaseEffect):
@@ -32604,7 +32597,7 @@ class Effect6862(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
                                       'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryM1'), skill='Minmatar Carrier', **kwargs)
 
 
@@ -35169,8 +35162,9 @@ class Effect7092(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
-                                      'capacitorNeed', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+            'capacitorNeed', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
 
 
 class Effect7093(BaseEffect):
@@ -35216,8 +35210,9 @@ class Effect7094(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
-                                      'maxRange', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+            'maxRange', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
 
 class Effect7097(BaseEffect):
@@ -35241,7 +35236,7 @@ class Effect7111(BaseEffect):
     systemSmallPrecursorTurretDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    Celestials named like: Class Wolf Rayet Effects (6 of 6)
     """
 
     runTime = 'early'
@@ -35793,7 +35788,7 @@ class Effect7193(BaseEffect):
     systemMiningCycleTimeBonus
 
     Used by:
-    Celestials named like: Invasion Effects (3 of 3)
+    Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
     runTime = 'early'
@@ -35810,7 +35805,7 @@ class Effect7202(BaseEffect):
     systemDroneSpeedBonusPercent
 
     Used by:
-    Celestials named like: Invasion Effects (3 of 3)
+    Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
     runTime = 'early'
@@ -35828,7 +35823,7 @@ class Effect7203(BaseEffect):
     systemDroneDamageBonusPercent
 
     Used by:
-    Celestials named like: Invasion Effects (3 of 3)
+    Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
     runTime = 'early'
@@ -35973,7 +35968,7 @@ class Effect7223(BaseEffect):
     systemAgilityBonusPercentItem
 
     Used by:
-    Celestials named like: Invasion Effects (3 of 3)
+    Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
     runTime = 'early'
@@ -35989,7 +35984,7 @@ class Effect7227(BaseEffect):
     systemHullHPBonusPercentItem
 
     Used by:
-    Celestials named like: Invasion Effects (3 of 3)
+    Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
     runTime = 'early'
