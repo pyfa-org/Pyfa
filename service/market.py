@@ -117,8 +117,8 @@ class SearchWorkerThread(threading.Thread):
             elif filterName == 'everything':
                 filters = [
                     or_(
-                        types_Category.name == 'Ship',
-                        types_Group.name.in_(('Citadel', 'Engineering Complex', 'Refinery'))),
+                        types_Category.name.in_(sMkt.FIT_CATEGORIES),
+                        types_Group.name.in_(sMkt.FIT_GROUPS)),
                     or_(
                         types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
                         types_Group.name.in_(sMkt.SEARCH_GROUPS))]
@@ -330,6 +330,7 @@ class Market:
         self.META_MAP["normal"] = frozenset((0, *(mg.ID for mg in eos.db.getMetaGroups() if mg.ID not in nonNormalMetas)))
         self.META_MAP.move_to_end("normal", last=False)
         self.META_MAP_REVERSE = {sv: k for k, v in self.META_MAP.items() for sv in v}
+        self.META_MAP_REVERSE_INDICES = self.__makeReverseMetaMapIndices()
         self.SEARCH_CATEGORIES = (
             "Drone",
             "Module",
@@ -353,6 +354,8 @@ class Market:
                                    2203  # Structure Modifications
                                    )
         self.SHOWN_MARKET_GROUPS = eos.db.getMarketTreeNodeIds(self.ROOT_MARKET_GROUPS)
+        self.FIT_CATEGORIES = ['Ship']
+        self.FIT_GROUPS = ['Citadel', 'Engineering Complex', 'Refinery']
         # Tell other threads that Market is at their service
         mktRdy.set()
 
@@ -371,6 +374,15 @@ class Market:
                 rev[value] = set()
             rev[value].add(item)
         return rev
+
+    def __makeReverseMetaMapIndices(self):
+        revmap = {}
+        i = 0
+        for mgids in self.META_MAP.values():
+            for mgid in mgids:
+                revmap[mgid] = i
+            i += 1
+        return revmap
 
     @staticmethod
     def getItem(identity, *args, **kwargs):

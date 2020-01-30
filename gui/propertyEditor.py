@@ -208,9 +208,37 @@ class ItemView(d.Display):
 
         sMkt.searchItems(search, self.populateSearch, 'everything')
 
+    def itemSort(self, item):
+        sMkt = Market.getInstance()
+        isFittable = item.group.name in sMkt.FIT_GROUPS or item.category.name in sMkt.FIT_CATEGORIES
+        catname = sMkt.getCategoryByItem(item).name
+        try:
+            mktgrpid = sMkt.getMarketGroupByItem(item).ID
+        except AttributeError:
+            mktgrpid = -1
+            pyfalog.warning("unable to find market group for {}".format(item.name))
+        parentname = sMkt.getParentItemByItem(item).name
+        # Get position of market group
+        metagrpid = sMkt.getMetaGroupIdByItem(item)
+        metatab = sMkt.META_MAP_REVERSE_INDICES.get(metagrpid)
+        metalvl = item.metaLevel or 0
+
+        return not isFittable, catname, mktgrpid, parentname, metatab, metalvl, item.name
+
     def populateSearch(self, items):
         self.items = list(items)
         self.update(items)
+
+    def populate(self, items):
+        if len(items) > 0:
+            self.unselectAll()
+            items.sort(key=self.itemSort)
+        d.Display.populate(self, items)
+
+    def refresh(self, items):
+        if len(items) > 1:
+            items.sort(key=self.itemSort)
+        d.Display.refresh(self, items)
 
 
 class AttributeGrid(wxpg.PropertyGrid):

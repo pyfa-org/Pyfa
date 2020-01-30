@@ -49,8 +49,6 @@ class ItemView(Display):
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
-        # Make reverse map, used by sorter
-        self.metaMap = self.makeReverseMetaMap()
         self.active = []
 
     def delaySearch(self, evt):
@@ -214,7 +212,7 @@ class ItemView(Display):
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
-        metatab = self.metaMap.get(metagrpid)
+        metatab = sMkt.META_MAP_REVERSE_INDICES.get(metagrpid)
         metalvl = item.metaLevel or 0
 
         return catname, mktgrpid, parentname, metatab, metalvl, item.name
@@ -258,18 +256,6 @@ class ItemView(Display):
             item.marketShortcut = i + 1
 
         Display.refresh(self, items)
-
-    def makeReverseMetaMap(self):
-        """
-        Form map which tells in which tab items of given metagroup are located
-        """
-        revmap = {}
-        i = 0
-        for mgids in self.sMkt.META_MAP.values():
-            for mgid in mgids:
-                revmap[mgid] = i
-            i += 1
-        return revmap
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
