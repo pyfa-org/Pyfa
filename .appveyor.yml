@@ -9,7 +9,7 @@ environment:
 
     - PYTHON: "C:\\Python38"
       PYTHON_VERSION: "3.8.x"
-      PYTHON_ARCH: "32"
+      PYTHON_ARCH: "64"
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
