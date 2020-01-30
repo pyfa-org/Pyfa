@@ -7,7 +7,7 @@ environment:
 
   matrix:
 
-    - PYTHON: "C:\\Python38"
+    - PYTHON: "C:\\Python38-x64"
       PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "64"
 init:
