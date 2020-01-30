@@ -7,8 +7,8 @@ environment:
 
   matrix:
 
-    - PYTHON: "C:\\Python36"
-      PYTHON_VERSION: "3.6.x"
+    - PYTHON: "C:\\Python38"
+      PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "32"
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

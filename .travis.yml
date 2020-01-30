@@ -3,13 +3,13 @@ language: python
 git:
   depth: 400
 python:
-  - 3.6
+  - 3.8
 matrix:
   include:
   - os: osx
     osx_image: xcode7.3
     language: generic
-    env: PYTHON=3.6.1
+    env: PYTHON=3.8.1
 before_install:
   - bash scripts/setup-osx.sh
 install:
