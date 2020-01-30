@@ -107,37 +107,46 @@ class SearchWorkerThread(threading.Thread):
             sMkt = Market.getInstance()
             if filterName == 'market':
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter_ = or_(
+                filters = [or_(
                     types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
-                    types_Group.name.in_(sMkt.SEARCH_GROUPS))
+                    types_Group.name.in_(sMkt.SEARCH_GROUPS))]
             # Used in implant editor
             elif filterName == 'implants':
-                filter_ = types_Category.name == 'Implant'
+                filters = [types_Category.name == 'Implant']
             # Actually not everything, just market search + ships
             elif filterName == 'everything':
-                filter_ = or_(
-                    types_Category.name.in_(sMkt.SEARCH_CATEGORIES + ('Ship',)),
-                    types_Group.name.in_(sMkt.SEARCH_GROUPS))
+                filters = [
+                    or_(
+                        types_Category.name == 'Ship',
+                        types_Group.name.in_(('Citadel', 'Engineering Complex', 'Refinery'))),
+                    or_(
+                        types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
+                        types_Group.name.in_(sMkt.SEARCH_GROUPS))]
             else:
-                filter_ = None
+                filters = [None]
 
             jargon_request = self.jargonLoader.get_jargon().apply(request)
 
-            results = []
+            all_results = set()
             if len(request) >= config.minItemSearchLength:
-                results = eos.db.searchItems(request, where=filter_,
-                                             join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup"))
+                for filter_ in filters:
+                    regular_results = eos.db.searchItems(
+                        request, where=filter_,
+                        join=(types_Item.group, types_Group.category),
+                        eager=("group.category", "metaGroup"))
+                    all_results.update(regular_results)
 
-            jargon_results = []
             if len(jargon_request) >= config.minItemSearchLength:
-                jargon_results = eos.db.searchItems(jargon_request, where=filter_,
-                                             join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup"))
+                for filter_ in filters:
+                    jargon_results = eos.db.searchItems(
+                        jargon_request, where=filter_,
+                        join=(types_Item.group, types_Group.category),
+                        eager=("group.category", "metaGroup"))
+                    all_results.update(jargon_results)
 
             items = set()
             # Return only published items, consult with Market service this time
-            for item in [*results, *jargon_results]:
+            for item in all_results:
                 if sMkt.getPublicityByItem(item):
                     items.add(item)
             wx.CallAfter(callback, items)
