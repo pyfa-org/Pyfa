@@ -309,7 +309,7 @@ class ItemView(d.Display):
             self.clearSearch()
             return
 
-        sMkt.searchItems(search, self.populateSearch, ["Implant"])
+        sMkt.searchItems(search, self.populateSearch, 'implants')
 
     def populateSearch(self, items):
         if not self.IsShown():

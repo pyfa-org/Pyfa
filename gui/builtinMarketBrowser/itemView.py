@@ -180,7 +180,7 @@ class ItemView(Display):
             return
 
         self.marketBrowser.mode = 'search'
-        self.sMkt.searchItems(search, self.populateSearch)
+        self.sMkt.searchItems(search, self.populateSearch, 'market')
 
     def clearSearch(self, event=None):
         # Wipe item store and update everything to accomodate with it

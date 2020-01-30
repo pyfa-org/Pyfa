@@ -101,15 +101,23 @@ class SearchWorkerThread(threading.Thread):
             while self.searchRequest is None:
                 cv.wait()
 
-            request, callback, filterOn = self.searchRequest
+            request, callback, filterName = self.searchRequest
             self.searchRequest = None
             cv.release()
             sMkt = Market.getInstance()
-            if filterOn is True:
+            if filterName == 'market':
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter_ = or_(types_Category.name.in_(sMkt.SEARCH_CATEGORIES), types_Group.name.in_(sMkt.SEARCH_GROUPS))
-            elif filterOn:  # filter by selected categories
-                filter_ = types_Category.name.in_(filterOn)
+                filter_ = or_(
+                    types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
+                    types_Group.name.in_(sMkt.SEARCH_GROUPS))
+            # Used in implant editor
+            elif filterName == 'implants':
+                filter_ = types_Category.name == 'Implant'
+            # Actually not everything, just market search + ships
+            elif filterName == 'everything':
+                filter_ = or_(
+                    types_Category.name.in_(sMkt.SEARCH_CATEGORIES + ('Ship',)),
+                    types_Group.name.in_(sMkt.SEARCH_GROUPS))
             else:
                 filter_ = None
 
@@ -134,9 +142,9 @@ class SearchWorkerThread(threading.Thread):
                     items.add(item)
             wx.CallAfter(callback, items)
 
-    def scheduleSearch(self, text, callback, filterOn=True):
+    def scheduleSearch(self, text, callback, filterName=None):
         self.cv.acquire()
-        self.searchRequest = (text, callback, filterOn)
+        self.searchRequest = (text, callback, filterName)
         self.cv.notify()
         self.cv.release()
 
@@ -748,9 +756,9 @@ class Market:
                 ships.add(item)
         return ships
 
-    def searchItems(self, name, callback, filterOn=True):
+    def searchItems(self, name, callback, filterName=None):
         """Find items according to given text pattern"""
-        self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
+        self.searchWorkerThread.scheduleSearch(name, callback, filterName)
 
     @staticmethod
     def getItemsWithOverrides():

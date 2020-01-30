@@ -206,7 +206,7 @@ class ItemView(d.Display):
             self.clearSearch()
             return
 
-        sMkt.searchItems(search, self.populateSearch, False)
+        sMkt.searchItems(search, self.populateSearch, 'everything')
 
     def populateSearch(self, items):
         self.items = list(items)
