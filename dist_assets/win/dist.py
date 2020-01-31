@@ -14,7 +14,7 @@ with open("version.yml", 'r') as file:
 os.environ["PYFA_DIST_DIR"] = os.path.join(os.getcwd(), 'dist')
 
 os.environ["PYFA_VERSION"] = version
-iscc = "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" # inno script location via wine
+iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 
 source = os.path.join(os.environ["PYFA_DIST_DIR"], "pyfa")
 
