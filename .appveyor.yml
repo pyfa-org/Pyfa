@@ -23,17 +23,20 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
+
+  - ps: "ls \"C:\\Program Files (x86)\\\""
+  - ps: "ls \"C:\\Program Files (x86)\\Inno Setup 6\\\""
   - ECHO "Filesystem root:"
-  - ps: "ls \"C:/\""
+  - ps: "ls \"C:\\\""
 
   - ECHO "Filesystem projects root:"
   - ps: "ls \"C:\\projects\\\""
 
   - ECHO "Filesystem pyfa root:"
-  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\""
+  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
 
   - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+  - ps: "ls \"C:\\Program Files\\Microsoft SDKs\\Windows\\\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
@@ -45,7 +48,7 @@ install:
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "python -m pip install --disable-pip-version-check --user --upgrade pip"
+  - "python -m pip install --upgrade pip"
 
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
