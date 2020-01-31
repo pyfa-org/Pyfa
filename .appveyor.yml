@@ -23,9 +23,10 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
-
+  # Temporary debug stuff as I have no idea how else to get this info
+  - ps: "[System.Environment]::OSVersion.Version"
+  - ps: "ls \"C:\\Program Files\\\""
   - ps: "ls \"C:\\Program Files (x86)\\\""
-  - ps: "ls \"C:\\Program Files (x86)\\Inno Setup 6\\\""
   - ECHO "Filesystem root:"
   - ps: "ls \"C:\\\""
 
