@@ -31,7 +31,6 @@ if os_name == 'Windows':
     added_files.extend([
         ('dist_assets/win/pyfa.ico', '.'),
         ('dist_assets/win/pyfa.exe.manifest', '.'),
-        ('dist_assets/win/Microsoft.VC90.CRT.manifest', '.')
     ])
 
     icon = 'dist_assets/win/pyfa.ico'

@@ -20,7 +20,6 @@ added_files = [
              ('../../service/jargon/*.yaml', 'service/jargon'),
              ('../../dist_assets/win/pyfa.ico', '.'),
              ('../../dist_assets/win/pyfa.exe.manifest', '.'),
-             ('../../dist_assets/win/Microsoft.VC90.CRT.manifest', '.'),
              (requests.certs.where(), '.'),  # is this needed anymore?
              ('../../eve.db', '.'),
              ('../../README.md', '.'),

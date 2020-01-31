@@ -74,8 +74,6 @@ build_script:
   - "python -m PyInstaller --noupx --clean --windowed --noconsole -y pyfa.spec"
   # Copy over manifest (See pyfa-org/pyfa#1622)
   - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
-  # Not really sure if this is needed, but why not
-  - ps: xcopy /y dist_assets\win\Microsoft.VC90.CRT.manifest $env:PYFA_DIST_DIR\pyfa\
 
   ##########
   # InnoScript EXE building
