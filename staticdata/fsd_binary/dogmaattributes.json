@@ -10135,7 +10135,7 @@
     "displayNameID": 233232, 
     "highIsGood": 1, 
     "iconID": 0, 
-    "name": "implantSetAngel", 
+    "name": "implantSetHalo", 
     "published": 1, 
     "stackable": 1, 
     "unitID": 104
@@ -32227,5 +32227,33 @@
     "published": 1, 
     "stackable": 1, 
     "unitID": 104
+  }, 
+  "3023": {
+    "attributeID": 3023, 
+    "categoryID": 7, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "displayName": "Savior Set Bonus", 
+    "displayNameID": 559060, 
+    "highIsGood": 1, 
+    "iconID": 0, 
+    "name": "implantSetSavior", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 104
+  }, 
+  "3024": {
+    "attributeID": 3024, 
+    "categoryID": 7, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayName": "Remote Rep Cycle Time Bonus", 
+    "displayNameID": 559061, 
+    "highIsGood": 1, 
+    "iconID": 1392, 
+    "name": "remoteRepDurationBonus", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 105
   }
 }
