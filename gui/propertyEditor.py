@@ -168,10 +168,7 @@ class ItemView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
-        sMkt = Market.getInstance()
-
-        self.things = sMkt.getItemsWithOverrides()
-        self.items = self.things
+        self.activeItems = []
 
         self.searchBox = parent.Parent.Parent.searchBox
         # Bind search actions
@@ -180,20 +177,16 @@ class ItemView(d.Display):
         self.searchBox.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
         self.searchBox.Bind(SBox.EVT_TEXT, self.scheduleSearch)
 
-        self.update(self.items)
+        self.update(Market.getInstance().getItemsWithOverrides())
 
     def clearSearch(self, event=None):
         if event:
             self.searchBox.Clear()
-        self.items = self.things
-        self.update(self.items)
+        self.update(Market.getInstance().getItemsWithOverrides())
 
     def updateItems(self, updateDisplay=False):
-        sMkt = Market.getInstance()
-        self.things = sMkt.getItemsWithOverrides()
-        self.items = self.things
         if updateDisplay:
-            self.update(self.things)
+            self.update(Market.getInstance().getItemsWithOverrides())
 
     def scheduleSearch(self, event=None):
         sMkt = Market.getInstance()
@@ -226,13 +219,13 @@ class ItemView(d.Display):
         return not isFittable, catname, mktgrpid, parentname, metatab, metalvl, item.name
 
     def populateSearch(self, items):
-        self.items = list(items)
         self.update(items)
 
     def populate(self, items):
         if len(items) > 0:
             self.unselectAll()
             items.sort(key=self.itemSort)
+        self.activeItems = items
         d.Display.populate(self, items)
 
     def refresh(self, items):
@@ -264,7 +257,7 @@ class AttributeGrid(wxpg.PropertyGrid):
         self.Clear()
         self.btn.Enable(True)
         sel = event.EventObject.GetFirstSelected()
-        self.item = item = self.itemView.items[sel]
+        self.item = item = self.itemView.activeItems[sel]
 
         for key in sorted(item.attributes.keys()):
             override = item.overrides.get(key, None)
