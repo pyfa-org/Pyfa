@@ -254,7 +254,7 @@ class MainFrame(wx.Frame):
             except:
                 fits.remove(id)
 
-        if not self.prevOpenFits['enabled'] or len(fits) is 0:
+        if not self.prevOpenFits['enabled'] or len(fits) == 0:
             # add blank page if there are no fits to be loaded
             self.fitMultiSwitch.AddPage()
             return

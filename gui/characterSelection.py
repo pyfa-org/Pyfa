@@ -122,7 +122,7 @@ class CharacterSelection(wx.Panel):
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
-        return self.charChoice.GetClientData(selection) if selection is not -1 else None
+        return self.charChoice.GetClientData(selection) if selection != -1 else None
 
     def refreshCharacterList(self, event=None):
         choice = self.charChoice

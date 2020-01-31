@@ -88,7 +88,7 @@ def _resolve_ship(fitting, sMkt, b_localized):
             pyfalog.warning("Caught exception on _resolve_ship")
             pyfalog.error(e)
             limit -= 1
-            if limit is 0:
+            if limit == 0:
                 break
             shipType = anything
             must_retry = True
@@ -132,7 +132,7 @@ def _resolve_module(hardware, sMkt, b_localized):
             pyfalog.warning("Caught exception on _resolve_module")
             pyfalog.error(e)
             limit -= 1
-            if limit is 0:
+            if limit == 0:
                 break
             moduleName = emergency
             must_retry = True
