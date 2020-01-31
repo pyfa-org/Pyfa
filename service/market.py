@@ -149,7 +149,7 @@ class SearchWorkerThread(threading.Thread):
             for item in all_results:
                 if sMkt.getPublicityByItem(item):
                     items.add(item)
-            wx.CallAfter(callback, items)
+            wx.CallAfter(callback, list(items))
 
     def scheduleSearch(self, text, callback, filterName=None):
         self.cv.acquire()
