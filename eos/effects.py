@@ -3696,7 +3696,6 @@ class Effect1185(BaseEffect):
     Used by:
     Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
-    Implants named like: grade Savior (15 of 18)
     """
 
     type = 'passive'
@@ -4556,11 +4555,10 @@ class Effect1551(BaseEffect):
 
 class Effect1577(BaseEffect):
     """
-    angelsetbonus
+    haloSetBonus
 
     Used by:
     Implants named like: grade Halo (18 of 18)
-    Implants named like: grade Savior (18 of 18)
     """
 
     runTime = 'early'
@@ -4569,10 +4567,8 @@ class Effect1577(BaseEffect):
     @staticmethod
     def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(
-            lambda implant: 'signatureRadiusBonus' in implant.itemModifiedAttributes and
-                            'implantSetAngel' in implant.itemModifiedAttributes,
-            'signatureRadiusBonus',
-            implant.getModifiedItemAttr('implantSetAngel'), **kwargs)
+            lambda implant: implant.item.requiresSkill('Cybernetics'),
+            'signatureRadiusBonus', implant.getModifiedItemAttr('implantSetHalo'), **kwargs)
 
 
 class Effect1579(BaseEffect):
@@ -4582,7 +4578,6 @@ class Effect1579(BaseEffect):
     Used by:
     Implants named like: grade Amulet (18 of 18)
     Implant: High-grade Halo Omega
-    Implant: High-grade Savior Omega
     """
 
     runTime = 'early'
@@ -36227,3 +36222,37 @@ class Effect8013(BaseEffect):
     def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
                                                  'shieldHpBonus', implant.getModifiedItemAttr('ImplantSetNirvana') or 1, **kwargs)
+
+
+class Effect8017(BaseEffect):
+    """
+    saviorSetBonus
+
+    Used by:
+    Implants named like: grade Savior (18 of 18)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.appliedImplants.filteredItemMultiply(
+            lambda implant: implant.item.requiresSkill('Cybernetics'),
+            'remoteRepDurationBonus', implant.getModifiedItemAttr('implantSetSavior'), **kwargs)
+
+
+class Effect8018(BaseEffect):
+    """
+    subcapRemoteArmorShieldRepDurationBonus
+
+    Used by:
+    Implants named like: grade Savior (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
+                                      'duration', implant.getModifiedItemAttr('remoteRepDurationBonus'), **kwargs)
