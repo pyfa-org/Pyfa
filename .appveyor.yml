@@ -31,7 +31,7 @@ install:
 
   - ECHO "OS version:"
   - ps: "[System.Environment]::OSVersion.Version"
-    -
+
   - ECHO "Filesystem root:"
   - ps: "ls \"C:\\\""
 
