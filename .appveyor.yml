@@ -42,8 +42,7 @@ install:
   - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
 
   - ECHO "Installed SDKs:"
-  - ps: "ls \"C:\\Program Files\\Microsoft SDKs\\\""
-  - ps: "ls \"C:\\Program Files\\Microsoft SDKs\\Windows\\\""
+  - ps: "ls \"C:\\Program Files\\Windows Kits\\\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
