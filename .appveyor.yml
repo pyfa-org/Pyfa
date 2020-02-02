@@ -24,19 +24,19 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
-  - cmd: echo "OS version:"
+  - ps: echo("OS version:")
   - ps: "[System.Environment]::OSVersion.Version"
 
-  - cmd: echo "Filesystem root:"
+  - ps: echo("Filesystem root:")
   - ps: "ls \"C:\\\""
 
-  - cmd: echo "Filesystem projects root:"
+  - ps: echo("Filesystem projects root:")
   - ps: "ls \"C:\\projects\\\""
 
-  - cmd: echo "Filesystem pyfa root:"
+  - ps: echo("Filesystem pyfa root:")
   - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
 
-  - cmd: echo "Installed SDKs:"
+  - ps: echo("Installed SDKs:")
   - ps: "ls \"C:\\Program Files (x86)\\Windows Kits\\\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
@@ -55,7 +55,7 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  - cmd: echo "Install pip requirements:"
+  - ps: echo("Install pip requirements:")
   - "python -m pip install -r requirements.txt"
   - "python -m pip install PyInstaller==3.6"
 
@@ -63,11 +63,10 @@ before_build:
     # directory that will contain the built files
   - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
   - ps: $env:PYFA_VERSION = (python ./scripts/dump_version.py)
-  - ps: echo("pyfa version ")
-  - ps: echo ($env:PYFA_VERSION)
+  - ps: echo("pyfa version $env:PYFA_VERSION")
 
 build_script:
-  - cmd: echo "Build pyfa:"
+  - ps: echo("Build pyfa:")
 
   # Build gamedata DB
   - "python db_update.py"
@@ -85,7 +84,7 @@ build_script:
   ##########
   - "python dist_assets/win/dist.py"
   - ps: dir $env:PYFA_DIST_DIR/
-  #- ECHO "Build pyfa (Debug):"
+  #- ps: echo("Build pyfa (Debug):")
   #- copy C:\projects\pyfa\dist_assets\win\pyfa_debug.spec C:\projects\pyfa\pyfa_debug.spec
   #- "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa_debug.spec"
 
