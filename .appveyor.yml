@@ -77,8 +77,9 @@ deploy:
   description: 'Release description'
   provider: GitHub
   auth_token:
-    secure: BfNHO66ff5hVx2O2ORbl49X0U/5h2V2T0IuRZDwm7fd1HvsVluF0wRCbl29oRp1M
+    secure: sjPZ2yZ9tbtooYC//9uw1NM/niKsOcW6A6g9e51loN6phoKMWpScQSecxoKIJ6r8
   draft: true
+  force_update: false
+  # deploy on tag push only
   on:
-    # deploy on tag push only
     APPVEYOR_REPO_TAG: true
