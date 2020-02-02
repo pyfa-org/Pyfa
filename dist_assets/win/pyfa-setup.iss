@@ -17,7 +17,7 @@
 
 ; What version starts with the new structure (1.x.0). This is used to determine if we run directory structure cleanup
 #define MajorVersionFlag 2
-#define MinorVersionFlag 0
+#define MinorVersionFlag 17
 
 #ifndef MyOutputFile
     #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-win', " ", "-"))
@@ -85,6 +85,7 @@ Type: files; Name: "{app}\*.pyc"
 
 [Code]
 
+/////////////////////////////////////////////////////////////////////
 function IsAppRunning(const FileName : string): Boolean;
 var
     FSWbemLocator: Variant;
@@ -101,6 +102,7 @@ begin
     FSWbemLocator := Unassigned;
 end;
 
+/////////////////////////////////////////////////////////////////////
 procedure RemoveFromVirtualStore;
 var
     VirtualStore,FileName,FilePath:String;
@@ -117,6 +119,7 @@ begin
     end;
 end;
 
+/////////////////////////////////////////////////////////////////////
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   if(IsAppRunning( 'pyfa.exe' )) then
@@ -129,12 +132,12 @@ begin
     end
 end;
 
-function GetUninstallString: string;
+/////////////////////////////////////////////////////////////////////
+function GetUninstallString(): String;
 var
-  sUnInstPath: string;
+  sUnInstPath: String;
   sUnInstallString: String;
 begin
-  Result := '';
   sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\{{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1'); //Your App GUID/ID
   sUnInstallString := '';
   if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
@@ -142,12 +145,14 @@ begin
   Result := sUnInstallString;
 end;
 
-function IsUpgrade: Boolean;
+/////////////////////////////////////////////////////////////////////
+function IsUpgrade(): Boolean;
 begin
   Result := (GetUninstallString() <> '');
 end;
 
-function InitializeSetup: Boolean;
+/////////////////////////////////////////////////////////////////////
+function InitializeSetup(): Boolean;
 var
   V: Integer;
   iResultCode: Integer;
