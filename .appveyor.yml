@@ -10,16 +10,16 @@ install:
   - ps: echo("OS version:")
   - ps: "[System.Environment]::OSVersion.Version"
 
-  - ps: echo("Filesystem root:")
+  - ps: echo("Filesystem - root:")
   - ps: "ls \"C:\\\""
 
-  - ps: echo("Filesystem projects root:")
+  - ps: echo("Filesystem - projects root:")
   - ps: "ls \"C:\\projects\\\""
 
-  - ps: echo("Filesystem pyfa root:")
+  - ps: echo("Filesystem - pyfa root:")
   - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
 
-  - ps: echo("Installed SDKs:")
+  - ps: echo("Filesystem - installed SDKs:")
   - ps: "ls \"C:\\Program Files (x86)\\Windows Kits\\\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
