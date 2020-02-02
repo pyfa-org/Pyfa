@@ -41,6 +41,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64
+CloseApplications=yes
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
@@ -49,7 +52,6 @@ OutputDir={#MyOutputDir}
 OutputBaseFilename={#MyOutputFile}
 SetupIconFile={#MyAppDir}\pyfa.ico
 SolidCompression=yes
-CloseApplications=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
