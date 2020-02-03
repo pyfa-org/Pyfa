@@ -112,6 +112,8 @@ class ItemAffectedBy(wx.Panel):
         else:
             try:
                 self.affectedBy.CollapseAll()
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 pass
 

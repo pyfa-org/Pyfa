@@ -40,7 +40,7 @@ def db_needs_update():
     try:
         with open(os.path.join(JSON_DIR, 'phobos', 'metadata.json')) as f:
             data_version = next((r['field_value'] for r in json.load(f) if r['field_name'] == 'client_build'))
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         raise
     # If we have no source data - return None; should not update in this case
     except:
@@ -61,7 +61,7 @@ def db_needs_update():
             db_schema_version = int(row[0])
         cursor.close()
         db.close()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         raise
     except:
         print('Error when fetching gamedata DB metadata')

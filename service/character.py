@@ -86,6 +86,8 @@ class CharacterImportThread(threading.Thread):
                         )
                 char = sCharacter.new(name + " (EVEMon)")
                 sCharacter.apiUpdateCharSheet(char.ID, skills, securitystatus)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.error("Exception on character import:")
                 pyfalog.error(e)
@@ -151,6 +153,8 @@ class Character:
                     data += "Skills required for {}:\n".format(item)
                 data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
             data += "-" * 79 + "\n"
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception:
             pass
 
@@ -496,6 +500,8 @@ class UpdateAPIThread(threading.Thread):
             char.secStatus = resp['security_status']
 
             self.callback[0](self.callback[1])
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             pyfalog.warn(ex)
             self.callback[0](self.callback[1], sys.exc_info())

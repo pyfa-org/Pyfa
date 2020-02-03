@@ -265,6 +265,8 @@ class DmgPatternEditor(AuxiliaryFrame):
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 msg = "Could not import from clipboard: unknown errors"
                 pyfalog.warning(msg)

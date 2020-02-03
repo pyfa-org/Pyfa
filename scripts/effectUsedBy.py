@@ -119,7 +119,7 @@ def calc_outerscore(innerscore_dict, pereffect_totalaffected, weight):
 def validate_string(s):
     try:
         s.encode('ascii')
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         raise
     except Exception:
         return False

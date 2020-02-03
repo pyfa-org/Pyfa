@@ -86,6 +86,8 @@ class ItemProperties(wx.Panel):
                 valueUnit = str(value)
 
                 self.paramList.SetItem(index, 1, valueUnit)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.

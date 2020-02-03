@@ -63,6 +63,8 @@ class MarketTree(wx.TreeCtrl):
                 iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=childMktGrp.ID)
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception as e:
                     pyfalog.debug("Error appending item.")
                     pyfalog.debug(e)

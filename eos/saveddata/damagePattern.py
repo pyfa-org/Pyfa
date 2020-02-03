@@ -260,6 +260,8 @@ class DamagePattern:
                 line = line.split('#', 1)[0]  # allows for comments
                 type, data = line.rsplit('=', 1)
                 type, data = type.strip(), data.split(',')
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 # Data isn't in correct format, continue to next line
                 continue
@@ -274,6 +276,8 @@ class DamagePattern:
             for index, val in enumerate(data):
                 try:
                     fields["%sAmount" % cls.DAMAGE_TYPES[index]] = int(val)
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     continue
 

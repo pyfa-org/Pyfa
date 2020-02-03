@@ -125,6 +125,8 @@ class EveFittings(AuxiliaryFrame):
             #  Can't do this in a finally because then it obscures the message dialog
             del waitDialog  # noqa: F821
             ESIExceptionHandler(self, ex)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             del waitDialog  # noqa: F821
             raise ex
@@ -302,6 +304,8 @@ class ExportToEve(AuxiliaryFrame):
         except APIException as ex:
             try:
                 ESIExceptionHandler(self, ex)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as ex:
                 self.statusbar.SetStatusText("ERROR", 0)
                 self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
@@ -381,6 +385,8 @@ class SsoCharacterMgmt(AuxiliaryFrame):
         try:
             sEsi = Esi.getInstance()
             sEsi.login()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             ESIServerExceptionHandler(self, ex)
 
@@ -457,6 +463,8 @@ class FittingsTreeView(wx.Panel):
                 cargo = Cargo(getItem(item['type_id']))
                 cargo.amount = item['quantity']
                 list.append(cargo)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Exception caught in displayFit")
                 pyfalog.critical(e)

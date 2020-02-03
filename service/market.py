@@ -68,12 +68,16 @@ class ShipBrowserWorkerThread(threading.Thread):
                     cache[id_] = set_
 
                 wx.CallAfter(callback, (id_, set_))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Callback failed.")
                 pyfalog.critical(e)
             finally:
                 try:
                     queue.task_done()
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception as e:
                     pyfalog.critical("Queue task done failed.")
                     pyfalog.critical(e)
@@ -403,6 +407,8 @@ class Market:
                 item = eos.db.getItem(id_, *args, **kwargs)
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.error("Could not get item: {0}", identity)
             raise

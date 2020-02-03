@@ -251,6 +251,8 @@ class MainFrame(wx.Frame):
                 fit = sFit.getFit(id, basic=True)
                 if fit is None:
                     fits.remove(id)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 fits.remove(id)
 
@@ -774,6 +776,8 @@ class MainFrame(wx.Frame):
                 if self.command.Submit(cmd.GuiImportCargosCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
                     self.additionsPane.select("Cargo")
                 return
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.error("Attempt to import failed:\n{0}", clipboard)
         else:

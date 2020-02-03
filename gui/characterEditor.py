@@ -475,6 +475,8 @@ class SkillTreeView(wx.Panel):
                     if skill:
                         skill.setLevel(level, ignoreRestrict=True)
 
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.error(e)
                 with wx.MessageDialog(self, "There was an error importing skills, please see log file", "Error", wx.ICON_ERROR) as dlg:

@@ -131,6 +131,8 @@ class Price:
             except TimeoutError:
                 pyfalog.warning("Price fetch timeout for source {}".format(source))
                 timedOutSources[source] = True
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(source, e))
             # Sources remove price map items as they fetch info, if none remain then we're done
@@ -176,6 +178,8 @@ class Price:
         def cb():
             try:
                 callback(requests)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Execution of callback from getPrices failed.")
                 pyfalog.critical(e)
@@ -211,6 +215,8 @@ class Price:
                     replacementsCheaper[replacee] = replacer
             try:
                 callback(replacementsCheaper)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Execution of callback from findCheaperReplacements failed.")
                 pyfalog.critical(e)

@@ -1138,6 +1138,8 @@ class _TabsContainer(wx.Panel):
                             self.preview_tab = tab
                             self.preview_timer.Start(500, True)
                             break
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pass
 

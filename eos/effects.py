@@ -32676,6 +32676,8 @@ class Effect6871(BaseEffect):
         # via https://forums.eveonline.com/default.aspx?g=posts&t=515826
         try:
             bonus = max(0, min(50.0, (src.owner.character.secStatus * 10)))
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             bonus = None
 

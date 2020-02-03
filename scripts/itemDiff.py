@@ -394,6 +394,8 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         new_cursor.execute(query)
         for row in new_cursor:
             new_meta[row[0]] = row[1]
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         pass
     # Print jobs

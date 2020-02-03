@@ -50,6 +50,8 @@ class CheckUpdateThread(threading.Thread):
                 response = network.get(
                     url='https://www.pyfa.io/update_check?pyfa_version={}&client_hash={}'.format(config.version, config.getClientSecret()),
                     type=network.UPDATE)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 response = network.get(
                     url='https://api.github.com/repos/pyfa-org/Pyfa/releases',
@@ -81,6 +83,8 @@ class CheckUpdateThread(threading.Thread):
                     wx.CallAfter(self.callback, release, rVersion)
                     break
 
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.error("Caught exception in run")
             pyfalog.error(e)

@@ -560,6 +560,8 @@ def commit():
     with sd_lock:
         try:
             saveddata_session.commit()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception:
             saveddata_session.rollback()
             exc_info = sys.exc_info()
@@ -570,6 +572,8 @@ def flush():
     with sd_lock:
         try:
             saveddata_session.flush()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception:
             saveddata_session.rollback()
             exc_info = sys.exc_info()

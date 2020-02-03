@@ -269,6 +269,8 @@ class EfsPort:
                 else:
                     modTypeIDSets[mod.slot].append(0)
                     moduleNameSets[mod.slot].append("Empty Slot")
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 pyfalog.error("Could not find name for module {0}".format(vars(mod)))
 
