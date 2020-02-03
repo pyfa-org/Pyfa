@@ -143,21 +143,6 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////
-function IsUpgrade(): Boolean;
-begin
-  Result := (GetUninstallString() <> '');
-end;
-
-/////////////////////////////////////////////////////////////////////
-function InitializeSetup(): Boolean;
-var
-  sUnInstallString: string;
-begin
-  Result := True; // No idea if result is needed for some kind of API, but keeping it here just in case
-  UnInstallOldVersion();
-end;
-
-/////////////////////////////////////////////////////////////////////
 function UnInstallOldVersion(): Integer;
 var
   sUnInstallString: String;
@@ -181,4 +166,19 @@ begin
       Result := 2;
   end else
     Result := 1;
+end;
+
+/////////////////////////////////////////////////////////////////////
+function IsUpgrade(): Boolean;
+begin
+  Result := (GetUninstallString() <> '');
+end;
+
+/////////////////////////////////////////////////////////////////////
+function InitializeSetup(): Boolean;
+var
+  sUnInstallString: string;
+begin
+  Result := True; // No idea if result is needed for some kind of API, but keeping it here just in case
+  UnInstallOldVersion();
 end;
