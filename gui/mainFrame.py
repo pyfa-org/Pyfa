@@ -99,12 +99,14 @@ class PFPanel(wx.Panel):
 
 
 class OpenFitsThread(threading.Thread):
+
     def __init__(self, fits, callback):
         threading.Thread.__init__(self)
         self.name = "LoadingOpenFits"
         self.mainFrame = MainFrame.getInstance()
         self.callback = callback
         self.fits = fits
+        self.running = True
         self.start()
 
     def run(self):
@@ -118,10 +120,15 @@ class OpenFitsThread(threading.Thread):
         # We use 1 for all fits except the last one where we use 2 so that we
         # have correct calculations displayed at startup
         for fitID in self.fits[:-1]:
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
+            if self.running:
+                wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
 
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
-        wx.CallAfter(self.callback)
+        if self.running:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
+            wx.CallAfter(self.callback)
+
+    def stop(self):
+        self.running = False
 
 
 # todo: include IPortUser again

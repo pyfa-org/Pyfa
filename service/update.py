@@ -41,6 +41,7 @@ class CheckUpdateThread(threading.Thread):
         self.callback = callback
         self.settings = UpdateSettings.getInstance()
         self.network = Network.getInstance()
+        self.running = True
 
     def run(self):
         network = Network.getInstance()
@@ -49,13 +50,13 @@ class CheckUpdateThread(threading.Thread):
             try:
                 response = network.get(
                     url='https://www.pyfa.io/update_check?pyfa_version={}&client_hash={}'.format(config.version, config.getClientSecret()),
-                    type=network.UPDATE)
+                    type=network.UPDATE, timeout=5)
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
                 response = network.get(
                     url='https://api.github.com/repos/pyfa-org/Pyfa/releases',
-                    type=network.UPDATE)
+                    type=network.UPDATE, timeout=5)
 
             jsonResponse = response.json()
             jsonResponse.sort(
@@ -93,6 +94,9 @@ class CheckUpdateThread(threading.Thread):
     @staticmethod
     def versiontuple(v):
         return tuple(map(int, (v.split("."))))
+
+    def stop(self):
+        self.running = False
 
 
 class Update:

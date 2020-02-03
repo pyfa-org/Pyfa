@@ -46,6 +46,7 @@ class ShipBrowserWorkerThread(threading.Thread):
         threading.Thread.__init__(self)
         pyfalog.debug("Initialize ShipBrowserWorkerThread.")
         self.name = "ShipBrowser"
+        self.running = True
 
     def run(self):
         self.queue = queue.Queue()
@@ -60,6 +61,8 @@ class ShipBrowserWorkerThread(threading.Thread):
         cache = self.cache
         sMkt = Market.getInstance()
         while True:
+            if not self.running:
+                break
             try:
                 id_, callback = queue.get()
                 set_ = cache.get(id_)
@@ -82,6 +85,9 @@ class ShipBrowserWorkerThread(threading.Thread):
                     pyfalog.critical("Queue task done failed.")
                     pyfalog.critical(e)
 
+    def stop(self):
+        self.running = False
+
 
 class SearchWorkerThread(threading.Thread):
     def __init__(self):
@@ -91,6 +97,7 @@ class SearchWorkerThread(threading.Thread):
         # load the jargon while in an out-of-thread context, to spot any problems while in the main thread
         self.jargonLoader.get_jargon()
         self.jargonLoader.get_jargon().apply('test string')
+        self.running = True
 
     def run(self):
         self.cv = threading.Condition()
@@ -101,6 +108,8 @@ class SearchWorkerThread(threading.Thread):
         cv = self.cv
 
         while True:
+            if not self.running:
+                break
             cv.acquire()
             while self.searchRequest is None:
                 cv.wait()
@@ -161,6 +170,8 @@ class SearchWorkerThread(threading.Thread):
         self.cv.notify()
         self.cv.release()
 
+    def stop(self):
+        self.running = False
 
 class Market:
     instance = None

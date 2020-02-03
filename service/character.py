@@ -45,11 +45,13 @@ pyfalog = Logger(__name__)
 
 
 class CharacterImportThread(threading.Thread):
+
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
         self.name = "CharacterImport"
         self.paths = paths
         self.callback = callback
+        self.running = True
 
     def run(self):
         paths = self.paths
@@ -61,6 +63,8 @@ class CharacterImportThread(threading.Thread):
             all_skill_ids.append(skill.itemID)
 
         for path in paths:
+            if not self.running:
+                break
             try:
                 charFile = open(path, mode='r').read()
                 doc = minidom.parseString(charFile)
@@ -95,6 +99,9 @@ class CharacterImportThread(threading.Thread):
 
         wx.CallAfter(self.callback)
 
+    def stop(self):
+        self.running = False
+
 
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
@@ -104,24 +111,31 @@ class SkillBackupThread(threading.Thread):
         self.saveFmt = saveFmt
         self.activeFit = activeFit
         self.callback = callback
+        self.running = True
 
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
 
-        if self.saveFmt == "xml" or self.saveFmt == "emp":
-            backupData = sCharacter.exportXml()
-        else:
-            backupData = sCharacter.exportText()
+        backupData = None
+        if self.running:
+            if self.saveFmt == "xml" or self.saveFmt == "emp":
+                backupData = sCharacter.exportXml()
+            else:
+                backupData = sCharacter.exportText()
 
-        if self.saveFmt == "emp":
-            with gzip.open(path, mode='wb') as backupFile:
-                backupFile.write(backupData.encode())
-        else:
-            with open(path, mode='w', encoding='utf-8') as backupFile:
-                backupFile.write(backupData)
+        if self.running and backupData is not None:
+            if self.saveFmt == "emp":
+                with gzip.open(path, mode='wb') as backupFile:
+                    backupFile.write(backupData.encode())
+            else:
+                with open(path, mode='w', encoding='utf-8') as backupFile:
+                    backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
+    def stop(self):
+        self.running = False
 
 
 class Character:
@@ -474,12 +488,14 @@ class Character:
 
 
 class UpdateAPIThread(threading.Thread):
+
     def __init__(self, charID, callback):
         threading.Thread.__init__(self)
 
         self.name = "CheckUpdate"
         self.callback = callback
         self.charID = charID
+        self.running = True
 
     def run(self):
         try:
@@ -488,20 +504,31 @@ class UpdateAPIThread(threading.Thread):
             sEsi = Esi.getInstance()
             sChar = Character.getInstance()
             ssoChar = sChar.getSsoCharacter(char.ID)
+
+            if not self.running:
+                self.callback[0](self.callback[1])
+                return
             resp = sEsi.getSkills(ssoChar.ID)
 
+            if not self.running:
+                self.callback[0](self.callback[1])
+                return
             # todo: check if alpha. if so, pop up a question if they want to apply it as alpha. Use threading events to set the answer?
             char.clearSkills()
             for skillRow in resp["skills"]:
                 char.addSkill(Skill(char, skillRow["skill_id"], skillRow["trained_skill_level"]))
 
+            if not self.running:
+                self.callback[0](self.callback[1])
+                return
             resp = sEsi.getSecStatus(ssoChar.ID)
-
             char.secStatus = resp['security_status']
-
             self.callback[0](self.callback[1])
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as ex:
             pyfalog.warn(ex)
             self.callback[0](self.callback[1], sys.exc_info())
+
+    def stop(self):
+        self.running = False
