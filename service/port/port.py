@@ -256,8 +256,8 @@ class Port:
             except:
                 pass
             else:
-                if baseItem is not None and mutaplasmidItem is not None:
-                    return "MutatedItem", False, ((baseItem, mutaplasmidItem, mutations),)
+                if baseItem is not None:
+                    return "FittingItem", False, ((baseItem, mutaplasmidItem, mutations),)
             # Try to import into one of additions panels
             isDrone, droneData = isValidDroneImport(string)
             if isDrone:

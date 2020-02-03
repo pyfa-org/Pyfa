@@ -747,9 +747,12 @@ class MainFrame(wx.Frame):
         activeFit = self.getActiveFit()
         try:
             importType, importData = Port().importFitFromBuffer(clipboard, activeFit)
-            if importType == "MutatedItem":
-                # we've imported an Abyssal module, need to fire off the command to add it to the fit
-                self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, *importData[0]))
+            if importType == "FittingItem":
+                baseItem, mutaplasmidItem, mutations = importData[0]
+                if mutaplasmidItem:
+                    self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, baseItem, mutaplasmidItem, mutations))
+                else:
+                    self.command.Submit(cmd.GuiAddLocalModuleCommand(activeFit, baseItem.ID))
                 return
             if importType == "AdditionsDrones":
                 if self.command.Submit(cmd.GuiImportLocalDronesCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
