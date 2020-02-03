@@ -45,11 +45,13 @@ pyfalog = Logger(__name__)
 
 
 class CharacterImportThread(threading.Thread):
+
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
         self.name = "CharacterImport"
         self.paths = paths
         self.callback = callback
+        self.running = True
 
     def run(self):
         paths = self.paths
@@ -61,6 +63,8 @@ class CharacterImportThread(threading.Thread):
             all_skill_ids.append(skill.itemID)
 
         for path in paths:
+            if not self.running:
+                break
             try:
                 charFile = open(path, mode='r').read()
                 doc = minidom.parseString(charFile)
@@ -86,12 +90,17 @@ class CharacterImportThread(threading.Thread):
                         )
                 char = sCharacter.new(name + " (EVEMon)")
                 sCharacter.apiUpdateCharSheet(char.ID, skills, securitystatus)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.error("Exception on character import:")
                 pyfalog.error(e)
                 continue
 
         wx.CallAfter(self.callback)
+
+    def stop(self):
+        self.running = False
 
 
 class SkillBackupThread(threading.Thread):
@@ -102,24 +111,31 @@ class SkillBackupThread(threading.Thread):
         self.saveFmt = saveFmt
         self.activeFit = activeFit
         self.callback = callback
+        self.running = True
 
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
 
-        if self.saveFmt == "xml" or self.saveFmt == "emp":
-            backupData = sCharacter.exportXml()
-        else:
-            backupData = sCharacter.exportText()
+        backupData = None
+        if self.running:
+            if self.saveFmt == "xml" or self.saveFmt == "emp":
+                backupData = sCharacter.exportXml()
+            else:
+                backupData = sCharacter.exportText()
 
-        if self.saveFmt == "emp":
-            with gzip.open(path, mode='wb') as backupFile:
-                backupFile.write(backupData.encode())
-        else:
-            with open(path, mode='w', encoding='utf-8') as backupFile:
-                backupFile.write(backupData)
+        if self.running and backupData is not None:
+            if self.saveFmt == "emp":
+                with gzip.open(path, mode='wb') as backupFile:
+                    backupFile.write(backupData.encode())
+            else:
+                with open(path, mode='w', encoding='utf-8') as backupFile:
+                    backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
+    def stop(self):
+        self.running = False
 
 
 class Character:
@@ -151,6 +167,8 @@ class Character:
                     data += "Skills required for {}:\n".format(item)
                 data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
             data += "-" * 79 + "\n"
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception:
             pass
 
@@ -376,8 +394,8 @@ class Character:
         char.apiUpdateCharSheet(skills, securitystatus)
         eos.db.commit()
 
-    @staticmethod
-    def changeLevel(charID, skillID, level, persist=False, ifHigher=False):
+    @classmethod
+    def changeLevel(cls, charID, skillID, level, persist=False, ifHigher=False):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
 
@@ -386,10 +404,19 @@ class Character:
 
         if isinstance(level, str) or level > 5 or level < 0:
             skill.setLevel(None, persist)
-        else:
+            eos.db.commit()
+        elif skill.level != level:
+            cls._trainSkillReqs(char, skill, persist)
             skill.setLevel(level, persist)
+            eos.db.commit()
 
-        eos.db.commit()
+    @classmethod
+    def _trainSkillReqs(cls, char, skill, persist):
+        for childSkillItem, neededSkillLevel in skill.item.requiredSkills.items():
+            childSkill = char.getSkill(childSkillItem.ID)
+            if childSkill.level < neededSkillLevel:
+                childSkill.setLevel(neededSkillLevel, persist)
+                cls._trainSkillReqs(char, childSkill, persist)
 
     @staticmethod
     def revertLevel(charID, skillID):
@@ -442,13 +469,13 @@ class Character:
                 if subThing is not None:
                     if isinstance(thing, es_Fighter) and attr == "charge":
                         continue
-                    self._checkRequirements(fit, fit.character, subThing, subReqs)
+                    self._checkRequirements(fit.character, subThing, subReqs)
                     if subReqs:
                         reqs[subThing] = subReqs
 
         return reqs
 
-    def _checkRequirements(self, fit, char, subThing, reqs):
+    def _checkRequirements(self, char, subThing, reqs):
         for req, level in subThing.requiredSkills.items():
             name = req.name
             ID = req.ID
@@ -456,18 +483,19 @@ class Character:
             currLevel, subs = info if info is not None else 0, {}
             if level > currLevel and (char is None or char.getSkill(req).level < level):
                 reqs[name] = (level, ID, subs)
-                self._checkRequirements(fit, char, req, subs)
-
+                self._checkRequirements(char, req, subs)
         return reqs
 
 
 class UpdateAPIThread(threading.Thread):
+
     def __init__(self, charID, callback):
         threading.Thread.__init__(self)
 
         self.name = "CheckUpdate"
         self.callback = callback
         self.charID = charID
+        self.running = True
 
     def run(self):
         try:
@@ -476,18 +504,31 @@ class UpdateAPIThread(threading.Thread):
             sEsi = Esi.getInstance()
             sChar = Character.getInstance()
             ssoChar = sChar.getSsoCharacter(char.ID)
+
+            if not self.running:
+                self.callback[0](self.callback[1])
+                return
             resp = sEsi.getSkills(ssoChar.ID)
 
+            if not self.running:
+                self.callback[0](self.callback[1])
+                return
             # todo: check if alpha. if so, pop up a question if they want to apply it as alpha. Use threading events to set the answer?
             char.clearSkills()
             for skillRow in resp["skills"]:
                 char.addSkill(Skill(char, skillRow["skill_id"], skillRow["trained_skill_level"]))
 
+            if not self.running:
+                self.callback[0](self.callback[1])
+                return
             resp = sEsi.getSecStatus(ssoChar.ID)
-
             char.secStatus = resp['security_status']
-
             self.callback[0](self.callback[1])
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             pyfalog.warn(ex)
             self.callback[0](self.callback[1], sys.exc_info())
+
+    def stop(self):
+        self.running = False

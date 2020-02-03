@@ -151,5 +151,18 @@ if __name__ == "__main__":
         else:
             pyfa.MainLoop()
 
-        # TODO: Add some thread cleanup code here. Right now we bail, and that can lead to orphaned threads or threads not properly exiting.
+        # When main loop is over, threads have 5 seconds to comply...
+        import threading
+        from utils.timer import CountdownTimer
+
+        timer = CountdownTimer(5)
+        stoppableThreads = []
+        for t in threading.enumerate():
+            if t is not threading.main_thread() and hasattr(t, 'stop'):
+                stoppableThreads.append(t)
+                t.stop()
+        for t in stoppableThreads:
+            t.join(timeout=timer.remainder())
+
+        # Nah, just kidding, no way to terminate threads - just try to exit
         sys.exit()

@@ -56,6 +56,8 @@ try:
     config.gamedata_date = gamedata_session.execute(
         "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'dump_time'"
     ).fetchone()[0]
+except (KeyboardInterrupt, SystemExit):
+    raise
 except Exception as e:
     pyfalog.warning("Missing gamedata version.")
     pyfalog.critical(e)

@@ -321,6 +321,8 @@ def importEftCfg(shipname, lines, iportuser):
     sMkt = Market.getInstance()
     try:
         sMkt.getItem(shipname)
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         return []  # empty list is expected
 
@@ -377,6 +379,8 @@ def importEftCfg(shipname, lines, iportuser):
                         # Bail if we can't get item or it's not from drone category
                         try:
                             droneItem = sMkt.getItem(droneName, eager="group.category")
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except:
                             pyfalog.warning("Cannot get item.")
                             continue
@@ -399,6 +403,8 @@ def importEftCfg(shipname, lines, iportuser):
                         # Bail if we can't get item or it's not from implant category
                         try:
                             implantItem = sMkt.getItem(entityData, eager="group.category")
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except:
                             pyfalog.warning("Cannot get item.")
                             continue
@@ -415,6 +421,8 @@ def importEftCfg(shipname, lines, iportuser):
                         # Bail if we can't get item or it's not from implant category
                         try:
                             boosterItem = sMkt.getItem(entityData, eager="group.category")
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except:
                             pyfalog.warning("Cannot get item.")
                             continue
@@ -436,6 +444,8 @@ def importEftCfg(shipname, lines, iportuser):
                     # Bail if we can't get item
                     try:
                         item = sMkt.getItem(cargoName)
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pyfalog.warning("Cannot get item.")
                         continue
@@ -453,6 +463,8 @@ def importEftCfg(shipname, lines, iportuser):
                     # If we can't get module item, skip it
                     try:
                         modItem = sMkt.getItem(modName)
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pyfalog.warning("Cannot get item.")
                         continue
@@ -475,6 +487,8 @@ def importEftCfg(shipname, lines, iportuser):
                                 chargeItem = sMkt.getItem(chargeName, eager="group.category")
                                 if chargeItem.category.name == "Charge":
                                     m.charge = chargeItem
+                            except (KeyboardInterrupt, SystemExit):
+                                raise
                             except:
                                 pyfalog.warning("Cannot get item.")
                                 pass
@@ -499,6 +513,8 @@ def importEftCfg(shipname, lines, iportuser):
                     "%s:\n%s" % (fitobj.ship.name, fitobj.name)
                 )
 
+        except (KeyboardInterrupt, SystemExit):
+            raise
         # Skip fit silently if we get an exception
         except Exception as e:
             pyfalog.error("Caught exception on fit.")
@@ -593,6 +609,8 @@ def _importCreateFit(lines):
         except ValueError:
             fit.ship = Citadel(ship)
         fit.name = fitName
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         pyfalog.warning('service.port.eft.importEft: exception caught when parsing header')
         raise EftImportError

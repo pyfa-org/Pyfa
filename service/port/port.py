@@ -177,6 +177,8 @@ class Port:
 
         except UserCancelException:
             return False, "Processing has been canceled.\n"
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.critical("Unknown exception processing: {0}", path)
             pyfalog.critical(e)
@@ -253,11 +255,13 @@ class Port:
             # Try to import mutated module
             try:
                 baseItem, mutaplasmidItem, mutations = parseMutant(lines)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 pass
             else:
-                if baseItem is not None and mutaplasmidItem is not None:
-                    return "MutatedItem", False, ((baseItem, mutaplasmidItem, mutations),)
+                if baseItem is not None:
+                    return "FittingItem", False, ((baseItem, mutaplasmidItem, mutations),)
             # Try to import into one of additions panels
             isDrone, droneData = isValidDroneImport(string)
             if isDrone:

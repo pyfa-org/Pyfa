@@ -294,6 +294,8 @@ class TargetProfile:
                 line = line.split('#', 1)[0]  # allows for comments
                 type, data = line.rsplit('=', 1)
                 type, data = type.strip(), [d.strip() for d in data.split(',')]
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 pyfalog.warning("Data isn't in correct format, continue to next line.")
                 continue
@@ -312,6 +314,8 @@ class TargetProfile:
                 try:
                     assert 0 <= val <= 100
                     fields["%sAmount" % cls.DAMAGE_TYPES[index]] = val / 100
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     pyfalog.warning("Caught unhandled exception in import patterns.")
                     continue

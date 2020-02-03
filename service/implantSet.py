@@ -110,6 +110,8 @@ class ImplantSets:
                 else:
                     item = sMkt.getItem(line)
                     current.implants.append(es_Implant(item))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 errors += 1
                 continue

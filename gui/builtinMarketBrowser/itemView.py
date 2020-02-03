@@ -48,7 +48,6 @@ class ItemView(Display):
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
-        # Make reverse map, used by sorter
         self.active = []
 
     def delaySearch(self, evt):
@@ -178,7 +177,7 @@ class ItemView(Display):
             return
 
         self.marketBrowser.mode = 'search'
-        self.sMkt.searchItems(search, self.populateSearch)
+        self.sMkt.searchItems(search, self.populateSearch, 'market')
 
     def clearSearch(self, event=None):
         # Wipe item store and update everything to accomodate with it
@@ -200,7 +199,6 @@ class ItemView(Display):
         self.updateItemStore(items)
         self.setToggles()
         self.filterItemStore()
-
 
     def contextMenu(self, event):
         clickedPos = self.getRowByAbs(event.Position)
@@ -235,11 +233,9 @@ class ItemView(Display):
             # Re-sort stuff
             if self.marketBrowser.mode != 'recent':
                 items.sort(key=self.sMkt.itemSort)
-
         for i, item in enumerate(items[:9]):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
-
         Display.refresh(self, items)
 
     def columnBackground(self, colItem, item):

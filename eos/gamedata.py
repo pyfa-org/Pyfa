@@ -193,6 +193,8 @@ class Effect(EqBase):
             self.__dealsDamage = False
             self.__type = None
             pyfalog.error("AttributeError generating handler: {0}", e)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
@@ -210,6 +212,8 @@ class Effect(EqBase):
 
         try:
             return self.__effectDef.get(key, None)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             return getattr(self.__effectDef, key, None)
 

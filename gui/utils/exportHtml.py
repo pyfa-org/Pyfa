@@ -70,6 +70,8 @@ class exportHtmlThread(threading.Thread):
         except IOError as ex:
             pyfalog.warning("Failed to write to " + settings.getPath())
             pass
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             pass
 
@@ -226,6 +228,8 @@ class exportHtmlThread(threading.Thread):
 
                             HTMLfit += '              </ul>\n          </li>\n'
                             HTMLship += HTMLfit
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except:
                             pyfalog.warning("Failed to export line")
                             continue
@@ -281,6 +285,8 @@ class exportHtmlThread(threading.Thread):
                         HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' \
                                 + ship.name + ': ' + \
                                 fit[1] + '</a><br> \n'
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pyfalog.error("Failed to export line")
                         continue

@@ -3,13 +3,12 @@ language: python
 git:
   depth: 400
 python:
-  - 3.6
+  - 3.8
 matrix:
   include:
   - os: osx
-    osx_image: xcode7.3
+    osx_image: xcode11.3
     language: generic
-    env: PYTHON=3.6.1
 before_install:
   - bash scripts/setup-osx.sh
 install:
@@ -22,7 +21,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-    secure: Xfu0xApoB0zUPLXl29aYUulVC3iA4/3bXQwwADKCfAKZwxgNon4dLbO7Rie5/7Ukf2POL0KwmRaQGN3kOr+XSoIVTE4M5sXxnhiaaLGKQ+48hDizLE6JuXcZGJvkxUaghaTzIdCwHsG7VGBsPfQgfGsjJcfBp8tFNLmRyM/Jpsr8T6BR2MxtBIEUVy8zrOWFNZqnmWrY2pWMsB9fYt3JFNdpqeIgRAYqbBsBcZQ1MngLTi3ztuYS5IaF+lk06RrnBlHmUsJu/5nCvIpvPvD0i2BLZ3Uu0+Fn+8QWUgjJEL9MNseXZMXynu05xd8YRk7Ajc9CUrzQIIbAktyteYp85kE3pUJHmrMLcXhh7nqkwttR5/47Zwa3OLJLJFKBxMx6wY5jFkJjkV08850B7aWrmTFl/Eqc3Q5nZMuiEt3wFRbjxHi9h1mTN/fkxfRRHg8u3ENGPR+ZPiFC3J18qtks/B/hsKjjHvZP1i79OYlET4V/zyLyyQkCbpDaARQANuotLYJyZ7tH+KWEyRsvTi0M9Yev9mNNw6aI4vzh4HfkEhvcvnWnYwckPj1dnjQ573Qpw0Z9wsconoWfHAn+hBDt3+YLMrrFZl++mCRskHH1mZChX3aGMDi49zD0kfxBUkYPOAhguc6PwudBxHUZP+O6T/SoHylff6EizCE/k5dGeAk=
+    secure: D8tBW0kyHlKf/sXS69aIuexsYTx9auY2DzudKFlfcvdzqat4N2XZqZbZCTVd7YVvptQ8Dj0oZ/p3KUxEGpnJZmlTeJL142rpM/qaNd6wOIMy2yUde/aZl+W9JLFNQp7KHutM+MxObYLzJGihx/8YsupmFx6lxgdngGDXtXYZe/ruDIWDs92ShoKJ4vlce9Csm7eGKv7wv6Z6V9sD5FS3E9J8xdWStHxsbrkPBOflmG+uHU09dpEqzUm+ZYROIoTwig1Xbw3fw+gfjmNrfdSU4fAJcVZI1hrgoenZyJbMfhI2Ej/nZdbZgaXcZNF/eUpqOGgbPe1JljqFnHTbexcE+LPBVyAToScsGMpByHhig67DrZ0nk9gSZoC6CPNl5YS6xub+5dncMJ3P5L03DOGYRu4SL9NczbeuQyKuea7+JPP/8VLwfFDSEqbNEAmgzABAzrdfano+VXtuBuE/Tiy5eE7le9hJu6aSQoKW1SA3cUhMsmr2amzdO96sh+PN8FA1oNr45Yuy0pqOj4SUIkb8JUy4th7vgdhljEkSxrHDK1UcHpxUTp+IIUZkZVVk50aH68dQZxGwSTVOeRxpjrTcEf7VCGaM98qxi/ZK4RW6Ewiq0eo0AxwEeB2Zm841lycGPR/406vM9/ZBzv5IhELIdDdVWTk+dGjJBXB8z5hPJOg=
   file_glob: true
   file: "dist/pyfa-*.zip"
   skip_cleanup: true

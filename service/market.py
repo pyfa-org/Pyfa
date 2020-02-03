@@ -46,6 +46,7 @@ class ShipBrowserWorkerThread(threading.Thread):
         threading.Thread.__init__(self)
         pyfalog.debug("Initialize ShipBrowserWorkerThread.")
         self.name = "ShipBrowser"
+        self.running = True
 
     def run(self):
         self.queue = queue.Queue()
@@ -60,6 +61,8 @@ class ShipBrowserWorkerThread(threading.Thread):
         cache = self.cache
         sMkt = Market.getInstance()
         while True:
+            if not self.running:
+                break
             try:
                 id_, callback = queue.get()
                 set_ = cache.get(id_)
@@ -68,15 +71,22 @@ class ShipBrowserWorkerThread(threading.Thread):
                     cache[id_] = set_
 
                 wx.CallAfter(callback, (id_, set_))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Callback failed.")
                 pyfalog.critical(e)
             finally:
                 try:
                     queue.task_done()
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception as e:
                     pyfalog.critical("Queue task done failed.")
                     pyfalog.critical(e)
+
+    def stop(self):
+        self.running = False
 
 
 class SearchWorkerThread(threading.Thread):
@@ -87,6 +97,7 @@ class SearchWorkerThread(threading.Thread):
         # load the jargon while in an out-of-thread context, to spot any problems while in the main thread
         self.jargonLoader.get_jargon()
         self.jargonLoader.get_jargon().apply('test string')
+        self.running = True
 
     def run(self):
         self.cv = threading.Condition()
@@ -97,49 +108,70 @@ class SearchWorkerThread(threading.Thread):
         cv = self.cv
 
         while True:
+            if not self.running:
+                break
             cv.acquire()
             while self.searchRequest is None:
                 cv.wait()
 
-            request, callback, filterOn = self.searchRequest
+            request, callback, filterName = self.searchRequest
             self.searchRequest = None
             cv.release()
             sMkt = Market.getInstance()
-            if filterOn is True:
+            if filterName == 'market':
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter_ = or_(types_Category.name.in_(sMkt.SEARCH_CATEGORIES), types_Group.name.in_(sMkt.SEARCH_GROUPS))
-            elif filterOn:  # filter by selected categories
-                filter_ = types_Category.name.in_(filterOn)
+                filters = [or_(
+                    types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
+                    types_Group.name.in_(sMkt.SEARCH_GROUPS))]
+            # Used in implant editor
+            elif filterName == 'implants':
+                filters = [types_Category.name == 'Implant']
+            # Actually not everything, just market search + ships
+            elif filterName == 'everything':
+                filters = [
+                    or_(
+                        types_Category.name.in_(sMkt.FIT_CATEGORIES),
+                        types_Group.name.in_(sMkt.FIT_GROUPS)),
+                    or_(
+                        types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
+                        types_Group.name.in_(sMkt.SEARCH_GROUPS))]
             else:
-                filter_ = None
+                filters = [None]
 
             jargon_request = self.jargonLoader.get_jargon().apply(request)
 
-            results = []
+            all_results = set()
             if len(request) >= config.minItemSearchLength:
-                results = eos.db.searchItems(request, where=filter_,
-                                             join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup"))
+                for filter_ in filters:
+                    regular_results = eos.db.searchItems(
+                        request, where=filter_,
+                        join=(types_Item.group, types_Group.category),
+                        eager=("group.category", "metaGroup"))
+                    all_results.update(regular_results)
 
-            jargon_results = []
             if len(jargon_request) >= config.minItemSearchLength:
-                jargon_results = eos.db.searchItems(jargon_request, where=filter_,
-                                             join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup"))
+                for filter_ in filters:
+                    jargon_results = eos.db.searchItems(
+                        jargon_request, where=filter_,
+                        join=(types_Item.group, types_Group.category),
+                        eager=("group.category", "metaGroup"))
+                    all_results.update(jargon_results)
 
             items = set()
             # Return only published items, consult with Market service this time
-            for item in [*results, *jargon_results]:
+            for item in all_results:
                 if sMkt.getPublicityByItem(item):
                     items.add(item)
-            wx.CallAfter(callback, items)
+            wx.CallAfter(callback, list(items))
 
-    def scheduleSearch(self, text, callback, filterOn=True):
+    def scheduleSearch(self, text, callback, filterName=None):
         self.cv.acquire()
-        self.searchRequest = (text, callback, filterOn)
+        self.searchRequest = (text, callback, filterName)
         self.cv.notify()
         self.cv.release()
 
+    def stop(self):
+        self.running = False
 
 class Market:
     instance = None
@@ -264,8 +296,6 @@ class Market:
         self.ITEMS_FORCEDMETAGROUP = {
             "'Habitat' Miner I": ("Storyline", "Miner I"),
             "'Wild' Miner I": ("Storyline", "Miner I"),
-            "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
-            "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
             "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I"),
@@ -321,6 +351,7 @@ class Market:
             for mgid in mgids:
                 self.META_MAP_REVERSE_GROUPED[mgid] = i
             i += 1
+        self.META_MAP_REVERSE_INDICES = self.__makeReverseMetaMapIndices()
         self.SEARCH_CATEGORIES = (
             "Drone",
             "Module",
@@ -344,6 +375,8 @@ class Market:
                                    2203  # Structure Modifications
                                    )
         self.SHOWN_MARKET_GROUPS = eos.db.getMarketTreeNodeIds(self.ROOT_MARKET_GROUPS)
+        self.FIT_CATEGORIES = ['Ship']
+        self.FIT_GROUPS = ['Citadel', 'Engineering Complex', 'Refinery']
         # Tell other threads that Market is at their service
         mktRdy.set()
 
@@ -362,6 +395,15 @@ class Market:
                 rev[value] = set()
             rev[value].add(item)
         return rev
+
+    def __makeReverseMetaMapIndices(self):
+        revmap = {}
+        i = 0
+        for mgids in self.META_MAP.values():
+            for mgid in mgids:
+                revmap[mgid] = i
+            i += 1
+        return revmap
 
     @staticmethod
     def getItem(identity, *args, **kwargs):
@@ -382,6 +424,8 @@ class Market:
                 item = eos.db.getItem(id_, *args, **kwargs)
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.error("Could not get item: {0}", identity)
             raise
@@ -756,9 +800,9 @@ class Market:
                 ships.add(item)
         return ships
 
-    def searchItems(self, name, callback, filterOn=True):
+    def searchItems(self, name, callback, filterName=None):
         """Find items according to given text pattern"""
-        self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
+        self.searchWorkerThread.scheduleSearch(name, callback, filterName)
 
     @staticmethod
     def getItemsWithOverrides():

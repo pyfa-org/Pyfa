@@ -475,6 +475,8 @@ class SkillTreeView(wx.Panel):
                     if skill:
                         skill.setLevel(level, ignoreRestrict=True)
 
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.error(e)
                 with wx.MessageDialog(self, "There was an error importing skills, please see log file", "Error", wx.ICON_ERROR) as dlg:
@@ -839,7 +841,7 @@ class APIView(wx.Panel):
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
-        return self.charChoice.GetClientData(selection) if selection is not -1 else None
+        return self.charChoice.GetClientData(selection) if selection != -1 else None
 
     def ssoListChanged(self, event):
         if not self:  # todo: fix event not unbinding properly

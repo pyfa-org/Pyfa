@@ -233,6 +233,8 @@ def defLogging():
                         # reset=False,
                 )
             ])
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         print("Critical error attempting to setup logging. Falling back to console only.")
         logging_setup = NestedSetup([

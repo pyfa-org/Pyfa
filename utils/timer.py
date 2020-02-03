@@ -35,3 +35,16 @@ class Timer:
     def __exit__(self, type, value, traceback):
         self.checkpoint('finished')
         pass
+
+
+class CountdownTimer:
+
+    def __init__(self, timeout):
+        self.timeout = timeout
+        self.start = time.time()
+
+    def elapsed(self):
+        return time.time() - self.start
+
+    def remainder(self):
+        return max(self.timeout - self.elapsed(), 0)

@@ -54,6 +54,8 @@ try:
 except ImportError as e:
     pyfalog.warning('Matplotlib failed to import.  Likely missing or incompatible version.')
     graphFrame_enabled = False
+except (KeyboardInterrupt, SystemExit):
+    raise
 except Exception:
     # We can get exceptions deep within matplotlib. Catch those.  See GH #1046
     tb = traceback.format_exc()
@@ -71,6 +73,8 @@ class GraphCanvasPanel(wx.Panel):
         # Remove matplotlib font cache, see #234
         try:
             cache_dir = mpl._get_cachedir()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             cache_dir = os.path.expanduser(os.path.join('~', '.matplotlib'))
         cache_file = os.path.join(cache_dir, 'fontList.cache')
@@ -168,6 +172,8 @@ class GraphCanvasPanel(wx.Panel):
                     legendData.append((color, lineStyle, source.shortName))
                 else:
                     legendData.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception:
                 pyfalog.warning('Failed to plot "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
                 self.canvas.draw()
@@ -241,6 +247,8 @@ class GraphCanvasPanel(wx.Panel):
                                 src=source,
                                 tgt=target)
                             addYMark(y)
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except Exception:
                             pyfalog.warning('Failed to get X mark for "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
                             # Silently skip this mark, otherwise other marks and legend display will fail

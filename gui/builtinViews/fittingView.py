@@ -66,6 +66,8 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                         self.multiSwitch.SetSelection(index)
                         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(event.fitID,)))
                         break
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception as e:
                     pyfalog.critical("Caught exception in fitSelected")
                     pyfalog.critical(e)
@@ -812,6 +814,8 @@ class FittingView(d.Display):
         if self and not self.IsShown():
             try:
                 self.MakeSnapshot()
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Failed to make snapshot")
                 pyfalog.critical(e)
@@ -837,6 +841,8 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         try:
             fit = sFit.getFit(self.activeFitID)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.critical("Failed to get fit")
             pyfalog.critical(e)

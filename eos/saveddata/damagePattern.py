@@ -118,15 +118,15 @@ BUILTINS = OrderedDict([
     # Source: ticket #2067
     (-86, ('[NPC][Invasion][Invading Precursor Entities]Dread', 0, 417, 0, 583)),
     (-87, ('[NPC][Invasion][Invading Precursor Entities]Normal Subcaps', 0, 610, 0, 390)),
-    (-88, ('[NPC][Invasion][Invading Precursor Entities]Subcaps w/missiles 0% spool up', 363, 160, 363, 115)),
-    (-89, ('[NPC][Invasion][Invading Precursor Entities]Subcaps w/missiles 50% spool up', 286, 249, 286, 179)),
-    (-90, ('[NPC][Invasion][Invading Precursor Entities]Subcaps w/missiles 100% spool up', 236, 307, 236, 221)),
+    (-88, ('[NPC][Invasion][Invading Precursor Entities]Subcaps w/missiles 0% spool up', 367, 155, 367, 112)),
+    (-89, ('[NPC][Invasion][Invading Precursor Entities]Subcaps w/missiles 50% spool up', 291, 243, 291, 175)),
+    (-90, ('[NPC][Invasion][Invading Precursor Entities]Subcaps w/missiles 100% spool up', 241, 301, 241, 217)),
     (-91, ('[NPC][Invasion][Retaliating Amarr Entities]Dread/Subcaps', 583, 417, 0, 0)),
     (-92, ('[NPC][Invasion][Retaliating Caldari Entities]Dread', 1000, 0, 0, 0)),
-    (-93, ('[NPC][Invasion][Retaliating Caldari Entities]Subcaps', 511, 21, 29, 439)),
+    (-93, ('[NPC][Invasion][Retaliating Caldari Entities]Subcaps', 511, 21, 29, 440)),
     (-94, ('[NPC][Invasion][Retaliating Gallente Entities]Dread/Subcaps', 0, 417, 583, 0)),
     (-95, ('[NPC][Invasion][Retaliating Minmatar Entities]Dread', 0, 0, 583, 417)),
-    (-96, ('[NPC][Invasion][Retaliating Minmatar Entities]Subcaps', 302, 132, 330, 236)),
+    (-96, ('[NPC][Invasion][Retaliating Minmatar Entities]Subcaps', 302, 136, 328, 234)),
     (-97, ('[NPC][Mission]Amarr Empire', 4464, 3546, 97, 0)),
     (-98, ('[NPC][Mission]Caldari State', 0, 2139, 4867, 0)),
     (-99, ('[NPC][Mission]CONCORD', 336, 134, 212, 412)),
@@ -260,6 +260,8 @@ class DamagePattern:
                 line = line.split('#', 1)[0]  # allows for comments
                 type, data = line.rsplit('=', 1)
                 type, data = type.strip(), data.split(',')
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 # Data isn't in correct format, continue to next line
                 continue
@@ -274,6 +276,8 @@ class DamagePattern:
             for index, val in enumerate(data):
                 try:
                     fields["%sAmount" % cls.DAMAGE_TYPES[index]] = int(val)
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     continue
 

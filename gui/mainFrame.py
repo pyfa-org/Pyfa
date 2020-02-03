@@ -99,12 +99,14 @@ class PFPanel(wx.Panel):
 
 
 class OpenFitsThread(threading.Thread):
+
     def __init__(self, fits, callback):
         threading.Thread.__init__(self)
         self.name = "LoadingOpenFits"
         self.mainFrame = MainFrame.getInstance()
         self.callback = callback
         self.fits = fits
+        self.running = True
         self.start()
 
     def run(self):
@@ -118,10 +120,15 @@ class OpenFitsThread(threading.Thread):
         # We use 1 for all fits except the last one where we use 2 so that we
         # have correct calculations displayed at startup
         for fitID in self.fits[:-1]:
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
+            if self.running:
+                wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
 
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
-        wx.CallAfter(self.callback)
+        if self.running:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
+            wx.CallAfter(self.callback)
+
+    def stop(self):
+        self.running = False
 
 
 # todo: include IPortUser again
@@ -251,10 +258,12 @@ class MainFrame(wx.Frame):
                 fit = sFit.getFit(id, basic=True)
                 if fit is None:
                     fits.remove(id)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 fits.remove(id)
 
-        if not self.prevOpenFits['enabled'] or len(fits) is 0:
+        if not self.prevOpenFits['enabled'] or len(fits) == 0:
             # add blank page if there are no fits to be loaded
             self.fitMultiSwitch.AddPage()
             return
@@ -747,9 +756,12 @@ class MainFrame(wx.Frame):
         activeFit = self.getActiveFit()
         try:
             importType, importData = Port().importFitFromBuffer(clipboard, activeFit)
-            if importType == "MutatedItem":
-                # we've imported an Abyssal module, need to fire off the command to add it to the fit
-                self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, *importData[0]))
+            if importType == "FittingItem":
+                baseItem, mutaplasmidItem, mutations = importData[0]
+                if mutaplasmidItem:
+                    self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, baseItem, mutaplasmidItem, mutations))
+                else:
+                    self.command.Submit(cmd.GuiAddLocalModuleCommand(activeFit, baseItem.ID))
                 return
             if importType == "AdditionsDrones":
                 if self.command.Submit(cmd.GuiImportLocalDronesCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
@@ -771,6 +783,8 @@ class MainFrame(wx.Frame):
                 if self.command.Submit(cmd.GuiImportCargosCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
                     self.additionsPane.select("Cargo")
                 return
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.error("Attempt to import failed:\n{0}", clipboard)
         else:
