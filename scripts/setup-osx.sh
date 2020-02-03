@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-echo "Upgrading pip"
-sudo python3 -m ensurepip --upgrade
 echo "Checking python version"
 python3 --version
+echo "Upgrading pip"
+python3 -m pip install --upgrade pip
 echo "Installing app requirements"
 python3 -m pip install -r requirements.txt
 echo "Installing packaging tools"
