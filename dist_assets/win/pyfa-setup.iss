@@ -175,10 +175,13 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////
-function InitializeSetup(): Boolean;
-var
-  sUnInstallString: string;
+procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  Result := True; // No idea if result is needed for some kind of API, but keeping it here just in case
-  UnInstallOldVersion();
+  if (CurStep=ssInstall) then
+  begin
+    if (IsUpgrade()) then
+    begin
+      UnInstallOldVersion();
+    end;
+  end;
 end;
