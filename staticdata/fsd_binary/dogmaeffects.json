@@ -49904,6 +49904,14 @@
         "domain": "target", 
         "effectID": 6442, 
         "func": "EffectStopper"
+      }, 
+      {
+        "domain": "targetID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1349, 
+        "modifyingAttributeID": 1350, 
+        "operation": 2, 
+        "skillTypeID": 4385
       }
     ], 
     "npcUsageChanceAttributeID": 504, 
