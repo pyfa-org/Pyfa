@@ -9441,7 +9441,7 @@
     "groupID": 4029, 
     "groupName": "Talassonite", 
     "groupNameID": 549008, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4030": {
@@ -9452,7 +9452,7 @@
     "groupID": 4030, 
     "groupName": "Rakovene", 
     "groupNameID": 549009, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4031": {
@@ -9463,7 +9463,7 @@
     "groupID": 4031, 
     "groupName": "Bezdnacine", 
     "groupNameID": 549010, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4033": {
