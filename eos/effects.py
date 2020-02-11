@@ -9194,7 +9194,7 @@ class Effect3002(BaseEffect):
     Modules from group: Energy Nosferatu (54 of 54)
     Modules from group: Hull Repair Unit (25 of 25)
     Modules from group: Remote Armor Repairer (39 of 39)
-    Modules from group: Remote Capacitor Transmitter (41 of 41)
+    Modules from group: Remote Capacitor Transmitter (35 of 35)
     Modules from group: Remote Shield Booster (38 of 38)
     Modules from group: Smart Bomb (118 of 118)
     Modules from group: Warp Disrupt Field Generator (7 of 7)
@@ -25036,7 +25036,7 @@ class Effect6184(BaseEffect):
     shipModuleRemoteCapacitorTransmitter
 
     Used by:
-    Modules from group: Remote Capacitor Transmitter (41 of 41)
+    Modules from group: Remote Capacitor Transmitter (35 of 35)
     """
 
     runTime = 'late'
