@@ -41,7 +41,7 @@ install:
   # target Python version and architecture
   - ps: echo("Install pip requirements:")
   # This one is needed to build wxpython 4.0.6 on windows
-  - cmd: "python -m pip install pathlib"
+  - cmd: "python -m pip install pathlib2"
   - cmd: "python -m pip install -r requirements.txt"
   - cmd: "python -m pip install PyInstaller==3.6"
 
