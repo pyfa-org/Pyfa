@@ -25,7 +25,7 @@ class PFGeneralPref(PreferenceView):
         self.stTitle.Wrap(-1)
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
         mainSizer.Add(self.stTitle, 0, wx.EXPAND | wx.ALL, 5)
-        
+
         helpCursor = wx.Cursor(wx.CURSOR_QUESTION_ARROW)
 
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
