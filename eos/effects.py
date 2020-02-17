@@ -7148,8 +7148,7 @@ class Effect2491(BaseEffect):
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Jammer',
-                                      'ecmBurstRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
-                                      stackingPenalties=False if 'skill' in context else True, **kwargs)
+                                      'ecmBurstRange', container.getModifiedItemAttr('rangeSkillBonus') * level, **kwargs)
 
 
 class Effect2492(BaseEffect):
