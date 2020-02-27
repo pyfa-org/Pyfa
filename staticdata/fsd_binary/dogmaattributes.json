@@ -32255,5 +32255,23 @@
     "published": 1, 
     "stackable": 1, 
     "unitID": 105
+  }, 
+  "3025": {
+    "attributeID": 3025, 
+    "dataType": 3, 
+    "defaultValue": 0.0, 
+    "highIsGood": 0, 
+    "name": "ActiveSystemJump", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "3026": {
+    "attributeID": 3026, 
+    "dataType": 4, 
+    "defaultValue": 561098.0, 
+    "highIsGood": 0, 
+    "name": "FilamentDescriptionMessageID", 
+    "published": 0, 
+    "stackable": 0
   }
 }

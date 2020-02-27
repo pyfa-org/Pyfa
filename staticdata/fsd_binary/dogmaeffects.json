@@ -60876,14 +60876,6 @@
     "modifierInfo": [
       {
         "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 64, 
-        "modifyingAttributeID": 2820, 
-        "operation": 4, 
-        "skillTypeID": 3312
-      }, 
-      {
-        "domain": "shipID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 2135, 
         "modifyingAttributeID": 2352, 
@@ -61099,14 +61091,6 @@
       }, 
       {
         "domain": "shipID", 
-        "func": "LocationGroupModifier", 
-        "groupID": 1673, 
-        "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2821, 
-        "operation": 6
-      }, 
-      {
-        "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 64, 
         "modifyingAttributeID": 2307, 
@@ -61150,6 +61134,14 @@
         "modifyingAttributeID": 2307, 
         "operation": 6, 
         "skillTypeID": 52998
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 1673, 
+        "modifiedAttributeID": 51, 
+        "modifyingAttributeID": 2821, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 

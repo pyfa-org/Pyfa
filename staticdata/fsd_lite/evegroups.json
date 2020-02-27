@@ -9567,6 +9567,17 @@
     "published": false, 
     "useBasePrice": false
   }, 
+  "4052": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 9, 
+    "fittableNonSingleton": false, 
+    "groupID": 4052, 
+    "groupName": "Jump Filament Blueprint", 
+    "groupNameID": 560666, 
+    "published": true, 
+    "useBasePrice": false
+  }, 
   "406": {
     "anchorable": false, 
     "anchored": false, 

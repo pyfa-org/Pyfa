@@ -29063,10 +29063,6 @@ class Effect6582(BaseEffect):
                                                   mod.item.requiresSkill('Capital Precursor Weapon'),
                                       'damageMultiplier', src.getModifiedItemAttr('siegeTurretDamageBonus'), **kwargs)
 
-        fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Motion Prediction'),
-                                         'damageMultiplier', src.getModifiedItemAttr('siegeHAWTurretDamageBonus'),
-                                         stackingPenalties=True, **kwargs)
-
         # Missiles
         for type in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Torpedoes') or
@@ -29078,7 +29074,7 @@ class Effect6582(BaseEffect):
                                                   mod.item.requiresSkill('XL Cruise Missiles'),
                                       'speed', src.getModifiedItemAttr('siegeLauncherROFBonus'), **kwargs)
 
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Target Navigation Prediction'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Torpedo',
                                       'speed', src.getModifiedItemAttr('siegeHAWMissileROFBonus'),
                                       stackingPenalties=True, penaltyGroup='postPercent', **kwargs)
 

@@ -15270,11 +15270,11 @@
     "parentGroupID": 2440
   }, 
   "2456": {
-    "description": "Abyssal Filaments are used to access Abyssal Deadspace", 
+    "description": "Abyssal Filaments and Jump Filaments", 
     "descriptionID": 317841, 
     "hasTypes": 0, 
     "iconID": 21924, 
-    "name": "Abyssal Filaments", 
+    "name": "Filaments", 
     "nameID": 317840, 
     "parentGroupID": 19
   }, 
@@ -16058,5 +16058,14 @@
     "name": "Triglavian", 
     "nameID": 555353, 
     "parentGroupID": 2703
+  }, 
+  "2706": {
+    "description": "Filaments that jump fleets unpredictably to other locations in known space.", 
+    "descriptionID": 560905, 
+    "hasTypes": 1, 
+    "iconID": 21924, 
+    "name": "Jump Filaments", 
+    "nameID": 560904, 
+    "parentGroupID": 2456
   }
 }
