@@ -608,6 +608,18 @@ class Miscellanea(ViewColumn):
             shield_hp = stuff.getModifiedItemAttr("shieldBonus", 0)
             hp = max(stuff_hp, armor_hp * cycles, capacitor_hp * cycles, shield_hp * cycles, 0)
 
+            nonChargedMap = {
+                "Ancillary Remote Armor Repairer": ("armor", "Armor repaired per second"),
+                "Ancillary Remote Shield Booster": ("shield", "Shield transferred per second")}
+            if not cycles and itemGroup in nonChargedMap:
+                rps = stuff.getRemoteReps(ignoreState=True)
+                rps = getattr(rps, nonChargedMap[itemGroup][0])
+                if not rps:
+                    return "", None
+                text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
+                tooltip = nonChargedMap[itemGroup][1]
+                return text, tooltip
+
             if not hp or not cycleTime or not cycles:
                 return "", None
 
