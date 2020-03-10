@@ -218,7 +218,7 @@ class Effect48(BaseEffect):
     powerBooster
 
     Used by:
-    Modules from group: Capacitor Booster (59 of 59)
+    Modules from group: Capacitor Booster (41 of 41)
     """
 
     type = 'active'
@@ -9188,7 +9188,7 @@ class Effect3002(BaseEffect):
 
     Used by:
     Modules from group: Ancillary Remote Shield Booster (4 of 4)
-    Modules from group: Capacitor Booster (59 of 59)
+    Modules from group: Capacitor Booster (41 of 41)
     Modules from group: Energy Neutralizer (54 of 54)
     Modules from group: Energy Nosferatu (54 of 54)
     Modules from group: Hull Repair Unit (25 of 25)

@@ -32228,6 +32228,20 @@
     "stackable": 1, 
     "unitID": 104
   }, 
+  "3020": {
+    "attributeID": 3020, 
+    "categoryID": 4, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayName": "Frigate Escape Bay", 
+    "displayNameID": 561201, 
+    "highIsGood": 1, 
+    "iconID": 1443, 
+    "name": "frigateEscapeBayCapacity", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 138
+  }, 
   "3023": {
     "attributeID": 3023, 
     "categoryID": 7, 

@@ -364,5 +364,12 @@
     "description": "Date and time", 
     "descriptionID": 312106, 
     "name": "Datetime"
+  }, 
+  "144": {
+    "description": "AU per second", 
+    "descriptionID": 561538, 
+    "displayName": "AU/s", 
+    "displayNameID": 561537, 
+    "name": "Warp speed"
   }
 }

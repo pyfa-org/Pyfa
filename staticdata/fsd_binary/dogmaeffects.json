@@ -78102,5 +78102,27 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "8020": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8020, 
+    "effectName": "systemWarpSpeedAddition", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 600, 
+        "modifyingAttributeID": 1950, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }

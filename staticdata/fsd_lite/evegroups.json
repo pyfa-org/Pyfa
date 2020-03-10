@@ -9578,6 +9578,17 @@
     "published": true, 
     "useBasePrice": false
   }, 
+  "4053": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4053, 
+    "groupName": "Irregular Capsule", 
+    "groupNameID": 561629, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
   "406": {
     "anchorable": false, 
     "anchored": false, 

@@ -102,6 +102,20 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "2AU/s", 
+            "text": "increase in ship warp speed"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 54215
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
