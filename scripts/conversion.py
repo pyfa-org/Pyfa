@@ -16,18 +16,28 @@ rename_phrase = " renamed to "
 conversion_phrase = " converted to "
 
 text = """
-    Small Asymmetric Remote Capacitor Transmitter renamed to Small Radiative Scoped Remote Capacitor Transmitter
-    Small 'Regard' Remote Capacitor Transmitter renamed to Small Inductive Compact Remote Capacitor Transmitter
-    Medium Asymmetric Remote Capacitor Transmitter renamed to Medium Radiative Scoped Remote Capacitor Transmitter
-    Medium 'Regard' Remote Capacitor Transmitter renamed to Medium Inductive Compact Remote Capacitor Transmitter
-    Large Asymmetric Remote Capacitor Transmitter renamed to Large Radiative Scoped Remote Capacitor Transmitter
-    Large 'Regard' Remote Capacitor Transmitter renamed to Large Inductive Compact Remote Capacitor Transmitter
-    Small Partial E95a Remote Capacitor Transmitter converted to Small Radiative Scoped Remote Capacitor Transmitter
-    Small Murky Remote Capacitor Transmitter converted to Small Inductive Compact Remote Capacitor Transmitter
-    Medium Partial E95b Remote Capacitor Transmitter converted to Medium Radiative Scoped Remote Capacitor Transmitter
-    Medium Murky Remote Capacitor Transmitter converted to Medium Inductive Compact Remote Capacitor Transmitter
-    Large Partial E95c Remote Capacitor Transmitter converted to Large Radiative Scoped Remote Capacitor Transmitter
-    Large Murky Remote Capacitor Transmitter converted to Large Inductive Compact Remote Capacitor Transmitter
+    Micro Electrochemical Capacitor Booster I renamed to 'Seed' Micro Capacitor Booster I
+    Small Electrochemical Capacitor Booster I renamed to Small F-RX Compact Capacitor Booster
+    Medium Electrochemical Capacitor Booster I renamed to Medium F-RX Compact Capacitor Booster
+    Heavy Electrochemical Capacitor Booster I renamed to Heavy F-RX Compact Capacitor Booster
+    Micro Brief Capacitor Overcharge I converted to 'Seed' Micro Capacitor Booster I
+    Micro Tapered Capacitor Infusion I converted to 'Seed' Micro Capacitor Booster I
+    Micro F-RX Prototype Capacitor Boost converted to 'Seed' Micro Capacitor Booster I
+    Micro Capacitor Booster I converted to 'Seed' Micro Capacitor Booster I
+    Micro Capacitor Booster II converted to 'Seed' Micro Capacitor Booster I
+    Ammatar Navy Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
+    Dark Blood Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
+    True Sansha Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
+    Imperial Navy Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
+    Small Brief Capacitor Overcharge I converted to Small F-RX Compact Capacitor Booster
+    Small Tapered Capacitor Infusion I converted to Small F-RX Compact Capacitor Booster
+    Small F-RX Prototype Capacitor Boost converted to Small F-RX Compact Capacitor Booster
+    Medium Brief Capacitor Overcharge I converted to Medium F-RX Compact Capacitor Booster
+    Medium Tapered Capacitor Infusion I converted to Medium F-RX Compact Capacitor Booster
+    Medium F-RX Prototype Capacitor Boost converted to Medium F-RX Compact Capacitor Booster
+    Heavy Brief Capacitor Overcharge I converted to Heavy F-RX Compact Capacitor Booster
+    Heavy Tapered Capacitor Infusion I converted to Heavy F-RX Compact Capacitor Booster
+    Heavy F-RX Prototype Capacitor Boost converted to Heavy F-RX Compact Capacitor Booster
     """
 
 def main(old, new):
