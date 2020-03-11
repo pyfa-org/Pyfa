@@ -576,11 +576,15 @@ class Fit:
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
-                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                                    "Shield Emission Systems"), "capacitorNeed", value)
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                    mod.item.requiresSkill("Shield Emission Systems") or
+                                    mod.item.requiresSkill("Capital Shield Emission Systems"),
+                        "capacitorNeed", value)
                     self.modules.filteredItemBoost(
-                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                                    "Shield Emission Systems"), "duration", value)
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                    mod.item.requiresSkill("Shield Emission Systems") or
+                                    mod.item.requiresSkill("Capital Shield Emission Systems"),
+                        "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
                     self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
@@ -590,12 +594,16 @@ class Fit:
                         self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                                               mod.item.requiresSkill("Repair Systems"),
-                                                   "capacitorNeed", value)
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                                               mod.item.requiresSkill("Repair Systems"),
-                                                   "duration", value)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                    mod.item.requiresSkill("Repair Systems") or
+                                    mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                        "capacitorNeed", value)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                    mod.item.requiresSkill("Repair Systems") or
+                                    mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                        "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)

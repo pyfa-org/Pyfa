@@ -121,12 +121,20 @@
         "skillID": 3422
       }, 
       {
+        "dogmaAttributeID": 6, 
+        "skillID": 24571
+      }, 
+      {
         "dogmaAttributeID": 73, 
         "skillID": 3416
       }, 
       {
         "dogmaAttributeID": 73, 
         "skillID": 3422
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 24571
       }
     ], 
     "operationName": "PostPercent", 
@@ -191,12 +199,20 @@
         "skillID": 16069
       }, 
       {
+        "dogmaAttributeID": 6, 
+        "skillID": 24568
+      }, 
+      {
         "dogmaAttributeID": 73, 
         "skillID": 3393
       }, 
       {
         "dogmaAttributeID": 73, 
         "skillID": 16069
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 24568
       }
     ], 
     "operationName": "PostPercent", 
