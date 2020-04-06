@@ -23,6 +23,7 @@ import functools
 import itertools
 import json
 import os
+import re
 import sqlite3
 import sys
 
@@ -458,6 +459,36 @@ def update_db():
             if itemReplacements is not None:
                 item.replacements = ','.join('{}'.format(tid) for tid in sorted(itemReplacements))
 
+    def processImplantSets(eveTypesData):
+        print('composing implant sets')
+        # Includes only implants which can be considered part of sets, not all implants
+        implant_groups = (300, 1730)
+        specials = {'Genolution': ('Genolution Core Augmentation', r'CA-\d+')}
+        implantSets = {}
+        for row in eveTypesData:
+            if not row.get('published'):
+                continue
+            if row.get('groupID') not in implant_groups:
+                continue
+            typeName = row.get('typeName', '')
+            # Regular sets matching
+            m = re.match('(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName)
+            if m:
+                implantSets.setdefault((m.group('grade'), m.group('set')), set()).add(row['typeID'])
+            # Special set matching
+            for setHandle, (setName, implantPattern) in specials.items():
+                pattern = '(?P<set>{}) (?P<implant>{})'.format(setName, implantPattern)
+                m = re.match(pattern, typeName)
+                if m:
+                    implantSets.setdefault((None, setHandle), set()).add(row['typeID'])
+                    break
+        data = []
+        for (gradeName, setName), implants in implantSets.items():
+            implants = ','.join('{}'.format(tid) for tid in sorted(implants))
+            row = {'setName': setName, 'gradeName': gradeName, 'implants': implants}
+            data.append(row)
+        _addRows(data, eos.gamedata.ImplantSet)
+
     eveTypesData = processEveTypes()
     eveGroupsData = processEveGroups()
     processEveCategories()
@@ -476,6 +507,7 @@ def update_db():
     eos.db.gamedata_session.flush()
     processReqSkills(eveTypesData)
     processReplacements(eveTypesData, eveGroupsData, dogmaTypeAttributesData, dogmaTypeEffectsData)
+    processImplantSets(eveTypesData)
 
     # Add schema version to prevent further updates
     metadata_schema_version = eos.gamedata.MetaData()

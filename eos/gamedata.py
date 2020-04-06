@@ -723,5 +723,15 @@ class Unit(EqBase):
 
         return value
 
+
 class Traits(EqBase):
     pass
+
+
+class ImplantSet(EqBase):
+
+    @property
+    def fullName(self):
+        if not self.gradeName:
+            return self.setName
+        return '{} {}'.format(self.gradeName, self.setName)

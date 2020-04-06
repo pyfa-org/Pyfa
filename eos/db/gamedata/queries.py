@@ -26,7 +26,7 @@ from eos.db import gamedata_session
 from eos.db.gamedata.item import items_table
 from eos.db.gamedata.group import groups_table
 from eos.db.util import processEager, processWhere
-from eos.gamedata import AlphaClone, Attribute, AttributeInfo, Category, DynamicItem, Group, Item, MarketGroup, MetaData, MetaGroup
+from eos.gamedata import AlphaClone, Attribute, AttributeInfo, Category, DynamicItem, Group, Item, MarketGroup, MetaData, MetaGroup, ImplantSet
 
 cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
@@ -424,3 +424,18 @@ def getDynamicItem(itemID, eager=None):
     except exc.NoResultFound:
         result = None
     return result
+
+
+@cachedQuery(1, "lookfor")
+def getImplantSet(lookfor):
+    if isinstance(lookfor, int):
+        implantSet = gamedata_session.query(ImplantSet).get(lookfor)
+    else:
+        raise TypeError("Need integer as argument")
+    return implantSet
+
+
+@cachedQuery(1, "lookfor")
+def getAllImplantSets():
+    implantSets = gamedata_session.query(ImplantSet).all()
+    return implantSets
