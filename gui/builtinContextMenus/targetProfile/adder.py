@@ -26,7 +26,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
         return 'Add Target Profile'
 
     def handleProfileAdd(self, event):
-        profile = self.profileEventMap.get(event.Id, False)
+        profile = self.eventProfileMap.get(event.Id, False)
         if profile is False:
             event.Skip()
             return
@@ -34,7 +34,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
 
     def _addProfile(self, parentMenu, profile, name):
         id = ContextMenuUnconditional.nextID()
-        self.profileEventMap[id] = profile
+        self.eventProfileMap[id] = profile
         menuItem = wx.MenuItem(parentMenu, id, name)
         parentMenu.Bind(wx.EVT_MENU, self.handleProfileAdd, menuItem)
         return menuItem
@@ -51,7 +51,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
         profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
         profiles.sort(key=lambda p: smartSort(p.fullName))
 
-        self.profileEventMap = {}
+        self.eventProfileMap = {}
         items = (OrderedDict(), OrderedDict())
         for profile in profiles:
             container = items

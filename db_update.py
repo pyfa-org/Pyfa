@@ -484,6 +484,8 @@ def update_db():
                     break
         data = []
         for (gradeName, setName), implants in implantSets.items():
+            if len(implants) < 2:
+                continue
             implants = ','.join('{}'.format(tid) for tid in sorted(implants))
             row = {'setName': setName, 'gradeName': gradeName, 'implants': implants}
             data.append(row)

@@ -729,12 +729,12 @@ class ImplantEditorView(BaseImplantEditorView):
 
         sChar.removeImplant(char.ID, implant)
 
-    def addImplantSet(self, impSet):
+    def addImplants(self, implants):
         charEditor = self.Parent.Parent
         char = charEditor.entityEditor.getActiveEntity()
 
         sChar = Character.getInstance()
-        for implant in impSet.implants:
+        for implant in implants:
             sChar.addImplant(char.ID, implant.item.ID)
 
         wx.PostEvent(charEditor, GE.CharChanged())

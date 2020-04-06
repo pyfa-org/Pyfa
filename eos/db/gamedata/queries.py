@@ -427,15 +427,6 @@ def getDynamicItem(itemID, eager=None):
 
 
 @cachedQuery(1, "lookfor")
-def getImplantSet(lookfor):
-    if isinstance(lookfor, int):
-        implantSet = gamedata_session.query(ImplantSet).get(lookfor)
-    else:
-        raise TypeError("Need integer as argument")
-    return implantSet
-
-
-@cachedQuery(1, "lookfor")
 def getAllImplantSets():
     implantSets = gamedata_session.query(ImplantSet).all()
     return implantSets

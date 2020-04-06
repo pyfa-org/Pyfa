@@ -316,7 +316,7 @@ class ImplantDisplay(d.Display):
             implants.append(implant)
         return implants
 
-    def addImplantSet(self, impSet):
+    def addImplants(self, implants):
         self.mainFrame.command.Submit(cmd.GuiAddImplantSetCommand(
             fitID=self.mainFrame.getActiveFit(),
-            itemIDs=[i.itemID for i in impSet.implants]))
+            itemIDs=[i.itemID for i in implants]))
