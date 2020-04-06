@@ -78124,5 +78124,153 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "8021": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8021, 
+    "effectName": "hydraSetBonus", 
+    "electronicChance": 0, 
+    "iconID": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3028, 
+        "modifyingAttributeID": 3027, 
+        "operation": 0, 
+        "skillTypeID": 3411
+      }, 
+      {
+        "domain": "charID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3029, 
+        "modifyingAttributeID": 3027, 
+        "operation": 0, 
+        "skillTypeID": 3411
+      }, 
+      {
+        "domain": "charID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3030, 
+        "modifyingAttributeID": 3027, 
+        "operation": 0, 
+        "skillTypeID": 3411
+      }, 
+      {
+        "domain": "charID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3031, 
+        "modifyingAttributeID": 3027, 
+        "operation": 0, 
+        "skillTypeID": 3411
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8023": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8023, 
+    "effectName": "hydraDroneTrackingEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 3028, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8024": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8024, 
+    "effectName": "hydraDroneRangeEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 3029, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 158, 
+        "modifyingAttributeID": 3029, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8025": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8025, 
+    "effectName": "hydraMissileFlightTimeEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 281, 
+        "modifyingAttributeID": 3030, 
+        "operation": 6, 
+        "skillTypeID": 3319
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8026": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8026, 
+    "effectName": "hydraMissileExplosionVelocityEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 653, 
+        "modifyingAttributeID": 3031, 
+        "operation": 6, 
+        "skillTypeID": 3319
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }
