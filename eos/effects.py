@@ -5977,6 +5977,7 @@ class Effect2019(BaseEffect):
     repairDroneShieldBonusBonus
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Repair Drone Operation DR (3 of 3)
     Modules named like: Drone Repair Augmentor (8 of 8)
     Skill: Repair Drone Operation
     """
@@ -5986,7 +5987,7 @@ class Effect2019(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalized = False if 'skill' in context else True
+        penalized = False if 'skill' in context or 'implant' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
                                      'shieldBonus', container.getModifiedItemAttr('damageHP') * level,
                                      stackingPenalties=penalized, **kwargs)
@@ -5997,6 +5998,7 @@ class Effect2020(BaseEffect):
     repairDroneArmorDamageAmountBonus
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Repair Drone Operation DR (3 of 3)
     Modules named like: Drone Repair Augmentor (8 of 8)
     Skill: Repair Drone Operation
     """
@@ -6006,7 +6008,7 @@ class Effect2020(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalized = False if 'skill' in context else True
+        penalized = False if 'skill' in context or 'implant' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
                                      'armorDamageAmount', container.getModifiedItemAttr('damageHP') * level,
                                      stackingPenalties=penalized, **kwargs)
@@ -22034,6 +22036,7 @@ class Effect5769(BaseEffect):
     repairDroneHullBonusBonus
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Repair Drone Operation DR (3 of 3)
     Modules named like: Drone Repair Augmentor (8 of 8)
     Skill: Repair Drone Operation
     """
@@ -30456,6 +30459,7 @@ class Effect6664(BaseEffect):
     skillBonusDroneSharpshooting
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Drone Sharpshooting DS (3 of 3)
     Skill: Drone Sharpshooting
     """
 
@@ -30464,16 +30468,18 @@ class Effect6664(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level if 'skill' in context else 1
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxRange',
-                                     src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityMissilesRange',
-                                       src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
-                                       'fighterAbilityAttackTurretRangeOptimal',
-                                       src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
-                                       'fighterAbilityAttackMissileRangeOptimal',
-                                       src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.drones.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Drones'), 'maxRange',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityMissilesRange',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityAttackTurretRangeOptimal',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityAttackMissileRangeOptimal',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
 
 
 class Effect6665(BaseEffect):
@@ -30481,6 +30487,7 @@ class Effect6665(BaseEffect):
     skillBonusDroneDurability
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Drone Durability DD (3 of 3)
     Skill: Drone Durability
     """
 
@@ -30504,6 +30511,7 @@ class Effect6667(BaseEffect):
     skillBonusDroneNavigation
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Drone Navigation DN (3 of 3)
     Skill: Drone Navigation
     """
 
@@ -35659,7 +35667,7 @@ class Effect7177(BaseEffect):
     skillBonusDroneDurabilityNotFighters
 
     Used by:
-    Implants from group: Cyber Drones (4 of 4)
+    Implants named like: Drone Tuner (4 of 4)
     """
 
     type = 'passive'
@@ -36253,3 +36261,91 @@ class Effect8018(BaseEffect):
     def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'duration', implant.getModifiedItemAttr('remoteRepDurationBonus'), **kwargs)
+
+
+class Effect8021(BaseEffect):
+    """
+    hydraSetBonus
+
+    Used by:
+    Implants named like: grade Hydra (18 of 18)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        for attr in ('hydraDroneTrackingBonus', 'hydraDroneRangeBonus', 'hydraMissileFlightTimeBonus', 'hydraMissileExplosionVelocityBonus'):
+            fit.appliedImplants.filteredItemMultiply(
+                lambda implant: implant.item.requiresSkill('Cybernetics'),
+                attr, implant.getModifiedItemAttr('implantSetHydra'), **kwargs)
+
+
+class Effect8023(BaseEffect):
+    """
+    hydraDroneTrackingEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'),
+            'trackingSpeed', implant.getModifiedItemAttr('hydraDroneTrackingBonus'), **kwargs)
+
+
+class Effect8024(BaseEffect):
+    """
+    hydraDroneRangeEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        for attr in ('maxRange', 'falloff'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'),
+                attr, implant.getModifiedItemAttr('hydraDroneRangeBonus'), **kwargs)
+
+
+class Effect8025(BaseEffect):
+    """
+    hydraMissileFlightTimeEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosionDelay', implant.getModifiedItemAttr('hydraMissileFlightTimeBonus'), **kwargs)
+
+
+class Effect8026(BaseEffect):
+    """
+    hydraMissileExplosionVelocityEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'aoeVelocity', implant.getModifiedItemAttr('hydraMissileExplosionVelocityBonus'), **kwargs)
