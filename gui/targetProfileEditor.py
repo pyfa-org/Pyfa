@@ -25,12 +25,12 @@ from collections import OrderedDict
 import wx
 from logbook import Logger
 
-import gui.mainFrame
 import gui.globalEvents as GE
+import gui.mainFrame
 from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
-from gui.utils.clipboard import toClipboard, fromClipboard
+from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
+from gui.utils.clipboard import fromClipboard, toClipboard
 from gui.utils.inputs import FloatBox, InputValidator, strToFloat
 from service.fit import Fit
 from service.targetProfile import TargetProfile

@@ -67,7 +67,8 @@ class DmgPatternEntityEditor(EntityEditor):
     def getEntitiesFromContext(self):
         sDP = DamagePattern.getInstance()
         choices = sorted(sDP.getUserDamagePatternList(), key=lambda p: p.rawName)
-        return [c for c in choices if c.rawName != "Selected Ammo"]
+        choices = [c for c in choices if c.rawName != "Selected Ammo"]
+        return choices
 
     def DoNew(self, name):
         sDP = DamagePattern.getInstance()
@@ -183,6 +184,10 @@ class DmgPatternEditor(AuxiliaryFrame):
             footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
+        if not self.entityEditor.checkEntitiesExist():
+            self.Close()
+            return
+
         self.Layout()
         bsize = self.GetBestSize()
         self.SetSize((-1, bsize.height))
@@ -232,6 +237,11 @@ class DmgPatternEditor(AuxiliaryFrame):
         self.entityEditor.btnDelete.Enable()
 
     def patternChanged(self, event=None):
+
+        if not self.entityEditor.checkEntitiesExist():
+            self.Close()
+            return
+
         p = self.entityEditor.getActiveEntity()
 
         if p is None:
