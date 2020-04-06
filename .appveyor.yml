@@ -65,7 +65,7 @@ build_script:
 
 after_build:
   - ps: "ls \"./\""
-  - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*.*"
+  - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*"
 
 test_script:
   # Ha... we're just building
