@@ -41,6 +41,15 @@ class Time2SpeedGetter(SmoothPointGetter):
         return speed
 
 
+class Time2MomentumGetter(Time2SpeedGetter):
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        mass = commonData['mass']
+        speed = super()._calculatePoint(x=x, miscParams=miscParams, src=src, tgt=tgt, commonData=commonData)
+        momentum = speed * mass
+        return momentum
+
+
 class Time2DistanceGetter(SmoothPointGetter):
 
     def _getCommonData(self, miscParams, src, tgt):

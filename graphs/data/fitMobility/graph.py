@@ -19,7 +19,7 @@
 
 
 from graphs.data.base import FitGraph, XDef, YDef, Input
-from .getter import Time2SpeedGetter, Time2DistanceGetter
+from .getter import Time2SpeedGetter, Time2DistanceGetter, Time2MomentumGetter
 
 
 class FitMobilityGraph(FitGraph):
@@ -30,12 +30,16 @@ class FitMobilityGraph(FitGraph):
     xDefs = [XDef(handle='time', unit='s', label='Time', mainInput=('time', 's'))]
     yDefs = [
         YDef(handle='speed', unit='m/s', label='Speed'),
-        YDef(handle='distance', unit='km', label='Distance')]
+        YDef(handle='distance', unit='km', label='Distance'),
+        YDef(handle='momentum', unit='Mt⋅m/s', label='Momentum')]
     inputs = [Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30))]
     srcExtraCols = ('Speed', 'Agility')
 
     # Calculation stuff
     _getters = {
         ('time', 'speed'): Time2SpeedGetter,
-        ('time', 'distance'): Time2DistanceGetter}
-    _denormalizers = {('distance', 'km'): lambda v, src, tgt: v / 1000}
+        ('time', 'distance'): Time2DistanceGetter,
+        ('time', 'momentum'): Time2MomentumGetter}
+    _denormalizers = {
+        ('distance', 'km'): lambda v, src, tgt: v / 1000,
+        ('momentum', 'Mt⋅m/s'): lambda v, src, tgt: v / 10 ** 9}
