@@ -26,8 +26,8 @@ from .getter import Distance2RpsGetter, Distance2RepAmountGetter, Time2RpsGetter
 
 class FitRemoteRepsGraph(FitGraph):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._timeCache = TimeCache()
 
     def _clearInternalCache(self, reason, extraData):

@@ -26,11 +26,12 @@ VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle'
 
 class YDef:
 
-    def __init__(self, handle, unit, label, selectorLabel=None):
+    def __init__(self, handle, unit, label, selectorLabel=None, hidden=False):
         self.handle = handle
         self.unit = unit
         self.label = label
         self._selectorLabel = selectorLabel
+        self.hidden = hidden
 
     @property
     def selectorLabel(self):
@@ -53,12 +54,13 @@ class YDef:
 
 class XDef:
 
-    def __init__(self, handle, unit, label, mainInput, selectorLabel=None):
+    def __init__(self, handle, unit, label, mainInput, selectorLabel=None, hidden=False):
         self.handle = handle
         self.unit = unit
         self.label = label
         self.mainInput = mainInput
         self._selectorLabel = selectorLabel
+        self.hidden = hidden
 
     @property
     def selectorLabel(self):

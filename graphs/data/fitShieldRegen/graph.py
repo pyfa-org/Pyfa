@@ -27,6 +27,10 @@ from .getter import (
 
 class FitShieldRegenGraph(FitGraph):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.isEffective = gui.mainFrame.MainFrame.getInstance().statsPane.nameViewMap['resistancesViewFull'].showEffective
+
     # UI stuff
     internalName = 'shieldRegenGraph'
     name = 'Shield Regeneration'
@@ -73,7 +77,3 @@ class FitShieldRegenGraph(FitGraph):
         ('shieldAmount', '%'): lambda v, src, tgt: v * 100 / src.item.ship.getModifiedItemAttr('shieldCapacity'),
         ('shieldAmount', 'EHP'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item, v, 'shield'),
         ('shieldRegen', 'EHP/s'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item, v, 'shield')}
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.isEffective = gui.mainFrame.MainFrame.getInstance().statsPane.nameViewMap['resistancesViewFull'].showEffective

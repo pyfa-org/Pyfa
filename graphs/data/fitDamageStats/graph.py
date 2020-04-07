@@ -31,8 +31,8 @@ from .getter import (
 
 class FitDamageStatsGraph(FitGraph):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._timeCache = TimeCache()
         self._projectedCache = ProjectedDataCache()
 

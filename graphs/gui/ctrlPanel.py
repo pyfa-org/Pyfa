@@ -295,12 +295,16 @@ class GraphControlPanel(wx.Panel):
 
         self.ySubSelection.Clear()
         for yDef in view.yDefs:
+            if yDef.hidden and not self.graphFrame.includeHidden:
+                continue
             self.ySubSelection.Append(self.formatLabel(yDef, selector=True), yDef)
         self.ySubSelection.Enable(len(view.yDefs) > 1)
         self.ySubSelection.SetSelection(selectedY)
 
         self.xSubSelection.Clear()
         for xDef in view.xDefs:
+            if xDef.hidden and not self.graphFrame.includeHidden:
+                continue
             self.xSubSelection.Append(self.formatLabel(xDef, selector=True), xDef)
         self.xSubSelection.Enable(len(view.xDefs) > 1)
         self.xSubSelection.SetSelection(selectedX)

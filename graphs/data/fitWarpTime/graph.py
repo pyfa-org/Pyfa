@@ -26,8 +26,8 @@ from .getter import AU_METERS, Distance2TimeGetter
 
 class FitWarpTimeGraph(FitGraph):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._subspeedCache = SubwarpSpeedCache()
 
     def _clearInternalCache(self, reason, extraData):
