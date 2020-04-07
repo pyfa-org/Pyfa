@@ -3,8 +3,9 @@ echo "Python version:"
 python3 --version
 echo "Upgrading pip..."
 python3 -m pip install --upgrade pip
-echo "Installing hardcoded app requirements for debugging..."
-python3 -m pip install setuptools==42.0.2
+# See issue #2156
+echo "Upgrading setuptools..."
+python3 -m pip install --upgrade setuptools
 echo "Installing app requirements..."
 python3 -m pip install -r requirements.txt
 echo "Installing packaging tools..."
