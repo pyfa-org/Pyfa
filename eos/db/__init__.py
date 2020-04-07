@@ -17,22 +17,30 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import re
 import threading
 
-from sqlalchemy import MetaData, create_engine
+from sqlalchemy import MetaData, create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from . import migration
 from eos import config
 from logbook import Logger
 
+
 pyfalog = Logger(__name__)
 pyfalog.info("Initializing database")
 pyfalog.info("Gamedata connection: {0}", config.gamedata_connectionstring)
 pyfalog.info("Saveddata connection: {0}", config.saveddata_connectionstring)
 
+
 class ReadOnlyException(Exception):
     pass
+
+
+def re_fn(expr, item):
+    reg = re.compile(expr, re.IGNORECASE)
+    return reg.search(item) is not None
 
 
 pyfalog.debug('Initializing gamedata')
@@ -41,6 +49,12 @@ if callable(gamedata_connectionstring):
     gamedata_engine = create_engine("sqlite://", creator=gamedata_connectionstring, echo=config.debug)
 else:
     gamedata_engine = create_engine(gamedata_connectionstring, echo=config.debug)
+
+
+@event.listens_for(gamedata_engine, 'connect')
+def create_functions(dbapi_connection, connection_record):
+    dbapi_connection.create_function('regexp', 2, re_fn)
+
 
 gamedata_meta = MetaData()
 gamedata_meta.bind = gamedata_engine
