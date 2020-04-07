@@ -274,6 +274,16 @@ class Fit:
                 fitIDs.add(fit.ID)
         return fitIDs
 
+    def processOverrideToggle(self):
+        fitIDs = set()
+        for fit in set(self._loadedFits):
+            if fit is None:
+                continue
+            if fit.calculated:
+                self.recalc(fit)
+                fitIDs.add(fit.ID)
+        return fitIDs
+
     def processTargetProfileChange(self):
         fitIDs = set()
         for fit in set(self._loadedFits):
