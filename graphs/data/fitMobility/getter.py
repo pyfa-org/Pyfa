@@ -76,13 +76,14 @@ class Time2MomentumGetter(Time2SpeedGetter):
 class Time2BumpSpeedGetter(Time2SpeedGetter):
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
-        bumperMass = commonData['mass']
+        # S. Santorine, Ship Motion in EVE-Online, p3, Collisions & Bumping section
+        # https://docs.google.com/document/d/1rwVWjTvzVdPEFETf0vwm649AFb4bgRBaNLpRPaoB03o
+        # Internally, Santorine's formulas are using millions of kilograms, so we normalize to them here
+        bumperMass = commonData['mass'] / 10 ** 6
         bumperSpeed = Time2SpeedGetter._calculatePoint(
             self, x=x, miscParams=miscParams,
             src=src, tgt=tgt, commonData=commonData)
-        tgtMass = miscParams['tgtMass']
-        # S. Santorine, Ship Motion in EVE-Online, p3, Collisions & Bumping section
-        # https://docs.google.com/document/d/1rwVWjTvzVdPEFETf0vwm649AFb4bgRBaNLpRPaoB03o
+        tgtMass = miscParams['tgtMass'] / 10 ** 6
         tgtSpeed = (2 * bumperSpeed * bumperMass) / (bumperMass + tgtMass)
         return tgtSpeed
 
@@ -90,12 +91,13 @@ class Time2BumpSpeedGetter(Time2SpeedGetter):
 class Time2BumpDistanceGetter(Time2BumpSpeedGetter):
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
-        tgtMass = miscParams['tgtMass']
+        # S. Santorine, Ship Motion in EVE-Online, p3, Collisions & Bumping section
+        # https://docs.google.com/document/d/1rwVWjTvzVdPEFETf0vwm649AFb4bgRBaNLpRPaoB03o
+        # Internally, Santorine's formulas are using millions of kilograms, so we normalize to them here
+        tgtMass = miscParams['tgtMass'] / 10 ** 6
         tgtInertia = miscParams['tgtInertia']
         tgtSpeed = Time2BumpSpeedGetter._calculatePoint(
             self, x=x, miscParams=miscParams,
             src=src, tgt=tgt, commonData=commonData)
-        # S. Santorine, Ship Motion in EVE-Online, p3, Collisions & Bumping section
-        # https://docs.google.com/document/d/1rwVWjTvzVdPEFETf0vwm649AFb4bgRBaNLpRPaoB03o
         tgtDistance = tgtSpeed * tgtMass * tgtInertia
         return tgtDistance
