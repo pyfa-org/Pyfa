@@ -1797,7 +1797,7 @@
               "text": "bonus to Medium Projectile Turret rate of fire"
             }, 
             {
-              "number": "7.5%", 
+              "number": "5%", 
               "text": "bonus to Medium Projectile Turret damage"
             }
           ], 
@@ -1806,7 +1806,7 @@
         {
           "bonuses": [
             {
-              "number": "7.5%", 
+              "number": "5%", 
               "text": "bonus to Medium Projectile Turret optimal range"
             }, 
             {
@@ -3216,7 +3216,7 @@
             "text": "·Can lock at extended ranges"
           }, 
           {
-            "number": "400%", 
+            "number": "200%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -3448,7 +3448,7 @@
             "text": "·Can lock at extended ranges"
           }, 
           {
-            "number": "400%", 
+            "number": "200%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -3533,7 +3533,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "number": "500%", 
+            "number": "300%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -9002,7 +9002,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "number": "500%", 
+            "number": "300%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -11282,7 +11282,7 @@
             "text": "·Can lock at extended ranges"
           }, 
           {
-            "number": "400%", 
+            "number": "200%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -11917,7 +11917,7 @@
             "text": "bonus to Remote Sensor Dampener resistance"
           }, 
           {
-            "number": "400%", 
+            "number": "200%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -13443,7 +13443,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "number": "500%", 
+            "number": "300%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -13939,7 +13939,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "number": "500%", 
+            "number": "300%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -16121,7 +16121,7 @@
             "text": "·Can lock at extended ranges"
           }, 
           {
-            "number": "400%", 
+            "number": "200%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -16250,7 +16250,7 @@
             "text": "·Can lock at extended ranges"
           }, 
           {
-            "number": "400%", 
+            "number": "200%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -16326,7 +16326,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "number": "500%", 
+            "number": "300%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -16482,7 +16482,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "number": "500%", 
+            "number": "300%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -16883,7 +16883,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "number": "500%", 
+            "number": "300%", 
             "text": "bonus to Armor Plates and Shield Extenders"
           }, 
           {
@@ -17779,11 +17779,11 @@
               "text": "bonus to Medium Projectile Turret damage"
             }, 
             {
-              "number": "10%", 
+              "number": "5%", 
               "text": "bonus to Medium Projectile Turret optimal range and falloff"
             }, 
             {
-              "number": "7.5%", 
+              "number": "5%", 
               "text": "bonus to Medium Projectile Turret tracking speed"
             }
           ], 
@@ -19169,7 +19169,7 @@
               "text": "bonus to Medium Hybrid Turret falloff"
             }, 
             {
-              "number": "5%", 
+              "number": "7.5%", 
               "text": "bonus to Medium Hybrid Turret damage"
             }
           ], 
