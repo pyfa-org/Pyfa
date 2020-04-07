@@ -32,8 +32,8 @@ class FitMobilityGraph(FitGraph):
         YDef(handle='speed', unit='m/s', label='Speed'),
         YDef(handle='distance', unit='km', label='Distance'),
         YDef(handle='momentum', unit='Gkg⋅m/s', label='Momentum'),
-        YDef(handle='bumpSpeed', unit='m/s', label='Bump speed'),
-        YDef(handle='bumpDistance', unit='km', label='Bump distance')]
+        YDef(handle='bumpSpeed', unit='m/s', label='Target speed', selectorLabel='Bump speed'),
+        YDef(handle='bumpDistance', unit='km', label='Target distance traveled', selectorLabel='Bump distance')]
     inputs = [
         Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30)),
         # Default values in target fields correspond to a random carrier/fax
