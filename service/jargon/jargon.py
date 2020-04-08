@@ -19,6 +19,7 @@
 
 
 class Jargon:
+
     def __init__(self, rawdata: dict):
         self._rawdata = rawdata
 
