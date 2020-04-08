@@ -31,15 +31,14 @@ class Jargon:
     def get_rawdata(self) -> dict:
         return self._rawdata
 
-    def apply(self, query):
-        query_words = query.split()
+    def apply(self, query_words):
         parts = []
 
         for word in query_words:
             replacement = self.get(word)
             if replacement:
-                parts.append(replacement)
+                parts.append('({}|{})'.format(word, replacement))
             else:
                 parts.append(word)
 
-        return ' '.join(parts)
+        return parts

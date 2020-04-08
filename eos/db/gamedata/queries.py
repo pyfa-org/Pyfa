@@ -303,10 +303,10 @@ def getItemsByCategory(filter, where=None, eager=None):
             filter).all()
 
 
-@cachedQuery(3, "where", "nameLike", "join")
-def searchItems(nameLike, where=None, join=None, eager=None):
-    if not isinstance(nameLike, str):
-        raise TypeError("Need string as argument")
+@cachedQuery(3, "tokens", "where", "join")
+def searchItems(tokens, where=None, join=None, eager=None):
+    if not isinstance(tokens, (tuple, list)) or not all(isinstance(t, str) for t in tokens):
+        raise TypeError("Need tuple or list of strings as argument")
 
     if join is None:
         join = tuple()
@@ -315,12 +315,11 @@ def searchItems(nameLike, where=None, join=None, eager=None):
         join = (join,)
 
     items = gamedata_session.query(Item).options(*processEager(eager)).join(*join)
-    for token in nameLike.split(' '):
-        token_safe = "%{0}%".format(sqlizeString(token))
+    for token in tokens:
         if where is not None:
-            items = items.filter(and_(Item.name.like(token_safe, escape="\\"), where))
+            items = items.filter(and_(Item.name.op('regexp')(token), where))
         else:
-            items = items.filter(Item.name.like(token_safe, escape="\\"))
+            items = items.filter(Item.name.op('regexp')(token))
     items = items.limit(100).all()
     return items
 

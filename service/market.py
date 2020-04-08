@@ -96,7 +96,7 @@ class SearchWorkerThread(threading.Thread):
         self.jargonLoader = JargonLoader.instance()
         # load the jargon while in an out-of-thread context, to spot any problems while in the main thread
         self.jargonLoader.get_jargon()
-        self.jargonLoader.get_jargon().apply('test string')
+        self.jargonLoader.get_jargon().apply('test string'.split())
         self.running = True
 
     def run(self):
@@ -138,24 +138,17 @@ class SearchWorkerThread(threading.Thread):
             else:
                 filters = [None]
 
-            jargon_request = self.jargonLoader.get_jargon().apply(request)
+            requestTokens = request.split()
+            requestTokens = self.jargonLoader.get_jargon().apply(requestTokens)
 
             all_results = set()
-            if len(request) >= config.minItemSearchLength:
+            if len(' '.join(requestTokens)) >= config.minItemSearchLength:
                 for filter_ in filters:
-                    regular_results = eos.db.searchItems(
-                        request, where=filter_,
+                    filtered_results = eos.db.searchItems(
+                        requestTokens, where=filter_,
                         join=(types_Item.group, types_Group.category),
                         eager=("group.category", "metaGroup"))
-                    all_results.update(regular_results)
-
-            if len(jargon_request) >= config.minItemSearchLength:
-                for filter_ in filters:
-                    jargon_results = eos.db.searchItems(
-                        jargon_request, where=filter_,
-                        join=(types_Item.group, types_Group.category),
-                        eager=("group.category", "metaGroup"))
-                    all_results.update(jargon_results)
+                    all_results.update(filtered_results)
 
             items = set()
             # Return only published items, consult with Market service this time
