@@ -170,8 +170,8 @@ class ItemView(Display):
     def scheduleSearch(self, event=None):
         self.searchTimer.Stop()  # Cancel any pending timers
         search = self.marketBrowser.search.GetLineText(0)
-        # Make sure we do not count wildcard as search symbol
-        realsearch = search.replace("*", "")
+        # Make sure we do not count wildcards as search symbol
+        realsearch = search.replace('*', '').replace('?', '')
         # Re-select market group if search query has zero length
         if len(realsearch) == 0:
             self.selectionMade('search')

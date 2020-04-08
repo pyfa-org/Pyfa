@@ -302,8 +302,8 @@ class ItemView(d.Display):
         sMkt = Market.getInstance()
 
         search = self.searchBox.GetLineText(0)
-        # Make sure we do not count wildcard as search symbol
-        realsearch = search.replace("*", "")
+        # Make sure we do not count wildcards as search symbol
+        realsearch = search.replace('*', '').replace('?', '')
         # Show nothing if query is too short
         if len(realsearch) < 3:
             self.clearSearch()

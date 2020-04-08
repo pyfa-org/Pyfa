@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import queue
+import re
 import threading
 from collections import OrderedDict
 from itertools import chain
@@ -39,6 +40,10 @@ pyfalog = Logger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
+
+
+class RegexTokenizationError(Exception):
+    pass
 
 
 class ShipBrowserWorkerThread(threading.Thread):
@@ -90,6 +95,7 @@ class ShipBrowserWorkerThread(threading.Thread):
 
 
 class SearchWorkerThread(threading.Thread):
+
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
@@ -138,7 +144,10 @@ class SearchWorkerThread(threading.Thread):
             else:
                 filters = [None]
 
-            requestTokens = request.split()
+            if request.strip().startswith('re:'):
+                requestTokens = self._prepareRequestRegex(request[3:])
+            else:
+                requestTokens = self._prepareRequestNormal(request)
             requestTokens = self.jargonLoader.get_jargon().apply(requestTokens)
 
             all_results = set()
@@ -165,6 +174,65 @@ class SearchWorkerThread(threading.Thread):
 
     def stop(self):
         self.running = False
+
+    def _prepareRequestNormal(self, request):
+        # Escape regexp-specific symbols, and un-escape whitespaces
+        request = re.escape(request)
+        request = re.sub(r'\\(?P<ws>\s+)', '\g<ws>', request)
+        # Imitate wildcard search
+        request = re.sub(r'\\\*', r'\\w*', request)
+        request = re.sub(r'\\\?', r'\\w?', request)
+        tokens = request.split()
+        return tokens
+
+    def _prepareRequestRegex(self, request):
+        roundLvl = 0
+        squareLvl = 0
+        nextEscaped = False
+        tokens = []
+        currentToken = ''
+
+        def verifyErrors():
+            if squareLvl not in (0, 1):
+                raise RegexTokenizationError('Square braces level is {}'.format(squareLvl))
+            if roundLvl < 0:
+                raise RegexTokenizationError('Round braces level is {}'.format(roundLvl))
+
+        try:
+            for char in request:
+                thisEscaped = nextEscaped
+                nextEscaped = False
+                if thisEscaped:
+                    currentToken += char
+                elif char == '\\':
+                    nextEscaped = True
+                elif char == '[':
+                    currentToken += char
+                    squareLvl += 1
+                elif char == ']':
+                    currentToken += char
+                    squareLvl -= 1
+                elif char == '(' and squareLvl == 0:
+                    currentToken += char
+                    roundLvl += 1
+                elif char == ')' and squareLvl == 0:
+                    currentToken += char
+                    roundLvl -= 1
+                elif char.isspace() and roundLvl == squareLvl == 0:
+                    if currentToken:
+                        tokens.append(currentToken)
+                        currentToken = ''
+                else:
+                    currentToken += char
+                verifyErrors()
+            else:
+                if currentToken:
+                    tokens.append(currentToken)
+        # Treat request as normal string if regex tokenization fails
+        except RegexTokenizationError:
+            tokens = self._prepareRequestNormal(request)
+        return tokens
+
 
 class Market:
     instance = None

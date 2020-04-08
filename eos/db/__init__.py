@@ -39,7 +39,12 @@ class ReadOnlyException(Exception):
 
 
 def re_fn(expr, item):
-    reg = re.compile(expr, re.IGNORECASE)
+    try:
+        reg = re.compile(expr, re.IGNORECASE)
+    except (SystemExit, KeyboardInterrupt):
+        raise
+    except:
+        return False
     return reg.search(item) is not None
 
 
