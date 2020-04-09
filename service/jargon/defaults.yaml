@@ -1,309 +1,571 @@
-# Default jargon - comment out as necessary.
+# Default jargon definitions
 
-# Note that some of these are experimental abbreviations which don't have any real purpose and are simply there to play with
+# Generic acronyms
+std:
+  - 'std'
+  - 'standard'
 
-# shortcuts
-1: I
-2: II
-lrg: Large
-hvy: Heavy
-# med: Medium # (ineffective)
-sml: Small
-# mic: Micro # (ineffective)
-xl: X-Large
+# Sizes
+small:
+  - 'small'
+  - '75mm (.+ )?(rail|gun|cannon)'
+med:
+  - 'med'
+medium:
+  - 'medium'
+large:
+  - 'large'
+xl:
+  - 'xl'
 
-# sizes
-large: heavy
-heavy: large
+# Damage types
+em:
+  - 'em'
+  - 'electromagnetic'  # Used in doomsday names
+  - 'electron bomb'  # Used in bomb names
+therm:
+  - 'therm'
+  - 'plasma smartbomb'  # Used in smartbomb names
+  - 'scorch bomb'  # Used in bomb names
+thermal:
+  - 'thermal'
+  - 'plasma smartbomb'  # Used in smartbomb names
+  - 'scorch bomb'  # Used in bomb names
+kin:
+  - 'kin'
+  - 'concussion bomb'  # Used in bomb and smartbomb names
+kinet:
+  - 'kinet'
+  - 'concussion bomb'  # Used in bomb and smartbomb names
+kinetic:
+  - 'kinetic'
+  - 'concussion bomb'  # Used in bomb and smartbomb names
+exp:
+  - 'exp'
+  - 'proton smartbomb'  # Used in smartbomb names
+  - 'shrapnel bomb'  # Used in bomb names
+expl:
+  - 'expl'
+  - 'proton smartbomb'  # Used in smartbomb names
+  - 'shrapnel bomb'  # Used in bomb names
+explo:
+  - 'explo'
+  - 'proton smartbomb'  # Used in smartbomb names
+  - 'shrapnel bomb'  # Used in bomb names
+explosive:
+  - 'explosive'
+  - 'proton smartbomb'  # Used in smartbomb names
+  - 'shrapnel bomb'  # Used in bomb names
 
-# language fixes (american/british differences)
-armour: armor
-neutraliser: neutralizer
-stabiliser: stabilizer
-energised: energized
-economiser: economizer
+# Races
+cn:
+  - 'cn'
+  - 'caldari navy'
+rf:
+  - 'rf'
+  - 'republic fleet'
+in:
+  - 'in'
+  - 'imperial navy'
+fn:
+  - 'fn'
+  - 'federation navy'
+ts:
+  - 'ts'
+  - 'true sansha'
+db:
+  - 'db'
+  - 'dark blood'
+dg:
+  - 'dg'
+  - 'dread guristas'
+ss:
+  - 'ss'
+  - 'shadow serpentis'
 
-# races
-cn: Caldari Navy
-rf: Republic Fleet
-in: Imperial Navy
-fn: Federation Navy
-ts: True Sansha
-db: Dark Blood
-dg: Dread Guristas
-ss: Shadow Serpentis
+# Weapons
+ac:
+  - 'ac'
+  - 'autocannon'
+arty:
+  - 'arty'
+  - 'artillery'
+ml:
+  - 'ml'
+  - 'missile (launcher|bay)'
+rl:
+  - 'rl'
+  - 'rocket (launcher|bay)'
+lml:
+  - 'lml'
+  - '(?<!rapid )light missile (launcher|bay)'
+rlml:
+  - 'rlml'
+  - 'rapid light missile (launcher|bay)'
+haml:
+  - 'haml'
+  - 'heavy assault missile (launcher|bay)'
+hml:
+  - 'hml'
+  - '(?<!rapid )heavy missile (launcher|bay)'
+rhml:
+  - 'rhml'
+  - 'rapid heavy missile (launcher|bay)'
+tl:  # No "tl" since it is used in items with "Gatling"
+  - '(?<!rapid )(?<!XL )torpedo (launcher|bay)'
+cml:
+  - 'cml'
+  - '(?<!xl )cruise (missile )?(launcher|bay)'
+rtl:
+  - 'rtl'
+  - 'rapid torpedo (launcher|bay)'
+xlcml:
+  - 'xlcml'
+  - 'xl cruise missile (launcher|bay)'
+xltl:
+  - 'xltl'
+  - 'xl torpedo (launcher|bay)'
+dd:
+  - 'dd'
+  - 'doomsday'
+  - 'lance$'
+  - 'reaper'
+  - 'bosonic'
+  - 'arcing vorton projector'
+doomsday:
+  - 'doomsday'
+  - 'lance$'
+  - 'reaper'
+  - 'bosonic'
+  - 'arcing vorton projector'
+# Related entry in other section: "em" in "Damage types"
+gtfo:
+  - 'gravitational transportation field oscillator'
+panic:
+  - 'pulse activated nexus invulnerability core'
+sb:
+  - 'sb'
+  - 'smartbomb'
+  - '(?<!remote )shield booster'
+  - '(?<!remote )sensor booster'
+disco:
+  - 'disco'
+  - 'smartbomb'
+sbomb:
+  - 'sbomb'
+  - 'smartbomb'
+# Related entry in other section: "therm" in "Damage types"
+# Related entry in other section: "thermal" in "Damage types"
+# Related entry in other section: "kin" in "Damage types"
+# Related entry in other section: "kinet" in "Damage types"
+# Related entry in other section: "kinetic" in "Damage types"
+# Related entry in other section: "exp" in "Damage types"
+# Related entry in other section: "expl" in "Damage types"
+# Related entry in other section: "explo" in "Damage types"
+# Related entry in other section: "explosive" in "Damage types"
+pdb:
+  - 'pdb'
+  - 'point defense battery'
+haw:
+  - 'haw'
+  - 'quad 800mm repeating cannon'
+  - 'triple neutron blaster cannon'
+  - 'quad mega pulse laser'
+  - 'rapid torpedo (launcher|bay)'
+# Related entry in other section: "pds" in "Power and capacitor upgrade modules"
 
-# weapons
-ac: AutoCannon
-rt: Artillery
-arty: Artillery
-bs: Blaster
-rg: Railgun
-pl: Pulse Laser
-bl: Beam Laser
-ml: Missile Launcher
-lnb: Light Neutron Blaster
-lib: Light Ion Blaster
-leb: Light Electron Blaster
-hnb: Heavy Neutron Blaster
-hib: Heavy Ion Blaster
-heb: Heavy Electron Blaster
-nbc: Neutron Blaster Cannon
-ibc: Ion Blaster Cannon
-ebc: Electron Blaster Cannon
-isb: Ion Siege Blaster
-capbc: Ion Siege Blaster
-hawbc: Triple Neutron
-tnb: Triple Neutron
-125rg: 125mm Railgun
-150rg: 150mm Railgun #also catches dual 150mm railguns
-75rg: 75mm
-200rg: 200mm Railgun
-250rg: 250mm Railgun #also catches dual 250mm railguns
-350rg: 350mm Railgun
-425rg: 425mm Railgun
-caprg: 1000mm Railgun
-1000rg: 1000mm Railgun
-125ac: 125mm AutoCannon
-150ac: 150mm AutoCannon
-200ac: 200mm AutoCannon
-220ac: 220mm AutoCannon
-180ac: 180mm AutoCannon
-425ac: 425mm AutoCannon #catches both regular 425mm and dual
-650ac: 650mm Repeating Cannon
-800ac: 800mm Repeating Cannon #catches both regular 800mm and quad
-hawac: Quad 800mm #for those who want to quickly find the HAW ac
-2500ac: 2500mm Repeating Cannon
-capac: 2500mm Repeating Cannon
-250rt: 250mm Artillery
-280rt: 280mm Artillery
-650rt: 650mm Artillery
-720rt: 720mm Artillery
-1200rt: 1200mm Artillery
-1400rt: 1400mm Artillery
-3500rt: 3500mm Artillery
-caprt: 3500mm Artillery
-dlp: Dual Light Pulse
-# gpl: Gatling Pulse Laser - conflicts with giga pulse
-sfp: Small Focused Pulse
-fmp: Focused Medium Pulse
-hpl: Heavy Pulse Laser #also catches dual heavy
-mpl: Mega Pulse Laser #also catches quad mega
-cappl: Dual Giga Pulse
-gpl: Dual Giga Pulse
-hawpl: Quad Mega Pulse
-sfb: Small Focused Beam
-dlb: Dual Light Beam
-fmb: Focused Medium Beam
-qlb: Quad Light Beam
-hbl: Heavy Beam Laser #catches dual heavy
-mbl: Mega Beam Laser
-tbl: Tachyon Beam Laser
-gbl: Dual Giga Beam Laser
-capbl: Dual Giga Beam Laser
-lml: Light Missile Launcher #gets RLML too
-rl: Rocket Launcher
-rlml: Rapid Light Missile Launcher
-haml: Heavy Assault Missile Launcher
-hal: Heavy Assault Missile Launcher
-hml: Heavy Missile Launcher #gets HAM + RHML launcher too?
-rhml: Rapid Heavy Missile Launcher
-cml: Cruise Missile Launcher
-tpl: Torpedo Launcher
-# tl: Torpedo Launcher - conflicts with tracking link entry
-rtl: Rapid Torpedo Launcher
-hawml: Rapid Torpedo Launcher
-hawtl: Rapid Torpedo Launcher
-captl: XL Torpedo Launcher
-xltl: XL Torpedo Launcher
-xlcml: XL Cruise Missile Launcher
-capcml: XL Cruise Missile Launcher
-xlcl: XL Cruise Missile Launcher
-capcl: XL Cruise Missile Launcher
-dd: Doomsday
-rp: Reaper
-disco: Smartbomb
-sbomb: Smartbomb
-fvb: Focused Void Bomb
+# Weapon upgrades
+bcs:
+  - 'bcs'
+  - 'ballistic control system'
+bcu:
+  - 'bcu'
+  - 'ballistic control system'
+mgc:
+  - 'mgc'
+  - 'missile guidance computer'
+mge:
+  - 'mge'
+  - 'missile guidance enhancer'
 
-# Propulsion Modules
-ab: Afterburner
-mwd: Microwarpdrive
-smwd: 5mn
-sab: 1mn
-mmwd: 50mn
-mab: 10mn
-lmwd: 500mn
-lab: 100mn
-cmwd: 50000mn
-cab: 10000mn
-mjd: Micro Jump Drive
-mmjd: Medium Micro Jump Drive
-lmjd: Large Micro Jump Drive
-istab: Inertial Stabilizer
-odi: Overdrive Injector
-wcs: Warp Core Stabilizer
-nano: Nanofiber Internal Structure
-boosh: Micro Jump Field Generator
-mjfg: Micro Jump Field Generator
+# Drone upgrades
+dda:
+  - 'dda'
+  - 'drone damage amplifier'
+dla:
+  - 'dla'
+  - 'drone link augmentor'
+dnc:
+  - 'dnc'
+  - 'drone navigation computer'
+fsu:
+  - 'fsu'
+  - 'fighter support unit'
+dte:
+  - 'dte'
+  - 'omnidirectional tracking enhancer'
+ote:  # No "ote" since word Remote is too wide-spread
+  - 'omnidirectional tracking enhancer'
+odte:
+  - 'odte'
+  - 'omnidirectional tracking enhancer'
+dtl:
+  - 'dtl'
+  - 'omnidirectional tracking link'
+otl:
+  - 'otl'
+  - 'omnidirectional tracking link'
+odtl:
+  - 'odtl'
+  - 'omnidirectional tracking link'
+dtc:
+  - 'dtc'
+  - 'omnidirectional tracking link'
+otc:
+  - 'otc'
+  - 'omnidirectional tracking link'
+odtc:
+  - 'odtc'
+  - 'omnidirectional tracking link'
 
-# Tank Modules
-100pl: 100mm Plates
-200pl: 200mm Plates
-400pl: 400mm Plates
-800pl: 800mm Plates
-1600pl: 1600mm Plates
-25000pl: 25000mm Plates
-aar: Ancillary Armor Repairer
-ain: Adaptive Invulnerability Field
-anp: Adaptive Nano Plating
-asb: Ancillary Shield Booster
-sba: Shield Boost Amplifier
-car: Capital Armor Repairer
-cpl: 25000mm Plates
-dc: Damage Control
-dcu: Damage Control
-adc: Assault Damage Control
-adcu: Assault Damage Control
-eanm: Energized Adaptive Nano Membrane
-enam: Energized Adaptive Nano Membrane
-laar: Large Ancillary Armor Repairer
-lar: Large Armor Repairer
-lasb: Large Ancillary Shield Booster
-lsb: Large Shield Booster
-lse: Large Shield Extender
-lap: 1600mm Plates
-maar: Medium Ancillary Armor Repairer
-masb: Medium Ancillary Shield Booster
-mar: Medium Armor Repairer
-msb: Medium Shield Booster
-mse: Medium Shield Extender
-rah: Reactive Armor Hardener
-saar: Small Ancillary Armor Repairer
-sar: Small Armor Repairer
-sasb: Small Ancillary Shield Booster
-sfc: Shield Flux Coil
-ssb: Small Shield Booster
-sse: Small Shield Extender
-xlasb: X-Large Ancillary Shield Booster
-xlsb: X-Large Shield Booster
-sb: Shield Booster
-thrf: Thermal Dissipation Field
-knrf: Kinetic Deflection Field
-emrf: EM Ward Field
-exrf: Explosive Deflection Field
-thra: Thermal Dissipation Amplifier
-knra: Kinetic Deflection Amplifier
-emra: EM Ward Amplifier
-exra: Explosive Deflection Amplifier
-panic: Pulse Activated Nexus Invulnerability Core
+# Remote repair mods
+rr:  # There is a shitton of remote rep-related items, we want to hide irrelevant like "Barrage" so we do not have "rr" in here
+  - 'remote shield booster'
+  - 'remote armor repairer'
+  - 'remote hull repairer'
+  - '[shield|armor|hull] maintenance bot'
 
-# Weapon Upgrades
-bcs: Ballistic Control System
-bcu: Ballistic Control System
-bc: Ballistic Control System
-mge: Missile Guidance Enhancer
-mgc: Missile Guidance Computer
-magstab: Magnetic Field Stabilizer
-mfs: Magnetic Field Stabilizer
-ms: Magnetic Field Stabilizer
-te: Tracking Enhancer
-tc: Tracking Computer
-mlu: Mining Laser Upgrade
-dla: Drone Link Augmentor
-fsu: Fighter Support Unit
-otl: Omnidirectional Tracking Link
-ote: Omnidirectional Tracking Enhancer
-dda: Drone Damage Amplifier
-dnc: Drone Navigation Computer
-gs: Gyrostabilizer
-hs: Heat Sink
+# Shield modules
+se:  # No "se" due to spam of results containing it
+  - 'shield extender'
+sse:  # No "sse" since word "compressed" is often used
+  - 'small (.+ )?shield extender'
+mse:
+  - 'mse'
+  - 'medium (.+ )?shield extender'
+lse:  # No "lse" due to spam of results containing "pulse"
+  - 'large (.+ )?shield extender'
+cse:
+  - 'cse'
+  - 'capital (.+ )?shield extender'
+aif:
+  - 'aif'
+  - 'adaptive invulnerability shield hardener'
+# Related entry in other section: "sb" in "Weapons"
+ssb:
+  - 'ssb'
+  - 'small (.+ )?(?<!remote )shield booster'
+msb:
+  - 'msb'
+  - 'medium (.+ )?(?<!remote )shield booster'
+lsb:
+  - 'lsb'
+  - '(?<!x-)large (.+ )?(?<!remote )shield booster'
+xlsb:
+  - 'xlsb'
+  - 'x-large (.+ )?(?<!remote )shield booster'
+csb:
+  - 'csb'
+  - 'capital (.+ )?(?<!remote )shield booster'
+asb:
+  - 'asb'
+  - 'ancillary shield booster'
+sasb:
+  - 'sasb'
+  - 'small ancillary (.+ )?(?<!remote )shield booster'
+masb:
+  - 'masb'
+  - 'medium ancillary (.+ )?(?<!remote )shield booster'
+lasb:
+  - 'lasb'
+  - '(?<!x-)large ancillary (.+ )?(?<!remote )shield booster'
+xlasb:
+  - 'xlasb'
+  - 'x-large ancillary (.+ )?(?<!remote )shield booster'
+casb:
+  - 'casb'
+  - 'capital ancillary (.+ )?(?<!remote )shield booster'
+sba:
+  - 'sba'
+  - 'shield boost amplifier'
+spr:
+  - 'spr'
+  - 'shield power relay'
+shieldrech:
+  - 'shieldrech'
+  - 'shield recharger'
 
-# Fleet Assistance
-rsebo: Remote Sensor Booster
-reccm: Remote Sensor Booster
-rct: Remote Capacitor Transmitter
-et: Remote Capacitor Transmitter
-rar: Remote Armor Repairer
-rsb: Remote Shield Booster
-rr: Remote
-rtc: Remote Tracking Computer
-tl: Remote Tracking Computer
-cmdb: Command Burst
-cdb: Command Burst
-cp: Command Processor
+# Propulsion modules and upgrades
+ab:  # No "ab" since way too many item names have this letter combination
+  - 'afterburner'
+mwd:
+  - 'mwd'
+  - 'microwarpdrive'
+mjd:
+  - 'mjd'
+  - 'micro jump drive'
+  - 'micro jump field generator'
+  - 'micro jump unit'
+mmjd:
+  - 'mmjd'
+  - 'medium micro jump drive'
+lmjd:
+  - 'lmjd'
+  - 'large micro jump drive'
+mjfg:
+  - 'mjfg'
+  - 'micro jump field generator'
+boosh:
+  - 'boosh'
+  - 'micro jump field generator'
+od:  # No "od" since too many item names have this letter combination
+  - 'overdrive injector'
+odi:  # No "odi" since too many item names have this letter combination
+  - 'overdrive injector'
+istab:
+  - 'istab'
+  - 'inertial stabilizer'
+wcs:
+  - 'wcs'
+  - 'warp core stabilizer'
+wstab:
+  - 'wstab'
+  - 'warp core stabilizer'
+jde:
+  - 'jde'
+  - 'jump drive economizer'
 
-# EWAR
-wd: Warp Disruptor
-ws: Warp Scrambler
-sw: Stasis Webifier
-sg: Stasis Grappler
-hws: Heavy Warp Scrambler
-hwd: Heavy Warp Disruptor
-wdfg: Warp Disruption Field Generator
-infinipoint: Warp Disruption Field Generator
-infiniscram: Warp Disruption Field Generator
-rsd: Remote Sensor Dampener
-td: Tracking Disruptor
-tp: Target Painter
-sd: Remote Sensor Dampener
-gd: Guidance Disruptor
-md: Guidance Disruptor
-point: Warp Disruptor
+# Tackling modules
+point:
+  - 'point'
+  - 'warp disruptor'
+wdfg:
+  - 'wdfg'
+  - 'warp disruption field generator'
+infinipoint:
+  - 'infinipoint'
+  - 'warp disruption field generator'
+infiniscram:
+  - 'infiniscram'
+  - 'warp disruption field generator'
+bubble:
+  - 'bubble'
+  - 'interdiction sphere launcher'
+  - 'warp disrupt probe'
+  - 'warp disruption field generator'
+  - 'warp disruption (.+ )?projector'
+webifier:
+  - 'webifier'
+  - 'grappler'
+  - 'sw-\d00'
+web:
+  - 'web'
+  - 'grappler'
+  - 'sw-\d00'
+sw:
+  - 'sw'
+  - 'stasis webifier'
+  - 'stasis grappler'
 
-# Engineering
-cpr: Capacitor Power Relay
-cpu: Co-Processor
-coproc: Co-Processor
-eccm: Sensor Booster
-jam: ECM
-pdu: Power Diagnostic System
-pds: Power Diagnostic System
-rcu: Reactor Control Unit
-sebo: Sensor Booster
-spr: Shield Power Relay
-cb: Capacitor Booster
-cbat: Cap Battery
-cbst: Capacitor Booster
-sa: Signal Amplifier
-sigamp: Signal Amplifier
-mapc: Micro Auxiliary Power Core
-nsa: Networked Sensor Array
+# Neutralization
+neut:  # No "neut" to hide items with word like "neutron" in name
+  - 'neutralizer'
+  - 'neutralization'
+  - 'ev-\d00'
+neutralizer:
+  - 'neutralizer'
+  - 'neutralization'
+  - 'ev-\d00'
 
-# Ammo/Charges
-am: Antimatter
-cnam: Caldari Navy Antimatter
-fnam: Federation Navy Antimatter
-inmf: Imperial Navy Multifrequency
-pp: Phased Plasma
-mf: Multifrequency
-lm: Light Missile
-lo: Liquid Ozone
-ham: Heavy Assault Missile
-hm: Heavy Missile
-cm: Cruise Missile
-ncb: Navy Cap Booster
-mw: Microwave
-mc: Mining Crystal
-nrp: Nanite Repair Paste
-np: Nanite Repair Paste
-wdp: Warp Disrupt Probe
-sp: Scanner Probe
-bubble: Warp Disrupt Probe
-ars: Armor Resistance Script
+# ECM
+ecm:
+  - 'ecm'
+  - 'jammer'
+  - 'ec-\d00'
+jam:
+  - 'jam'
+  - 'ecm'
+  - 'ec-\d00'
+jamm:
+  - 'jamm'
+  - 'ecm'
+  - 'ec-\d00'
+jammer:
+  - 'jammer'
+  - 'ecm'
+  - 'ec-\d00'
+amarr:
+  - 'amarr'
+  - 'radar'
+caldari:
+  - 'caldari'
+  - 'gravimetric'
+gallente:
+  - 'gallente'
+  - 'magnetometric'
+minmatar:
+  - 'minmatar'
+  - 'ladar'
+yellow:
+  - 'yellow'
+  - 'radar'
+blue:
+  - 'blue'
+  - 'gravimetric'
+green:
+  - 'green'
+  - 'magnetometric'
+red:
+  - 'red'
+  - 'ladar'
+sda:
+  - 'sda'
+  - 'signal distortion amplifier'
+
+# Damps
+dampener:
+  - 'dampener'
+  - 'sd-\d00'
+damp:
+  - 'damp'
+  - 'sd-\d00'
+sd:
+  - 'sd'
+  - 'remote sensor dampener'
+rsd:
+  - 'rsd'
+  - 'remote sensor dampener'
+  - 'sd-\d00'
+
+# Weapon disruption
+td:
+  - 'td'
+  - 'tracking disrupt'
+  - 'weapon disrupt'
+gd:
+  - 'gd'
+  - 'guidance disrupt'
+  - 'weapon disrupt'
+wd:
+  - 'wd'
+  - 'weapon disrupt'
+  - 'tracking disrupt'
+  - 'guidance disrupt'
+  - 'td-\d00'
+
+# Target painting
+tp:  # No "tp" due to too many outpost rigs
+  - 'target painter'
+  - 'target illumination'
+  - 'tp-\d00'
+paint:
+  - 'paint'
+  - 'target illumination'
+painter:
+  - 'painter'
+  - 'target illumination'
+
+# Power and capacitor upgrade modules
+cpr:
+  - 'cpr'
+  - 'capacitor power relay'
+pds:
+  - 'pds'
+  - 'power diagnostic system'
+  - 'point defense battery'
+pdu:
+  - 'pdu'
+  - 'power diagnostic system'
+rcu:
+  - 'rcu'
+  - 'reactor control unit'
+rcs:
+  - 'rcs'
+  - 'reactor control unit'
+
+# Electronics and sensor upgrade modules
+coproc:
+  - 'coproc'
+  - 'co-proc'
+# Related entry in other section: "sb" in "Weapons"
+sebo:
+  - 'sebo'
+  - '(?<!remote )sensor booster'
+rsb:
+  - 'rsb'
+  - 'remote sensor booster'
+rsebo:
+  - 'rsebo'
+  - 'remote sensor booster'
+resebo:
+  - 'resebo'
+  - 'remote sensor booster'
+nsa:
+  - 'nsa'
+  - 'networked sensor array'
+sigamp:
+  - 'sigamp'
+  - 'signal amplifier'
+sa:  # No "sa" since too many item names have this letter combination
+  - 'signal amplifier'
+eccm:
+  - 'eccm'
+  - '(?<!remote )sensor booster'
+  - 'signal amplifier'
+reccm:
+  - 'reccm'
+  - 'remote sensor booster'
 
 # Rigs
-acr: Ancillary Current Router
-ccc: Capacitor Control Circuit
-smc: Semiconductor Memory Cell
-tap: Trimark Armor Pump
-aap: Anti- Pump
-pcu: Processor Overclocking Unit
-asr: Anti- Screen Reinforcer
-cdfe: Core Defense Field Extender
+acr:
+  - 'acr'
+  - 'ancillary current router'
+ccc:
+  - 'ccc'
+  - 'capacitor control circuit'
+smc:
+  - 'smc'
+  - 'semiconductor memory cell'
+cdfe:
+  - 'cdfe'
+  - 'core defense field extender'
 
 # Implants
-lg: Low-grade
-mg: Mid-grade
-hg: High-grade
-slave: amulet
+lg:
+  - 'lg'
+  - 'low-grade'
+mg:
+  - 'mg'
+  - 'mid-grade'
+hg:
+  - 'hg'
+  - 'high-grade'
+slave:
+  - 'slave'
+  - 'amulet'
+
+# Ammo
+# Related entry in other section: "em" in "Damage types"
+# Related entry in other section: "therm" in "Damage types"
+# Related entry in other section: "thermal" in "Damage types"
+# Related entry in other section: "kin" in "Damage types"
+# Related entry in other section: "kinet" in "Damage types"
+# Related entry in other section: "kinetic" in "Damage types"
+# Related entry in other section: "exp" in "Damage types"
+# Related entry in other section: "expl" in "Damage types"
+# Related entry in other section: "explo" in "Damage types"
+# Related entry in other section: "explosive" in "Damage types"
+
+# Deployables
+mju:
+  - 'mju'
+  - 'micro jump unit'
+mmju:
+  - 'mmju'
+  - 'mobile micro jump unit'
+# Related entry in other section: "mjd" in "Propulsion modules and upgrades"
+ess:
+  - 'encounter surveillance system'
+mtu:
+  - 'mtu'
+  - 'mobile tractor unit'

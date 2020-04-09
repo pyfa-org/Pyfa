@@ -34,12 +34,10 @@ class Jargon:
 
     def apply(self, query_words):
         parts = []
-
         for word in query_words:
-            replacement = self.get(word)
-            if replacement:
-                parts.append('({}|{})'.format(word, replacement))
+            replacements = self.get(word)
+            if replacements:
+                parts.append('({})'.format('|'.join(replacements)))
             else:
                 parts.append(word)
-
         return parts
