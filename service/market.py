@@ -153,7 +153,7 @@ class SearchWorkerThread(threading.Thread):
             all_results = set()
             if len(' '.join(requestTokens)) >= config.minItemSearchLength:
                 for filter_ in filters:
-                    filtered_results = eos.db.searchItems(
+                    filtered_results = eos.db.searchItemsRegex(
                         requestTokens, where=filter_,
                         join=(types_Item.group, types_Group.category),
                         eager=("group.category", "metaGroup"))
@@ -846,7 +846,7 @@ class Market:
     def searchShips(self, name):
         """Find ships according to given text pattern"""
         filter_ = types_Category.name.in_(["Ship", "Structure"])
-        results = eos.db.searchItems(name.split(), where=filter_,
+        results = eos.db.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
                                      eager=("group.category", "metaGroup"))
         ships = set()
