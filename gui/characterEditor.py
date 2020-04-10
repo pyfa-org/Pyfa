@@ -833,7 +833,7 @@ class APIView(wx.Panel):
     def fetchSkills(self, evt):
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
-        sChar.apiFetch(char.ID, self.__fetchCallback)
+        sChar.apiFetch(char.ID, APIView.fetchCallback)
 
     def addCharacter(self, event):
         sEsi = Esi.getInstance()
@@ -899,7 +899,8 @@ class APIView(wx.Panel):
         if event is not None:
             event.Skip()
 
-    def __fetchCallback(self, e=None):
+    @staticmethod
+    def fetchCallback(e=None):
         if e:
             pyfalog.warn("Error fetching skill information for character for __fetchCallback")
             exc_type, exc_value, exc_trace = e
