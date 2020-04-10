@@ -663,8 +663,18 @@ zpme:
 
 # Tackling modules
 point:
-  - 'point'
-  - 'warp disruptor'
+  - '(^| )point'  # Checking only beginning of a word to remove unwanted spam like "pinpoint"
+  - '(?<!mobile small )(?<!mobile medium )(?<!mobile large )warp disruptor'
+# Related entry in other section: "wd" in "Weapon disruption"
+ws:
+  - 'ws'
+  - '(?<!heavy )warp scrambler'
+hwd:
+  - 'hwd'
+  - 'heavy warp disruptor'
+hws:
+  - 'hws'
+  - 'heavy warp scrambler'
 wdfg:
   - 'wdfg'
   - 'warp disruption field generator'
@@ -686,6 +696,7 @@ bubble:
   - 'warp disrupt probe'
   - 'warp disruption field generator'
   - 'warp disruption (.+ )?projector'
+  - 'mobile (.+ )?warp disruptor'
 webifier:
   - 'webifier'
   - 'grappler'
@@ -697,6 +708,9 @@ web:
 sw:
   - 'sw'
   - 'stasis webifier'
+  - 'stasis grappler'
+sg:
+  - 'sg'
   - 'stasis grappler'
 
 # Neutralization
@@ -793,6 +807,7 @@ wd:
   - 'tracking disrupt'
   - 'guidance disrupt'
   - 'td-\d00'
+  - '(?<!mobile small )(?<!mobile medium )(?<!mobile large )(?<!heavy )warp disruptor'
 
 # Target painting
 tp:
@@ -989,6 +1004,18 @@ charge:
 stick:
   - 'stick'
   - 'cap booster \d+'
+ncb:
+  - 'ncb'
+  - 'navy cap booster \d+'
+nrp:
+  - 'nrp'
+  - 'nanite repair paste'
+np:
+  - '(^| )np'  # Checking only beginning of a word to remove unwanted results
+  - 'nanite repair paste'
+lo:
+  - '(^| )lo'  # Checking only beginning of a word to remove some unwanted results, still spammy though
+  - 'liquid ozone'
 
 # Deployables
 mju:
@@ -1003,3 +1030,4 @@ ess:
 mtu:
   - 'mtu'
   - 'mobile tractor unit'
+# Related entry in other section: "bubble" in "Tackle modules"
