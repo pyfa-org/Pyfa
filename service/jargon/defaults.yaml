@@ -1,86 +1,108 @@
 # Default jargon definitions
 
 # Generic acronyms
+t1:
+  - 't1'
+  - ' I$'
+t2:
+  - 't2'
+  - '  II$'
+1:
+  - '1'
+  - ' I$'
+2:
+  - '2'
+  - '  II$'
+mk:
+  - 'mk'
+  - 'mark'
 std:
   - 'std'
   - 'standard'
-
-# Sizes
-small:
-  - 'small'
-  - '75mm (.+ )?(rail|gun|cannon)'
-med:
-  - 'med'
-medium:
-  - 'medium'
-large:
-  - 'large'
 xl:
   - 'xl'
+  - 'x-large'
+scan:
+  - 'scan'
+  - 'probe launcher'
+scanner:
+  - 'scanner'
+  - 'probe launcher'
 
 # Damage types
 em:
   - 'em'
+  - 'mjolnir(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'electromagnetic'  # Used in doomsday names
   - 'electron bomb'  # Used in bomb names
 therm:
   - 'therm'
+  - 'inferno(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'plasma smartbomb'  # Used in smartbomb names
   - 'scorch bomb'  # Used in bomb names
 thermal:
   - 'thermal'
+  - 'inferno(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'plasma smartbomb'  # Used in smartbomb names
   - 'scorch bomb'  # Used in bomb names
 kin:
   - 'kin'
+  - 'scourge(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'concussion bomb'  # Used in bomb and smartbomb names
 kinet:
   - 'kinet'
+  - 'scourge(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'concussion bomb'  # Used in bomb and smartbomb names
 kinetic:
   - 'kinetic'
+  - 'scourge(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'concussion bomb'  # Used in bomb and smartbomb names
 exp:
   - 'exp'
+  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 expl:
   - 'expl'
+  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 explo:
   - 'explo'
+  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 explosive:
   - 'explosive'
+  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 
 # Races
 cn:
-  - 'cn'
+  - '(^| )cn'  # Checking only beginning of a word to remove unwanted spam
   - 'caldari navy'
 rf:
-  - 'rf'
+  - '(^| )rf'  # Checking only beginning of a word to remove unwanted spam
   - 'republic fleet'
 in:
-  - 'in'
+  - '(^| )in'  # Checking only beginning of a word to remove unwanted spam
   - 'imperial navy'
 fn:
-  - 'fn'
+  - '(^| )fn'  # Checking only beginning of a word to remove unwanted spam
   - 'federation navy'
 ts:
-  - 'ts'
+  - '(^| )ts'  # Checking only beginning of a word to remove unwanted spam
   - 'true sansha'
+  - 'titanium sabot'
 db:
-  - 'db'
+  - '(^| )db'  # Checking only beginning of a word to remove unwanted spam
   - 'dark blood'
 dg:
-  - 'dg'
+  - '(^| )dg'  # Checking only beginning of a word to remove unwanted spam
   - 'dread guristas'
 ss:
-  - 'ss'
+  - '(^| )ss'  # Checking only beginning of a word to remove unwanted spam
   - 'shadow serpentis'
 
 # Weapons
@@ -113,12 +135,16 @@ rhml:
   - 'rapid heavy missile (launcher|bay)'
 tl:  # No "tl" since it is used in items with "Gatling"
   - '(?<!rapid )(?<!XL )torpedo (launcher|bay)'
+  - 'remote tracking computer'
+  - '(optimal range|tracking speed) script'
 cml:
   - 'cml'
   - '(?<!xl )cruise (missile )?(launcher|bay)'
 rtl:
   - 'rtl'
   - 'rapid torpedo (launcher|bay)'
+  - 'remote tracking computer'
+  - '(optimal range|tracking speed) script'
 xlcml:
   - 'xlcml'
   - 'xl cruise missile (launcher|bay)'
@@ -148,6 +174,7 @@ sb:
   - 'smartbomb'
   - '(?<!remote )shield booster'
   - '(?<!remote )sensor booster'
+  - '(targeting range|scan resolution|eccm) script'
 disco:
   - 'disco'
   - 'smartbomb'
@@ -175,18 +202,55 @@ haw:
 # Related entry in other section: "pds" in "Power and capacitor upgrade modules"
 
 # Weapon upgrades
+gs:  # No "gs" since way too many item names have this letter combination
+  - 'gyrostabilizer'
+magstab:
+  - 'magstab'
+  - 'magnetic field stabilizer'
+mfs:
+  - 'mfs'
+  - 'magnetic field stabilizer'
+hs:
+  - 'hs'
+  - 'heat sink'
+heatsink:
+  - 'heatsink'
+  - 'heat sink'
+radsink:
+  - 'radsink'
+  - 'entropic radiation sink'
+rs:  # No "rs" since way too many item names have this letter combination
+  - 'entropic radiation sink'
 bcs:
   - 'bcs'
   - 'ballistic control system'
 bcu:
   - 'bcu'
   - 'ballistic control system'
+tc:
+  - 'tc'
+  - '(?<!remote )tracking computer'
+  - '(optimal range|tracking speed) script'
+te:  # No "te" since way too many item names have this letter combination
+  - '(?<!omnidirectional )tracking enhancer'
+rtc:
+  - 'rtc'
+  - 'remote tracking computer'
+  - '(optimal range|tracking speed) script'
+# Related entry in other section: "tl" in "Weapons"
+# Related entry in other section: "rtl" in "Weapons"
 mgc:
   - 'mgc'
   - 'missile guidance computer'
+  - 'missile (precision|range) script'
 mge:
   - 'mge'
   - 'missile guidance enhancer'
+siege:
+  - 'siege'
+  - 'bastion module'
+  - 'industrial core'
+  - 'triage module'
 
 # Drone upgrades
 dda:
@@ -212,38 +276,196 @@ odte:
 dtl:
   - 'dtl'
   - 'omnidirectional tracking link'
+  - '(optimal range|tracking speed) script'
 otl:
   - 'otl'
   - 'omnidirectional tracking link'
+  - '(optimal range|tracking speed) script'
 odtl:
   - 'odtl'
   - 'omnidirectional tracking link'
+  - '(optimal range|tracking speed) script'
 dtc:
   - 'dtc'
   - 'omnidirectional tracking link'
+  - '(optimal range|tracking speed) script'
 otc:
   - 'otc'
   - 'omnidirectional tracking link'
+  - '(optimal range|tracking speed) script'
 odtc:
   - 'odtc'
   - 'omnidirectional tracking link'
+  - '(optimal range|tracking speed) script'
 
 # Remote repair mods
 rr:  # There is a shitton of remote rep-related items, we want to hide irrelevant like "Barrage" so we do not have "rr" in here
   - 'remote shield booster'
+  - 'remote (armor|hull) repairer'
+  - 'maintenance bot'
+srr:
+  - 'srr'
+  - 'small (.+ )?remote shield booster'
+  - 'small (.+ )?remote (armor|hull) repairer'
+  - 'light (.+ )? maintenance bot'
+mrr:
+  - 'mrr'
+  - 'medium (.+ )?remote shield booster'
+  - 'medium (.+ )?remote (armor|hull) repairer'
+  - 'heavy mutadaptive (.+ )?remote armor repairer'
+  - 'medium (.+ )?maintenance bot'
+lrr:
+  - 'lrr'
+  - 'large (.+ )?remote shield booster'
+  - 'large (.+ )?remote (armor|hull) repairer'
+  - 'heavy (.+ )?maintenance bot'
+crr:
+  - 'crr'
+  - 'capital (.+ )?remote shield booster'
+  - 'capital (.+ )?remote (armor|hull) repairer'
+rsb:
+  - 'rsb'
+  - 'remote shield booster'
+  - 'shield maintenance bot'
+  - 'remote sensor booster'
+  - '(targeting range|scan resolution|eccm) script'
+srsb:
+  - 'srsb'
+  - 'small (.+ )?remote shield booster'
+  - 'light shield maintenance bot'
+mrsb:
+  - 'mrsb'
+  - 'medium (.+ )?remote shield booster'
+  - 'medium shield maintenance bot'
+lrsb:
+  - 'lrsb'
+  - 'large (.+ )?remote shield booster'
+  - 'heavy shield maintenance bot'
+crsb:
+  - 'crsb'
+  - 'capital (.+ )?remote shield booster'
+rasb:
+  - 'rasb'
+  - 'ancillary remote shield booster'
+srasb:
+  - 'srasb'
+  - 'small ancillary remote shield booster'
+mrasb:
+  - 'mrasb'
+  - 'medium ancillary remote shield booster'
+lrasb:
+  - 'lrasb'
+  - 'large ancillary remote shield booster'
+crasb:
+  - 'crasb'
+  - 'capital ancillary remote shield booster'
+arsb:
+  - 'arsb'
+  - 'ancillary remote shield booster'
+sarsb:
+  - 'sarsb'
+  - 'small ancillary remote shield booster'
+marsb:
+  - 'marsb'
+  - 'medium ancillary remote shield booster'
+larsb:
+  - 'larsb'
+  - 'large ancillary remote shield booster'
+carsb:
+  - 'carsb'
+  - 'capital ancillary remote shield booster'
+rar:
+  - 'rar'
   - 'remote armor repairer'
-  - 'remote hull repairer'
-  - '[shield|armor|hull] maintenance bot'
+srar:
+  - 'srar'
+  - 'small (.+ )?remote armor repairer'
+  - 'light (.+ )?armor maintenance bot'
+mrar:
+  - 'mrar'
+  - 'medium (.+ )?remote armor repairer'
+  - 'heavy mutadaptive (.+ )?remote armor repairer'
+  - 'medium (.+ )?armor maintenance bot'
+lrar:
+  - 'lrar'
+  - 'large (.+ )?remote armor repairer'
+  - 'heavy (.+ )?armor maintenance bot'
+crar:
+  - 'crar'
+  - 'capital (.+ )?remote armor repairer'
+raar:
+  - 'raar'
+  - 'ancillary remote armor repairer'
+sraar:
+  - 'sraar'
+  - 'small ancillary remote armor repairer'
+mraar:
+  - 'mraar'
+  - 'medium ancillary remote armor repairer'
+lraar:
+  - 'lraar'
+  - 'large ancillary remote armor repairer'
+craar:
+  - 'craar'
+  - 'capital ancillary remote armor repairer'
+et:
+  - '(^| )et'  # Checking only beginning of a word to remove unwanted spam
+  - 'remote capacitor transmitter'
+set:
+  - '(^| )set'  # Checking only beginning of a word to remove unwanted spam
+  - 'small (.+ )?remote capacitor transmitter'
+met:
+  - '(^| )met'  # Checking only beginning of a word to remove unwanted spam
+  - 'medium (.+ )?remote capacitor transmitter'
+let:
+  - '(^| )let'  # Checking only beginning of a word to remove unwanted spam
+  - 'large (.+ )?remote capacitor transmitter'
+cet:
+  - 'cet'
+  - 'capital (.+ )?remote capacitor transmitter'
+ret:
+  - '(^| )ret'  # Checking only beginning of a word to remove unwanted spam
+  - 'remote capacitor transmitter'
+sret:
+  - 'sret'
+  - 'small (.+ )?remote capacitor transmitter'
+mret:
+  - 'mret'
+  - 'medium (.+ )?remote capacitor transmitter'
+lret:
+  - 'lret'
+  - 'large (.+ )?remote capacitor transmitter'
+cret:
+  - 'cret'
+  - 'capital (.+ )?remote capacitor transmitter'
+rct:
+  - 'rct'
+  - 'remote capacitor transmitter'
+srct:
+  - 'srct'
+  - 'small (.+ )?remote capacitor transmitter'
+mrct:
+  - 'mrct'
+  - 'medium (.+ )?remote capacitor transmitter'
+lrct:
+  - 'lrct'
+  - 'large (.+ )?remote capacitor transmitter'
+crct:
+  - 'crct'
+  - 'capital (.+ )?remote capacitor transmitter'
+
 
 # Shield modules
 se:  # No "se" due to spam of results containing it
   - 'shield extender'
-sse:  # No "sse" since word "compressed" is often used
+sse:
+  - '(^| )sse'  # Checking only beginning of a word since "compressed" is often used
   - 'small (.+ )?shield extender'
 mse:
   - 'mse'
   - 'medium (.+ )?shield extender'
-lse:  # No "lse" due to spam of results containing "pulse"
+lse:
+  - '(^| )lse'  # Checking only beginning of a word since "pulse" is often used
   - 'large (.+ )?shield extender'
 cse:
   - 'cse'
@@ -295,8 +517,68 @@ shieldrech:
   - 'shieldrech'
   - 'shield recharger'
 
+# Armor modules
+eanm:
+  - 'eanm'
+  - 'energized adaptive nano membrane'
+anp:
+  - 'anp'
+  - 'adaptive nano plating'
+rah:
+  - 'rah'
+  - 'reactive armor hardener'
+ar:  # No "ar" since way too many item names have this letter combination, like "artillery"
+  - '(?<!remote )armor repairer'
+sar:
+  - '(^| )sar'  # Checking only beginning of a word to remove unwanted spam
+  - 'small (.+ )?(?<!remote )armor repairer'
+mar:  # No "mar" to remove few item groups with "market" and "mark"
+  - 'medium (.+ )?(?<!remote )armor repairer'
+lar:
+  - 'lar'
+  - 'large (.+ )?(?<!remote )armor repairer'
+car:
+  - 'car'
+  - 'capital (.+ )?(?<!remote )armor repairer'
+aar:
+  - 'aar'
+  - 'ancillary (.+ )?(?<!remote )armor repairer'
+saar:
+  - 'saar'
+  - 'small ancillary (.+ )?(?<!remote )armor repairer'
+maar:
+  - 'maar'
+  - 'medium ancillary (.+ )?(?<!remote )armor repairer'
+laar:
+  - 'laar'
+  - 'large ancillary (.+ )?(?<!remote )armor repairer'
+caar:
+  - 'caar'
+  - 'capital ancillary (.+ )?(?<!remote )armor repairer'
+
+# Hull modules
+dc:
+  - 'dc'
+  - '(?<!assault )damage control'
+dcu:
+  - 'dcu'
+  - '(?<!assault )damage control'
+adc:
+  - 'adc'
+  - 'assault damage control'
+adcu:
+  - 'adcu'
+  - 'assault damage control'
+ehe:
+  - 'ehe'
+  - 'emergency hull energizer'
+cehe:
+  - 'cehe'
+  - 'capital (.+ )?emergency hull energizer'
+
 # Propulsion modules and upgrades
-ab:  # No "ab" since way too many item names have this letter combination
+ab:
+  - '(^| )ab'  # Checking only beginning of a word to remove unwanted spam
   - 'afterburner'
 mwd:
   - 'mwd'
@@ -318,9 +600,11 @@ mjfg:
 boosh:
   - 'boosh'
   - 'micro jump field generator'
-od:  # No "od" since too many item names have this letter combination
+od:
+  - '(^| )od'  # Checking only beginning of a word to remove unwanted spam
   - 'overdrive injector'
-odi:  # No "odi" since too many item names have this letter combination
+odi:
+  - '(^| )odi'  # Checking only beginning of a word to remove unwanted spam
   - 'overdrive injector'
 istab:
   - 'istab'
@@ -334,6 +618,9 @@ wstab:
 jde:
   - 'jde'
   - 'jump drive economizer'
+zpme:
+  - 'zpme'
+  - 'zero-point mass entangler'
 
 # Tackling modules
 point:
@@ -342,12 +629,18 @@ point:
 wdfg:
   - 'wdfg'
   - 'warp disruption field generator'
+  - '^focused warp disruption script'
+  - '^focused warp scrambling script'
 infinipoint:
   - 'infinipoint'
   - 'warp disruption field generator'
+  - '^focused warp disruption script'
+  - '^focused warp scrambling script'
 infiniscram:
   - 'infiniscram'
   - 'warp disruption field generator'
+  - '^focused warp disruption script'
+  - '^focused warp scrambling script'
 bubble:
   - 'bubble'
   - 'interdiction sphere launcher'
@@ -372,6 +665,7 @@ neut:  # No "neut" to hide items with word like "neutron" in name
   - 'neutralizer'
   - 'neutralization'
   - 'ev-\d00'
+  - 'void bomb'
 neutralizer:
   - 'neutralizer'
   - 'neutralization'
@@ -382,14 +676,17 @@ ecm:
   - 'ecm'
   - 'jammer'
   - 'ec-\d00'
+  - 'lockbreaker bomb'
 jam:
   - 'jam'
   - 'ecm'
   - 'ec-\d00'
+  - 'lockbreaker bomb'
 jamm:
   - 'jamm'
   - 'ecm'
   - 'ec-\d00'
+  - 'lockbreaker bomb'
 jammer:
   - 'jammer'
   - 'ecm'
@@ -426,26 +723,31 @@ sda:
 dampener:
   - 'dampener'
   - 'sd-\d00'
+  - '(targeting range|scan resolution) dampening script'
 damp:
   - 'damp'
   - 'sd-\d00'
 sd:
-  - 'sd'
+  - '(^| )sd'  # Checking only beginning of a word to remove unwanted spam
   - 'remote sensor dampener'
+  - '(targeting range|scan resolution) dampening script'
 rsd:
   - 'rsd'
   - 'remote sensor dampener'
   - 'sd-\d00'
+  - '(targeting range|scan resolution) dampening script'
 
 # Weapon disruption
 td:
   - 'td'
   - 'tracking disrupt'
   - 'weapon disrupt'
+  - '(optimal range|tracking speed) disruption script'
 gd:
   - 'gd'
   - 'guidance disrupt'
   - 'weapon disrupt'
+  - 'missile (precision|range) disruption script'
 wd:
   - 'wd'
   - 'weapon disrupt'
@@ -454,7 +756,8 @@ wd:
   - 'td-\d00'
 
 # Target painting
-tp:  # No "tp" due to too many outpost rigs
+tp:
+  - '(^| )tp'  # Checking only beginning of a word to remove unwanted outpost rigs
   - 'target painter'
   - 'target illumination'
   - 'tp-\d00'
@@ -469,6 +772,12 @@ painter:
 cpr:
   - 'cpr'
   - 'capacitor power relay'
+caprelay:
+  - 'caprelay'
+  - 'capacitor power relay'
+caprech:
+  - 'caprech'
+  - 'cap recharger'
 pds:
   - 'pds'
   - 'power diagnostic system'
@@ -479,9 +788,22 @@ pdu:
 rcu:
   - 'rcu'
   - 'reactor control unit'
+  - 'reactor control unit'
 rcs:
   - 'rcs'
   - 'reactor control unit'
+mapc:
+  - 'mapc'
+  - 'micro auxiliary power core'
+cb:
+  - 'cb'
+  - 'capacitor booster'
+inj:
+  - 'inj'
+  - 'capacitor booster'
+injector:
+  - 'injector'
+  - 'capacitor booster'
 
 # Electronics and sensor upgrade modules
 coproc:
@@ -491,22 +813,23 @@ coproc:
 sebo:
   - 'sebo'
   - '(?<!remote )sensor booster'
-rsb:
-  - 'rsb'
-  - 'remote sensor booster'
+  - '(targeting range|scan resolution|eccm) script'
+# Related entry in other section: "rsb" in "Remote repair mods"
 rsebo:
   - 'rsebo'
   - 'remote sensor booster'
+  - '(targeting range|scan resolution|eccm) script'
 resebo:
   - 'resebo'
   - 'remote sensor booster'
+  - '(targeting range|scan resolution|eccm) script'
 nsa:
   - 'nsa'
   - 'networked sensor array'
 sigamp:
   - 'sigamp'
   - 'signal amplifier'
-sa:  # No "sa" since too many item names have this letter combination
+sa:  # No "sa" since too many item names have this letter combination, like "sabot"
   - 'signal amplifier'
 eccm:
   - 'eccm'
@@ -515,6 +838,7 @@ eccm:
 reccm:
   - 'reccm'
   - 'remote sensor booster'
+  - 'eccm script'
 
 # Rigs
 acr:
@@ -545,6 +869,57 @@ slave:
   - 'amulet'
 
 # Ammo
+lm:
+  - '(^| )lm'  # Checking only beginning of a word to remove unwanted spam
+  - 'light missile(?! (launcher|bay))'
+hm:
+  - '(^| )hm'  # Checking only beginning of a word to remove a few unwanted results
+  - 'heavy missile(?! (launcher|bay))'
+ham:
+  - '(^| )ham'  # Checking only beginning of a word to remove a few unwanted results
+  - 'heavy assault missile(?! (launcher|bay))'
+cm:
+  - '(^| )cm'  # Checking only beginning of a word to remove unwanted spam such as "ECM"
+  - 'cruise missile(?! (launcher|bay))'
+xlcm:
+  - 'xlcm'
+  - 'xl cruise missile(?! (launcher|bay))'
+fof:
+  - 'fof'
+  - 'auto-targeting (.+ )?missile'
+gbomb:
+  - 'gbomb'
+  - 'guided bomb'
+ir:
+  - '(^| )ir'  # Checking only beginning of a word to remove a few unwanted results
+  - 'infrared'
+mw:
+  - 'mw'
+  - 'microwave'
+uw:
+  - 'uw'
+  - 'microwave'
+uv:
+  - '(^| )uv'  # Checking only beginning of a word to remove a few unwanted results
+  - 'ultraviolet'
+x\-ray:
+  - 'x-ray'
+  - 'xray'
+mf:
+  - 'mf'
+  - 'multifrequency'
+am:
+  - '(^| )am'  # Checking only beginning of a word to remove spam of unwanted results
+  - 'antimatter'
+cl:
+  - '(^| )cl'  # Checking only beginning of a word to remove spam of unwanted results
+  - 'carbonized lead'
+du:
+  - '(^| )du'  # Checking only beginning of a word to remove spam of unwanted results
+  - 'depleted uranium'
+pp:
+  - '(^| )pp'  # Checking only beginning of a word to remove spam of unwanted results
+  - 'phased plasma'
 # Related entry in other section: "em" in "Damage types"
 # Related entry in other section: "therm" in "Damage types"
 # Related entry in other section: "thermal" in "Damage types"
@@ -555,6 +930,22 @@ slave:
 # Related entry in other section: "expl" in "Damage types"
 # Related entry in other section: "explo" in "Damage types"
 # Related entry in other section: "explosive" in "Damage types"
+# Related entry in other section: "neut" in "Neutralization"
+# Related entry in other section: "ecm" in "ECM"
+# Related entry in other section: "jam" in "ECM"
+# Related entry in other section: "jamm" in "ECM"
+fvb:
+  - 'fvb'
+  - 'focused void bomb'
+flex:
+  - 'flex'
+  - 'resistance script'
+charge:
+  - 'charge'
+  - 'cap booster \d+'
+stick:
+  - 'stick'
+  - 'cap booster \d+'
 
 # Deployables
 mju:
