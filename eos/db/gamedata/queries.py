@@ -64,7 +64,7 @@ else:
         return deco
 
 
-def sqlizeString(line):
+def sqlizeNormalString(line):
     # Escape backslashes first, as they will be as escape symbol in queries
     # Then escape percent and underscore signs
     # Finally, replace generic wildcards with sql-style wildcards
@@ -316,7 +316,7 @@ def searchItems(nameLike, where=None, join=None, eager=None):
 
     items = gamedata_session.query(Item).options(*processEager(eager)).join(*join)
     for token in nameLike.split(' '):
-        token_safe = "%{0}%".format(sqlizeString(token))
+        token_safe = "%{0}%".format(sqlizeNormalString(token))
         if where is not None:
             items = items.filter(and_(Item.name.like(token_safe, escape="\\"), where))
         else:
@@ -353,7 +353,7 @@ def searchSkills(nameLike, where=None, eager=None):
 
     items = gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category)
     for token in nameLike.split(' '):
-        token_safe = "%{0}%".format(sqlizeString(token))
+        token_safe = "%{0}%".format(sqlizeNormalString(token))
         if where is not None:
             items = items.filter(and_(Item.name.like(token_safe, escape="\\"), Category.ID == 16, where))
         else:

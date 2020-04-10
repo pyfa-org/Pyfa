@@ -144,7 +144,7 @@ class SearchWorkerThread(threading.Thread):
             else:
                 filters = [None]
 
-            if request.strip().startswith('re:'):
+            if request.strip().lower().startswith('re:'):
                 requestTokens = self._prepareRequestRegex(request[3:])
             else:
                 requestTokens = self._prepareRequestNormal(request)
@@ -205,6 +205,7 @@ class SearchWorkerThread(threading.Thread):
                 if thisEscaped:
                     currentToken += char
                 elif char == '\\':
+                    currentToken += char
                     nextEscaped = True
                 elif char == '[':
                     currentToken += char
