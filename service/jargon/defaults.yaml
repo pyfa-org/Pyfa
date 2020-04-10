@@ -19,15 +19,45 @@ mk:
 std:
   - 'std'
   - 'standard'
-xl:
-  - 'xl'
-  - 'x-large'
 scan:
   - 'scan'
   - 'probe launcher'
 scanner:
   - 'scanner'
   - 'probe launcher'
+
+# Sizes
+sml:
+  - 'sml'
+  - 'small'
+hvy:
+  - 'hvy'
+  - 'heavy'
+lrg:
+  - 'lrg'
+  - 'large'
+xl:
+  - 'xl'
+  - 'x-large'
+
+# British vs american language fixes
+armour:
+  - 'armour'
+  - 'armor'
+neutraliser:  # Copied entry from "Neutralization" section
+  - 'neutraliser'
+  - 'neutralizer'
+  - 'neutralization'
+  - 'ev-\d00'
+stabiliser:
+  - 'stabiliser'
+  - 'stabilizer'
+energised:
+  - 'energised'
+  - 'energized'
+economiser:
+  - 'economiser'
+  - 'economizer'
 
 # Damage types
 em:
@@ -210,6 +240,9 @@ magstab:
 mfs:
   - 'mfs'
   - 'magnetic field stabilizer'
+ms:
+  - '(^| )ms'  # Checking only beginning of a word to remove unwanted spam
+  - 'magnetic field stabilizer'
 hs:
   - 'hs'
   - 'heat sink'
@@ -297,6 +330,9 @@ odtc:
   - 'odtc'
   - 'omnidirectional tracking link'
   - '(optimal range|tracking speed) script'
+mlu:
+  - 'mlu'
+  - '(mining laser|harvester) upgrade'
 
 # Remote repair mods
 rr:  # There is a shitton of remote rep-related items, we want to hide irrelevant like "Barrage" so we do not have "rr" in here
@@ -520,6 +556,9 @@ shieldrech:
 # Armor modules
 eanm:
   - 'eanm'
+  - 'energized adaptive nano membrane'
+enam:  # mistype of "eanm"
+  - 'enam'
   - 'energized adaptive nano membrane'
 anp:
   - 'anp'
@@ -798,6 +837,7 @@ mapc:
 cb:
   - 'cb'
   - 'capacitor booster'
+  - 'command burst'
 inj:
   - 'inj'
   - 'capacitor booster'
@@ -853,6 +893,9 @@ smc:
 cdfe:
   - 'cdfe'
   - 'core defense field extender'
+cp:
+  - 'cp'
+  - 'command processor'
 
 # Implants
 lg:
