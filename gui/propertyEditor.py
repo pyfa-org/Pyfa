@@ -13,6 +13,7 @@ from eos.db.gamedata.queries import getAttributeInfo, getItem
 from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
+from service.fit import Fit
 from service.market import Market
 
 
@@ -170,12 +171,15 @@ class ItemView(d.Display):
         d.Display.__init__(self, parent)
         self.activeItems = []
 
+        self.searchTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.scheduleSearch, self.searchTimer)
+
         self.searchBox = parent.Parent.Parent.searchBox
         # Bind search actions
         self.searchBox.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
         self.searchBox.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
         self.searchBox.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
-        self.searchBox.Bind(SBox.EVT_TEXT, self.scheduleSearch)
+        self.searchBox.Bind(SBox.EVT_TEXT, self.delaySearch)
 
         self.update(Market.getInstance().getItemsWithOverrides())
 
@@ -187,6 +191,11 @@ class ItemView(d.Display):
     def updateItems(self, updateDisplay=False):
         if updateDisplay:
             self.update(Market.getInstance().getItemsWithOverrides())
+
+    def delaySearch(self, evt):
+        sFit = Fit.getInstance()
+        self.searchTimer.Stop()
+        self.searchTimer.Start(sFit.serviceFittingOptions["marketSearchDelay"], True)
 
     def scheduleSearch(self, event=None):
         sMkt = Market.getInstance()

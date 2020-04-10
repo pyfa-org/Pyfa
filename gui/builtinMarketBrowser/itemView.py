@@ -1,15 +1,15 @@
 import wx
 from logbook import Logger
 
-from eos.saveddata.module import Module
 import gui.builtinMarketBrowser.pfSearchBox as SBox
+from config import slotColourMap
+from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
-from service.attribute import Attribute
 from service.fit import Fit
-from config import slotColourMap
+
 
 pyfalog = Logger(__name__)
 
