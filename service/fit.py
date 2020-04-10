@@ -342,7 +342,10 @@ class Fit:
         inited = getattr(fit, "inited", None)
 
         if inited is None or inited is False:
-            if not projected:
+            if projected:
+                if not fit.calculated:
+                    self.recalc(fit)
+            else:
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected=True)
                 self.recalc(fit)
