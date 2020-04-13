@@ -5,11 +5,14 @@ import requests
 import wx
 from logbook import Logger
 
+import config
 import gui.globalEvents as GE
 from eos.db import getItem
 from eos.saveddata.cargo import Cargo
 from gui.auxFrame import AuxiliaryFrame
 from gui.display import Display
+from gui.characterEditor import APIView
+from service.character import Character
 from service.esi import Esi
 from service.esiAccess import APIException
 from service.fit import Fit
@@ -338,10 +341,14 @@ class SsoCharacterMgmt(AuxiliaryFrame):
         self.deleteBtn = wx.Button(self, wx.ID_ANY, "Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.fetchSkillsBtn = wx.Button(self, wx.ID_ANY, "Fetch Skills", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.fetchSkillsBtn, 0, wx.ALL | wx.EXPAND, 5)
+
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
 
         self.addBtn.Bind(wx.EVT_BUTTON, self.addChar)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.delChar)
+        self.fetchSkillsBtn.Bind(wx.EVT_BUTTON, self.fetchSkills)
 
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
@@ -355,6 +362,14 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
     def ssoLogin(self, event):
         self.popCharList()
+
+        characterID = event.character.ID
+
+        sChar = Character.getInstance()
+        char = sChar.new(event.character.characterName)
+        char.setSsoCharacter(event.character, config.getClientSecret())
+        sChar.apiFetch(char.ID, APIView.fetchCallback)
+
         event.Skip()
 
     def kbEvent(self, event):
@@ -380,6 +395,18 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
+
+    def fetchSkills(self, event):
+        sEsi = Esi.getInstance()
+        chars = sEsi.getSsoCharacters()
+
+        for ssoChar in chars:
+            if not ssoChar.characters:
+                char = Character.new(ssoChar.characterName)
+                char.setSsoCharacter(ssoChar, config.getClientSecret())
+            for char in ssoChar.characters:
+                sChar = Character.getInstance()
+                sChar.apiFetch(char.ID, APIView.fetchCallback)
 
     def addChar(self, event):
         try:
