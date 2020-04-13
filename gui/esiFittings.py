@@ -362,14 +362,13 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
     def ssoLogin(self, event):
         self.popCharList()
-
-        characterID = event.character.ID
-
         sChar = Character.getInstance()
-        char = sChar.new(event.character.characterName)
+        # Update existing pyfa character, if it doesn't exist - create new
+        char = sChar.getCharacter(event.character.characterName)
+        if char is None:
+            char = sChar.new(event.character.characterName)
         char.setSsoCharacter(event.character, config.getClientSecret())
         sChar.apiFetch(char.ID, APIView.fetchCallback)
-
         event.Skip()
 
     def kbEvent(self, event):

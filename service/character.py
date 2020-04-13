@@ -242,8 +242,8 @@ class Character:
         return eos.db.getCharacterList()
 
     @staticmethod
-    def getCharacter(charID):
-        char = eos.db.getCharacter(charID)
+    def getCharacter(identity):
+        char = eos.db.getCharacter(identity)
         return char
 
     def saveCharacter(self, charID):
