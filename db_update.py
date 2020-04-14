@@ -472,7 +472,7 @@ def update_db():
                 continue
             typeName = row.get('typeName', '')
             # Regular sets matching
-            m = re.match('(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName)
+            m = re.match('(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName, re.IGNORECASE)
             if m:
                 implantSets.setdefault((m.group('grade'), m.group('set')), set()).add(row['typeID'])
             # Special set matching
