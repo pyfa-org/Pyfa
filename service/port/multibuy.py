@@ -24,7 +24,8 @@ from service.price import Price as sPrc
 
 MULTIBUY_OPTIONS = (
     (PortMultiBuyOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortMultiBuyOptions.IMPLANTS, 'Implants && Boosters', 'Export implants and boosters', False),
+    (PortMultiBuyOptions.IMPLANTS, 'Implants', 'Export implants', False),
+    (PortMultiBuyOptions.BOOSTERS, 'Boosters', 'Export boosters', False),
     (PortMultiBuyOptions.CARGO, 'Cargo', 'Export cargo contents', True),
     (PortMultiBuyOptions.OPTIMIZE_PRICES, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
 )
@@ -56,6 +57,7 @@ def exportMultiBuy(fit, options, callback):
         for implant in fit.implants:
             _addItem(itemAmounts, implant.item)
 
+    if options[PortMultiBuyOptions.BOOSTERS]:
         for booster in fit.boosters:
             _addItem(itemAmounts, booster.item)
 

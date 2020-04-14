@@ -47,7 +47,8 @@ pyfalog = Logger(__name__)
 EFT_OPTIONS = (
     (PortEftOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
     (PortEftOptions.MUTATIONS, 'Mutated Attributes', 'Export mutated modules\' stats', True),
-    (PortEftOptions.IMPLANTS, 'Implants && Boosters', 'Export implants and boosters', True),
+    (PortEftOptions.IMPLANTS, 'Implants', 'Export implants', True),
+    (PortEftOptions.BOOSTERS, 'Boosters', 'Export boosters', True),
     (PortEftOptions.CARGO, 'Cargo', 'Export cargo hold contents', True))
 
 
@@ -115,16 +116,17 @@ def exportEft(fit, options, callback):
         sections.append('\n\n'.join(minionSection))
 
     # Section 3: implants, boosters
+    charSection = []
     if options[PortEftOptions.IMPLANTS]:
-        charSection = []
         implantExport = exportImplants(fit.implants)
         if implantExport:
             charSection.append(implantExport)
+    if options[PortEftOptions.BOOSTERS]:
         boosterExport = exportBoosters(fit.boosters)
         if boosterExport:
             charSection.append(boosterExport)
-        if charSection:
-            sections.append('\n\n'.join(charSection))
+    if charSection:
+        sections.append('\n\n'.join(charSection))
 
     # Section 4: cargo
     if options[PortEftOptions.CARGO]:
