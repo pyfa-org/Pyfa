@@ -36395,3 +36395,21 @@ class Effect8026(BaseEffect):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
             'aoeVelocity', implant.getModifiedItemAttr('hydraMissileExplosionVelocityBonus'), **kwargs)
+
+
+class Effect8029(BaseEffect):
+    """
+    roleBonus7CapBoosterGroupRestriction
+
+    Used by:
+    Ships from group: Force Auxiliary (6 of 6)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in ('maxGroupOnline', 'maxGroupFitted'):
+            fit.modules.filteredItemForce(
+                lambda mod: mod.item.group.name == 'Capacitor Booster',
+                attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
