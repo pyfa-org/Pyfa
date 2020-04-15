@@ -9311,6 +9311,9 @@
           {
             "number": "200%", 
             "text": "bonus to Command Burst area of effect range"
+          }, 
+          {
+            "text": "·Can only online one Capacitor Booster module"
           }
         ], 
         "header": "Role Bonus:"
@@ -9362,6 +9365,9 @@
           {
             "number": "5x", 
             "text": "penalty to Entosis Link duration"
+          }, 
+          {
+            "text": "·Can only online one Capacitor Booster module"
           }
         ], 
         "header": "Role Bonus:"
@@ -9413,6 +9419,9 @@
           {
             "number": "5x", 
             "text": "penalty to Entosis Link duration"
+          }, 
+          {
+            "text": "·Can only online one Capacitor Booster module"
           }
         ], 
         "header": "Role Bonus:"
@@ -9460,6 +9469,9 @@
           {
             "number": "200%", 
             "text": "bonus to Logistics Drone transfer amount"
+          }, 
+          {
+            "text": "·Can only online one Capacitor Booster module"
           }, 
           {
             "number": "5x", 
@@ -13582,6 +13594,9 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
+            "text": "·Can only online one Capacitor Booster module"
+          }, 
+          {
             "number": "5x", 
             "text": "penalty to Entosis Link cycle time"
           }
@@ -14033,6 +14048,9 @@
           {
             "number": "5x", 
             "text": "penalty to Entosis Link duration"
+          }, 
+          {
+            "text": "·Can only online one Capacitor Booster module"
           }
         ], 
         "header": "Role Bonus:"

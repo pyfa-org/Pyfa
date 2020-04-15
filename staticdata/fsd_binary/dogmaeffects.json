@@ -78272,5 +78272,36 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "8029": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8029, 
+    "effectName": "roleBonus7CapBoosterGroupRestriction", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 76, 
+        "modifiedAttributeID": 1544, 
+        "modifyingAttributeID": 793, 
+        "operation": 7
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 76, 
+        "modifiedAttributeID": 978, 
+        "modifyingAttributeID": 793, 
+        "operation": 7
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }
