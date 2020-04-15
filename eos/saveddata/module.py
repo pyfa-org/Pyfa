@@ -696,7 +696,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # Check this only if we're told to do so
         if hardpointLimit:
-            if fit.getHardpointsFree(self.hardpoint) < 1:
+            if fit.getHardpointsFree(self.hardpoint) < (1 if self.owner != fit else 0):
                 return False
 
         return True
