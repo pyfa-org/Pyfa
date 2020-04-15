@@ -39,7 +39,17 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         if newMod.slot != oldMod.slot:
             return False
         # Dummy it out in case the next bit fails
-        fit.modules.free(self.position)
+        fit.modules.replace(self.position, newMod)
+        if newMod not in fit.modules:
+            pyfalog.warning('Failed to replace in list')
+            self.Undo()
+            return False
+        if self.recalc:
+            # Need to flush because checkStates sometimes relies on module->fit
+            # relationship via .owner attribute, which is handled by SQLAlchemy
+            eos.db.flush()
+            sFit.recalc(fit)
+            self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if not self.ignoreRestrictions and not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             self.Undo()
@@ -52,17 +62,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
                 pyfalog.warning('Invalid charge')
                 self.Undo()
                 return False
-        fit.modules.replace(self.position, newMod)
-        if newMod not in fit.modules:
-            pyfalog.warning('Failed to replace in list')
-            self.Undo()
-            return False
-        if self.recalc:
-            # Need to flush because checkStates sometimes relies on module->fit
-            # relationship via .owner attribute, which is handled by SQLAlchemy
-            eos.db.flush()
-            sFit.recalc(fit)
-            self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         return True
 
     def Undo(self):

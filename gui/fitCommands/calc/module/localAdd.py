@@ -54,9 +54,7 @@ class CalcAddLocalModuleCommand(wx.Command):
         # module if the check has failed
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
-            from .localRemove import CalcRemoveLocalModulesCommand
-            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], recalc=False)
-            cmd.Do()
+            self.Undo()
             return False
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         return True
