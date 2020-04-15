@@ -3,7 +3,7 @@ Conversion pack for April 2020 release
 """
 
 CONVERSIONS = {
-    # Renamed items, extracted via diff file (TODO: redo when patch hits, add converted items)
+    # Renamed items, extracted via diff file
     "Adaptive Invulnerability Field I": "Adaptive Invulnerability Shield Hardener I",
     "Gistum C-Type Adaptive Invulnerability Field": "Gistum C-Type Adaptive Invulnerability Shield Hardener",
     "Adaptive Invulnerability Field II": "Adaptive Invulnerability Shield Hardener II",
