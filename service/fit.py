@@ -342,10 +342,7 @@ class Fit:
         inited = getattr(fit, "inited", None)
 
         if inited is None or inited is False:
-            if projected:
-                if not fit.calculated:
-                    self.recalc(fit)
-            else:
+            if not projected:
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected=True)
                 self.recalc(fit)
@@ -357,8 +354,8 @@ class Fit:
                         if not mod.isEmpty:
                             mod.fits(fit)
 
-            # Check that the states of all modules are valid
-            self.checkStates(fit, None)
+                # Check that the states of all modules are valid
+                self.checkStates(fit, None)
 
             eos.db.commit()
             fit.inited = True
