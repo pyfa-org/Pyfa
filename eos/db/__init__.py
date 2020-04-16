@@ -21,7 +21,7 @@ import re
 import threading
 
 from sqlalchemy import MetaData, create_engine, event
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 from . import migration
 from eos import config
@@ -63,7 +63,15 @@ def create_functions(dbapi_connection, connection_record):
 
 gamedata_meta = MetaData()
 gamedata_meta.bind = gamedata_engine
-gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False)()
+GamedataSession = scoped_session(sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False))
+gamedata_session = GamedataSession()
+
+gamedata_sessions = {}
+def get_gamedata_session():
+    thread_id = threading.get_ident()
+    if thread_id not in gamedata_sessions:
+        gamedata_sessions[thread_id] = GamedataSession()
+    return gamedata_sessions[thread_id]
 
 pyfalog.debug('Getting gamedata version')
 # This should be moved elsewhere, maybe as an actual query. Current, without try-except, it breaks when making a new
