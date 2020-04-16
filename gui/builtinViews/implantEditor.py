@@ -311,12 +311,12 @@ class ItemView(d.Display):
 
         sMkt.searchItems(search, self.populateSearch, 'implants')
 
-    def populateSearch(self, items):
+    def populateSearch(self, itemIDs):
         if not self.IsShown():
             self.parent.availableImplantsTree.Hide()
             self.Show()
             self.parent.Layout()
-
+        items = Market.getItems(itemIDs)
         items = [i for i in items if i.group.name != 'Booster']
         self.items = sorted(list(items), key=lambda i: i.name)
 

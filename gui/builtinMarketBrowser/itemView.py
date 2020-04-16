@@ -9,6 +9,7 @@ from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
+from service.market import Market
 
 
 pyfalog = Logger(__name__)
@@ -193,10 +194,11 @@ class ItemView(Display):
             self.setToggles()
             self.filterItemStore()
 
-    def populateSearch(self, items):
+    def populateSearch(self, itemIDs):
         # If we're no longer searching, dump the results
         if self.marketBrowser.mode != 'search':
             return
+        items = Market.getItems(itemIDs)
         self.updateItemStore(items)
         self.setToggles()
         self.filterItemStore()

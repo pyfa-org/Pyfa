@@ -227,7 +227,8 @@ class ItemView(d.Display):
 
         return not isFittable, catname, mktgrpid, parentname, metatab, metalvl, item.name
 
-    def populateSearch(self, items):
+    def populateSearch(self, itemIDs):
+        items = Market.getItems(itemIDs)
         self.update(items)
 
     def populate(self, items):

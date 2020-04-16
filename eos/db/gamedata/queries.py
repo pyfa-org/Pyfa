@@ -98,6 +98,16 @@ def getItem(lookfor, eager=None):
         raise TypeError("Need integer or string as argument")
     return item
 
+@cachedQuery(1, "itemIDs")
+def getItems(itemIDs, eager=None):
+    if not isinstance(itemIDs, (tuple, list, set)) or not all(isinstance(t, int) for t in itemIDs):
+        raise TypeError("Need iterable of integers as argument")
+    if eager is None:
+        items = get_gamedata_session().query(Item).filter(Item.ID.in_(itemIDs)).all()
+    else:
+        items = get_gamedata_session().query(Item).options(*processEager(eager)).filter(Item.ID.in_(itemIDs)).all()
+    return items
+
 
 def getMutaplasmid(lookfor, eager=None):
     if isinstance(lookfor, int):

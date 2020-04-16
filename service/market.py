@@ -159,12 +159,12 @@ class SearchWorkerThread(threading.Thread):
                         eager=("group.category", "metaGroup"))
                     all_results.update(filtered_results)
 
-            items = set()
+            item_IDs = set()
             # Return only published items, consult with Market service this time
             for item in all_results:
                 if sMkt.getPublicityByItem(item):
-                    items.add(item)
-            wx.CallAfter(callback, list(items))
+                    item_IDs.add(item.ID)
+            wx.CallAfter(callback, sorted(item_IDs))
 
     def scheduleSearch(self, text, callback, filterName=None):
         self.cv.acquire()
@@ -487,6 +487,11 @@ class Market:
             raise
 
         return item
+
+    @staticmethod
+    def getItems(itemIDs, eager=None):
+        items = eos.db.getItems(itemIDs, eager=eager)
+        return items
 
     def getGroup(self, identity, *args, **kwargs):
         """Get group by its ID or name"""
