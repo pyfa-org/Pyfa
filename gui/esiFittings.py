@@ -361,10 +361,13 @@ class SsoCharacterMgmt(AuxiliaryFrame):
         sChar = Character.getInstance()
         # Update existing pyfa character, if it doesn't exist - create new
         char = sChar.getCharacter(event.character.characterName)
+        newChar = False
         if char is None:
             char = sChar.new(event.character.characterName)
+            newChar = True
         char.setSsoCharacter(event.character, config.getClientSecret())
         sChar.apiFetch(char.ID, APIView.fetchCallback)
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         event.Skip()
 
     def kbEvent(self, event):
