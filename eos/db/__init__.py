@@ -66,12 +66,15 @@ gamedata_meta.bind = gamedata_engine
 GamedataSession = scoped_session(sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False))
 gamedata_session = GamedataSession()
 
-gamedata_sessions = {}
+gamedata_sessions = {threading.get_ident(): gamedata_session}
+
+
 def get_gamedata_session():
     thread_id = threading.get_ident()
     if thread_id not in gamedata_sessions:
         gamedata_sessions[thread_id] = GamedataSession()
     return gamedata_sessions[thread_id]
+
 
 pyfalog.debug('Getting gamedata version')
 # This should be moved elsewhere, maybe as an actual query. Current, without try-except, it breaks when making a new
