@@ -338,17 +338,13 @@ class SsoCharacterMgmt(AuxiliaryFrame):
         self.addBtn = wx.Button(self, wx.ID_ANY, "Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.addBtn, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Remove Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5)
-
-        self.fetchSkillsBtn = wx.Button(self, wx.ID_ANY, "Fetch Skills", wx.DefaultPosition, wx.DefaultSize, 0)
-        btnSizer.Add(self.fetchSkillsBtn, 0, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
 
         self.addBtn.Bind(wx.EVT_BUTTON, self.addChar)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.delChar)
-        self.fetchSkillsBtn.Bind(wx.EVT_BUTTON, self.fetchSkills)
 
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
@@ -394,18 +390,6 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
-
-    def fetchSkills(self, event):
-        sEsi = Esi.getInstance()
-        chars = sEsi.getSsoCharacters()
-
-        for ssoChar in chars:
-            if not ssoChar.characters:
-                char = Character.new(ssoChar.characterName)
-                char.setSsoCharacter(ssoChar, config.getClientSecret())
-            for char in ssoChar.characters:
-                sChar = Character.getInstance()
-                sChar.apiFetch(char.ID, APIView.fetchCallback)
 
     def addChar(self, event):
         try:
