@@ -163,7 +163,8 @@ hml:
 rhml:
   - 'rhml'
   - 'rapid heavy missile (launcher|bay)'
-tl:  # No "tl" since it is used in items with "Gatling"
+tl:
+  - '(^| )tl'  # Checking only beginning of a word to remove unwanted spam
   - '(?<!rapid )(?<!XL )torpedo (launcher|bay)'
   - 'remote tracking computer'
   - '(optimal range|tracking speed) script'
@@ -232,7 +233,8 @@ haw:
 # Related entry in other section: "pds" in "Power and capacitor upgrade modules"
 
 # Weapon upgrades
-gs:  # No "gs" since way too many item names have this letter combination
+gs:
+  - '(^| )gs'  # Checking only beginning of a word to remove unwanted spam
   - 'gyrostabilizer'
 magstab:
   - 'magstab'
@@ -252,7 +254,8 @@ heatsink:
 radsink:
   - 'radsink'
   - 'entropic radiation sink'
-rs:  # No "rs" since way too many item names have this letter combination
+rs:
+  - '(^| )rs'  # Checking only beginning of a word to remove unwanted spam
   - 'entropic radiation sink'
 bcs:
   - 'bcs'
@@ -301,7 +304,8 @@ fsu:
 dte:
   - 'dte'
   - 'omnidirectional tracking enhancer'
-ote:  # No "ote" since word Remote is too wide-spread
+ote:
+  - '(^| )ote'  # Checking only beginning of a word to remove unwanted spam
   - 'omnidirectional tracking enhancer'
 odte:
   - 'odte'
@@ -335,7 +339,8 @@ mlu:
   - '(mining laser|harvester) upgrade'
 
 # Remote repair mods
-rr:  # There is a shitton of remote rep-related items, we want to hide irrelevant like "Barrage" so we do not have "rr" in here
+rr:
+  - '(^| )rr'  # Checking only beginning of a word to remove unwanted spam
   - 'remote shield booster'
   - 'remote (armor|hull) repairer'
   - 'maintenance bot'
@@ -493,6 +498,7 @@ crct:
 
 # Shield modules
 se:  # No "se" due to spam of results containing it
+  - '(^| )se-'  # Include se- implants
   - 'shield extender'
 sse:
   - '(^| )sse'  # Checking only beginning of a word since "compressed" is often used
