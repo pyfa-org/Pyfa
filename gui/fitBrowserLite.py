@@ -68,6 +68,7 @@ class FitBrowserLiteDialog(wx.Dialog):
         self.CenterOnParent()
         self.searchBox.SetFocus()
 
+
     def OnButtonAdd(self, event):
         event.Skip()
         fits = self.fromList.GetSelectedFits()

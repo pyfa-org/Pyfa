@@ -152,6 +152,7 @@ class FittingView(d.Display):
         self.mainFrame.Bind(GE.FIT_RENAMED, self.fitRenamed)
         self.mainFrame.Bind(GE.FIT_REMOVED, self.fitRemoved)
         self.mainFrame.Bind(ITEM_SELECTED, self.appendItem)
+        self.mainFrame.Bind(GE.DARK_MODE_TOGGLED, self.Update())
         self.font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
@@ -176,6 +177,7 @@ class FittingView(d.Display):
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
         pyfalog.debug("------------------ new fitting view -------------------")
         pyfalog.debug(self)
+
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -292,6 +294,7 @@ class FittingView(d.Display):
             self.removeModule(modules)
         event.Skip()
 
+
     def fitRemoved(self, event):
         """
         If fit is removed and active, the page is deleted.
@@ -360,6 +363,12 @@ class FittingView(d.Display):
         pageIndex = self.parent.GetPageIndex(self)
         if pageIndex is not None:
             self.parent.SetPageTextIcon(pageIndex, text, bitmap)
+
+        #TODO: Check if this call to setColorMode is still necessary
+        #      to fill in color for "gapped" areas under wx.DC objects.
+        self.mainFrame.setColorMode(self, self.mainFrame.color_mode)
+        self.Update()
+
 
     def appendItem(self, event):
         """
@@ -789,6 +798,10 @@ class FittingView(d.Display):
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
+                #TODO: Probably wrong place.  Creates bug when Slot Colored backgrounds are enabled
+                #      but self.mainFrame.color_mode is also set to "dark"
+                else:
+                    self.SetItemBackgroundColour(i, self.mainFrame.GetBackgroundColour())
 
             # Set rack face to bold
             if isinstance(mod, Rack) and \
@@ -809,6 +822,7 @@ class FittingView(d.Display):
         #     except Exception as e:
         #         pyfalog.critical("Failed to make snapshot")
         #         pyfalog.critical(e)
+        #d.Display.Refresh()
 
     def OnShow(self, event):
         if self and not self.IsShown():
@@ -926,12 +940,13 @@ class FittingView(d.Display):
         mbmp = wx.Bitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
 
         mdc.SelectObject(mbmp)
-
-        mdc.SetBackground(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
         mdc.SetFont(self.font)
-        mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+
+        mdc.SetTextForeground(self.mainFrame.GetForegroundColour())
+        mdc.SetBackground(wx.Brush(self.mainFrame.GetBackgroundColour()))
+        mdc.Clear()
 
         cx = padding
         for i, col in enumerate(self.activeColumns):
@@ -957,8 +972,9 @@ class FittingView(d.Display):
 
             cx += columnsWidths[i]
 
-        brush = wx.Brush(wx.Colour(224, 51, 51))
-        pen = wx.Pen(wx.Colour(224, 51, 51))
+        #TODO: Investigate why the colors are hard-coded here
+        #brush = wx.Brush(wx.Colour(224, 51, 51))
+        #pen = wx.Pen(wx.Colour(224, 51, 51))
 
         mdc.SetPen(pen)
         mdc.SetBrush(brush)

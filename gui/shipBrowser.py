@@ -85,6 +85,7 @@ class ShipBrowser(wx.Panel):
 
         self.stage1(None)
 
+
     def GetBrowserContainer(self):
         return self.lpane
 
@@ -160,6 +161,7 @@ class ShipBrowser(wx.Panel):
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
 
+
         pyfalog.debug("Populate ship category list.")
         if len(self.categoryList) == 0:
             # set cache of category list
@@ -186,6 +188,7 @@ class ShipBrowser(wx.Panel):
         if self.showRacesFilterInStage2Only:
             self.raceselect.Show(False)
             self.Layout()
+
 
     RACE_ORDER = [
         "amarr", "caldari", "gallente", "minmatar",

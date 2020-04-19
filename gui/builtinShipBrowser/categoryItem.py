@@ -96,14 +96,18 @@ class CategoryItem(SFBrowserItem):
         self.catx = self.shipBmpx + self.shipBmp.GetWidth() + self.padding
         self.caty = (rect.height - htext) / 2
 
+
     def DrawItem(self, mdc):
         # rect = self.GetRect()
         self.UpdateElementsPos(mdc)
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitable(windowColor, 1)
+        #NOTE: Controls left-hand ship browser colors
+        windowColor = self.mainFrame.GetBackgroundColour()
+        textColor = self.mainFrame.GetForegroundColour()
 
+        mdc.SetBackground(wx.Brush(windowColor))
         mdc.SetTextForeground(textColor)
+        mdc.Clear() #NOTE: Otherwise DCObjects do not update until mouseover
         mdc.DrawBitmap(self.dropShadowBitmap, self.shipBmpx + 1, self.shipBmpy + 1)
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 

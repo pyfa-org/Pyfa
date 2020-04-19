@@ -23,7 +23,7 @@ import wx.lib.newevent
 from gui.bitmap_loader import BitmapLoader
 from gui.utils import color as color_utils, draw, fonts
 from service.fit import Fit
-
+import gui.mainFrame
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -132,6 +132,7 @@ class ChromeNotebook(wx.Panel):
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Layout()
 
+
     def GetPage(self, i):
         return self._pages[i]
 
@@ -231,6 +232,7 @@ class ChromeNotebook(wx.Panel):
 
         self._active_page = win
         self.ShowActive(True)
+
 
     def DisablePage(self, page, toggle):
         idx = self.GetPageIndex(page)
@@ -541,7 +543,11 @@ class _TabRenderer:
         self.close_region.Offset(x_offset, y_offset)
 
     def InitColors(self):
-        """Determines colors used for tab, based on system settings"""
+        """
+        Determines colors used for tab, based on system settings
+        TODO: Change these colors; make them dynamic based off current
+              color-scheme rather than system definitions.
+        """
         self.tab_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DFACE)
         self.inactive_color = color_utils.GetSuitable(self.tab_color, 0.25)
         self.selected_color = color_utils.GetSuitable(self.tab_color, 0.10)
@@ -1256,6 +1262,7 @@ class _TabsContainer(wx.Panel):
         self.tabs.append(tab_renderer)
         self.AdjustTabsSize()
         self.Refresh()
+
 
     def ClearTabsSelected(self):
         for tab in self.tabs:

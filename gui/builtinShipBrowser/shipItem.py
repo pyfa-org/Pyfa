@@ -233,10 +233,11 @@ class ShipItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         # rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitable(windowColor, 1)
-
+        windowColor = self.mainFrame.GetBackgroundColour()
+        textColor = self.mainFrame.GetForegroundColour()
         mdc.SetTextForeground(textColor)
+        mdc.SetBackground(wx.Brush(windowColor))
+        mdc.Clear() #NOTE: Otherwise will not update until mouseover event
 
         self.UpdateElementsPos(mdc)
 
@@ -278,6 +279,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         if self.tcFitName.IsShown():
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
+
 
     def AdjustControlSizePos(self, editCtl, start, end):
         fnEditSize = editCtl.GetSize()

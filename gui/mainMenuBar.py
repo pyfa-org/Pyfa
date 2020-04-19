@@ -20,6 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+import gui
 import config
 import graphs
 from service.character import Character
@@ -33,6 +34,7 @@ pyfalog = Logger(__name__)
 
 
 class MainMenuBar(wx.MenuBar):
+
     def __init__(self, mainFrame):
         pyfalog.debug("Initialize MainMenuBar")
         self.characterEditorId = wx.NewId()
@@ -168,6 +170,10 @@ class MainMenuBar(wx.MenuBar):
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(GE.FIT_RENAMED, self.fitRenamed)
+        #TODO: Figure out how to make this handler change menu color post-init
+        #self.mainFrame.Bind(GE.DARK_MODE_TOGGLED, self.recolorMenu)
+
+
 
     def fitChanged(self, event):
         event.Skip()
@@ -213,3 +219,13 @@ class MainMenuBar(wx.MenuBar):
             self.Enable(wx.ID_UNDO, True)
         if command.CanRedo():
             self.Enable(wx.ID_REDO, True)
+
+
+    def recolorMenu(self, event=None):
+        """
+        Handler for the GE.DARK_MODE_TOGGLED event posted from preferences.
+
+        TODO: Menu will not change color after it is initialized drawn.
+        """
+        self.mainFrame.setColorMode(self, self.mainFrame.color_mode)
+

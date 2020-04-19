@@ -7,6 +7,7 @@ FitRemoved, FIT_REMOVED = wx.lib.newevent.NewEvent()
 FitNotesChanged, FIT_NOTES_CHANGED = wx.lib.newevent.NewEvent()
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
 CharChanged, CHAR_CHANGED = wx.lib.newevent.NewEvent()
+DarkModeToggled, DARK_MODE_TOGGLED = wx.lib.newevent.NewEvent()
 GraphOptionChanged, GRAPH_OPTION_CHANGED = wx.lib.newevent.NewEvent()
 TargetProfileRenamed, TARGET_PROFILE_RENAMED = wx.lib.newevent.NewEvent()
 TargetProfileChanged, TARGET_PROFILE_CHANGED = wx.lib.newevent.NewEvent()
@@ -17,3 +18,17 @@ EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 SsoLoggingIn, EVT_SSO_LOGGING_IN = wx.lib.newevent.NewEvent()
 SsoLogin, EVT_SSO_LOGIN = wx.lib.newevent.NewEvent()
 SsoLogout, EVT_SSO_LOGOUT = wx.lib.newevent.NewEvent()
+
+#DARK_MODE_EVT_TYPE = wx.NewEventType()
+#EVT_DARK_MODE = wx.PyEventBinder(DARK_MODE_EVT_TYPE, 1)
+
+#class DarkMode(wx.PyCommandEvent):
+#    def __init__(self, evtType, id):
+#        wx.PyCommandEvent.__init__(self, evtType, id)
+#        myVal = None#
+#
+#    def SetMyVal(self, val):
+#        self.myVal = val
+#
+#    def GetMyVal(self):
+#        return self.myVal

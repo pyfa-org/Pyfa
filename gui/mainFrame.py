@@ -38,6 +38,7 @@ import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from graphs import GraphFrame
+from gui import display
 from gui.additionsPane import AdditionsPane
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ItemSelected
@@ -68,7 +69,6 @@ from service.port import IPortUser, Port
 from service.price import Price
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
-
 
 pyfalog = Logger(__name__)
 
@@ -140,6 +140,7 @@ class MainFrame(wx.Frame):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
     def __init__(self, title="pyfa"):
+
         pyfalog.debug("Initialize MainFrame")
         self.title = title
         super().__init__(None, wx.ID_ANY, self.title)
@@ -147,14 +148,22 @@ class MainFrame(wx.Frame):
 
         MainFrame.__instance = self
 
+        #TODO: Place color modes into config
+        self.color_modes = {
+            "dark": {"bg": (18, 20, 20, 255), "fg": (200, 200, 200, 255)},
+            "system": {"bg": wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW),
+                       "fg": wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)},
+        }
+
         # Load stored settings (width/height/maximized..)
         self.LoadMainFrameAttribs()
+        self.color_mode = "system" #TODO: Store and pick up color_mode
 
         self.disableOverrideEditor = disableOverrideEditor
 
         # Fix for msw (have the frame background color match panel color
         if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)) #Investigate
 
         # Load and set the icon for pyfa main window
         i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))
@@ -222,6 +231,7 @@ class MainFrame(wx.Frame):
         self.activeStatsWnd = None
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(GE.DARK_MODE_TOGGLED, self.darkModeToggled)
 
         # Show ourselves
         self.Show()
@@ -233,6 +243,46 @@ class MainFrame(wx.Frame):
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
+
+
+    def darkModeToggled(self, event=None):
+        """
+        Event Handler.
+        Toggles dark mode on/off for all children of mainFrame.  These are all
+        panel elements and widgets except for those that inherit from the
+        Display class.  wx.DC objects are handled directly in various
+        locations (search for calls to wx.Brush() and Clear()).
+
+        TODO: Modify as colorschemes become more customized (i.e. > 2)
+
+        :var event - Event being handled (default=None)
+        """
+        if self.color_mode == "system":
+            self.color_mode = "dark"
+        else:
+            self.color_mode = "system"
+        self.setColorMode(self, self.color_mode)
+
+
+    def setColorMode(self, ele, color):
+        """
+        Recursively calls the children of element specified by ele, updating
+        the background and foreground for each to mainFrame's current color
+        mode.
+
+        :var ele - Object whose color (and children's colors) will change
+        :var color - String representing colormode either "system" or "dark"
+        """
+        if ele is None: return
+        if color not in self.color_modes: return
+        ele.SetForegroundColour(self.color_modes[color]["fg"])
+        ele.SetBackgroundColour(self.color_modes[color]["bg"])
+        ele.Refresh() #Force a redraw of the element
+        # Do the same for all children elements
+        if "GetChildren" in dir(ele):
+            for ele in ele.GetChildren():
+                self.setColorMode(ele, color)
+
 
     @property
     def command(self) -> wx.CommandProcessor:
@@ -281,7 +331,7 @@ class MainFrame(wx.Frame):
     def LoadMainFrameAttribs(self):
         mainFrameDefaultAttribs = {
             "wnd_display": 0, "wnd_x": 0, "wnd_y": 0, "wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False,
-            "browser_width": 300, "market_height": 0, "fitting_height": -200}
+            "browser_width": 300, "market_height": 0, "fitting_height": -200, "color_mode": "system"}
         self.mainFrameAttribs = SettingsProvider.getInstance().getSettings(
             "pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
@@ -312,6 +362,8 @@ class MainFrame(wx.Frame):
         self.browserWidth = self.mainFrameAttribs["browser_width"]
         self.marketHeight = self.mainFrameAttribs["market_height"]
         self.fittingHeight = self.mainFrameAttribs["fitting_height"]
+        self.color_mode = self.mainFrameAttribs["color_mode"]
+
 
     def UpdateMainFrameAttribs(self):
         if self.IsIconized():
@@ -342,6 +394,7 @@ class MainFrame(wx.Frame):
         self.mainFrameAttribs["browser_width"] = self.notebookBrowsers.GetSize()[0]
         self.mainFrameAttribs["market_height"] = self.marketBrowser.marketView.GetSize()[1]
         self.mainFrameAttribs["fitting_height"] = self.fitting_additions_split.GetSashPosition()
+        self.mainFrameAttribs["color_mode"] = self.color_mode
 
     def SetActiveStatsWindow(self, wnd):
         self.activeStatsWnd = wnd
@@ -403,7 +456,8 @@ class MainFrame(wx.Frame):
         info = wx.adv.AboutDialogInfo()
         info.Name = "pyfa"
         time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
-        info.Version = config.getVersion() + '\nEVE Data Version: {} ({})'.format(gamedata_version, time)  # gui.aboutData.versionString
+        info.Version = config.getVersion() + '\nEVE Data Version: {} ({})'.format(gamedata_version,
+                                                                                  time)  # gui.aboutData.versionString
         #
         # try:
         #     import matplotlib
@@ -461,10 +515,10 @@ class MainFrame(wx.Frame):
         defaultFile = "%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
 
         with wx.FileDialog(
-            self, "Save Fitting As...",
-            wildcard="EVE XML fitting files (*.xml)|*.xml",
-            style=wx.FD_SAVE,
-            defaultFile=defaultFile
+                self, "Save Fitting As...",
+                wildcard="EVE XML fitting files (*.xml)|*.xml",
+                style=wx.FD_SAVE,
+                defaultFile=defaultFile
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 self.supress_left_up = True
@@ -639,15 +693,15 @@ class MainFrame(wx.Frame):
 
         if not fit.ignoreRestrictions:
             with wx.MessageDialog(
-                self, "Are you sure you wish to ignore fitting restrictions for the "
-                "current fit? This could lead to wildly inaccurate results and possible errors.",
-                "Confirm", wx.YES_NO | wx.ICON_QUESTION
+                    self, "Are you sure you wish to ignore fitting restrictions for the "
+                          "current fit? This could lead to wildly inaccurate results and possible errors.",
+                    "Confirm", wx.YES_NO | wx.ICON_QUESTION
             ) as dlg:
                 result = dlg.ShowModal() == wx.ID_YES
         else:
             with wx.MessageDialog(
-                self, "Re-enabling fitting restrictions for this fit will also remove any illegal items "
-                "from the fit. Do you want to continue?", "Confirm", wx.YES_NO | wx.ICON_QUESTION
+                    self, "Re-enabling fitting restrictions for this fit will also remove any illegal items "
+                          "from the fit. Do you want to continue?", "Confirm", wx.YES_NO | wx.ICON_QUESTION
             ) as dlg:
                 result = dlg.ShowModal() == wx.ID_YES
         if result:
@@ -759,16 +813,19 @@ class MainFrame(wx.Frame):
             if importType == "FittingItem":
                 baseItem, mutaplasmidItem, mutations = importData[0]
                 if mutaplasmidItem:
-                    self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, baseItem, mutaplasmidItem, mutations))
+                    self.command.Submit(
+                        cmd.GuiImportLocalMutatedModuleCommand(activeFit, baseItem, mutaplasmidItem, mutations))
                 else:
                     self.command.Submit(cmd.GuiAddLocalModuleCommand(activeFit, baseItem.ID))
                 return
             if importType == "AdditionsDrones":
-                if self.command.Submit(cmd.GuiImportLocalDronesCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
+                if self.command.Submit(
+                        cmd.GuiImportLocalDronesCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
                     self.additionsPane.select("Drones")
                 return
             if importType == "AdditionsFighters":
-                if self.command.Submit(cmd.GuiImportLocalFightersCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
+                if self.command.Submit(
+                        cmd.GuiImportLocalFightersCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
                     self.additionsPane.select("Fighters")
                 return
             if importType == "AdditionsImplants":
@@ -798,12 +855,12 @@ class MainFrame(wx.Frame):
         """ Exports skills needed for active fit and active character """
         sCharacter = Character.getInstance()
         with wx.FileDialog(
-            self,
-            "Export Skills Needed As...",
-            wildcard=("EVEMon skills training file (*.emp)|*.emp|"
-                      "EVEMon skills training XML file (*.xml)|*.xml|"
-                      "Text skills training file (*.txt)|*.txt"),
-            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+                self,
+                "Export Skills Needed As...",
+                wildcard=("EVEMon skills training file (*.emp)|*.emp|"
+                          "EVEMon skills training XML file (*.xml)|*.xml|"
+                          "Text skills training file (*.txt)|*.txt"),
+                style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 saveFmtInt = dlg.GetFilterIndex()
@@ -825,12 +882,12 @@ class MainFrame(wx.Frame):
     def fileImportDialog(self, event):
         """Handles importing single/multiple EVE XML / EFT cfg fit files"""
         with wx.FileDialog(
-            self,
-            "Open One Or More Fitting Files",
-            wildcard=("EVE XML fitting files (*.xml)|*.xml|"
-                      "EFT text fitting files (*.cfg)|*.cfg|"
-                      "All Files (*)|*"),
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
+                self,
+                "Open One Or More Fitting Files",
+                wildcard=("EVE XML fitting files (*.xml)|*.xml|"
+                          "EFT text fitting files (*.cfg)|*.cfg|"
+                          "All Files (*)|*"),
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 self.progressDialog = wx.ProgressDialog(
@@ -847,11 +904,11 @@ class MainFrame(wx.Frame):
         defaultFile = "pyfa-fits-%s.xml" % strftime("%Y%m%d_%H%M%S", gmtime())
 
         with wx.FileDialog(
-            self,
-            "Save Backup As...",
-            wildcard="EVE XML fitting file (*.xml)|*.xml",
-            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
-            defaultFile=defaultFile,
+                self,
+                "Save Backup As...",
+                wildcard="EVE XML fitting file (*.xml)|*.xml",
+                style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+                defaultFile=defaultFile,
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 filePath = dlg.GetPath()
@@ -881,10 +938,10 @@ class MainFrame(wx.Frame):
 
         if not os.path.isdir(os.path.dirname(path)):
             with wx.MessageDialog(
-                self,
-                "Invalid Path\n\nThe following path is invalid or does not exist: \n%s\n\nPlease verify path location pyfa's preferences." % path,
-                "Error",
-                wx.OK | wx.ICON_ERROR
+                    self,
+                    "Invalid Path\n\nThe following path is invalid or does not exist: \n%s\n\nPlease verify path location pyfa's preferences." % path,
+                    "Error",
+                    wx.OK | wx.ICON_ERROR
             ) as dlg:
                 if dlg.ShowModal() == wx.ID_OK:
                     return
@@ -935,9 +992,9 @@ class MainFrame(wx.Frame):
             self.closeProgressDialog()
             _message = "Import Error" if action & IPortUser.PROCESS_IMPORT else "Export Error"
             with wx.MessageDialog(
-                self,
-                "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
-                _message, wx.OK | wx.ICON_ERROR
+                    self,
+                    "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
+                    _message, wx.OK | wx.ICON_ERROR
             ) as dlg:
                 dlg.ShowModal()
             return
@@ -994,10 +1051,10 @@ class MainFrame(wx.Frame):
     def importCharacter(self, event):
         """ Imports character XML file from EVE API """
         with wx.FileDialog(
-            self,
-            "Open One Or More Character Files",
-            wildcard="EVE API XML character files (*.xml)|*.xml|All Files (*)|*",
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
+                self,
+                "Open One Or More Character Files",
+                wildcard="EVE API XML character files (*.xml)|*.xml|All Files (*)|*",
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 self.supress_left_up = True
