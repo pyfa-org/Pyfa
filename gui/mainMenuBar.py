@@ -80,8 +80,8 @@ class MainMenuBar(wx.MenuBar):
         fitMenu = wx.Menu()
         self.Append(fitMenu, "Fi&t")
 
-        fitMenu.Append(wx.ID_UNDO)
-        fitMenu.Append(wx.ID_REDO)
+        fitMenu.Append(wx.ID_UNDO, "&Undo\tCTRL+Z", "Undo the most recent action")
+        fitMenu.Append(wx.ID_REDO, "&Redo\tCTRL+Y", "Redo the most recent undone action")
 
         fitMenu.AppendSeparator()
         fitMenu.Append(wx.ID_COPY, "&To Clipboard\tCTRL+C", "Export a fit to the clipboard")
