@@ -3,7 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.const import FittingSlot
-from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates
+from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, restoreRemovedDummies
 from service.fit import Fit
 
 
@@ -12,14 +12,16 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveLocalModulesCommand(wx.Command):
 
-    def __init__(self, fitID, positions, recalc=True):
+    def __init__(self, fitID, positions, recalc=True, clearTail=False):
         wx.Command.__init__(self, True, 'Remove Module')
         self.fitID = fitID
         self.positions = positions
         self.recalc = recalc
+        self.clearTail = clearTail
         self.savedSubInfos = None
         self.savedModInfos = None
         self.savedStateCheckChanges = None
+        self.savedTail = None
 
     def Do(self):
         pyfalog.debug('Doing removal of local modules from positions {} on fit {}'.format(self.positions, self.fitID))
@@ -39,6 +41,9 @@ class CalcRemoveLocalModulesCommand(wx.Command):
 
         if len(self.savedSubInfos) == 0 and len(self.savedModInfos) == 0:
             return False
+
+        if self.clearTail:
+            self.savedTail = fit.clearTail()
 
         if self.recalc:
             # Need to flush because checkStates sometimes relies on module->fit
@@ -76,6 +81,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         if not any(results):
             return False
         restoreCheckedStates(fit, self.savedStateCheckChanges)
+        restoreRemovedDummies(fit, self.savedTail)
         return True
 
     @property

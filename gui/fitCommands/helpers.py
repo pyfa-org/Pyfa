@@ -353,6 +353,8 @@ def restoreCheckedStates(fit, stateInfo, ignoreModPoss=()):
 
 
 def restoreRemovedDummies(fit, dummyInfo):
+    if dummyInfo is None:
+        return
     # Need this to properly undo the case when removal of subsystems removes dummy slots
     for position in sorted(dummyInfo):
         slot = dummyInfo[position]

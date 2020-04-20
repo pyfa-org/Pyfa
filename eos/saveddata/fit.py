@@ -1026,6 +1026,16 @@ class Fit:
             if mod.isEmpty:
                 del self.modules[i]
 
+    def clearTail(self):
+        tailPositions = {}
+        for mod in reversed(self.modules):
+            if not mod.isEmpty:
+                break
+            tailPositions[self.modules.index(mod)] = mod.slot
+        for pos in reversed(tailPositions):
+            self.modules.remove(self.modules[pos])
+        return tailPositions
+
     @property
     def modCount(self):
         x = 0
