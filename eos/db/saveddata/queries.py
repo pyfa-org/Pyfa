@@ -470,7 +470,7 @@ def searchFits(nameLike, where=None, eager=None):
     filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
     eager = processEager(eager)
     with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).limit(100).all())
 
     return fits
 
