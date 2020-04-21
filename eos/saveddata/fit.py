@@ -1028,11 +1028,11 @@ class Fit:
 
     def clearTail(self):
         tailPositions = {}
-        for mod in reversed(self.modules):
+        for mod in self.modules:
             if not mod.isEmpty:
                 break
             tailPositions[self.modules.index(mod)] = mod.slot
-        for pos in reversed(tailPositions):
+        for pos in sorted(tailPositions, reverse=True):
             self.modules.remove(self.modules[pos])
         return tailPositions
 
