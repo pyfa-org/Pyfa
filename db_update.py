@@ -125,6 +125,8 @@ def update_db():
                 row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor')
             ):
                 row['published'] = True
+            elif row['typeName'].startswith('Limited Synth '):
+                row['published'] = False
 
         newData = []
         for row in data:
