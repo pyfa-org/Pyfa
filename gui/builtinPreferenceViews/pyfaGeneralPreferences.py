@@ -31,7 +31,7 @@ class PFGeneralPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbToggleDarkMode = wx.CheckBox(panel, wx.ID_ANY, "Toggle Dark Mode On/Off",
+        self.cbToggleDarkMode = wx.CheckBox(panel, wx.ID_ANY, "Toggle Dark Mode On/Off (Experimental)",
                                                  wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbToggleDarkMode, 0, wx.ALL | wx.EXPAND, 5)
 

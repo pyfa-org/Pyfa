@@ -255,7 +255,7 @@ class MainFrame(wx.Frame):
 
         TODO: Modify as colorschemes become more customized (i.e. > 2)
 
-        :var event - Event being handled (default=None)
+        :param event: Event being handled (default=None)
         """
         if self.color_mode == "system":
             self.color_mode = "dark"
@@ -270,8 +270,8 @@ class MainFrame(wx.Frame):
         the background and foreground for each to mainFrame's current color
         mode.
 
-        :var ele - Object whose color (and children's colors) will change
-        :var color - String representing colormode either "system" or "dark"
+        :param ele: Object whose color (and children's colors) will change
+        :param color: - String representing colormode ("system" or "dark")
         """
         if ele is None: return
         if color not in self.color_modes: return
