@@ -93,6 +93,8 @@ class ItemMutatorList(wx.ScrolledWindow):
 
         first = True
         for m in sorted(mod.mutators.values(), key=lambda x: x.attribute.displayName):
+            if m.baseValue == 0:
+                continue
             if not first:
                 sizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
             first = False
