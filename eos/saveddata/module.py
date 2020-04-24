@@ -214,8 +214,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if charge is None:
             charges = 0
         else:
-            chargeVolume = charge.volume
-            containerCapacity = self.item.capacity
+            chargeVolume = charge.attributes['volume'].value
+            containerCapacity = self.item.attributes['capacity'].value
             if chargeVolume is None or containerCapacity is None:
                 charges = 0
             else:
@@ -778,8 +778,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check sizes, if 'charge size > module volume' it won't fit
         if charge is None:
             return True
-        chargeVolume = charge.volume
-        moduleCapacity = self.item.capacity
+        chargeVolume = charge.attributes['volume'].value
+        moduleCapacity = self.item.attributes['capacity'].value
         if chargeVolume is not None and moduleCapacity is not None and chargeVolume > moduleCapacity:
             return False
 

@@ -226,18 +226,6 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                         effectSet.add(effectID)
 
             if attributes:
-                # Add base attributes to our data
-                query = 'SELECT it.typeID, it.mass, it.capacity, it.volume FROM invtypes AS it'
-                cursor.execute(query)
-                for row in cursor:
-                    itemid = row[0]
-                    if itemid in dictionary:
-                        attrdict = dictionary[itemid][2]
-                        # Add base attributes: mass (4), capacity (38) and volume (161)
-                        attrdict[4] = row[1]
-                        attrdict[38] = row[2]
-                        attrdict[161] = row[3]
-
                 # Add attribute data for other attributes
                 query = 'SELECT dta.typeID, dta.attributeID, dta.value FROM dgmtypeattribs AS dta'
                 cursor.execute(query)

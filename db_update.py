@@ -170,16 +170,26 @@ def update_db():
         data = _readData('fsd_binary', 'typedogma', keyIdName='typeID')
         eveTypeIds = set(r['typeID'] for r in eveTypesData)
         newData = []
-        for row in eveTypesData:
-            for attrId, attrName in {4: 'mass', 38: 'capacity', 161: 'volume', 162: 'radius'}.items():
-                if attrName in row:
-                    newData.append({'typeID': row['typeID'], 'attributeID': attrId, 'value': row[attrName]})
+        seenKeys = set()
+
+        def checkKey(key):
+            if key in seenKeys:
+                return False
+            seenKeys.add(key)
+            return True
+
         for typeData in data:
             if typeData['typeID'] not in eveTypeIds:
                 continue
             for row in typeData.get('dogmaAttributes', ()):
                 row['typeID'] = typeData['typeID']
-                newData.append(row)
+                if checkKey((row['typeID'], row['attributeID'])):
+                    newData.append(row)
+        for row in eveTypesData:
+            for attrId, attrName in {4: 'mass', 38: 'capacity', 161: 'volume', 162: 'radius'}.items():
+                if attrName in row and checkKey((row['typeID'], attrId)):
+                    newData.append({'typeID': row['typeID'], 'attributeID': attrId, 'value': row[attrName]})
+
         _addRows(newData, eos.gamedata.Attribute)
         return newData
 

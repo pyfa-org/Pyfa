@@ -209,40 +209,13 @@ class Effect(EqBase):
 
 
 class Item(EqBase):
-    MOVE_ATTRS = (4,  # Mass
-                  38,  # Capacity
-                  161)  # Volume
-
-    MOVE_ATTR_INFO = None
-
     ABYSSAL_TYPES = None
-
-    @classmethod
-    def getMoveAttrInfo(cls):
-        info = getattr(cls, "MOVE_ATTR_INFO", None)
-        if info is None:
-            cls.MOVE_ATTR_INFO = info = []
-            for id in cls.MOVE_ATTRS:
-                info.append(eos.db.getAttributeInfo(id))
-
-        return info
-
-    def moveAttrs(self):
-        self.__moved = True
-        for info in self.getMoveAttrInfo():
-            val = getattr(self, info.name, 0)
-            if val != 0:
-                attr = Attribute()
-                attr.info = info
-                attr.value = val
-                self.__attributes[info.name] = attr
 
     @reconstructor
     def init(self):
         self.__race = None
         self.__requiredSkills = None
         self.__requiredFor = None
-        self.__moved = False
         self.__offensive = None
         self.__assistive = None
         self.__overrides = None
@@ -264,9 +237,6 @@ class Item(EqBase):
 
     @property
     def attributes(self):
-        if not self.__moved:
-            self.moveAttrs()
-
         return self.__attributes
 
     @property
