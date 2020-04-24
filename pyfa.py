@@ -140,6 +140,7 @@ if __name__ == "__main__":
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
         pyfa = wx.App(False)
+        pyfa.ResetLocale()
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 
