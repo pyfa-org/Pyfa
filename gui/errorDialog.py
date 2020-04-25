@@ -106,7 +106,7 @@ class ErrorFrame(AuxiliaryFrame):
         self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, version + version_block.strip(), wx.DefaultPosition,
                                          (-1, 400), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
         self.errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
-        mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
+        mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL, 5)
         self.errorTextCtrl.AppendText("\n")
         self.errorTextCtrl.Layout()
 
