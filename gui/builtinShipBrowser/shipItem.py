@@ -19,10 +19,9 @@ pyfalog = Logger(__name__)
 
 class ShipItem(SFItem.SFBrowserItem):
 
-    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None,
-                 id=wx.ID_ANY, pos=wx.DefaultPosition,
-                 size=(0, 40), style=0):
-        SFItem.SFBrowserItem.__init__(self, parent, size=size)
+    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None):
+        SFItem.SFBrowserItem.__init__(self, parent)
+        self.SetSize(self.FromDIP((0, 40)))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -68,11 +67,12 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipBrowser = self.Parent.Parent
 
-        self.editWidth = 150
-        self.padding = 4
+        self.editWidth = self.FromDIP(150)
+        self.padding = self.FromDIP(4)
 
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120, -1),
-                                     wx.TE_PROCESS_ENTER)
+        self.tcFitName = wx.TextCtrl(
+            self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition,
+            self.FromDIP((120, -1)), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
 
         self.newBtn = self.toolbar.AddButton(self.newBmp, "New", self.newBtnCB)

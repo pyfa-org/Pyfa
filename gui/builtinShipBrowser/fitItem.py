@@ -24,9 +24,7 @@ pyfalog = Logger(__name__)
 
 class FitItem(SFItem.SFBrowserItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0, None), shipID=None,
-                 itemData=None, graphicID=None,
-                 id=wx.ID_ANY, pos=wx.DefaultPosition,
-                 size=(0, 40), style=0):
+                 itemData=None, graphicID=None):
 
         # =====================================================================
         # animCount should be 10 if we enable animation in Preferences
@@ -35,7 +33,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.animCount = 0
         self.selectedDelta = 0
 
-        SFItem.SFBrowserItem.__init__(self, parent, size=size)
+        SFItem.SFBrowserItem.__init__(self, parent)
+        self.SetSize(self.FromDIP((0, 40)))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -87,12 +86,12 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.__setToolTip()
 
-        self.padding = 4
-        self.editWidth = 150
+        self.padding = self.FromDIP(4)
+        self.editWidth = self.FromDIP(150)
 
         self.dragging = False
         self.dragged = False
-        self.dragMotionTrail = 5
+        self.dragMotionTrail = self.FromDIP(5)
         self.dragMotionTrigger = self.dragMotionTrail
         self.dragWindow = None
 
@@ -130,7 +129,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.animPeriod = 10
         self.animDuration = 100
 
-        self.maxDelta = 48
+        self.maxDelta = self.FromDIP(48)
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
@@ -424,8 +423,8 @@ class FitItem(SFItem.SFBrowserItem):
                 else:
                     self.dragMotionTrigger -= 1
             if self.dragWindow:
-                pos.x += 3
-                pos.y += 3
+                pos.x += self.FromDIP(3)
+                pos.y += self.FromDIP(3)
                 self.dragWindow.SetPosition(pos)
             return
 
@@ -519,9 +518,9 @@ class FitItem(SFItem.SFBrowserItem):
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
         tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
+        self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < self.FromDIP(200) else self.FromDIP(200)), rect.height, 24)
         tdc.SelectObject(self.dragTLFBmp)
-        tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
+        tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < self.FromDIP(200) else self.FromDIP(200)), rect.height, mdc, 0, 0, wx.COPY)
         tdc.SelectObject(wx.NullBitmap)
 
     def AdjustControlSizePos(self, editCtl, start, end):
