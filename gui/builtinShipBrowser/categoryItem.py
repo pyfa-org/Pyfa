@@ -23,6 +23,7 @@ class CategoryItem(SFBrowserItem):
         else:
             self.shipBmp = wx.Bitmap(self.FromDIP((16, 16)))
 
+
         self.dropShadowBitmap = drawUtils.CreateDropShadowBitmap(self.shipBmp, 0.2)
 
         self.categoryID = categoryID

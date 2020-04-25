@@ -108,6 +108,7 @@ class BitmapLoader:
 
         w, h = img.GetSize()
         extraScale = cls.gen_scale / current_res_scale
+
         bmp = wx.Bitmap(img.Scale(int(w * extraScale), int(h * extraScale)))
         return bmp
 
@@ -145,7 +146,7 @@ class BitmapLoader:
             except KeyError:
                 pyfalog.warning("Missing icon file from zip: {0}".format(path))
         else:
-            path = os.path.join(config.pyfaPath, 'imgs' + os.sep + location + os.sep + filename)
+            path = os.path.join(config.pyfaPath, 'imgs', location, filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
