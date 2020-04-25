@@ -35,31 +35,31 @@ class PFGeneralPref(PreferenceView):
         # Database path
         self.stSetUserPath = wx.StaticText(panel, wx.ID_ANY, "pyfa User Path:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetUserPath.Wrap(-1)
-        mainSizer.Add(self.stSetUserPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.stSetUserPath, 0, wx.ALL, 5)
         self.inputUserPath = wx.TextCtrl(panel, wx.ID_ANY, config.savePath, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputUserPath.SetEditable(False)
         self.inputUserPath.SetBackgroundColour((200, 200, 200))
-        mainSizer.Add(self.inputUserPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        mainSizer.Add(self.inputUserPath, 0, wx.ALL | wx.EXPAND, 5)
 
         # Save DB
         self.stFitDB = wx.StaticText(panel, wx.ID_ANY, "Fitting Database:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stFitDB.Wrap(-1)
-        mainSizer.Add(self.stFitDB, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.stFitDB, 0, wx.ALL, 5)
 
         self.inputFitDB = wx.TextCtrl(panel, wx.ID_ANY, config.saveDB, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputFitDB.SetEditable(False)
         self.inputFitDB.SetBackgroundColour((200, 200, 200))
-        mainSizer.Add(self.inputFitDB, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        mainSizer.Add(self.inputFitDB, 0, wx.ALL | wx.EXPAND, 5)
 
         # Game Data DB
         self.stGameDB = wx.StaticText(panel, wx.ID_ANY, "Game Database:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stGameDB.Wrap(-1)
-        mainSizer.Add(self.stGameDB, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.stGameDB, 0, wx.ALL, 5)
 
         self.inputGameDB = wx.TextCtrl(panel, wx.ID_ANY, config.gameDB, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputGameDB.SetEditable(False)
         self.inputGameDB.SetBackgroundColour((200, 200, 200))
-        mainSizer.Add(self.inputGameDB, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        mainSizer.Add(self.inputGameDB, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbsaveInRoot.SetValue(config.saveInRoot)
         self.cbsaveInRoot.Bind(wx.EVT_CHECKBOX, self.onCBsaveInRoot)

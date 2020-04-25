@@ -36,20 +36,20 @@ class PFGeneralPref(PreferenceView):
         # Database path
         self.stLogPath = wx.StaticText(panel, wx.ID_ANY, "Log file location:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stLogPath.Wrap(-1)
-        mainSizer.Add(self.stLogPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.stLogPath, 0, wx.ALL, 5)
         self.inputLogPath = wx.TextCtrl(panel, wx.ID_ANY, config.logPath, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputLogPath.SetEditable(False)
         self.inputLogPath.SetBackgroundColour((200, 200, 200))
-        mainSizer.Add(self.inputLogPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        mainSizer.Add(self.inputLogPath, 0, wx.ALL | wx.EXPAND, 5)
 
         import requests
         self.certPath = wx.StaticText(panel, wx.ID_ANY, "Cert Path:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.certPath .Wrap(-1)
-        mainSizer.Add(self.certPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.certPath, 0, wx.ALL, 5)
         self.certPathCtrl = wx.TextCtrl(panel, wx.ID_ANY, requests.certs.where(), wx.DefaultPosition, wx.DefaultSize, 0)
         self.certPathCtrl.SetEditable(False)
         self.certPathCtrl.SetBackgroundColour((200, 200, 200))
-        mainSizer.Add(self.certPathCtrl, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        mainSizer.Add(self.certPathCtrl, 0, wx.ALL | wx.EXPAND, 5)
 
         # Debug Logging
         self.cbdebugLogging = wx.CheckBox(panel, wx.ID_ANY, "Debug Logging Enabled", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -57,7 +57,7 @@ class PFGeneralPref(PreferenceView):
 
         self.stDumpLogs = wx.StaticText(panel, wx.ID_ANY, "Pressing this button will cause all logs in memory to write to the log file:",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
-        mainSizer.Add(self.stDumpLogs, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.stDumpLogs, 0, wx.ALL, 5)
         self.btnDumpLogs = wx.Button(panel, wx.ID_ANY, "Dump All Logs", wx.DefaultPosition, wx.DefaultSize, 0)
         self.btnDumpLogs.Bind(wx.EVT_BUTTON, OnDumpLogs)
         mainSizer.Add(self.btnDumpLogs, 0, wx.ALIGN_LEFT, 5)
