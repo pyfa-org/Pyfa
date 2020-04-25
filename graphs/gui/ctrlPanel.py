@@ -235,7 +235,7 @@ class GraphControlPanel(wx.Panel):
             fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnNonMainInputChanged)
         fieldTextBox.SetToolTip(wx.ToolTip(tooltipText))
-        fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.RIGHT, 5)
         fieldIcon = None
         if inputDef.iconID is not None:
             icon = BitmapLoader.getBitmap(inputDef.iconID, 'icons')
