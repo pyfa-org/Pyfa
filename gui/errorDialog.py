@@ -65,7 +65,8 @@ class ErrorHandler:
 class ErrorFrame(AuxiliaryFrame):
 
     def __init__(self, parent=None, error_title='Error!'):
-        super().__init__(parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600))
+        super().__init__(parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition)
+        self.SetSize(self.FromDIP(wx.Size(500, 600)))
 
         from eos.config import gamedata_version, gamedata_date
 
@@ -84,8 +85,8 @@ class ErrorFrame(AuxiliaryFrame):
         headingText = wx.StaticText(self, wx.ID_ANY, error_title, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
         headingText.SetFont(wx.Font(14, 74, 90, 92, False))
 
-        headSizer.Add(headingText, 1, wx.ALL, 5)
-        mainSizer.Add(headSizer, 0, wx.EXPAND, 5)
+        headSizer.Add(headingText, 1, wx.ALL, self.FromDIP(5))
+        mainSizer.Add(headSizer, 0, wx.EXPAND, self.FromDIP(5))
 
         mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND | wx.ALL, 5)
 
@@ -93,7 +94,7 @@ class ErrorFrame(AuxiliaryFrame):
         mainSizer.Add(box, 0, wx.EXPAND | wx.ALIGN_TOP)
 
         descText = wx.StaticText(self, wx.ID_ANY, desc)
-        box.Add(descText, 1, wx.ALL, 5)
+        box.Add(descText, 1, wx.ALL, self.FromDIP(5))
 
         # github = wx.lib.agw.hyperlink.HyperLinkCtrl(self, wx.ID_ANY, label="Github", URL="https://github.com/pyfa-org/Pyfa/issues")
         # box.Add(github, 0, wx.ALL, 5)
@@ -104,9 +105,9 @@ class ErrorFrame(AuxiliaryFrame):
         # mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
 
         self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, version + version_block.strip(), wx.DefaultPosition,
-                                         (-1, 400), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
+                                         self.FromDIP((-1, 400)), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
         self.errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
-        mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL, 5)
+        mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL, self.FromDIP(5))
         self.errorTextCtrl.AppendText("\n")
         self.errorTextCtrl.Layout()
 
