@@ -14,13 +14,14 @@ pyfalog = Logger(__name__)
 
 
 class CategoryItem(SFBrowserItem):
-    def __init__(self, parent, categoryID, fittingInfo, size=(0, 16)):
-        SFBrowserItem.__init__(self, parent, size=size)
+    def __init__(self, parent, categoryID, fittingInfo):
+        SFBrowserItem.__init__(self, parent)
+        self.SetSize(self.FromDIP((0, 16)))
 
         if categoryID:
             self.shipBmp = BitmapLoader.getBitmap("ship_small", "gui")
         else:
-            self.shipBmp = wx.Bitmap(16, 16)
+            self.shipBmp = wx.Bitmap(self.FromDIP((16, 16)))
 
         self.dropShadowBitmap = drawUtils.CreateDropShadowBitmap(self.shipBmp, 0.2)
 
@@ -28,7 +29,7 @@ class CategoryItem(SFBrowserItem):
         self.fittingInfo = fittingInfo
         self.shipBrowser = self.Parent.Parent
 
-        self.padding = 4
+        self.padding = self.FromDIP(4)
 
         self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.NORMAL)
 

@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+import math
 import io
 import os.path
 import zipfile
@@ -49,7 +50,8 @@ class BitmapLoader:
     dont_use_cached_bitmaps = False
     max_cached_bitmaps = 500
 
-    scaling_factor = None
+    gen_scale = None
+    res_scale = None
 
     @classmethod
     def getStaticBitmap(cls, name, parent, location):
@@ -88,41 +90,45 @@ class BitmapLoader:
 
     @classmethod
     def loadBitmap(cls, name, location):
-        if cls.scaling_factor is None:
-            cls.scaling_factor = 1 if 'wxGTK' in wx.PlatformInfo else int(wx.GetApp().GetTopWindow().GetContentScaleFactor())
-        scale = cls.scaling_factor
-
-        filename, img = cls.loadScaledBitmap(name, location, scale)
-
-        while img is None and scale > 0:
-            # can't find the correctly scaled image, fallback to smaller scales
-            scale -= 1
-            filename, img = cls.loadScaledBitmap(name, location, scale)
+        if cls.gen_scale is None:
+            cls.gen_scale = wx.GetApp().GetTopWindow().GetContentScaleFactor()
+            cls.res_scale = math.ceil(cls.gen_scale)  # We provide no images with non-int scaling factor
+        # Find the biggest image we have, according to our scaling factor
+        filename = img = None
+        current_res_scale = cls.res_scale
+        while img is None and current_res_scale > 0:
+            filename, img = cls.loadScaledBitmap(name, location, current_res_scale)
+            if img is not None:
+                break
+            current_res_scale -= 1
 
         if img is None:
             pyfalog.warning("Missing icon file: {0}/{1}".format(location, filename))
             return None
 
-        bmp: wx.Bitmap = img.ConvertToBitmap()
-        if scale > 1:
-            bmp.SetSize((bmp.GetWidth() // scale, bmp.GetHeight() // scale))
+        w, h = img.GetSize()
+        extraScale = cls.gen_scale / current_res_scale
+        bmp = wx.Bitmap(img.Scale(int(w * extraScale), int(h * extraScale)))
         return bmp
 
     @classmethod
-    def loadScaledBitmap(cls, name, location, scale=0):
+    def loadScaledBitmap(cls, name, location, scale=1):
         """Attempts to load a scaled bitmap.
 
         Args:
             name (str): TypeID or basename of the image being requested.
             location (str): Path to a location that may contain the image.
-            scale (int): Scale factor of the image variant to load. If ``0``, attempts to load the unscaled variant.
+            scale (int): Scale factor of the image variant to load.
 
         Returns:
             (str, wx.Image): Tuple of the filename that may have been loaded and the image at that location. The
                 filename will always be present, but the image may be ``None``.
         """
-        filename = "{0}@{1}x.png".format(name, scale) if scale > 0 else "{0}.png".format(name)
+        filename = "{0}@{1}x.png".format(name, scale)
         img = cls.loadImage(filename, location)
+        if img is None and scale == 1:
+            filename = "{0}.png".format(name)
+            img = cls.loadImage(filename, location)
         return filename, img
 
     @classmethod
