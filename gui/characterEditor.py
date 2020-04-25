@@ -402,7 +402,7 @@ class SkillTreeView(wx.Panel):
             setattr(self, "{}Btn".format(name.lower()), btn)
             btn.Enable(True)
             btn.SetToolTip("%s skills %s clipboard" % (name, direction))
-            bSizerButtons.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT | wx.ALL, 5)
+            bSizerButtons.Add(btn, 0, wx.ALL, 5)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Skills".format(name.lower())))
 
         pmainSizer.Add(bSizerButtons, 0, wx.EXPAND, 5)
