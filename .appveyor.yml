@@ -3,7 +3,7 @@ clone_depth: 400
 
 environment:
   matrix:
-    - PYTHON: "C:\\Python38-x64"
+    - PYTHON: "C:\\Python37-x64"
 # Should be enabled only for build process debugging
 # init:
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -40,6 +40,8 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   - ps: echo("Install pip requirements:")
+  # This one is needed to build wxpython 4.0.6 on windows
+  - cmd: "python -m pip install pathlib2"
   - cmd: "python -m pip install -r requirements.txt"
   - cmd: "python -m pip install PyInstaller==3.6"
 
