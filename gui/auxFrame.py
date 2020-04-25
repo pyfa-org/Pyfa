@@ -27,7 +27,9 @@ class AuxiliaryFrame(wx.Frame):
     _instance = None
 
     def __init__(self, parent, id=None, title=None, pos=None, size=None, style=None, name=None, resizeable=False):
-        baseStyle = wx.FRAME_NO_TASKBAR | wx.FRAME_FLOAT_ON_PARENT | wx.CAPTION | wx.CLOSE_BOX | wx.SYSTEM_MENU
+        baseStyle = wx.FRAME_NO_TASKBAR | wx.CAPTION | wx.CLOSE_BOX | wx.SYSTEM_MENU
+        if parent is not None:
+            baseStyle = baseStyle | wx.FRAME_FLOAT_ON_PARENT
         if resizeable:
             baseStyle = baseStyle | wx.RESIZE_BORDER | wx.MAXIMIZE_BOX
         kwargs = {
