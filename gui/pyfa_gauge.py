@@ -254,7 +254,6 @@ class PyGauge(wx.Window):
                 w = rect.width
             else:
                 w = rect.width * (float(value) / 100)
-
             r = copy.copy(rect)
             r.width = w
             dc.DrawRectangle(r)
@@ -315,7 +314,8 @@ class PyGauge(wx.Window):
                 color,
                 gradient_color
             )
-            dc.DrawBitmap(gradient_bitmap, r.left, r.top)
+            if gradient_bitmap is not None:
+                dc.DrawBitmap(gradient_bitmap, r.left, r.top)
 
         # font stuff begins here
         dc.SetFont(self.font)
