@@ -1028,7 +1028,7 @@ class Fit:
 
     def clearTail(self):
         tailPositions = {}
-        for mod in self.modules:
+        for mod in reversed(self.modules):
             if not mod.isEmpty:
                 break
             tailPositions[self.modules.index(mod)] = mod.slot
