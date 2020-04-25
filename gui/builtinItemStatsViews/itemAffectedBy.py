@@ -71,7 +71,7 @@ class ItemAffectedBy(wx.Panel):
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, 0)
             bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshTree)
 
