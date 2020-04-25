@@ -14,7 +14,7 @@ class PFStaticText(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         text = wx.StaticText(self, wx.ID_ANY, label, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
         text.Wrap(-1)
-        mainSizer.Add(text, 1, wx.ALL, 10)
+        mainSizer.Add(text, 1, wx.ALL, self.FromDIP(10))
         self.SetSizer(mainSizer)
         self.Layout()
 

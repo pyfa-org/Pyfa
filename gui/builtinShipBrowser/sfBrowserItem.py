@@ -86,12 +86,13 @@ class PFBaseButton:
 
 
 class PFToolbar:
-    def __init__(self, parent):
+
+    def __init__(self, parent, padding):
         self.Parent = parent
         self.buttons = []
         self.toolbarX = 0
         self.toolbarY = 0
-        self.padding = 2
+        self.padding = padding
         self.hoverLabel = ""
 
     def SetPosition(self, pos):
@@ -240,8 +241,10 @@ class PFToolbar:
 
 
 class SFBrowserItem(wx.Window):
-    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=(0, 16), style=0):
-        wx.Window.__init__(self, parent, id, pos, size, style)
+
+    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=0):
+        wx.Window.__init__(self, parent, id=id, pos=pos)
+        self.SetSize(self.FromDIP((0, 16)))
         self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
         self.highlighted = False
         self.selected = False
@@ -250,7 +253,7 @@ class SFBrowserItem(wx.Window):
 
         self.canBeDragged = False
 
-        self.toolbar = PFToolbar(self)
+        self.toolbar = PFToolbar(self, padding=self.FromDIP(2))
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)

@@ -19,8 +19,10 @@ pyfalog = Logger(__name__)
 
 
 class NavigationPanel(SFItem.SFBrowserItem):
-    def __init__(self, parent, size=(-1, 24)):
-        SFItem.SFBrowserItem.__init__(self, parent, size=size)
+    def __init__(self, parent):
+        SFItem.SFBrowserItem.__init__(self, parent)
+        size = self.FromDIP((-1, 24))
+        self.SetSize(size)
 
         self.rewBmpH = BitmapLoader.getBitmap("frewind_small", "gui")
         self.forwBmp = BitmapLoader.getBitmap("fforward_small", "gui")
@@ -61,7 +63,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.toolbar.AddButton(self.searchBmp, "Search fittings ({}+F)".format(modifier), clickCallback=self.ToggleSearchBox,
                                hoverBitmap=self.searchBmpH)
 
-        self.padding = 4
+        self.padding = self.FromDIP(4)
         self.lastSearch = ""
         self.recentSearches = []  # not used?
         self.inSearch = False
@@ -69,7 +71,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
         w, h = size
         self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
-                                            (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
+                                            (-1, h - self.FromDIP(2) if 'wxGTK' in wx.PlatformInfo else -1),
                                              (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.BrowserSearchBox.Show(False)
 

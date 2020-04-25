@@ -7,7 +7,7 @@ class PFWidgetsContainer(PFListPane):
     def __init__(self, parent):
         PFListPane.__init__(self, parent)
 
-        self.anim = animUtils.LoadAnimation(self, label="", size=(100, 12))
+        self.anim = animUtils.LoadAnimation(self, label="", size=self.FromDIP((100, 12)))
         self.anim.Stop()
         self.anim.Show(False)
 

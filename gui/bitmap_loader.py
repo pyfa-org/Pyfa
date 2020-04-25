@@ -109,7 +109,7 @@ class BitmapLoader:
         w, h = img.GetSize()
         extraScale = cls.gen_scale / current_res_scale
 
-        bmp = wx.Bitmap(img.Scale(int(w * extraScale), int(h * extraScale)))
+        bmp = wx.Bitmap(img.Scale(int(w * extraScale), int(h * extraScale), quality=wx.IMAGE_QUALITY_NORMAL))
         return bmp
 
     @classmethod

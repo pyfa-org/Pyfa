@@ -22,10 +22,10 @@ class RaceSelector(wx.Window):
         self.animPeriod = 25
         self.animDuration = 250
         self.animStep = 0
-        self.maxWidth = 24
-        self.minWidth = 5 if animate else self.maxWidth
-        self.maxHeight = 24
-        self.minHeight = 10 if animate else self.maxHeight
+        self.maxWidth = self.FromDIP(24)
+        self.minWidth = self.FromDIP(5) if animate else self.maxWidth
+        self.maxHeight = self.FromDIP(24)
+        self.minHeight = self.FromDIP(10) if animate else self.maxHeight
 
         self.direction = 0 if animate else 1
         self.layout = layout
@@ -48,11 +48,11 @@ class RaceSelector(wx.Window):
         self.hoveredItem = None
 
         if layout == wx.VERTICAL:
-            self.buttonsBarPos = (4, 0)
+            self.buttonsBarPos = self.FromDIP((4, 0))
         else:
-            self.buttonsBarPos = (0, 4)
+            self.buttonsBarPos = self.FromDIP((0, 4))
 
-        self.buttonsPadding = 4
+        self.buttonsPadding = self.FromDIP(4)
 
         if layout == wx.VERTICAL:
             self.bmpArrow = BitmapLoader.getBitmap("down-arrow2", "gui")
@@ -68,7 +68,7 @@ class RaceSelector(wx.Window):
             img = img.Rotate90(False)
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
         if layout == wx.VERTICAL:
-            img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
+            img = img.Scale(self.minWidth, self.FromDIP(8), wx.IMAGE_QUALITY_HIGH)
 
         self.bmpArrow = wx.Bitmap(img)
 
