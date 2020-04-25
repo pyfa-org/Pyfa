@@ -91,7 +91,7 @@ class BitmapLoader:
     @classmethod
     def loadBitmap(cls, name, location):
         if cls.gen_scale is None:
-            cls.gen_scale = wx.GetApp().GetTopWindow().GetContentScaleFactor()
+            cls.gen_scale = 1 if 'wxGTK' in wx.PlatformInfo else wx.GetApp().GetTopWindow().GetContentScaleFactor()
             cls.res_scale = math.ceil(cls.gen_scale)  # We provide no images with non-int scaling factor
         # Find the biggest image we have, according to our scaling factor
         filename = img = None
