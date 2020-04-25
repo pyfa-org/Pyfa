@@ -19,6 +19,7 @@
 
 
 class Jargon:
+
     def __init__(self, rawdata: dict):
         self._rawdata = rawdata
 
@@ -31,15 +32,12 @@ class Jargon:
     def get_rawdata(self) -> dict:
         return self._rawdata
 
-    def apply(self, query):
-        query_words = query.split()
+    def apply(self, query_words):
         parts = []
-
         for word in query_words:
-            replacement = self.get(word)
-            if replacement:
-                parts.append(replacement)
+            replacements = self.get(word)
+            if replacements:
+                parts.append('({})'.format('|'.join(replacements)))
             else:
                 parts.append(word)
-
-        return ' '.join(parts)
+        return parts

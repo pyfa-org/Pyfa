@@ -9441,7 +9441,7 @@
     "groupID": 4029, 
     "groupName": "Talassonite", 
     "groupNameID": 549008, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4030": {
@@ -9452,7 +9452,7 @@
     "groupID": 4030, 
     "groupName": "Rakovene", 
     "groupNameID": 549009, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4031": {
@@ -9463,7 +9463,7 @@
     "groupID": 4031, 
     "groupName": "Bezdnacine", 
     "groupNameID": 549010, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4033": {
@@ -9544,6 +9544,17 @@
     "published": true, 
     "useBasePrice": false
   }, 
+  "4041": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 17, 
+    "fittableNonSingleton": false, 
+    "groupID": 4041, 
+    "groupName": "Jump Filaments", 
+    "groupNameID": 553695, 
+    "published": true, 
+    "useBasePrice": false
+  }, 
   "405": {
     "anchorable": false, 
     "anchored": false, 
@@ -9553,6 +9564,28 @@
     "groupName": "Anti Cloaking Pulse", 
     "groupNameID": 63853, 
     "iconID": 0, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4052": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 9, 
+    "fittableNonSingleton": false, 
+    "groupID": 4052, 
+    "groupName": "Jump Filament Blueprint", 
+    "groupNameID": 560666, 
+    "published": true, 
+    "useBasePrice": false
+  }, 
+  "4053": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4053, 
+    "groupName": "Irregular Capsule", 
+    "groupNameID": 561629, 
     "published": false, 
     "useBasePrice": false
   }, 

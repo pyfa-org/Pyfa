@@ -21,9 +21,12 @@ class PFContextMenuPref(PreferenceView):
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
         mainSizer.Add(self.stTitle, 0, wx.EXPAND | wx.ALL, 5)
 
-        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY,
-                                        "Disabling context menus can improve responsiveness.",
-                                        wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSubTitle = wx.StaticText(
+            panel, wx.ID_ANY,
+            'Disabling context menus can improve responsiveness.\n'
+            'You can hold {} key + right-click to show all menu items regardless of these settings.'.format(
+                'Command' if 'wxMac' in wx.PlatformInfo else 'Control'),
+            wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitle.Wrap(-1)
         mainSizer.Add(self.stSubTitle, 0, wx.ALL, 5)
 

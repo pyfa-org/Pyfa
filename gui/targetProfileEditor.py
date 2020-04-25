@@ -25,12 +25,12 @@ from collections import OrderedDict
 import wx
 from logbook import Logger
 
-import gui.mainFrame
 import gui.globalEvents as GE
+import gui.mainFrame
 from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
-from gui.utils.clipboard import toClipboard, fromClipboard
+from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
+from gui.utils.clipboard import fromClipboard, toClipboard
 from gui.utils.inputs import FloatBox, InputValidator, strToFloat
 from service.fit import Fit
 from service.targetProfile import TargetProfile
@@ -68,7 +68,7 @@ class TargetProfileNameValidator(BaseValidator):
         try:
             if len(text) == 0:
                 raise ValueError("You must supply a name for your Target Profile!")
-            elif text in [x.name for x in entityEditor.choices]:
+            elif text in [x.rawName for x in entityEditor.choices]:
                 raise ValueError("Target Profile name already in use, please choose another.")
 
             return True
@@ -88,7 +88,7 @@ class TargetProfileEntityEditor(EntityEditor):
 
     def getEntitiesFromContext(self):
         sTR = TargetProfile.getInstance()
-        choices = sorted(sTR.getTargetProfileList(), key=lambda p: p.name)
+        choices = sorted(sTR.getUserTargetProfileList(), key=lambda p: p.rawName)
         return choices
 
     def DoNew(self, name):
@@ -352,6 +352,8 @@ class TargetProfileEditor(AuxiliaryFrame):
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 msg = "Could not import from clipboard:"
                 pyfalog.warning(msg)

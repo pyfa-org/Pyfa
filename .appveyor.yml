@@ -1,126 +1,76 @@
+image: Visual Studio 2019
+clone_depth: 400
+
 environment:
-  global:
-    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script intepreter
-    # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
-
   matrix:
-
-    - PYTHON: "C:\\Python36"
-      PYTHON_VERSION: "3.6.x"
-      PYTHON_ARCH: "32"
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    - PYTHON: "C:\\Python38-x64"
+# Should be enabled only for build process debugging
+# init:
+#   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
-  # If there is a newer build queued for the same PR, cancel this one.
-  # The AppVeyor 'rollout builds' option is supposed to serve the same
-  # purpose but it is problematic because it tends to cancel builds pushed
-  # directly to master instead of just PR builds (or the converse).
-  # credits: JuliaLang developers.
-  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
-        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
-        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
-          throw "There are newer queued builds for this pull request, failing early." }
+  - ps: echo("OS version:")
+  - ps: "[System.Environment]::OSVersion.Version"
 
-  - ECHO "Filesystem root:"
-  - ps: "ls \"C:/\""
+  - ps: echo("Filesystem - root:")
+  - ps: "ls \"C:\\\""
 
-  - ECHO "Filesystem projects root:"
+  - ps: echo("Filesystem - projects root:")
   - ps: "ls \"C:\\projects\\\""
 
-  - ECHO "Filesystem pyfa root:"
-  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\""
+  - ps: echo("Filesystem - pyfa root:")
+  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
 
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+  - ps: echo("Filesystem - installed SDKs:")
+  - ps: "ls \"C:\\Program Files (x86)\\Windows Kits\\\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - cmd: "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+  - cmd: "python --version"
+  - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "pip install --disable-pip-version-check --user --upgrade pip"
+  - cmd: "python -m pip install --upgrade pip"
 
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  - ECHO "Install pip requirements:"
-  - "python -m pip install -r requirements.txt"
-  - "python -m pip install PyInstaller"
+  - ps: echo("Install pip requirements:")
+  - cmd: "python -m pip install -r requirements.txt"
+  - cmd: "python -m pip install PyInstaller==3.6"
 
 before_build:
     # directory that will contain the built files
   - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
   - ps: $env:PYFA_VERSION = (python ./scripts/dump_version.py)
-  - ps: echo("pyfa version ")
-  - ps: echo ($env:PYFA_VERSION)
+  - ps: echo("pyfa version $env:PYFA_VERSION")
 
 build_script:
-  - ECHO "Build pyfa:"
-
+  - ps: echo("Build pyfa:")
   # Build gamedata DB
-  - "python db_update.py"
-  ##########
-  # PyInstaller - create binaries for pyfa
-  ##########
+  - cmd: "python db_update.py"
   # Build command for PyInstaller
-  - "python -m PyInstaller --noupx --clean --windowed --noconsole -y pyfa.spec"
+  - cmd: "python -m PyInstaller --noupx --clean --windowed --noconsole -y pyfa.spec"
   # Copy over manifest (See pyfa-org/pyfa#1622)
   - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
-  # Not really sure if this is needed, but why not
-  - ps: xcopy /y dist_assets\win\Microsoft.VC90.CRT.manifest $env:PYFA_DIST_DIR\pyfa\
-
-  ##########
-  # InnoScript EXE building
-  # This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
-  ##########
-  - "python dist_assets/win/dist.py"
+  # InnoScript EXE building. This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
+  - cmd: "python dist_assets/win/dist.py"
   - ps: dir $env:PYFA_DIST_DIR/
-  #- ECHO "Build pyfa (Debug):"
-  #- copy C:\projects\pyfa\dist_assets\win\pyfa_debug.spec C:\projects\pyfa\pyfa_debug.spec
-  #- "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa_debug.spec"
-
-build: on
 
 after_build:
   - ps: "ls \"./\""
-  #- ps: "ls \"C:\\projects\\pyfa\\build\\pyfa\\\""
-#  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\build\\exe.win32-2.7\\\""
-  # Zip
-  # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
-  #- 7z a build.zip -r C:\projects\pyfa\build\pyfa\*.*
-  - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*.*"
-  #- 7z a pyfa_debug.zip -r C:\projects\pyfa\dist\pyfa_debug\*.*
-
-on_success:
-  # Do nothing right now
+  - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*"
 
 test_script:
-  #- tox
-  #- "py.test --cov=./"
-  # Run the project tests
-  # - "%CMD_IN_ENV% python C:/projects/eve-gnosis/setup.py nosetests"
-
-after_test:
-  # If tests are successful, create binary packages for the project.
-  # - "%CMD_IN_ENV% python setup.py bdist_wheel"
-  # - "%CMD_IN_ENV% python setup.py bdist_wininst"
-  # - "%CMD_IN_ENV% python setup.py bdist_msi"
-  # - ps: "ls dist"
+  # Ha... we're just building
 
 artifacts:
-  # Archive the generated packages in the ci.appveyor.com build report.
   - path: pyfa*-win.zip
   - path: pyfa*-win.exe
-  #- path: pyfa_debug.zip
-  #  name: Pyfa_debug
 
 deploy:
   tag: $(pyfa_version)
@@ -128,10 +78,9 @@ deploy:
   description: 'Release description'
   provider: GitHub
   auth_token:
-    secure: BfNHO66ff5hVx2O2ORbl49X0U/5h2V2T0IuRZDwm7fd1HvsVluF0wRCbl29oRp1M
+    secure: X+U3hOAMTt7HGXCR/LXaGNF6qyhUXetrjz5+xlWiNJQ3XEdzhZZmHK75m0Hm6qre
   draft: true
+  force_update: false
+  # deploy on tag push only
   on:
-    APPVEYOR_REPO_TAG: true        # deploy on tag push only
-#on_success:
-#  - TODO: upload the content of dist/*.whl to a public wheelhouse
-#
+    APPVEYOR_REPO_TAG: true

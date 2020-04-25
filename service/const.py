@@ -57,6 +57,7 @@ class PortMultiBuyOptions(IntEnum):
     CARGO = 2
     LOADED_CHARGES = 3
     OPTIMIZE_PRICES = 4
+    BOOSTERS = 5
 
 
 @unique
@@ -68,6 +69,7 @@ class PortEftOptions(IntEnum):
     MUTATIONS = 2
     LOADED_CHARGES = 3
     CARGO = 4
+    BOOSTERS = 5
 
 
 @unique

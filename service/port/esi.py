@@ -161,6 +161,8 @@ def importESI(string):
             fitobj.ship = Ship(sMkt.getItem(ship))
         except ValueError:
             fitobj.ship = Citadel(sMkt.getItem(ship))
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         pyfalog.warning("Caught exception in importESI")
         return None
@@ -201,6 +203,8 @@ def importESI(string):
 
                     moduleList.append(m)
 
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.warning("Could not process module.")
             continue

@@ -428,6 +428,31 @@ class SkillTreeView(wx.Panel):
         # This cuases issues with GTK, see #1866
         # self.Layout()
 
+        # For level keyboard shortcuts
+        self.ChangeLevelEvent, CHANGE_LEVEL_EVENT = wx.lib.newevent.NewEvent()
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(CHANGE_LEVEL_EVENT, self.changeLevel)
+
+    def kbEvent(self, event):
+        keyLevelMap = {
+            # Regular number keys
+            48: 0, 49: 1, 50: 2, 51: 3, 52: 4, 53: 5,
+            # Numpad keys
+            wx.WXK_NUMPAD0: 0, wx.WXK_NUMPAD1: 1, wx.WXK_NUMPAD2: 2,
+            wx.WXK_NUMPAD3: 3, wx.WXK_NUMPAD4: 4, wx.WXK_NUMPAD5: 5}
+        keycode = event.GetKeyCode()
+        if keycode in keyLevelMap and event.GetModifiers() == wx.MOD_NONE:
+            level = keyLevelMap[keycode]
+            selection = self.skillTreeListCtrl.GetSelection()
+            if selection:
+                dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
+                if dataType == 'skill':
+                    event = self.ChangeLevelEvent()
+                    event.SetId(self.idLevels[level])
+                    wx.PostEvent(self, event)
+                    return
+        event.Skip()
+
     def importSkills(self, evt):
 
         with wx.MessageDialog(
@@ -450,6 +475,8 @@ class SkillTreeView(wx.Panel):
                     if skill:
                         skill.setLevel(level, ignoreRestrict=True)
 
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.error(e)
                 with wx.MessageDialog(self, "There was an error importing skills, please see log file", "Error", wx.ICON_ERROR) as dlg:
@@ -611,6 +638,8 @@ class SkillTreeView(wx.Panel):
 
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
+        if char.name in ("All 0", "All 5"):
+            return
         selection = self.skillTreeListCtrl.GetSelection()
         dataType, skillID = self.skillTreeListCtrl.GetItemData(selection)
 
@@ -700,12 +729,12 @@ class ImplantEditorView(BaseImplantEditorView):
 
         sChar.removeImplant(char.ID, implant)
 
-    def addImplantSet(self, impSet):
+    def addImplants(self, implants):
         charEditor = self.Parent.Parent
         char = charEditor.entityEditor.getActiveEntity()
 
         sChar = Character.getInstance()
-        for implant in impSet.implants:
+        for implant in implants:
             sChar.addImplant(char.ID, implant.item.ID)
 
         wx.PostEvent(charEditor, GE.CharChanged())
@@ -804,7 +833,7 @@ class APIView(wx.Panel):
     def fetchSkills(self, evt):
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
-        sChar.apiFetch(char.ID, self.__fetchCallback)
+        sChar.apiFetch(char.ID, APIView.fetchCallback)
 
     def addCharacter(self, event):
         sEsi = Esi.getInstance()
@@ -812,7 +841,7 @@ class APIView(wx.Panel):
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
-        return self.charChoice.GetClientData(selection) if selection is not -1 else None
+        return self.charChoice.GetClientData(selection) if selection != -1 else None
 
     def ssoListChanged(self, event):
         if not self:  # todo: fix event not unbinding properly
@@ -870,7 +899,8 @@ class APIView(wx.Panel):
         if event is not None:
             event.Skip()
 
-    def __fetchCallback(self, e=None):
+    @staticmethod
+    def fetchCallback(e=None):
         if e:
             pyfalog.warn("Error fetching skill information for character for __fetchCallback")
             exc_type, exc_value, exc_trace = e

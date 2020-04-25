@@ -4235,6 +4235,8 @@ def upgrade(saveddata_engine):
 
             # And last but not least, delete the last subsystem
             saveddata_engine.execute("DELETE FROM modules WHERE ID = ?", (oldModules[4][0],))
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             # if something fails, fuck it, we tried. It'll default to the generic conversion below
             continue

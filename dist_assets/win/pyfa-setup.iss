@@ -15,10 +15,6 @@
 #define MyAppURL "https://github.com/pyfa-org/Pyfa/"
 #define MyAppExeName "pyfa.exe"
 
-; What version starts with the new structure (1.x.0). This is used to determine if we run directory structure cleanup
-#define MajorVersionFlag 2
-#define MinorVersionFlag 0
-
 #ifndef MyOutputFile
     #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-win', " ", "-"))
 #endif
@@ -30,7 +26,6 @@
 #endif
 
 [Setup]
-
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
@@ -41,6 +36,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64
+CloseApplications=yes
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
@@ -49,7 +47,6 @@ OutputDir={#MyOutputDir}
 OutputBaseFilename={#MyOutputFile}
 SetupIconFile={#MyAppDir}\pyfa.ico
 SolidCompression=yes
-CloseApplications=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -83,6 +80,7 @@ Type: files; Name: "{app}\*.pyc"
 
 [Code]
 
+/////////////////////////////////////////////////////////////////////
 function IsAppRunning(const FileName : string): Boolean;
 var
     FSWbemLocator: Variant;
@@ -99,6 +97,7 @@ begin
     FSWbemLocator := Unassigned;
 end;
 
+/////////////////////////////////////////////////////////////////////
 procedure RemoveFromVirtualStore;
 var
     VirtualStore,FileName,FilePath:String;
@@ -115,6 +114,7 @@ begin
     end;
 end;
 
+/////////////////////////////////////////////////////////////////////
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   if(IsAppRunning( 'pyfa.exe' )) then
@@ -127,54 +127,61 @@ begin
     end
 end;
 
-function GetUninstallString: string;
+/////////////////////////////////////////////////////////////////////
+function GetUninstallString(): String;
 var
-  sUnInstPath: string;
+  sUnInstPath: String;
   sUnInstallString: String;
 begin
-  Result := '';
   sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\{{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1'); //Your App GUID/ID
   sUnInstallString := '';
   if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
-    RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+    if not RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString) then
+      if not RegQueryStringValue(HKLM32, sUnInstPath, 'UninstallString', sUnInstallString) then
+        RegQueryStringValue(HKCU32, sUnInstPath, 'UninstallString', sUnInstallString);
   Result := sUnInstallString;
 end;
 
-function IsUpgrade: Boolean;
+/////////////////////////////////////////////////////////////////////
+function UnInstallOldVersion(): Integer;
+var
+  sUnInstallString: String;
+  iResultCode: Integer;
+begin
+// Return Values:
+// 1 - uninstall string is empty
+// 2 - error executing the UnInstallString
+// 3 - successfully executed the UnInstallString
+
+  // default return value
+  Result := 0;
+
+  // get the uninstall string of the old app
+  sUnInstallString := GetUninstallString();
+  if sUnInstallString <> '' then begin
+    sUnInstallString := RemoveQuotes(sUnInstallString);
+    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
+      Result := 3
+    else
+      Result := 2;
+  end else
+    Result := 1;
+end;
+
+/////////////////////////////////////////////////////////////////////
+function IsUpgrade(): Boolean;
 begin
   Result := (GetUninstallString() <> '');
 end;
 
-function InitializeSetup: Boolean;
-var
-  V: Integer;
-  iResultCode: Integer;
-  sUnInstallString: string;
-  iOldVersionMajor: Cardinal;
-  iOldVersionMinor: Cardinal;
+/////////////////////////////////////////////////////////////////////
+procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  Result := True; // in case when no previous version is found
-  if RegValueExists(HKEY_LOCAL_MACHINE,'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1', 'UninstallString') then  //Your App GUID/ID
+  if (CurStep=ssInstall) then
   begin
-    RegQueryDWordValue(HKEY_LOCAL_MACHINE,
-      'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1',
-      'MajorVersion', iOldVersionMajor);
-    RegQueryDWordValue(HKEY_LOCAL_MACHINE,
-      'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1',
-      'MinorVersion', iOldVersionMinor);
-    if (iOldVersionMajor < {#MajorVersionFlag}) or ((iOldVersionMajor = {#MajorVersionFlag}) and (iOldVersionMinor < {#MinorVersionFlag})) then // If old version with old structure is installed.
+    if (IsUpgrade()) then
     begin
-      V := MsgBox(ExpandConstant('An old version of pyfa was detected. Due to recent changes in the application structure, you must uninstall the previous version first. This will not affect your user data (saved fittings, characters, etc.). Do you want to uninstall now?'), mbInformation, MB_YESNO); //Custom Message if App installed
-      if V = IDYES then
-      begin
-        sUnInstallString := GetUninstallString();
-        sUnInstallString :=  RemoveQuotes(sUnInstallString);
-        Exec(ExpandConstant(sUnInstallString), '', '', SW_SHOW, ewWaitUntilTerminated, iResultCode);
-        Result := True; //if you want to proceed after uninstall
-                  //Exit; //if you want to quit after uninstall
-      end
-      else
-        Result := False; //when older version present and not uninstalled
+      UnInstallOldVersion();
     end;
   end;
 end;

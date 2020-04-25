@@ -122,7 +122,7 @@ class CharacterSelection(wx.Panel):
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
-        return self.charChoice.GetClientData(selection) if selection is not -1 else None
+        return self.charChoice.GetClientData(selection) if selection != -1 else None
 
     def refreshCharacterList(self, event=None):
         choice = self.charChoice
@@ -303,7 +303,6 @@ class CharacterSelection(wx.Panel):
         if tabulationLevel == 0:
             for item, subReqs in reqs.items():
                 skillsMap = self._buildSkillsTooltipCondensed(subReqs, item.name, 1, skillsMap)
-            sorted(skillsMap, key=skillsMap.get)
         else:
             for name, info in reqs.items():
                 level, ID, more = info
@@ -323,3 +322,25 @@ class CharacterSelection(wx.Panel):
                 skillsMap = self._buildSkillsTooltipCondensed(more, currItem, tabulationLevel + 1, skillsMap)
 
         return skillsMap
+
+    def _buildSkillsTooltipSuperCondensed(self, reqs, currItem="", tabulationLevel=0, skillsMap=None):
+        allReqs = {}
+        implicitReqs = {}
+
+        def traverseReqs(itemReqs, topLevel=True):
+            for skillName, (skillLevel, skillTypeID, subReqs) in itemReqs.items():
+                if (skillTypeID, skillName) not in allReqs or allReqs[(skillTypeID, skillName)] < skillLevel:
+                    allReqs[(skillTypeID, skillName)] = skillLevel
+                if not topLevel and (skillTypeID not in implicitReqs or implicitReqs[skillTypeID] < skillLevel):
+                    implicitReqs[skillTypeID] = skillLevel
+                traverseReqs(subReqs, topLevel=False)
+
+        for item, itemReqs in reqs.items():
+            traverseReqs(itemReqs)
+
+        newReqs = {}
+        for (skillTypeID, skillName), skillLevel in allReqs.items():
+            if skillTypeID not in implicitReqs or implicitReqs[skillTypeID] < skillLevel:
+                newReqs[skillName] = skillLevel, skillTypeID
+
+        return newReqs

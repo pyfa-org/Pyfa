@@ -151,52 +151,71 @@ class FirepowerViewFull(StatsView):
         else:
             self.stEff.Hide()
 
-        def dpsToolTip(preSpool, fullSpool, prec, lowest, highest):
-            if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
+        def hasSpoolUp(preSpool, fullSpool):
+            if preSpool is None or fullSpool is None:
+                return False
+            return roundToPrec(preSpool.total, prec) != roundToPrec(fullSpool.total, prec)
+
+        def dpsToolTip(normal, preSpool, fullSpool, prec, lowest, highest):
+            if normal is None or preSpool is None or fullSpool is None:
                 return ""
-            else:
-                return "Spool up: {}-{}".format(
-                    formatAmount(preSpool, prec, lowest, highest),
-                    formatAmount(fullSpool, prec, lowest, highest))
+            hasSpool = hasSpoolUp(preSpool, fullSpool)
+            lines = []
+            if hasSpool:
+                lines.append("Spool up: {}-{}".format(
+                    formatAmount(preSpool.total, prec, lowest, highest),
+                    formatAmount(fullSpool.total, prec, lowest, highest)))
+            if getattr(normal, 'total', None):
+                if hasSpool:
+                    lines.append("")
+                    lines.append("Current: {}".format(formatAmount(normal.total, prec, lowest, highest)))
+                for dmgType in normal.names():
+                    val = getattr(normal, dmgType, None)
+                    if val:
+                        lines.append("{}{}: {}%".format(
+                            "  " if hasSpool else "",
+                            dmgType.capitalize(),
+                            formatAmount(val / normal.total * 100, 3, 0, 0)))
+            return "\n".join(lines)
 
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         stats = (
             (
                 "labelFullDpsWeapon",
-                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total,
-                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).total,
-                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)),
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)),
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)),
                 3, 0, 0, "{}{} DPS"),
             (
                 "labelFullDpsDrone",
-                lambda: fit.getDroneDps().total,
-                lambda: fit.getDroneDps().total,
-                lambda: fit.getDroneDps().total,
+                lambda: fit.getDroneDps(),
+                lambda: fit.getDroneDps(),
+                lambda: fit.getDroneDps(),
                 3, 0, 0, "{}{} DPS"),
             (
                 "labelFullVolleyTotal",
-                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total,
-                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).total,
-                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)),
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)),
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)),
                 3, 0, 0, "{}{}"),
             (
                 "labelFullDpsTotal",
-                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total,
-                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).total,
-                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)),
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)),
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)),
                 3, 0, 0, "{}{}"))
 
         counter = 0
         for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat in stats:
             label = getattr(self, labelName)
-            val = val() if fit is not None else 0
-            preSpoolVal = preSpoolVal() if fit is not None else 0
-            fullSpoolVal = fullSpoolVal() if fit is not None else 0
+            val = val() if fit is not None else None
+            preSpoolVal = preSpoolVal() if fit is not None else None
+            fullSpoolVal = fullSpoolVal() if fit is not None else None
             if self._cachedValues[counter] != val:
-                tooltipText = dpsToolTip(preSpoolVal, fullSpoolVal, prec, lowest, highest)
+                tooltipText = dpsToolTip(val, preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetLabel(valueFormat.format(
-                    formatAmount(val, prec, lowest, highest),
-                    "\u02e2" if tooltipText else ""))
+                    formatAmount(0 if val is None else val.total, prec, lowest, highest),
+                    "\u02e2" if hasSpoolUp(preSpoolVal, fullSpoolVal) else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1

@@ -16,7 +16,7 @@ from PIL import Image
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')
 parser.add_argument('-s', '--server', required=False, default='tq', type=str, help='which server to use (defaults to tq)')
-parser.add_argument('-i', '--icons', required=True, type=str, help='Path to icons .json')
+parser.add_argument('-i', '--icons', required=True, type=str, help='Path to iconids.json extracted by phobos')
 args = parser.parse_args()
 
 
@@ -48,7 +48,7 @@ with open(os.path.join(res_cache, resfileindex[1]), 'r') as f:
     res_index = {x.split(',')[0].lower(): x.split(',') for x in lines}
 
 # Need to copy the file to  our cuirrent directory
-graphics_loader_file = os.path.join(res_cache, file_index['app:/bin/graphicIDsLoader.pyd'][1])
+graphics_loader_file = os.path.join(res_cache, file_index['app:/bin64/graphicIDsLoader.pyd'][1])
 to_path = os.path.dirname(os.path.abspath(__file__))
 copyfile(graphics_loader_file, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'graphicIDsLoader.pyd'))
 

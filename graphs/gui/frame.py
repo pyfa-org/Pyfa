@@ -50,6 +50,7 @@ class GraphFrame(AuxiliaryFrame):
 
         super().__init__(parent, title='Graphs', size=(520, 390), resizeable=True)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.includeHidden = includeHidden
 
         self.SetIcon(wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui')))
 
@@ -74,7 +75,7 @@ class GraphFrame(AuxiliaryFrame):
 
         # Setup - graph selector
         for view in FitGraph.views:
-            if view.hidden and not includeHidden:
+            if view.hidden and not self.includeHidden:
                 continue
             self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)

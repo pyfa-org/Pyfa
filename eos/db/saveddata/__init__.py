@@ -13,6 +13,5 @@ __all__ = [
     "miscData",
     "targetProfile",
     "override",
-    "implantSet",
-    "loadDefaultDatabaseValues"
+    "implantSet"
 ]

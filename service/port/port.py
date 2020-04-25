@@ -47,7 +47,7 @@ from service.port.muta import parseMutant
 pyfalog = Logger(__name__)
 
 # 2017/04/05 NOTE: simple validation, for xml file
-RE_XML_START = r'<\?xml\s+version="1.0"\s*\?>'
+RE_XML_START = r'<\?xml\s+version="1.0"[^<>]*\?>'
 
 
 class Port:
@@ -177,12 +177,15 @@ class Port:
 
         except UserCancelException:
             return False, "Processing has been canceled.\n"
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.critical("Unknown exception processing: {0}", path)
             pyfalog.critical(e)
             # TypeError: not all arguments converted during string formatting
 #                 return False, "Unknown Error while processing {0}" % path
-            return False, "Unknown error while processing %s\n\n Error: %s" % (path, e.message)
+            return False, "Unknown error while processing {}\n\n Error: {} {}".format(
+                path, type(e).__name__, getattr(e, 'message', ''))
 
         return True, fit_list
 
@@ -252,11 +255,13 @@ class Port:
             # Try to import mutated module
             try:
                 baseItem, mutaplasmidItem, mutations = parseMutant(lines)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 pass
             else:
-                if baseItem is not None and mutaplasmidItem is not None:
-                    return "MutatedItem", False, ((baseItem, mutaplasmidItem, mutations),)
+                if baseItem is not None:
+                    return "FittingItem", False, ((baseItem, mutaplasmidItem, mutations),)
             # Try to import into one of additions panels
             isDrone, droneData = isValidDroneImport(string)
             if isDrone:

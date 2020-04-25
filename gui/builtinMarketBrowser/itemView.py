@@ -1,15 +1,16 @@
 import wx
 from logbook import Logger
 
-from eos.saveddata.module import Module
 import gui.builtinMarketBrowser.pfSearchBox as SBox
+from config import slotColourMap
+from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
-from service.attribute import Attribute
 from service.fit import Fit
-from config import slotColourMap
+from service.market import Market
+
 
 pyfalog = Logger(__name__)
 
@@ -49,8 +50,6 @@ class ItemView(Display):
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
-        # Make reverse map, used by sorter
-        self.metaMap = self.makeReverseMetaMap()
         self.active = []
 
     def delaySearch(self, evt):
@@ -172,15 +171,15 @@ class ItemView(Display):
     def scheduleSearch(self, event=None):
         self.searchTimer.Stop()  # Cancel any pending timers
         search = self.marketBrowser.search.GetLineText(0)
-        # Make sure we do not count wildcard as search symbol
-        realsearch = search.replace("*", "")
+        # Make sure we do not count wildcards as search symbol
+        realsearch = search.replace('*', '').replace('?', '')
         # Re-select market group if search query has zero length
         if len(realsearch) == 0:
             self.selectionMade('search')
             return
 
         self.marketBrowser.mode = 'search'
-        self.sMkt.searchItems(search, self.populateSearch)
+        self.sMkt.searchItems(search, self.populateSearch, 'market')
 
     def clearSearch(self, event=None):
         # Wipe item store and update everything to accomodate with it
@@ -195,10 +194,11 @@ class ItemView(Display):
             self.setToggles()
             self.filterItemStore()
 
-    def populateSearch(self, items):
+    def populateSearch(self, itemIDs):
         # If we're no longer searching, dump the results
         if self.marketBrowser.mode != 'search':
             return
+        items = Market.getItems(itemIDs)
         self.updateItemStore(items)
         self.setToggles()
         self.filterItemStore()
@@ -214,7 +214,7 @@ class ItemView(Display):
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
-        metatab = self.metaMap.get(metagrpid)
+        metatab = sMkt.META_MAP_REVERSE_INDICES.get(metagrpid)
         metalvl = item.metaLevel or 0
 
         return catname, mktgrpid, parentname, metatab, metalvl, item.name
@@ -258,18 +258,6 @@ class ItemView(Display):
             item.marketShortcut = i + 1
 
         Display.refresh(self, items)
-
-    def makeReverseMetaMap(self):
-        """
-        Form map which tells in which tab items of given metagroup are located
-        """
-        revmap = {}
-        i = 0
-        for mgids in self.sMkt.META_MAP.values():
-            for mgid in mgids:
-                revmap[mgid] = i
-            i += 1
-        return revmap
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:

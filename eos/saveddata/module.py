@@ -214,8 +214,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if charge is None:
             charges = 0
         else:
-            chargeVolume = charge.volume
-            containerCapacity = self.item.capacity
+            chargeVolume = charge.attributes['volume'].value
+            containerCapacity = self.item.attributes['capacity'].value
             if chargeVolume is None or containerCapacity is None:
                 charges = 0
             else:
@@ -318,10 +318,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "energyDestabilizationRange", "empFieldRange",
                  "ecmBurstRange", "warpScrambleRange", "cargoScanRange",
                  "shipScanRange", "surveyScanRange")
+        maxRange = None
         for attr in attrs:
             maxRange = self.getModifiedItemAttr(attr, None)
             if maxRange is not None:
-                return maxRange
+                break
+        if maxRange is not None:
+            if 'burst projector' in self.item.name.lower():
+                maxRange -= self.owner.ship.getModifiedItemAttr("radius")
+            return maxRange
         missileMaxRangeData = self.missileMaxRangeData
         if missileMaxRangeData is None:
             return None
@@ -691,7 +696,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # Check this only if we're told to do so
         if hardpointLimit:
-            if fit.getHardpointsFree(self.hardpoint) < 1:
+            if fit.getHardpointsFree(self.hardpoint) < (1 if self.owner != fit else 0):
                 return False
 
         return True
@@ -773,8 +778,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check sizes, if 'charge size > module volume' it won't fit
         if charge is None:
             return True
-        chargeVolume = charge.volume
-        moduleCapacity = self.item.capacity
+        chargeVolume = charge.attributes['volume'].value
+        moduleCapacity = self.item.attributes['capacity'].value
         if chargeVolume is not None and moduleCapacity is not None and chargeVolume > moduleCapacity:
             return False
 

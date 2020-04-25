@@ -47,7 +47,7 @@ class ImplantTextValidor(BaseValidator):
             if len(text) == 0:
                 raise ValueError("You must supply a name for the Implant Set!")
             elif text in [x.name for x in entityEditor.choices]:
-                raise ValueError("Imlplant Set name already in use, please choose another.")
+                raise ValueError("Implant Set name already in use, please choose another.")
 
             return True
         except ValueError as e:
@@ -106,7 +106,7 @@ class ImplantSetEditorView(BaseImplantEditorView):
         sIS = ImplantSets.getInstance()
         set_ = self.Parent.entityEditor.getActiveEntity()
 
-        sIS.addImplant(set_.ID, item.ID)
+        sIS.addImplants(set_.ID, item.ID)
 
     def removeImplantFromContext(self, implant):
         sIS = ImplantSets.getInstance()
@@ -117,7 +117,7 @@ class ImplantSetEditorView(BaseImplantEditorView):
 
 class ImplantSetEditor(AuxiliaryFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, dataToAdd=None):
         super().__init__(
             parent, id=wx.ID_ANY, title="Implant Set Editor", resizeable=True,
             size=wx.Size(950, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
@@ -166,7 +166,13 @@ class ImplantSetEditor(AuxiliaryFrame):
         self.SetSizer(mainSizer)
         self.Layout()
 
-        if not self.entityEditor.checkEntitiesExist():
+        if dataToAdd:
+            name, implants = dataToAdd
+            newSet = self.entityEditor.DoNew(name)
+            ImplantSets.getInstance().addImplants(newSet.ID, *[i.item.ID for i in implants])
+            self.entityEditor.refreshEntityList(newSet)
+            wx.PostEvent(self.entityEditor.entityChoices, wx.CommandEvent(wx.wxEVT_COMMAND_CHOICE_SELECTED))
+        elif not self.entityEditor.checkEntitiesExist():
             self.Close()
             return
 
@@ -205,6 +211,8 @@ class ImplantSetEditor(AuxiliaryFrame):
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")

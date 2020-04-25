@@ -73,12 +73,16 @@ class Mutator(EqBase):
             self.dynamicAttribute = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
             # base attribute links to the base ite's attribute for this mutated definition (contains original, base value)
             self.baseAttribute = self.module.item.attributes[self.dynamicAttribute.name]
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             self.module = None
 
     @validates("value")
     def validator(self, key, val):
         """ Validates values as properly falling within the range of the modules' Mutaplasmid """
+        if self.baseValue == 0:
+            return 0
         mod = val / self.baseValue
 
         if self.minMod <= mod <= self.maxMod:

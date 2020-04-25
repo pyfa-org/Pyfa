@@ -19,8 +19,8 @@ class AddToCargo(ContextMenuSingle):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
-        # Make sure context menu registers in the correct view
-        if not fit or fit.isStructure:
+
+        if not fit or (fit.isStructure and mainItem.category.ID != 8):
             return False
 
         return True

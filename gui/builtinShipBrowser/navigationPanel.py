@@ -86,8 +86,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
     def OnScheduleSearch(self, event):
         search = self.BrowserSearchBox.GetValue()
-        # Make sure we do not count wildcard as search symbol
-        realsearch = search.replace("*", "")
+        # Make sure we do not count wildcards as search symbol
+        realsearch = search.replace('*', '').replace('?', '')
         minChars = 1 if isStringCjk(realsearch) else 3
         if len(realsearch) >= minChars:
             self.lastSearch = search

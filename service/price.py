@@ -131,6 +131,8 @@ class Price:
             except TimeoutError:
                 pyfalog.warning("Price fetch timeout for source {}".format(source))
                 timedOutSources[source] = True
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(source, e))
             # Sources remove price map items as they fetch info, if none remain then we're done
@@ -176,6 +178,8 @@ class Price:
         def cb():
             try:
                 callback(requests)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Execution of callback from getPrices failed.")
                 pyfalog.critical(e)
@@ -211,6 +215,8 @@ class Price:
                     replacementsCheaper[replacee] = replacer
             try:
                 callback(replacementsCheaper)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Execution of callback from findCheaperReplacements failed.")
                 pyfalog.critical(e)
@@ -229,11 +235,14 @@ class PriceWorkerThread(threading.Thread):
         self.name = "PriceWorker"
         self.queue = queue.Queue()
         self.wait = {}
+        self.running = True
         pyfalog.debug("Initialize PriceWorkerThread.")
 
     def run(self):
         queue = self.queue
         while True:
+            if not self.running:
+                break
             # Grab our data
             callback, requests, fetchTimeout, validityOverride = queue.get()
 
@@ -258,6 +267,9 @@ class PriceWorkerThread(threading.Thread):
         for price in prices:
             callbacks = self.wait.setdefault(price.typeID, [])
             callbacks.append(callback)
+
+    def stop(self):
+        self.running = False
 
 
 # Import market sources only to initialize price source modules, they register on their own

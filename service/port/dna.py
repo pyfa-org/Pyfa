@@ -59,6 +59,8 @@ def importDna(string, fitName=None):
                 Citadel(sMkt.getItem(id_))
             string = string[string.index(str(id_)):]
             break
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.warning("Exception caught in importDna")
             pass
@@ -107,6 +109,8 @@ def importDna(string, fitName=None):
                 for i in range(int(amount)):
                     try:
                         m = Module(item)
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pyfalog.warning("Exception caught in importDna")
                         continue

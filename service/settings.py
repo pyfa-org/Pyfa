@@ -69,6 +69,8 @@ class SettingsProvider:
                     for item in defaults:
                         if item not in info:
                             info[item] = defaults[item]
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     info = {}
                     info.update(defaults)

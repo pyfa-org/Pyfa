@@ -8,19 +8,16 @@ from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenuSingle
 from service.character import Character
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class ChangeAffectingSkills(ContextMenuSingle):
 
+    visibilitySetting = 'changeAffectingSkills'
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, callingWindow, srcContext, mainItem):
-        if not self.settings.get('changeAffectingSkills'):
-            return False
-
         if srcContext not in (
             "fittingModule", "fittingCharge",
             "fittingShip", "droneItem",

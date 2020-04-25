@@ -18,6 +18,7 @@
 # ===============================================================================
 
 
+import json
 from collections import OrderedDict
 
 from logbook import Logger
@@ -183,6 +184,8 @@ class Effect(EqBase):
             self.__activeByDefault = True
             self.__type = None
             pyfalog.error("AttributeError generating handler: {0}", e)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
@@ -199,45 +202,20 @@ class Effect(EqBase):
 
         try:
             return self.__effectDef.get(key, None)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             return getattr(self.__effectDef, key, None)
 
 
 class Item(EqBase):
-    MOVE_ATTRS = (4,  # Mass
-                  38,  # Capacity
-                  161)  # Volume
-
-    MOVE_ATTR_INFO = None
-
     ABYSSAL_TYPES = None
-
-    @classmethod
-    def getMoveAttrInfo(cls):
-        info = getattr(cls, "MOVE_ATTR_INFO", None)
-        if info is None:
-            cls.MOVE_ATTR_INFO = info = []
-            for id in cls.MOVE_ATTRS:
-                info.append(eos.db.getAttributeInfo(id))
-
-        return info
-
-    def moveAttrs(self):
-        self.__moved = True
-        for info in self.getMoveAttrInfo():
-            val = getattr(self, info.name, 0)
-            if val != 0:
-                attr = Attribute()
-                attr.info = info
-                attr.value = val
-                self.__attributes[info.name] = attr
 
     @reconstructor
     def init(self):
         self.__race = None
         self.__requiredSkills = None
         self.__requiredFor = None
-        self.__moved = False
         self.__offensive = None
         self.__assistive = None
         self.__overrides = None
@@ -259,9 +237,6 @@ class Item(EqBase):
 
     @property
     def attributes(self):
-        if not self.__moved:
-            self.moveAttrs()
-
         return self.__attributes
 
     @property
@@ -314,50 +289,26 @@ class Item(EqBase):
         eos.db.saveddata_session.delete(override)
         eos.db.commit()
 
-    srqIDMap = {182: 277, 183: 278, 184: 279, 1285: 1286, 1289: 1287, 1290: 1288}
-
     @property
     def requiredSkills(self):
         if self.__requiredSkills is None:
-            requiredSkills = OrderedDict()
-            self.__requiredSkills = requiredSkills
-            # Map containing attribute IDs we may need for required skills
-            # { requiredSkillX : requiredSkillXLevel }
-            combinedAttrIDs = set(self.srqIDMap.keys()).union(set(self.srqIDMap.values()))
-            # Map containing result of the request
-            # { attributeID : attributeValue }
-            skillAttrs = {}
-            # Get relevant attribute values from db (required skill IDs and levels) for our item
-            for attrInfo in eos.db.directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
-                attrID = attrInfo[1]
-                attrVal = attrInfo[2]
-                skillAttrs[attrID] = attrVal
-            # Go through all attributeID pairs
-            for srqIDAtrr, srqLvlAttr in self.srqIDMap.items():
-                # Check if we have both in returned result
-                if srqIDAtrr in skillAttrs and srqLvlAttr in skillAttrs:
-                    skillID = int(skillAttrs[srqIDAtrr])
-                    skillLvl = skillAttrs[srqLvlAttr]
-                    # Fetch item from database and fill map
-                    item = eos.db.getItem(skillID)
-                    requiredSkills[item] = skillLvl
+            self.__requiredSkills = {}
+            if self.reqskills:
+                for skillTypeID, skillLevel in json.loads(self.reqskills).items():
+                    skillItem = eos.db.getItem(int(skillTypeID))
+                    if skillItem:
+                        self.__requiredSkills[skillItem] = skillLevel
         return self.__requiredSkills
 
     @property
     def requiredFor(self):
         if self.__requiredFor is None:
-            self.__requiredFor = dict()
-
-            # Map containing attribute IDs we may need for required skills
-
-            # Get relevant attribute values from db (required skill IDs and levels) for our item
-            q = eos.db.getRequiredFor(self.ID, self.srqIDMap)
-
-            for itemID, lvl in q:
-                # Fetch item from database and fill map
-                item = eos.db.getItem(itemID)
-                self.__requiredFor[item] = lvl
-
+            self.__requiredFor = {}
+            if self.requiredfor:
+                for typeID, skillLevel in json.loads(self.requiredfor).items():
+                    requiredForItem = eos.db.getItem(int(typeID))
+                    if requiredForItem:
+                        self.__requiredFor[requiredForItem] = skillLevel
         return self.__requiredFor
 
     factionMap = {
@@ -373,7 +324,8 @@ class Item(EqBase):
         500016: "sisters",
         500018: "mordu",
         500019: "sansha",
-        500020: "serpentis"
+        500020: "serpentis",
+        500026: "triglavian"
     }
 
     @property
@@ -399,6 +351,7 @@ class Item(EqBase):
                     9  : "guristas",  # Caldari + Gallente
                     10 : "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
                     12 : "sisters",  # Amarr + Gallente
+                    15 : "concord",
                     16 : "jove",
                     32 : "sansha",  # Incrusion Sansha
                     128: "ore",
@@ -740,5 +693,15 @@ class Unit(EqBase):
 
         return value
 
+
 class Traits(EqBase):
     pass
+
+
+class ImplantSet(EqBase):
+
+    @property
+    def fullName(self):
+        if not self.gradeName:
+            return self.setName
+        return '{} {}'.format(self.gradeName, self.setName)

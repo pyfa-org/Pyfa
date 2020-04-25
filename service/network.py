@@ -92,6 +92,8 @@ class Network:
             raise Error(error)
         except requests.exceptions.Timeout:
             raise TimeoutError()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as error:
             raise Error(error)
 
@@ -117,6 +119,8 @@ class Network:
             raise Error(error)
         except requests.exceptions.Timeout:
             raise TimeoutError()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as error:
             raise Error(error)
 

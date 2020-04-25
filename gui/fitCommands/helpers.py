@@ -321,7 +321,10 @@ def activeStateLimit(itemIdentity):
     item = Market.getInstance().getItem(itemIdentity)
     if {
         'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability',
-        'microJumpDrive', 'microJumpPortalDrive'
+        'microJumpDrive', 'microJumpPortalDrive', 'emergencyHullEnergizer',
+        'cynosuralGeneration', 'jumpPortalGeneration', 'jumpPortalGenerationBO',
+        'cloneJumpAccepting', 'cloakingWarpSafe', 'cloakingPrototype', 'cloaking',
+        'massEntanglerEffect5', 'electronicAttributeModifyOnline', 'targetPassively'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
@@ -350,6 +353,8 @@ def restoreCheckedStates(fit, stateInfo, ignoreModPoss=()):
 
 
 def restoreRemovedDummies(fit, dummyInfo):
+    if dummyInfo is None:
+        return
     # Need this to properly undo the case when removal of subsystems removes dummy slots
     for position in sorted(dummyInfo):
         slot = dummyInfo[position]

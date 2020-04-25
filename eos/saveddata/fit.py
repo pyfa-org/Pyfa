@@ -28,15 +28,17 @@ from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
 from eos import capSim
-from eos.calc import calculateMultiplier, calculateLockTime
+from eos.calc import calculateLockTime, calculateMultiplier
 from eos.const import CalcType, FitSystemSecurity, FittingHardpoint, FittingModuleState, FittingSlot, ImplantLocation
 from eos.effectHandlerHelpers import (
     HandledBoosterList, HandledDroneCargoList, HandledImplantList,
     HandledModuleList, HandledProjectedDroneList, HandledProjectedModList)
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
+from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
+from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.stats import DmgTypes, RRTypes
 
 
@@ -163,14 +165,29 @@ class Fit:
         self.__capUsed = None
         self.__capRecharge = None
         self.__savedCapSimData.clear()
+        # Ancillary tank modules affect this
+        self.__sustainableTank = None
+        self.__effectiveSustainableTank = None
 
     @property
     def targetProfile(self):
-        return self.__targetProfile
+        if self.__userTargetProfile is not None:
+            return self.__userTargetProfile
+        if self.__builtinTargetProfileID is not None:
+            return TargetProfile.getBuiltinById(self.__builtinTargetProfileID)
+        return None
 
     @targetProfile.setter
     def targetProfile(self, targetProfile):
-        self.__targetProfile = targetProfile
+        if targetProfile is None:
+            self.__userTargetProfile = None
+            self.__builtinTargetProfileID = None
+        elif targetProfile.builtin:
+            self.__userTargetProfile = None
+            self.__builtinTargetProfileID = targetProfile.ID
+        else:
+            self.__userTargetProfile = targetProfile
+            self.__builtinTargetProfileID = None
         self.__weaponDpsMap = {}
         self.__weaponVolleyMap = {}
         self.__droneDps = None
@@ -178,11 +195,25 @@ class Fit:
 
     @property
     def damagePattern(self):
-        return self.__damagePattern
+        if self.__userDamagePattern is not None:
+            return self.__userDamagePattern
+        if self.__builtinDamagePatternID is not None:
+            pattern = DamagePattern.getBuiltinById(self.__builtinDamagePatternID)
+            if pattern is not None:
+                return pattern
+        return DamagePattern.getDefaultBuiltin()
 
     @damagePattern.setter
     def damagePattern(self, damagePattern):
-        self.__damagePattern = damagePattern
+        if damagePattern is None:
+            self.__userDamagePattern = None
+            self.__builtinDamagePatternID = None
+        elif damagePattern.builtin:
+            self.__userDamagePattern = None
+            self.__builtinDamagePatternID = damagePattern.ID
+        else:
+            self.__userDamagePattern = damagePattern
+            self.__builtinDamagePatternID = None
         self.__ehp = None
         self.__effectiveTank = None
 
@@ -545,11 +576,15 @@ class Fit:
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
-                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                                    "Shield Emission Systems"), "capacitorNeed", value)
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                    mod.item.requiresSkill("Shield Emission Systems") or
+                                    mod.item.requiresSkill("Capital Shield Emission Systems"),
+                        "capacitorNeed", value)
                     self.modules.filteredItemBoost(
-                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                                    "Shield Emission Systems"), "duration", value)
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                    mod.item.requiresSkill("Shield Emission Systems") or
+                                    mod.item.requiresSkill("Capital Shield Emission Systems"),
+                        "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
                     self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
@@ -559,12 +594,16 @@ class Fit:
                         self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                                               mod.item.requiresSkill("Repair Systems"),
-                                                   "capacitorNeed", value)
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                                               mod.item.requiresSkill("Repair Systems"),
-                                                   "duration", value)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                    mod.item.requiresSkill("Repair Systems") or
+                                    mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                        "capacitorNeed", value)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                    mod.item.requiresSkill("Repair Systems") or
+                                    mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                        "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
@@ -987,6 +1026,16 @@ class Fit:
             if mod.isEmpty:
                 del self.modules[i]
 
+    def clearTail(self):
+        tailPositions = {}
+        for mod in reversed(self.modules):
+            if not mod.isEmpty:
+                break
+            tailPositions[self.modules.index(mod)] = mod.slot
+        for pos in sorted(tailPositions, reverse=True):
+            self.modules.remove(self.modules[pos])
+        return tailPositions
+
     @property
     def modCount(self):
         x = 0
@@ -1096,7 +1145,7 @@ class Fit:
     def droneBayUsed(self):
         amount = 0
         for d in self.drones:
-            amount += d.item.volume * d.amount
+            amount += d.item.attributes['volume'].value * d.amount
 
         return amount
 
@@ -1104,7 +1153,7 @@ class Fit:
     def fighterBayUsed(self):
         amount = 0
         for f in self.fighters:
-            amount += f.item.volume * f.amount
+            amount += f.item.attributes['volume'].value * f.amount
 
         return amount
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-wget "https://www.python.org/ftp/python/${PYTHON}/python-${PYTHON}-macosx10.6.pkg"
-sudo installer -pkg python-${PYTHON}-macosx10.6.pkg -target /
-sudo python3 -m ensurepip --upgrade
-# A manual check that the correct version of Python is running.
+echo "Python version:"
 python3 --version
+echo "Upgrading pip..."
+python3 -m pip install --upgrade pip
+echo "Installing app requirements..."
 python3 -m pip install -r requirements.txt
+echo "Installing packaging tools..."
+python3 -m pip install PyInstaller==3.6

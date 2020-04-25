@@ -24,16 +24,20 @@ import datetime
 from eos.db import saveddata_meta
 from eos.saveddata.damagePattern import DamagePattern
 
-damagePatterns_table = Table("damagePatterns", saveddata_meta,
-                             Column("ID", Integer, primary_key=True),
-                             Column("name", String),
-                             Column("emAmount", Float),
-                             Column("thermalAmount", Float),
-                             Column("kineticAmount", Float),
-                             Column("explosiveAmount", Float),
-                             Column("ownerID", ForeignKey("users.ID"), nullable=True),
-                             Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                             Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
-                             )
+damagePatterns_table = Table(
+    'damagePatterns',
+    saveddata_meta,
+    Column('ID', Integer, primary_key=True),
+    Column('name', String),
+    Column('emAmount', Float),
+    Column('thermalAmount', Float),
+    Column('kineticAmount', Float),
+    Column('explosiveAmount', Float),
+    Column('ownerID', ForeignKey('users.ID'), nullable=True),
+    Column('created', DateTime, nullable=True, default=datetime.datetime.now),
+    Column('modified', DateTime, nullable=True, onupdate=datetime.datetime.now))
 
-mapper(DamagePattern, damagePatterns_table)
+mapper(
+    DamagePattern,
+    damagePatterns_table,
+    properties={'rawName': damagePatterns_table.c.name})

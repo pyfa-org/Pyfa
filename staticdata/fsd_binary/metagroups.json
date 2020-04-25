@@ -35,34 +35,6 @@
     "name": "Deadspace", 
     "nameID": 66677
   }, 
-  "7": {
-    "name": "Frigates", 
-    "nameID": 66678
-  }, 
-  "8": {
-    "name": "Elite Frigates", 
-    "nameID": 66679
-  }, 
-  "9": {
-    "name": "Commander Frigates", 
-    "nameID": 66680
-  }, 
-  "10": {
-    "name": "Destroyer", 
-    "nameID": 66681
-  }, 
-  "11": {
-    "name": "Cruiser", 
-    "nameID": 66682
-  }, 
-  "12": {
-    "name": "Elite Cruiser", 
-    "nameID": 66683
-  }, 
-  "13": {
-    "name": "Commander Cruiser", 
-    "nameID": 66684
-  }, 
   "14": {
     "iconID": 24151, 
     "iconSuffix": "t3", 

@@ -5,11 +5,14 @@ import requests
 import wx
 from logbook import Logger
 
+import config
 import gui.globalEvents as GE
 from eos.db import getItem
 from eos.saveddata.cargo import Cargo
 from gui.auxFrame import AuxiliaryFrame
 from gui.display import Display
+from gui.characterEditor import APIView
+from service.character import Character
 from service.esi import Esi
 from service.esiAccess import APIException
 from service.fit import Fit
@@ -125,6 +128,8 @@ class EveFittings(AuxiliaryFrame):
             #  Can't do this in a finally because then it obscures the message dialog
             del waitDialog  # noqa: F821
             ESIExceptionHandler(self, ex)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             del waitDialog  # noqa: F821
             raise ex
@@ -302,6 +307,8 @@ class ExportToEve(AuxiliaryFrame):
         except APIException as ex:
             try:
                 ESIExceptionHandler(self, ex)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as ex:
                 self.statusbar.SetStatusText("ERROR", 0)
                 self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
@@ -331,7 +338,7 @@ class SsoCharacterMgmt(AuxiliaryFrame):
         self.addBtn = wx.Button(self, wx.ID_ANY, "Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.addBtn, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Remove Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
@@ -351,6 +358,16 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
     def ssoLogin(self, event):
         self.popCharList()
+        sChar = Character.getInstance()
+        # Update existing pyfa character, if it doesn't exist - create new
+        char = sChar.getCharacter(event.character.characterName)
+        newChar = False
+        if char is None:
+            char = sChar.new(event.character.characterName)
+            newChar = True
+        char.setSsoCharacter(event.character, config.getClientSecret())
+        sChar.apiFetch(char.ID, APIView.fetchCallback)
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         event.Skip()
 
     def kbEvent(self, event):
@@ -381,6 +398,8 @@ class SsoCharacterMgmt(AuxiliaryFrame):
         try:
             sEsi = Esi.getInstance()
             sEsi.login()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             ESIServerExceptionHandler(self, ex)
 
@@ -457,6 +476,8 @@ class FittingsTreeView(wx.Panel):
                 cargo = Cargo(getItem(item['type_id']))
                 cargo.amount = item['quantity']
                 list.append(cargo)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Exception caught in displayFit")
                 pyfalog.critical(e)

@@ -64,7 +64,7 @@
     "descriptionID": 64453, 
     "hasTypes": 0, 
     "iconID": 365, 
-    "name": "Turrets & Bays", 
+    "name": "Turrets & Launchers", 
     "nameID": 65527, 
     "parentGroupID": 9
   }, 
@@ -605,7 +605,7 @@
     "nameID": 65587
   }, 
   "157": {
-    "description": "Drones are semi-autonomous robotic devices used for military and industrial purposes throughout space.", 
+    "description": "Drones are semi-autonomous robotic devices used for military and industrial purposes throughout space", 
     "descriptionID": 64514, 
     "hasTypes": 0, 
     "iconID": 1084, 
@@ -15270,11 +15270,11 @@
     "parentGroupID": 2440
   }, 
   "2456": {
-    "description": "Abyssal Filaments are used to access Abyssal Deadspace", 
+    "description": "Abyssal Filaments and Jump Filaments", 
     "descriptionID": 317841, 
     "hasTypes": 0, 
     "iconID": 21924, 
-    "name": "Abyssal Filaments", 
+    "name": "Filaments", 
     "nameID": 317840, 
     "parentGroupID": 19
   }, 
@@ -15988,5 +15988,84 @@
     "name": "Triglavian", 
     "nameID": 551112, 
     "parentGroupID": 65
+  }, 
+  "2690": {
+    "description": "Triglavian Dreadnoughts", 
+    "descriptionID": 553051, 
+    "hasTypes": 1, 
+    "iconID": 24135, 
+    "name": "Precursor Dreadnoughts", 
+    "nameID": 553050, 
+    "parentGroupID": 761
+  }, 
+  "2691": {
+    "description": "Capital ship entropic disintegrators, for use on dreadnoughts and titans.", 
+    "descriptionID": 553053, 
+    "hasTypes": 1, 
+    "iconID": 24237, 
+    "name": "Extra Large", 
+    "nameID": 553052, 
+    "parentGroupID": 2432
+  }, 
+  "2692": {
+    "description": "For use with dreadnought-sized entropic disintegrators.", 
+    "descriptionID": 553055, 
+    "hasTypes": 1, 
+    "iconID": 21918, 
+    "name": "Extra Large", 
+    "nameID": 553054, 
+    "parentGroupID": 2463
+  }, 
+  "2693": {
+    "hasTypes": 1, 
+    "iconID": 24135, 
+    "name": "Triglavian", 
+    "nameID": 553059, 
+    "parentGroupID": 1883
+  }, 
+  "2701": {
+    "description": "Items used in the HyperNet Relay", 
+    "descriptionID": 554068, 
+    "hasTypes": 1, 
+    "iconID": 24205, 
+    "name": "HyperNet Relay", 
+    "nameID": 554066, 
+    "parentGroupID": 1922
+  }, 
+  "2702": {
+    "description": "Corvettes that have been offered to capsuleers on occasion for limited periods.", 
+    "descriptionID": 554136, 
+    "hasTypes": 1, 
+    "iconID": 1443, 
+    "name": "Special Edition Corvettes", 
+    "nameID": 554135, 
+    "parentGroupID": 1612
+  }, 
+  "2703": {
+    "description": "Precursor Dreadnoughts", 
+    "descriptionID": 555352, 
+    "hasTypes": 0, 
+    "iconID": 21420, 
+    "name": "Precursor Dreadnoughts", 
+    "nameID": 555351, 
+    "parentGroupID": 1971
+  }, 
+  "2704": {
+    "description": "Triglavian Dreadnoughts", 
+    "descriptionID": 555354, 
+    "hasTypes": 1, 
+    "iconID": 21420, 
+    "name": "Triglavian", 
+    "nameID": 555353, 
+    "parentGroupID": 2703
+  }, 
+  "2706": {
+    "description": "Filaments that jump fleets unpredictably to other locations in known space.", 
+    "descriptionID": 560905, 
+    "hasTypes": 1, 
+    "iconID": 21924, 
+    "name": "Jump Filaments", 
+    "nameID": 560904, 
+    "parentGroupID": 2456
   }
 }
