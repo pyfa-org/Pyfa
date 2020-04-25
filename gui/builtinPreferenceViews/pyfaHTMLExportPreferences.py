@@ -50,7 +50,7 @@ class PFHTMLExportPref(PreferenceView):
 
         self.fileSelectButton = wx.Button(panel, -1, "Set export destination", pos=(0, 0))
         self.fileSelectButton.Bind(wx.EVT_BUTTON, self.selectHTMLExportFilePath)
-        mainSizer.Add(self.fileSelectButton, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.fileSelectButton, 0, wx.ALL, 5)
 
         self.stDesc4 = wx.StaticText(panel, wx.ID_ANY, self.desc4, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stDesc4.Wrap(dlgWidth - 50)

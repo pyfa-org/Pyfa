@@ -135,7 +135,7 @@ class PFNetworkPref(PreferenceView):
         self.stPSAutoDetected = wx.StaticText(panel, wx.ID_ANY, "Auto-detected: ", wx.DefaultPosition, wx.DefaultSize,
                                                0)
         self.stPSAutoDetected.Wrap(-1)
-        mainSizer.Add(self.stPSAutoDetected, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(self.stPSAutoDetected, 0, wx.ALL, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
         btnSizer.AddStretchSpacer()

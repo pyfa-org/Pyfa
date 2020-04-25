@@ -159,7 +159,7 @@ class ImplantSetEditor(AuxiliaryFrame):
             setattr(self, name, btn)
             btn.Enable(True)
             btn.SetToolTip("%s implant sets %s clipboard" % (name, direction))
-            footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
+            footerSizer.Add(btn, 0)
 
         mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)
 
