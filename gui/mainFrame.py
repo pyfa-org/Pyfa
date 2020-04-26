@@ -186,11 +186,11 @@ class MainFrame(wx.Frame):
         self.notebookBrowsers.SetSelection(1)
 
         self.browser_fitting_split.SplitVertically(self.notebookBrowsers, self.fitting_additions_split)
-        self.browser_fitting_split.SetMinimumPaneSize(204)
+        self.browser_fitting_split.SetMinimumPaneSize(self.FromDIP(204))
         self.browser_fitting_split.SetSashPosition(self.browserWidth)
 
-        self.fitting_additions_split.SplitHorizontally(self.fitMultiSwitch, self.additionsPane, -200)
-        self.fitting_additions_split.SetMinimumPaneSize(200)
+        self.fitting_additions_split.SplitHorizontally(self.fitMultiSwitch, self.additionsPane, self.FromDIP(-200))
+        self.fitting_additions_split.SetMinimumPaneSize(self.FromDIP(200))
         self.fitting_additions_split.SetSashPosition(self.fittingHeight)
         self.fitting_additions_split.SetSashGravity(1.0)
 
