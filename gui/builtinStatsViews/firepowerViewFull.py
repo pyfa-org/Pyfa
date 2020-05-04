@@ -51,8 +51,7 @@ class FirepowerViewFull(StatsView):
         self.headerPanel = headerPanel
         hsizer = self.headerPanel.Parent.GetHeaderContentSizer()
         self.stEff = wx.StaticText(self.headerPanel, wx.ID_ANY, "( Effective )")
-        hsizer.Add(self.stEff)
-        # self.headerPanel.GetParent().AddToggleItem(self.stEff)
+        hsizer.Insert(0, self.stEff)
 
         panel = "full"
 
@@ -130,9 +129,12 @@ class FirepowerViewFull(StatsView):
         self.panel.GetSizer().Layout()
 
         # Remove effective label
-        hsizer = self.headerPanel.GetSizer()
-        hsizer.Hide(self.stEff)
-        # self.stEff.Destroy()
+        hsizer = self.headerPanel.Parent.GetHeaderContentSizer()
+        for i, c in enumerate(hsizer.Children):
+            if c.GetWindow() is self.stEff:
+                hsizer.Remove(i)
+                self.stEff.Destroy()
+                break
 
         # Get the new view
         view = StatsView.getView("miningyieldViewFull")(self.parent)
