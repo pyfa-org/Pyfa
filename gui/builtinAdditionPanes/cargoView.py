@@ -24,6 +24,7 @@ import gui.display as d
 import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
+from gui.builtinMarketBrowser.events import ITEM_SELECTED, ItemSelected
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
@@ -58,6 +59,7 @@ class CargoView(d.Display):
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
@@ -65,6 +67,31 @@ class CargoView(d.Display):
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
+
+    def addItem(self, event):
+        item = Market.getInstance().getItem(event.itemID, eager='group')
+        if item is None or not item.isCharge:
+            event.Skip()
+            return
+
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+
+        if not fit:
+            event.Skip()
+            return
+        modifiers = wx.GetMouseState().GetModifiers()
+        amount = 1
+        if modifiers == wx.MOD_CONTROL:
+            amount = 10
+        elif modifiers == wx.MOD_ALT:
+            amount = 100
+        elif modifiers == wx.MOD_CONTROL | wx.MOD_ALT:
+            amount = 1000
+        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(
+            fitID=fitID, itemID=item.ID, amount=amount))
+        self.mainFrame.additionsPane.select('Cargo')
+        event.Skip()
 
     def handleListDrag(self, x, y, data):
         """
