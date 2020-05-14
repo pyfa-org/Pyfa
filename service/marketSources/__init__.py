@@ -1,1 +1,1 @@
-__all__ = ['evemarketer', 'evepraisal', 'evemarketdata']
+__all__ = ['evemarketer', 'evepraisal', 'evemarketdata', 'fuzzwork']
