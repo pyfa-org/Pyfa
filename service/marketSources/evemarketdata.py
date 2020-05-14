@@ -69,4 +69,4 @@ class EveMarketData:
             del priceMap[typeID]
 
 
-Price.register(EveMarketData)
+# Price.register(EveMarketData)
