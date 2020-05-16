@@ -33,6 +33,7 @@ from gui.builtinAdditionPanes.projectedView import ProjectedView
 from gui.chrome_tabs import ChromeNotebook
 from gui.toggle_panel import TogglePanel
 
+_ = wx.GetTranslation
 
 class AdditionsPane(TogglePanel):
 
@@ -41,7 +42,7 @@ class AdditionsPane(TogglePanel):
         TogglePanel.__init__(self, parent, force_layout=1)
         self.mainFrame = mainFrame
 
-        self.SetLabel("Additions")
+        self.SetLabel(_("Additions"))
         pane = self.GetContentPanel()
 
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -62,28 +63,28 @@ class AdditionsPane(TogglePanel):
         notesImg = BitmapLoader.getImage("skill_small", "gui")
 
         self.drone = DroneView(self.notebook)
-        self.notebook.AddPage(self.drone, "Drones", image=droneImg, closeable=False)
+        self.notebook.AddPage(self.drone, _("Drones"), image=droneImg, closeable=False)
 
         self.fighter = FighterView(self.notebook)
-        self.notebook.AddPage(self.fighter, "Fighters", image=fighterImg, closeable=False)
+        self.notebook.AddPage(self.fighter, _("Fighters"), image=fighterImg, closeable=False)
 
         self.cargo = CargoView(self.notebook)
-        self.notebook.AddPage(self.cargo, "Cargo", image=cargoImg, closeable=False)
+        self.notebook.AddPage(self.cargo, _("Cargo"), image=cargoImg, closeable=False)
 
         self.implant = ImplantView(self.notebook)
-        self.notebook.AddPage(self.implant, "Implants", image=implantImg, closeable=False)
+        self.notebook.AddPage(self.implant, _("Implants"), image=implantImg, closeable=False)
 
         self.booster = BoosterView(self.notebook)
-        self.notebook.AddPage(self.booster, "Boosters", image=boosterImg, closeable=False)
+        self.notebook.AddPage(self.booster, _("Boosters"), image=boosterImg, closeable=False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected", image=projectedImg, closeable=False)
+        self.notebook.AddPage(self.projectedPage, _("Projected"), image=projectedImg, closeable=False)
 
         self.gangPage = CommandView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Command", image=gangImg, closeable=False)
+        self.notebook.AddPage(self.gangPage, _("Command"), image=gangImg, closeable=False)
 
         self.notes = NotesView(self.notebook)
-        self.notebook.AddPage(self.notes, "Notes", image=notesImg, closeable=False)
+        self.notebook.AddPage(self.notes, _("Notes"), image=notesImg, closeable=False)
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.mainFrame.Bind(GE.FIT_NOTES_CHANGED, self.OnNotesChanged)

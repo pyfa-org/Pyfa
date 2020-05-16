@@ -74,6 +74,8 @@ parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set
 parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
 parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.", default=None)
 
+parser.add_option("-i", "--language", action="store", dest="language", help="Set the language for pyfa", default="en_US")
+
 (options, args) = parser.parse_args()
 
 
@@ -105,6 +107,7 @@ if __name__ == "__main__":
     config.loggingLevel = config.LOGLEVEL_MAP.get(options.logginglevel.lower(), config.LOGLEVEL_MAP['error'])
     config.defPaths(options.savepath)
     config.defLogging()
+    config.language = options.language
 
     with config.logging_setup.threadbound():
 
@@ -133,13 +136,14 @@ if __name__ == "__main__":
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
+        from gui.app import PyfaApp
         from gui.mainFrame import MainFrame
 
         # set title if it wasn't supplied by argument
         if options.title is None:
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
-        pyfa = wx.App(False)
+        pyfa = PyfaApp(False)
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 
