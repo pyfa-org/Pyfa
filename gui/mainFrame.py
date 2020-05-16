@@ -143,6 +143,7 @@ class MainFrame(wx.Frame):
         pyfalog.debug("Initialize MainFrame")
         self.title = title
         super().__init__(None, wx.ID_ANY, self.title)
+
         self.supress_left_up = False
 
         MainFrame.__instance = self
@@ -177,7 +178,7 @@ class MainFrame(wx.Frame):
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", image=marketImg, closeable=False)
+        self.notebookBrowsers.AddPage(self.marketBrowser, _("Market"), image=marketImg, closeable=False)
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
