@@ -23,6 +23,7 @@ class PyfaApp(wx.App):
         #
         # #------------
 
+
         # Return locale folder.
         localeDir = os.path.join(config.pyfaPath, "locale")
 
@@ -31,7 +32,7 @@ class PyfaApp(wx.App):
         wx.Locale.AddCatalogLookupPathPrefix(localeDir)
         # Set language stuff and update to last used language.
         self.UpdateLanguage(config.language)
-        print(_("Market"))
+
         return True
 
     #-----------------------------------------------------------------------
