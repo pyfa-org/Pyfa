@@ -514,7 +514,16 @@ cse:
   - 'capital (.+ )?shield extender'
 aif:
   - 'aif'
-  - 'adaptive invulnerability shield hardener'
+  - 'multispectrum shield hardener'
+inv:
+  - 'inv'
+  - 'multispectrum shield hardener'
+invul:
+  - 'invul'
+  - 'multispectrum shield hardener'
+invulnerability:
+  - 'invulnerability'
+  - 'multispectrum shield hardener'
 # Related entry in other section: "sb" in "Weapons"
 ssb:
   - 'ssb'
@@ -558,6 +567,12 @@ spr:
 shieldrech:
   - 'shieldrech'
   - 'shield recharger'
+anti:
+  - 'anti'
+  - '(shield|armor) reinforcer'
+anti\-:
+  - 'anti-'
+  - '(shield|armor) reinforcer'
 
 # Armor modules
 eanm:
