@@ -8474,7 +8474,7 @@
     "categoryID": 7, 
     "fittableNonSingleton": false, 
     "groupID": 329, 
-    "groupName": "Armor Reinforcer", 
+    "groupName": "Armor Plate", 
     "groupNameID": 63793, 
     "iconID": 0, 
     "published": true, 
@@ -8702,7 +8702,7 @@
     "categoryID": 9, 
     "fittableNonSingleton": false, 
     "groupID": 349, 
-    "groupName": "Armor Reinforcer Blueprint", 
+    "groupName": "Armor Plate Blueprint", 
     "groupNameID": 63811, 
     "iconID": 0, 
     "published": true, 
@@ -9589,6 +9589,28 @@
     "published": false, 
     "useBasePrice": false
   }, 
+  "4055": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 2, 
+    "fittableNonSingleton": false, 
+    "groupID": 4055, 
+    "groupName": "Invisible Beacon", 
+    "groupNameID": 562903, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4057": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 30, 
+    "fittableNonSingleton": false, 
+    "groupID": 4057, 
+    "groupName": "Masks", 
+    "groupNameID": 563630, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
   "406": {
     "anchorable": false, 
     "anchored": false, 
@@ -9610,6 +9632,17 @@
     "groupName": "Fighter Support Unit", 
     "groupNameID": 63855, 
     "iconID": 0, 
+    "published": true, 
+    "useBasePrice": false
+  }, 
+  "4070": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 2, 
+    "fittableNonSingleton": false, 
+    "groupID": 4070, 
+    "groupName": "Exotic Artefact", 
+    "groupNameID": 564553, 
     "published": true, 
     "useBasePrice": false
   }, 

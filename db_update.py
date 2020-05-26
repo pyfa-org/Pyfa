@@ -327,8 +327,8 @@ def update_db():
 
         def composeReqSkills(raw):
             reqSkills = {}
-            for skillTypeID, skillLevels in raw.items():
-                reqSkills[int(skillTypeID)] = skillLevels[0]
+            for skillTypeID, skillLevel in raw.items():
+                reqSkills[int(skillTypeID)] = skillLevel
             return reqSkills
 
         eveTypeIds = set(r['typeID'] for r in eveTypesData)

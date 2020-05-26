@@ -804,8 +804,14 @@
       "role": {
         "bonuses": [
           {
-            "number": "50%", 
-            "text": "bonus to Small Hybrid Turret optimal range"
+            "number": "10+", 
+            "text": "bonus to Relic and Data Analyzer virus strength"
+          }, 
+          {
+            "text": "·Can fit Covert Ops Cloaking Device and Covert Cynosural Field Generator"
+          }, 
+          {
+            "text": "·Cloak reactivation delay reduced to 5 seconds"
           }
         ], 
         "header": "Role Bonus:"
@@ -814,19 +820,36 @@
         {
           "bonuses": [
             {
-              "number": "10%", 
-              "text": "bonus to Small Hybrid Turret tracking speed"
+              "number": "5%", 
+              "text": "bonus to Rocket damage"
+            }, 
+            {
+              "number": "5%", 
+              "text": "reduction in capacitor recharge time"
+            }
+          ], 
+          "header": "Amarr Frigate bonuses (per skill level):"
+        }, 
+        {
+          "bonuses": [
+            {
+              "number": "20%", 
+              "text": "reduction in Cloaking Devices CPU requirement"
             }, 
             {
               "number": "10%", 
-              "text": "bonus to Small Hybrid Turret optimal range"
+              "text": "bonus to Core and Combat Scanner Probe strength"
+            }, 
+            {
+              "number": "10%", 
+              "text": "reduction in time required for Survey Probe scans"
             }
           ], 
-          "header": "Caldari Destroyer bonuses (per skill level):"
+          "header": "Covert Ops bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 33881
+    "typeID": 11188
   }, 
   {
     "traits": {
@@ -3210,7 +3233,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "text": "·Can launch Light, Support and Heavy Fighters"
+            "text": "·Can launch Light and Heavy Fighters"
           }, 
           {
             "text": "·Can lock at extended ranges"
@@ -3442,7 +3465,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "text": "·Can launch Light, Support and Heavy Fighters"
+            "text": "·Can launch Light and Heavy Fighters"
           }, 
           {
             "text": "·Can lock at extended ranges"
@@ -4233,14 +4256,8 @@
       "role": {
         "bonuses": [
           {
-            "number": "10+", 
-            "text": "bonus to Relic and Data Analyzer virus strength"
-          }, 
-          {
-            "text": "·Can fit Covert Ops Cloaking Device and Covert Cynosural Field Generator"
-          }, 
-          {
-            "text": "·Cloak reactivation delay reduced to 5 seconds"
+            "number": "50%", 
+            "text": "bonus to Small Hybrid Turret optimal range"
           }
         ], 
         "header": "Role Bonus:"
@@ -4249,36 +4266,19 @@
         {
           "bonuses": [
             {
-              "number": "5%", 
-              "text": "bonus to Rocket damage"
-            }, 
-            {
-              "number": "5%", 
-              "text": "reduction in capacitor recharge time"
-            }
-          ], 
-          "header": "Amarr Frigate bonuses (per skill level):"
-        }, 
-        {
-          "bonuses": [
-            {
-              "number": "20%", 
-              "text": "reduction in Cloaking Devices CPU requirement"
+              "number": "10%", 
+              "text": "bonus to Small Hybrid Turret tracking speed"
             }, 
             {
               "number": "10%", 
-              "text": "bonus to Core and Combat Scanner Probe strength"
-            }, 
-            {
-              "number": "10%", 
-              "text": "reduction in time required for Survey Probe scans"
+              "text": "bonus to Small Hybrid Turret optimal range"
             }
           ], 
-          "header": "Covert Ops bonuses (per skill level):"
+          "header": "Caldari Destroyer bonuses (per skill level):"
         }
       ]
     }, 
-    "typeID": 11188
+    "typeID": 33881
   }, 
   {
     "traits": {
@@ -6629,6 +6629,94 @@
       ]
     }, 
     "typeID": 52254
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "10%", 
+            "text": "bonus to shield capacity"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to ECM range"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to mining speed"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 54332
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "10%", 
+            "text": "bonus to armor"
+          }, 
+          {
+            "number": "1+", 
+            "text": "bonus to warp scramble strength"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to mining speed"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 54333
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "10%", 
+            "text": "bonus to armor"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to energy warfare capacitor drain"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to mining speed"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 54330
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "10%", 
+            "text": "bonus to shield capacity"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to stasis webifier strength"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to mining speed"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 54331
   }, 
   {
     "traits": {
@@ -10087,6 +10175,9 @@
           }, 
           {
             "text": "·While this structure has at least one online service module it enters full power mode and will gain increased shield and armor hitpoints and an extra reinforcement cycle."
+          }, 
+          {
+            "text": "·This structure is able to maintain a low-power state indefinitely, and so will not lapse to into an abandoned state."
           }
         ], 
         "header": "Role Bonus:"
@@ -10120,6 +10211,9 @@
           }, 
           {
             "text": "·While this structure has at least one online service module it enters full power mode and will gain increased shield and armor hitpoints and an extra reinforcement cycle."
+          }, 
+          {
+            "text": "·This structure is able to maintain a low-power state indefinitely, and so will not lapse to into an abandoned state."
           }
         ], 
         "header": "Role Bonus:"
@@ -10149,6 +10243,9 @@
           }, 
           {
             "text": "·While this structure has at least one online service module it enters full power mode and will gain increased shield and armor hitpoints and an extra reinforcement cycle."
+          }, 
+          {
+            "text": "·This structure is able to maintain a low-power state indefinitely, and so will not lapse to into an abandoned state."
           }
         ], 
         "header": "Role Bonus:"
@@ -10182,6 +10279,9 @@
           }, 
           {
             "text": "·While this structure has at least one online service module it enters full power mode and will gain increased shield and armor hitpoints and an extra reinforcement cycle."
+          }, 
+          {
+            "text": "·This structure is able to maintain a low-power state indefinitely, and so will not lapse to into an abandoned state."
           }
         ], 
         "header": "Role Bonus:"
@@ -10207,6 +10307,9 @@
           }, 
           {
             "text": "·While this structure has at least one online service module it enters full power mode and will gain increased shield and armor hitpoints and an extra reinforcement cycle."
+          }, 
+          {
+            "text": "·This structure is able to maintain a low-power state indefinitely, and so will not lapse to into an abandoned state."
           }
         ], 
         "header": "Role Bonus:"
@@ -11288,7 +11391,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "text": "·Can launch Light, Support and Heavy Fighters"
+            "text": "·Can launch Light and Heavy Fighters"
           }, 
           {
             "text": "·Can lock at extended ranges"
@@ -11919,7 +12022,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "text": "·Can launch Light, Support and Heavy Fighters"
+            "text": "·Can launch Light and Heavy Fighters"
           }, 
           {
             "text": "·Can lock at extended ranges"
@@ -16133,7 +16236,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "text": "·Can launch Light, Support and Heavy Fighters"
+            "text": "·Can launch Light and Heavy Fighters"
           }, 
           {
             "text": "·Can lock at extended ranges"
@@ -16262,7 +16365,7 @@
             "text": "bonus to Command Burst area of effect range"
           }, 
           {
-            "text": "·Can launch Light, Support and Heavy Fighters"
+            "text": "·Can launch Light and Heavy Fighters"
           }, 
           {
             "text": "·Can lock at extended ranges"
@@ -19740,20 +19843,20 @@
       "misc": {
         "bonuses": [
           {
-            "number": "15%", 
-            "text": "bonus to turret tracking speed"
+            "number": "25%", 
+            "text": "bonus to remote armor repair"
           }, 
           {
-            "number": "15%", 
-            "text": "bonus to missile explosion velocity"
-          }, 
-          {
-            "number": "10%", 
-            "text": "bonus to mining speed"
+            "number": "25%", 
+            "text": "bonus to remote shield boost"
           }, 
           {
             "number": "30%", 
             "text": "penalty to warp speed"
+          }, 
+          {
+            "number": "50%", 
+            "text": "penalty to maximum locked targets"
           }
         ], 
         "header": "Misc bonus:"

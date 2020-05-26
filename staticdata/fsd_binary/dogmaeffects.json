@@ -78303,5 +78303,77 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "8031": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8031, 
+    "effectName": "systemMaxTargets", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 192, 
+        "modifyingAttributeID": 3034, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8032": {
+    "description": "Automatically generated effect", 
+    "descriptionID": 563154, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8032, 
+    "effectName": "systemWarpScrambleStrengthBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 52, 
+        "modifiedAttributeID": 105, 
+        "modifyingAttributeID": 3035, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8033": {
+    "description": "Automatically generated effect", 
+    "descriptionID": 563155, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8033, 
+    "effectName": "systemEcmRangeMultiplier", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 201, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 1536, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }

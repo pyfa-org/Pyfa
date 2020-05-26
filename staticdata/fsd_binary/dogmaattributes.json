@@ -14761,11 +14761,12 @@
     "highIsGood": 1, 
     "iconID": 3759, 
     "name": "baseWarpSpeed", 
-    "published": 0, 
+    "published": 1, 
     "stackable": 1, 
     "tooltipDescription": "The maximum speed that can be reached in warp", 
     "tooltipDescriptionID": 295336, 
-    "tooltipTitleID": 295335
+    "tooltipTitleID": 295335, 
+    "unitID": 144
   }, 
   "1282": {
     "attributeID": 1282, 
@@ -32357,5 +32358,48 @@
     "published": 1, 
     "stackable": 1, 
     "unitID": 105
+  }, 
+  "3034": {
+    "attributeID": 3034, 
+    "categoryID": 6, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "description": "Multiplier for maximum number of targets that can be locked.", 
+    "highIsGood": 1, 
+    "iconID": 1004, 
+    "name": "maxLockedTargetsMultiplier", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3035": {
+    "attributeID": 3035, 
+    "categoryID": 27, 
+    "dataType": 4, 
+    "defaultValue": 0.0, 
+    "description": "Warp Scramble Strength Bonus", 
+    "highIsGood": 1, 
+    "name": "warpScrambleStrengthBonus", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3038": {
+    "attributeID": 3038, 
+    "dataType": 0, 
+    "defaultValue": 0.0, 
+    "description": "Referenced by code to know that cynosural fields will fail in the same park as this type", 
+    "highIsGood": 0, 
+    "name": "isCynoJammer", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "3039": {
+    "attributeID": 3039, 
+    "dataType": 2, 
+    "defaultValue": 1.0, 
+    "description": "Controls how much of the NpcBehaviorSmartBomb effect's damage gets applied to entities", 
+    "highIsGood": 0, 
+    "name": "behaviorSmartBombEntityDamageMultiplier", 
+    "published": 0, 
+    "stackable": 0
   }
 }
