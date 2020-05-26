@@ -989,7 +989,7 @@ class Effect290(BaseEffect):
     sharpshooterRangeSkillBonusPostPercentMaxRangeLocationShipModulesRequiringGunnery
 
     Used by:
-    Implants named like: Frentix Booster (9 of 9)
+    Implants named like: Frentix Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
     Skill: Sharpshooter
     """
@@ -1008,7 +1008,7 @@ class Effect298(BaseEffect):
     surgicalStrikeFalloffBonusPostPercentFalloffLocationShipModulesRequiringGunnery
 
     Used by:
-    Implants named like: Sooth Sayer Booster (9 of 9)
+    Implants named like: Sooth Sayer Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Trajectory Analysis TA (6 of 6)
     Skill: Trajectory Analysis
     """
@@ -3694,7 +3694,7 @@ class Effect1185(BaseEffect):
     structureStealthEmitterArraySigDecrease
 
     Used by:
-    Implants named like: X Instinct Booster (9 of 9)
+    Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
     """
 
@@ -5789,7 +5789,7 @@ class Effect1959(BaseEffect):
     armorReinforcerMassAdd
 
     Used by:
-    Modules from group: Armor Reinforcer (51 of 51)
+    Modules from group: Armor Plate (51 of 51)
     """
 
     type = 'passive'
@@ -6966,7 +6966,7 @@ class Effect2432(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
-    Implants named like: Mindflood Booster (9 of 9)
+    Implants named like: Mindflood Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Genolution Core Augmentation CA-1
@@ -7822,9 +7822,7 @@ class Effect2735(BaseEffect):
     boosterArmorHpPenalty
 
     Used by:
-    Implants named like: Improved Booster (4 of 8)
-    Implants named like: Standard Booster (4 of 8)
-    Implants named like: Strong Booster (4 of 8)
+    Implants named like: Booster (12 of 38)
     """
 
     attr = 'boosterArmorHPPenalty'
@@ -7841,15 +7839,9 @@ class Effect2736(BaseEffect):
     boosterArmorRepairAmountPenalty
 
     Used by:
-    Implant: Improved Drop Booster
-    Implant: Improved Mindflood Booster
-    Implant: Improved Sooth Sayer Booster
-    Implant: Standard Drop Booster
-    Implant: Standard Mindflood Booster
-    Implant: Standard Sooth Sayer Booster
-    Implant: Strong Drop Booster
-    Implant: Strong Mindflood Booster
-    Implant: Strong Sooth Sayer Booster
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
     """
 
     attr = 'boosterArmorRepairAmountPenalty'
@@ -7867,9 +7859,10 @@ class Effect2737(BaseEffect):
     boosterShieldCapacityPenalty
 
     Used by:
-    Implants named like: Improved Booster (4 of 8)
-    Implants named like: Standard Booster (4 of 8)
-    Implants named like: Strong Booster (4 of 8)
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterShieldCapacityPenalty'
@@ -7886,15 +7879,9 @@ class Effect2739(BaseEffect):
     boosterTurretOptimalRangePenalty
 
     Used by:
-    Implant: Improved Blue Pill Booster
-    Implant: Improved Mindflood Booster
-    Implant: Improved Sooth Sayer Booster
-    Implant: Standard Blue Pill Booster
-    Implant: Standard Mindflood Booster
-    Implant: Standard Sooth Sayer Booster
-    Implant: Strong Blue Pill Booster
-    Implant: Strong Mindflood Booster
-    Implant: Strong Sooth Sayer Booster
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Mindflood Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
     """
 
     attr = 'boosterTurretOptimalRangePenalty'
@@ -7912,12 +7899,8 @@ class Effect2741(BaseEffect):
     boosterTurretFalloffPenalty
 
     Used by:
-    Implant: Improved Drop Booster
-    Implant: Improved X-Instinct Booster
-    Implant: Standard Drop Booster
-    Implant: Standard X-Instinct Booster
-    Implant: Strong Drop Booster
-    Implant: Strong X-Instinct Booster
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterTurretFalloffPenalty'
@@ -7935,12 +7918,8 @@ class Effect2745(BaseEffect):
     boosterCapacitorCapacityPenalty
 
     Used by:
-    Implant: Improved Blue Pill Booster
-    Implant: Improved Exile Booster
-    Implant: Standard Blue Pill Booster
-    Implant: Standard Exile Booster
-    Implant: Strong Blue Pill Booster
-    Implant: Strong Exile Booster
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Exile Booster (3 of 4)
     """
 
     attr = 'boosterCapacitorCapacityPenalty'
@@ -7957,10 +7936,8 @@ class Effect2746(BaseEffect):
     boosterMaxVelocityPenalty
 
     Used by:
+    Implants named like: Crash Booster (3 of 4)
     Items from market group: Implants & Boosters > Booster > Booster Slot 02 (9 of 13)
-    Implant: Improved Crash Booster
-    Implant: Standard Crash Booster
-    Implant: Strong Crash Booster
     """
 
     attr = 'boosterMaxVelocityPenalty'
@@ -7977,12 +7954,8 @@ class Effect2747(BaseEffect):
     boosterTurretTrackingPenalty
 
     Used by:
-    Implant: Improved Exile Booster
-    Implant: Improved Frentix Booster
-    Implant: Standard Exile Booster
-    Implant: Standard Frentix Booster
-    Implant: Strong Exile Booster
-    Implant: Strong Frentix Booster
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
     """
 
     attr = 'boosterTurretTrackingPenalty'
@@ -8000,12 +7973,8 @@ class Effect2748(BaseEffect):
     boosterMissileVelocityPenalty
 
     Used by:
-    Implant: Improved Crash Booster
-    Implant: Improved X-Instinct Booster
-    Implant: Standard Crash Booster
-    Implant: Standard X-Instinct Booster
-    Implant: Strong Crash Booster
-    Implant: Strong X-Instinct Booster
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterMissileVelocityPenalty'
@@ -8023,9 +7992,7 @@ class Effect2749(BaseEffect):
     boosterMissileExplosionVelocityPenalty
 
     Used by:
-    Implant: Improved Blue Pill Booster
-    Implant: Standard Blue Pill Booster
-    Implant: Strong Blue Pill Booster
+    Implants named like: Blue Pill Booster (3 of 5)
     """
 
     attr = 'boosterAOEVelocityPenalty'
@@ -8180,12 +8147,8 @@ class Effect2791(BaseEffect):
     boosterMissileExplosionCloudPenaltyFixed
 
     Used by:
-    Implant: Improved Exile Booster
-    Implant: Improved Mindflood Booster
-    Implant: Standard Exile Booster
-    Implant: Standard Mindflood Booster
-    Implant: Strong Exile Booster
-    Implant: Strong Mindflood Booster
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
     """
 
     attr = 'boosterMissileAOECloudPenalty'
@@ -8203,7 +8166,7 @@ class Effect2792(BaseEffect):
     modifyArmorResonancePostPercentPassive
 
     Used by:
-    Modules named like: Anti Pump (32 of 32)
+    Modules named like: Armor Reinforcer (32 of 32)
     """
 
     type = 'passive'
@@ -8239,7 +8202,7 @@ class Effect2795(BaseEffect):
     modifyShieldResonancePostPercentPassive
 
     Used by:
-    Modules named like: Anti Screen Reinforcer (32 of 32)
+    Modules named like: Shield Reinforcer (32 of 32)
     """
 
     type = 'passive'
@@ -8462,7 +8425,7 @@ class Effect2837(BaseEffect):
     armorHPBonusAdd
 
     Used by:
-    Modules from group: Armor Reinforcer (51 of 51)
+    Modules from group: Armor Plate (51 of 51)
     """
 
     type = 'passive'
@@ -8477,7 +8440,7 @@ class Effect2847(BaseEffect):
     trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
 
     Used by:
-    Implants named like: Drop Booster (9 of 9)
+    Implants named like: Drop Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
@@ -9344,9 +9307,9 @@ class Effect3029(BaseEffect):
     overloadSelfEmHardeningBonus
 
     Used by:
-    Modules named like: Anti EM Shield Hardener (21 of 21)
-    Variations of module: Anti-EM Shield Hardener I (20 of 20)
-    Variations of module: Armor EM Hardener I (39 of 39)
+    Variations of module: EM Armor Hardener I (37 of 37)
+    Variations of module: EM Shield Hardener I (20 of 20)
+    Module: Civilian EM Shield Hardener
     """
 
     type = 'overheat'
@@ -9361,9 +9324,9 @@ class Effect3030(BaseEffect):
     overloadSelfThermalHardeningBonus
 
     Used by:
-    Variations of module: Anti-Thermal Shield Hardener I (20 of 20)
-    Variations of module: Armor Thermal Hardener I (39 of 39)
-    Module: Civilian Anti-Thermal Shield Hardener
+    Variations of module: Thermal Armor Hardener I (37 of 37)
+    Variations of module: Thermal Shield Hardener I (20 of 20)
+    Module: Civilian Thermal Shield Hardener
     """
 
     type = 'overheat'
@@ -9378,9 +9341,9 @@ class Effect3031(BaseEffect):
     overloadSelfExplosiveHardeningBonus
 
     Used by:
-    Variations of module: Anti-Explosive Shield Hardener I (20 of 20)
-    Variations of module: Armor Explosive Hardener I (39 of 39)
-    Module: Civilian Anti-Explosive Shield Hardener
+    Variations of module: Explosive Armor Hardener I (37 of 37)
+    Variations of module: Explosive Shield Hardener I (20 of 20)
+    Module: Civilian Explosive Shield Hardener
     """
 
     type = 'overheat'
@@ -9395,9 +9358,9 @@ class Effect3032(BaseEffect):
     overloadSelfKineticHardeningBonus
 
     Used by:
-    Modules named like: Anti Kinetic Shield Hardener (21 of 21)
-    Variations of module: Anti-Kinetic Shield Hardener I (20 of 20)
-    Variations of module: Armor Kinetic Hardener I (39 of 39)
+    Variations of module: Kinetic Armor Hardener I (37 of 37)
+    Variations of module: Kinetic Shield Hardener I (20 of 20)
+    Module: Civilian Kinetic Shield Hardener
     """
 
     type = 'overheat'
@@ -9413,7 +9376,7 @@ class Effect3035(BaseEffect):
 
     Used by:
     Modules named like: Capital Flex Hardener (9 of 9)
-    Variations of module: Adaptive Invulnerability Shield Hardener I (18 of 18)
+    Variations of module: Multispectrum Shield Hardener I (18 of 18)
     """
 
     type = 'overheat'
@@ -16755,7 +16718,7 @@ class Effect4951(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
-    Implants named like: Blue Pill Booster (10 of 10)
+    Implants named like: Blue Pill Booster (5 of 5)
     Implant: Antipharmakon Thureo
     """
 
@@ -16809,15 +16772,9 @@ class Effect4970(BaseEffect):
     boosterShieldBoostAmountPenaltyShieldSkills
 
     Used by:
-    Implant: Improved Crash Booster
-    Implant: Improved Frentix Booster
-    Implant: Improved Mindflood Booster
-    Implant: Standard Crash Booster
-    Implant: Standard Frentix Booster
-    Implant: Standard Mindflood Booster
-    Implant: Strong Crash Booster
-    Implant: Strong Frentix Booster
-    Implant: Strong Mindflood Booster
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
     """
 
     attr = 'boosterShieldBoostAmountPenalty'
@@ -16919,7 +16876,7 @@ class Effect4989(BaseEffect):
     missileSkillAoeCloudSizeBonusAllIncludingCapitals
 
     Used by:
-    Implants named like: Crash Booster (9 of 9)
+    Implants named like: Crash Booster (4 of 4)
     """
 
     type = 'passive'
@@ -18295,7 +18252,7 @@ class Effect5201(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Reinforcer',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plate',
                                       'massAddition', container.getModifiedItemAttr('massPenaltyReduction') * level, **kwargs)
 
 
@@ -18696,7 +18653,7 @@ class Effect5231(BaseEffect):
     modifyActiveArmorResonancePostPercent
 
     Used by:
-    Modules from group: Armor Hardener (156 of 156)
+    Modules from group: Armor Hardener (148 of 148)
     Modules from group: Flex Armor Hardener (4 of 4)
     """
 
@@ -19844,7 +19801,7 @@ class Effect5364(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
-    Implants named like: Exile Booster (9 of 9)
+    Implants named like: Exile Booster (4 of 4)
     Implant: Antipharmakon Kosybo
     """
 
