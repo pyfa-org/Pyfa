@@ -794,7 +794,7 @@ class Market:
                 except KeyError:
                     return ""
 
-                return item.iconID if item.icon else ""
+                return item.iconID if getattr(item, "icon", None) else ""
             elif self.getMarketGroupChildren(mg) > 0:
                 kids = self.getMarketGroupChildren(mg)
                 mktGroups = self.getIconByMarketGroup(kids)

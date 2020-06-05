@@ -1633,7 +1633,7 @@ class Effect581(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery') or mod.item.requiresSkill('Vorton Projector Operation'),
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level, **kwargs)
 
 
@@ -4898,7 +4898,9 @@ class Effect1638(BaseEffect):
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Gunnery') or mod.item.requiresSkill('Missile Launcher Operation'),
+            lambda mod: (mod.item.requiresSkill('Gunnery') or
+                         mod.item.requiresSkill('Missile Launcher Operation') or
+                         mod.item.requiresSkill('Vorton Projector Operation')),
             'power', skill.getModifiedItemAttr('powerNeedBonus') * skill.level, **kwargs)
 
 
@@ -36373,3 +36375,107 @@ class Effect8029(BaseEffect):
             fit.modules.filteredItemForce(
                 lambda mod: mod.item.group.name == 'Capacitor Booster',
                 attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
+
+
+class Effect8047(BaseEffect):
+    """
+    shipBonusUF1shieldResistance
+
+    Used by:
+    Ship: Skybreaker
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('kinetic', 'thermal', 'explosive', 'em'):
+            fit.ship.boostItemAttr('shield%sDamageResonance' % type.capitalize(),
+                                   ship.getModifiedItemAttr('shipBonusUF1'),
+                                   skill='EDENCOM Frigate', **kwargs)
+
+
+class Effect8048(BaseEffect):
+    """
+    shipBonusUF2damage
+
+    Used by:
+    Ship: Skybreaker
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Vorton Projector'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusUF2'), skill='EDENCOM Frigate', **kwargs)
+
+
+class Effect8052(BaseEffect):
+    """
+    shipBonusUC2ShieldResistance
+
+    Used by:
+    Ship: Stormbringer
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('kinetic', 'thermal', 'explosive', 'em'):
+            fit.ship.boostItemAttr('shield%sDamageResonance' % type.capitalize(),
+                                   ship.getModifiedItemAttr('shipBonusUC2'),
+                                   skill='EDENCOM Cruiser', **kwargs)
+            
+
+class Effect8053(BaseEffect):
+    """
+    shipBonusUC1maxRange
+
+    Used by:
+    Ship: Stormbringer
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Vorton Projector'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusUC1'), skill='EDENCOM Cruiser', **kwargs)
+
+
+class Effect8054(BaseEffect):
+    """
+    shipBonusUB1upwellDamage
+
+    Used by:
+    Ship: Thunderchild
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Vorton Projector'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusUB1'), skill='EDENCOM Battleship', **kwargs)
+
+
+class Effect8056(BaseEffect):
+    """
+    shipBonusUB2upwellROF
+
+    Used by:
+    Ship: Thunderchild
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Vorton Projector'), 'speed',
+            ship.getModifiedItemAttr('shipBonusUB2'), skill='EDENCOM Battleship', **kwargs)

@@ -60,7 +60,8 @@ class MarketTree(wx.TreeCtrl):
                 # If market should have items but it doesn't, do not show it
                 if sMkt.marketGroupValidityCheck(childMktGrp) is False:
                     continue
-                iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
+                icon = sMkt.getIconByMarketGroup(childMktGrp)
+                iconId = -1 if icon is None else self.addImage(icon)
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=childMktGrp.ID)
                 except (KeyboardInterrupt, SystemExit):
