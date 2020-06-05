@@ -37,7 +37,14 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
     for mod in src.item.activeModulesIter():
         if not mod.isDealingDamage():
             continue
-        if mod.hardpoint == FittingHardpoint.TURRET:
+        if "ChainLightning" in mod.item.effects:
+            if inLockRange:
+                applicationMap[mod] = getVortonMult(
+                    mod=mod,
+                    distance=distance,
+                    tgtSpeed=tgtSpeed,
+                    tgtSigRadius=tgtSigRadius)
+        elif mod.hardpoint == FittingHardpoint.TURRET:
             if inLockRange:
                 applicationMap[mod] = getTurretMult(
                     mod=mod,
@@ -56,7 +63,6 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
             if inLockRange or (mod.charge is not None and 'fofMissileLaunching' in mod.charge.effects):
                 applicationMap[mod] = getLauncherMult(
                     mod=mod,
-                    src=src,
                     distance=distance,
                     tgtSpeed=tgtSpeed,
                     tgtSigRadius=tgtSigRadius)
@@ -151,7 +157,21 @@ def getTurretMult(mod, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngl
     return mult
 
 
-def getLauncherMult(mod, src, distance, tgtSpeed, tgtSigRadius):
+def getVortonMult(mod, distance, tgtSpeed, tgtSigRadius):
+    rangeFactor = calculateRangeFactor(
+        mod.getModifiedItemAttr('maxRange'),
+        0,
+        distance)
+    applicationFactor = _calcMissileFactor(
+        atkEr=mod.getModifiedItemAttr('aoeCloudSize'),
+        atkEv=mod.getModifiedItemAttr('aoeVelocity'),
+        atkDrf=mod.getModifiedItemAttr('aoeDamageReductionFactor'),
+        tgtSpeed=tgtSpeed,
+        tgtSigRadius=tgtSigRadius)
+    return rangeFactor * applicationFactor
+
+
+def getLauncherMult(mod, distance, tgtSpeed, tgtSigRadius):
     missileMaxRangeData = mod.missileMaxRangeData
     if missileMaxRangeData is None:
         return 0

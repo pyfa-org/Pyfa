@@ -36377,6 +36377,11 @@ class Effect8029(BaseEffect):
                 attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
 
+class Effect8037(BaseEffect):
+
+    type = 'active'
+
+
 class Effect8047(BaseEffect):
     """
     shipBonusUF1shieldResistance
@@ -36428,7 +36433,7 @@ class Effect8052(BaseEffect):
             fit.ship.boostItemAttr('shield%sDamageResonance' % type.capitalize(),
                                    ship.getModifiedItemAttr('shipBonusUC2'),
                                    skill='EDENCOM Cruiser', **kwargs)
-            
+
 
 class Effect8053(BaseEffect):
     """
