@@ -521,6 +521,9 @@ inv:
 invul:
   - 'invul'
   - 'multispectrum shield hardener'
+invuln:
+  - 'invuln'
+  - 'multispectrum shield hardener'
 invulnerability:
   - 'invulnerability'
   - 'multispectrum shield hardener'
