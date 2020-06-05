@@ -96,7 +96,7 @@ class Effect21(BaseEffect):
 
     Used by:
     Modules from group: Shield Extender (36 of 36)
-    Modules from group: Shield Resistance Amplifier (88 of 88)
+    Modules from group: Shield Resistance Amplifier (84 of 84)
     """
 
     type = 'passive'
@@ -1742,7 +1742,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (590 of 955)
+    Items from category: Charge (608 of 973)
     """
 
     type = 'passive'
@@ -2328,7 +2328,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (496 of 955)
+    Items from category: Charge (514 of 973)
     """
 
     type = 'passive'
@@ -6054,7 +6054,7 @@ class Effect2052(BaseEffect):
     modifyShieldResonancePostPercent
 
     Used by:
-    Modules from group: Shield Resistance Amplifier (88 of 88)
+    Modules from group: Shield Resistance Amplifier (84 of 84)
     """
 
     type = 'passive'
@@ -7822,7 +7822,10 @@ class Effect2735(BaseEffect):
     boosterArmorHpPenalty
 
     Used by:
-    Implants named like: Booster (12 of 38)
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterArmorHPPenalty'
@@ -8441,6 +8444,7 @@ class Effect2847(BaseEffect):
 
     Used by:
     Implants named like: Drop Booster (4 of 4)
+    Implants named like: EDENCOM Vorton Booster (6 of 9)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
@@ -9176,7 +9180,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (429 of 889)
+    Items from market group: Ship Equipment > Turrets & Launchers (444 of 907)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -31290,7 +31294,6 @@ class Effect6713(BaseEffect):
     shipBonusSupercarrierM1BurstProjectorWebBonus
 
     Used by:
-    Ship: Hel
     Ship: Vendetta
     """
 
