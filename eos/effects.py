@@ -36377,9 +36377,161 @@ class Effect8029(BaseEffect):
                 attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
 
+class Effect8034(BaseEffect):
+    """
+    smallUpwellWeaponDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Small Vorton Projector
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Vorton Projector'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8035(BaseEffect):
+    """
+    mediumUpwellWeaponDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Medium Vorton Projector
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Vorton Projector'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8036(BaseEffect):
+    """
+    largeUpwellWeaponDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Large Vorton Projector
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Vorton Projector'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
 class Effect8037(BaseEffect):
+    """
+    ChainLightning
+
+    Used by:
+    Modules from group: Vorton Projector (15 of 15)
+    """
 
     type = 'active'
+
+
+class Effect8039(BaseEffect):
+    """
+    upwellSkillaoeVelocityaoeCloudSizeBonus
+
+    Used by:
+    Skill: Vorton Arc Guidance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'aoeVelocity', skill.getModifiedItemAttr('aoeVelocityBonus') * skill.level, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'aoeCloudSize', skill.getModifiedItemAttr('aoeCloudSizeBonus') * skill.level, **kwargs)
+
+
+class Effect8041(BaseEffect):
+    """
+    upwellSkillDamageMuliplierBonus
+
+    Used by:
+    Skill: Vorton Power Amplification
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Vorton Projector',
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8042(BaseEffect):
+    """
+    upwellSkillSpeedBonus
+
+    Used by:
+    Skill: Vorton Projector Operation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'speed', skill.getModifiedItemAttr('turretSpeeBonus') * skill.level, **kwargs)
+
+
+class Effect8044(BaseEffect):
+    """
+    smallVortonProjectorSkillDmgBonus
+
+    Used by:
+    Skill: Small Vorton Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Vorton Specialization'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8045(BaseEffect):
+    """
+    mediumVortonProjectorSkillDmgBonus
+
+    Used by:
+    Skill: Medium Vorton Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Vorton Specialization'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8046(BaseEffect):
+    """
+    largeVortonProjectorSkillDmgBonus
+
+    Used by:
+    Skill: Large Vorton Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Vorton Specialization'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
 
 class Effect8047(BaseEffect):
@@ -36487,6 +36639,12 @@ class Effect8056(BaseEffect):
 
 
 class Effect8057(BaseEffect):
+    """
+    vortonWeaponDamageSpeedMultiply
+
+    Used by:
+    Modules from group: Vorton Projector Upgrade (3 of 3)
+    """
 
     type = 'passive'
 
@@ -36498,3 +36656,50 @@ class Effect8057(BaseEffect):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Vorton Projector',
                                          'speed', module.getModifiedItemAttr('speedMultiplier'),
                                          stackingPenalties=True, **kwargs)
+
+
+class Effect8062(BaseEffect):
+    """
+    ammoAOEvelocityMultiplier
+
+    Used by:
+    Charges from group: Advanced Condensor Pack (6 of 6)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.multiplyItemAttr('aoeVelocity', module.getModifiedChargeAttr('aoeVelocityBonus') or 0, **kwargs)
+
+
+class Effect8064(BaseEffect):
+    """
+    vortonProjectorOptimalRangeBonus
+
+    Used by:
+    Implants named like: EDENCOM Vorton Booster RA (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
+
+
+class Effect8065(BaseEffect):
+    """
+    vortonProjectorSkillRangeBonus
+
+    Used by:
+    Skill: Vorton Extension
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'maxRange', skill.getModifiedItemAttr('rangeSkillBonus') * skill.level, **kwargs)
