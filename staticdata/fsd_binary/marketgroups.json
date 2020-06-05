@@ -10043,38 +10043,38 @@
     "parentGroupID": 14
   }, 
   "1688": {
-    "description": "Thermal Resistance Amplifiers", 
+    "description": "Thermal Shield Amplifiers", 
     "descriptionID": 285398, 
     "hasTypes": 1, 
     "iconID": 1394, 
-    "name": "Thermal Resistance Amplifiers", 
+    "name": "Thermal Shield Amplifiers", 
     "nameID": 285397, 
     "parentGroupID": 550
   }, 
   "1689": {
-    "description": "Kinetic Resistance Amplifiers", 
+    "description": "Kinetic Shield Amplifiers", 
     "descriptionID": 285400, 
     "hasTypes": 1, 
     "iconID": 1393, 
-    "name": "Kinetic Resistance Amplifiers", 
+    "name": "Kinetic Shield Amplifiers", 
     "nameID": 285399, 
     "parentGroupID": 550
   }, 
   "1690": {
-    "description": "Explosive Resistance Amplifiers", 
+    "description": "Explosive Shield Amplifiers", 
     "descriptionID": 285402, 
     "hasTypes": 1, 
     "iconID": 1395, 
-    "name": "Explosive Resistance Amplifiers", 
+    "name": "Explosive Shield Amplifiers", 
     "nameID": 285401, 
     "parentGroupID": 550
   }, 
   "1691": {
-    "description": "EM Resistance Amplifiers", 
+    "description": "EM Shield Amplifiers", 
     "descriptionID": 285404, 
     "hasTypes": 1, 
     "iconID": 1396, 
-    "name": "EM Resistance Amplifiers", 
+    "name": "EM Shield Amplifiers", 
     "nameID": 285403, 
     "parentGroupID": 550
   }, 
@@ -16067,5 +16067,99 @@
     "name": "Jump Filaments", 
     "nameID": 560904, 
     "parentGroupID": 2456
+  }, 
+  "2728": {
+    "description": "Condensor Pack charges used in Vorton Projectors", 
+    "descriptionID": 564544, 
+    "hasTypes": 0, 
+    "name": "Condensor Packs", 
+    "nameID": 564543, 
+    "parentGroupID": 11
+  }, 
+  "2729": {
+    "description": "Standard Condensor Packs", 
+    "descriptionID": 564546, 
+    "hasTypes": 0, 
+    "name": "Standard Condensor Packs", 
+    "nameID": 564545, 
+    "parentGroupID": 2728
+  }, 
+  "2730": {
+    "description": "Advanced Condensor Packs", 
+    "descriptionID": 564548, 
+    "hasTypes": 0, 
+    "name": "Advanced Condensor Packs", 
+    "nameID": 564547, 
+    "parentGroupID": 2728
+  }, 
+  "2734": {
+    "hasTypes": 1, 
+    "name": "Small", 
+    "nameID": 564558, 
+    "parentGroupID": 2729
+  }, 
+  "2735": {
+    "hasTypes": 1, 
+    "name": "Medium", 
+    "nameID": 564559, 
+    "parentGroupID": 2729
+  }, 
+  "2736": {
+    "hasTypes": 1, 
+    "name": "Large", 
+    "nameID": 564560, 
+    "parentGroupID": 2729
+  }, 
+  "2737": {
+    "hasTypes": 1, 
+    "name": "Small", 
+    "nameID": 564561, 
+    "parentGroupID": 2730
+  }, 
+  "2738": {
+    "hasTypes": 1, 
+    "name": "Medium", 
+    "nameID": 564562, 
+    "parentGroupID": 2730
+  }, 
+  "2739": {
+    "hasTypes": 1, 
+    "name": "Large", 
+    "nameID": 564563, 
+    "parentGroupID": 2730
+  }, 
+  "2740": {
+    "hasTypes": 1, 
+    "iconID": 1046, 
+    "name": "Vorton Tuning Systems", 
+    "nameID": 564564, 
+    "parentGroupID": 143
+  }, 
+  "2741": {
+    "description": "Vorton Projectors made by Upwell", 
+    "descriptionID": 564566, 
+    "hasTypes": 0, 
+    "iconID": 370, 
+    "name": "Vorton Projectors", 
+    "nameID": 564565, 
+    "parentGroupID": 10
+  }, 
+  "2742": {
+    "hasTypes": 1, 
+    "name": "Small", 
+    "nameID": 564567, 
+    "parentGroupID": 2741
+  }, 
+  "2743": {
+    "hasTypes": 1, 
+    "name": "Medium", 
+    "nameID": 564568, 
+    "parentGroupID": 2741
+  }, 
+  "2744": {
+    "hasTypes": 1, 
+    "name": "Large", 
+    "nameID": 564569, 
+    "parentGroupID": 2741
   }
 }

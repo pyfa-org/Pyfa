@@ -32382,6 +32382,40 @@
     "published": 0, 
     "stackable": 1
   }, 
+  "3036": {
+    "attributeID": 3036, 
+    "categoryID": 29, 
+    "dataType": 2, 
+    "defaultValue": 1.0, 
+    "description": "The maximum distance from the original target from which additional targets can receive arc damage", 
+    "displayName": "Arc Chain Range", 
+    "displayNameID": 564027, 
+    "highIsGood": 1, 
+    "iconID": 24252, 
+    "name": "upwellArcRange", 
+    "published": 1, 
+    "stackable": 0, 
+    "tooltipDescription": "The maximum distance the arc chain can reach from the original target", 
+    "tooltipDescriptionID": 564029, 
+    "tooltipTitleID": 564028
+  }, 
+  "3037": {
+    "attributeID": 3037, 
+    "categoryID": 29, 
+    "dataType": 4, 
+    "defaultValue": 1.0, 
+    "description": "Maximum number of arc targets hit.", 
+    "displayName": "Arc Chain Targets", 
+    "displayNameID": 564030, 
+    "highIsGood": 1, 
+    "iconID": 24252, 
+    "name": "upwellArcTargets", 
+    "published": 1, 
+    "stackable": 0, 
+    "tooltipDescription": "The maximum number of targets hit by arc chains", 
+    "tooltipDescriptionID": 564032, 
+    "tooltipTitleID": 564031
+  }, 
   "3038": {
     "attributeID": 3038, 
     "dataType": 0, 
@@ -32399,6 +32433,76 @@
     "description": "Controls how much of the NpcBehaviorSmartBomb effect's damage gets applied to entities", 
     "highIsGood": 0, 
     "name": "behaviorSmartBombEntityDamageMultiplier", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "3041": {
+    "attributeID": 3041, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "highIsGood": 1, 
+    "name": "shipBonusUF1", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3042": {
+    "attributeID": 3042, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "highIsGood": 1, 
+    "name": "shipBonusUF2", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3043": {
+    "attributeID": 3043, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "highIsGood": 1, 
+    "name": "shipBonusUC1", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3044": {
+    "attributeID": 3044, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "highIsGood": 1, 
+    "name": "shipBonusUC2", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3045": {
+    "attributeID": 3045, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "highIsGood": 1, 
+    "name": "shipBonusUB1", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3046": {
+    "attributeID": 3046, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "highIsGood": 1, 
+    "name": "shipBonusUB2", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3093": {
+    "attributeID": 3093, 
+    "dataType": 4, 
+    "defaultValue": 1.0, 
+    "description": "A dummy attribute for brute-forcing the system-wide effects info bubble bonus tooltip to appear on a player's HUD.", 
+    "highIsGood": 0, 
+    "name": "showSystemInfoBubble", 
     "published": 0, 
     "stackable": 0
   }

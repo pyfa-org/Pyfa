@@ -730,6 +730,26 @@
   }, 
   {
     "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "5%", 
+              "text": "bonus to Large Upwell Weapon damage"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Large Upwell Weapon rate of fire"
+            }
+          ], 
+          "header": "EDENCOM Battleship bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 54733
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -769,6 +789,26 @@
       ]
     }, 
     "typeID": 11184
+  }, 
+  {
+    "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "6%", 
+              "text": "bonus to all shield resistances"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Small Upwell Weapon damage"
+            }
+          ], 
+          "header": "EDENCOM Frigate (old) bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 54731
   }, 
   {
     "traits": {
@@ -4132,6 +4172,26 @@
       ]
     }, 
     "typeID": 33691
+  }, 
+  {
+    "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "6%", 
+              "text": "bonus to all shield resistances"
+            }, 
+            {
+              "number": "5%", 
+              "text": "bonus to Medium Upwell Weapon damage"
+            }
+          ], 
+          "header": "EDENCOM Cruiser (old) bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 54732
   }, 
   {
     "traits": {
@@ -8115,6 +8175,26 @@
           "bonuses": [
             {
               "number": "5%", 
+              "text": "bonus to Large Hybrid Turret rate of fire"
+            }, 
+            {
+              "number": "7.5%", 
+              "text": "bonus to Large Hybrid Turret tracking speed"
+            }
+          ], 
+          "header": "Gallente Battleship bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 34467
+  }, 
+  {
+    "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "5%", 
               "text": "bonus to Medium Projectile Turret rate of fire"
             }, 
             {
@@ -10422,23 +10502,16 @@
   }, 
   {
     "traits": {
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "5%", 
-              "text": "bonus to Large Hybrid Turret rate of fire"
-            }, 
-            {
-              "number": "7.5%", 
-              "text": "bonus to Large Hybrid Turret tracking speed"
-            }
-          ], 
-          "header": "Gallente Battleship bonuses (per skill level):"
-        }
-      ]
+      "misc": {
+        "bonuses": [
+          {
+            "text": "·Cynosural Field Generation Blocked"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 34467
+    "typeID": 54838
   }, 
   {
     "traits": {
