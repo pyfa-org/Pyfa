@@ -123,6 +123,15 @@ class Miscellanea(ViewColumn):
             text = ' | '.join(i[0] for i in info)
             tooltip = ' and '.join(i[1] for i in info).capitalize()
             return text, tooltip
+        elif itemGroup == "Vorton Projector":
+            cloudSize = stuff.getModifiedItemAttr("aoeCloudSize")
+            aoeVelocity = stuff.getModifiedItemAttr("aoeVelocity")
+            if not cloudSize or not aoeVelocity:
+                return "", None
+            text = "{0}{1} | {2}{3}".format(formatAmount(cloudSize, 3, 0, 3), "m",
+                                            formatAmount(aoeVelocity, 3, 0, 3), "m/s")
+            tooltip = "Explosion radius and explosion velocity"
+            return text, tooltip
         elif itemCategory == "Subsystem":
             slots = ("hi", "med", "low")
             info = []
@@ -279,7 +288,8 @@ class Miscellanea(ViewColumn):
             "Heat Sink",
             "Ballistic Control system",
             "Structure Weapon Upgrade",
-            "Entropic Radiation Sink"
+            "Entropic Radiation Sink",
+            "Vorton Projector Upgrade"
         ):
             attrMap = {
                 "Gyrostabilizer": ("damageMultiplier", "speedMultiplier", "Projectile weapon"),
@@ -287,7 +297,8 @@ class Miscellanea(ViewColumn):
                 "Heat Sink": ("damageMultiplier", "speedMultiplier", "Energy weapon"),
                 "Ballistic Control system": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
                 "Structure Weapon Upgrade": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
-                "Entropic Radiation Sink": ("damageMultiplier", "speedMultiplier", "Precursor weapon")}
+                "Entropic Radiation Sink": ("damageMultiplier", "speedMultiplier", "Precursor weapon"),
+                "Vorton Projector Upgrade": ("damageMultiplier", "speedMultiplier", "Vorton projector")}
             dmgAttr, rofAttr, weaponName = attrMap[itemGroup]
             dmg = stuff.getModifiedItemAttr(dmgAttr)
             rof = stuff.getModifiedItemAttr(rofAttr)

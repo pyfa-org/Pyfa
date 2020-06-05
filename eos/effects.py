@@ -36484,3 +36484,17 @@ class Effect8056(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Large Vorton Projector'), 'speed',
             ship.getModifiedItemAttr('shipBonusUB2'), skill='EDENCOM Battleship', **kwargs)
+
+
+class Effect8057(BaseEffect):
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Vorton Projector',
+                                         'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
+                                         stackingPenalties=True, **kwargs)
+        fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Vorton Projector',
+                                         'speed', module.getModifiedItemAttr('speedMultiplier'),
+                                         stackingPenalties=True, **kwargs)
