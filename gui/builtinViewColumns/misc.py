@@ -142,7 +142,7 @@ class Miscellanea(ViewColumn):
             return "+ " + ", ".join(info), "Slot Modifiers"
         elif (
             itemGroup in ("Energy Neutralizer", "Structure Energy Neutralizer") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOENeut" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOENeut" in item.effects)
         ):
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
             cycleParams = stuff.getCycleParameters()
@@ -191,7 +191,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif (
             itemGroup in ("Stasis Web", "Stasis Webifying Drone", "Structure Stasis Webifier") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEWeb" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEWeb" in item.effects)
         ):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
@@ -202,7 +202,7 @@ class Miscellanea(ViewColumn):
         elif (
             itemGroup == "Target Painter" or
             (itemGroup == "Structure Disruption Battery" and "structureModuleEffectTargetPainter" in item.effects) or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEPaint" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEPaint" in item.effects)
         ):
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             if not sigRadBonus:
@@ -213,7 +213,7 @@ class Miscellanea(ViewColumn):
         elif (
             itemGroup == "Sensor Dampener" or
             (itemGroup == "Structure Disruption Battery" and "structureModuleEffectRemoteSensorDampener" in item.effects) or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEDamp" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEDamp" in item.effects)
         ):
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
@@ -235,7 +235,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif (
             itemGroup in ("Weapon Disruptor", "Structure Disruption Battery") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOETrack" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOETrack" in item.effects)
         ):
             # Weapon disruption now covers both tracking and guidance (missile) disruptors
             # First get the attributes for tracking disruptors
@@ -322,8 +322,8 @@ class Miscellanea(ViewColumn):
             tooltip = "Drone DPS boost"
             return text, tooltip
         elif (
-            itemGroup in ("ECM", "Burst Jammer", "Burst Projectors", "Structure ECM Battery") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEECM" in item.effects)
+            itemGroup in ("ECM", "Burst Jammer", "Structure ECM Battery") or
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEECM" in item.effects)
         ):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
