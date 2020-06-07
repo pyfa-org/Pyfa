@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2020-05-15 22:13-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: ./gui/app.py:34 ./gui/mainFrame.py:181
+msgid "Market"
+msgstr ""
+
+#: ./gui/mainFrame.py:185
+msgid "Fittings"
+msgstr ""
+
+#: ./gui/mainFrame.py:272
+msgid "Loading previous fits..."
+msgstr ""
+
+#: ./gui/mainFrame.py:465
+msgid "Save Fitting As..."
+msgstr ""
+
+#: ./gui/mainFrame.py:466
+msgid "EVE XML fitting files (*.xml)|*.xml"
+msgstr ""
+
+#: ./gui/mainFrame.py:643
+msgid "Are you sure you wish to ignore fitting restrictions for the current fit? This could lead to wildly inaccurate results and possible errors."
+msgstr ""
+
+#: ./gui/mainFrame.py:645 ./gui/mainFrame.py:651
+msgid "Confirm"
+msgstr ""
+
+#: ./gui/mainFrame.py:650
+msgid "Re-enabling fitting restrictions for this fit will also remove any illegal items from the fit. Do you want to continue?"
+msgstr ""
+
+#: ./gui/mainFrame.py:669
+msgid "Manage Characters"
+msgstr ""
+
+#: ./gui/mainFrame.py:686
+msgid "&Turn Overrides Off"
+msgstr ""
+
+#: ./gui/mainFrame.py:686
+msgid "&Turn Overrides On"
+msgstr ""
+
+#: ./gui/mainFrame.py:719
+msgid "Please Wait..."
+msgstr ""
+
+#: ./gui/mainFrame.py:769
+msgid "Drones"
+msgstr ""
+
+#: ./gui/mainFrame.py:773
+msgid "Fighters"
+msgstr ""
+
+#: ./gui/mainFrame.py:777
+msgid "Implants"
+msgstr ""
+
+#: ./gui/mainFrame.py:781
+msgid "Boosters"
+msgstr ""
+
+#: ./gui/mainFrame.py:785
+msgid "Cargo"
+msgstr ""
+
+#: ./gui/mainFrame.py:803
+msgid "Export Skills Needed As..."
+msgstr ""
+
+#: ./gui/mainFrame.py:804
+msgid "EVEMon skills training file (*.emp)|*.emp|EVEMon skills training XML file (*.xml)|*.xml|Text skills training file (*.txt)|*.txt"
+msgstr ""
+
+#: ./gui/mainFrame.py:823
+msgid "Exporting skills needed..."
+msgstr ""
+
+#: ./gui/mainFrame.py:830
+msgid "Open One Or More Fitting Files"
+msgstr ""
+
+#: ./gui/mainFrame.py:831
+msgid "EVE XML fitting files (*.xml)|*.xml|EFT text fitting files (*.cfg)|*.cfg|All Files (*)|*"
+msgstr ""
+
+#: ./gui/mainFrame.py:838
+msgid "Importing fits"
+msgstr ""
+
+#: ./gui/mainFrame.py:852
+msgid "Save Backup As..."
+msgstr ""
+
+#: ./gui/mainFrame.py:853
+msgid "EVE XML fitting file (*.xml)|*.xml"
+msgstr ""
+
+#: ./gui/mainFrame.py:866 ./gui/mainFrame.py:894
+msgid "Backup fits"
+msgstr ""
+
+#: ./gui/mainFrame.py:867
+msgid "Backing up %d fits to: %s"
+msgstr ""
+
+#: ./gui/mainFrame.py:886
+msgid ""
+"Invalid Path\n"
+"\n"
+"The following path is invalid or does not exist: \n"
+"%s\n"
+"\n"
+"Please verify path location pyfa's preferences."
+msgstr ""
+
+#: ./gui/mainFrame.py:887
+msgid "Error"
+msgstr ""
+
+#: ./gui/mainFrame.py:895
+msgid "Generating HTML file at: %s"
+msgstr ""
+
+#: ./gui/mainFrame.py:937
+msgid "Export Error"
+msgstr ""
+
+#: ./gui/mainFrame.py:937
+msgid "Import Error"
+msgstr ""
+
+#: ./gui/mainFrame.py:940
+msgid ""
+"The following error was generated\n"
+"\n"
+"%s\n"
+"\n"
+"Be aware that already processed fits were not saved"
+msgstr ""
+
+#: ./gui/mainFrame.py:999
+msgid "Open One Or More Character Files"
+msgstr ""
+
+#: ./gui/mainFrame.py:1000
+msgid "EVE API XML character files (*.xml)|*.xml|All Files (*)|*"
+msgstr ""
+
+#: ./gui/mainFrame.py:1005
+msgid "Importing Character..."
+msgstr ""
+

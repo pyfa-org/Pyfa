@@ -20,6 +20,7 @@ from service.port import Port
 from service.port.esi import ESIExportException
 
 
+_ = wx.GetTranslation
 pyfalog = Logger(__name__)
 
 
@@ -27,7 +28,7 @@ class EveFittings(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
+            parent, id=wx.ID_ANY, title=_("Browse EVE Fittings"), pos=wx.DefaultPosition,
             size=wx.Size(750, 450), resizeable=True)
 
         self.mainFrame = parent
@@ -39,7 +40,7 @@ class EveFittings(AuxiliaryFrame):
         characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
         self.updateCharList()
 
-        self.fetchBtn = wx.Button(self, wx.ID_ANY, "Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.fetchBtn = wx.Button(self, wx.ID_ANY, _("Fetch Fits"), wx.DefaultPosition, wx.DefaultSize, 5)
         characterSelectSizer.Add(self.fetchBtn, 0, wx.ALL, 5)
         mainSizer.Add(characterSelectSizer, 0, wx.EXPAND, 5)
 
@@ -59,8 +60,8 @@ class EveFittings(AuxiliaryFrame):
         fitSizer.Add(self.fitView, 1, wx.ALL | wx.EXPAND, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.importBtn = wx.Button(self, wx.ID_ANY, "Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.importBtn = wx.Button(self, wx.ID_ANY, _("Import to pyfa"), wx.DefaultPosition, wx.DefaultSize, 5)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, _("Delete from EVE"), wx.DefaultPosition, wx.DefaultSize, 5)
         btnSizer.Add(self.importBtn, 1, wx.ALL, 5)
         btnSizer.Add(self.deleteBtn, 1, wx.ALL, 5)
         fitSizer.Add(btnSizer, 0, wx.EXPAND)
@@ -106,10 +107,10 @@ class EveFittings(AuxiliaryFrame):
 
     def fetchFittings(self, event):
         sEsi = Esi.getInstance()
-        waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
+        waitDialog = wx.BusyInfo(_("Fetching fits, please wait..."), parent=self)
         activeChar = self.getActiveCharacter()
         if activeChar is None:
-            msg = "Need at least one ESI character to fetch"
+            msg = _("Need at least one ESI character to fetch")
             pyfalog.warning(msg)
             self.statusbar.SetStatusText(msg)
             return
@@ -121,7 +122,7 @@ class EveFittings(AuxiliaryFrame):
             self.fitTree.populateSkillTree(self.fittings)
             del waitDialog
         except requests.exceptions.ConnectionError:
-            msg = "Connection error, please check your internet connection"
+            msg = _("Connection error, please check your internet connection")
             pyfalog.error(msg)
             self.statusbar.SetStatusText(msg)
         except APIException as ex:
@@ -151,8 +152,8 @@ class EveFittings(AuxiliaryFrame):
         data = json.loads(self.fitTree.fittingsTreeCtrl.GetItemData(selection))
 
         with wx.MessageDialog(
-            self, "Do you really want to delete %s (%s) from EVE?" % (data['name'], getItem(data['ship_type_id']).name),
-            "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION
+            self, _("Do you really want to delete {} ({}) from EVE?").format((data['name'], getItem(data['ship_type_id']).name)),
+            _("Confirm Delete"), wx.YES | wx.NO | wx.ICON_QUESTION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
                 activeChar = self.getActiveCharacter()
@@ -164,7 +165,7 @@ class EveFittings(AuxiliaryFrame):
                     self.fitTree.populateSkillTree(self.fittings)
                     self.fitView.update([])
                 except requests.exceptions.ConnectionError:
-                    msg = "Connection error, please check your internet connection"
+                    msg = _("Connection error, please check your internet connection")
                     pyfalog.error(msg)
                     self.statusbar.SetStatusText(msg)
 
@@ -174,11 +175,11 @@ class ESIServerExceptionHandler:
         pyfalog.error(ex)
         with wx.MessageDialog(
             parentWindow,
-            "There was an issue starting up the localized server, try setting "
+            _("There was an issue starting up the localized server, try setting "
             "Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> "
             "Login Authentication Method. If this doesn't fix the problem please file an "
-            "issue on Github.",
-            "Add Character Error",
+            "issue on Github."),
+            _("Add Character Error"),
             wx.OK | wx.ICON_ERROR
         ) as dlg:
             dlg.ShowModal()
@@ -191,9 +192,9 @@ class ESIExceptionHandler:
             pyfalog.error(ex)
             with wx.MessageDialog(
                 parentWindow,
-                "There was an error validating characters' SSO token. Please try "
-                "logging into the character again to reset the token.",
-                "Invalid Token",
+                _("There was an error validating characters' SSO token. Please try "
+                "logging into the character again to reset the token."),
+                _("Invalid Token"),
                 wx.OK | wx.ICON_ERROR
             ) as dlg:
                 dlg.ShowModal()
@@ -206,7 +207,7 @@ class ExportToEve(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition,
+            parent, id=wx.ID_ANY, title=_("Export fit to EVE"), pos=wx.DefaultPosition,
             size=wx.Size(400, 120) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 100), resizeable=True)
 
         self.mainFrame = parent
@@ -219,7 +220,7 @@ class ExportToEve(AuxiliaryFrame):
         self.updateCharList()
         self.charChoice.SetSelection(0)
 
-        self.exportBtn = wx.Button(self, wx.ID_ANY, "Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.exportBtn = wx.Button(self, wx.ID_ANY, _("Export Fit"), wx.DefaultPosition, wx.DefaultSize, 5)
         hSizer.Add(self.exportBtn, 0, wx.ALL, 5)
 
         mainSizer.Add(hSizer, 0, wx.EXPAND, 5)
@@ -267,10 +268,10 @@ class ExportToEve(AuxiliaryFrame):
         self.statusbar.SetStatusText("", 0)
 
         if fitID is None:
-            self.statusbar.SetStatusText("Please select an active fitting in the main window", 1)
+            self.statusbar.SetStatusText(_("Please select an active fitting in the main window"), 1)
             return
 
-        self.statusbar.SetStatusText("Sending request and awaiting response", 1)
+        self.statusbar.SetStatusText(_("Sending request and awaiting response"), 1)
         sEsi = Esi.getInstance()
 
         sFit = Fit.getInstance()
@@ -279,13 +280,13 @@ class ExportToEve(AuxiliaryFrame):
         except ESIExportException as e:
             msg = str(e)
             if not msg:
-                msg = "Failed to generate export data"
+                msg = _("Failed to generate export data")
             pyfalog.warning(msg)
             self.statusbar.SetStatusText(msg, 1)
             return
         activeChar = self.getActiveCharacter()
         if activeChar is None:
-            msg = "Need at least one ESI character to export"
+            msg = _("Need at least one ESI character to export")
             pyfalog.warning(msg)
             self.statusbar.SetStatusText(msg, 1)
             return
@@ -296,13 +297,13 @@ class ExportToEve(AuxiliaryFrame):
             self.statusbar.SetStatusText("", 0)
             self.statusbar.SetStatusText(res.reason, 1)
         except requests.exceptions.ConnectionError:
-            msg = "Connection error, please check your internet connection"
+            msg = _("Connection error, please check your internet connection")
             pyfalog.error(msg)
-            self.statusbar.SetStatusText("ERROR", 0)
+            self.statusbar.SetStatusText(_("ERROR"), 0)
             self.statusbar.SetStatusText(msg, 1)
         except ESIExportException as ex:
             pyfalog.error(ex)
-            self.statusbar.SetStatusText("ERROR", 0)
+            self.statusbar.SetStatusText(_("ERROR"), 0)
             self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
         except APIException as ex:
             try:
@@ -310,7 +311,7 @@ class ExportToEve(AuxiliaryFrame):
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception as ex:
-                self.statusbar.SetStatusText("ERROR", 0)
+                self.statusbar.SetStatusText(_("ERROR"), 0)
                 self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
                 pyfalog.error(ex)
 
@@ -319,15 +320,15 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
+            parent, id=wx.ID_ANY, title=_("SSO Character Management"), pos=wx.DefaultPosition,
             size=wx.Size(550, 250), resizeable=True)
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.lcCharacters = wx.ListCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
 
-        self.lcCharacters.InsertColumn(0, heading='Character')
-        self.lcCharacters.InsertColumn(1, heading='Character ID')
+        self.lcCharacters.InsertColumn(0, heading=_('Character'))
+        self.lcCharacters.InsertColumn(1, heading=_('Character ID'))
 
         self.popCharList()
 
@@ -335,10 +336,10 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
         btnSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.addBtn = wx.Button(self, wx.ID_ANY, "Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.addBtn = wx.Button(self, wx.ID_ANY, _("Add Character"), wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.addBtn, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Remove Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, _("Remove Character"), wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)

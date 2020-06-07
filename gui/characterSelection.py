@@ -32,7 +32,7 @@ from gui.utils.clipboard import toClipboard
 from service.character import Character
 from service.fit import Fit
 
-
+_ = wx.GetTranslation
 pyfalog = Logger(__name__)
 
 
@@ -44,7 +44,7 @@ class CharacterSelection(wx.Panel):
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(mainSizer)
 
-        mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Character: "), 0, wx.CENTER | wx.RIGHT | wx.LEFT, 3)
+        mainSizer.Add(wx.StaticText(self, wx.ID_ANY, _("Character: ")), 0, wx.CENTER | wx.RIGHT | wx.LEFT, 3)
 
         # cache current selection to fall back in case we choose to open char editor
         self.charCache = None
@@ -65,7 +65,7 @@ class CharacterSelection(wx.Panel):
 
         self.btnRefresh.SetMinSize(size)
         self.btnRefresh.SetMaxSize(size)
-        self.btnRefresh.SetToolTip("Refresh API")
+        self.btnRefresh.SetToolTip(_("Refresh Skills"))
 
         self.btnRefresh.Bind(wx.EVT_BUTTON, self.refreshApi)
         self.btnRefresh.Enable(False)
@@ -99,10 +99,10 @@ class CharacterSelection(wx.Panel):
 
         menu = wx.Menu()
 
-        grantItem = menu.Append(wx.ID_ANY, "Grant Missing Skills")
+        grantItem = menu.Append(wx.ID_ANY, _("Grant Missing Skills"))
         self.Bind(wx.EVT_MENU, self.grantMissingSkills, grantItem)
 
-        exportItem = menu.Append(wx.ID_ANY, "Copy Missing Skills")
+        exportItem = menu.Append(wx.ID_ANY, _("Copy Missing Skills"))
         self.Bind(wx.EVT_MENU, self.exportSkills, exportItem)
 
         self.PopupMenu(menu, pos)
@@ -147,7 +147,7 @@ class CharacterSelection(wx.Panel):
             sFit = Fit.getInstance()
             sFit.changeChar(fitID, charID)
 
-        choice.Append("\u2015 Open Character Editor \u2015", -1)
+        choice.Append("\u2015 " + _("Open Character Editor") + " \u2015", -1)
         self.charCache = self.charChoice.GetCurrentSelection()
 
         if event is not None:
@@ -170,8 +170,8 @@ class CharacterSelection(wx.Panel):
             pyfalog.warn(exc_value)
 
             wx.MessageBox(
-                "Error fetching skill information",
-                "Error", wx.ICON_ERROR | wx.STAY_ON_TOP)
+                _("Error fetching skill information"),
+                _("Error"), wx.ICON_ERROR | wx.STAY_ON_TOP)
 
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
@@ -227,7 +227,7 @@ class CharacterSelection(wx.Panel):
 
         if activeFitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
-            self.skillReqsStaticBitmap.SetToolTip("No active fit")
+            self.skillReqsStaticBitmap.SetToolTip(_("No active fit"))
         else:
             sCharacter = Character.getInstance()
             self.reqs = sCharacter.checkRequirements(fit)
@@ -235,11 +235,11 @@ class CharacterSelection(wx.Panel):
             sCharacter.skillReqsDict = {'charname': fit.character.name, 'skills': []}
             if len(self.reqs) == 0:
                 self.needsSkills = False
-                tip = "All skill prerequisites have been met"
+                tip = _("All skill prerequisites have been met")
                 self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
             else:
                 self.needsSkills = True
-                tip = "Skills required:\n"
+                tip = _("Skills required:") + "\n"
                 condensed = sFit.serviceFittingOptions["compactSkills"]
                 if condensed:
                     dict_ = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
