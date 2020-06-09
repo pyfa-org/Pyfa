@@ -36663,7 +36663,7 @@ class Effect8062(BaseEffect):
     ammoAOEvelocityMultiplier
 
     Used by:
-    Charges from group: Advanced Condensor Pack (6 of 6)
+    Charges from group: Advanced Condenser Pack (6 of 6)
     """
 
     type = 'passive'
@@ -36694,7 +36694,7 @@ class Effect8065(BaseEffect):
     vortonProjectorSkillRangeBonus
 
     Used by:
-    Skill: Vorton Extension
+    Skill: Vorton Arc Extension
     """
 
     type = 'passive'

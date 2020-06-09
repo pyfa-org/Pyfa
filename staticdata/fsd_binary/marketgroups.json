@@ -16069,26 +16069,26 @@
     "parentGroupID": 2456
   }, 
   "2728": {
-    "description": "Condensor Pack charges used in Vorton Projectors", 
+    "description": "Condenser Pack charges used in Vorton Projectors", 
     "descriptionID": 564544, 
     "hasTypes": 0, 
-    "name": "Condensor Packs", 
+    "name": "Condenser Packs", 
     "nameID": 564543, 
     "parentGroupID": 11
   }, 
   "2729": {
-    "description": "Standard Condensor Packs", 
+    "description": "Standard Condenser Packs", 
     "descriptionID": 564546, 
     "hasTypes": 0, 
-    "name": "Standard Condensor Packs", 
+    "name": "Standard Condenser Packs", 
     "nameID": 564545, 
     "parentGroupID": 2728
   }, 
   "2730": {
-    "description": "Advanced Condensor Packs", 
+    "description": "Advanced Condenser Packs", 
     "descriptionID": 564548, 
     "hasTypes": 0, 
-    "name": "Advanced Condensor Packs", 
+    "name": "Advanced Condenser Packs", 
     "nameID": 564547, 
     "parentGroupID": 2728
   }, 

@@ -9640,7 +9640,7 @@
     "categoryID": 8, 
     "fittableNonSingleton": false, 
     "groupID": 4061, 
-    "groupName": "Advanced Condensor Pack", 
+    "groupName": "Advanced Condenser Pack", 
     "groupNameID": 563793, 
     "published": false, 
     "useBasePrice": false
@@ -9651,7 +9651,7 @@
     "categoryID": 8, 
     "fittableNonSingleton": false, 
     "groupID": 4062, 
-    "groupName": "Condensor Pack", 
+    "groupName": "Condenser Pack", 
     "groupNameID": 563792, 
     "published": false, 
     "useBasePrice": false
@@ -9673,7 +9673,7 @@
     "categoryID": 9, 
     "fittableNonSingleton": false, 
     "groupID": 4065, 
-    "groupName": "Condensor Pack Blueprint", 
+    "groupName": "Condenser Pack Blueprint", 
     "groupNameID": 564058, 
     "published": false, 
     "useBasePrice": false
@@ -9684,7 +9684,7 @@
     "categoryID": 9, 
     "fittableNonSingleton": false, 
     "groupID": 4066, 
-    "groupName": "Advanced Condensor Pack Blueprint", 
+    "groupName": "Advanced Condenser Pack Blueprint", 
     "groupNameID": 564059, 
     "published": false, 
     "useBasePrice": false
