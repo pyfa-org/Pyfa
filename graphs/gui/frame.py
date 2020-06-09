@@ -27,7 +27,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings

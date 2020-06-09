@@ -3,33 +3,28 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from eos.const import FittingHardpoint
-from eos.saveddata.module import Module
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarModPositions
+from service.ammo import Ammo
 from service.fit import Fit
-from service.market import Market
 
 
 class ChangeModuleAmmo(ContextMenuCombined):
 
-    DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
-    MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
-
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         # Format: {type ID: set(loadable, charges)}
-        self.loadableCharges = {}
+        self.loadableChargesCache = {}
 
     def display(self, callingWindow, srcContext, mainItem, selection):
-        if srcContext not in ("fittingModule", "projectedModule"):
+        if srcContext not in ('fittingModule', 'projectedModule'):
             return False
 
         if self.mainFrame.getActiveFit() is None:
             return False
 
-        self.mainCharges = self.getChargesForMod(mainItem)
+        self.mainCharges = self._getAmmo(mainItem)
         if not self.mainCharges:
             return False
 
@@ -39,186 +34,81 @@ class ChangeModuleAmmo(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return "Charge"
+        return 'Charge'
 
-    def getChargesForMod(self, mod):
-        sMkt = Market.getInstance()
-        if mod is None or mod.isEmpty:
+    def _getAmmo(self, mod):
+        if mod.itemID is None:
             return set()
-        typeID = mod.item.ID
-        if typeID in self.loadableCharges:
-            return self.loadableCharges[typeID]
-        chargeSet = self.loadableCharges.setdefault(typeID, set())
-        # Do not try to grab it for modes which can also be passed as part of selection
-        if isinstance(mod, Module):
-            for charge in mod.getValidCharges():
-                if sMkt.getPublicityByItem(charge):
-                    chargeSet.add(charge)
-        return chargeSet
+        if mod.itemID not in self.loadableChargesCache:
+            self.loadableChargesCache[mod.itemID] = Ammo.getInstance().getModuleFlatAmmo(mod)
+        return self.loadableChargesCache[mod.itemID]
 
-    def turretSorter(self, charge):
-        damage = 0
-        range_ = (self.module.item.getAttribute("maxRange")) * \
-                 (charge.getAttribute("weaponRangeMultiplier") or 1)
-        falloff = (self.module.item.getAttribute("falloff") or 0) * \
-                  (charge.getAttribute("fallofMultiplier") or 1)
-        for type_ in self.DAMAGE_TYPES:
-            d = charge.getAttribute("%sDamage" % type_)
-            if d > 0:
-                damage += d
-
-        # Take optimal and falloff as range factor
-        rangeFactor = range_ + falloff
-
-        return - rangeFactor, charge.name.rsplit()[-2:], damage, charge.name
-
-    def missileSorter(self, charge):
-        # Get charge damage type and total damage
-        chargeDamageType, totalDamage = self.damageInfo(charge)
-        # Find its position in sort list
-        position = self.MISSILE_ORDER.index(chargeDamageType)
-        return position, totalDamage, charge.name
-
-    def damageInfo(self, charge):
-        # Set up data storage for missile damage stuff
-        damageMap = {}
-        totalDamage = 0
-        # Fill them with the data about charge
-        for damageType in self.DAMAGE_TYPES:
-            currentDamage = charge.getAttribute("{0}Damage".format(damageType)) or 0
-            damageMap[damageType] = currentDamage
-            totalDamage += currentDamage
-        # Detect type of ammo
-        chargeDamageType = None
-        for damageType in damageMap:
-            # If all damage belongs to certain type purely, set appropriate
-            # ammoType
-            if damageMap[damageType] == totalDamage:
-                chargeDamageType = damageType
-                break
-        # Else consider ammo as mixed damage
-        if chargeDamageType is None:
-            chargeDamageType = "mixed"
-
-        return chargeDamageType, totalDamage
-
-    @staticmethod
-    def numericConverter(string):
-        return int(string) if string.isdigit() else string
-
-    def nameSorter(self, charge):
-        parts = charge.name.split(" ")
-        return list(map(self.numericConverter, parts))
-
-    def addCharge(self, menu, charge):
+    def _addCharge(self, menu, charge):
         id_ = ContextMenuCombined.nextID()
-        name = charge.name if charge is not None else "Empty"
-        self.chargeIds[id_] = charge
+        name = charge.name if charge is not None else 'Empty'
+        self.chargeEventMap[id_] = charge
         item = wx.MenuItem(menu, id_, name)
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
         item.charge = charge
         if charge is not None and charge.iconID is not None:
-            bitmap = BitmapLoader.getBitmap(charge.iconID, "icons")
+            bitmap = BitmapLoader.getBitmap(charge.iconID, 'icons')
             if bitmap is not None:
                 item.SetBitmap(bitmap)
-
         return item
 
     @staticmethod
-    def addSeperator(m, text):
+    def _addSeparator(m, text):
         id_ = ContextMenuCombined.nextID()
         m.Append(id_, '─ %s ─' % text)
         m.Enable(id_, False)
 
     def getSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
-        msw = True if "wxMSW" in wx.PlatformInfo else False
-        m = wx.Menu()
-        self.chargeIds = {}
-        hardpoint = self.module.hardpoint
-        moduleName = self.module.item.name
-        # Make sure we do not consider mining turrets as combat turrets
-        if hardpoint == FittingHardpoint.TURRET and self.module.getModifiedItemAttr("miningAmount", None) is None:
-            self.addSeperator(m, "Long Range")
-            items = []
-            range_ = None
-            nameBase = None
-            sub = None
-            chargesSorted = sorted(self.mainCharges, key=self.turretSorter)
-            for charge in chargesSorted:
-                if "civilian" in charge.name.lower():
-                    continue
-                currBase = charge.name.rsplit()[-2:]
-                currRange = charge.getAttribute("weaponRangeMultiplier")
-                if nameBase is None or range_ != currRange or nameBase != currBase:
-                    if sub is not None:
-                        self.addSeperator(sub, "More Damage")
-
-                    sub = None
-                    base = charge
-                    nameBase = currBase
-                    range_ = currRange
-                    item = self.addCharge(rootMenu if msw else m, charge)
-                    items.append(item)
+        msw = True if 'wxMSW' in wx.PlatformInfo else False
+        menu = wx.Menu()
+        self.chargeEventMap = {}
+        modType, chargeDict = Ammo.getInstance().getModuleStructuredAmmo(self.module, ammo=self.mainCharges)
+        if modType == 'ddTurret':
+            self._addSeparator(menu, 'Long Range')
+            menuItems = []
+            for charges in chargeDict.values():
+                if len(charges) == 1:
+                    menuItems.append(self._addCharge(rootMenu if msw else menu, charges[0]))
                 else:
-                    if sub is None and item and base:
-                        sub = wx.Menu()
-                        sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
-                        self.addSeperator(sub, "Less Damage")
-                        item.SetSubMenu(sub)
-                        sub.Append(self.addCharge(rootMenu if msw else sub, base))
-
-                    sub.Append(self.addCharge(rootMenu if msw else sub, charge))
-
-            if sub is not None:
-                self.addSeperator(sub, "More Damage")
-
-            for item in items:
-                m.Append(item)
-
-            self.addSeperator(m, "Short Range")
-        elif hardpoint == FittingHardpoint.MISSILE and moduleName != 'Festival Launcher':
-            type_ = None
-            sub = None
-            defender = None
-            chargesSorted = sorted(self.mainCharges, key=self.missileSorter)
-            for charge in chargesSorted:
-                currType = self.damageInfo(charge)[0]
-
-                if currType != type_ or type_ is None:
-                    if sub is not None:
-                        self.addSeperator(sub, "More Damage")
-
-                    type_ = currType
-                    item = wx.MenuItem(m, wx.ID_ANY, type_.capitalize())
-                    bitmap = BitmapLoader.getBitmap("%s_small" % type_, "gui")
-                    if bitmap is not None:
-                        item.SetBitmap(bitmap)
-
-                    sub = wx.Menu()
-                    sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
-                    self.addSeperator(sub, "Less Damage")
-                    item.SetSubMenu(sub)
-                    m.Append(item)
-
-                if charge.name not in ("Light Defender Missile I", "Heavy Defender Missile I"):
-                    sub.Append(self.addCharge(rootMenu if msw else sub, charge))
-                else:
-                    defender = charge
-
-            if defender is not None:
-                m.Append(self.addCharge(rootMenu if msw else m, defender))
-            if sub is not None:
-                self.addSeperator(sub, "More Damage")
-        else:
-            chargesSorted = sorted(self.mainCharges, key=self.nameSorter)
-            for charge in chargesSorted:
-                m.Append(self.addCharge(rootMenu if msw else m, charge))
-
-        m.Append(self.addCharge(rootMenu if msw else m, None))
-        return m
+                    baseCharge = charges[0]
+                    menuItem = self._addCharge(rootMenu if msw else menu, baseCharge)
+                    menuItems.append(menuItem)
+                    subMenu = wx.Menu()
+                    subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
+                    menuItem.SetSubMenu(subMenu)
+                    self._addSeparator(subMenu, 'Less Damage')
+                    for charge in charges:
+                        subMenu.Append(self._addCharge(rootMenu if msw else subMenu, charge))
+                    self._addSeparator(subMenu, 'More Damage')
+            for menuItem in menuItems:
+                menu.Append(menuItem)
+            self._addSeparator(menu, 'Short Range')
+        elif modType == 'ddMissile':
+            menuItems = []
+            for chargeCatName, charges in chargeDict.items():
+                menuItem = wx.MenuItem(menu, wx.ID_ANY, chargeCatName.capitalize())
+                menuItems.append(menuItem)
+                subMenu = wx.Menu()
+                subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
+                menuItem.SetSubMenu(subMenu)
+                self._addSeparator(subMenu, 'Less Damage')
+                for charge in charges:
+                    subMenu.Append(self._addCharge(rootMenu if msw else subMenu, charge))
+                self._addSeparator(subMenu, 'More Damage')
+            for menuItem in menuItems:
+                menu.Append(menuItem)
+        elif modType == 'general':
+            for charge in chargeDict['general']:
+                menu.Append(self._addCharge(rootMenu if msw else menu, charge))
+        menu.Append(self._addCharge(rootMenu if msw else menu, None))
+        return menu
 
     def handleAmmoSwitch(self, event):
-        charge = self.chargeIds.get(event.Id, False)
+        charge = self.chargeEventMap.get(event.Id, False)
         if charge is False:
             event.Skip()
             return
@@ -254,7 +144,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
             positions = []
             for position, mod in enumerate(modContainer):
                 if mod in self.selection:
-                    modCharges = self.getChargesForMod(mod)
+                    modCharges = self._getAmmo(mod)
                     if modCharges.issubset(self.mainCharges):
                         positions.append(position)
             self.mainFrame.command.Submit(command(
