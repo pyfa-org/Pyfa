@@ -29,7 +29,7 @@ class GraphFitAmmoPicker(ContextMenuSingle):
         AmmoPickerFrame.openOne(callingWindow, mainItem.item, forceReopen=True)
 
 
-GraphFitAmmoPicker.register()
+# GraphFitAmmoPicker.register()
 
 
 class AmmoPickerFrame(AuxiliaryDialog):
