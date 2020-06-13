@@ -62,49 +62,49 @@ economiser:
 # Damage types
 em:
   - 'em'
-  - 'mjolnir(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'mjolnir (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'electromagnetic'  # Used in doomsday names
   - 'electron bomb'  # Used in bomb names
 therm:
   - 'therm'
-  - 'inferno(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'inferno (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'plasma smartbomb'  # Used in smartbomb names
   - 'scorch bomb'  # Used in bomb names
 thermal:
   - 'thermal'
-  - 'inferno(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'inferno (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'plasma smartbomb'  # Used in smartbomb names
   - 'scorch bomb'  # Used in bomb names
 kin:
   - 'kin'
-  - 'scourge(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'scourge (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'concussion bomb'  # Used in bomb and smartbomb names
 kinet:
   - 'kinet'
-  - 'scourge(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'scourge (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'concussion bomb'  # Used in bomb and smartbomb names
 kinetic:
   - 'kinetic'
-  - 'scourge(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'scourge (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'concussion bomb'  # Used in bomb and smartbomb names
 exp:
   - 'exp'
-  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'nova (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 expl:
   - 'expl'
-  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'nova (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 explo:
   - 'explo'
-  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'nova (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 explosive:
   - 'explosive'
-  - 'nova(.+ )?(missile|rocket|torpedo)'  # Used in missile names
+  - 'nova (.+ )?(missile|rocket|torpedo)'  # Used in missile names
   - 'proton smartbomb'  # Used in smartbomb names
   - 'shrapnel bomb'  # Used in bomb names
 
