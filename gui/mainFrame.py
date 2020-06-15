@@ -610,7 +610,9 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CTRL, wx.WXK_PAGEDOWN, ctabnext),
                 (wx.ACCEL_CTRL, wx.WXK_PAGEUP, ctabprev),
                 (wx.ACCEL_CMD, wx.WXK_PAGEDOWN, ctabnext),
-                (wx.ACCEL_CMD, wx.WXK_PAGEUP, ctabprev)
+                (wx.ACCEL_CMD, wx.WXK_PAGEUP, ctabprev),
+
+                (wx.ACCEL_CMD | wx.ACCEL_SHIFT, ord("Z"), wx.ID_REDO)
                 ]
 
         # Ctrl/Cmd+# for addition pane selection
