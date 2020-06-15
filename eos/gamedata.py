@@ -343,7 +343,11 @@ class Item(EqBase):
         if self.__race is None:
 
             try:
-                if self.category.categoryName == 'Structure':
+                if (
+                    self.category.categoryName == 'Structure' or
+                    # Here until CCP puts their shit together
+                    self.name in ("Thunderchild", "Stormbringer", "Skybreaker")
+                ):
                     self.__race = "upwell"
                 else:
                     self.__race = self.factionMap[self.factionID]
