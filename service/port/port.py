@@ -314,8 +314,8 @@ class Port:
         return importESI(string)
 
     @staticmethod
-    def exportESI(fit, callback=None):
-        return exportESI(fit, callback=callback)
+    def exportESI(fit, exportCharges, callback=None):
+        return exportESI(fit, exportCharges, callback=callback)
 
     # XML-related methods
     @staticmethod
