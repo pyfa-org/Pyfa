@@ -9608,7 +9608,7 @@
     "groupID": 4057, 
     "groupName": "Masks", 
     "groupNameID": 563630, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "406": {
@@ -9620,6 +9620,94 @@
     "groupName": "Smartbomb Supercharger", 
     "groupNameID": 63854, 
     "iconID": 0, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4060": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 7, 
+    "fittableNonSingleton": false, 
+    "groupID": 4060, 
+    "groupName": "Vorton Projector", 
+    "groupNameID": 563701, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4061": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 8, 
+    "fittableNonSingleton": false, 
+    "groupID": 4061, 
+    "groupName": "Advanced Condenser Pack", 
+    "groupNameID": 563793, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4062": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 8, 
+    "fittableNonSingleton": false, 
+    "groupID": 4062, 
+    "groupName": "Condenser Pack", 
+    "groupNameID": 563792, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4064": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 9, 
+    "fittableNonSingleton": false, 
+    "groupID": 4064, 
+    "groupName": "Vorton Projector Blueprint", 
+    "groupNameID": 564057, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4065": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 9, 
+    "fittableNonSingleton": false, 
+    "groupID": 4065, 
+    "groupName": "Condenser Pack Blueprint", 
+    "groupNameID": 564058, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4066": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 9, 
+    "fittableNonSingleton": false, 
+    "groupID": 4066, 
+    "groupName": "Advanced Condenser Pack Blueprint", 
+    "groupNameID": 564059, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4067": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 7, 
+    "fittableNonSingleton": false, 
+    "groupID": 4067, 
+    "groupName": "Vorton Projector Upgrade", 
+    "groupNameID": 564488, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
+  "4069": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 9, 
+    "fittableNonSingleton": false, 
+    "groupID": 4069, 
+    "groupName": "Vorton Projector Upgrade Blueprints", 
+    "groupNameID": 564489, 
     "published": false, 
     "useBasePrice": false
   }, 
@@ -9644,6 +9732,17 @@
     "groupName": "Exotic Artefact", 
     "groupNameID": 564553, 
     "published": true, 
+    "useBasePrice": false
+  }, 
+  "4071": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 29, 
+    "fittableNonSingleton": false, 
+    "groupID": 4071, 
+    "groupName": "Type Graveyard", 
+    "groupNameID": 567090, 
+    "published": false, 
     "useBasePrice": false
   }, 
   "408": {

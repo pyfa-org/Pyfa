@@ -26,7 +26,7 @@ import wx
 from logbook import Logger
 
 import config
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from service.prereqsCheck import version_block
 
 

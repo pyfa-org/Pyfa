@@ -34,7 +34,7 @@ from wx.lib.agw.floatspin import FloatSpin
 
 import config
 import gui.globalEvents as GE
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor, TextEntryValidatedDialog
 from gui.builtinViews.implantEditor import BaseImplantEditorView

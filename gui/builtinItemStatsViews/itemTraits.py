@@ -14,7 +14,7 @@ class ItemTraits(wx.Panel):
         self.traits.SetPage(item.traits.traitText)
 
         self.traits.Bind(wx.EVT_CONTEXT_MENU, self.onPopupMenu)
-        self.traits.Bind(wx.EVT_KEY_DOWN, self.onKeyDown)
+        self.traits.Bind(wx.EVT_KEY_UP, self.onKeyUp)
 
         mainSizer.Add(self.traits, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
@@ -32,7 +32,7 @@ class ItemTraits(wx.Panel):
         if selectedMenuItem == 1:  # Copy was chosen
             self.copySelectionToClipboard()
 
-    def onKeyDown(self, event):
+    def onKeyUp(self, event):
         keyCode = event.GetKeyCode()
         # Ctrl + C
         if keyCode == 67 and event.ControlDown():
