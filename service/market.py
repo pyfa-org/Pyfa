@@ -359,7 +359,6 @@ class Market:
             "'Habitat' Miner I": ("Storyline", "Miner I"),
             "'Wild' Miner I": ("Storyline", "Miner I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
-            "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I"),
             "Dark Blood Standup Heavy Energy Neutralizer": ("Structure Faction", "Standup Heavy Energy Neutralizer I")}
         # Parent type name: set(item names)

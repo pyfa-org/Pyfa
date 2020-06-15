@@ -122,9 +122,10 @@ def update_db():
             if (
                 # Apparently people really want Civilian modules available
                 (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
-                row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor')
+                row['typeName'] == 'Capsule'
             ):
                 row['published'] = True
+            # Nearly useless and clutter search results too much
             elif row['typeName'].startswith('Limited Synth '):
                 row['published'] = False
 
@@ -138,11 +139,11 @@ def update_db():
                 row['typeID'] in (41549, 41548, 41551, 41550) or
                 # Abyssal weather (environment)
                 row['groupID'] in (
-                1882,
-                1975,
-                1971,
-                # the "container" for the abyssal environments
-                1983)
+                    1882,
+                    1975,
+                    1971,
+                    # the "container" for the abyssal environments
+                    1983)
             ):
                 newData.append(row)
 

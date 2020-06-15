@@ -93,4 +93,5 @@ CONVERSIONS = {
     "Supplemental Explosive Deflection Amplifier": "'Basic' Explosive Shield Amplifier",
     "Supplemental Kinetic Deflection Amplifier": "'Basic' Kinetic Shield Amplifier",
     "Supplemental Thermal Dissipation Amplifier": "'Basic' Thermal Shield Amplifier",
+    "Dark Blood Tracking Disruptor": "'Investor' Tracking Disruptor I"
 }

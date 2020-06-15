@@ -21997,7 +21997,6 @@ class Effect5754(BaseEffect):
     Used by:
     Modules named like: Tracking Computer (19 of 19)
     Variations of module: Tracking Disruptor I (6 of 6)
-    Module: Dark Blood Tracking Disruptor
     """
 
     type = 'overheat'
@@ -27229,7 +27228,6 @@ class Effect6424(BaseEffect):
 
     Used by:
     Variations of module: Tracking Disruptor I (6 of 6)
-    Module: Dark Blood Tracking Disruptor
     """
 
     type = 'projected', 'active'

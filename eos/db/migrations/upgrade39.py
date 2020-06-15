@@ -2,6 +2,7 @@
 Migration 39
 
 - Shield amplifier tiericide
+- CCP getting rid of DB TDs due to exploits
 """
 
 CONVERSIONS = {
@@ -16,6 +17,9 @@ CONVERSIONS = {
     ),
     1800: (  # 'Basic' Thermal Shield Amplifier
         9566,  # Supplemental Thermal Dissipation Amplifier
+    ),
+    22933: (  # 'Investor' Tracking Disruptor I
+        32416,  # Dark Blood Tracking Disruptor
     )
 }
 
