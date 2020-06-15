@@ -36461,11 +36461,12 @@ class Effect8039(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
-                                      'aoeVelocity', skill.getModifiedItemAttr('aoeVelocityBonus') * skill.level, **kwargs)
+                                      'aoeVelocity', container.getModifiedItemAttr('aoeVelocityBonus') * level, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
-                                      'aoeCloudSize', skill.getModifiedItemAttr('aoeCloudSizeBonus') * skill.level, **kwargs)
+                                      'aoeCloudSize', container.getModifiedItemAttr('aoeCloudSizeBonus') * level, **kwargs)
 
 
 class Effect8041(BaseEffect):
@@ -36717,3 +36718,19 @@ class Effect8065(BaseEffect):
     def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
                                       'maxRange', skill.getModifiedItemAttr('rangeSkillBonus') * skill.level, **kwargs)
+
+
+class Effect8066(BaseEffect):
+    """
+    vortonProjectorDamageBonus
+
+    Used by:
+    Implants named like: EDENCOM Vorton Booster DA (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'damageMultiplier', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
