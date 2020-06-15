@@ -8452,7 +8452,6 @@ class Effect2847(BaseEffect):
 
     Used by:
     Implants named like: Drop Booster (4 of 4)
-    Implants named like: EDENCOM Vorton Booster (6 of 9)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
@@ -36457,6 +36456,7 @@ class Effect8039(BaseEffect):
     upwellSkillaoeVelocityaoeCloudSizeBonus
 
     Used by:
+    Implants named like: EDENCOM Vorton Booster GU (3 of 3)
     Skill: Vorton Arc Guidance
     """
 

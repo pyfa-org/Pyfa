@@ -735,11 +735,11 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Large Upwell Weapon damage"
+              "text": "bonus to Large Vorton Projector damage"
             }, 
             {
               "number": "5%", 
-              "text": "bonus to Large Upwell Weapon rate of fire"
+              "text": "bonus to Large Vorton Projector rate of fire"
             }
           ], 
           "header": "EDENCOM Battleship bonuses (per skill level):"
@@ -801,10 +801,10 @@
             }, 
             {
               "number": "5%", 
-              "text": "bonus to Small Upwell Weapon damage"
+              "text": "bonus to Small Vorton Projector damage"
             }
           ], 
-          "header": "EDENCOM Frigate (old) bonuses (per skill level):"
+          "header": "EDENCOM Frigate bonuses (per skill level):"
         }
       ]
     }, 
@@ -4184,10 +4184,10 @@
             }, 
             {
               "number": "5%", 
-              "text": "bonus to Medium Upwell Weapon damage"
+              "text": "bonus to Medium Vorton Projector optimal range"
             }
           ], 
-          "header": "EDENCOM Cruiser (old) bonuses (per skill level):"
+          "header": "EDENCOM Cruiser bonuses (per skill level):"
         }
       ]
     }, 

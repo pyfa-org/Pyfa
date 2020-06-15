@@ -32388,16 +32388,17 @@
     "dataType": 2, 
     "defaultValue": 1.0, 
     "description": "The maximum distance from the original target from which additional targets can receive arc damage", 
-    "displayName": "Arc Chain Range", 
+    "displayName": "Vorton Arc Range", 
     "displayNameID": 564027, 
     "highIsGood": 1, 
     "iconID": 24252, 
-    "name": "upwellArcRange", 
+    "name": "VortonArcRange", 
     "published": 1, 
     "stackable": 0, 
     "tooltipDescription": "The maximum distance the arc chain can reach from the original target", 
     "tooltipDescriptionID": 564029, 
-    "tooltipTitleID": 564028
+    "tooltipTitleID": 564028, 
+    "unitID": 1
   }, 
   "3037": {
     "attributeID": 3037, 
@@ -32409,10 +32410,10 @@
     "displayNameID": 564030, 
     "highIsGood": 1, 
     "iconID": 24252, 
-    "name": "upwellArcTargets", 
+    "name": "VortonArcTargets", 
     "published": 1, 
     "stackable": 0, 
-    "tooltipDescription": "The maximum number of targets hit by arc chains", 
+    "tooltipDescription": "The maximum number of targets hit by Vorton Arcs", 
     "tooltipDescriptionID": 564032, 
     "tooltipTitleID": 564031
   }, 

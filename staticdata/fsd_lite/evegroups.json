@@ -9745,6 +9745,17 @@
     "published": false, 
     "useBasePrice": false
   }, 
+  "4072": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 17, 
+    "fittableNonSingleton": false, 
+    "groupID": 4072, 
+    "groupName": "Expired Jump Filaments", 
+    "groupNameID": 567348, 
+    "published": true, 
+    "useBasePrice": false
+  }, 
   "408": {
     "anchorable": false, 
     "anchored": false, 
