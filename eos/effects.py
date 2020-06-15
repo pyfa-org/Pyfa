@@ -218,6 +218,28 @@ class Effect39(BaseEffect):
         fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
 
 
+class Effect46(BaseEffect):
+    """
+    shipScan
+
+    Used by:
+    Modules from group: Ship Scanner (3 of 3)
+    """
+
+    type = 'active'
+
+
+class Effect47(BaseEffect):
+    """
+    cargoScan
+
+    Used by:
+    Modules from group: Cargo Scanner (4 of 4)
+    """
+
+    type = 'active'
+
+
 class Effect48(BaseEffect):
     """
     powerBooster
@@ -445,6 +467,17 @@ class Effect67(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         # Set reload time to 1 second
         module.reloadTime = 1000
+
+
+class Effect81(BaseEffect):
+    """
+    surveyScan
+
+    Used by:
+    Modules from group: Survey Scanner (3 of 3)
+    """
+
+    type = 'active'
 
 
 class Effect89(BaseEffect):

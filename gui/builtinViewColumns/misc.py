@@ -691,6 +691,13 @@ class Miscellanea(ViewColumn):
                 formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
             )
             return text, tooltip
+        elif itemGroup in ("Cargo Scanner", "Ship Scanner", "Survey Scanner"):
+            duration = stuff.getModifiedItemAttr("duration")
+            if not duration:
+                return "", None
+            text = "{}s".format(formatAmount(duration / 1000, 3, 0, 0))
+            tooltip = "Scan duration"
+            return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup.endswith("Rocket") or chargeGroup.endswith("Missile") or chargeGroup.endswith("Torpedo"):
