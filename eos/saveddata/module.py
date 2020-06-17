@@ -64,7 +64,9 @@ ProjectedSystem = {
 class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
     MINING_ATTRIBUTES = ("miningAmount",)
-    SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")
+    SYSTEM_GROUPS = (
+        "Effect Beacon", "MassiveEnvironments", "Abyssal Hazards",
+        "Non-Interactable Object", "Destructible Effect Beacon")
 
     def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""
@@ -726,6 +728,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
         elif state == FittingModuleState.OVERHEATED and not self.item.isType("overheat"):
             return False
+        # Some destructible effect beacons contain active effects, hardcap those at online state
+        elif state > FittingModuleState.ONLINE and self.slot == FittingSlot.SYSTEM:
+            return False
         else:
             return True
 
@@ -1051,7 +1056,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         elif click == "ctrl":
             state = FittingModuleState.OFFLINE
         else:
-            state = transitionMap[currState]
+            try:
+                state = transitionMap[currState]
+            except KeyError:
+                state = min(transitionMap)
             # If passive module tries to transition into online and fails,
             # put it to passive instead
             if not mod.isValidState(state) and currState == FittingModuleState.ONLINE:

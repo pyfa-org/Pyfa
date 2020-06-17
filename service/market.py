@@ -721,8 +721,9 @@ class Market:
         groupItems = set(group.items)
         if hasattr(group, 'addItems'):
             groupItems.update(group.addItems)
-        items = set(
-                [item for item in groupItems if self.getPublicityByItem(item) and self.getGroupByItem(item) == group])
+        items = set([
+            item for item in groupItems
+            if self.getPublicityByItem(item) and self.getGroupByItem(item) == group])
         return items
 
     def getItemsByMarketGroup(self, mg, vars_=True):

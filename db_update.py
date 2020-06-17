@@ -33,7 +33,7 @@ DB_PATH = os.path.join(ROOT_DIR, 'eve.db')
 JSON_DIR = os.path.join(ROOT_DIR, 'staticdata')
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
-GAMEDATA_SCHEMA_VERSION = 3
+GAMEDATA_SCHEMA_VERSION = 4
 
 
 def db_needs_update():
@@ -122,7 +122,8 @@ def update_db():
             if (
                 # Apparently people really want Civilian modules available
                 (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
-                row['typeName'] == 'Capsule'
+                row['typeName'] == 'Capsule' or
+                row['groupID'] == 4033  # destructible effect beacons
             ):
                 row['published'] = True
             # Nearly useless and clutter search results too much
@@ -142,8 +143,7 @@ def update_db():
                     1882,
                     1975,
                     1971,
-                    # the "container" for the abyssal environments
-                    1983)
+                    1983)  # the "container" for the abyssal environments
             ):
                 newData.append(row)
 

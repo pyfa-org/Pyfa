@@ -60,6 +60,7 @@ class Effect10(BaseEffect):
     targetAttack
 
     Used by:
+    Celestials from group: Destructible Effect Beacon (6 of 6)
     Drones from group: Combat Drone (75 of 75)
     Modules from group: Energy Weapon (212 of 214)
     """
@@ -12419,6 +12420,8 @@ class Effect3992(BaseEffect):
 
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestial: Republic Stellar Observatory
+    Celestial: State Stellar Observatory
     """
 
     runTime = 'early'
@@ -13212,6 +13215,7 @@ class Effect4088(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
+    Celestial: Dazh Liminality Locus
     """
 
     runTime = 'early'
@@ -13230,6 +13234,7 @@ class Effect4089(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
+    Celestial: Dazh Liminality Locus
     """
 
     runTime = 'early'
@@ -23144,6 +23149,8 @@ class Effect5913(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Federal Stellar Observatory
+    Celestial: Imperial Stellar Observatory
     """
 
     runTime = 'early'
@@ -23160,6 +23167,7 @@ class Effect5914(BaseEffect):
 
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestial: Imperial Stellar Observatory
     """
 
     runTime = 'early'
@@ -23179,6 +23187,7 @@ class Effect5915(BaseEffect):
 
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestial: Imperial Stellar Observatory
     """
 
     runTime = 'early'
@@ -23306,6 +23315,7 @@ class Effect5922(BaseEffect):
 
     Used by:
     Celestials named like: Class Black Hole Effects (6 of 6)
+    Celestial: Republic Stellar Observatory
     """
 
     runTime = 'early'
@@ -35838,6 +35848,7 @@ class Effect7193(BaseEffect):
     systemMiningCycleTimeBonus
 
     Used by:
+    Celestials named like: Stellar Observatory (4 of 4)
     Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
@@ -35846,8 +35857,8 @@ class Effect7193(BaseEffect):
 
     @staticmethod
     def handler(fit, beacon, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+                                      beacon.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
 
 
 class Effect7202(BaseEffect):
@@ -36151,6 +36162,23 @@ class Effect7234(BaseEffect):
             implant.getModifiedItemAttr('setBonusMimesis'), **kwargs)
 
 
+class Effect7237(BaseEffect):
+    """
+    systemWarpSpeed
+
+    Used by:
+    Celestial: Dazh Liminality Locus
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('warpSpeedMultiplier', beacon.getModifiedItemAttr('warpSpeedBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
 class Effect7238(BaseEffect):
     """
     shipBonusDreadnoughtPC1DamageMultMax
@@ -36421,6 +36449,58 @@ class Effect8029(BaseEffect):
             fit.modules.filteredItemForce(
                 lambda mod: mod.item.group.name == 'Capacitor Booster',
                 attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
+
+
+class Effect8031(BaseEffect):
+    """
+    systemMaxTargets
+
+    Used by:
+    Celestial: Dazh Liminality Locus
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.multiplyItemAttr('maxLockedTargets', beacon.getModifiedItemAttr('maxLockedTargetsMultiplier'), **kwargs)
+
+
+class Effect8032(BaseEffect):
+    """
+    systemWarpScrambleStrengthBonus
+
+    Used by:
+    Celestial: Federal Stellar Observatory
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Warp Scrambler',
+            'warpScrambleStrength', beacon.getModifiedItemAttr('warpScrambleStrengthBonus'), **kwargs)
+
+
+class Effect8033(BaseEffect):
+    """
+    systemEcmRangeMultiplier
+
+    Used by:
+    Celestial: State Stellar Observatory
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name == 'ECM', 'maxRange',
+            beacon.getModifiedItemAttr('ecmRangeBonus'), stackingPenalties=True, **kwargs)
 
 
 class Effect8034(BaseEffect):
