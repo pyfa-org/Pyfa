@@ -80,8 +80,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                 subMenu = makeMenu(data.groups[group_name], menu)
                 menuItem.SetSubMenu(subMenu)
                 menu.Append(menuItem)
-            items = data.items
-            for entry in items:
+            for entry in data.items:
                 menuItem = addEffect(rootMenu if msw else parentMenu, entry.item, entry.short_name)
                 menu.Append(menuItem)
             menu.Bind(wx.EVT_MENU, self.handleSelection)
@@ -162,23 +161,19 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def getAbyssalWeather(self):
         sMkt = Market.getInstance()
+        data = Group()
 
         environments = {x.ID: x for x in sMkt.getGroup("Abyssal Environment").items}
         items = chain(
             sMkt.getGroup("MassiveEnvironments").items,
             sMkt.getGroup("Non-Interactable Object").items)
-
-        data = Group()
-
         for beacon in items:
             if not beacon.isType('projected'):
                 continue
-
             type = self.__class__.abyssal_mapping.get(beacon.name[0:-2], None)
             type = environments.get(type, None)
             if type is None:
                 continue
-
             subdata = data.groups.setdefault(type.name, Group())
             display_name = "{} {}".format(type.name, beacon.name[-1:])
             subdata.items.append(Entry(beacon, display_name, display_name))
