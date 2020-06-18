@@ -18,7 +18,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
-
+import gettext
 import datetime
 import os
 import sys
@@ -140,6 +140,11 @@ if __name__ == "__main__":
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
         pyfa = wx.App(False)
+
+        pyfa.locale = wx.Locale(wx.LANGUAGE_CHINESE_SIMPLIFIED)
+        pyfa.translation = gettext.translation('pyfa', './locale', languages=['zh_CN'])
+        pyfa.translation.install()
+
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 

@@ -1,0 +1,51 @@
+# Chinese translations for pyfa package.
+# Copyright (C) 2020 THE pyfa'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the pyfa package.
+# zhaoweny <zhaoweny@users.noreply.github.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pyfa 2.22.0\n"
+"Report-Msgid-Bugs-To: https://github.com/pyfa-org/Pyfa/issues\n"
+"POT-Creation-Date: 2020-06-17 17:35+0800\n"
+"PO-Revision-Date: 2020-06-18 14:48+0800\n"
+"Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
+"Language-Team: Chinese (simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: gui/additionsPane.py:79
+msgid "Boosters"
+msgstr "增效"
+
+#: gui/additionsPane.py:73
+msgid "Cargo"
+msgstr "货舱"
+
+#: gui/additionsPane.py:85
+msgid "Command"
+msgstr "指令"
+
+#: gui/additionsPane.py:67
+msgid "Drones"
+msgstr "无人机"
+
+#: gui/additionsPane.py:70
+msgid "Fighters"
+msgstr "铁骑机"
+
+#: gui/additionsPane.py:76
+msgid "Implants"
+msgstr "植入体"
+
+#: gui/additionsPane.py:88
+msgid "Notes"
+msgstr "备注"
+
+#: gui/additionsPane.py:82
+msgid "Projected"
+msgstr ""
