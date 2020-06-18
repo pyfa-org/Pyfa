@@ -80,9 +80,9 @@ class ResistancesViewFull(StatsView):
         sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition(row, col), wx.GBSpan(1, 1))
         col += 1
         toolTipText = {
-            "em"       : _("Electromagnetic resistance"),
-            "thermal"  : _("Thermal resistance"),
-            "kinetic"  : _("Kinetic resistance"),
+            "em": _("Electromagnetic resistance"),
+            "thermal": _("Thermal resistance"),
+            "kinetic": _("Kinetic resistance"),
             "explosive": _("Explosive resistance")
         }
         for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -107,9 +107,9 @@ class ResistancesViewFull(StatsView):
                         ((198, 133, 38), (81, 83, 67)))
 
         toolTipText = {
-            "shield"       : _("Shield resistance"),
-            "armor"        : _("Armor resistance"),
-            "hull"         : _("Hull resistance"),
+            "shield": _("Shield resistance"),
+            "armor": _("Armor resistance"),
+            "hull": _("Hull resistance"),
             "damagePattern": _("Incoming damage pattern")
         }
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
