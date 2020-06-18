@@ -9631,7 +9631,7 @@
     "groupID": 4060, 
     "groupName": "Vorton Projector", 
     "groupNameID": 563701, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4061": {
@@ -9642,7 +9642,7 @@
     "groupID": 4061, 
     "groupName": "Advanced Condenser Pack", 
     "groupNameID": 563793, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4062": {
@@ -9653,7 +9653,7 @@
     "groupID": 4062, 
     "groupName": "Condenser Pack", 
     "groupNameID": 563792, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4064": {
@@ -9664,7 +9664,7 @@
     "groupID": 4064, 
     "groupName": "Vorton Projector Blueprint", 
     "groupNameID": 564057, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4065": {
@@ -9675,7 +9675,7 @@
     "groupID": 4065, 
     "groupName": "Condenser Pack Blueprint", 
     "groupNameID": 564058, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4066": {
@@ -9686,7 +9686,7 @@
     "groupID": 4066, 
     "groupName": "Advanced Condenser Pack Blueprint", 
     "groupNameID": 564059, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4067": {
@@ -9697,7 +9697,7 @@
     "groupID": 4067, 
     "groupName": "Vorton Projector Upgrade", 
     "groupNameID": 564488, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "4069": {
@@ -9708,7 +9708,7 @@
     "groupID": 4069, 
     "groupName": "Vorton Projector Upgrade Blueprints", 
     "groupNameID": 564489, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "407": {
