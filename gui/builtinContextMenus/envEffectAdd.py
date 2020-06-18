@@ -21,15 +21,15 @@ class Group:
         self.groups = OrderedDict((k, self.groups[k]) for k in sorted(self.groups))
         for group in self.groups.values():
             group.sort()
-        self.items.sort(key=lambda e: e.short_name)
+        self.items.sort(key=lambda e: e.shortName)
 
 
 class Entry:
 
-    def __init__(self, item, name, short_name):
-        self.item = item
+    def __init__(self, itemID, name, shortName):
+        self.itemID = itemID
         self.name = name
-        self.short_name = short_name
+        self.shortName = shortName
 
 
 
@@ -48,7 +48,6 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.idmap = {}
 
     def display(self, callingWindow, srcContext):
         return srcContext == "projected"
@@ -56,32 +55,33 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
     def getText(self, callingWindow, itmContext):
         return "Add Environmental Effect"
 
+    def _addGroup(self, parentMenu, name):
+        id = ContextMenuUnconditional.nextID()
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
+        return menuItem
+
+    def _addEffect(self, parentMenu, typeID, name):
+        id = ContextMenuUnconditional.nextID()
+        self.idmap[id] = typeID
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
+        return menuItem
+
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
+        self.idmap = {}
         data = self.getData()
         msw = "wxMSW" in wx.PlatformInfo
-
-        def addGroup(parentMenu, name):
-            id = ContextMenuUnconditional.nextID()
-            menuItem = wx.MenuItem(parentMenu, id, name)
-            parentMenu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
-            return menuItem
-
-        def addEffect(parentMenu, effect, name):
-            id = ContextMenuUnconditional.nextID()
-            self.idmap[id] = effect
-            menuItem = wx.MenuItem(parentMenu, id, name)
-            parentMenu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
-            return menuItem
 
         def makeMenu(data, parentMenu):
             menu = wx.Menu()
             for group_name in data.groups:
-                menuItem = addGroup(rootMenu if msw else parentMenu, group_name)
+                menuItem = self._addGroup(rootMenu if msw else parentMenu, group_name)
                 subMenu = makeMenu(data.groups[group_name], menu)
                 menuItem.SetSubMenu(subMenu)
                 menu.Append(menuItem)
             for entry in data.items:
-                menuItem = addEffect(rootMenu if msw else parentMenu, entry.item, entry.short_name)
+                menuItem = self._addEffect(rootMenu if msw else parentMenu, entry.itemID, entry.shortName)
                 menu.Append(menuItem)
             menu.Bind(wx.EVT_MENU, self.handleSelection)
             return menu
@@ -98,7 +98,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID, swObj.ID))
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID, swObj))
 
     def getData(self):
         data = Group()
@@ -153,7 +153,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                         container = data.items
                     else:
                         container = data.groups.setdefault(groupname, Group()).items
-                    container.append(Entry(beacon, beaconname, shortname))
+                    container.append(Entry(beacon.ID, beaconname, shortname))
                     # Break loop on 1st result
                     break
         data.sort()
@@ -176,7 +176,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                 continue
             subdata = data.groups.setdefault(type.name, Group())
             display_name = "{} {}".format(type.name, beacon.name[-1:])
-            subdata.items.append(Entry(beacon, display_name, display_name))
+            subdata.items.append(Entry(beacon.ID, display_name, display_name))
         data.sort()
 
         # Localized abyssal hazards
@@ -192,11 +192,11 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
                 key = name_parts[1].strip()
                 subsubdata = subdata.groups.setdefault(key, Group())
-                subsubdata.items.append(Entry(beacon, beacon.name, beacon.name))
+                subsubdata.items.append(Entry(beacon.ID, beacon.name, beacon.name))
             subdata.sort()
 
         # PVP weather
-        data.items.append(Entry(sMkt.getItem(49766), 'PvP Weather', 'PvP Weather'))
+        data.items.append(Entry(49766, 'PvP Weather', 'PvP Weather'))
 
         return data
 
@@ -206,7 +206,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         for item in sMkt.getItemsByGroup(sMkt.getGroup('Destructible Effect Beacon')):
             if not item.isType('projected'):
                 continue
-            data.items.append(Entry(item, item.name, item.name))
+            data.items.append(Entry(item.ID, item.name, item.name))
         data.sort()
         return data
 
