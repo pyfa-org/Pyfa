@@ -106,10 +106,10 @@ class ResourcesViewFull(StatsView):
         sizer.AddStretchSpacer()
         # Turrets & launcher hardslots display
         tooltipText = {
-            "turret"     : _("Turret hardpoints"),
-            "launcher"   : _("Launcher hardpoints"),
-            "drones"     : _("Drones active"),
-            "fighter"    : _("Fighter squadrons active"),
+            "turret": _("Turret hardpoints"),
+            "launcher": _("Launcher hardpoints"),
+            "drones": _("Drones active"),
+            "fighter": _("Fighter squadrons active"),
             "calibration": _("Calibration")
         }
         for type_ in ("turret", "launcher", "drones", "fighter", "calibration"):
@@ -124,7 +124,7 @@ class ResourcesViewFull(StatsView):
             sizer.Add(box, 0, wx.ALIGN_CENTER)
 
             suffix = {
-                'turret'     : 'Hardpoints', 'launcher': 'Hardpoints', 'drones': 'Active', 'fighter': 'Tubes',
+                'turret': 'Hardpoints', 'launcher': 'Hardpoints', 'drones': 'Active', 'fighter': 'Tubes',
                 'calibration': 'Points'
             }
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
@@ -148,12 +148,12 @@ class ResourcesViewFull(StatsView):
 
         # PG, Cpu & drone stuff
         tooltipText = {
-            "cpu"           : _("CPU"),
-            "pg"            : _("PowerGrid"),
-            "droneBay"      : _("Drone bay"),
-            "fighterBay"    : _("Fighter bay"),
+            "cpu": _("CPU"),
+            "pg": _("PowerGrid"),
+            "droneBay": _("Drone bay"),
+            "fighterBay": _("Fighter bay"),
             "droneBandwidth": _("Drone bandwidth"),
-            "cargoBay"      : _("Cargo bay")
+            "cargoBay": _("Cargo bay")
         }
         for i, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "fighterBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
