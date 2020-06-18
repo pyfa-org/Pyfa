@@ -38,7 +38,7 @@ class FirepowerViewFull(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return "Firepower"
+        return _("Firepower")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -71,7 +71,7 @@ class FirepowerViewFull(StatsView):
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, damageType.capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, _(damageType).capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
@@ -95,14 +95,14 @@ class FirepowerViewFull(StatsView):
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
-        gridS.Add(wx.StaticText(parent, wx.ID_ANY, " Volley: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+        gridS.Add(wx.StaticText(parent, wx.ID_ANY, _(" Volley: ")), 0, wx.ALL | wx.ALIGN_RIGHT)
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self._cachedValues.append(0)
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
-        gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+        gridS.Add(wx.StaticText(parent, wx.ID_ANY, _(" DPS: ")), 0, wx.ALL | wx.ALIGN_RIGHT)
 
         self._cachedValues.append(0)
 
@@ -110,7 +110,7 @@ class FirepowerViewFull(StatsView):
 
         image = BitmapLoader.getBitmap("mining_small", "gui")
         self.miningyield = wx.BitmapButton(contentPanel, -1, image)
-        self.miningyield.SetToolTip(wx.ToolTip("Click to toggle to Mining Yield "))
+        self.miningyield.SetToolTip(wx.ToolTip(_("Click to toggle to Mining Yield ")))
         self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
         sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
 

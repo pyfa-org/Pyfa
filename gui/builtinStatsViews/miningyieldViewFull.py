@@ -35,7 +35,7 @@ class MiningYieldViewFull(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return "Mining Yield"
+        return _("Mining Yield")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -64,7 +64,7 @@ class MiningYieldViewFull(StatsView):
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, miningType.capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, _(miningType).capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
@@ -85,7 +85,7 @@ class MiningYieldViewFull(StatsView):
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.EXPAND)
 
-        box.Add(wx.StaticText(parent, wx.ID_ANY, "Total"), 0, wx.ALIGN_LEFT)
+        box.Add(wx.StaticText(parent, wx.ID_ANY, _("Total")), 0, wx.ALIGN_LEFT)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.EXPAND)
@@ -98,7 +98,7 @@ class MiningYieldViewFull(StatsView):
 
         image = BitmapLoader.getBitmap("turret_small", "gui")
         firepower = wx.BitmapButton(contentPanel, -1, image)
-        firepower.SetToolTip(wx.ToolTip("Click to toggle to Firepower View"))
+        firepower.SetToolTip(wx.ToolTip(_("Click to toggle to Firepower View")))
         firepower.Bind(wx.EVT_BUTTON, self.switchToFirepowerView)
         sizerMiningYield.Add(firepower, 0, wx.ALIGN_LEFT)
 

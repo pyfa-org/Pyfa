@@ -61,7 +61,7 @@ class OutgoingViewMinimal(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return "Remote Reps"
+        return _("Remote Reps")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)

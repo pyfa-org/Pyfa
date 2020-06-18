@@ -41,7 +41,7 @@ class AdditionsPane(TogglePanel):
         TogglePanel.__init__(self, parent, force_layout=1)
         self.mainFrame = mainFrame
 
-        self.SetLabel("Additions")
+        self.SetLabel(_("Additions"))
         pane = self.GetContentPanel()
 
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -96,7 +96,7 @@ class AdditionsPane(TogglePanel):
         self.notebook.SetSelection(self.PANES.index(name), focus=focus)
 
     def getName(self, idx):
-        return _(self.PANES[idx])
+        return self.PANES[idx]
 
     def ToggleContent(self, event):
         TogglePanel.ToggleContent(self, event)

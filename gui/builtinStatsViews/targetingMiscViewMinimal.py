@@ -33,7 +33,7 @@ class TargetingMiscViewMinimal(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return "Targeting && Misc"
+        return _("Targeting && Misc")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -55,11 +55,11 @@ class TargetingMiscViewMinimal(StatsView):
 
         gridTargetingMisc.Add(gridTargeting, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
-        labels = (("Targets", "Targets", ""),
-                  ("Range", "Range", "km"),
-                  ("Scan res.", "ScanRes", "mm"),
-                  ("Sensor str.", "SensorStr", ""),
-                  ("Drone range", "CtrlRange", "km"))
+        labels = ((_("Targets"), "Targets", ""),
+                  (_("Range"), "Range", "km"),
+                  (_("Scan res."), "ScanRes", "mm"),
+                  (_("Sensor str."), "SensorStr", ""),
+                  (_("Drone range"), "CtrlRange", "km"))
 
         for header, labelShort, unit in labels:
             gridTargeting.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -79,11 +79,11 @@ class TargetingMiscViewMinimal(StatsView):
         gridMisc.AddGrowableCol(1)
         gridTargetingMisc.Add(gridMisc, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
-        labels = (("Speed", "Speed", "m/s"),
-                  ("Align time", "AlignTime", "s"),
-                  ("Signature", "SigRadius", "m"),
-                  ("Warp Speed", "WarpSpeed", "AU/s"),
-                  ("Cargo", "Cargo", "m\u00B3"))
+        labels = ((_("Speed"), "Speed", "m/s"),
+                  (_("Align time"), "AlignTime", "s"),
+                  (_("Signature"), "SigRadius", "m"),
+                  (_("Warp Speed"), "WarpSpeed", "AU/s"),
+                  (_("Cargo"), "Cargo", "m\u00B3"))
 
         for header, labelShort, unit in labels:
             gridMisc.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -105,23 +105,23 @@ class TargetingMiscViewMinimal(StatsView):
             "jamChance": lambda: fit.jamChance}
 
         cargoNamesOrder = OrderedDict((
-            ("fleetHangarCapacity", "Fleet hangar"),
-            ("shipMaintenanceBayCapacity", "Maintenance bay"),
-            ("specialAmmoHoldCapacity", "Ammo hold"),
-            ("specialFuelBayCapacity", "Fuel bay"),
-            ("specialShipHoldCapacity", "Ship hold"),
-            ("specialSmallShipHoldCapacity", "Small ship hold"),
-            ("specialMediumShipHoldCapacity", "Medium ship hold"),
-            ("specialLargeShipHoldCapacity", "Large ship hold"),
-            ("specialIndustrialShipHoldCapacity", "Industrial ship hold"),
-            ("specialOreHoldCapacity", "Ore hold"),
-            ("specialMineralHoldCapacity", "Mineral hold"),
-            ("specialMaterialBayCapacity", "Material bay"),
-            ("specialGasHoldCapacity", "Gas hold"),
-            ("specialSalvageHoldCapacity", "Salvage hold"),
-            ("specialCommandCenterHoldCapacity", "Command center hold"),
-            ("specialPlanetaryCommoditiesHoldCapacity", "Planetary goods hold"),
-            ("specialQuafeHoldCapacity", "Quafe hold")))
+            ("fleetHangarCapacity", _("Fleet hangar")),
+            ("shipMaintenanceBayCapacity", _("Maintenance bay")),
+            ("specialAmmoHoldCapacity", _("Ammo hold")),
+            ("specialFuelBayCapacity", _("Fuel bay")),
+            ("specialShipHoldCapacity", _("Ship hold")),
+            ("specialSmallShipHoldCapacity", _("Small ship hold")),
+            ("specialMediumShipHoldCapacity", _("Medium ship hold")),
+            ("specialLargeShipHoldCapacity", _("Large ship hold")),
+            ("specialIndustrialShipHoldCapacity", _("Industrial ship hold")),
+            ("specialOreHoldCapacity", _("Ore hold")),
+            ("specialMineralHoldCapacity", _("Mineral hold")),
+            ("specialMaterialBayCapacity", _("Material bay")),
+            ("specialGasHoldCapacity", _("Gas hold")),
+            ("specialSalvageHoldCapacity", _("Salvage hold")),
+            ("specialCommandCenterHoldCapacity", _("Command center hold")),
+            ("specialPlanetaryCommoditiesHoldCapacity", _("Planetary goods hold")),
+            ("specialQuafeHoldCapacity", _("Quafe hold"))))
 
         cargoValues = {
             "main": lambda: fit.ship.getModifiedItemAttr("capacity"),
