@@ -19,12 +19,12 @@ from service.market import Market
 
 pyfalog = Logger(__name__)
 
-
+_ = wx.GetTranslation
 class AttributeEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
+            parent, wx.ID_ANY, title=_("Attribute Editor"), pos=wx.DefaultPosition,
             size=wx.Size(650, 600), resizeable=True)
 
         i = wx.Icon(BitmapLoader.getBitmap("fit_rename_small", "gui"))
@@ -34,9 +34,9 @@ class AttributeEditor(AuxiliaryFrame):
 
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
-        fileImport = fileMenu.Append(wx.ID_ANY, 'Import', 'Import overrides')
-        fileExport = fileMenu.Append(wx.ID_ANY, 'Export', 'Import overrides')
-        fileClear = fileMenu.Append(wx.ID_ANY, 'Clear All', 'Clear all overrides')
+        fileImport = fileMenu.Append(wx.ID_ANY, _('Import'), _('Import overrides'))
+        fileExport = fileMenu.Append(wx.ID_ANY, _('Export'), _('Import overrides'))
+        fileClear = fileMenu.Append(wx.ID_ANY, _('Clear All'), _('Clear all overrides'))
 
         menubar.Append(fileMenu, '&File')
         self.SetMenuBar(menubar)
@@ -67,7 +67,7 @@ class AttributeEditor(AuxiliaryFrame):
         mainSizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
 
         rightSizer = wx.BoxSizer(wx.VERTICAL)
-        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, "Remove Overides for Item", wx.DefaultPosition,
+        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, _("Remove Overides for Item"), wx.DefaultPosition,
                                             wx.DefaultSize, 0)
         self.pg = AttributeGrid(panel)
         rightSizer.Add(self.pg, 1, wx.ALL | wx.EXPAND, 5)
@@ -103,7 +103,7 @@ class AttributeEditor(AuxiliaryFrame):
 
     def OnImport(self, event):
         with wx.FileDialog(
-            self, "Import pyfa override file",
+            self, _("Import pyfa override file"),
             wildcard="pyfa override file (*.csv)|*.csv",
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
         ) as dlg:
@@ -126,7 +126,7 @@ class AttributeEditor(AuxiliaryFrame):
         defaultFile = "pyfa_overrides.csv"
 
         with wx.FileDialog(
-            self, "Save Overrides As...",
+            self, _("Save Overrides As..."),
             wildcard="pyfa overrides (*.csv)|*.csv",
             style=wx.FD_SAVE,
             defaultFile=defaultFile
@@ -142,8 +142,8 @@ class AttributeEditor(AuxiliaryFrame):
     def OnClear(self, event):
         with wx.MessageDialog(
             self,
-            "Are you sure you want to delete all overrides?",
-            "Confirm Delete",
+            _("Are you sure you want to delete all overrides?"),
+            _("Confirm Delete"),
             wx.YES | wx.NO | wx.ICON_EXCLAMATION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
@@ -279,7 +279,7 @@ class AttributeGrid(wxpg.PropertyGrid):
                 prop = wxpg.FloatProperty(key, value=default)
 
             prop.SetClientData(item.attributes[key])  # set this so that we may access it later
-            prop.SetHelpString("%s\n%s" % (item.attributes[key].displayName or key, "Default Value: %0.3f" % default))
+            prop.SetHelpString("%s\n%s" % (item.attributes[key].displayName or key, _("Default Value: %0.3f") % default))
             self.Append(prop)
 
     def removeOverrides(self, event):

@@ -38,6 +38,7 @@ from service.targetProfile import TargetProfile
 
 pyfalog = Logger(__name__)
 
+_ = wx.GetTranslation
 
 class ResistValidator(InputValidator):
 
@@ -46,9 +47,9 @@ class ResistValidator(InputValidator):
             return True, ''
         value = strToFloat(value)
         if value is None:
-            return False, 'Incorrect formatting (decimals only)'
+            return False, _('Incorrect formatting (decimals only)')
         if value < 0 or value > 100:
-            return False, 'Incorrect range (must be 0-100)'
+            return False, _('Incorrect range (must be 0-100)')
         return True, ''
 
 
@@ -67,14 +68,14 @@ class TargetProfileNameValidator(BaseValidator):
 
         try:
             if len(text) == 0:
-                raise ValueError("You must supply a name for your Target Profile!")
+                raise ValueError(_("You must supply a name for your Target Profile!"))
             elif text in [x.rawName for x in entityEditor.choices]:
-                raise ValueError("Target Profile name already in use, please choose another.")
+                raise ValueError(_("Target Profile name already in use, please choose another."))
 
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox("{}".format(e), "Error")
+            wx.MessageBox("{}".format(e), _("Error"))
             textCtrl.SetFocus()
             return False
 
@@ -82,7 +83,7 @@ class TargetProfileNameValidator(BaseValidator):
 class TargetProfileEntityEditor(EntityEditor):
 
     def __init__(self, parent):
-        EntityEditor.__init__(self, parent=parent, entityName="Target Profile")
+        EntityEditor.__init__(self, parent=parent, entityName=_("Target Profile"))
         self.SetEditorValidator(TargetProfileNameValidator)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -115,18 +116,18 @@ class TargetProfileEntityEditor(EntityEditor):
 class TargetProfileEditor(AuxiliaryFrame):
 
     DAMAGE_TYPES = OrderedDict([
-        ("em", "EM resistance"),
-        ("thermal", "Thermal resistance"),
-        ("kinetic", "Kinetic resistance"),
-        ("explosive", "Explosive resistance")])
+        ("em", _("EM resistance")),
+        ("thermal", _("Thermal resistance")),
+        ("kinetic", _("Kinetic resistance")),
+        ("explosive", _("Explosive resistance"))])
     ATTRIBUTES = OrderedDict([
-        ('maxVelocity', ('Maximum speed', 'm/s')),
-        ('signatureRadius', ('Signature radius\nLeave blank for infinitely big value', 'm')),
-        ('radius', ('Radius', 'm'))])
+        ('maxVelocity', (_('Maximum speed'), 'm/s')),
+        ('signatureRadius', (_('Signature radius\nLeave blank for infinitely big value'), 'm')),
+        ('radius', (_('Radius'), 'm'))])
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Target Profile Editor", resizeable=True,
+            parent, id=wx.ID_ANY, title=_("Target Profile Editor"), resizeable=True,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 
@@ -217,8 +218,8 @@ class TargetProfileEditor(AuxiliaryFrame):
 
         self.SetSizer(mainSizer)
 
-        importExport = (("Import", wx.ART_FILE_OPEN, "from"),
-                        ("Export", wx.ART_FILE_SAVE_AS, "to"))
+        importExport = (("Import", wx.ART_FILE_OPEN, _("from")),
+                        ("Export", wx.ART_FILE_SAVE_AS, _("to")))
 
         for name, art, direction in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
@@ -230,7 +231,7 @@ class TargetProfileEditor(AuxiliaryFrame):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTip("%s profiles %s clipboard" % (name, direction))
+            btn.SetToolTip(_("{} profiles {} clipboard").format(name, direction))
             footerSizer.Add(btn, 0)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
@@ -348,27 +349,27 @@ class TargetProfileEditor(AuxiliaryFrame):
             sTR = TargetProfile.getInstance()
             try:
                 sTR.importPatterns(text)
-                self.stNotice.SetLabel("Profiles successfully imported from clipboard")
+                self.stNotice.SetLabel(_("Profiles successfully imported from clipboard"))
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
-                msg = "Could not import from clipboard:"
+                msg = _("Could not import from clipboard:")
                 pyfalog.warning(msg)
                 pyfalog.error(e)
                 self.stNotice.SetLabel(msg)
             finally:
                 self.entityEditor.refreshEntityList()
         else:
-            self.stNotice.SetLabel("Could not import from clipboard")
+            self.stNotice.SetLabel(_("Could not import from clipboard"))
 
     def exportPatterns(self, event):
         """Event fired when export to clipboard button is clicked"""
         sTR = TargetProfile.getInstance()
         toClipboard(sTR.exportPatterns())
-        self.stNotice.SetLabel("Profiles exported to clipboard")
+        self.stNotice.SetLabel(_("Profiles exported to clipboard"))
 
     def kbEvent(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:
