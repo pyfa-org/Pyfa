@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 17:07+0800\n"
-"PO-Revision-Date: 2020-06-19 17:44+0800\n"
+"POT-Creation-Date: 2020-06-19 17:50+0800\n"
+"PO-Revision-Date: 2020-06-19 17:59+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -20,10 +20,6 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:106
 msgid " DPS: "
-msgstr ""
-
-#: gui/builtinStatsViews/capacitorViewFull.py:70
-msgid " GJ"
 msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:99
@@ -245,6 +241,10 @@ msgstr "指令"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Command center hold"
+msgstr ""
+
+#: gui/builtinItemStatsViews/itemTraits.py:23
+msgid "Copy"
 msgstr ""
 
 #: gui/mainMenuBar.py:166
@@ -539,7 +539,7 @@ msgstr "亚光速航速"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:169
 msgid "Stable: "
-msgstr "稳定："
+msgstr "稳定"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:85
 msgid "Sustained"
@@ -559,11 +559,11 @@ msgstr "热能抗性"
 
 #: gui/builtinStatsViews/miningyieldViewFull.py:88
 msgid "Total"
-msgstr "总容量"
+msgstr "总计"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:65
 msgid "Total: "
-msgstr "总容量："
+msgstr "总计"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:109
 msgid "Turret hardpoints"
@@ -577,31 +577,35 @@ msgstr "撤销最近一次操作"
 msgid "Warp Speed"
 msgstr "曲速航速"
 
-#: gui/builtinStatsViews/firepowerViewFull.py:66
-#: gui/builtinStatsViews/miningyieldViewFull.py:58
-msgid "drone"
+#: gui/builtinStatsViews/priceViewFull.py:54
+msgid "cargoBay"
+msgstr "货舱"
+
+#: gui/builtinStatsViews/priceViewFull.py:54
+msgid "character"
+msgstr "角色"
+
+#: gui/builtinStatsViews/priceViewFull.py:54
+msgid "drones"
 msgstr "无人机"
 
-#: gui/builtinStatsViews/firepowerViewFull.py:66
-msgid "droneDPS"
-msgstr ""
+#: gui/builtinStatsViews/priceViewFull.py:54
+msgid "fittings"
+msgstr "装配"
 
-#: gui/builtinStatsViews/firepowerViewFull.py:57
-msgid "full"
-msgstr ""
+#: gui/builtinStatsViews/priceViewFull.py:54
+msgid "ship"
+msgstr "船体"
 
-#: gui/builtinStatsViews/miningyieldViewFull.py:58
-msgid "miner"
-msgstr "采矿器"
+#: gui/builtinStatsViews/priceViewFull.py:54
+msgid "total"
+msgstr "总计"
 
-#: gui/builtinStatsViews/miningyieldViewFull.py:58
-msgid "mining"
-msgstr ""
+#~ msgid "miner"
+#~ msgstr "采矿器"
 
-#: gui/builtinStatsViews/firepowerViewFull.py:66
-msgid "turret"
-msgstr "炮台"
+#~ msgid "turret"
+#~ msgstr "炮台"
 
-#: gui/builtinStatsViews/firepowerViewFull.py:66
-msgid "weapon"
-msgstr "武器"
+#~ msgid "weapon"
+#~ msgstr "武器"
