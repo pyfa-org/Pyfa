@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-18 17:46+0800\n"
-"PO-Revision-Date: 2020-06-18 17:55+0800\n"
+"POT-Creation-Date: 2020-06-19 17:07+0800\n"
+"PO-Revision-Date: 2020-06-19 17:44+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -29,6 +29,130 @@ msgstr ""
 #: gui/builtinStatsViews/firepowerViewFull.py:99
 msgid " Volley: "
 msgstr "齐射"
+
+#: gui/mainMenuBar.py:73
+msgid "&Backup All Fittings"
+msgstr "备份所有装配(&B)"
+
+#: gui/mainMenuBar.py:104
+msgid "&Browse ESI Fittings\tCTRL+B"
+msgstr "浏览ESI装配(&B)\tCTRL+B"
+
+#: gui/mainMenuBar.py:111
+msgid "&Character"
+msgstr "角色(&C)"
+
+#: gui/mainMenuBar.py:143
+msgid "&Character Editor\tCTRL+K"
+msgstr "角色编辑器(&C)\tCTRL+k"
+
+#: gui/mainMenuBar.py:70
+msgid "&Close All Tabs\tCTRL+ALT+W"
+msgstr "关闭所有标签页(&C)\tCTRL+ALT+W"
+
+#: gui/mainMenuBar.py:69
+msgid "&Close Tab\tCTRL+W"
+msgstr "关闭标签页(&C)\tCTRL+W"
+
+#: gui/mainMenuBar.py:149
+msgid "&Damage Pattern Editor"
+msgstr "伤害模式编辑器(&D)"
+
+#: gui/mainMenuBar.py:142
+msgid "&Editors"
+msgstr "编辑器(&E)"
+
+#: gui/mainMenuBar.py:92
+msgid "&Export Fitting\tCTRL+S"
+msgstr "导出装配(&E)\tCTRL+S"
+
+#: gui/mainMenuBar.py:119
+msgid "&Export Skills Needed"
+msgstr "导出所需技能(&E)"
+
+#: gui/mainMenuBar.py:66
+msgid "&File"
+msgstr "文件(&F)"
+
+#: gui/mainMenuBar.py:160
+msgid "&Forums"
+msgstr "论坛(&F)"
+
+#: gui/mainMenuBar.py:88
+msgid "&From Clipboard\tCTRL+V"
+msgstr "从剪贴版导入(&F)\tCTRL+V"
+
+#: gui/mainMenuBar.py:134
+msgid "&Global"
+msgstr "全局设置(&G)"
+
+#: gui/mainMenuBar.py:96
+msgid "&Graphs\tCTRL+G"
+msgstr "图表(&G)\tCTRL+G"
+
+#: gui/mainMenuBar.py:158
+msgid "&Help"
+msgstr "帮助(&H)"
+
+#: gui/mainMenuBar.py:146
+msgid "&Implant Set Editor\tCTRL+I"
+msgstr "植入体配置编辑器(&I)\tCTRL+I"
+
+#: gui/mainMenuBar.py:118
+msgid "&Import Character File"
+msgstr "导入角色文件(&I)"
+
+#: gui/mainMenuBar.py:91
+msgid "&Import Fittings\tCTRL+O"
+msgstr "导入装配(&I)\tCTRL+O"
+
+#: gui/mainMenuBar.py:122
+msgid "&Manage ESI Characters"
+msgstr "管理ESI角色(&M)"
+
+#: gui/mainMenuBar.py:68
+msgid "&New Tab\tCTRL+T"
+msgstr "新标签页(&N)\tCTRL+T"
+
+#: gui/mainMenuBar.py:95
+msgid "&Optimize Fit Price\tCTRL+D"
+msgstr "优化装配价格(&O)\tCTRL+D"
+
+#: gui/mainMenuBar.py:136
+msgid "&Preferences\t{}"
+msgstr "偏好设置(&P)\t{}"
+
+#: gui/mainMenuBar.py:84
+msgid "&Redo\tCTRL+Y"
+msgstr "恢复(&R)\tCTRL+Y"
+
+#: gui/mainMenuBar.py:115
+msgid "&Revert Character"
+msgstr "还原角色(&R)"
+
+#: gui/mainMenuBar.py:113
+msgid "&Save Character"
+msgstr "保存角色(&S)"
+
+#: gui/mainMenuBar.py:152
+msgid "&Target Profile Editor"
+msgstr "敌对属性编辑器(&T)"
+
+#: gui/mainMenuBar.py:87
+msgid "&To Clipboard\tCTRL+C"
+msgstr "导出到剪贴板(&T)\tCTRL+C"
+
+#: gui/mainMenuBar.py:131
+msgid "&Turn Overrides On"
+msgstr "启用自定义属性(&T)"
+
+#: gui/mainMenuBar.py:83
+msgid "&Undo\tCTRL+Z"
+msgstr "撤销(&R)\tCTRL+Z"
+
+#: gui/mainMenuBar.py:159
+msgid "&Wiki"
+msgstr "百科(&W)"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:79
 msgid "0s"
@@ -57,6 +181,14 @@ msgstr "装甲维修"
 #: gui/builtinStatsViews/resistancesViewFull.py:111
 msgid "Armor resistance"
 msgstr "装甲抗性"
+
+#: gui/mainMenuBar.py:128
+msgid "Attribute &Overrides"
+msgstr "自定义属性(&O)"
+
+#: gui/mainMenuBar.py:73
+msgid "Backup all fittings to a XML file"
+msgstr "备份所有装配到XML文件"
 
 #: gui/additionsPane.py:77
 msgid "Boosters"
@@ -99,6 +231,14 @@ msgstr "点击切换到火力视图"
 msgid "Click to toggle to Mining Yield "
 msgstr "点击切换到矿物产出视图"
 
+#: gui/mainMenuBar.py:70
+msgid "Close all open fits"
+msgstr "关闭所有装配标签页"
+
+#: gui/mainMenuBar.py:69
+msgid "Close the current fit"
+msgstr "关闭当前装配标签页"
+
 #: gui/additionsPane.py:83
 msgid "Command"
 msgstr "指令"
@@ -106,6 +246,14 @@ msgstr "指令"
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Command center hold"
 msgstr ""
+
+#: gui/mainMenuBar.py:166
+msgid "Dev Tools"
+msgstr "开发者工具"
+
+#: gui/mainMenuBar.py:101 gui/mainMenuBar.py:201
+msgid "Disable Fitting Re&strictions"
+msgstr "关闭装配资源限制(&S)"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:155
 msgid "Drone bandwidth"
@@ -127,17 +275,49 @@ msgstr "无人机"
 msgid "Drones active"
 msgstr "激活的无人机"
 
+#: gui/mainMenuBar.py:105
+msgid "E&xport to ESI\tCTRL+E"
+msgstr "导出到ESI(&X)\tCTRL+E"
+
 #: gui/builtinStatsViews/resistancesViewFull.py:83
 msgid "Electromagnetic resistance"
 msgstr "电磁抗性"
+
+#: gui/mainMenuBar.py:199
+msgid "Enable Fitting Re&strictions"
+msgstr "开启装配资源限制(&S)"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:86
 msgid "Explosive resistance"
 msgstr "爆炸抗性"
 
+#: gui/mainMenuBar.py:74
+msgid "Export All Fittings to &HTML"
+msgstr "导出所有装配到网页(&H)"
+
+#: gui/mainMenuBar.py:87
+msgid "Export a fit to the clipboard"
+msgstr "导出当前装配到剪贴板"
+
+#: gui/mainMenuBar.py:74
+msgid "Export fits to HTML file (set in Preferences)"
+msgstr "导出所有装配到网页（通过偏好设置指定）"
+
+#: gui/mainMenuBar.py:92
+msgid "Export fitting to another format"
+msgstr "导出装配为其他格式"
+
+#: gui/mainMenuBar.py:119
+msgid "Export skills needed for this fitting"
+msgstr "导出使用此装配所需技能"
+
 #: gui/builtinStatsViews/capacitorViewFull.py:88
 msgid "Extra stats"
 msgstr "额外状态"
+
+#: gui/mainMenuBar.py:81
+msgid "Fi&t"
+msgstr "装配(&T)"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:154
 msgid "Fighter bay"
@@ -167,6 +347,14 @@ msgstr "燃料机库"
 msgid "Gas hold"
 msgstr "气态矿物仓库"
 
+#: gui/mainMenuBar.py:160
+msgid "Go to EVE Online Forum thread"
+msgstr "打开 EVE Online 论坛讨论页"
+
+#: gui/mainMenuBar.py:159
+msgid "Go to wiki on GitHub"
+msgstr "打开搭建在GitHub的维基页"
+
 #: gui/builtinStatsViews/rechargeViewFull.py:76
 msgid "Hull repair amount"
 msgstr "结构维修"
@@ -178,6 +366,18 @@ msgstr "结构抗性"
 #: gui/additionsPane.py:74
 msgid "Implants"
 msgstr "植入体"
+
+#: gui/mainMenuBar.py:88
+msgid "Import a fit from the clipboard"
+msgstr "从剪贴板导入装配"
+
+#: gui/mainMenuBar.py:118
+msgid "Import characters into pyfa from file"
+msgstr "从文件导入角色信息到pyfa"
+
+#: gui/mainMenuBar.py:91
+msgid "Import fittings into pyfa"
+msgstr "从文件导入装配到pyfa"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Incoming damage pattern"
@@ -228,6 +428,22 @@ msgstr "矿物产出"
 msgid "Notes"
 msgstr "备注"
 
+#: gui/mainMenuBar.py:166
+msgid "Open &Dev Tools"
+msgstr "打开开发者工具(&D)"
+
+#: gui/mainMenuBar.py:165
+msgid "Open Wid&gets Inspect tool"
+msgstr "打开控件检查工具(&G)"
+
+#: gui/mainMenuBar.py:165
+msgid "Open Widgets Inspect tool"
+msgstr "打开控件检查工具"
+
+#: gui/mainMenuBar.py:68
+msgid "Open a new fitting tab"
+msgstr "打开新的装配标签页"
+
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:117
 msgid "Ore hold"
 msgstr "矿石机库"
@@ -264,6 +480,10 @@ msgstr "锁定范围"
 msgid "Recharge rates"
 msgstr "回充速度"
 
+#: gui/mainMenuBar.py:84
+msgid "Redo the most recent undone action"
+msgstr "恢复最近一次撤销的操作"
+
 #: gui/builtinStatsViews/rechargeViewFull.py:84
 msgid "Reinforced"
 msgstr "加强回充"
@@ -284,6 +504,10 @@ msgstr "装配资源"
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:121
 msgid "Salvage hold"
 msgstr "打捞件机库"
+
+#: gui/mainMenuBar.py:114
+msgid "Save Character &As..."
+msgstr "保存角色为...(&A)"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:60
 msgid "Scan res."
@@ -344,6 +568,10 @@ msgstr "总容量："
 #: gui/builtinStatsViews/resourcesViewFull.py:109
 msgid "Turret hardpoints"
 msgstr "炮台"
+
+#: gui/mainMenuBar.py:83
+msgid "Undo the most recent action"
+msgstr "撤销最近一次操作"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:85
 msgid "Warp Speed"

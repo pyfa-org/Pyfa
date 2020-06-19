@@ -63,108 +63,107 @@ class MainMenuBar(wx.MenuBar):
 
         # File menu
         fileMenu = wx.Menu()
-        self.Append(fileMenu, "&File")
+        self.Append(fileMenu, _("&File"))
 
-        fileMenu.Append(self.mainFrame.addPageId, "&New Tab\tCTRL+T", "Open a new fitting tab")
-        fileMenu.Append(self.mainFrame.closePageId, "&Close Tab\tCTRL+W", "Close the current fit")
-        fileMenu.Append(self.mainFrame.closeAllPagesId, "&Close All Tabs\tCTRL+ALT+W", "Close all open fits")
+        fileMenu.Append(self.mainFrame.addPageId, _("&New Tab\tCTRL+T"), _("Open a new fitting tab"))
+        fileMenu.Append(self.mainFrame.closePageId, _("&Close Tab\tCTRL+W"), _("Close the current fit"))
+        fileMenu.Append(self.mainFrame.closeAllPagesId, _("&Close All Tabs\tCTRL+ALT+W"), _("Close all open fits"))
 
         fileMenu.AppendSeparator()
-        fileMenu.Append(self.backupFitsId, "&Backup All Fittings", "Backup all fittings to a XML file")
-        fileMenu.Append(self.exportHtmlId, "Export All Fittings to &HTML", "Export fits to HTML file (set in Preferences)")
+        fileMenu.Append(self.backupFitsId, _("&Backup All Fittings"), _("Backup all fittings to a XML file"))
+        fileMenu.Append(self.exportHtmlId, _("Export All Fittings to &HTML"), _("Export fits to HTML file (set in Preferences)"))
 
         fileMenu.AppendSeparator()
         fileMenu.Append(wx.ID_EXIT)
 
         # Fit menu
         fitMenu = wx.Menu()
-        self.Append(fitMenu, "Fi&t")
+        self.Append(fitMenu, _("Fi&t"))
 
-        fitMenu.Append(wx.ID_UNDO, "&Undo\tCTRL+Z", "Undo the most recent action")
-        fitMenu.Append(wx.ID_REDO, "&Redo\tCTRL+Y", "Redo the most recent undone action")
-
-        fitMenu.AppendSeparator()
-        fitMenu.Append(wx.ID_COPY, "&To Clipboard\tCTRL+C", "Export a fit to the clipboard")
-        fitMenu.Append(wx.ID_PASTE, "&From Clipboard\tCTRL+V", "Import a fit from the clipboard")
+        fitMenu.Append(wx.ID_UNDO, _("&Undo\tCTRL+Z"), _("Undo the most recent action"))
+        fitMenu.Append(wx.ID_REDO, _("&Redo\tCTRL+Y"), _("Redo the most recent undone action"))
 
         fitMenu.AppendSeparator()
-        fitMenu.Append(wx.ID_OPEN, "&Import Fittings\tCTRL+O", "Import fittings into pyfa")
-        fitMenu.Append(wx.ID_SAVEAS, "&Export Fitting\tCTRL+S", "Export fitting to another format")
+        fitMenu.Append(wx.ID_COPY, _("&To Clipboard\tCTRL+C"), _("Export a fit to the clipboard"))
+        fitMenu.Append(wx.ID_PASTE, _("&From Clipboard\tCTRL+V"), _("Import a fit from the clipboard"))
 
         fitMenu.AppendSeparator()
-        fitMenu.Append(self.optimizeFitPrice, "&Optimize Fit Price\tCTRL+D")
-        graphFrameItem = wx.MenuItem(fitMenu, self.graphFrameId, "&Graphs\tCTRL+G")
+        fitMenu.Append(wx.ID_OPEN, _("&Import Fittings\tCTRL+O"), _("Import fittings into pyfa"))
+        fitMenu.Append(wx.ID_SAVEAS, _("&Export Fitting\tCTRL+S"), _("Export fitting to another format"))
+
+        fitMenu.AppendSeparator()
+        fitMenu.Append(self.optimizeFitPrice, _("&Optimize Fit Price\tCTRL+D"))
+        graphFrameItem = wx.MenuItem(fitMenu, self.graphFrameId, _("&Graphs\tCTRL+G"))
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         fitMenu.Append(graphFrameItem)
         if not graphs.graphFrame_enabled:
             self.Enable(self.graphFrameId, False)
-        self.ignoreRestrictionItem = fitMenu.Append(self.toggleIgnoreRestrictionID, "Disable Fitting Re&strictions")
+        self.ignoreRestrictionItem = fitMenu.Append(self.toggleIgnoreRestrictionID, _("Disable Fitting Re&strictions"))
 
         fitMenu.AppendSeparator()
-        fitMenu.Append(self.eveFittingsId, "&Browse ESI Fittings\tCTRL+B")
-        fitMenu.Append(self.exportToEveId, "E&xport to ESI\tCTRL+E")
+        fitMenu.Append(self.eveFittingsId, _("&Browse ESI Fittings\tCTRL+B"))
+        fitMenu.Append(self.exportToEveId, _("E&xport to ESI\tCTRL+E"))
         self.Enable(self.eveFittingsId, True)
         self.Enable(self.exportToEveId, True)
 
         # Character menu
         characterMenu = wx.Menu()
-        self.Append(characterMenu, "&Character")
+        self.Append(characterMenu, _("&Character"))
 
-        characterMenu.Append(self.saveCharId, "&Save Character")
-        characterMenu.Append(self.saveCharAsId, "Save Character &As...")
-        characterMenu.Append(self.revertCharId, "&Revert Character")
-
-        characterMenu.AppendSeparator()
-        characterMenu.Append(self.importCharacterId, "&Import Character File", "Import characters into pyfa from file")
-        characterMenu.Append(self.exportSkillsNeededId, "&Export Skills Needed", "Export skills needed for this fitting")
+        characterMenu.Append(self.saveCharId, _("&Save Character"))
+        characterMenu.Append(self.saveCharAsId, _("Save Character &As..."))
+        characterMenu.Append(self.revertCharId, _("&Revert Character"))
 
         characterMenu.AppendSeparator()
-        characterMenu.Append(self.ssoLoginId, "&Manage ESI Characters")
+        characterMenu.Append(self.importCharacterId, _("&Import Character File"), _("Import characters into pyfa from file"))
+        characterMenu.Append(self.exportSkillsNeededId, _("&Export Skills Needed"), _("Export skills needed for this fitting"))
+
+        characterMenu.AppendSeparator()
+        characterMenu.Append(self.ssoLoginId, _("&Manage ESI Characters"))
 
         # Global Menu
         globalMenu = wx.Menu()
 
         if not self.mainFrame.disableOverrideEditor:
-            attrItem = wx.MenuItem(globalMenu, self.attrEditorId, "Attribute &Overrides")
+            attrItem = wx.MenuItem(globalMenu, self.attrEditorId, _("Attribute &Overrides"))
             attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
             globalMenu.Append(attrItem)
-            globalMenu.Append(self.toggleOverridesId, "&Turn Overrides On")
+            globalMenu.Append(self.toggleOverridesId, _("&Turn Overrides On"))
             globalMenu.AppendSeparator()
 
-
-        self.Append(globalMenu, "&Global")
+        self.Append(globalMenu, _("&Global"))
         preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
-        preferencesItem = wx.MenuItem(globalMenu, wx.ID_PREFERENCES, "&Preferences\t" + preferencesShortCut)
+        preferencesItem = wx.MenuItem(globalMenu, wx.ID_PREFERENCES, _("&Preferences\t{}").format(preferencesShortCut))
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         globalMenu.Append(preferencesItem)
 
         # Editors menu
         editorsMenu = wx.Menu()
-        self.Append(editorsMenu, "&Editors")
-        charEditItem = wx.MenuItem(editorsMenu, self.characterEditorId, "&Character Editor\tCTRL+K")
+        self.Append(editorsMenu, _("&Editors"))
+        charEditItem = wx.MenuItem(editorsMenu, self.characterEditorId, _("&Character Editor\tCTRL+K"))
         charEditItem.SetBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         editorsMenu.Append(charEditItem)
-        implantSetEditItem = wx.MenuItem(editorsMenu, self.implantSetEditorId, "&Implant Set Editor\tCTRL+I")
+        implantSetEditItem = wx.MenuItem(editorsMenu, self.implantSetEditorId, _("&Implant Set Editor\tCTRL+I"))
         implantSetEditItem.SetBitmap(BitmapLoader.getBitmap("hardwire_small", "gui"))
         editorsMenu.Append(implantSetEditItem)
-        damagePatternEditItem = wx.MenuItem(editorsMenu, self.damagePatternEditorId, "&Damage Pattern Editor")
+        damagePatternEditItem = wx.MenuItem(editorsMenu, self.damagePatternEditorId, _("&Damage Pattern Editor"))
         damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
         editorsMenu.Append(damagePatternEditItem)
-        targetProfileEditItem = wx.MenuItem(editorsMenu, self.targetProfileEditorId, "&Target Profile Editor")
+        targetProfileEditItem = wx.MenuItem(editorsMenu, self.targetProfileEditorId, _("&Target Profile Editor"))
         targetProfileEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
         editorsMenu.Append(targetProfileEditItem)
 
         # Help menu
         helpMenu = wx.Menu()
-        self.Append(helpMenu, "&Help")
-        helpMenu.Append(self.wikiId, "&Wiki", "Go to wiki on GitHub")
-        helpMenu.Append(self.forumId, "&Forums", "Go to EVE Online Forum thread")
+        self.Append(helpMenu, _("&Help"))
+        helpMenu.Append(self.wikiId, _("&Wiki"), _("Go to wiki on GitHub"))
+        helpMenu.Append(self.forumId, _("&Forums"), _("Go to EVE Online Forum thread"))
         helpMenu.AppendSeparator()
         helpMenu.Append(wx.ID_ABOUT)
 
         if config.debug:
-            helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Wid&gets Inspect tool", "Open Widgets Inspect tool")
-            helpMenu.Append(self.devToolsId, "Open &Dev Tools", "Dev Tools")
+            helpMenu.Append(self.mainFrame.widgetInspectMenuID, _("Open Wid&gets Inspect tool"), _("Open Widgets Inspect tool"))
+            helpMenu.Append(self.devToolsId, _("Open &Dev Tools"), _("Dev Tools"))
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(GE.FIT_RENAMED, self.fitRenamed)
@@ -197,9 +196,9 @@ class MainMenuBar(wx.MenuBar):
             fit = sFit.getFit(activeFitID)
 
             if fit.ignoreRestrictions:
-                self.ignoreRestrictionItem.SetItemLabel("Enable Fitting Re&strictions")
+                self.ignoreRestrictionItem.SetItemLabel(_("Enable Fitting Re&strictions"))
             else:
-                self.ignoreRestrictionItem.SetItemLabel("Disable Fitting Re&strictions")
+                self.ignoreRestrictionItem.SetItemLabel(_("Disable Fitting Re&strictions"))
 
     def fitRenamed(self, event):
         self.refreshUndo()
