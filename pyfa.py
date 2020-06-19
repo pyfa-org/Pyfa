@@ -90,6 +90,11 @@ if __name__ == "__main__":
     # from here, we can assume we have the libraries that we need, including wx
     import wx
 
+    def _install_wx_translation():
+        import builtins
+        builtins._ = wx.GetTranslation
+    _install_wx_translation()
+
     from logbook import Logger
     pyfalog = Logger(__name__)
 
@@ -148,9 +153,10 @@ if __name__ == "__main__":
 
         pyfa = wx.App(False)
 
-        pyfa.locale = wx.Locale(wx.LANGUAGE_CHINESE_SIMPLIFIED)
-        pyfa.translation = gettext.translation('pyfa', './locale', languages=['zh_CN'])
-        pyfa.translation.install()
+        from service.settings import LocaleSettings
+        pyfa.locale = wx.Locale(LocaleSettings.getInstance().get('locale'))
+        pyfa.locale.AddCatalogLookupPathPrefix('./locale')
+        pyfa.locale.AddCatalog('pyfa')
 
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
