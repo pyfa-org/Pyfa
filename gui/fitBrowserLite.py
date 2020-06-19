@@ -6,6 +6,7 @@ import wx
 import gui.display as d
 from service.fit import Fit
 
+_ = wx.GetTranslation
 
 def fitSorter(fit):
     return fit.shipName, fit.name
@@ -13,7 +14,7 @@ def fitSorter(fit):
 
 class FitBrowserLiteDialog(wx.Dialog):
 
-    def __init__(self, parent, title='Add Fits', excludedFitIDs=()):
+    def __init__(self, parent, title=_('Add Fits'), excludedFitIDs=()):
         super().__init__(parent, title=title, style=wx.DEFAULT_DIALOG_STYLE)
 
         listWidth = 250 if 'wxGTK' in wx.PlatformInfo else 200

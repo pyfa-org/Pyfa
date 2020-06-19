@@ -33,6 +33,7 @@ from gui.builtinAdditionPanes.projectedView import ProjectedView
 from gui.chrome_tabs import ChromeNotebook
 from gui.toggle_panel import TogglePanel
 
+_ = wx.GetTranslation
 
 class AdditionsPane(TogglePanel):
 

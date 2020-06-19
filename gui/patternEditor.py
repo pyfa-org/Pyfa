@@ -32,6 +32,7 @@ from service.fit import Fit
 
 pyfalog = Logger(__name__)
 
+_ = wx.GetTranslation
 
 class DmgPatternNameValidator(BaseValidator):
     def __init__(self):
@@ -47,21 +48,21 @@ class DmgPatternNameValidator(BaseValidator):
 
         try:
             if len(text) == 0:
-                raise ValueError("You must supply a name for your Damage Profile!")
+                raise ValueError(_("You must supply a name for your Damage Profile!"))
             elif text in [x.rawName for x in entityEditor.choices]:
-                raise ValueError("Damage Profile name already in use, please choose another.")
+                raise ValueError(_("Damage Profile name already in use, please choose another."))
 
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox("{}".format(e), "Error")
+            wx.MessageBox("{}".format(e), _("Error"))
             textCtrl.SetFocus()
             return False
 
 
 class DmgPatternEntityEditor(EntityEditor):
     def __init__(self, parent):
-        EntityEditor.__init__(self, parent, "Damage Profile")
+        EntityEditor.__init__(self, parent, _("Damage Profile"))
         self.SetEditorValidator(DmgPatternNameValidator)
 
     def getEntitiesFromContext(self):
@@ -95,7 +96,7 @@ class DmgPatternEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Damage Pattern Editor", resizeable=True,
+            parent, id=wx.ID_ANY, title=_("Damage Pattern Editor"), resizeable=True,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
 
@@ -167,8 +168,8 @@ class DmgPatternEditor(AuxiliaryFrame):
 
         self.SetSizer(mainSizer)
 
-        importExport = (("Import", wx.ART_FILE_OPEN, "from"),
-                        ("Export", wx.ART_FILE_SAVE_AS, "to"))
+        importExport = (("Import", wx.ART_FILE_OPEN, _("from")),
+                        ("Export", wx.ART_FILE_SAVE_AS, _("to")))
 
         for name, art, direction in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
@@ -180,7 +181,7 @@ class DmgPatternEditor(AuxiliaryFrame):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTip("%s patterns %s clipboard" % (name, direction))
+            btn.SetToolTip(_("%s patterns %s clipboard") % (name, direction))
             footerSizer.Add(btn, 0)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
@@ -247,6 +248,7 @@ class DmgPatternEditor(AuxiliaryFrame):
         if p is None:
             return
 
+        # localization todo: unsure if these names are internal only or also displayed somewhere...
         if p.rawName == "Uniform" or p.rawName == "Selected Ammo":
             self.restrict()
         else:
@@ -271,26 +273,26 @@ class DmgPatternEditor(AuxiliaryFrame):
             sDP = DamagePattern.getInstance()
             try:
                 sDP.importPatterns(text)
-                self.stNotice.SetLabel("Patterns successfully imported from clipboard")
+                self.stNotice.SetLabel(_("Patterns successfully imported from clipboard"))
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
-                msg = "Could not import from clipboard: unknown errors"
+                msg = _("Could not import from clipboard: unknown errors")
                 pyfalog.warning(msg)
                 pyfalog.error(e)
                 self.stNotice.SetLabel(msg)
             finally:
                 self.entityEditor.refreshEntityList()
         else:
-            self.stNotice.SetLabel("Could not import from clipboard")
+            self.stNotice.SetLabel(_("Could not import from clipboard"))
 
     def exportPatterns(self, event):
         sDP = DamagePattern.getInstance()
         toClipboard(sDP.exportPatterns())
-        self.stNotice.SetLabel("Patterns exported to clipboard")
+        self.stNotice.SetLabel(_("Patterns exported to clipboard"))
 
     def kbEvent(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:

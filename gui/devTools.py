@@ -29,7 +29,6 @@ import eos.db
 from gui.auxWindow import AuxiliaryFrame
 from gui.builtinShipBrowser.events import FitSelected
 
-
 pyfalog = Logger(__name__)
 
 

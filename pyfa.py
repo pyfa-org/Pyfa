@@ -18,7 +18,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
-import gettext
+
 import datetime
 import os
 import sys
@@ -110,6 +110,7 @@ if __name__ == "__main__":
     config.loggingLevel = config.LOGLEVEL_MAP.get(options.logginglevel.lower(), config.LOGLEVEL_MAP['error'])
     config.defPaths(options.savepath)
     config.defLogging()
+    config.language = options.language
 
     with config.logging_setup.threadbound():
 
@@ -138,19 +139,19 @@ if __name__ == "__main__":
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
+        from gui.app import PyfaApp
         from gui.mainFrame import MainFrame
 
         # set title if it wasn't supplied by argument
         if options.title is None:
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
-        pyfa = wx.App(False)
+        pyfa = PyfaApp(False)
 
         from service.settings import LocaleSettings
         pyfa.locale = wx.Locale(LocaleSettings.getInstance().get('locale'))
         pyfa.locale.AddCatalogLookupPathPrefix('./locale')
         pyfa.locale.AddCatalog('pyfa')
-
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 

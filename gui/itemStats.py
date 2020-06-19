@@ -37,6 +37,8 @@ from gui.builtinItemStatsViews.itemRequirements import ItemRequirements
 from gui.builtinItemStatsViews.itemTraits import ItemTraits
 from service.market import Market
 
+_ = wx.GetTranslation
+
 
 class ItemStatsFrame(AuxiliaryFrame):
 
@@ -53,7 +55,7 @@ class ItemStatsFrame(AuxiliaryFrame):
         super().__init__(
             parent=gui.mainFrame.MainFrame.getInstance(),
             id=wx.ID_ANY,
-            title="Item stats",
+            title=_("Item stats"),
             pos=pos,
             size=size,
             resizeable=True)
@@ -82,8 +84,10 @@ class ItemStatsFrame(AuxiliaryFrame):
             itemImg = BitmapLoader.getBitmap(item.iconID, "icons")
             if itemImg is not None:
                 self.SetIcon(wx.Icon(itemImg))
-        self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
-                                    " (%d)" % item.ID if config.debug else ""))
+        self.SetTitle(_("{context}Stats: {name}{debug_info}").format(
+             context = "{} ".format(itmContext) if itmContext is not None else "",
+             name = item.name,
+             debug_info = " ({item_id})".format(item_id = item.ID) if config.debug else ""))
 
         self.SetMinSize((300, 200))
         # GTK has huge tab widgets, give it a bit more room
@@ -159,37 +163,37 @@ class ItemStatsContainer(wx.Panel):
 
         if item.traits is not None:
             self.traits = ItemTraits(self.nbContainer, stuff, item)
-            self.nbContainer.AddPage(self.traits, "Traits")
+            self.nbContainer.AddPage(self.traits, _("Traits"))
 
         if isinstance(stuff, Module) and stuff.isMutated:
             self.mutator = ItemMutatorPanel(self.nbContainer, stuff)
-            self.nbContainer.AddPage(self.mutator, "Mutations")
+            self.nbContainer.AddPage(self.mutator, _("Mutations"))
 
         if item.description:
             self.desc = ItemDescription(self.nbContainer, stuff, item)
-            self.nbContainer.AddPage(self.desc, "Description")
+            self.nbContainer.AddPage(self.desc, _("Description"))
 
         self.params = ItemParams(self.nbContainer, stuff, item, context)
-        self.nbContainer.AddPage(self.params, "Attributes")
+        self.nbContainer.AddPage(self.params, _("Attributes"))
 
         items = sMkt.getVariationsByItems([item])
         if len(items) > 1:
             self.compare = ItemCompare(self.nbContainer, stuff, item, items, context)
-            self.nbContainer.AddPage(self.compare, "Compare")
+            self.nbContainer.AddPage(self.compare, _("Compare"))
 
         self.reqs = ItemRequirements(self.nbContainer, stuff, item)
-        self.nbContainer.AddPage(self.reqs, "Requirements")
+        self.nbContainer.AddPage(self.reqs, _("Requirements"))
 
         if context == "Skill":
             self.dependents = ItemDependents(self.nbContainer, stuff, item)
-            self.nbContainer.AddPage(self.dependents, "Dependents")
+            self.nbContainer.AddPage(self.dependents, _("Dependents"))
 
         self.effects = ItemEffects(self.nbContainer, stuff, item)
-        self.nbContainer.AddPage(self.effects, "Effects")
+        self.nbContainer.AddPage(self.effects, _("Effects"))
 
         if stuff is not None:
             self.affectedby = ItemAffectedBy(self.nbContainer, stuff, item)
-            self.nbContainer.AddPage(self.affectedby, "Affected by")
+            self.nbContainer.AddPage(self.affectedby, _("Affected by"))
 
         if config.debug:
             self.properties = ItemProperties(self.nbContainer, stuff, item, context)
