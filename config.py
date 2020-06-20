@@ -41,6 +41,7 @@ cipher = None
 clientHash = None
 experimentalFeatures = None
 version = None
+language = None
 
 ESI_CACHE = 'esi_cache'
 
