@@ -22,6 +22,7 @@ import os.path
 import urllib.request
 import urllib.error
 import urllib.parse
+import wx
 
 from logbook import Logger
 
@@ -533,3 +534,32 @@ class GraphSettings:
 
     def set(self, type, value):
         self.settings[type] = value
+
+
+class LocaleSettings:
+    _instance = None
+
+    supported_langauges = {
+            "en_US": wx.LANGUAGE_ENGLISH,
+            "zh_CN": wx.LANGUAGE_CHINESE_SIMPLIFIED,
+            # todo: add the others that EVE supports
+        }
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = LocaleSettings()
+        return cls._instance
+
+    def __init__(self):
+
+        defaults = {
+            'locale': "en_US"
+        }
+        self.settings = SettingsProvider.getInstance().getSettings('localeSettings', defaults)
+
+    def get(self, key):
+        return self.settings[key]
+
+    def set(self, key, value):
+        self.settings[key] = value

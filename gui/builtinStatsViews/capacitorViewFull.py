@@ -23,6 +23,8 @@ from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundToPrec
 
+_ = wx.GetTranslation
+
 
 class CapacitorViewFull(StatsView):
     name = "capacitorViewFull"
@@ -32,7 +34,7 @@ class CapacitorViewFull(StatsView):
         self.parent = parent
 
     def getHeaderText(self, fit):
-        return "Capacitor"
+        return _("Capacitor")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -52,7 +54,7 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
         bitmap = BitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
-        tooltip = wx.ToolTip("Capacitor stability")
+        tooltip = wx.ToolTip(_("Capacitor stability"))
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
@@ -62,7 +64,7 @@ class CapacitorViewFull(StatsView):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-        hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
+        hbox.Add(wx.StaticText(parent, wx.ID_ANY, _("Total: ")), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sCapacitorCapacity" % panel.capitalize(), lbl)
         hbox.Add(lbl, 0, wx.ALIGN_LEFT)
@@ -72,11 +74,11 @@ class CapacitorViewFull(StatsView):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts ")
+        lbl = wx.StaticText(parent, wx.ID_ANY, _("Lasts "))
         hbox.Add(lbl, 0, wx.ALIGN_LEFT | wx.LEFT, 3)
         setattr(self, "label%sCapacitorState" % panel.capitalize(), lbl)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0s")
+        lbl = wx.StaticText(parent, wx.ID_ANY, _("0s"))
         setattr(self, "label%sCapacitorTime" % panel.capitalize(), lbl)
         hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
@@ -85,7 +87,7 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
-        tooltip = wx.ToolTip("Extra stats")
+        tooltip = wx.ToolTip(_("Extra stats"))
         bitmap = BitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "gui")
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
@@ -166,7 +168,7 @@ class CapacitorViewFull(StatsView):
                 else:
                     t = "%ds" % capState
 
-            s = "Stable: " if capStable else "Lasts "
+            s = _("Stable: ") if capStable else _("Lasts ")
 
         getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)

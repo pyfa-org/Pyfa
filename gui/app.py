@@ -3,6 +3,7 @@ import config
 import os
 from logbook import Logger
 pyfalog = Logger(__name__)
+from service.settings import LocaleSettings
 
 class PyfaApp(wx.App):
     def OnInit(self):
@@ -37,7 +38,7 @@ class PyfaApp(wx.App):
 
     #-----------------------------------------------------------------------
 
-    def UpdateLanguage(self, lang = "en_US"):
+    def UpdateLanguage(self, lang_override = None):
         """
         Update the language to the requested one.
 
@@ -52,13 +53,10 @@ class PyfaApp(wx.App):
 
         # Language domain.
         langDomain = "lang"
+        lang = lang_override or LocaleSettings.getInstance().get('locale')
 
         # Languages you want to support.
-        supLang = {
-            "en_US": wx.LANGUAGE_ENGLISH,
-            "zh_CN": wx.LANGUAGE_CHINESE_SIMPLIFIED,
-            "de": wx.LANGUAGE_GERMAN
-        }
+        supLang = LocaleSettings.supported_langauges
 
         # If an unsupported language is requested default to English.
         if lang in supLang:

@@ -25,6 +25,8 @@ from gui.utils.numberFormatter import formatAmount
 from service.price import Fit, Price
 from service.settings import MarketPriceSettings
 
+_ = wx.GetTranslation
+
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
@@ -35,7 +37,7 @@ class PriceViewFull(StatsView):
         self.settings = MarketPriceSettings.getInstance()
 
     def getHeaderText(self, fit):
-        return "Price"
+        return _("Price")
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
@@ -67,7 +69,7 @@ class PriceViewFull(StatsView):
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)
 
-            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, _type.capitalize()), 0, wx.ALIGN_LEFT)
+            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, _(_type).capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)
