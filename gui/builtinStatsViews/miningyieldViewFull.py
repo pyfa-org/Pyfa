@@ -25,6 +25,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.fit import Fit
 
+_ = wx.GetTranslation
 
 class MiningYieldViewFull(StatsView):
     name = "miningyieldViewFull"

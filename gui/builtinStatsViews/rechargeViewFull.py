@@ -27,6 +27,8 @@ from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
 from service.fit import Fit
 
+_ = wx.GetTranslation
+
 
 class RechargeViewFull(StatsView):
     name = "rechargeViewFull"

@@ -28,6 +28,8 @@ from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount, roundToPrec
 from service.fit import Fit
 
+_ = wx.GetTranslation
+
 
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"

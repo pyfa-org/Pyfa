@@ -28,6 +28,8 @@ from gui.statsView import StatsView
 from gui.utils import fonts
 from gui.utils.numberFormatter import formatAmount
 
+_ = wx.GetTranslation
+
 
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"

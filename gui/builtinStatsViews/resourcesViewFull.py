@@ -30,6 +30,8 @@ from eos.const import FittingHardpoint
 
 from gui.utils.numberFormatter import formatAmount
 
+_ = wx.GetTranslation
+
 
 class ResourcesViewFull(StatsView):
     name = "resourcesViewFull"

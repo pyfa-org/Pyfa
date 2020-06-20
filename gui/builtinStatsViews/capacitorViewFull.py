@@ -23,6 +23,8 @@ from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundToPrec
 
+_ = wx.GetTranslation
+
 
 class CapacitorViewFull(StatsView):
     name = "capacitorViewFull"

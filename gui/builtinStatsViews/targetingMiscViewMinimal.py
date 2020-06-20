@@ -23,6 +23,8 @@ from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
 from collections import OrderedDict
 
+_ = wx.GetTranslation
+
 
 class TargetingMiscViewMinimal(StatsView):
     name = "targetingMiscViewMinimal"

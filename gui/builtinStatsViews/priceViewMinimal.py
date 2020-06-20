@@ -25,6 +25,8 @@ from gui.utils.numberFormatter import formatAmount
 from service.price import Fit, Price
 from service.settings import MarketPriceSettings
 
+_ = wx.GetTranslation
+
 
 class PriceViewMinimal(StatsView):
     name = "priceViewMinimal"
