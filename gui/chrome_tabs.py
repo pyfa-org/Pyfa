@@ -215,7 +215,8 @@ class ChromeNotebook(wx.Panel):
 
         wx.PostEvent(self, PageChanged(current_page, new_page))
 
-    def AddPage(self, win=None, title="Empty Tab", image: wx.Image=None, closeable=True):
+    def AddPage(self, win=None, title=None, image: wx.Image=None, closeable=True):
+        title = title or "Empty Tab"
         if self._active_page:
             self._active_page.Hide()
 
@@ -227,7 +228,7 @@ class ChromeNotebook(wx.Panel):
         self.page_container.Layout()
 
         self._pages.append(win)
-        self.tabs_container.AddTab(_(title), image, closeable)
+        self.tabs_container.AddTab(title, image, closeable)
 
         self._active_page = win
         self.ShowActive(True)
