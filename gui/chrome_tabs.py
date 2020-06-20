@@ -24,7 +24,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils import color as color_utils, draw, fonts
 from service.fit import Fit
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
 _PageAdding, EVT_NOTEBOOK_PAGE_ADDING = wx.lib.newevent.NewEvent()

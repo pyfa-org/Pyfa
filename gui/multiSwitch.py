@@ -21,7 +21,7 @@ from gui.chrome_tabs import ChromeNotebook
 import gui.builtinViews.emptyView
 import wx
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 class MultiSwitch(ChromeNotebook):
     def __init__(self, parent):
@@ -38,7 +38,7 @@ class MultiSwitch(ChromeNotebook):
                 h(type, info)
 
     def AddPage(self, tabWnd=None, tabTitle=None, tabImage=None):
-        tabTitle = tabTitle or _("Empty Tab")
+        tabTitle = tabTitle or _t("Empty Tab")
         if tabWnd is None:
             tabWnd = gui.builtinViews.emptyView.BlankPage(self)
             tabWnd.handleDrag = lambda type, info: self.handleDrag(type, info)

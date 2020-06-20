@@ -69,7 +69,7 @@ from service.price import Price
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 pyfalog = Logger(__name__)
 
@@ -179,11 +179,11 @@ class MainFrame(wx.Frame):
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.marketBrowser, _("Market"), image=marketImg, closeable=False)
+        self.notebookBrowsers.AddPage(self.marketBrowser, _t("Market"), image=marketImg, closeable=False)
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, _("Fittings"), image=shipBrowserImg, closeable=False)
+        self.notebookBrowsers.AddPage(self.shipBrowser, _t("Fittings"), image=shipBrowserImg, closeable=False)
 
         self.notebookBrowsers.SetSelection(1)
 
@@ -270,7 +270,7 @@ class MainFrame(wx.Frame):
             self.fitMultiSwitch.AddPage()
             return
 
-        self.waitDialog = wx.BusyInfo(_("Loading previous fits..."), parent=self)
+        self.waitDialog = wx.BusyInfo(_t("Loading previous fits..."), parent=self)
         OpenFitsThread(fits, self.closeWaitDialog)
 
     def _getDisplayData(self):
@@ -463,8 +463,8 @@ class MainFrame(wx.Frame):
         defaultFile = "%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
 
         with wx.FileDialog(
-            self, _("Save Fitting As..."),
-            wildcard=_("EVE XML fitting files (*.xml)|*.xml"),
+            self, _t("Save Fitting As..."),
+            wildcard=_t("EVE XML fitting files (*.xml)|*.xml"),
             style=wx.FD_SAVE,
             defaultFile=defaultFile
         ) as dlg:
@@ -643,15 +643,15 @@ class MainFrame(wx.Frame):
 
         if not fit.ignoreRestrictions:
             with wx.MessageDialog(
-                self, _("Are you sure you wish to ignore fitting restrictions for the "
+                self, _t("Are you sure you wish to ignore fitting restrictions for the "
                 "current fit? This could lead to wildly inaccurate results and possible errors."),
-                _("Confirm"), wx.YES_NO | wx.ICON_QUESTION
+                _t("Confirm"), wx.YES_NO | wx.ICON_QUESTION
             ) as dlg:
                 result = dlg.ShowModal() == wx.ID_YES
         else:
             with wx.MessageDialog(
-                self, _("Re-enabling fitting restrictions for this fit will also remove any illegal items "
-                "from the fit. Do you want to continue?"), _("Confirm"), wx.YES_NO | wx.ICON_QUESTION
+                self, _t("Re-enabling fitting restrictions for this fit will also remove any illegal items "
+                "from the fit. Do you want to continue?"), _t("Confirm"), wx.YES_NO | wx.ICON_QUESTION
             ) as dlg:
                 result = dlg.ShowModal() == wx.ID_YES
         if result:
@@ -669,7 +669,7 @@ class MainFrame(wx.Frame):
         menu = self.GetMenuBar()
         sEsi = Esi.getInstance()
 
-        menu.SetLabel(menu.ssoLoginId, _("Manage Characters"))
+        menu.SetLabel(menu.ssoLoginId, _t("Manage Characters"))
         enable = len(sEsi.getSsoCharacters()) == 0
         menu.Enable(menu.eveFittingsId, not enable)
         menu.Enable(menu.exportToEveId, not enable)
@@ -686,7 +686,7 @@ class MainFrame(wx.Frame):
         wx.PostEvent(self, GE.FitChanged(fitIDs=changedFitIDs))
         menu = self.GetMenuBar()
         menu.SetLabel(menu.toggleOverridesId,
-                      _("&Turn Overrides Off") if ModifiedAttributeDict.overrides_enabled else _("&Turn Overrides On"))
+                      _t("&Turn Overrides Off") if ModifiedAttributeDict.overrides_enabled else _t("&Turn Overrides On"))
 
     def saveChar(self, event):
         sChr = Character.getInstance()
@@ -719,7 +719,7 @@ class MainFrame(wx.Frame):
 
             fitItems = {i for i in Fit.fitItemIter(fit, forceFitImplants=True) if i is not fit.ship.item}
             self.disablerAll = wx.WindowDisabler()
-            self.waitDialog = wx.BusyInfo(_("Please Wait..."), parent=self)
+            self.waitDialog = wx.BusyInfo(_t("Please Wait..."), parent=self)
             Price.getInstance().findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=10)
 
     def AdditionsTabSelect(self, event):
@@ -803,11 +803,11 @@ class MainFrame(wx.Frame):
         sCharacter = Character.getInstance()
         with wx.FileDialog(
             self,
-            _("Export Skills Needed As..."),
+            _t("Export Skills Needed As..."),
             wildcard=("|".join([
-                _("EVEMon skills training file") + " (*.emp)|*.emp",
-                _("EVEMon skills training XML file") +" (*.xml)|*.xml",
-                _("Text skills training file") + " (*.txt)|*.txt"
+                _t("EVEMon skills training file") + " (*.emp)|*.emp",
+                _t("EVEMon skills training XML file") + " (*.xml)|*.xml",
+                _t("Text skills training file") + " (*.txt)|*.txt"
             ])),
             style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
         ) as dlg:
@@ -825,24 +825,24 @@ class MainFrame(wx.Frame):
                 if '.' not in os.path.basename(filePath):
                     filePath += ".{0}".format(saveFmt)
 
-                self.waitDialog = wx.BusyInfo(_("Exporting skills needed..."), parent=self)
+                self.waitDialog = wx.BusyInfo(_t("Exporting skills needed..."), parent=self)
                 sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
 
     def fileImportDialog(self, event):
         """Handles importing single/multiple EVE XML / EFT cfg fit files"""
         with wx.FileDialog(
             self,
-            _("Open One Or More Fitting Files"),
+            _t("Open One Or More Fitting Files"),
             wildcard=("|".join([
-                _("EVE XML fitting files") + " (*.xml)|*.xml",
-                _("EFT text fitting files") + " (*.cfg)|*.cfg",
-                _("All Files") + "|*"
+                _t("EVE XML fitting files") + " (*.xml)|*.xml",
+                _t("EFT text fitting files") + " (*.cfg)|*.cfg",
+                _t("All Files") + "|*"
             ])),
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 self.progressDialog = wx.ProgressDialog(
-                    _("Importing fits"),
+                    _t("Importing fits"),
                     " " * 100,  # set some arbitrary spacing to create width in window
                     parent=self,
                     style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
@@ -856,8 +856,8 @@ class MainFrame(wx.Frame):
 
         with wx.FileDialog(
             self,
-            _("Save Backup As..."),
-            wildcard=_("EVE XML fitting file")+" (*.xml)|*.xml",
+            _t("Save Backup As..."),
+            wildcard=_t("EVE XML fitting file") + " (*.xml)|*.xml",
             style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
             defaultFile=defaultFile,
         ) as dlg:
@@ -870,8 +870,8 @@ class MainFrame(wx.Frame):
                 max_ = sFit.countAllFits()
 
                 self.progressDialog = wx.ProgressDialog(
-                    _("Backup fits"),
-                    _("Backing up {} fits to: {}").format(max_, filePath),
+                    _t("Backup fits"),
+                    _t("Backing up {} fits to: {}").format(max_, filePath),
                     maximum=max_,
                     parent=self,
                     style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
@@ -890,19 +890,19 @@ class MainFrame(wx.Frame):
         if not os.path.isdir(os.path.dirname(path)):
             with wx.MessageDialog(
                 self,
-                _("Invalid Path") + "\n\n" +
-                    _("The following path is invalid or does not exist:") +
+                    _t("Invalid Path") + "\n\n" +
+                    _t("The following path is invalid or does not exist:") +
                     f"\n{path}\n\n" +
-                    _("Please verify path location pyfa's preferences."),
-                _("Error"),
+                    _t("Please verify path location pyfa's preferences."),
+                _t("Error"),
                 wx.OK | wx.ICON_ERROR
             ) as dlg:
                 if dlg.ShowModal() == wx.ID_OK:
                     return
 
         self.progressDialog = wx.ProgressDialog(
-            _("Backup fits"),
-            _("Generating HTML file at: {}").format(path),
+            _t("Backup fits"),
+            _t("Generating HTML file at: {}").format(path),
             maximum=max_, parent=self,
             style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
 
@@ -944,12 +944,12 @@ class MainFrame(wx.Frame):
         _message = None
         if action & IPortUser.ID_ERROR:
             self.closeProgressDialog()
-            _message = _("Import Error") if action & IPortUser.PROCESS_IMPORT else _("Export Error")
+            _message = _t("Import Error") if action & IPortUser.PROCESS_IMPORT else _t("Export Error")
             with wx.MessageDialog(
                 self,
-                _("The following error was generated") +
+                    _t("The following error was generated") +
                 f"\n\n{data}\n\n" +
-                _("Be aware that already processed fits were not saved"),
+                    _t("Be aware that already processed fits were not saved"),
                 _message, wx.OK | wx.ICON_ERROR
             ) as dlg:
                 dlg.ShowModal()
@@ -1008,16 +1008,16 @@ class MainFrame(wx.Frame):
         """ Imports character XML file from EVE API """
         with wx.FileDialog(
             self,
-            _("Open One Or More Character Files"),
+            _t("Open One Or More Character Files"),
             wildcard="|".join([
-                _("EVE API XML character files") + " (*.xml)|*.xml",
-                _("All Files") + "|*"
+                _t("EVE API XML character files") + " (*.xml)|*.xml",
+                _t("All Files") + "|*"
             ]),
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 self.supress_left_up = True
-                self.waitDialog = wx.BusyInfo(_("Importing Character..."), parent=self)
+                self.waitDialog = wx.BusyInfo(_t("Importing Character..."), parent=self)
                 sCharacter = Character.getInstance()
                 sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
 

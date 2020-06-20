@@ -23,7 +23,7 @@ from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
 from collections import OrderedDict
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 
 class TargetingMiscViewMinimal(StatsView):
@@ -35,7 +35,7 @@ class TargetingMiscViewMinimal(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return _("Targeting && Misc")
+        return _t("Targeting && Misc")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -57,11 +57,11 @@ class TargetingMiscViewMinimal(StatsView):
 
         gridTargetingMisc.Add(gridTargeting, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
-        labels = ((_("Targets"), "Targets", ""),
-                  (_("Range"), "Range", "km"),
-                  (_("Scan res."), "ScanRes", "mm"),
-                  (_("Sensor str."), "SensorStr", ""),
-                  (_("Drone range"), "CtrlRange", "km"))
+        labels = ((_t("Targets"), "Targets", ""),
+                  (_t("Range"), "Range", "km"),
+                  (_t("Scan res."), "ScanRes", "mm"),
+                  (_t("Sensor str."), "SensorStr", ""),
+                  (_t("Drone range"), "CtrlRange", "km"))
 
         for header, labelShort, unit in labels:
             gridTargeting.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -81,11 +81,11 @@ class TargetingMiscViewMinimal(StatsView):
         gridMisc.AddGrowableCol(1)
         gridTargetingMisc.Add(gridMisc, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
-        labels = ((_("Speed"), "Speed", "m/s"),
-                  (_("Align time"), "AlignTime", "s"),
-                  (_("Signature"), "SigRadius", "m"),
-                  (_("Warp Speed"), "WarpSpeed", "AU/s"),
-                  (_("Cargo"), "Cargo", "m\u00B3"))
+        labels = ((_t("Speed"), "Speed", "m/s"),
+                  (_t("Align time"), "AlignTime", "s"),
+                  (_t("Signature"), "SigRadius", "m"),
+                  (_t("Warp Speed"), "WarpSpeed", "AU/s"),
+                  (_t("Cargo"), "Cargo", "m\u00B3"))
 
         for header, labelShort, unit in labels:
             gridMisc.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -107,23 +107,23 @@ class TargetingMiscViewMinimal(StatsView):
             "jamChance": lambda: fit.jamChance}
 
         cargoNamesOrder = OrderedDict((
-            ("fleetHangarCapacity", _("Fleet hangar")),
-            ("shipMaintenanceBayCapacity", _("Maintenance bay")),
-            ("specialAmmoHoldCapacity", _("Ammo hold")),
-            ("specialFuelBayCapacity", _("Fuel bay")),
-            ("specialShipHoldCapacity", _("Ship hold")),
-            ("specialSmallShipHoldCapacity", _("Small ship hold")),
-            ("specialMediumShipHoldCapacity", _("Medium ship hold")),
-            ("specialLargeShipHoldCapacity", _("Large ship hold")),
-            ("specialIndustrialShipHoldCapacity", _("Industrial ship hold")),
-            ("specialOreHoldCapacity", _("Ore hold")),
-            ("specialMineralHoldCapacity", _("Mineral hold")),
-            ("specialMaterialBayCapacity", _("Material bay")),
-            ("specialGasHoldCapacity", _("Gas hold")),
-            ("specialSalvageHoldCapacity", _("Salvage hold")),
-            ("specialCommandCenterHoldCapacity", _("Command center hold")),
-            ("specialPlanetaryCommoditiesHoldCapacity", _("Planetary goods hold")),
-            ("specialQuafeHoldCapacity", _("Quafe hold"))))
+            ("fleetHangarCapacity", _t("Fleet hangar")),
+            ("shipMaintenanceBayCapacity", _t("Maintenance bay")),
+            ("specialAmmoHoldCapacity", _t("Ammo hold")),
+            ("specialFuelBayCapacity", _t("Fuel bay")),
+            ("specialShipHoldCapacity", _t("Ship hold")),
+            ("specialSmallShipHoldCapacity", _t("Small ship hold")),
+            ("specialMediumShipHoldCapacity", _t("Medium ship hold")),
+            ("specialLargeShipHoldCapacity", _t("Large ship hold")),
+            ("specialIndustrialShipHoldCapacity", _t("Industrial ship hold")),
+            ("specialOreHoldCapacity", _t("Ore hold")),
+            ("specialMineralHoldCapacity", _t("Mineral hold")),
+            ("specialMaterialBayCapacity", _t("Material bay")),
+            ("specialGasHoldCapacity", _t("Gas hold")),
+            ("specialSalvageHoldCapacity", _t("Salvage hold")),
+            ("specialCommandCenterHoldCapacity", _t("Command center hold")),
+            ("specialPlanetaryCommoditiesHoldCapacity", _t("Planetary goods hold")),
+            ("specialQuafeHoldCapacity", _t("Quafe hold"))))
 
         cargoValues = {
             "main": lambda: fit.ship.getModifiedItemAttr("capacity"),

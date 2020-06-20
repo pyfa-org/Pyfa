@@ -45,7 +45,7 @@ from service.esi import Esi
 from service.fit import Fit
 from service.market import Market
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 pyfalog = Logger(__name__)
 
@@ -73,21 +73,21 @@ class CharacterTextValidor(BaseValidator):
 
         try:
             if len(text) == 0:
-                raise ValueError(_("You must supply a name for the Character!"))
+                raise ValueError(_t("You must supply a name for the Character!"))
             elif text in [x.name for x in sChar.getCharacterList()]:
-                raise ValueError(_("Character name already in use, please choose another."))
+                raise ValueError(_t("Character name already in use, please choose another."))
 
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox("{}".format(e), _("Error"))
+            wx.MessageBox("{}".format(e), _t("Error"))
             textCtrl.SetFocus()
             return False
 
 
 class CharacterEntityEditor(EntityEditor):
     def __init__(self, parent):
-        EntityEditor.__init__(self, parent, _("Character"))
+        EntityEditor.__init__(self, parent, _t("Character"))
         self.SetEditorValidator(CharacterTextValidor)
 
     def getEntitiesFromContext(self):
@@ -134,7 +134,7 @@ class CharacterEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title=_("Character Editor"), resizeable=True, pos=wx.DefaultPosition,
+            parent, id=wx.ID_ANY, title=_t("Character Editor"), resizeable=True, pos=wx.DefaultPosition,
             size=wx.Size(950, 650) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 600))
 
         i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
@@ -157,9 +157,9 @@ class CharacterEditor(AuxiliaryFrame):
         self.iview = ImplantEditorView(self.viewsNBContainer, self)
         self.aview = APIView(self.viewsNBContainer)
 
-        self.viewsNBContainer.AddPage(self.sview, _("Skills"))
-        self.viewsNBContainer.AddPage(self.iview, _("Implants"))
-        self.viewsNBContainer.AddPage(self.aview, _("EVE SSO"))
+        self.viewsNBContainer.AddPage(self.sview, _t("Skills"))
+        self.viewsNBContainer.AddPage(self.iview, _t("Implants"))
+        self.viewsNBContainer.AddPage(self.aview, _t("EVE SSO"))
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -278,10 +278,10 @@ class CharacterEditor(AuxiliaryFrame):
 
         with TextEntryValidatedDialog(
             parent, CharacterTextValidor,
-            _("Enter a name for your new Character:"),
-            _("Save Character As...")
+            _t("Enter a name for your new Character:"),
+            _t("Save Character As...")
         ) as dlg:
-            dlg.SetValue(_("{} Copy").format(name))
+            dlg.SetValue(_t("{} Copy").format(name))
             dlg.txtctrl.SetInsertionPointEnd()
             dlg.CenterOnParent()
 
@@ -323,7 +323,7 @@ class SkillTreeView(wx.Panel):
         self.clonesChoice.Bind(wx.EVT_CHOICE, self.cloneChanged)
 
         self.clonesChoice.SetToolTip(
-            wx.ToolTip(_("Setting an Alpha clone does not replace the character's skills, but rather caps them to Alpha levels.")))
+            wx.ToolTip(_t("Setting an Alpha clone does not replace the character's skills, but rather caps them to Alpha levels.")))
 
         pmainSizer.Add(hSizer, 0, wx.EXPAND | wx.ALL, 5)
 
@@ -339,8 +339,8 @@ class SkillTreeView(wx.Panel):
         self.skillBookImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small", "gui")))
         self.skillBookDirtyImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small_red", "gui")))
 
-        tree.AppendColumn(_("Skill"))
-        tree.AppendColumn(_("Level"))
+        tree.AppendColumn(_t("Skill"))
+        tree.AppendColumn(_t("Level"))
         # tree.SetMainColumn(0)
 
         self.root = tree.GetRootItem()
@@ -353,7 +353,7 @@ class SkillTreeView(wx.Panel):
         tree.SetColumnWidth(0, 525)
         tree.SetColumnWidth(1, 100)
 
-        self.secStatusLabel = _("Sec Status: {0:.2f}")
+        self.secStatusLabel = _t("Sec Status: {0:.2f}")
         self.btnSecStatus = wx.Button(self, wx.ID_ANY, self.secStatusLabel.format(char.secStatus or 0.0))
         self.btnSecStatus.Bind(wx.EVT_BUTTON, self.onSecStatus)
 
@@ -369,8 +369,8 @@ class SkillTreeView(wx.Panel):
 
         bSizerButtons.AddStretchSpacer()
 
-        importExport = ((_("Import"), wx.ART_FILE_OPEN, _("from")),
-                        (_("Export"), wx.ART_FILE_SAVE_AS, _("to")))
+        importExport = ((_t("Import"), wx.ART_FILE_OPEN, _t("from")),
+                        (_t("Export"), wx.ART_FILE_SAVE_AS, _t("to")))
 
         for name, art, direction in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
@@ -382,7 +382,7 @@ class SkillTreeView(wx.Panel):
             btn.Layout()
             setattr(self, "{}Btn".format(name.lower()), btn)
             btn.Enable(True)
-            btn.SetToolTip(_("%s skills %s clipboard") % (name, direction))
+            btn.SetToolTip(_t("%s skills %s clipboard") % (name, direction))
             bSizerButtons.Add(btn, 0, wx.ALL, 5)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Skills".format(name.lower())))
 
@@ -437,9 +437,9 @@ class SkillTreeView(wx.Panel):
     def importSkills(self, evt):
 
         with wx.MessageDialog(
-            self, (_("Importing skills into this character will set the skill levels as pending. To save the skills "
+            self, (_t("Importing skills into this character will set the skill levels as pending. To save the skills "
                    "permanently, please click the Save button at the bottom of the window after importing")),
-            _("Import Skills"), wx.OK
+            _t("Import Skills"), wx.OK
         ) as dlg:
             dlg.ShowModal()
 
@@ -460,7 +460,7 @@ class SkillTreeView(wx.Panel):
                 raise
             except Exception as e:
                 pyfalog.error(e)
-                with wx.MessageDialog(self, _("There was an error importing skills, please see log file"), _("Error"), wx.ICON_ERROR) as dlg:
+                with wx.MessageDialog(self, _t("There was an error importing skills, please see log file"), _t("Error"), wx.ICON_ERROR) as dlg:
                     dlg.ShowModal()
 
             finally:
@@ -529,7 +529,7 @@ class SkillTreeView(wx.Panel):
                 iconId = self.skillBookDirtyImageId
 
             childId = tree.AppendItem(root, name, iconId, data=('skill', id))
-            tree.SetItemText(childId, 1, _("Level {}d").format(int(level) if isinstance(level, float) else level))
+            tree.SetItemText(childId, 1, _t("Level {}d").format(int(level) if isinstance(level, float) else level))
 
     def populateSkillTree(self, event=None):
         sChar = Character.getInstance()
@@ -588,7 +588,7 @@ class SkillTreeView(wx.Panel):
 
                 childId = tree.AppendItem(root, name, iconId, data=('skill', id))
 
-                tree.SetItemText(childId, 1, _("Level {}").format(int(level) if isinstance(level, float) else level))
+                tree.SetItemText(childId, 1, _t("Level {}").format(int(level) if isinstance(level, float) else level))
 
     def spawnMenu(self, event):
         item = event.GetItem()
@@ -611,9 +611,9 @@ class SkillTreeView(wx.Panel):
         char = self.charEditor.entityEditor.getActiveEntity()
         if char.name not in ("All 0", "All 5"):
             menu.AppendSeparator()
-            menu.Append(self.idUnlearned, _("Unlearn"))
+            menu.Append(self.idUnlearned, _t("Unlearn"))
             for level in range(6):
-                menu.Append(self.idLevels[level], _("Level {}").format(level))
+                menu.Append(self.idLevels[level], _t("Level {}").format(level))
             menu.Bind(wx.EVT_MENU, self.changeLevel)
 
         self.PopupMenu(menu)
@@ -754,8 +754,8 @@ class APIView(wx.Panel):
         hintSizer = wx.BoxSizer(wx.HORIZONTAL)
         hintSizer.AddStretchSpacer()
         self.stDisabledTip = wx.StaticText(self, wx.ID_ANY,
-                                           _("You cannot link All 0 or All 5 characters to an EVE character.") + "\n" +
-                                           _("Please select another character or make a new one."), style=wx.ALIGN_CENTER)
+                                           _t("You cannot link All 0 or All 5 characters to an EVE character.") + "\n" +
+                                           _t("Please select another character or make a new one."), style=wx.ALIGN_CENTER)
         self.stDisabledTip.Wrap(-1)
         hintSizer.Add(self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10)
 
@@ -768,14 +768,14 @@ class APIView(wx.Panel):
         fgSizerInput.SetFlexibleDirection(wx.BOTH)
         fgSizerInput.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, _("Character:"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, _t("Character:"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticCharText.Wrap(-1)
         fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
         fgSizerInput.Add(self.charChoice, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 10)
 
-        self.fetchButton = wx.Button(self, wx.ID_ANY, _("Get Skills"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.fetchButton = wx.Button(self, wx.ID_ANY, _t("Get Skills"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.fetchButton.Bind(wx.EVT_BUTTON, self.fetchSkills)
         fgSizerInput.Add(self.fetchButton, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
@@ -786,12 +786,12 @@ class APIView(wx.Panel):
         self.m_staticline1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         pmainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.ALL, 10)
 
-        self.noCharactersTip = wx.StaticText(self, wx.ID_ANY, _("Don't see your EVE character in the list?"), style=wx.ALIGN_CENTER)
+        self.noCharactersTip = wx.StaticText(self, wx.ID_ANY, _t("Don't see your EVE character in the list?"), style=wx.ALIGN_CENTER)
 
         self.noCharactersTip.Wrap(-1)
         pmainSizer.Add(self.noCharactersTip, 0, wx.CENTER | wx.TOP | wx.BOTTOM, 0)
 
-        self.addButton = wx.Button(self, wx.ID_ANY, _("Log In with EVE SSO"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.addButton = wx.Button(self, wx.ID_ANY, _t("Log In with EVE SSO"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.addButton.Bind(wx.EVT_BUTTON, self.addCharacter)
         pmainSizer.Add(self.addButton, 0, wx.ALL | wx.ALIGN_CENTER, 10)
 
@@ -852,7 +852,7 @@ class APIView(wx.Panel):
 
         self.charChoice.Clear()
 
-        noneID = self.charChoice.Append(_("None"), None)
+        noneID = self.charChoice.Append(_t("None"), None)
 
         for char in ssoChars:
             currId = self.charChoice.Append(char.characterName, char.ID)
@@ -894,25 +894,25 @@ class APIView(wx.Panel):
             pyfalog.warn(exc_value)
 
             wx.MessageBox(
-                _("Error fetching skill information"),
-                _("Error"), wx.ICON_ERROR | wx.STAY_ON_TOP)
+                _t("Error fetching skill information"),
+                _t("Error"), wx.ICON_ERROR | wx.STAY_ON_TOP)
         else:
             wx.MessageBox(
-                _("Successfully fetched skills"), _("Success"), wx.ICON_INFORMATION | wx.STAY_ON_TOP)
+                _t("Successfully fetched skills"), _t("Success"), wx.ICON_INFORMATION | wx.STAY_ON_TOP)
 
 
 class SecStatusDialog(wx.Dialog):
 
     def __init__(self, parent, sec):
-        super().__init__(parent, title=_("Set Security Status"), size=(300, 175), style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(parent, title=_t("Set Security Status"), size=(300, 175), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
         self.m_staticText1 = wx.StaticText(self, wx.ID_ANY,
-                                        _("Security Status is used in some CONCORD hull calculations"),
-                                        wx.DefaultPosition, wx.DefaultSize, 0)
+                                           _t("Security Status is used in some CONCORD hull calculations"),
+                                           wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticText1.Wrap(-1)
         bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)
 

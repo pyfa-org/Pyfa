@@ -30,7 +30,7 @@ from eos.const import FittingHardpoint
 
 from gui.utils.numberFormatter import formatAmount
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 
 class ResourcesViewFull(StatsView):
@@ -81,7 +81,7 @@ class ResourcesViewFull(StatsView):
         self.headerPanel.Layout()
 
     def getHeaderText(self, fit):
-        return _("Resources")
+        return _t("Resources")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -108,11 +108,11 @@ class ResourcesViewFull(StatsView):
         sizer.AddStretchSpacer()
         # Turrets & launcher hardslots display
         tooltipText = {
-            "turret": _("Turret hardpoints"),
-            "launcher": _("Launcher hardpoints"),
-            "drones": _("Drones active"),
-            "fighter": _("Fighter squadrons active"),
-            "calibration": _("Calibration")
+            "turret": _t("Turret hardpoints"),
+            "launcher": _t("Launcher hardpoints"),
+            "drones": _t("Drones active"),
+            "fighter": _t("Fighter squadrons active"),
+            "calibration": _t("Calibration")
         }
         for type_ in ("turret", "launcher", "drones", "fighter", "calibration"):
             box = wx.BoxSizer(wx.HORIZONTAL)
@@ -150,12 +150,12 @@ class ResourcesViewFull(StatsView):
 
         # PG, Cpu & drone stuff
         tooltipText = {
-            "cpu": _("CPU"),
-            "pg": _("PowerGrid"),
-            "droneBay": _("Drone bay"),
-            "fighterBay": _("Fighter bay"),
-            "droneBandwidth": _("Drone bandwidth"),
-            "cargoBay": _("Cargo bay")
+            "cpu": _t("CPU"),
+            "pg": _t("PowerGrid"),
+            "droneBay": _t("Drone bay"),
+            "fighterBay": _t("Fighter bay"),
+            "droneBandwidth": _t("Drone bandwidth"),
+            "cargoBay": _t("Cargo bay")
         }
         for i, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "fighterBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)

@@ -28,7 +28,7 @@ from gui.statsView import StatsView
 from gui.utils import fonts
 from gui.utils.numberFormatter import formatAmount
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 
 class ResistancesViewFull(StatsView):
@@ -44,7 +44,7 @@ class ResistancesViewFull(StatsView):
         self.mainFrame.Bind(GE.EFFECTIVE_HP_TOGGLED, self.ehpSwitch)
 
     def getHeaderText(self, fit):
-        return _("Resistances")
+        return _t("Resistances")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -58,7 +58,7 @@ class ResistancesViewFull(StatsView):
         # Custom header  EHP
         headerContentSizer = self.headerPanel.Parent.GetHeaderContentSizer()
 
-        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "(" + _("Effective HP") + ": ")
+        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "(" + _t("Effective HP") + ": ")
         headerContentSizer.Add(self.stEff)
         headerPanel.GetParent().AddToggleItem(self.stEff)
 
@@ -82,10 +82,10 @@ class ResistancesViewFull(StatsView):
         sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition(row, col), wx.GBSpan(1, 1))
         col += 1
         toolTipText = {
-            "em": _("Electromagnetic resistance"),
-            "thermal": _("Thermal resistance"),
-            "kinetic": _("Kinetic resistance"),
-            "explosive": _("Explosive resistance")
+            "em": _t("Electromagnetic resistance"),
+            "thermal": _t("Thermal resistance"),
+            "kinetic": _t("Kinetic resistance"),
+            "explosive": _t("Explosive resistance")
         }
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "gui")
@@ -94,7 +94,7 @@ class ResistancesViewFull(StatsView):
             sizerResistances.Add(bitmap, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
             col += 1
         self.stEHPs = wx.Button(contentPanel, style=wx.BU_EXACTFIT, label="EHP")
-        self.stEHPs.SetToolTip(wx.ToolTip(_("Click to toggle between effective HP and raw HP")))
+        self.stEHPs.SetToolTip(wx.ToolTip(_t("Click to toggle between effective HP and raw HP")))
 
         self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
 
@@ -109,10 +109,10 @@ class ResistancesViewFull(StatsView):
                         ((198, 133, 38), (81, 83, 67)))
 
         toolTipText = {
-            "shield": _("Shield resistance"),
-            "armor": _("Armor resistance"),
-            "hull": _("Hull resistance"),
-            "damagePattern": _("Incoming damage pattern")
+            "shield": _t("Shield resistance"),
+            "armor": _t("Armor resistance"),
+            "hull": _t("Hull resistance"),
+            "damagePattern": _t("Incoming damage pattern")
         }
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
             if tankType != "separator":
@@ -166,7 +166,7 @@ class ResistancesViewFull(StatsView):
             row += 1
             col = 0
 
-        self.stEHPs.SetToolTip(wx.ToolTip(_("Click to toggle between effective HP and raw HP")))
+        self.stEHPs.SetToolTip(wx.ToolTip(_t("Click to toggle between effective HP and raw HP")))
 
     def toggleEHP(self, event):
         wx.PostEvent(self.mainFrame, GE.EffectiveHpToggled(effective=self.stEHPs.GetLabel() == "HP"))
