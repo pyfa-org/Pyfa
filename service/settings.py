@@ -539,6 +539,12 @@ class GraphSettings:
 class LocaleSettings:
     _instance = None
 
+    supported_langauges = {
+            "en_US": wx.LANGUAGE_ENGLISH,
+            "zh_CN": wx.LANGUAGE_CHINESE_SIMPLIFIED,
+            # todo: add the others that EVE supports
+        }
+
     @classmethod
     def getInstance(cls):
         if cls._instance is None:
@@ -548,7 +554,7 @@ class LocaleSettings:
     def __init__(self):
 
         defaults = {
-            'locale': wx.LANGUAGE_DEFAULT
+            'locale': "en_US"
         }
         self.settings = SettingsProvider.getInstance().getSettings('localeSettings', defaults)
 
