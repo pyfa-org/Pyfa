@@ -19,7 +19,9 @@
 
 from gui.chrome_tabs import ChromeNotebook
 import gui.builtinViews.emptyView
+import wx
 
+_ = wx.GetTranslation
 
 class MultiSwitch(ChromeNotebook):
     def __init__(self, parent):

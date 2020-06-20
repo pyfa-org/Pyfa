@@ -27,6 +27,8 @@ import webbrowser
 import re
 import markdown2
 
+_ = wx.GetTranslation
+
 # HTML template. We link to a bootstrap cdn for quick and easy css, and include some additional teaks.
 html_tmpl = """
 <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />
@@ -49,7 +51,7 @@ class UpdateDialog(wx.Dialog):
 
     def __init__(self, parent, release, version):
         super().__init__(
-            parent, id=wx.ID_ANY, title=_"pyfa "+_("Update Available"), pos=wx.DefaultPosition,
+            parent, id=wx.ID_ANY, title="pyfa {}" + _("Update Available"), pos=wx.DefaultPosition,
             size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.UpdateSettings = svc_UpdateSettings.getInstance()
