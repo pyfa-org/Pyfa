@@ -35,7 +35,7 @@ class PriceViewFull(StatsView):
         self.settings = MarketPriceSettings.getInstance()
 
     def getHeaderText(self, fit):
-        return "Price"
+        return _("Price")
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()

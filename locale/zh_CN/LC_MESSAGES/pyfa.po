@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
-"Report-Msgid-Bugs-To: https://github.com/pyfa-org/Pyfa/issues\n"
-"POT-Creation-Date: 2020-06-17 17:35+0800\n"
-"PO-Revision-Date: 2020-06-18 14:48+0800\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-18 17:46+0800\n"
+"PO-Revision-Date: 2020-06-18 17:55+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -18,34 +18,362 @@ msgstr ""
 "X-Generator: Poedit 2.3.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: gui/additionsPane.py:79
-msgid "Boosters"
-msgstr "增效"
+#: gui/builtinStatsViews/firepowerViewFull.py:106
+msgid " DPS: "
+msgstr ""
 
-#: gui/additionsPane.py:73
+#: gui/builtinStatsViews/capacitorViewFull.py:70
+msgid " GJ"
+msgstr ""
+
+#: gui/builtinStatsViews/firepowerViewFull.py:99
+msgid " Volley: "
+msgstr "齐射"
+
+#: gui/builtinStatsViews/capacitorViewFull.py:79
+msgid "0s"
+msgstr "0秒"
+
+#: gui/builtinStatsViews/rechargeViewFull.py:74
+msgid "Active shield boost"
+msgstr "主动维修"
+
+#: gui/additionsPane.py:44
+msgid "Additions"
+msgstr "附加装备"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:83
+msgid "Align time"
+msgstr "起跳时间"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:110
+msgid "Ammo hold"
+msgstr ""
+
+#: gui/builtinStatsViews/rechargeViewFull.py:75
+msgid "Armor repair amount"
+msgstr "装甲维修"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:111
+msgid "Armor resistance"
+msgstr "装甲抗性"
+
+#: gui/additionsPane.py:77
+msgid "Boosters"
+msgstr "增效剂"
+
+#: gui/builtinStatsViews/resourcesViewFull.py:151
+msgid "CPU"
+msgstr ""
+
+#: gui/builtinStatsViews/resourcesViewFull.py:113
+msgid "Calibration"
+msgstr "校准"
+
+#: gui/builtinStatsViews/capacitorViewFull.py:35
+msgid "Capacitor"
+msgstr "电容"
+
+#: gui/builtinStatsViews/capacitorViewFull.py:55
+msgid "Capacitor stability"
+msgstr "电容稳定性"
+
+#: gui/additionsPane.py:71 gui/builtinStatsViews/targetingMiscViewMinimal.py:86
 msgid "Cargo"
 msgstr "货舱"
 
-#: gui/additionsPane.py:85
+#: gui/builtinStatsViews/resourcesViewFull.py:156
+msgid "Cargo bay"
+msgstr "货舱"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:95
+#: gui/builtinStatsViews/resistancesViewFull.py:167
+msgid "Click to toggle between effective HP and raw HP"
+msgstr "点击切换有效HP和原始HP"
+
+#: gui/builtinStatsViews/miningyieldViewFull.py:101
+msgid "Click to toggle to Firepower View"
+msgstr "点击切换到火力视图"
+
+#: gui/builtinStatsViews/firepowerViewFull.py:114
+msgid "Click to toggle to Mining Yield "
+msgstr "点击切换到矿物产出视图"
+
+#: gui/additionsPane.py:83
 msgid "Command"
 msgstr "指令"
 
-#: gui/additionsPane.py:67
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
+msgid "Command center hold"
+msgstr ""
+
+#: gui/builtinStatsViews/resourcesViewFull.py:155
+msgid "Drone bandwidth"
+msgstr "无人机带宽"
+
+#: gui/builtinStatsViews/resourcesViewFull.py:153
+msgid "Drone bay"
+msgstr "无人机仓库"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:62
+msgid "Drone range"
+msgstr "无人机半径"
+
+#: gui/additionsPane.py:65
 msgid "Drones"
 msgstr "无人机"
 
-#: gui/additionsPane.py:70
-msgid "Fighters"
-msgstr "铁骑机"
+#: gui/builtinStatsViews/resourcesViewFull.py:111
+msgid "Drones active"
+msgstr "激活的无人机"
 
-#: gui/additionsPane.py:76
+#: gui/builtinStatsViews/resistancesViewFull.py:83
+msgid "Electromagnetic resistance"
+msgstr "电磁抗性"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:86
+msgid "Explosive resistance"
+msgstr "爆炸抗性"
+
+#: gui/builtinStatsViews/capacitorViewFull.py:88
+msgid "Extra stats"
+msgstr "额外状态"
+
+#: gui/builtinStatsViews/resourcesViewFull.py:154
+msgid "Fighter bay"
+msgstr "铁骑舰载机仓库"
+
+#: gui/builtinStatsViews/resourcesViewFull.py:112
+msgid "Fighter squadrons active"
+msgstr "激活的铁骑舰载机中队"
+
+#: gui/additionsPane.py:68
+msgid "Fighters"
+msgstr "铁骑舰载机"
+
+#: gui/builtinStatsViews/firepowerViewFull.py:41
+msgid "Firepower"
+msgstr "火力"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:108
+msgid "Fleet hangar"
+msgstr "舰队机库"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:111
+msgid "Fuel bay"
+msgstr "燃料机库"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
+msgid "Gas hold"
+msgstr "气态矿物仓库"
+
+#: gui/builtinStatsViews/rechargeViewFull.py:76
+msgid "Hull repair amount"
+msgstr "结构维修"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:112
+msgid "Hull resistance"
+msgstr "结构抗性"
+
+#: gui/additionsPane.py:74
 msgid "Implants"
 msgstr "植入体"
 
-#: gui/additionsPane.py:88
+#: gui/builtinStatsViews/resistancesViewFull.py:113
+msgid "Incoming damage pattern"
+msgstr "敌对伤害模型"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:116
+msgid "Industrial ship hold"
+msgstr ""
+
+#: gui/builtinStatsViews/resistancesViewFull.py:85
+msgid "Kinetic resistance"
+msgstr "动能抗性"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:115
+msgid "Large ship hold"
+msgstr ""
+
+#: gui/builtinStatsViews/capacitorViewFull.py:75
+#: gui/builtinStatsViews/capacitorViewFull.py:169
+msgid "Lasts "
+msgstr "可维持"
+
+#: gui/builtinStatsViews/resourcesViewFull.py:110
+msgid "Launcher hardpoints"
+msgstr "发射器"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:109
+msgid "Maintenance bay"
+msgstr "维护机库"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:119
+msgid "Material bay"
+msgstr "矿物机库"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
+msgid "Medium ship hold"
+msgstr "中型舰船机库"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:118
+msgid "Mineral hold"
+msgstr "矿物机库"
+
+#: gui/builtinStatsViews/miningyieldViewFull.py:38
+msgid "Mining Yield"
+msgstr "矿物产出"
+
+#: gui/additionsPane.py:86
 msgid "Notes"
 msgstr "备注"
 
-#: gui/additionsPane.py:82
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:117
+msgid "Ore hold"
+msgstr "矿石机库"
+
+#: gui/builtinStatsViews/rechargeViewFull.py:73
+msgid "Passive shield recharge"
+msgstr "被动回充"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:123
+msgid "Planetary goods hold"
+msgstr "星系开发机库"
+
+#: gui/builtinStatsViews/resourcesViewFull.py:152
+msgid "PowerGrid"
+msgstr ""
+
+#: gui/builtinStatsViews/priceViewFull.py:38
+msgid "Price"
+msgstr "价格"
+
+#: gui/additionsPane.py:80
 msgid "Projected"
 msgstr ""
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:124
+msgid "Quafe hold"
+msgstr ""
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:59
+msgid "Range"
+msgstr "锁定范围"
+
+#: gui/builtinStatsViews/rechargeViewFull.py:41
+msgid "Recharge rates"
+msgstr "回充速度"
+
+#: gui/builtinStatsViews/rechargeViewFull.py:84
+msgid "Reinforced"
+msgstr "加强回充"
+
+#: gui/builtinStatsViews/outgoingViewFull.py:65
+#: gui/builtinStatsViews/outgoingViewMinimal.py:64
+msgid "Remote Reps"
+msgstr "遥修"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:45
+msgid "Resistances"
+msgstr "抗性"
+
+#: gui/builtinStatsViews/resourcesViewFull.py:82
+msgid "Resources"
+msgstr "装配资源"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:121
+msgid "Salvage hold"
+msgstr "打捞件机库"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:60
+msgid "Scan res."
+msgstr "扫描精度"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:61
+msgid "Sensor str."
+msgstr "传感器强度"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:110
+msgid "Shield resistance"
+msgstr "护盾抗性"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:112
+msgid "Ship hold"
+msgstr ""
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:84
+msgid "Signature"
+msgstr "信号半径"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:113
+msgid "Small ship hold"
+msgstr ""
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:82
+msgid "Speed"
+msgstr "亚光速航速"
+
+#: gui/builtinStatsViews/capacitorViewFull.py:169
+msgid "Stable: "
+msgstr "稳定："
+
+#: gui/builtinStatsViews/rechargeViewFull.py:85
+msgid "Sustained"
+msgstr "持续回充"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:36
+msgid "Targeting && Misc"
+msgstr "目标锁定和其他"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:58
+msgid "Targets"
+msgstr "最大锁定数"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:84
+msgid "Thermal resistance"
+msgstr "热能抗性"
+
+#: gui/builtinStatsViews/miningyieldViewFull.py:88
+msgid "Total"
+msgstr "总容量"
+
+#: gui/builtinStatsViews/capacitorViewFull.py:65
+msgid "Total: "
+msgstr "总容量："
+
+#: gui/builtinStatsViews/resourcesViewFull.py:109
+msgid "Turret hardpoints"
+msgstr "炮台"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:85
+msgid "Warp Speed"
+msgstr "曲速航速"
+
+#: gui/builtinStatsViews/firepowerViewFull.py:66
+#: gui/builtinStatsViews/miningyieldViewFull.py:58
+msgid "drone"
+msgstr "无人机"
+
+#: gui/builtinStatsViews/firepowerViewFull.py:66
+msgid "droneDPS"
+msgstr ""
+
+#: gui/builtinStatsViews/firepowerViewFull.py:57
+msgid "full"
+msgstr ""
+
+#: gui/builtinStatsViews/miningyieldViewFull.py:58
+msgid "miner"
+msgstr "采矿器"
+
+#: gui/builtinStatsViews/miningyieldViewFull.py:58
+msgid "mining"
+msgstr ""
+
+#: gui/builtinStatsViews/firepowerViewFull.py:66
+msgid "turret"
+msgstr "炮台"
+
+#: gui/builtinStatsViews/firepowerViewFull.py:66
+msgid "weapon"
+msgstr "武器"

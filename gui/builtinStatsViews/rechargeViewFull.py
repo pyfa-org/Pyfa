@@ -38,7 +38,7 @@ class RechargeViewFull(StatsView):
         self.mainFrame.Bind(GE.EFFECTIVE_HP_TOGGLED, self.toggleEffective)
 
     def getHeaderText(self, fit):
-        return "Recharge rates"
+        return _("Recharge rates")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -70,10 +70,10 @@ class RechargeViewFull(StatsView):
         # Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
         toolTipText = {
-            "shieldPassive": "Passive shield recharge",
-            "shieldActive": "Active shield boost",
-            "armorActive": "Armor repair amount",
-            "hullActive": "Hull repair amount"}
+            "shieldPassive": _("Passive shield recharge"),
+            "shieldActive": _("Active shield boost"),
+            "armorActive": _("Armor repair amount"),
+            "hullActive": _("Hull repair amount")}
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[tankType])
@@ -81,8 +81,8 @@ class RechargeViewFull(StatsView):
             sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         toolTipText = {
-            "reinforced": "Reinforced",
-            "sustained": "Sustained"}
+            "reinforced": _("Reinforced"),
+            "sustained": _("Sustained")}
         for stability in ("reinforced", "sustained"):
             bitmap = BitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[stability])

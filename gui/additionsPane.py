@@ -97,7 +97,7 @@ class AdditionsPane(TogglePanel):
         self.notebook.SetSelection(self.PANES.index(name), focus=focus)
 
     def getName(self, idx):
-        return _(self.PANES[idx])
+        return self.PANES[idx]
 
     def ToggleContent(self, event):
         TogglePanel.ToggleContent(self, event)
