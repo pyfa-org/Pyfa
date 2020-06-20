@@ -6,7 +6,7 @@ import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.fit import Fit
-from service.settings import SettingsProvider
+from service.settings import SettingsProvider, LocaleSettings
 
 
 class PFGeneralPref(PreferenceView):
@@ -18,7 +18,7 @@ class PFGeneralPref(PreferenceView):
         self.dirtySettings = False
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
                                                                            {"enabled": False, "pyfaOpenFits": []})
-
+        self.localeSettings = LocaleSettings.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -90,6 +90,21 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.rbAddLabels, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
         self.rbAddLabels.Bind(wx.EVT_RADIOBOX, self.OnAddLabelsChange)
 
+        langSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, "Language (restart required): ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stLangLabel.Wrap(-1)
+        langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.langChoices = self.localeSettings.supported_langauges.keys()
+        self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x for x in self.langChoices], 0)
+        self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
+
+        self.chLang.SetStringSelection(self.localeSettings.get('locale'))
+
+        langSizer.Add(self.chLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(langSizer)
+
         self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
@@ -125,6 +140,9 @@ class PFGeneralPref(PreferenceView):
 
         panel.SetSizer(mainSizer)
         panel.Layout()
+
+    def onLangSelection(self, event):
+        self.localeSettings.set('locale', self.chLang.GetString(self.chLang.GetSelection()))
 
     def onCBGlobalColorBySlot(self, event):
         # todo: maybe create a SettingChanged event that we can fire, and have other things hook into, instead of having the preference panel itself handle the
