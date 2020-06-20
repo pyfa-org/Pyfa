@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-20 11:57+0800\n"
-"PO-Revision-Date: 2020-06-20 15:59+0800\n"
+"POT-Creation-Date: 2020-06-20 17:09+0800\n"
+"PO-Revision-Date: 2020-06-20 17:40+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -114,7 +114,7 @@ msgstr "导入装配(&I)"
 
 #: gui/mainMenuBar.py:122
 msgid "&Manage ESI Characters"
-msgstr "管理ESI角色(&M)"
+msgstr "管理游戏内角色(&M)"
 
 #: gui/mainMenuBar.py:68
 msgid "&New Tab"
@@ -242,6 +242,10 @@ msgstr "属性编辑器"
 msgid "Attributes"
 msgstr "属性"
 
+#: gui/builtinShipBrowser/navigationPanel.py:50
+msgid "Back"
+msgstr "返回"
+
 #: gui/mainFrame.py:874
 msgid "Backing up {} fits to: {}"
 msgstr ""
@@ -256,7 +260,7 @@ msgstr "备份装配"
 
 #: gui/mainFrame.py:952
 msgid "Be aware that already processed fits were not saved"
-msgstr ""
+msgstr "请注意已处理的装配未作保存"
 
 #: gui/additionsPane.py:78
 msgid "Boosters"
@@ -365,19 +369,19 @@ msgstr "复制所需技能"
 
 #: gui/ssoLogin.py:18
 msgid "Copy and paste the block of text provided by pyfa.io"
-msgstr ""
+msgstr "请复制和粘贴pyfa.io提供的字符串"
 
 #: gui/patternEditor.py:290 gui/setEditor.py:222 gui/targetProfileEditor.py:366
 msgid "Could not import from clipboard"
-msgstr ""
+msgstr "无法从剪贴板导入"
 
 #: gui/targetProfileEditor.py:359
 msgid "Could not import from clipboard:"
-msgstr ""
+msgstr "无法从剪贴板导入："
 
 #: gui/patternEditor.py:283 gui/setEditor.py:218
 msgid "Could not import from clipboard: unknown errors"
-msgstr ""
+msgstr "无法从剪贴板导入：未知错误"
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
@@ -394,11 +398,11 @@ msgstr "伤害模型名已占用，请使用其他名称。"
 #: gui/propertyEditor.py:270
 #, python-format
 msgid "Default Value: %0.3f"
-msgstr ""
+msgstr "默认值：%0.3f"
 
 #: gui/esiFittings.py:65
 msgid "Delete from EVE"
-msgstr "从游戏内删除"
+msgstr "删除游戏内装配"
 
 #: gui/itemStats.py:189
 msgid "Dependents"
@@ -418,7 +422,7 @@ msgstr "关闭装配资源限制(&S)"
 
 #: gui/esiFittings.py:156
 msgid "Do you really want to delete {} ({}) from EVE?"
-msgstr ""
+msgstr "真的要从游戏内删除 {} ({})吗？"
 
 #: gui/updateDialog.py:102
 msgid "Don't remind me again for this release"
@@ -426,7 +430,7 @@ msgstr "不再提示此更新"
 
 #: gui/characterEditor.py:789
 msgid "Don't see your EVE character in the list?"
-msgstr "没看到你的EvE角色？"
+msgstr "列表中没有你的EvE角色？"
 
 #: gui/updateDialog.py:113
 msgid "Download"
@@ -466,7 +470,7 @@ msgstr "电磁抗性"
 
 #: gui/esiFittings.py:313 gui/esiFittings.py:317 gui/esiFittings.py:325
 msgid "ERROR"
-msgstr ""
+msgstr "错误"
 
 #: gui/mainFrame.py:1013
 msgid "EVE API XML character files"
@@ -474,27 +478,31 @@ msgstr ""
 
 #: gui/characterEditor.py:162
 msgid "EVE SSO"
-msgstr ""
+msgstr "连接到EvE"
 
 #: gui/mainFrame.py:860
 msgid "EVE XML fitting file"
-msgstr ""
+msgstr "EvE装配XML文件"
 
 #: gui/mainFrame.py:837
 msgid "EVE XML fitting files"
-msgstr ""
+msgstr "EvE装配XML文件"
 
 #: gui/mainFrame.py:467
 msgid "EVE XML fitting files (*.xml)|*.xml"
-msgstr ""
+msgstr "EvE装配XML文件 (*.xml)|*.xml"
 
 #: gui/mainFrame.py:809
 msgid "EVEMon skills training XML file"
-msgstr ""
+msgstr "EvEMon技能训练XML文件"
 
 #: gui/mainFrame.py:808
 msgid "EVEMon skills training file"
-msgstr ""
+msgstr "EvEMon技能训练文件"
+
+#: gui/builtinStatsViews/resistancesViewFull.py:61
+msgid "Effective HP"
+msgstr "有效HP"
 
 #: gui/itemStats.py:192
 msgid "Effects"
@@ -521,15 +529,15 @@ msgstr "请为新角色输入一个名称："
 #: gui/mainFrame.py:897 gui/patternEditor.py:58 gui/setEditor.py:55
 #: gui/targetProfileEditor.py:78
 msgid "Error"
-msgstr ""
+msgstr "错误"
 
 #: gui/characterEditor.py:897 gui/characterSelection.py:173
 msgid "Error fetching skill information"
-msgstr ""
+msgstr "无法获取技能信息"
 
 #: gui/errorDialog.py:68
 msgid "Error!"
-msgstr ""
+msgstr "错误！"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:88
 #: gui/targetProfileEditor.py:122
@@ -594,11 +602,11 @@ msgstr ""
 
 #: gui/esiFittings.py:44
 msgid "Fetch Fits"
-msgstr ""
+msgstr "获取装配"
 
 #: gui/esiFittings.py:111
 msgid "Fetching fits, please wait..."
-msgstr ""
+msgstr "正在获取装配，请稍候..."
 
 #: gui/mainMenuBar.py:81
 msgid "Fi&t"
@@ -642,7 +650,7 @@ msgstr ""
 
 #: gui/characterEditor.py:778
 msgid "Get Skills"
-msgstr ""
+msgstr "获取技能列表"
 
 #: gui/mainMenuBar.py:161
 msgid "Go to EVE Online Forum thread"
@@ -655,6 +663,11 @@ msgstr "转到GitHub上的百科页"
 #: gui/characterSelection.py:102
 msgid "Grant Missing Skills"
 msgstr ""
+
+#: gui/builtinShipBrowser/navigationPanel.py:53
+#: gui/builtinShipBrowser/navigationPanel.py:147
+msgid "Hide empty ship groups"
+msgstr "隐藏空的舰船类型"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:78
 msgid "Hull repair amount"
@@ -735,15 +748,15 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:115
 msgid "Incoming damage pattern"
-msgstr "敌对伤害模型"
+msgstr "伤害分布"
 
 #: gui/targetProfileEditor.py:50
 msgid "Incorrect formatting (decimals only)"
-msgstr ""
+msgstr "格式无效（仅允许小数）"
 
 #: gui/targetProfileEditor.py:52
 msgid "Incorrect range (must be 0-100)"
-msgstr ""
+msgstr "范围无效（必须是 0-100）"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:118
 msgid "Industrial ship hold"
@@ -751,11 +764,11 @@ msgstr ""
 
 #: gui/mainFrame.py:893
 msgid "Invalid Path"
-msgstr ""
+msgstr "无效路径"
 
 #: gui/esiFittings.py:198
 msgid "Invalid Token"
-msgstr ""
+msgstr "无效登录信息"
 
 #: gui/itemStats.py:58
 msgid "Item stats"
@@ -781,16 +794,16 @@ msgstr "发射器"
 
 #: gui/characterEditor.py:343
 msgid "Level"
-msgstr ""
+msgstr "技能等级"
 
 #: gui/characterEditor.py:591 gui/characterEditor.py:616
 #: gui/characterEditor.py:649
 msgid "Level {}"
-msgstr ""
+msgstr "等级"
 
 #: gui/characterEditor.py:532
 msgid "Level {}d"
-msgstr ""
+msgstr "等级"
 
 #: gui/mainFrame.py:273
 msgid "Loading previous fits..."
@@ -838,17 +851,19 @@ msgstr "变质"
 
 #: gui/esiFittings.py:300
 msgid "Need at least one ESI character to export"
-msgstr ""
+msgstr "请为导出至少选择一个游戏内角色"
 
 #: gui/esiFittings.py:114
 msgid "Need at least one ESI character to fetch"
-msgstr ""
+msgstr "请为获取至少选择一个游戏内角色"
+
+#: gui/builtinShipBrowser/navigationPanel.py:51
+msgid "New fitting"
+msgstr "新装配"
 
 #: gui/characterSelection.py:230
-#, fuzzy
-#| msgid "Drones active"
 msgid "No active fit"
-msgstr "激活的无人机"
+msgstr "没有选中的装配"
 
 #: gui/characterEditor.py:855
 msgid "None"
@@ -920,7 +935,7 @@ msgstr "请确认Pyfa偏好保存位置。"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:154
 msgid "PowerGrid"
-msgstr ""
+msgstr "PG"
 
 #: gui/preferenceDialog.py:31
 msgid "Preferences"
@@ -932,15 +947,15 @@ msgstr "价格"
 
 #: gui/targetProfileEditor.py:372
 msgid "Profiles exported to clipboard"
-msgstr ""
+msgstr "目标属性已导出到剪贴板"
 
 #: gui/targetProfileEditor.py:352
 msgid "Profiles successfully imported from clipboard"
-msgstr ""
+msgstr "已成功从剪贴板导入目标属性"
 
 #: gui/additionsPane.py:81
 msgid "Projected"
-msgstr ""
+msgstr "环境效果"
 
 #: gui/aboutData.py:49
 msgid ""
@@ -970,6 +985,10 @@ msgid ""
 "Re-enabling fitting restrictions for this fit will also remove any illegal "
 "items from the fit. Do you want to continue?"
 msgstr "重新启用装配限制将删除所有无效物品。您要继续吗？"
+
+#: gui/builtinShipBrowser/navigationPanel.py:56
+msgid "Recent Fits"
+msgstr "最近使用的装配"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:43
 msgid "Recharge rates"
@@ -1048,6 +1067,10 @@ msgstr "保存自定义属性为..."
 msgid "Scan res."
 msgstr "扫描精度"
 
+#: gui/builtinShipBrowser/navigationPanel.py:61
+msgid "Search fittings"
+msgstr "搜索装配"
+
 #: gui/characterEditor.py:356
 #, python-brace-format
 msgid "Sec Status: {0:.2f}"
@@ -1084,9 +1107,17 @@ msgstr ""
 msgid "Shield resistance"
 msgstr "护盾抗性"
 
+#: gui/builtinShipBrowser/navigationPanel.py:48
+msgid "Ship groups"
+msgstr "舰船类型"
+
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Ship hold"
 msgstr ""
+
+#: gui/builtinShipBrowser/navigationPanel.py:151
+msgid "Show empty ship groups"
+msgstr "显示空的舰船类型"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:86
 msgid "Signature"
@@ -1220,7 +1251,7 @@ msgstr "撤销最近一次操作"
 
 #: gui/characterEditor.py:614
 msgid "Unlearn"
-msgstr ""
+msgstr "忘掉"
 
 #: gui/updateDialog.py:54
 msgid "Update Available"
@@ -1261,7 +1292,7 @@ msgstr ""
 
 #: gui/errorDialog.py:69
 msgid "pyfa error"
-msgstr ""
+msgstr "Pyfa错误"
 
 #: gui/errorDialog.py:76
 msgid ""
@@ -1271,10 +1302,13 @@ msgid ""
 "the \n"
 "information provided through the EVE Online forums or file a GitHub issue."
 msgstr ""
+"Pyfa遇到了未知问题。下方文本框显示了该问题如何发生的关键信息。\n"
+"请通过EvE论坛或GitHub issue联系开发者，并提供下方文本框中的信息。"
 
 #: gui/aboutData.py:31
 msgid "pyfa is released under GNU GPLv3 - see included LICENSE file"
 msgstr ""
+"pyfa基于GNU通用公共许可证第三版(GPLv3)发布 - 详见应用目录下的LICENSE文件"
 
 #: gui/characterEditor.py:373 gui/patternEditor.py:172 gui/setEditor.py:149
 #: gui/targetProfileEditor.py:222
@@ -1288,7 +1322,7 @@ msgstr ""
 
 #: gui/characterEditor.py:284
 msgid "{} Copy"
-msgstr ""
+msgstr "复制{}"
 
 #: gui/setEditor.py:161
 msgid "{} implant sets {} clipboard"
@@ -1298,14 +1332,14 @@ msgstr "{}植入体配置{}剪贴板"
 msgid "{} profiles {} clipboard"
 msgstr "{}目标属性{}剪贴板"
 
-msgid "drone"
-msgstr "无人机"
+#~ msgid "drone"
+#~ msgstr "无人机"
 
-msgid "miner"
-msgstr "采矿器"
+#~ msgid "miner"
+#~ msgstr "采矿器"
 
-msgid "turret"
-msgstr "炮台"
+#~ msgid "turret"
+#~ msgstr "炮台"
 
-msgid "weapon"
-msgstr "武器"
+#~ msgid "weapon"
+#~ msgstr "武器"

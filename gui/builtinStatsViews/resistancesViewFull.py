@@ -58,7 +58,7 @@ class ResistancesViewFull(StatsView):
         # Custom header  EHP
         headerContentSizer = self.headerPanel.Parent.GetHeaderContentSizer()
 
-        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective HP: ")
+        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "(" + _("Effective HP") + ": ")
         headerContentSizer.Add(self.stEff)
         headerPanel.GetParent().AddToggleItem(self.stEff)
 
@@ -66,7 +66,7 @@ class ResistancesViewFull(StatsView):
         headerContentSizer.Add(self.labelEhp, 0)
         headerPanel.GetParent().AddToggleItem(self.labelEhp)
 
-        stCls = wx.StaticText(headerPanel, wx.ID_ANY, " )")
+        stCls = wx.StaticText(headerPanel, wx.ID_ANY, ")")
 
         headerPanel.GetParent().AddToggleItem(stCls)
         headerContentSizer.Add(stCls)
