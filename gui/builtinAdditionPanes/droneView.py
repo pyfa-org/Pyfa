@@ -36,6 +36,11 @@ import gui.fitCommands as cmd
 from gui.fitCommands.helpers import droneStackLimit
 
 
+DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
+               'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
+               'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
+
+
 class DroneViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(DroneViewDrop, self).__init__(*args, **kwargs)
@@ -186,17 +191,13 @@ class DroneView(Display):
             self.mainFrame.command.Submit(cmd.GuiMergeLocalDroneStacksCommand(
                 fitID=fitID, srcPosition=srcPosition, dstPosition=dstPosition))
 
-    DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
-                   'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
-                   'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
-
-    def droneKey(self, drone):
+    @staticmethod
+    def droneKey(drone):
         sMkt = Market.getInstance()
 
         groupName = sMkt.getMarketGroupByItem(drone.item).name
 
-        return (self.DRONE_ORDER.index(groupName),
-                drone.item.name)
+        return (DRONE_ORDER.index(groupName), drone.item.name)
 
     def fitChanged(self, event):
         event.Skip()

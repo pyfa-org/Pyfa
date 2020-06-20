@@ -21,7 +21,7 @@ import datetime
 import time
 from copy import deepcopy
 from itertools import chain
-from math import log, sqrt
+from math import floor, log, sqrt
 
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
@@ -39,6 +39,7 @@ from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
 from eos.saveddata.targetProfile import TargetProfile
+from eos.utils.float import floatUnerr
 from eos.utils.stats import DmgTypes, RRTypes
 
 
@@ -378,8 +379,9 @@ class Fit:
 
     @property
     def maxTargets(self):
-        return min(self.extraAttributes["maxTargetsLockedFromSkills"],
-                   self.ship.getModifiedItemAttr("maxLockedTargets"))
+        maxTargets = min(self.extraAttributes["maxTargetsLockedFromSkills"],
+                         self.ship.getModifiedItemAttr("maxLockedTargets"))
+        return floor(floatUnerr(maxTargets))
 
     @property
     def maxTargetRange(self):

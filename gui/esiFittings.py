@@ -9,7 +9,7 @@ import config
 import gui.globalEvents as GE
 from eos.db import getItem
 from eos.saveddata.cargo import Cargo
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.display import Display
 from gui.characterEditor import APIView
 from service.character import Character
@@ -18,6 +18,7 @@ from service.esiAccess import APIException
 from service.fit import Fit
 from service.port import Port
 from service.port.esi import ESIExportException
+from service.settings import EsiSettings
 
 
 _ = wx.GetTranslation
@@ -208,7 +209,7 @@ class ExportToEve(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title=_("Export fit to EVE"), pos=wx.DefaultPosition,
-            size=wx.Size(400, 120) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 100), resizeable=True)
+            size=wx.Size(400, 140) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 115), resizeable=True)
 
         self.mainFrame = parent
 
@@ -225,6 +226,11 @@ class ExportToEve(AuxiliaryFrame):
 
         mainSizer.Add(hSizer, 0, wx.EXPAND, 5)
 
+        self.exportChargesCb = wx.CheckBox(self, wx.ID_ANY, 'Export Loaded Charges', wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportChargesCb.SetValue(EsiSettings.getInstance().get('exportCharges'))
+        self.exportChargesCb.Bind(wx.EVT_CHECKBOX, self.OnChargeExportChange)
+        mainSizer.Add(self.exportChargesCb, 0, 0, 5)
+
         self.exportBtn.Bind(wx.EVT_BUTTON, self.exportFitting)
 
         self.statusbar = wx.StatusBar(self)
@@ -239,6 +245,10 @@ class ExportToEve(AuxiliaryFrame):
         self.SetMinSize(self.GetSize())
 
         self.Center(wx.BOTH)
+
+    def OnChargeExportChange(self, event):
+        EsiSettings.getInstance().set('exportCharges', self.exportChargesCb.GetValue())
+        event.Skip()
 
     def updateCharList(self):
         sEsi = Esi.getInstance()
@@ -275,8 +285,9 @@ class ExportToEve(AuxiliaryFrame):
         sEsi = Esi.getInstance()
 
         sFit = Fit.getInstance()
+        exportCharges = self.exportChargesCb.GetValue()
         try:
-            data = sPort.exportESI(sFit.getFit(fitID))
+            data = sPort.exportESI(sFit.getFit(fitID), exportCharges)
         except ESIExportException as e:
             msg = str(e)
             if not msg:

@@ -26,6 +26,8 @@ from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, re
 
 class BaseEffect:
 
+    dealsDamage = False
+
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         pass
@@ -58,10 +60,12 @@ class Effect10(BaseEffect):
     targetAttack
 
     Used by:
+    Celestials from group: Destructible Effect Beacon (6 of 6)
     Drones from group: Combat Drone (75 of 75)
     Modules from group: Energy Weapon (212 of 214)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -96,7 +100,7 @@ class Effect21(BaseEffect):
 
     Used by:
     Modules from group: Shield Extender (36 of 36)
-    Modules from group: Shield Resistance Amplifier (88 of 88)
+    Modules from group: Shield Resistance Amplifier (84 of 84)
     """
 
     type = 'passive'
@@ -169,6 +173,7 @@ class Effect34(BaseEffect):
     Modules from group: Projectile Weapon (165 of 165)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -189,6 +194,7 @@ class Effect38(BaseEffect):
     Modules from group: Smart Bomb (118 of 118)
     """
 
+    dealsDamage = True
     type = 'active'
 
 
@@ -211,6 +217,28 @@ class Effect39(BaseEffect):
         if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
             return
         fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
+
+
+class Effect46(BaseEffect):
+    """
+    shipScan
+
+    Used by:
+    Modules from group: Ship Scanner (3 of 3)
+    """
+
+    type = 'active'
+
+
+class Effect47(BaseEffect):
+    """
+    cargoScan
+
+    Used by:
+    Modules from group: Cargo Scanner (4 of 4)
+    """
+
+    type = 'active'
 
 
 class Effect48(BaseEffect):
@@ -442,6 +470,17 @@ class Effect67(BaseEffect):
         module.reloadTime = 1000
 
 
+class Effect81(BaseEffect):
+    """
+    surveyScan
+
+    Used by:
+    Modules from group: Survey Scanner (3 of 3)
+    """
+
+    type = 'active'
+
+
 class Effect89(BaseEffect):
     """
     projectileWeaponSpeedMultiply
@@ -555,6 +594,7 @@ class Effect101(BaseEffect):
     Structure Modules named like: Standup Launcher (7 of 7)
     """
 
+    dealsDamage = True
     type = 'active', 'projected'
 
     @staticmethod
@@ -989,7 +1029,7 @@ class Effect290(BaseEffect):
     sharpshooterRangeSkillBonusPostPercentMaxRangeLocationShipModulesRequiringGunnery
 
     Used by:
-    Implants named like: Frentix Booster (9 of 9)
+    Implants named like: Frentix Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
     Skill: Sharpshooter
     """
@@ -1008,7 +1048,7 @@ class Effect298(BaseEffect):
     surgicalStrikeFalloffBonusPostPercentFalloffLocationShipModulesRequiringGunnery
 
     Used by:
-    Implants named like: Sooth Sayer Booster (9 of 9)
+    Implants named like: Sooth Sayer Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Trajectory Analysis TA (6 of 6)
     Skill: Trajectory Analysis
     """
@@ -1633,7 +1673,7 @@ class Effect581(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery') or mod.item.requiresSkill('Vorton Projector Operation'),
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level, **kwargs)
 
 
@@ -1742,7 +1782,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (590 of 955)
+    Items from category: Charge (608 of 973)
     """
 
     type = 'passive'
@@ -2328,7 +2368,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (496 of 955)
+    Items from category: Charge (514 of 973)
     """
 
     type = 'passive'
@@ -3694,7 +3734,7 @@ class Effect1185(BaseEffect):
     structureStealthEmitterArraySigDecrease
 
     Used by:
-    Implants named like: X Instinct Booster (9 of 9)
+    Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
     """
 
@@ -4898,7 +4938,9 @@ class Effect1638(BaseEffect):
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Gunnery') or mod.item.requiresSkill('Missile Launcher Operation'),
+            lambda mod: (mod.item.requiresSkill('Gunnery') or
+                         mod.item.requiresSkill('Missile Launcher Operation') or
+                         mod.item.requiresSkill('Vorton Projector Operation')),
             'power', skill.getModifiedItemAttr('powerNeedBonus') * skill.level, **kwargs)
 
 
@@ -5789,7 +5831,7 @@ class Effect1959(BaseEffect):
     armorReinforcerMassAdd
 
     Used by:
-    Modules from group: Armor Reinforcer (51 of 51)
+    Modules from group: Armor Plate (51 of 51)
     """
 
     type = 'passive'
@@ -6054,7 +6096,7 @@ class Effect2052(BaseEffect):
     modifyShieldResonancePostPercent
 
     Used by:
-    Modules from group: Shield Resistance Amplifier (88 of 88)
+    Modules from group: Shield Resistance Amplifier (84 of 84)
     """
 
     type = 'passive'
@@ -6966,7 +7008,7 @@ class Effect2432(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
-    Implants named like: Mindflood Booster (9 of 9)
+    Implants named like: Mindflood Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Genolution Core Augmentation CA-1
@@ -7822,9 +7864,10 @@ class Effect2735(BaseEffect):
     boosterArmorHpPenalty
 
     Used by:
-    Implants named like: Improved Booster (4 of 8)
-    Implants named like: Standard Booster (4 of 8)
-    Implants named like: Strong Booster (4 of 8)
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterArmorHPPenalty'
@@ -7841,15 +7884,9 @@ class Effect2736(BaseEffect):
     boosterArmorRepairAmountPenalty
 
     Used by:
-    Implant: Improved Drop Booster
-    Implant: Improved Mindflood Booster
-    Implant: Improved Sooth Sayer Booster
-    Implant: Standard Drop Booster
-    Implant: Standard Mindflood Booster
-    Implant: Standard Sooth Sayer Booster
-    Implant: Strong Drop Booster
-    Implant: Strong Mindflood Booster
-    Implant: Strong Sooth Sayer Booster
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
     """
 
     attr = 'boosterArmorRepairAmountPenalty'
@@ -7867,9 +7904,10 @@ class Effect2737(BaseEffect):
     boosterShieldCapacityPenalty
 
     Used by:
-    Implants named like: Improved Booster (4 of 8)
-    Implants named like: Standard Booster (4 of 8)
-    Implants named like: Strong Booster (4 of 8)
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterShieldCapacityPenalty'
@@ -7886,15 +7924,9 @@ class Effect2739(BaseEffect):
     boosterTurretOptimalRangePenalty
 
     Used by:
-    Implant: Improved Blue Pill Booster
-    Implant: Improved Mindflood Booster
-    Implant: Improved Sooth Sayer Booster
-    Implant: Standard Blue Pill Booster
-    Implant: Standard Mindflood Booster
-    Implant: Standard Sooth Sayer Booster
-    Implant: Strong Blue Pill Booster
-    Implant: Strong Mindflood Booster
-    Implant: Strong Sooth Sayer Booster
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Mindflood Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
     """
 
     attr = 'boosterTurretOptimalRangePenalty'
@@ -7912,12 +7944,8 @@ class Effect2741(BaseEffect):
     boosterTurretFalloffPenalty
 
     Used by:
-    Implant: Improved Drop Booster
-    Implant: Improved X-Instinct Booster
-    Implant: Standard Drop Booster
-    Implant: Standard X-Instinct Booster
-    Implant: Strong Drop Booster
-    Implant: Strong X-Instinct Booster
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterTurretFalloffPenalty'
@@ -7935,12 +7963,8 @@ class Effect2745(BaseEffect):
     boosterCapacitorCapacityPenalty
 
     Used by:
-    Implant: Improved Blue Pill Booster
-    Implant: Improved Exile Booster
-    Implant: Standard Blue Pill Booster
-    Implant: Standard Exile Booster
-    Implant: Strong Blue Pill Booster
-    Implant: Strong Exile Booster
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Exile Booster (3 of 4)
     """
 
     attr = 'boosterCapacitorCapacityPenalty'
@@ -7957,10 +7981,8 @@ class Effect2746(BaseEffect):
     boosterMaxVelocityPenalty
 
     Used by:
+    Implants named like: Crash Booster (3 of 4)
     Items from market group: Implants & Boosters > Booster > Booster Slot 02 (9 of 13)
-    Implant: Improved Crash Booster
-    Implant: Standard Crash Booster
-    Implant: Strong Crash Booster
     """
 
     attr = 'boosterMaxVelocityPenalty'
@@ -7977,12 +7999,8 @@ class Effect2747(BaseEffect):
     boosterTurretTrackingPenalty
 
     Used by:
-    Implant: Improved Exile Booster
-    Implant: Improved Frentix Booster
-    Implant: Standard Exile Booster
-    Implant: Standard Frentix Booster
-    Implant: Strong Exile Booster
-    Implant: Strong Frentix Booster
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
     """
 
     attr = 'boosterTurretTrackingPenalty'
@@ -8000,12 +8018,8 @@ class Effect2748(BaseEffect):
     boosterMissileVelocityPenalty
 
     Used by:
-    Implant: Improved Crash Booster
-    Implant: Improved X-Instinct Booster
-    Implant: Standard Crash Booster
-    Implant: Standard X-Instinct Booster
-    Implant: Strong Crash Booster
-    Implant: Strong X-Instinct Booster
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterMissileVelocityPenalty'
@@ -8023,9 +8037,7 @@ class Effect2749(BaseEffect):
     boosterMissileExplosionVelocityPenalty
 
     Used by:
-    Implant: Improved Blue Pill Booster
-    Implant: Standard Blue Pill Booster
-    Implant: Strong Blue Pill Booster
+    Implants named like: Blue Pill Booster (3 of 5)
     """
 
     attr = 'boosterAOEVelocityPenalty'
@@ -8180,12 +8192,8 @@ class Effect2791(BaseEffect):
     boosterMissileExplosionCloudPenaltyFixed
 
     Used by:
-    Implant: Improved Exile Booster
-    Implant: Improved Mindflood Booster
-    Implant: Standard Exile Booster
-    Implant: Standard Mindflood Booster
-    Implant: Strong Exile Booster
-    Implant: Strong Mindflood Booster
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
     """
 
     attr = 'boosterMissileAOECloudPenalty'
@@ -8203,7 +8211,7 @@ class Effect2792(BaseEffect):
     modifyArmorResonancePostPercentPassive
 
     Used by:
-    Modules named like: Anti Pump (32 of 32)
+    Modules named like: Armor Reinforcer (32 of 32)
     """
 
     type = 'passive'
@@ -8239,7 +8247,7 @@ class Effect2795(BaseEffect):
     modifyShieldResonancePostPercentPassive
 
     Used by:
-    Modules named like: Anti Screen Reinforcer (32 of 32)
+    Modules named like: Shield Reinforcer (32 of 32)
     """
 
     type = 'passive'
@@ -8462,7 +8470,7 @@ class Effect2837(BaseEffect):
     armorHPBonusAdd
 
     Used by:
-    Modules from group: Armor Reinforcer (51 of 51)
+    Modules from group: Armor Plate (51 of 51)
     """
 
     type = 'passive'
@@ -8477,7 +8485,7 @@ class Effect2847(BaseEffect):
     trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
 
     Used by:
-    Implants named like: Drop Booster (9 of 9)
+    Implants named like: Drop Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
@@ -9213,7 +9221,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (429 of 889)
+    Items from market group: Ship Equipment > Turrets & Launchers (444 of 907)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9344,9 +9352,9 @@ class Effect3029(BaseEffect):
     overloadSelfEmHardeningBonus
 
     Used by:
-    Modules named like: Anti EM Shield Hardener (21 of 21)
-    Variations of module: Anti-EM Shield Hardener I (20 of 20)
-    Variations of module: Armor EM Hardener I (39 of 39)
+    Variations of module: EM Armor Hardener I (37 of 37)
+    Variations of module: EM Shield Hardener I (20 of 20)
+    Module: Civilian EM Shield Hardener
     """
 
     type = 'overheat'
@@ -9361,9 +9369,9 @@ class Effect3030(BaseEffect):
     overloadSelfThermalHardeningBonus
 
     Used by:
-    Variations of module: Anti-Thermal Shield Hardener I (20 of 20)
-    Variations of module: Armor Thermal Hardener I (39 of 39)
-    Module: Civilian Anti-Thermal Shield Hardener
+    Variations of module: Thermal Armor Hardener I (37 of 37)
+    Variations of module: Thermal Shield Hardener I (20 of 20)
+    Module: Civilian Thermal Shield Hardener
     """
 
     type = 'overheat'
@@ -9378,9 +9386,9 @@ class Effect3031(BaseEffect):
     overloadSelfExplosiveHardeningBonus
 
     Used by:
-    Variations of module: Anti-Explosive Shield Hardener I (20 of 20)
-    Variations of module: Armor Explosive Hardener I (39 of 39)
-    Module: Civilian Anti-Explosive Shield Hardener
+    Variations of module: Explosive Armor Hardener I (37 of 37)
+    Variations of module: Explosive Shield Hardener I (20 of 20)
+    Module: Civilian Explosive Shield Hardener
     """
 
     type = 'overheat'
@@ -9395,9 +9403,9 @@ class Effect3032(BaseEffect):
     overloadSelfKineticHardeningBonus
 
     Used by:
-    Modules named like: Anti Kinetic Shield Hardener (21 of 21)
-    Variations of module: Anti-Kinetic Shield Hardener I (20 of 20)
-    Variations of module: Armor Kinetic Hardener I (39 of 39)
+    Variations of module: Kinetic Armor Hardener I (37 of 37)
+    Variations of module: Kinetic Shield Hardener I (20 of 20)
+    Module: Civilian Kinetic Shield Hardener
     """
 
     type = 'overheat'
@@ -9413,7 +9421,7 @@ class Effect3035(BaseEffect):
 
     Used by:
     Modules named like: Capital Flex Hardener (9 of 9)
-    Variations of module: Adaptive Invulnerability Shield Hardener I (18 of 18)
+    Variations of module: Multispectrum Shield Hardener I (18 of 18)
     """
 
     type = 'overheat'
@@ -12412,6 +12420,8 @@ class Effect3992(BaseEffect):
 
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestial: Republic Stellar Observatory
+    Celestial: State Stellar Observatory
     """
 
     runTime = 'early'
@@ -13205,6 +13215,7 @@ class Effect4088(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
+    Celestial: Dazh Liminality Locus
     """
 
     runTime = 'early'
@@ -13223,6 +13234,7 @@ class Effect4089(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
+    Celestial: Dazh Liminality Locus
     """
 
     runTime = 'early'
@@ -15155,6 +15167,7 @@ class Effect4489(BaseEffect):
     Module: 'Judgment' Electromagnetic Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -15171,6 +15184,7 @@ class Effect4490(BaseEffect):
     Module: 'Oblivion' Kinetic Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -15187,6 +15201,7 @@ class Effect4491(BaseEffect):
     Module: 'Aurora Ominae' Thermal Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -15203,6 +15218,7 @@ class Effect4492(BaseEffect):
     Module: 'Gjallarhorn' Explosive Doomsday
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -16755,7 +16771,7 @@ class Effect4951(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
-    Implants named like: Blue Pill Booster (10 of 10)
+    Implants named like: Blue Pill Booster (5 of 5)
     Implant: Antipharmakon Thureo
     """
 
@@ -16809,15 +16825,9 @@ class Effect4970(BaseEffect):
     boosterShieldBoostAmountPenaltyShieldSkills
 
     Used by:
-    Implant: Improved Crash Booster
-    Implant: Improved Frentix Booster
-    Implant: Improved Mindflood Booster
-    Implant: Standard Crash Booster
-    Implant: Standard Frentix Booster
-    Implant: Standard Mindflood Booster
-    Implant: Strong Crash Booster
-    Implant: Strong Frentix Booster
-    Implant: Strong Mindflood Booster
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
     """
 
     attr = 'boosterShieldBoostAmountPenalty'
@@ -16919,7 +16929,7 @@ class Effect4989(BaseEffect):
     missileSkillAoeCloudSizeBonusAllIncludingCapitals
 
     Used by:
-    Implants named like: Crash Booster (9 of 9)
+    Implants named like: Crash Booster (4 of 4)
     """
 
     type = 'passive'
@@ -18295,7 +18305,7 @@ class Effect5201(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Reinforcer',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plate',
                                       'massAddition', container.getModifiedItemAttr('massPenaltyReduction') * level, **kwargs)
 
 
@@ -18696,7 +18706,7 @@ class Effect5231(BaseEffect):
     modifyActiveArmorResonancePostPercent
 
     Used by:
-    Modules from group: Armor Hardener (156 of 156)
+    Modules from group: Armor Hardener (148 of 148)
     Modules from group: Flex Armor Hardener (4 of 4)
     """
 
@@ -19844,7 +19854,7 @@ class Effect5364(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
-    Implants named like: Exile Booster (9 of 9)
+    Implants named like: Exile Booster (4 of 4)
     Implant: Antipharmakon Kosybo
     """
 
@@ -22025,7 +22035,6 @@ class Effect5754(BaseEffect):
     Used by:
     Modules named like: Tracking Computer (19 of 19)
     Variations of module: Tracking Disruptor I (6 of 6)
-    Module: Dark Blood Tracking Disruptor
     """
 
     type = 'overheat'
@@ -23140,6 +23149,8 @@ class Effect5913(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Federal Stellar Observatory
+    Celestial: Imperial Stellar Observatory
     """
 
     runTime = 'early'
@@ -23156,6 +23167,7 @@ class Effect5914(BaseEffect):
 
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestial: Imperial Stellar Observatory
     """
 
     runTime = 'early'
@@ -23175,6 +23187,7 @@ class Effect5915(BaseEffect):
 
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestial: Imperial Stellar Observatory
     """
 
     runTime = 'early'
@@ -23302,6 +23315,7 @@ class Effect5922(BaseEffect):
 
     Used by:
     Celestials named like: Class Black Hole Effects (6 of 6)
+    Celestial: Republic Stellar Observatory
     """
 
     runTime = 'early'
@@ -27257,7 +27271,6 @@ class Effect6424(BaseEffect):
 
     Used by:
     Variations of module: Tracking Disruptor I (6 of 6)
-    Module: Dark Blood Tracking Disruptor
     """
 
     type = 'projected', 'active'
@@ -27401,6 +27414,7 @@ class Effect6431(BaseEffect):
     Fighters from group: Light Fighter (32 of 32)
     """
 
+    dealsDamage = True
     displayName = 'Missile Attack'
     hasCharges = True
     prefix = 'fighterAbilityMissiles'
@@ -27681,6 +27695,7 @@ class Effect6465(BaseEffect):
     Fighters from group: Heavy Fighter (34 of 34)
     """
 
+    dealsDamage = True
     displayName = 'Turret Attack'
     prefix = 'fighterAbilityAttackMissile'
     type = 'active'
@@ -27723,6 +27738,7 @@ class Effect6472(BaseEffect):
     Modules named like: Lance (4 of 4)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -27739,6 +27755,7 @@ class Effect6473(BaseEffect):
     Module: Bosonic Field Generator
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -27949,6 +27966,7 @@ class Effect6485(BaseEffect):
     Fighters from group: Heavy Fighter (16 of 34)
     """
 
+    dealsDamage = True
     displayName = 'Bomb'
     hasCharges = True
     prefix = 'fighterAbilityLaunchBomb'
@@ -31333,7 +31351,6 @@ class Effect6713(BaseEffect):
     shipBonusSupercarrierM1BurstProjectorWebBonus
 
     Used by:
-    Ship: Hel
     Ship: Vendetta
     """
 
@@ -34002,6 +34019,7 @@ class Effect6995(BaseEffect):
     Modules from group: Precursor Weapon (19 of 19)
     """
 
+    dealsDamage = True
     type = 'active'
 
     @staticmethod
@@ -35830,6 +35848,7 @@ class Effect7193(BaseEffect):
     systemMiningCycleTimeBonus
 
     Used by:
+    Celestials named like: Stellar Observatory (4 of 4)
     Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
@@ -35838,8 +35857,8 @@ class Effect7193(BaseEffect):
 
     @staticmethod
     def handler(fit, beacon, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+                                      beacon.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
 
 
 class Effect7202(BaseEffect):
@@ -36143,6 +36162,23 @@ class Effect7234(BaseEffect):
             implant.getModifiedItemAttr('setBonusMimesis'), **kwargs)
 
 
+class Effect7237(BaseEffect):
+    """
+    systemWarpSpeed
+
+    Used by:
+    Celestial: Dazh Liminality Locus
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('warpSpeedMultiplier', beacon.getModifiedItemAttr('warpSpeedBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
 class Effect7238(BaseEffect):
     """
     shipBonusDreadnoughtPC1DamageMultMax
@@ -36413,3 +36449,401 @@ class Effect8029(BaseEffect):
             fit.modules.filteredItemForce(
                 lambda mod: mod.item.group.name == 'Capacitor Booster',
                 attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
+
+
+class Effect8031(BaseEffect):
+    """
+    systemMaxTargets
+
+    Used by:
+    Celestial: Dazh Liminality Locus
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.multiplyItemAttr('maxLockedTargets', beacon.getModifiedItemAttr('maxLockedTargetsMultiplier'), **kwargs)
+
+
+class Effect8032(BaseEffect):
+    """
+    systemWarpScrambleStrengthBonus
+
+    Used by:
+    Celestial: Federal Stellar Observatory
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Warp Scrambler',
+            'warpScrambleStrength', beacon.getModifiedItemAttr('warpScrambleStrengthBonus'), **kwargs)
+
+
+class Effect8033(BaseEffect):
+    """
+    systemEcmRangeMultiplier
+
+    Used by:
+    Celestial: State Stellar Observatory
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name == 'ECM', 'maxRange',
+            beacon.getModifiedItemAttr('ecmRangeBonus'), stackingPenalties=True, **kwargs)
+
+
+class Effect8034(BaseEffect):
+    """
+    smallUpwellWeaponDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Small Vorton Projector
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Vorton Projector'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8035(BaseEffect):
+    """
+    mediumUpwellWeaponDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Medium Vorton Projector
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Vorton Projector'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8036(BaseEffect):
+    """
+    largeUpwellWeaponDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Large Vorton Projector
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Vorton Projector'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8037(BaseEffect):
+    """
+    ChainLightning
+
+    Used by:
+    Modules from group: Vorton Projector (15 of 15)
+    """
+
+    type = 'active'
+
+
+class Effect8039(BaseEffect):
+    """
+    upwellSkillaoeVelocityaoeCloudSizeBonus
+
+    Used by:
+    Implants named like: EDENCOM Vorton Booster GU (3 of 3)
+    Skill: Vorton Arc Guidance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'aoeVelocity', container.getModifiedItemAttr('aoeVelocityBonus') * level, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'aoeCloudSize', container.getModifiedItemAttr('aoeCloudSizeBonus') * level, **kwargs)
+
+
+class Effect8041(BaseEffect):
+    """
+    upwellSkillDamageMuliplierBonus
+
+    Used by:
+    Skill: Vorton Power Amplification
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Vorton Projector',
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8042(BaseEffect):
+    """
+    upwellSkillSpeedBonus
+
+    Used by:
+    Skill: Vorton Projector Operation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'speed', skill.getModifiedItemAttr('turretSpeeBonus') * skill.level, **kwargs)
+
+
+class Effect8044(BaseEffect):
+    """
+    smallVortonProjectorSkillDmgBonus
+
+    Used by:
+    Skill: Small Vorton Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Vorton Specialization'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8045(BaseEffect):
+    """
+    mediumVortonProjectorSkillDmgBonus
+
+    Used by:
+    Skill: Medium Vorton Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Vorton Specialization'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8046(BaseEffect):
+    """
+    largeVortonProjectorSkillDmgBonus
+
+    Used by:
+    Skill: Large Vorton Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Vorton Specialization'),
+                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect8047(BaseEffect):
+    """
+    shipBonusUF1shieldResistance
+
+    Used by:
+    Ship: Skybreaker
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('kinetic', 'thermal', 'explosive', 'em'):
+            fit.ship.boostItemAttr('shield%sDamageResonance' % type.capitalize(),
+                                   ship.getModifiedItemAttr('shipBonusUF1'),
+                                   skill='EDENCOM Frigate', **kwargs)
+
+
+class Effect8048(BaseEffect):
+    """
+    shipBonusUF2damage
+
+    Used by:
+    Ship: Skybreaker
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Vorton Projector'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusUF2'), skill='EDENCOM Frigate', **kwargs)
+
+
+class Effect8052(BaseEffect):
+    """
+    shipBonusUC2ShieldResistance
+
+    Used by:
+    Ship: Stormbringer
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('kinetic', 'thermal', 'explosive', 'em'):
+            fit.ship.boostItemAttr('shield%sDamageResonance' % type.capitalize(),
+                                   ship.getModifiedItemAttr('shipBonusUC2'),
+                                   skill='EDENCOM Cruiser', **kwargs)
+
+
+class Effect8053(BaseEffect):
+    """
+    shipBonusUC1maxRange
+
+    Used by:
+    Ship: Stormbringer
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Vorton Projector'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusUC1'), skill='EDENCOM Cruiser', **kwargs)
+
+
+class Effect8054(BaseEffect):
+    """
+    shipBonusUB1upwellDamage
+
+    Used by:
+    Ship: Thunderchild
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Vorton Projector'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusUB1'), skill='EDENCOM Battleship', **kwargs)
+
+
+class Effect8056(BaseEffect):
+    """
+    shipBonusUB2upwellROF
+
+    Used by:
+    Ship: Thunderchild
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Vorton Projector'), 'speed',
+            ship.getModifiedItemAttr('shipBonusUB2'), skill='EDENCOM Battleship', **kwargs)
+
+
+class Effect8057(BaseEffect):
+    """
+    vortonWeaponDamageSpeedMultiply
+
+    Used by:
+    Modules from group: Vorton Projector Upgrade (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Vorton Projector',
+                                         'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
+                                         stackingPenalties=True, **kwargs)
+        fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Vorton Projector',
+                                         'speed', module.getModifiedItemAttr('speedMultiplier'),
+                                         stackingPenalties=True, **kwargs)
+
+
+class Effect8062(BaseEffect):
+    """
+    ammoAOEvelocityMultiplier
+
+    Used by:
+    Charges from group: Advanced Condenser Pack (6 of 6)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.multiplyItemAttr('aoeVelocity', module.getModifiedChargeAttr('aoeVelocityBonus') or 0, **kwargs)
+
+
+class Effect8064(BaseEffect):
+    """
+    vortonProjectorOptimalRangeBonus
+
+    Used by:
+    Implants named like: EDENCOM Vorton Booster RA (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
+
+
+class Effect8065(BaseEffect):
+    """
+    vortonProjectorSkillRangeBonus
+
+    Used by:
+    Skill: Vorton Arc Extension
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'maxRange', skill.getModifiedItemAttr('rangeSkillBonus') * skill.level, **kwargs)
+
+
+class Effect8066(BaseEffect):
+    """
+    vortonProjectorDamageBonus
+
+    Used by:
+    Implants named like: EDENCOM Vorton Booster DA (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
+                                      'damageMultiplier', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)

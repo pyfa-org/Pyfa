@@ -33,7 +33,7 @@ DB_PATH = os.path.join(ROOT_DIR, 'eve.db')
 JSON_DIR = os.path.join(ROOT_DIR, 'staticdata')
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
-GAMEDATA_SCHEMA_VERSION = 3
+GAMEDATA_SCHEMA_VERSION = 4
 
 
 def db_needs_update():
@@ -122,9 +122,11 @@ def update_db():
             if (
                 # Apparently people really want Civilian modules available
                 (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
-                row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor')
+                row['typeName'] == 'Capsule' or
+                row['groupID'] == 4033  # destructible effect beacons
             ):
                 row['published'] = True
+            # Nearly useless and clutter search results too much
             elif row['typeName'].startswith('Limited Synth '):
                 row['published'] = False
 
@@ -138,11 +140,10 @@ def update_db():
                 row['typeID'] in (41549, 41548, 41551, 41550) or
                 # Abyssal weather (environment)
                 row['groupID'] in (
-                1882,
-                1975,
-                1971,
-                # the "container" for the abyssal environments
-                1983)
+                    1882,
+                    1975,
+                    1971,
+                    1983)  # the "container" for the abyssal environments
             ):
                 newData.append(row)
 
@@ -327,8 +328,8 @@ def update_db():
 
         def composeReqSkills(raw):
             reqSkills = {}
-            for skillTypeID, skillLevels in raw.items():
-                reqSkills[int(skillTypeID)] = skillLevels[0]
+            for skillTypeID, skillLevel in raw.items():
+                reqSkills[int(skillTypeID)] = skillLevel
             return reqSkills
 
         eveTypeIds = set(r['typeID'] for r in eveTypesData)

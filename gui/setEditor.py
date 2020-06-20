@@ -21,7 +21,7 @@
 import wx
 from logbook import Logger
 
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import fromClipboard, toClipboard

@@ -359,7 +359,6 @@ class Market:
             "'Habitat' Miner I": ("Storyline", "Miner I"),
             "'Wild' Miner I": ("Storyline", "Miner I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
-            "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I"),
             "Dark Blood Standup Heavy Energy Neutralizer": ("Structure Faction", "Standup Heavy Energy Neutralizer I")}
         # Parent type name: set(item names)
@@ -407,6 +406,12 @@ class Market:
         self.META_MAP["normal"] = frozenset((0, *(mg.ID for mg in eos.db.getMetaGroups() if mg.ID not in nonNormalMetas)))
         self.META_MAP.move_to_end("normal", last=False)
         self.META_MAP_REVERSE = {sv: k for k, v in self.META_MAP.items() for sv in v}
+        self.META_MAP_REVERSE_GROUPED = {}
+        i = 0
+        for mgids in self.META_MAP.values():
+            for mgid in mgids:
+                self.META_MAP_REVERSE_GROUPED[mgid] = i
+            i += 1
         self.META_MAP_REVERSE_INDICES = self.__makeReverseMetaMapIndices()
         self.SEARCH_CATEGORIES = (
             "Drone",
@@ -716,8 +721,9 @@ class Market:
         groupItems = set(group.items)
         if hasattr(group, 'addItems'):
             groupItems.update(group.addItems)
-        items = set(
-                [item for item in groupItems if self.getPublicityByItem(item) and self.getGroupByItem(item) == group])
+        items = set([
+            item for item in groupItems
+            if self.getPublicityByItem(item) and self.getGroupByItem(item) == group])
         return items
 
     def getItemsByMarketGroup(self, mg, vars_=True):
@@ -794,7 +800,7 @@ class Market:
                 except KeyError:
                     return ""
 
-                return item.iconID if item.icon else ""
+                return item.iconID if getattr(item, "icon", None) else ""
             elif self.getMarketGroupChildren(mg) > 0:
                 kids = self.getMarketGroupChildren(mg)
                 mktGroups = self.getIconByMarketGroup(kids)
@@ -939,3 +945,19 @@ class Market:
         while len(recentlyUsedModules) >= 20:
             recentlyUsedModules.pop(-1)
         recentlyUsedModules.insert(0, itemID)
+
+    def itemSort(self, item, reverseMktGrp=False):
+        catname = self.getCategoryByItem(item).name
+        try:
+            mktgrpid = self.getMarketGroupByItem(item).ID
+        except AttributeError:
+            mktgrpid = -1
+            pyfalog.warning("unable to find market group for {}".format(item.name))
+        if reverseMktGrp:
+            mktgrpid = -mktgrpid
+        parentname = self.getParentItemByItem(item).name
+        # Get position of market group
+        metagrpid = self.getMetaGroupIdByItem(item)
+        metatab = self.META_MAP_REVERSE_GROUPED.get(metagrpid)
+        metalvl = item.metaLevel or 0
+        return catname, mktgrpid, parentname, metatab, metalvl, item.name

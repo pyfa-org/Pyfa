@@ -370,7 +370,8 @@ class EsiSettings:
             "loginMode": 0,
             "clientID": "",
             "clientSecret": "",
-            "timeout": 60}
+            "timeout": 60,
+            "exportCharges": True}
 
         self.settings = SettingsProvider.getInstance().getSettings(
                 "pyfaServiceEsiSettings",

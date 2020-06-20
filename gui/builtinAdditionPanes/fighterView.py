@@ -34,6 +34,9 @@ from service.fit import Fit
 from service.market import Market
 
 
+FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
+
+
 class FighterViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(FighterViewDrop, self).__init__(*args, **kwargs)
@@ -250,11 +253,10 @@ class FighterDisplay(d.Display):
     def _merge(src, dst):
         return
 
-    FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
-
-    def fighterKey(self, fighter):
+    @staticmethod
+    def fighterKey(fighter):
         groupName = Market.getInstance().getGroupByItem(fighter.item).name
-        orderPos = self.FIGHTER_ORDER.index(groupName)
+        orderPos = FIGHTER_ORDER.index(groupName)
         # Sort support fighters by name, ignore their abilities
         if groupName == 'Support Fighter':
             abilityEffectIDs = ()

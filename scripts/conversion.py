@@ -16,28 +16,94 @@ rename_phrase = " renamed to "
 conversion_phrase = " converted to "
 
 text = """
-    Micro Electrochemical Capacitor Booster I renamed to 'Seed' Micro Capacitor Booster I
-    Small Electrochemical Capacitor Booster I renamed to Small F-RX Compact Capacitor Booster
-    Medium Electrochemical Capacitor Booster I renamed to Medium F-RX Compact Capacitor Booster
-    Heavy Electrochemical Capacitor Booster I renamed to Heavy F-RX Compact Capacitor Booster
-    Micro Brief Capacitor Overcharge I converted to 'Seed' Micro Capacitor Booster I
-    Micro Tapered Capacitor Infusion I converted to 'Seed' Micro Capacitor Booster I
-    Micro F-RX Prototype Capacitor Boost converted to 'Seed' Micro Capacitor Booster I
-    Micro Capacitor Booster I converted to 'Seed' Micro Capacitor Booster I
-    Micro Capacitor Booster II converted to 'Seed' Micro Capacitor Booster I
-    Ammatar Navy Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
-    Dark Blood Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
-    True Sansha Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
-    Imperial Navy Micro Capacitor Booster converted to 'Seed' Micro Capacitor Booster I
-    Small Brief Capacitor Overcharge I converted to Small F-RX Compact Capacitor Booster
-    Small Tapered Capacitor Infusion I converted to Small F-RX Compact Capacitor Booster
-    Small F-RX Prototype Capacitor Boost converted to Small F-RX Compact Capacitor Booster
-    Medium Brief Capacitor Overcharge I converted to Medium F-RX Compact Capacitor Booster
-    Medium Tapered Capacitor Infusion I converted to Medium F-RX Compact Capacitor Booster
-    Medium F-RX Prototype Capacitor Boost converted to Medium F-RX Compact Capacitor Booster
-    Heavy Brief Capacitor Overcharge I converted to Heavy F-RX Compact Capacitor Booster
-    Heavy Tapered Capacitor Infusion I converted to Heavy F-RX Compact Capacitor Booster
-    Heavy F-RX Prototype Capacitor Boost converted to Heavy F-RX Compact Capacitor Booster
+    Supplemental EM Ward Amplifier converted to 'Basic' EM Shield Amplifier
+    Supplemental Explosive Deflection Amplifier converted to 'Basic' Explosive Shield Amplifier
+    Supplemental Kinetic Deflection Amplifier converted to 'Basic' Kinetic Shield Amplifier
+    Supplemental Thermal Dissipation Amplifier converted to 'Basic' Thermal Shield Amplifier
+    Basic EM Ward Amplifier renamed to 'Basic' EM Shield Amplifier
+    Basic Thermal Dissipation Amplifier renamed to 'Basic' Thermal Shield Amplifier
+    Basic Kinetic Deflection Amplifier renamed to 'Basic' Kinetic Shield Amplifier
+    Basic Explosive Deflection Amplifier renamed to 'Basic' Explosive Shield Amplifier
+    EM Ward Amplifier I renamed to EM Shield Amplifier I
+    Explosive Deflection Amplifier I renamed to Explosive Shield Amplifier I
+    Explosive Deflection Amplifier II renamed to Explosive Shield Amplifier II
+    Thermal Dissipation Amplifier I renamed to Thermal Shield Amplifier I
+    Thermal Dissipation Amplifier II renamed to Thermal Shield Amplifier II
+    Kinetic Deflection Amplifier I renamed to Kinetic Shield Amplifier I
+    Kinetic Deflection Amplifier II renamed to Kinetic Shield Amplifier II
+    EM Ward Amplifier II renamed to EM Shield Amplifier II
+    Upgraded Explosive Deflection Amplifier I renamed to Compact Explosive Shield Amplifier
+    Upgraded Thermal Dissipation Amplifier I renamed to Compact Thermal Shield Amplifier
+    Upgraded EM Ward Amplifier I renamed to Compact EM Shield Amplifier
+    Upgraded Kinetic Deflection Amplifier I renamed to Compact Kinetic Shield Amplifier
+    Domination Explosive Deflection Amplifier renamed to Domination Explosive Shield Amplifier
+    Dread Guristas Explosive Deflection Amplifier renamed to Dread Guristas Explosive Shield Amplifier
+    Domination Thermal Dissipation Amplifier renamed to Domination Thermal Shield Amplifier
+    Dread Guristas Thermal Dissipation Amplifier renamed to Dread Guristas Thermal Shield Amplifier
+    Domination Kinetic Deflection Amplifier renamed to Domination Kinetic Shield Amplifier
+    Dread Guristas Kinetic Deflection Amplifier renamed to Dread Guristas Kinetic Shield Amplifier
+    Domination EM Ward Amplifier renamed to Domination EM Shield Amplifier
+    Dread Guristas EM Ward Amplifier renamed to Dread Guristas EM Shield Amplifier
+    Hakim's Modified Explosive Deflection Amplifier renamed to Hakim's Modified Explosive Shield Amplifier
+    Tobias' Modified Explosive Deflection Amplifier renamed to Tobias' Modified Explosive Shield Amplifier
+    Hakim's Modified Thermal Dissipation Amplifier renamed to Hakim's Modified Thermal Shield Amplifier
+    Tobias' Modified Thermal Dissipation Amplifier renamed to Tobias' Modified Thermal Shield Amplifier
+    Hakim's Modified Kinetic Deflection Amplifier renamed to Hakim's Modified Kinetic Shield Amplifier
+    Tobias' Modified Kinetic Deflection Amplifier renamed to Tobias' Modified Kinetic Shield Amplifier
+    Hakim's Modified EM Ward Amplifier renamed to Hakim's Modified EM Shield Amplifier
+    Tobias' Modified EM Ward Amplifier renamed to Tobias' Modified EM Shield Amplifier
+    Kaikka's Modified Explosive Deflection Amplifier renamed to Kaikka's Modified Explosive Shield Amplifier
+    Thon's Modified Explosive Deflection Amplifier renamed to Thon's Modified Explosive Shield Amplifier
+    Vepas' Modified Explosive Deflection Amplifier renamed to Vepas' Modified Explosive Shield Amplifier
+    Estamel's Modified Explosive Deflection Amplifier renamed to Estamel's Modified Explosive Shield Amplifier
+    Kaikka's Modified Thermal Dissipation Amplifier renamed to Kaikka's Modified Thermal Shield Amplifier
+    Thon's Modified Thermal Dissipation Amplifier renamed to Thon's Modified Thermal Shield Amplifier
+    Vepas' Modified Thermal Dissipation Amplifier renamed to Vepas' Modified Thermal Shield Amplifier
+    Estamel's Modified Thermal Dissipation Amplifier renamed to Estamel's Modified Thermal Shield Amplifier
+    Kaikka's Modified Kinetic Deflection Amplifier renamed to Kaikka's Modified Kinetic Shield Amplifier
+    Thon's Modified Kinetic Deflection Amplifier renamed to Thon's Modified Kinetic Shield Amplifier
+    Vepas' Modified Kinetic Deflection Amplifier renamed to Vepas' Modified Kinetic Shield Amplifier
+    Estamel's Modified Kinetic Deflection Amplifier renamed to Estamel's Modified Kinetic Shield Amplifier
+    Kaikka's Modified EM Ward Amplifier renamed to Kaikka's Modified EM Shield Amplifier
+    Thon's Modified EM Ward Amplifier renamed to Thon's Modified EM Shield Amplifier
+    Vepas' Modified EM Ward Amplifier renamed to Vepas' Modified EM Shield Amplifier
+    Estamel's Modified EM Ward Amplifier renamed to Estamel's Modified EM Shield Amplifier
+    Caldari Navy EM Ward Amplifier renamed to Caldari Navy EM Shield Amplifier
+    Caldari Navy Kinetic Deflection Amplifier renamed to Caldari Navy Kinetic Shield Amplifier
+    Caldari Navy Thermal Dissipation Amplifier renamed to Caldari Navy Thermal Shield Amplifier
+    Caldari Navy Explosive Deflection Amplifier renamed to Caldari Navy Explosive Shield Amplifier
+    Republic Fleet EM Ward Amplifier renamed to Republic Fleet EM Shield Amplifier
+    Republic Fleet Kinetic Deflection Amplifier renamed to Republic Fleet Kinetic Shield Amplifier
+    Republic Fleet Thermal Dissipation Amplifier renamed to Republic Fleet Thermal Shield Amplifier
+    Republic Fleet Explosive Deflection Amplifier renamed to Republic Fleet Explosive Shield Amplifier
+    Pithum C-Type Explosive Deflection Amplifier renamed to Pithum C-Type Explosive Shield Amplifier
+    Pithum C-Type Thermal Dissipation Amplifier renamed to Pithum C-Type Thermal Shield Amplifier
+    Pithum C-Type Kinetic Deflection Amplifier renamed to Pithum C-Type Kinetic Shield Amplifier
+    Pithum C-Type EM Ward Amplifier renamed to Pithum C-Type EM Shield Amplifier
+    Pithum B-Type Explosive Deflection Amplifier renamed to Pithum B-Type Explosive Shield Amplifier
+    Pithum B-Type Thermal Dissipation Amplifier renamed to Pithum B-Type Thermal Shield Amplifier
+    Pithum B-Type Kinetic Deflection Amplifier renamed to Pithum B-Type Kinetic Shield Amplifier
+    Pithum B-Type EM Ward Amplifier renamed to Pithum B-Type EM Shield Amplifier
+    Pithum A-Type Explosive Deflection Amplifier renamed to Pithum A-Type Explosive Shield Amplifier
+    Pithum A-Type Thermal Dissipation Amplifier renamed to Pithum A-Type Thermal Shield Amplifier
+    Pithum A-Type Kinetic Deflection Amplifier renamed to Pithum A-Type Kinetic Shield Amplifier
+    Pithum A-Type EM Ward Amplifier renamed to Pithum A-Type EM Shield Amplifier
+    Gistum C-Type Explosive Deflection Amplifier renamed to Gistum C-Type Explosive Shield Amplifier
+    Gistum B-Type Explosive Deflection Amplifier renamed to Gistum B-Type Explosive Shield Amplifier
+    Gistum C-Type Thermal Dissipation Amplifier renamed to Gistum C-Type Thermal Shield Amplifier
+    Gistum B-Type Thermal Dissipation Amplifier renamed to Gistum B-Type Thermal Shield Amplifier
+    Gistum C-Type Kinetic Deflection Amplifier renamed to Gistum C-Type Kinetic Shield Amplifier
+    Gistum B-Type Kinetic Deflection Amplifier renamed to Gistum B-Type Kinetic Shield Amplifier
+    Gistum C-Type EM Ward Amplifier renamed to Gistum C-Type EM Shield Amplifier
+    Gistum B-Type EM Ward Amplifier renamed to Gistum B-Type EM Shield Amplifier
+    Gistum A-Type Explosive Deflection Amplifier renamed to Gistum A-Type Explosive Shield Amplifier
+    Gistum A-Type Thermal Dissipation Amplifier renamed to Gistum A-Type Thermal Shield Amplifier
+    Gistum A-Type Kinetic Deflection Amplifier renamed to Gistum A-Type Kinetic Shield Amplifier
+    Gistum A-Type EM Ward Amplifier renamed to Gistum A-Type EM Shield Amplifier
+    'Whiskey' Explosive Deflection Amplifier renamed to 'Whiskey' Explosive Shield Amplifier
+    'High Noon' Thermal Dissipation Amplifier renamed to 'High Noon' Thermal Shield Amplifier
+    'Cactus' Modified Kinetic Deflection Amplifier renamed to 'Cactus' Modified Kinetic Shield Amplifier
+    'Prospector' EM Ward Amplifier renamed to 'Prospector' EM Shield Amplifier
     """
 
 def main(old, new):

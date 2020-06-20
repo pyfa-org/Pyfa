@@ -10,7 +10,7 @@ import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
 import gui.globalEvents as GE
 from eos.db.gamedata.queries import getAttributeInfo, getItem
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
 from service.fit import Fit
@@ -213,19 +213,7 @@ class ItemView(d.Display):
     def itemSort(self, item):
         sMkt = Market.getInstance()
         isFittable = item.group.name in sMkt.FIT_GROUPS or item.category.name in sMkt.FIT_CATEGORIES
-        catname = sMkt.getCategoryByItem(item).name
-        try:
-            mktgrpid = sMkt.getMarketGroupByItem(item).ID
-        except AttributeError:
-            mktgrpid = -1
-            pyfalog.warning("unable to find market group for {}".format(item.name))
-        parentname = sMkt.getParentItemByItem(item).name
-        # Get position of market group
-        metagrpid = sMkt.getMetaGroupIdByItem(item)
-        metatab = sMkt.META_MAP_REVERSE_INDICES.get(metagrpid)
-        metalvl = item.metaLevel or 0
-
-        return not isFittable, catname, mktgrpid, parentname, metatab, metalvl, item.name
+        return (not isFittable, *sMkt.itemSort(item))
 
     def populateSearch(self, itemIDs):
         items = Market.getItems(itemIDs)

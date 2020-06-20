@@ -31,7 +31,7 @@ from logbook import Logger
 from eos import db
 from eos.const import ImplantLocation
 from service.fit import Fit as svcFit
-from service.port.dna import exportDna, importDna
+from service.port.dna import exportDna, importDna, importDnaAlt
 from service.port.eft import (
     exportEft, importEft, importEftCfg,
     isValidDroneImport, isValidFighterImport, isValidCargoImport,
@@ -250,6 +250,9 @@ class Port:
         m = re.search(dnaChatPattern, firstLine)
         if m:
             return "DNA", True, (cls.importDna(m.group("dna"), fitName=m.group("fitName")),)
+        m = re.search(r"DNA:(?P<dna>\d+(:\d+(\*\d+)?)*)", firstLine)
+        if m:
+            return "DNA", True, (cls.importDnaAlt(m.group("dna")),)
 
         if activeFit is not None:
             # Try to import mutated module
@@ -298,6 +301,10 @@ class Port:
         return importDna(string, fitName=fitName)
 
     @staticmethod
+    def importDnaAlt(string, fitName=None):
+        return importDnaAlt(string, fitName=fitName)
+
+    @staticmethod
     def exportDna(fit, options, callback=None):
         return exportDna(fit, options, callback=callback)
 
@@ -307,8 +314,8 @@ class Port:
         return importESI(string)
 
     @staticmethod
-    def exportESI(fit, callback=None):
-        return exportESI(fit, callback=callback)
+    def exportESI(fit, exportCharges, callback=None):
+        return exportESI(fit, exportCharges, callback=callback)
 
     # XML-related methods
     @staticmethod
