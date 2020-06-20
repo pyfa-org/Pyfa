@@ -30,7 +30,7 @@ from service.implantSet import ImplantSets
 
 pyfalog = Logger(__name__)
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 class ImplantTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
@@ -45,21 +45,21 @@ class ImplantTextValidor(BaseValidator):
 
         try:
             if len(text) == 0:
-                raise ValueError(_("You must supply a name for the Implant Set!"))
+                raise ValueError(_t("You must supply a name for the Implant Set!"))
             elif text in [x.name for x in entityEditor.choices]:
-                raise ValueError(_("Implant Set name already in use, please choose another."))
+                raise ValueError(_t("Implant Set name already in use, please choose another."))
 
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox("{}".format(e), _("Error"))
+            wx.MessageBox("{}".format(e), _t("Error"))
             textCtrl.SetFocus()
             return False
 
 
 class ImplantSetEntityEditor(EntityEditor):
     def __init__(self, parent):
-        EntityEditor.__init__(self, parent, _("Implant Set"))
+        EntityEditor.__init__(self, parent, _t("Implant Set"))
         self.SetEditorValidator(ImplantTextValidor)
 
     def getEntitiesFromContext(self):
@@ -119,7 +119,7 @@ class ImplantSetEditor(AuxiliaryFrame):
 
     def __init__(self, parent, dataToAdd=None):
         super().__init__(
-            parent, id=wx.ID_ANY, title=_("Implant Set Editor"), resizeable=True,
+            parent, id=wx.ID_ANY, title=_t("Implant Set Editor"), resizeable=True,
             size=wx.Size(950, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
 
         self.block = False
@@ -145,8 +145,8 @@ class ImplantSetEditor(AuxiliaryFrame):
         self.stNotice.Wrap(-1)
         footerSizer.Add(self.stNotice, 1, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
-        importExport = (("Import", wx.ART_FILE_OPEN, _("from")),
-                        ("Export", wx.ART_FILE_SAVE_AS, _("to")))
+        importExport = (("Import", wx.ART_FILE_OPEN, _t("from")),
+                        ("Export", wx.ART_FILE_SAVE_AS, _t("to")))
 
         for name, art, direction in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
@@ -158,7 +158,7 @@ class ImplantSetEditor(AuxiliaryFrame):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTip(_("{} implant sets {} clipboard").format(name, direction))
+            btn.SetToolTip(_t("{} implant sets {} clipboard").format(name, direction))
             footerSizer.Add(btn, 0)
 
         mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)
@@ -207,7 +207,7 @@ class ImplantSetEditor(AuxiliaryFrame):
             sIS = ImplantSets.getInstance()
             try:
                 sIS.importSets(text)
-                self.stNotice.SetLabel(_("Patterns successfully imported from clipboard"))
+                self.stNotice.SetLabel(_t("Patterns successfully imported from clipboard"))
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
@@ -215,15 +215,15 @@ class ImplantSetEditor(AuxiliaryFrame):
                 raise
             except Exception as e:
                 pyfalog.error(e)
-                self.stNotice.SetLabel(_("Could not import from clipboard: unknown errors"))
+                self.stNotice.SetLabel(_t("Could not import from clipboard: unknown errors"))
             finally:
                 self.entityEditor.refreshEntityList()
         else:
-            self.stNotice.SetLabel(_("Could not import from clipboard"))
+            self.stNotice.SetLabel(_t("Could not import from clipboard"))
 
     def exportPatterns(self, event):
         """Event fired when export to clipboard button is clicked"""
 
         sIS = ImplantSets.getInstance()
         toClipboard(sIS.exportSets())
-        self.stNotice.SetLabel(_("Sets exported to clipboard"))
+        self.stNotice.SetLabel(_t("Sets exported to clipboard"))
