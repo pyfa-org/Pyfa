@@ -13,6 +13,8 @@ saveddataCache = True
 gamedata_version = ""
 gamedata_date = ""
 gamedata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(__file__)), "..", "eve.db"))
+lang = "en_US"
+
 pyfalog.debug("Gamedata connection string: {0}", gamedata_connectionstring)
 
 if istravis is True or hasattr(sys, '_called_from_test'):

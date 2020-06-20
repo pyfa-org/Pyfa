@@ -184,6 +184,7 @@ def defPaths(customSavePath=None):
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
+    eos.config.lang = language or eos.config.lang
 
     # initialize the settings
     from service.settings import EOSSettings
