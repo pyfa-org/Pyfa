@@ -15,7 +15,7 @@ from utils.cjk import isStringCjk
 from .events import FitSelected, SearchSelected, ImportSelected, Stage1Selected, Stage2Selected, Stage3Selected
 
 pyfalog = Logger(__name__)
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 
 class NavigationPanel(SFItem.SFBrowserItem):
@@ -45,20 +45,20 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.recentBmp = self.AdjustChannels(self.recentBmpH)
         self.newBmp = self.AdjustChannels(self.newBmpH)
 
-        self.toolbar.AddButton(self.resetBmp, _("Ship groups"), clickCallback=self.OnHistoryReset,
+        self.toolbar.AddButton(self.resetBmp, _t("Ship groups"), clickCallback=self.OnHistoryReset,
                                hoverBitmap=self.resetBmpH)
-        self.toolbar.AddButton(self.rewBmp, _("Back"), clickCallback=self.OnHistoryBack, hoverBitmap=self.rewBmpH)
-        self.btnNew = self.toolbar.AddButton(self.newBmp, _("New fitting"), clickCallback=self.OnNewFitting,
+        self.toolbar.AddButton(self.rewBmp, _t("Back"), clickCallback=self.OnHistoryBack, hoverBitmap=self.rewBmpH)
+        self.btnNew = self.toolbar.AddButton(self.newBmp, _t("New fitting"), clickCallback=self.OnNewFitting,
                                              hoverBitmap=self.newBmpH, show=False)
-        self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, _("Hide empty ship groups"),
+        self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, _t("Hide empty ship groups"),
                                                 clickCallback=self.ToggleEmptyGroupsView, hoverBitmap=self.switchBmpH,
                                                 show=False)
-        self.btnRecent = self.toolbar.AddButton(self.recentBmpD, _("Recent Fits"),
+        self.btnRecent = self.toolbar.AddButton(self.recentBmpD, _t("Recent Fits"),
                                                 clickCallback=self.ToggleRecentShips, hoverBitmap=self.recentBmpH,
                                                 show=True)
 
         modifier = "CTRL" if 'wxMac' not in wx.PlatformInfo else "CMD"
-        self.toolbar.AddButton(self.searchBmp, _("Search fittings") + " ({}+F)".format(modifier), clickCallback=self.ToggleSearchBox,
+        self.toolbar.AddButton(self.searchBmp, _t("Search fittings") + " ({}+F)".format(modifier), clickCallback=self.ToggleSearchBox,
                                hoverBitmap=self.searchBmpH)
 
         self.padding = 4
@@ -144,11 +144,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def ToggleEmptyGroupsView(self):
         if self.shipBrowser.filterShipsWithNoFits:
             self.shipBrowser.filterShipsWithNoFits = False
-            self.btnSwitch.label = _("Hide empty ship groups")
+            self.btnSwitch.label = _t("Hide empty ship groups")
             self.btnSwitch.normalBmp = self.switchBmpD
         else:
             self.shipBrowser.filterShipsWithNoFits = True
-            self.btnSwitch.label = _("Show empty ship groups")
+            self.btnSwitch.label = _t("Show empty ship groups")
             self.btnSwitch.normalBmp = self.switchBmp
 
         stage = self.shipBrowser.GetActiveStage()

@@ -24,7 +24,7 @@ from gui.utils.numberFormatter import formatAmount, roundToPrec
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 import eos.config
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 
 stats = [
     (
@@ -62,7 +62,7 @@ class OutgoingViewMinimal(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return _("Remote Reps")
+        return _t("Remote Reps")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)

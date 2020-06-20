@@ -30,7 +30,7 @@ from gui.auxWindow import AuxiliaryFrame
 from service.prereqsCheck import version_block
 
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
 pyfalog = Logger(__name__)
 
 
@@ -65,15 +65,15 @@ class ErrorHandler:
 
 class ErrorFrame(AuxiliaryFrame):
 
-    def __init__(self, parent=None, error_title=_('Error!')):
-        super().__init__(parent, id=wx.ID_ANY, title=_("pyfa error"), pos=wx.DefaultPosition, size=wx.Size(500, 600))
+    def __init__(self, parent=None, error_title=_t('Error!')):
+        super().__init__(parent, id=wx.ID_ANY, title=_t("pyfa error"), pos=wx.DefaultPosition, size=wx.Size(500, 600))
 
         from eos.config import gamedata_version, gamedata_date
 
         time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
         version = "pyfa " + config.getVersion() + '\nEVE Data Version: {} ({})\n\n'.format(gamedata_version, time)  # gui.aboutData.versionString
 
-        desc = _("pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
+        desc = _t("pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
                "information about how this was triggered. Please contact the developers with the \n"
                "information provided through the EVE Online forums or file a GitHub issue.")
 
