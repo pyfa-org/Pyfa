@@ -37,7 +37,8 @@ class MultiSwitch(ChromeNotebook):
             if h:
                 h(type, info)
 
-    def AddPage(self, tabWnd=None, tabTitle=_("Empty Tab"), tabImage=None):
+    def AddPage(self, tabWnd=None, tabTitle=None, tabImage=None):
+        tabTitle = tabTitle or _("Empty Tab")
         if tabWnd is None:
             tabWnd = gui.builtinViews.emptyView.BlankPage(self)
             tabWnd.handleDrag = lambda type, info: self.handleDrag(type, info)

@@ -24,7 +24,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils import color as color_utils, draw, fonts
 from service.fit import Fit
 
-
+_ = wx.GetTranslation
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
 _PageAdding, EVT_NOTEBOOK_PAGE_ADDING = wx.lib.newevent.NewEvent()
@@ -215,7 +215,8 @@ class ChromeNotebook(wx.Panel):
 
         wx.PostEvent(self, PageChanged(current_page, new_page))
 
-    def AddPage(self, win=None, title="Empty Tab", image: wx.Image=None, closeable=True):
+    def AddPage(self, win=None, title=None, image: wx.Image=None, closeable=True):
+        title = title or "Empty Tab"
         if self._active_page:
             self._active_page.Hide()
 

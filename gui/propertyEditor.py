@@ -19,7 +19,9 @@ from service.market import Market
 
 pyfalog = Logger(__name__)
 
-_ = wx.GetTranslation
+_t = wx.GetTranslation
+
+
 class AttributeEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
@@ -142,8 +144,8 @@ class AttributeEditor(AuxiliaryFrame):
     def OnClear(self, event):
         with wx.MessageDialog(
             self,
-            _("Are you sure you want to delete all overrides?"),
-            _("Confirm Delete"),
+            _t("Are you sure you want to delete all overrides?"),
+            _t("Confirm Delete"),
             wx.YES | wx.NO | wx.ICON_EXCLAMATION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
