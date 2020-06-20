@@ -107,7 +107,9 @@ if __name__ == "__main__":
     config.loggingLevel = config.LOGLEVEL_MAP.get(options.logginglevel.lower(), config.LOGLEVEL_MAP['error'])
     config.defPaths(options.savepath)
     config.defLogging()
-    config.language = options.language
+
+    from service.settings import LocaleSettings
+    config.language = options.language or LocaleSettings.getInstance().get('locale')
 
     with config.logging_setup.threadbound():
 
