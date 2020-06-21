@@ -8,10 +8,11 @@ from gui.preferenceView import PreferenceView
 from service.fit import Fit
 from service.settings import SettingsProvider, LocaleSettings
 
+_t = wx.GetTranslation
+
 
 class PFGeneralPref(PreferenceView):
-
-    title = "General"
+    title = _t("General")
 
     def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -31,68 +32,68 @@ class PFGeneralPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, "Use global character", wx.DefaultPosition, wx.DefaultSize,
+        self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, _t("Use global character"), wx.DefaultPosition, wx.DefaultSize,
                                         0)
         mainSizer.Add(self.cbGlobalChar, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbDefaultCharImplants = wx.CheckBox(panel, wx.ID_ANY, "Use character implants by default for new fits",
+        self.cbDefaultCharImplants = wx.CheckBox(panel, wx.ID_ANY, _t("Use character implants by default for new fits"),
                                                  wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbDefaultCharImplants, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, "Use global damage pattern", wx.DefaultPosition,
+        self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, _t("Use global damage pattern"), wx.DefaultPosition,
                                               wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalDmgPattern, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, "Compact skills needed tooltip", wx.DefaultPosition,
+        self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, _t("Compact skills needed tooltip"), wx.DefaultPosition,
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbCompactSkills, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, "Color fitting view by slot", wx.DefaultPosition,
+        self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, _t("Color fitting view by slot"), wx.DefaultPosition,
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbFitColorSlots, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbReopenFits = wx.CheckBox(panel, wx.ID_ANY, "Reopen previous fits on startup", wx.DefaultPosition,
+        self.cbReopenFits = wx.CheckBox(panel, wx.ID_ANY, _t("Reopen previous fits on startup"), wx.DefaultPosition,
                                         wx.DefaultSize, 0)
         mainSizer.Add(self.cbReopenFits, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbRackSlots = wx.CheckBox(panel, wx.ID_ANY, "Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbRackSlots = wx.CheckBox(panel, wx.ID_ANY, _t("Separate Racks"), wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbRackSlots, 0, wx.ALL | wx.EXPAND, 5)
 
         labelSizer = wx.BoxSizer(wx.VERTICAL)
-        self.cbRackLabels = wx.CheckBox(panel, wx.ID_ANY, "Show Rack Labels", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbRackLabels = wx.CheckBox(panel, wx.ID_ANY, _t("Show Rack Labels"), wx.DefaultPosition, wx.DefaultSize, 0)
         labelSizer.Add(self.cbRackLabels, 0, wx.ALL | wx.EXPAND, 5)
         mainSizer.Add(labelSizer, 0, wx.LEFT | wx.EXPAND, 30)
 
-        self.cbShowTooltip = wx.CheckBox(panel, wx.ID_ANY, "Show fitting tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbShowTooltip = wx.CheckBox(panel, wx.ID_ANY, _t("Show fitting tab tooltips"), wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGaugeAnimation = wx.CheckBox(panel, wx.ID_ANY, "Animate gauges", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbGaugeAnimation = wx.CheckBox(panel, wx.ID_ANY, _t("Animate gauges"), wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGaugeAnimation, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbOpenFitInNew = wx.CheckBox(panel, wx.ID_ANY, "Open fittings in a new page by default",
+        self.cbOpenFitInNew = wx.CheckBox(panel, wx.ID_ANY, _t("Open fittings in a new page by default"),
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbShowShipBrowserTooltip = wx.CheckBox(panel, wx.ID_ANY, "Show ship browser tooltip",
-                                          wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbShowShipBrowserTooltip = wx.CheckBox(panel, wx.ID_ANY, _t("Show ship browser tooltip"),
+                                                    wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowShipBrowserTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
-
-        self.cbReloadAll = wx.CheckBox(panel, wx.ID_ANY, "Change charge in all modules of the same type",
+        self.cbReloadAll = wx.CheckBox(panel, wx.ID_ANY, _t("Change charge in all modules of the same type"),
                                        wx.DefaultPosition, wx.DefaultSize, 0)
         if "wxGTK" not in wx.PlatformInfo:
             self.cbReloadAll.SetCursor(helpCursor)
         self.cbReloadAll.SetToolTip(wx.ToolTip(
-            'When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge.'))
+                _t('When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge.')))
         mainSizer.Add(self.cbReloadAll, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.rbAddLabels = wx.RadioBox(panel, -1, "Extra info in Additions panel tab names", wx.DefaultPosition, wx.DefaultSize, ["None", "Quantity of active items", "Quantity of all items"], 1, wx.RA_SPECIFY_COLS)
+        self.rbAddLabels = wx.RadioBox(panel, -1, _t("Extra info in Additions panel tab names"), wx.DefaultPosition, wx.DefaultSize,
+                                       [_t("None"), _t("Quantity of active items"), _t("Quantity of all items")], 1, wx.RA_SPECIFY_COLS)
         mainSizer.Add(self.rbAddLabels, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
         self.rbAddLabels.Bind(wx.EVT_RADIOBOX, self.OnAddLabelsChange)
 
         langSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, "Language (restart required): ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Language (restart required): "), wx.DefaultPosition, wx.DefaultSize, 0)
         self.stLangLabel.Wrap(-1)
         langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 

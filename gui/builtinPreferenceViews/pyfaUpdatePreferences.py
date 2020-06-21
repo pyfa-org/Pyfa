@@ -5,13 +5,15 @@ from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
 from service.settings import UpdateSettings
 
+_t = wx.GetTranslation
+
 
 class PFUpdatePref(PreferenceView):
-    title = "Updates"
-    desc = ("Pyfa can automatically check and notify you of new releases. "
-            "This feature is toggled in the Network settings. "
-            "Here, you may allow pre-release notifications and view "
-            "suppressed release notifications, if any.")
+    title = _t("Updates")
+    desc = _t("Pyfa can automatically check and notify you of new releases. "
+              "This feature is toggled in the Network settings. "
+              "Here, you may allow pre-release notifications and view "
+              "suppressed release notifications, if any.")
 
     def populatePanel(self, panel):
         self.UpdateSettings = UpdateSettings.getInstance()
@@ -33,7 +35,7 @@ class PFUpdatePref(PreferenceView):
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
-        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, "Allow pre-release notifications", wx.DefaultPosition,
+        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, _t("Allow pre-release notifications"), wx.DefaultPosition,
                                               wx.DefaultSize, 0)
         self.suppressPrerelease.Bind(wx.EVT_CHECKBOX, self.OnPrereleaseStateChange)
         self.suppressPrerelease.SetValue(not self.UpdateSettings.get('prerelease'))
@@ -43,14 +45,14 @@ class PFUpdatePref(PreferenceView):
         if self.UpdateSettings.get('version'):
             self.versionSizer = wx.BoxSizer(wx.VERTICAL)
 
-            self.versionTitle = wx.StaticText(panel, wx.ID_ANY, "Suppressing {0} Notifications".format(
+            self.versionTitle = wx.StaticText(panel, wx.ID_ANY, _t("Suppressing {0} Notifications").format(
                     self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
             self.versionTitle.Wrap(-1)
             self.versionTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
-            self.versionInfo = ("There is a release available which you have chosen to suppress. "
-                                "You can choose to reset notification suppression for this release, "
-                                "or download the new release from GitHub.")
+            self.versionInfo = _t("There is a release available which you have chosen to suppress. "
+                                  "You can choose to reset notification suppression for this release, "
+                                  "or download the new release from GitHub.")
 
             self.versionSizer.AddStretchSpacer()
 
@@ -66,12 +68,12 @@ class PFUpdatePref(PreferenceView):
             actionSizer = wx.BoxSizer(wx.HORIZONTAL)
             resetSizer = wx.BoxSizer(wx.VERTICAL)
 
-            self.downloadButton = wx.Button(panel, wx.ID_ANY, "Download", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.downloadButton = wx.Button(panel, wx.ID_ANY, _t("Download"), wx.DefaultPosition, wx.DefaultSize, 0)
             self.downloadButton.Bind(wx.EVT_BUTTON, self.OnDownload)
             resetSizer.Add(self.downloadButton, 0, wx.ALL, 5)
             actionSizer.Add(resetSizer, 1, wx.EXPAND, 5)
 
-            self.resetButton = wx.Button(panel, wx.ID_ANY, "Reset Suppression", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.resetButton = wx.Button(panel, wx.ID_ANY, _t("Reset Suppression"), wx.DefaultPosition, wx.DefaultSize, 0)
             self.resetButton.Bind(wx.EVT_BUTTON, self.ResetSuppression)
             actionSizer.Add(self.resetButton, 0, wx.ALL, 5)
             self.versionSizer.Add(actionSizer, 0, wx.EXPAND, 5)
