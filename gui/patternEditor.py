@@ -168,10 +168,10 @@ class DmgPatternEditor(AuxiliaryFrame):
 
         self.SetSizer(mainSizer)
 
-        importExport = (("Import", wx.ART_FILE_OPEN, _t("from")),
-                        ("Export", wx.ART_FILE_SAVE_AS, _t("to")))
+        importExport = ((_t("Import patterns from clipboard"), wx.ART_FILE_OPEN, "import"),
+                        (_t("Export patterns to clipboard"), wx.ART_FILE_SAVE_AS, "export"))
 
-        for name, art, direction in importExport:
+        for tooltip, art, attr in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
@@ -179,11 +179,11 @@ class DmgPatternEditor(AuxiliaryFrame):
             btn.SetMaxSize(btn.GetSize())
 
             btn.Layout()
-            setattr(self, name, btn)
+            setattr(self, "{}Btn".format(attr), btn)
             btn.Enable(True)
-            btn.SetToolTip(_t("%s patterns %s clipboard") % (name, direction))
+            btn.SetToolTip(tooltip)
             footerSizer.Add(btn, 0)
-            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
+            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(attr)))
 
         if not self.entityEditor.checkEntitiesExist():
             self.Close()
