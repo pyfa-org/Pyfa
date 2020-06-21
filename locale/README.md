@@ -12,7 +12,7 @@ For Linux and macOS users these tools might be avaliable out-of-box.
 ### To generate new template for translation:
 
 ```console
-$ find */ *.py -name "*.py" | xgettext -o locale/lang.pot -d lang -k_t -k_r -
+$ find */ *.py -name "*.py" | xgettext -o locale/lang.pot -d lang -k_t -f -
 ```
 
 explaination:
@@ -21,8 +21,8 @@ explaination:
 * `xgettext`: a utility looking for keyword and put string literals in a specific format for human translation
     * `-o locale/lang.pot`: let `xgettext` write to `locale/lang.pot`
     * `-d lang`: default language domain is `lang`
-    * `-k_t -k_r`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t` and `_r`
-    * `-`: let `xgettext` to read from stdin, which is connected to `find` stdout
+    * `-k_t`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t`
+    * `-f -`: let `xgettext` to read from stdin, which is connected to `find` stdout
 
 this `locale/lang.pot` is called PO template, which is throwed away once actual `ll_CC/LC_MESSAGES/lang.po` is ready for use.
 
@@ -63,7 +63,7 @@ $ msgfmt locale/ll_CC/LC_MESSAGES/lang.po -o locale/ll_CC/LC_MESSAGES/lang.mo
 
 For all avaliable locale:
 ```bash
-for $f in locale/*/; do 
+for f in locale/*/; do 
     msgfmt $f/LC_MESSAGES/lang.po -o $f/LC_MESSAGES/lang.mo
 done
 ```
