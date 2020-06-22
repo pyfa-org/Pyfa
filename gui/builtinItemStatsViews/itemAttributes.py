@@ -115,7 +115,7 @@ class ItemParams(wx.Panel):
 
         with wx.FileDialog(
                 self, _t("Save CSV file"), "", exportFileName,
-                _t("CSV files (*.csv)|*.csv"), wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
+                _t("CSV files") + " (*.csv)|*.csv", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
         ) as dlg:
 
             if dlg.ShowModal() == wx.ID_CANCEL:

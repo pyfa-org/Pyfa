@@ -16,7 +16,6 @@ from gui.marketBrowser import SearchBox
 from service.fit import Fit
 from service.market import Market
 
-
 pyfalog = Logger(__name__)
 
 _t = wx.GetTranslation
@@ -26,8 +25,8 @@ class AttributeEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, wx.ID_ANY, title=_t("Attribute Editor"), pos=wx.DefaultPosition,
-            size=wx.Size(650, 600), resizeable=True)
+                parent, wx.ID_ANY, title=_t("Attribute Editor"), pos=wx.DefaultPosition,
+                size=wx.Size(650, 600), resizeable=True)
 
         i = wx.Icon(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         self.SetIcon(i)
@@ -105,9 +104,9 @@ class AttributeEditor(AuxiliaryFrame):
 
     def OnImport(self, event):
         with wx.FileDialog(
-            self, _t("Import pyfa override file"),
-            wildcard=_t("pyfa override file (*.csv)|*.csv"),
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+                self, _t("Import pyfa override file"),
+                wildcard=_t("pyfa override file") + " (*.csv)|*.csv",
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
@@ -128,10 +127,10 @@ class AttributeEditor(AuxiliaryFrame):
         defaultFile = "pyfa_overrides.csv"
 
         with wx.FileDialog(
-            self, _t("Save Overrides As..."),
-            wildcard=_t("pyfa overrides (*.csv)|*.csv"),
-            style=wx.FD_SAVE,
-            defaultFile=defaultFile
+                self, _t("Save Overrides As..."),
+                wildcard=_t("pyfa overrides") + " (*.csv)|*.csv",
+                style=wx.FD_SAVE,
+                defaultFile=defaultFile
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
@@ -143,10 +142,10 @@ class AttributeEditor(AuxiliaryFrame):
 
     def OnClear(self, event):
         with wx.MessageDialog(
-            self,
-            _t("Are you sure you want to delete all overrides?"),
-            _t("Confirm Delete"),
-            wx.YES | wx.NO | wx.ICON_EXCLAMATION
+                self,
+                _t("Are you sure you want to delete all overrides?"),
+                _t("Confirm Delete"),
+                wx.YES | wx.NO | wx.ICON_EXCLAMATION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
                 sMkt = Market.getInstance()

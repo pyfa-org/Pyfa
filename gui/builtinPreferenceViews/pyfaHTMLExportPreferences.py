@@ -46,7 +46,7 @@ class PFHTMLExportPref(PreferenceView):
         mainSizer.Add(self.PathLinkCtrl, 0, wx.ALL | wx.EXPAND, 5)
 
         self.fileSelectDialog = wx.FileDialog(None, _t("Save Fitting As..."),
-                                              wildcard=_t("EVE IGB HTML fitting file (*.html)|*.html"), style=wx.FD_SAVE)
+                                              wildcard=_t("EVE IGB HTML fitting file") + " (*.html)|*.html", style=wx.FD_SAVE)
         self.fileSelectDialog.SetPath(self.HTMLExportSettings.getPath())
         self.fileSelectDialog.SetFilename(os.path.basename(self.HTMLExportSettings.getPath()))
 
