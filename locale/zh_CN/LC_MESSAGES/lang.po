@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-22 17:50+0800\n"
-"PO-Revision-Date: 2020-06-22 17:51+0800\n"
+"POT-Creation-Date: 2020-06-22 19:38+0800\n"
+"PO-Revision-Date: 2020-06-22 20:01+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: gui/aboutData.py:32
 msgid "All EVE-Online related materials are property of CCP hf."
-msgstr "所有 EvE Online 相关材料版权归CCP所有。"
+msgstr "所有 EvE Online 相关材料版权归CCP所有"
 
 #: gui/aboutData.py:33
 msgid ""
@@ -86,6 +86,124 @@ msgstr "指令"
 #: gui/additionsPane.py:87
 msgid "Notes"
 msgstr "备注"
+
+#: gui/builtinItemStatsViews/itemAffectedBy.py:67
+msgid "Expand All"
+msgstr "展开所有"
+
+#: gui/builtinItemStatsViews/itemAffectedBy.py:70
+msgid "Toggle Names"
+msgstr "切换名称"
+
+#: gui/builtinItemStatsViews/itemAffectedBy.py:73
+msgid "Toggle View"
+msgstr "切换视图"
+
+#: gui/builtinItemStatsViews/itemAffectedBy.py:77
+#: gui/builtinItemStatsViews/itemAttributes.py:62
+#: gui/builtinItemStatsViews/itemCompare.py:79
+msgid "Refresh"
+msgstr "刷新"
+
+#: gui/builtinItemStatsViews/itemAttributes.py:44
+#: gui/builtinItemStatsViews/itemProperties.py:56
+msgid "Attribute"
+msgstr "属性"
+
+#: gui/builtinItemStatsViews/itemAttributes.py:45
+#: gui/builtinItemStatsViews/itemProperties.py:57
+msgid "Current Value"
+msgstr "当前值"
+
+#: gui/builtinItemStatsViews/itemAttributes.py:47
+msgid "Base Value"
+msgstr "基础值"
+
+#: gui/builtinItemStatsViews/itemAttributes.py:53
+msgid "View Raw Data"
+msgstr "显示原始数据"
+
+#: gui/builtinItemStatsViews/itemAttributes.py:57
+msgid "Export Item Stats"
+msgstr "导出物品属性"
+
+#: gui/builtinItemStatsViews/itemAttributes.py:117
+msgid "Save CSV file"
+msgstr "保存为CSV文件"
+
+#: gui/builtinItemStatsViews/itemAttributes.py:118
+msgid "CSV files (*.csv)|*.csv"
+msgstr "逗号分隔符文件 (*.csv)|*.csv"
+
+#: gui/builtinItemStatsViews/itemCompare.py:75
+msgid "Toggle view mode"
+msgstr "切换显示模式"
+
+#: gui/builtinItemStatsViews/itemCompare.py:147
+msgid "Item"
+msgstr "物品"
+
+#: gui/builtinItemStatsViews/itemCompare.py:155
+#: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
+#: gui/builtinStatsViews/priceViewFull.py:40
+msgid "Price"
+msgstr "价格"
+
+#: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
+#: gui/characterEditor.py:616 gui/characterEditor.py:649
+msgid "Level {}"
+msgstr "等级{}"
+
+#: gui/builtinItemStatsViews/itemDescription.py:43
+#: gui/builtinItemStatsViews/itemTraits.py:25
+msgid "Copy"
+msgstr "复制"
+
+#: gui/builtinItemStatsViews/itemEffects.py:30
+#: gui/builtinViewColumns/baseName.py:55
+msgid "Name"
+msgstr "名称"
+
+#: gui/builtinItemStatsViews/itemEffects.py:31
+msgid "Active"
+msgstr "激活"
+
+#: gui/builtinItemStatsViews/itemEffects.py:32
+msgid "Type"
+msgstr "类型"
+
+#: gui/builtinItemStatsViews/itemEffects.py:34
+msgid "Run Time"
+msgstr "运行时长"
+
+#: gui/builtinItemStatsViews/itemEffects.py:35
+msgid "ID"
+msgstr "ID"
+
+#: gui/builtinItemStatsViews/itemEffects.py:56
+msgid "Yes"
+msgstr "是"
+
+#: gui/builtinItemStatsViews/itemEffects.py:58
+msgid "No"
+msgstr "否"
+
+#: gui/builtinItemStatsViews/itemMutator.py:51
+msgid "Reset defaults"
+msgstr "重置为默认值"
+
+#: gui/builtinItemStatsViews/itemMutator.py:54
+msgid "Random stats"
+msgstr "随机化属性"
+
+#: gui/builtinItemStatsViews/itemMutator.py:57
+msgid "Revert changes"
+msgstr "还原到初始状态"
+
+#: gui/builtinItemStatsViews/itemProperties.py:98
+#, python-format
+msgid "%d attribute."
+msgstr "共%d个属性"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:14
 msgid "Context Menus"
@@ -704,12 +822,7 @@ msgstr "电容"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 msgid "Misc"
-msgstr "其他"
-
-#: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
-#: gui/builtinStatsViews/priceViewFull.py:40
-msgid "Price"
-msgstr "价格"
+msgstr "杂项"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 #: gui/builtinStatsViews/outgoingViewFull.py:66
@@ -1023,7 +1136,7 @@ msgstr "无人机带宽"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:38
 msgid "Targeting && Misc"
-msgstr "目标和其他"
+msgstr "目标和杂项"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:60
 msgid "Targets"
@@ -1129,6 +1242,18 @@ msgstr "星系物质仓"
 msgid "Quafe hold"
 msgstr "酷菲(Quafe)仓"
 
+#: gui/builtinViewColumns/abilities.py:37
+msgid "Active Abilities"
+msgstr "铁骑技能"
+
+#: gui/builtinViewColumns/misc.py:50
+msgid "Misc data"
+msgstr "杂项"
+
+#: gui/builtinViewColumns/sideEffects.py:37
+msgid "Active Side Effects"
+msgstr "副作用"
+
 #: gui/characterEditor.py:76
 msgid "You must supply a name for the Character!"
 msgstr "您必须填写一个角色名！"
@@ -1212,11 +1337,6 @@ msgstr "导入技能列表出错，详见日志文件"
 #: gui/characterEditor.py:532
 msgid "Level {}d"
 msgstr "等级{}d"
-
-#: gui/characterEditor.py:591 gui/characterEditor.py:616
-#: gui/characterEditor.py:649
-msgid "Level {}"
-msgstr "等级{}"
 
 #: gui/characterEditor.py:614
 msgid "Unlearn"
