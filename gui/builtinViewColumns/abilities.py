@@ -24,6 +24,8 @@ from eos.saveddata.fighter import Fighter
 from gui.viewColumn import ViewColumn
 import gui.mainFrame
 
+_t = wx.GetTranslation
+
 
 class Abilities(ViewColumn):
     name = "Fighter Abilities"
@@ -32,7 +34,7 @@ class Abilities(ViewColumn):
         ViewColumn.__init__(self, fittingView)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.columnText = "Active Abilities"
+        self.columnText = _t("Active Abilities")
         self.mask = wx.LIST_MASK_TEXT
 
     def getText(self, stuff):

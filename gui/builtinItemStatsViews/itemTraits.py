@@ -3,6 +3,8 @@ import wx
 # noinspection PyPackageRequirements
 import wx.html
 
+_t = wx.GetTranslation
+
 
 class ItemTraits(wx.Panel):
     def __init__(self, parent, stuff, item):
@@ -20,7 +22,7 @@ class ItemTraits(wx.Panel):
         self.Layout()
 
         self.popupMenu = wx.Menu()
-        copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
+        copyItem = wx.MenuItem(self.popupMenu, 1, _t('Copy'))
         self.popupMenu.Append(copyItem)
         self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, copyItem)
 

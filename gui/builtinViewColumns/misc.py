@@ -47,7 +47,7 @@ class Miscellanea(ViewColumn):
             self.imageId = -1
 
         if params["displayName"] or self.imageId == -1:
-            self.columnText = "Misc data"
+            self.columnText = _("Misc data")
             self.mask |= wx.LIST_MASK_TEXT
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.fittingView = fittingView
