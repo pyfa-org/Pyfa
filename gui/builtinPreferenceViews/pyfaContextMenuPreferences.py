@@ -9,9 +9,9 @@ _t = wx.GetTranslation
 
 
 class PFContextMenuPref(PreferenceView):
-    title = _t("Context Menus")
 
     def populatePanel(self, panel):
+        self.title = _t("Context Menus")
         self.settings = ContextMenuSettings.getInstance()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

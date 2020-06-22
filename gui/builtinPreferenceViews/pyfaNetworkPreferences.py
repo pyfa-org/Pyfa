@@ -12,10 +12,9 @@ _t = wx.GetTranslation
 
 
 class PFNetworkPref(PreferenceView):
-    title = _t("Network")
 
     def populatePanel(self, panel):
-
+        self.title = _t("Network")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = NetworkSettings.getInstance()
         self.network = Network.getInstance()

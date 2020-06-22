@@ -16,8 +16,6 @@ _t = wx.GetTranslation
 
 
 class PFFittingEnginePref(PreferenceView):
-    title = _t("Fitting Engine")
-
     def __init__(self):
         self.dirtySettings = False
 
@@ -26,6 +24,7 @@ class PFFittingEnginePref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
+        self.title = _t("Fitting Engine")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)

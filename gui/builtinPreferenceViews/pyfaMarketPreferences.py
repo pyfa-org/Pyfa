@@ -15,12 +15,12 @@ _t = wx.GetTranslation
 
 
 class PFMarketPref(PreferenceView):
-    title = _t("Market & Prices")
 
     def __init__(self):
         self.priceSettings = MarketPriceSettings.getInstance()
 
     def populatePanel(self, panel):
+        self.title = _t("Market & Prices")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
 

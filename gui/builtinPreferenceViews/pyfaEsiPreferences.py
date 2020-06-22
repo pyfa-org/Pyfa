@@ -11,10 +11,9 @@ _t = wx.GetTranslation
 
 
 class PFEsiPref(PreferenceView):
-    title = _t("EVE SSO")
 
     def populatePanel(self, panel):
-
+        self.title = _t("EVE SSO")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = EsiSettings.getInstance()
         self.dirtySettings = False

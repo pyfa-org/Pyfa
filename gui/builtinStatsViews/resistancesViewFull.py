@@ -58,7 +58,7 @@ class ResistancesViewFull(StatsView):
         # Custom header  EHP
         headerContentSizer = self.headerPanel.Parent.GetHeaderContentSizer()
 
-        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "(" + _t("Effective HP") + ": ")
+        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "(" + _t("Effective HP: "))
         headerContentSizer.Add(self.stEff)
         headerPanel.GetParent().AddToggleItem(self.stEff)
 
@@ -93,7 +93,7 @@ class ResistancesViewFull(StatsView):
             bitmap.SetToolTip(tooltip)
             sizerResistances.Add(bitmap, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
             col += 1
-        self.stEHPs = wx.Button(contentPanel, style=wx.BU_EXACTFIT, label="EHP")
+        self.stEHPs = wx.Button(contentPanel, style=wx.BU_EXACTFIT, label=_t("EHP"))
         self.stEHPs.SetToolTip(wx.ToolTip(_t("Click to toggle between effective HP and raw HP")))
 
         self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
@@ -184,7 +184,7 @@ class ResistancesViewFull(StatsView):
             wx.PostEvent(self.mainFrame, GE.EffectiveHpToggled(effective=True))
             return
 
-        self.stEHPs.SetLabel("EHP" if self.showEffective else "HP")
+        self.stEHPs.SetLabel(_t("EHP") if self.showEffective else _t("HP"))
         self.activeFit = fit.ID if fit is not None else None
 
         for tankType in ("shield", "armor", "hull"):
@@ -203,24 +203,24 @@ class ResistancesViewFull(StatsView):
 
         ehp = (fit.ehp if self.showEffective else fit.hp) if fit is not None else None
         total = 0
-        for tankType in ("shield", "armor", "hull"):
+        for tankType, tooltip in (("shield", _t("Shield: ")), ("armor", _t("Armor: ")), ("hull", _t("Hull: "))):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
                 total += ehp[tankType]
                 rrFactor = fit.ehp[tankType] / fit.hp[tankType]
                 lbl.SetLabel(formatAmount(ehp[tankType], 3, 0, 9))
                 lbl.SetToolTip(
-                        wx.ToolTip("%s: %d\nResist Multiplier: x%.2f" % (tankType.capitalize(), ehp[tankType], rrFactor)))
+                        wx.ToolTip(tooltip + "%d\n" % ehp[tankType] + _t("Resist Multiplier: ") + "%.2fx" % rrFactor))
             else:
                 lbl.SetLabel("0")
 
         self.labelEhp.SetLabel("%s" % formatAmount(total, 3, 0, 9))
         if self.showEffective:
-            self.stEff.SetLabel("( Effective HP: ")
-            self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d HP" % total))
+            self.stEff.SetLabel("(" + _t("Effective HP: "))
+            self.labelEhp.SetToolTip(wx.ToolTip(_t("Effective: %d HP") % total))
         else:
-            self.stEff.SetLabel("( Raw HP: ")
-            self.labelEhp.SetToolTip(wx.ToolTip("Raw: %d HP" % total))
+            self.stEff.SetLabel("(" + _t("Raw HP: "))
+            self.labelEhp.SetToolTip(wx.ToolTip(_t("Raw: %d HP") % total))
 
         damagePattern = fit.damagePattern if fit is not None and self.showEffective else None
         total = sum((damagePattern.emAmount, damagePattern.thermalAmount,

@@ -64,7 +64,7 @@ class FirepowerViewFull(StatsView):
 
         counter = 0
 
-        for damageType, image in (("weapon", "turret"), ("drone", "droneDPS")):
+        for label, image, attr in ((_t("Weapon"), "turret", "Weapon"), (_t("Drone"), "droneDPS", "Drone")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
@@ -73,13 +73,13 @@ class FirepowerViewFull(StatsView):
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, _t(damageType).capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, label), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 DPS")
-            setattr(self, "label%sDps%s" % (panel.capitalize(), damageType.capitalize()), lbl)
+            setattr(self, "label%sDps%s" % (panel.capitalize(), attr), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
@@ -112,7 +112,7 @@ class FirepowerViewFull(StatsView):
 
         image = BitmapLoader.getBitmap("mining_small", "gui")
         self.miningyield = wx.BitmapButton(contentPanel, -1, image)
-        self.miningyield.SetToolTip(wx.ToolTip(_t("Click to toggle to Mining Yield ")))
+        self.miningyield.SetToolTip(wx.ToolTip(_t("Click to toggle to Mining Yield")))
         self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
         sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
 

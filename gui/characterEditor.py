@@ -646,7 +646,7 @@ class SkillTreeView(wx.Panel):
             lvl, dirty = sChar.getSkillLevel(char.ID, skillID)
             self.skillTreeListCtrl.SetItemText(treeItem,
                                                1,
-                                               _("Level {}").format(int(lvl)) if not isinstance(lvl, str) else lvl)
+                                               _t("Level {}").format(int(lvl)) if not isinstance(lvl, str) else lvl)
 
             if not dirty:
                 self.skillTreeListCtrl.SetItemImage(treeItem, self.skillBookImageId)

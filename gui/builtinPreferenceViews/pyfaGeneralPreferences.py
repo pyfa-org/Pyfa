@@ -12,9 +12,9 @@ _t = wx.GetTranslation
 
 
 class PFGeneralPref(PreferenceView):
-    title = _t("General")
 
     def populatePanel(self, panel):
+        self.title = _t("General")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.dirtySettings = False
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
@@ -93,7 +93,7 @@ class PFGeneralPref(PreferenceView):
 
         langSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Language (restart required): "), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Language (restart required):"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.stLangLabel.Wrap(-1)
         langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 

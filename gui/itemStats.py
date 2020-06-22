@@ -197,7 +197,7 @@ class ItemStatsContainer(wx.Panel):
 
         if config.debug:
             self.properties = ItemProperties(self.nbContainer, stuff, item, context)
-            self.nbContainer.AddPage(self.properties, "Properties")
+            self.nbContainer.AddPage(self.properties, _t("Properties"))
 
         self.nbContainer.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
         self.SetSizer(mainSizer)

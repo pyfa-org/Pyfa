@@ -14,14 +14,14 @@ _t = wx.GetTranslation
 
 
 class PFHTMLExportPref(PreferenceView):
-    title = _t("HTML Export")
-    desc = _t("HTML Export (File > Export HTML) allows you to export your entire fitting "
-              "database into an HTML file at the specified location. This file can be "
-              "used to easily open your fits in a web-based fitting program")
-    desc4 = _t("Export Fittings in a minimal HTML Version, just containing the fittings links "
-               "without any visual styling")
 
     def populatePanel(self, panel):
+        self.title = _t("HTML Export")
+        self.desc = _t("HTML Export (File > Export HTML) allows you to export your entire fitting "
+                       "database into an HTML file at the specified location. This file can be "
+                       "used to easily open your fits in a web-based fitting program")
+        self.desc4 = _t("Export Fittings in a minimal HTML Version, just containing the fittings links "
+                        "without any visual styling")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.HTMLExportSettings = HTMLExportSettings.getInstance()
         self.dirtySettings = False

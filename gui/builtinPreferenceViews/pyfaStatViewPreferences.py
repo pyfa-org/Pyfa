@@ -9,7 +9,6 @@ _t = wx.GetTranslation
 
 
 class PFStatViewPref(PreferenceView):
-    title = _t("Statistics Panel")
 
     def __init__(self):
         self.dirtySettings = False
@@ -20,6 +19,7 @@ class PFStatViewPref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
+        self.title = _t("Statistics Panel")
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -96,12 +96,12 @@ class PFStatViewPref(PreferenceView):
         # Row 3
         rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbPrice = wx.RadioBox(panel, -1, _t("Price"), wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbPrice = wx.RadioBox(panel, -1, _t("Price"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1, wx.RA_SPECIFY_COLS)
         self.rbPrice.SetSelection(self.settings.get('price'))
         rbSizerRow3.Add(self.rbPrice, 1, wx.TOP | wx.RIGHT, 5)
         self.rbPrice.Bind(wx.EVT_RADIOBOX, self.OnPriceChange)
 
-        self.rbOutgoing = wx.RadioBox(panel, -1, _t("Remote Reps"), wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbOutgoing = wx.RadioBox(panel, -1, _t("Remote Reps"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1, wx.RA_SPECIFY_COLS)
         self.rbOutgoing.SetSelection(self.settings.get('outgoing'))
         rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
         self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)

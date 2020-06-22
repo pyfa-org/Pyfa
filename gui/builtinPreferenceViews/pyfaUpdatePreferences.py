@@ -9,13 +9,13 @@ _t = wx.GetTranslation
 
 
 class PFUpdatePref(PreferenceView):
-    title = _t("Updates")
-    desc = _t("Pyfa can automatically check and notify you of new releases. "
-              "This feature is toggled in the Network settings. "
-              "Here, you may allow pre-release notifications and view "
-              "suppressed release notifications, if any.")
 
     def populatePanel(self, panel):
+        self.title = _t("Updates")
+        self.desc = _t("Pyfa can automatically check and notify you of new releases. "
+                       "This feature is toggled in the Network settings. "
+                       "Here, you may allow pre-release notifications and view "
+                       "suppressed release notifications, if any.")
         self.UpdateSettings = UpdateSettings.getInstance()
         self.dirtySettings = False
 

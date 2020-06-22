@@ -10,9 +10,9 @@ _t = wx.GetTranslation
 
 
 class PFGeneralPref(PreferenceView):
-    title = _t("Database")
 
     def populatePanel(self, panel):
+        self.title = _t("Database")
         self.dirtySettings = False
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
