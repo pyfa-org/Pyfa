@@ -169,7 +169,7 @@ class ResistancesViewFull(StatsView):
         self.stEHPs.SetToolTip(wx.ToolTip(_t("Click to toggle between effective HP and raw HP")))
 
     def toggleEHP(self, event):
-        wx.PostEvent(self.mainFrame, GE.EffectiveHpToggled(effective=self.stEHPs.GetLabel() == "HP"))
+        wx.PostEvent(self.mainFrame, GE.EffectiveHpToggled(effective=self.stEHPs.GetLabel() == _t("HP")))
 
     def ehpSwitch(self, event):
         event.Skip()

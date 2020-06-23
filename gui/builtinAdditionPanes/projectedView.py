@@ -41,7 +41,7 @@ from service.market import Market
 
 
 pyfalog = Logger(__name__)
-
+_t = wx.GetTranslation
 
 class DummyItem:
     def __init__(self, txt):
@@ -303,7 +303,7 @@ class ProjectedView(d.Display):
 
             if isinstance(mainItem, EosModule):
                 modSrcContext = 'projectedModule'
-                modItemContext = 'Projected Item'
+                modItemContext = _t('Projected Item')
                 modFullContext = (modSrcContext, modItemContext)
                 contexts.append(modFullContext)
                 if mainItem.charge is not None:
@@ -313,17 +313,17 @@ class ProjectedView(d.Display):
                     contexts.append(chargeFullContext)
             elif isinstance(mainItem, EosDrone):
                 srcContext = 'projectedDrone'
-                itemContext = 'Projected Item'
+                itemContext = _t('Projected Item')
                 droneFullContext = (srcContext, itemContext)
                 contexts.append(droneFullContext)
             elif isinstance(mainItem, EosFighter):
                 srcContext = 'projectedFighter'
-                itemContext = 'Projected Item'
+                itemContext = _t('Projected Item')
                 fighterFullContext = (srcContext, itemContext)
                 contexts.append(fighterFullContext)
             else:
                 fitSrcContext = 'projectedFit'
-                fitItemContext = 'Projected Item'
+                fitItemContext = _t('Projected Item')
                 fitFullContext = (fitSrcContext, fitItemContext)
                 contexts.append(fitFullContext)
         contexts.append(('projected',))

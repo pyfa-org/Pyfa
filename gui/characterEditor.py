@@ -605,7 +605,7 @@ class SkillTreeView(wx.Panel):
         eveItem = Market.getInstance().getItem(id)
 
         srcContext = "skillItem"
-        itemContext = "Skill"
+        itemContext = _t("Skill")
         context = (srcContext, itemContext)
         menu = ContextMenu.getMenu(self, eveItem, [eveItem], context)
         char = self.charEditor.entityEditor.getActiveEntity()
