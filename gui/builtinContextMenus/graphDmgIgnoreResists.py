@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.settings import GraphSettings
+
+_t = wx.GetTranslation
 
 
 class GraphDmgIgnoreResistsMenu(ContextMenuUnconditional):
@@ -17,7 +20,7 @@ class GraphDmgIgnoreResistsMenu(ContextMenuUnconditional):
         return srcContext == 'dmgStatsGraph'
 
     def getText(self, callingWindow, itmContext):
-        return 'Ignore Target Resists'
+        return _t('Ignore Target Resists')
 
     def activate(self, callingWindow, fullContext, i):
         self.settings.set('ignoreResists', not self.settings.get('ignoreResists'))

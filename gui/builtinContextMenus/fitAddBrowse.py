@@ -1,8 +1,11 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
+
+_t = wx.GetTranslation
 
 
 class AddBrowsedFits(ContextMenuUnconditional):
@@ -16,7 +19,7 @@ class AddBrowsedFits(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, itmContext):
-        return 'Add Fit...'
+        return _t('Add Fit...')
 
     def activate(self, callingWindow, fullContext, i):
         from gui.fitBrowserLite import FitBrowserLiteDialog
@@ -24,7 +27,8 @@ class AddBrowsedFits(ContextMenuUnconditional):
             'projected': 'Add Projected Fits',
             'commandView': 'Add Command Fits',
             'graphFitList': 'Add Fits to Graph',
-            'graphTgtList': 'Add Targets to Graph'}
+            'graphTgtList': 'Add Targets to Graph'
+        }
         excludedFitIDs = callingWindow.getExistingFitIDs()
         with FitBrowserLiteDialog(self.mainFrame, title=titles[fullContext[0]], excludedFitIDs=excludedFitIDs) as dlg:
             if dlg.ShowModal() == wx.ID_OK:

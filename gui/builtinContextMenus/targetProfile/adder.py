@@ -1,7 +1,6 @@
 from collections import OrderedDict
 from itertools import chain
 
-# noinspection PyPackageRequirements
 import wx
 
 import gui.mainFrame
@@ -9,6 +8,10 @@ from eos.saveddata.targetProfile import TargetProfile
 from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.sorter import smartSort
 from service.targetProfile import TargetProfile as svc_TargetProfile
+
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
 
 
 class TargetProfileAdder(ContextMenuUnconditional):

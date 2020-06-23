@@ -1,4 +1,5 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
@@ -6,6 +7,8 @@ from gui.auxWindow import AuxiliaryDialog
 from gui.contextMenu import ContextMenuSingle
 from service.ammo import Ammo
 from service.market import Market
+
+_t = wx.GetTranslation
 
 
 class GraphFitAmmoPicker(ContextMenuSingle):
@@ -23,7 +26,7 @@ class GraphFitAmmoPicker(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return 'Plot with Different Ammo...'
+        return _t('Plot with Different Ammo...')
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         AmmoPickerFrame.openOne(callingWindow, mainItem.item, forceReopen=True)
@@ -73,7 +76,6 @@ class AmmoPickerFrame(AuxiliaryDialog):
 
 
 class AmmoPickerContents(wx.ScrolledCanvas):
-
     indent = 15
 
     def __init__(self, parent, fit):

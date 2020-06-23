@@ -10,6 +10,8 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.market import Market
 
+_t = wx.GetTranslation
+
 
 class Group:
 
@@ -32,9 +34,7 @@ class Entry:
         self.shortName = shortName
 
 
-
 class AddEnvironmentEffect(ContextMenuUnconditional):
-
     # CCP doesn't currently provide a mapping between the general Environment, and the specific environment effect
     # (which can be random when going into Abyssal space). This is how we currently define it:
     # environment type: specific type name prefix
@@ -53,7 +53,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         return srcContext == "projected"
 
     def getText(self, callingWindow, itmContext):
-        return "Add Environmental Effect"
+        return _t("Add Environmental Effect")
 
     def _addGroup(self, parentMenu, name):
         id = ContextMenuUnconditional.nextID()
@@ -103,8 +103,8 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
     def getData(self):
         data = Group()
         data.groups['Wormhole'] = self.getEffectBeacons(
-            'Black Hole', 'Cataclysmic Variable', 'Magnetar',
-            'Pulsar', 'Red Giant', 'Wolf Rayet')
+                'Black Hole', 'Cataclysmic Variable', 'Magnetar',
+                'Pulsar', 'Red Giant', 'Wolf Rayet')
         data.groups['Sansha Incursion'] = self.getEffectBeacons('Sansha Incursion')
         data.groups['Triglavian Invasion'] = self.getEffectBeacons('Triglavian Invasion')
         data.groups['Triglavian Invasion'].groups['Destructible Beacons'] = self.getDestructibleBeacons()
@@ -165,8 +165,8 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
         environments = {x.ID: x for x in sMkt.getGroup("Abyssal Environment").items}
         items = chain(
-            sMkt.getGroup("MassiveEnvironments").items,
-            sMkt.getGroup("Non-Interactable Object").items)
+                sMkt.getGroup("MassiveEnvironments").items,
+                sMkt.getGroup("Non-Interactable Object").items)
         for beacon in items:
             if not beacon.isType('projected'):
                 continue
@@ -209,5 +209,6 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
             data.items.append(Entry(item.ID, item.name, item.name))
         data.sort()
         return data
+
 
 AddEnvironmentEffect.register()

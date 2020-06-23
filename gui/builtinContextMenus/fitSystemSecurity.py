@@ -8,6 +8,7 @@ from eos.const import FitSystemSecurity
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 
+_t = wx.GetTranslation
 
 optionMap = OrderedDict((
     ('High Security', FitSystemSecurity.HISEC),
@@ -34,7 +35,7 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, itmContext):
-        return "Citadel System Security"
+        return _t("Citadel System Security")
 
     def addOption(self, menu, optionLabel):
         id = ContextMenuUnconditional.nextID()
@@ -60,8 +61,8 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
         optionLabel = self.optionIds[event.Id]
         optionValue = optionMap[optionLabel]
         self.mainFrame.command.Submit(cmd.GuiChangeFitSystemSecurityCommand(
-            fitID=self.mainFrame.getActiveFit(),
-            secStatus=optionValue))
+                fitID=self.mainFrame.getActiveFit(),
+                secStatus=optionValue))
 
 
 FitSystemSecurityMenu.register()

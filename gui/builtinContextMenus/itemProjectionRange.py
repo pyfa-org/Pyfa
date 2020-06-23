@@ -1,6 +1,5 @@
 import re
 
-# noinspection PyPackageRequirements
 import wx
 
 import gui.fitCommands as cmd
@@ -11,6 +10,10 @@ from eos.saveddata.module import Module as EosModule
 from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
 from service.fit import Fit
+
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
 
 
 class ChangeItemProjectionRange(ContextMenuCombined):
@@ -28,7 +31,7 @@ class ChangeItemProjectionRange(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return 'Change {} Range'.format(itmContext)
+        return _t('Change {} Range').format(itmContext)
 
     def activate(self, callingWindow, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
@@ -63,7 +66,7 @@ class ChangeItemProjectionRange(ContextMenuCombined):
                         fit = Fit.getInstance().getFit(fitID)
                         items = getSimilarFighters(fit.projectedFighters, mainItem)
                 self.mainFrame.command.Submit(cmd.GuiChangeProjectedItemsProjectionRangeCommand(
-                    fitID=fitID, items=items, projectionRange=newRange))
+                        fitID=fitID, items=items, projectionRange=newRange))
 
 
 ChangeItemProjectionRange.register()

@@ -1,8 +1,12 @@
+import wx
+
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from gui.fitCommands.helpers import droneStackLimit
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class DroneAddStack(ContextMenuSingle):
@@ -33,14 +37,14 @@ class DroneAddStack(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return 'Add {} to Drone Bay{}'.format(
-            itmContext, '' if self.amount == 1 else ' (x{})'.format(self.amount))
+        return _t('Add {} to Drone Bay{}').format(
+                itmContext, '' if self.amount == 1 else ' (x{})'.format(self.amount))
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         command = cmd.GuiAddLocalDroneCommand(
-            fitID=self.mainFrame.getActiveFit(),
-            itemID=int(mainItem.ID),
-            amount=self.amount)
+                fitID=self.mainFrame.getActiveFit(),
+                itemID=int(mainItem.ID),
+                amount=self.amount)
         if self.mainFrame.command.Submit(command):
             self.mainFrame.additionsPane.select('Drones', focus=False)
 

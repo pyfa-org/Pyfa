@@ -4,6 +4,8 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class ImplantSetSave(ContextMenuUnconditional):
 
@@ -22,7 +24,7 @@ class ImplantSetSave(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, context):
-        return 'Save as New Implant Set'
+        return _t('Save as New Implant Set')
 
     def activate(self, callingWindow, fullContext, i):
         with NameDialog(self.mainFrame, '') as dlg:
@@ -40,13 +42,13 @@ ImplantSetSave.register()
 class NameDialog(wx.Dialog):
 
     def __init__(self, parent, value):
-        super().__init__(parent, title='New Implant Set', style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(parent, title=_t('New Implant Set'), style=wx.DEFAULT_DIALOG_STYLE)
         self.SetMinSize((346, 156))
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
         bSizer2 = wx.BoxSizer(wx.VERTICAL)
-        text = wx.StaticText(self, wx.ID_ANY, 'Enter a name for your new Implant Set:')
+        text = wx.StaticText(self, wx.ID_ANY, _t('Enter a name for your new Implant Set:'))
         bSizer2.Add(text, 0)
 
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)

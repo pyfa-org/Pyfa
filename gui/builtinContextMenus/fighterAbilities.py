@@ -1,11 +1,14 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from gui import fitCommands as cmd
-from gui.fitCommands.helpers import getSimilarFighters
 from gui.contextMenu import ContextMenuCombined
+from gui.fitCommands.helpers import getSimilarFighters
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class FighterAbilities(ContextMenuCombined):
@@ -27,7 +30,7 @@ class FighterAbilities(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return "Abilities"
+        return _t("Abilities")
 
     def addAbility(self, menu, ability):
         label = ability.name
@@ -78,10 +81,10 @@ class FighterAbilities(ContextMenuCombined):
                 if fighter in container:
                     positions.append(container.index(fighter))
             self.mainFrame.command.Submit(command(
-                fitID=fitID,
-                mainPosition=mainPosition,
-                positions=positions,
-                effectID=ability.effectID))
+                    fitID=fitID,
+                    mainPosition=mainPosition,
+                    positions=positions,
+                    effectID=ability.effectID))
 
 
 FighterAbilities.register()

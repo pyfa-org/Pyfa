@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from gui.itemStats import ItemStatsFrame
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class ItemStats(ContextMenuSingle):
@@ -13,16 +16,16 @@ class ItemStats(ContextMenuSingle):
 
     def display(self, callingWindow, srcContext, mainItem):
         if srcContext not in (
-            "marketItemGroup", "marketItemMisc",
-            "fittingModule", "fittingCharge",
-            "fittingShip", "baseShip",
-            "cargoItem", "droneItem",
-            "implantItem", "boosterItem",
-            "skillItem", "projectedModule",
-            "projectedDrone", "projectedCharge",
-            "itemStats", "fighterItem",
-            "implantItemChar", "projectedFighter",
-            "fittingMode"
+                "marketItemGroup", "marketItemMisc",
+                "fittingModule", "fittingCharge",
+                "fittingShip", "baseShip",
+                "cargoItem", "droneItem",
+                "implantItem", "boosterItem",
+                "skillItem", "projectedModule",
+                "projectedDrone", "projectedCharge",
+                "itemStats", "fighterItem",
+                "implantItemChar", "projectedFighter",
+                "fittingMode"
         ):
             return False
 
@@ -32,7 +35,7 @@ class ItemStats(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "{} Stats".format(itmContext if itmContext is not None else "Item")
+        return _t("{} Stats").format(itmContext if itmContext is not None else _t("Item"))
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         srcContext = fullContext[0]

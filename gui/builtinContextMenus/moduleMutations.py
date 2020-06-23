@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class ChangeModuleMutation(ContextMenuSingle):
@@ -27,7 +30,7 @@ class ChangeModuleMutation(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Apply Mutaplasmid" if not mainItem.isMutated else "Revert to {}".format(mainItem.baseItem.name)
+        return _t("Apply Mutaplasmid") if not mainItem.isMutated else _t("Revert to {}").format(mainItem.baseItem.name)
 
     def getSubMenu(self, callingWindow, context, mainItem, rootMenu, i, pitem):
         if mainItem.isMutated:
@@ -56,7 +59,7 @@ class ChangeModuleMutation(ContextMenuSingle):
         if mod in fit.modules:
             position = fit.modules.index(mod)
             self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
-                fitID=fitID, position=position, mutaplasmid=mutaplasmid))
+                    fitID=fitID, position=position, mutaplasmid=mutaplasmid))
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
@@ -64,7 +67,7 @@ class ChangeModuleMutation(ContextMenuSingle):
         if mainItem in fit.modules:
             position = fit.modules.index(mainItem)
             self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
-                fitID=fitID, position=position))
+                    fitID=fitID, position=position))
 
     def getBitmap(self, callingWindow, context, mainItem):
         return None

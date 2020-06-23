@@ -35,8 +35,8 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         # Order here is important: patterns with duplicate names from the latter will overwrite
         # patterns from the former
         self.patterns = sorted(
-            chain(builtinPatterns, userPatterns),
-            key=lambda p: p.fullName not in ["Uniform", "Selected Ammo"])
+                chain(builtinPatterns, userPatterns),
+                key=lambda p: p.fullName not in ["Uniform", "Selected Ammo"])
 
         self.patternEventMap = {}
         self.items = (OrderedDict(), OrderedDict())

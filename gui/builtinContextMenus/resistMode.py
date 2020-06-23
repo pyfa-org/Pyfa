@@ -1,6 +1,5 @@
 from collections import OrderedDict
 
-# noinspection PyPackageRequirements
 import wx
 
 import gui.mainFrame
@@ -10,6 +9,9 @@ from gui.contextMenu import ContextMenuCombined
 from service.const import TargetResistMode
 from service.settings import GraphSettings
 
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
 
 optionMap = OrderedDict((
     ('Auto', TargetResistMode.auto),
@@ -36,7 +38,7 @@ class TargetWrapperResists(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return 'Resist Mode'
+        return _t('Resist Mode')
 
     def addOption(self, menu, optionLabel):
         id = ContextMenuCombined.nextID()

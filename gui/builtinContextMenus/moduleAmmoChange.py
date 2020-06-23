@@ -1,4 +1,5 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.fitCommands as cmd
@@ -8,6 +9,8 @@ from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarModPositions
 from service.ammo import Ammo
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class ChangeModuleAmmo(ContextMenuCombined):
@@ -34,7 +37,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return 'Charge'
+        return _t('Charge')
 
     def _getAmmo(self, mod):
         if mod.itemID is None:
@@ -129,9 +132,9 @@ class ChangeModuleAmmo(ContextMenuCombined):
                 return
             positions = getSimilarModPositions(modContainer, self.module)
             self.mainFrame.command.Submit(command(
-                fitID=fitID,
-                positions=positions,
-                chargeItemID=charge.ID if charge is not None else None))
+                    fitID=fitID,
+                    positions=positions,
+                    chargeItemID=charge.ID if charge is not None else None))
         else:
             if self.srcContext == 'fittingModule':
                 command = cmd.GuiChangeLocalModuleChargesCommand
@@ -148,9 +151,9 @@ class ChangeModuleAmmo(ContextMenuCombined):
                     if modCharges.issubset(self.mainCharges):
                         positions.append(position)
             self.mainFrame.command.Submit(command(
-                fitID=fitID,
-                positions=positions,
-                chargeItemID=charge.ID if charge is not None else None))
+                    fitID=fitID,
+                    positions=positions,
+                    chargeItemID=charge.ID if charge is not None else None))
 
 
 ChangeModuleAmmo.register()
