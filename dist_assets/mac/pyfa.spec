@@ -20,6 +20,7 @@ added_files = [
              ('../../imgs/renders/*.png', 'imgs/renders'),
              ('../../dist_assets/win/pyfa.ico', '.'),
              ('../../service/jargon/*.yaml', 'service/jargon'),
+             ('../../locale', 'locale'),
              (requests.certs.where(), '.'),  # is this needed anymore?
              ('../../eve.db', '.'),
              ('../../README.md', '.'),
