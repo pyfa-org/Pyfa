@@ -40,6 +40,7 @@ from service.market import Market
 
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class BaseName(ViewColumn):
@@ -51,7 +52,7 @@ class BaseName(ViewColumn):
         ViewColumn.__init__(self, fittingView)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.columnText = "Name"
+        self.columnText = _t("Name")
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.builtinAdditionPanes.projectedView.ProjectedView)
 

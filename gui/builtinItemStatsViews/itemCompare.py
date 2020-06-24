@@ -7,6 +7,8 @@ from service.market import Market
 from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 
+_t = wx.GetTranslation
+
 
 def defaultSort(item):
     return (item.metaLevel or 0, item.name)
@@ -70,11 +72,11 @@ class ItemCompare(wx.Panel):
         self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle view mode", wx.DefaultPosition,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, _t("Toggle view mode"), wx.DefaultPosition,
                                              wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize,
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, _t("Refresh"), wx.DefaultPosition, wx.DefaultSize,
                                     wx.BU_EXACTFIT)
         bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
         self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
@@ -142,7 +144,7 @@ class ItemCompare(wx.Panel):
 
             self.items = sorted(self.items, key=func, reverse=self.sortReverse)
 
-        self.paramList.InsertColumn(0, "Item")
+        self.paramList.InsertColumn(0, _t("Item"))
         self.paramList.SetColumnWidth(0, 200)
 
         for i, attr in enumerate(self.attrs.keys()):
@@ -150,7 +152,7 @@ class ItemCompare(wx.Panel):
             self.paramList.InsertColumn(i + 1, name)
             self.paramList.SetColumnWidth(i + 1, 120)
 
-        self.paramList.InsertColumn(len(self.attrs) + 1, "Price")
+        self.paramList.InsertColumn(len(self.attrs) + 1, _t("Price"))
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
         for item in self.items:
@@ -189,16 +191,16 @@ class ItemCompare(wx.Panel):
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
         trans = {
-            "Inverse Absolute Percent" : (lambda: (1 - value) * 100, unitName),
+            "Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
             "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
-            "Modifier Percent"         : (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-            "Volume"                   : (lambda: value, "m\u00B3"),
-            "Sizeclass"                : (lambda: value, ""),
-            "Absolute Percent"         : (lambda: (value * 100), unitName),
-            "Milliseconds"             : (lambda: value / 1000.0, unitName),
-            "typeID"                   : (itemIDCallback, ""),
-            "groupID"                  : (groupIDCallback, ""),
-            "attributeID"              : (attributeIDCallback, "")
+            "Modifier Percent": (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+            "Volume": (lambda: value, "m\u00B3"),
+            "Sizeclass": (lambda: value, ""),
+            "Absolute Percent": (lambda: (value * 100), unitName),
+            "Milliseconds": (lambda: value / 1000.0, unitName),
+            "typeID": (itemIDCallback, ""),
+            "groupID": (groupIDCallback, ""),
+            "attributeID": (attributeIDCallback, "")
         }
 
         override = trans.get(unitDisplayName)

@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.settings import GraphSettings
+
+_t = wx.GetTranslation
 
 
 class GraphIgnoreLockRangeMenu(ContextMenuUnconditional):
@@ -17,7 +20,7 @@ class GraphIgnoreLockRangeMenu(ContextMenuUnconditional):
         return srcContext in ('dmgStatsGraph', 'remoteRepsGraph', 'ewarStatsGraph')
 
     def getText(self, callingWindow, itmContext):
-        return 'Ignore Lock Range'
+        return _t('Ignore Lock Range')
 
     def activate(self, callingWindow, fullContext, i):
         self.settings.set('ignoreLockRange', not self.settings.get('ignoreLockRange'))

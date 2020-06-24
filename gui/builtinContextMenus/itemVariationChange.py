@@ -1,16 +1,18 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuCombined
-from gui.fitCommands.helpers import getSimilarModPositions, getSimilarFighters
+from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
 from service.fit import Fit
 from service.market import Market
 
+_t = wx.GetTranslation
+
 
 class ChangeItemToVariation(ContextMenuCombined):
-
     visibilitySetting = 'metaSwap'
 
     def __init__(self):
@@ -18,15 +20,15 @@ class ChangeItemToVariation(ContextMenuCombined):
 
     def display(self, callingWindow, srcContext, mainItem, selection):
         if self.mainFrame.getActiveFit() is None or srcContext not in (
-            'fittingModule',
-            'droneItem',
-            'fighterItem',
-            'boosterItem',
-            'implantItem',
-            'cargoItem',
-            'projectedModule',
-            'projectedDrone',
-            'projectedFighter'
+                'fittingModule',
+                'droneItem',
+                'fighterItem',
+                'boosterItem',
+                'implantItem',
+                'cargoItem',
+                'projectedModule',
+                'projectedDrone',
+                'projectedFighter'
         ):
             return False
 
@@ -44,7 +46,7 @@ class ChangeItemToVariation(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return 'Variations'
+        return _t('Variations')
 
     def getSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
         self.moduleLookup = {}
@@ -60,7 +62,8 @@ class ChangeItemToVariation(ContextMenuCombined):
                 # We want deadspace before officer mods
                 5: 6, 6: 5,
                 # For structures we want t1-t2-faction
-                54: 52, 52: 54}
+                54: 52, 52: 54
+            }
             metaGroup = sMkt.getMetaGroupByItem(x)
             return remap.get(metaGroup.ID, metaGroup.ID) if metaGroup is not None else 0
 
@@ -86,8 +89,8 @@ class ChangeItemToVariation(ContextMenuCombined):
 
         # Do not show abyssal items
         items = list(
-            i for i in self.mainVariations
-            if sMkt.getMetaGroupByItem(i) is None or sMkt.getMetaGroupByItem(i).ID != 15)
+                i for i in self.mainVariations
+                if sMkt.getMetaGroupByItem(i) is None or sMkt.getMetaGroupByItem(i).ID != 15)
         # Sort items by metalevel, and group within that metalevel
         # Sort all items by name first
         items.sort(key=lambda x: x.name)
@@ -143,7 +146,8 @@ class ChangeItemToVariation(ContextMenuCombined):
             'boosterItem': self.__handleBooster,
             'projectedModule': self.__handleProjectedModule,
             'projectedDrone': self.__handleProjectedDrone,
-            'projectedFighter': self.__handleProjectedFighter}
+            'projectedFighter': self.__handleProjectedFighter
+        }
         handler = handlerMap.get(context)
         if handler is None:
             return
@@ -169,7 +173,7 @@ class ChangeItemToVariation(ContextMenuCombined):
                 if modVariations == self.mainVariations:
                     positions.append(fit.modules.index(mod))
         self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
-            fitID=fitID, positions=positions, newItemID=varItem.ID))
+                fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleDrone(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -186,7 +190,7 @@ class ChangeItemToVariation(ContextMenuCombined):
             if droneVariations == self.mainVariations:
                 positions.append(fit.drones.index(drone))
         self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetasCommand(
-            fitID=fitID, positions=positions, newItemID=varItem.ID))
+                fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -207,7 +211,7 @@ class ChangeItemToVariation(ContextMenuCombined):
             if fighterVariations == self.mainVariations:
                 positions.append(fit.fighters.index(fighter))
         self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetasCommand(
-            fitID=fitID, positions=positions, newItemID=varItem.ID))
+                fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleCargo(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -221,7 +225,7 @@ class ChangeItemToVariation(ContextMenuCombined):
             if cargoVariations == self.mainVariations:
                 itemIDs.append(cargo.itemID)
         self.mainFrame.command.Submit(cmd.GuiChangeCargoMetasCommand(
-            fitID=fitID, itemIDs=itemIDs, newItemID=varItem.ID))
+                fitID=fitID, itemIDs=itemIDs, newItemID=varItem.ID))
 
     def __handleImplant(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -230,7 +234,7 @@ class ChangeItemToVariation(ContextMenuCombined):
         if implant in fit.implants:
             position = fit.implants.index(implant)
             self.mainFrame.command.Submit(cmd.GuiChangeImplantMetaCommand(
-                fitID=fitID, position=position, newItemID=varItem.ID))
+                    fitID=fitID, position=position, newItemID=varItem.ID))
 
     def __handleBooster(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -239,7 +243,7 @@ class ChangeItemToVariation(ContextMenuCombined):
         if booster in fit.boosters:
             position = fit.boosters.index(booster)
             self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
-                fitID=fitID, position=position, newItemID=varItem.ID))
+                    fitID=fitID, position=position, newItemID=varItem.ID))
 
     def __handleProjectedModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -259,7 +263,7 @@ class ChangeItemToVariation(ContextMenuCombined):
                 if modVariations == self.mainVariations:
                     positions.append(fit.projectedModules.index(mod))
         self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetasCommand(
-            fitID=fitID, positions=positions, newItemID=varItem.ID))
+                fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleProjectedDrone(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -276,7 +280,7 @@ class ChangeItemToVariation(ContextMenuCombined):
             if droneVariations == self.mainVariations:
                 itemIDs.append(drone.itemID)
         self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetasCommand(
-            fitID=fitID, itemIDs=itemIDs, newItemID=varItem.ID))
+                fitID=fitID, itemIDs=itemIDs, newItemID=varItem.ID))
 
     def __handleProjectedFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
@@ -297,7 +301,7 @@ class ChangeItemToVariation(ContextMenuCombined):
             if fighterVariations == self.mainVariations:
                 positions.append(fit.projectedFighters.index(fighter))
         self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetasCommand(
-            fitID=fitID, positions=positions, newItemID=varItem.ID))
+                fitID=fitID, positions=positions, newItemID=varItem.ID))
 
 
 ChangeItemToVariation.register()

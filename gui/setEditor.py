@@ -145,10 +145,10 @@ class ImplantSetEditor(AuxiliaryFrame):
         self.stNotice.Wrap(-1)
         footerSizer.Add(self.stNotice, 1, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
-        importExport = (("Import", wx.ART_FILE_OPEN, _t("from")),
-                        ("Export", wx.ART_FILE_SAVE_AS, _t("to")))
+        importExport = ((_t("Import implant sets from clipboard"), wx.ART_FILE_OPEN, "Import"),
+                        (_t("Export implant sets to clipboard"), wx.ART_FILE_SAVE_AS, "Export"))
 
-        for name, art, direction in importExport:
+        for tooltip, art, attr in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
@@ -156,9 +156,9 @@ class ImplantSetEditor(AuxiliaryFrame):
             btn.SetMaxSize(btn.GetSize())
 
             btn.Layout()
-            setattr(self, name, btn)
+            setattr(self, attr, btn)
             btn.Enable(True)
-            btn.SetToolTip(_t("{} implant sets {} clipboard").format(name, direction))
+            btn.SetToolTip(tooltip)
             footerSizer.Add(btn, 0)
 
         mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)

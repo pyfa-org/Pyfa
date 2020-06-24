@@ -17,11 +17,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+from collections import OrderedDict
+
 # noinspection PyPackageRequirements
 import wx
+
 from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
-from collections import OrderedDict
 
 _t = wx.GetTranslation
 
@@ -104,7 +106,8 @@ class TargetingMiscViewMinimal(StatsView):
 
         sensorValues = {
             "main": lambda: fit.scanStrength,
-            "jamChance": lambda: fit.jamChance}
+            "jamChance": lambda: fit.jamChance
+        }
 
         cargoNamesOrder = OrderedDict((
             ("fleetHangarCapacity", _t("Fleet hangar")),
@@ -143,7 +146,8 @@ class TargetingMiscViewMinimal(StatsView):
             "specialSalvageHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSalvageHoldCapacity"),
             "specialCommandCenterHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialCommandCenterHoldCapacity"),
             "specialPlanetaryCommoditiesHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialPlanetaryCommoditiesHoldCapacity"),
-            "specialQuafeHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity")}
+            "specialQuafeHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity")
+        }
 
         stats = (("labelTargets", {"main": lambda: fit.maxTargets}, 3, 0, 0, ""),
                  ("labelRange", {"main": lambda: fit.maxTargetRange / 1000}, 3, 0, 0, "km"),
@@ -157,10 +161,10 @@ class TargetingMiscViewMinimal(StatsView):
                  ("labelFullCargo", cargoValues, 4, 0, 9, "m\u00B3"))
 
         counter = 0
-        RADII = [("Pod", 25), ("Interceptor", 33), ("Frigate", 38),
-                 ("Destroyer", 83), ("Cruiser", 130),
-                 ("Battlecruiser", 265), ("Battleship", 420),
-                 ("Carrier", 3000)]
+        RADII = [(_t("Pod"), 25), (_t("Interceptor"), 33), (_t("Frigate"), 38),
+                 (_t("Destroyer"), 83), (_t("Cruiser"), 130),
+                 (_t("Battlecruiser"), 265), (_t("Battleship"), 420),
+                 (_t("Carrier"), 3000)]
         for labelName, valueDict, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
             newValues = {}
@@ -185,8 +189,8 @@ class TargetingMiscViewMinimal(StatsView):
                     ecmChance = round(ecmChance, 1)
                     if ecmChance:
                         label.SetLabel("{} ({}%)".format(
-                            formatAmount(mainValue, prec, lowest, highest),
-                            formatAmount(ecmChance, 3, 0, 0)))
+                                formatAmount(mainValue, prec, lowest, highest),
+                                formatAmount(ecmChance, 3, 0, 0)))
                     else:
                         label.SetLabel("{}".format(formatAmount(mainValue, prec, lowest, highest)))
                 else:
@@ -194,35 +198,35 @@ class TargetingMiscViewMinimal(StatsView):
                 # Tooltip stuff
                 if fit:
                     if labelName == "labelScanRes":
-                        lockTime = "%s\n" % "Lock Times".center(30)
+                        lockTime = "%s\n" % _t("Lock Times").center(30)
                         for size, radius in RADII:
                             left = "%.1fs" % fit.calculateLockTime(radius)
                             right = "%s [%d]" % (size, radius)
                             lockTime += "%5s\t%s\n" % (left, right)
                         label.SetToolTip(wx.ToolTip(lockTime))
                     elif labelName == "labelFullWarpSpeed":
-                        maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
+                        maxWarpDistance = _t("Max Warp Distance: %.1f AU") % fit.maxWarpDistance
                         if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
-                            warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
+                            warpScrambleStatus = _t("Warp Core Strength: %.1f") % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
                         else:
-                            warpScrambleStatus = "Warp Core Strength: %.1f" % 0
+                            warpScrambleStatus = _t("Warp Core Strength: %.1f") % 0
                         label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
                     elif labelName == "labelSensorStr":
                         ecmChance = otherValues["jamChance"]
                         ecmChance = round(ecmChance, 1)
                         if ecmChance > 0:
-                            label.SetToolTip(wx.ToolTip("Type: {}\n{}% chance to be jammed".format(
-                                fit.scanType,
-                                formatAmount(ecmChance, 3, 0, 0))))
+                            label.SetToolTip(wx.ToolTip(
+                                _t("Type: {0}\n").foramt(fit.scanType) + "{}%".format(formatAmount(ecmChance, 3, 0, 0)) + _t(" chance to be jammed").format(
+                                    formatAmount(ecmChance, 3, 0, 0))))
                         else:
-                            label.SetToolTip(wx.ToolTip("Type: {}".format(fit.scanType)))
+                            label.SetToolTip(wx.ToolTip(_t("Type: {}").format(fit.scanType)))
                     elif labelName == "labelFullAlignTime":
-                        alignTime = "Align:\t%.3fs" % mainValue
-                        mass = 'Mass:\t{:,.0f}kg'.format(fit.ship.getModifiedItemAttr("mass"))
-                        agility = "Agility:\t%.3fx" % (fit.ship.getModifiedItemAttr("agility") or 0)
+                        alignTime = _t("Align:\t%.3fs") % mainValue
+                        mass = _t('Mass:\t{:,.0f}kg').format(fit.ship.getModifiedItemAttr("mass"))
+                        agility = _t("Agility:\t%.3fx") % (fit.ship.getModifiedItemAttr("agility") or 0)
                         label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
-                        tipLines = ["Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"])]
+                        tipLines = [_t("Cargohold: ")+"{:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"])]
                         for attrName, tipAlias in list(cargoNamesOrder.items()):
                             if newValues[attrName] > 0:
                                 tipLines.append("{}: {:,.2f}m\u00B3".format(tipAlias, newValues[attrName]))
@@ -234,11 +238,11 @@ class TargetingMiscViewMinimal(StatsView):
                 self._cachedValues[counter] = newValues
             elif labelName == "labelFullWarpSpeed":
                 if fit:
-                    maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
+                    maxWarpDistance = _t("Max Warp Distance: %.1f AU") % fit.maxWarpDistance
                     if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
-                        warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
+                        warpScrambleStatus = _t("Warp Core Strength: %.1f") % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
                     else:
-                        warpScrambleStatus = "Warp Core Strength: %.1f" % 0
+                        warpScrambleStatus = _t("Warp Core Strength: %.1f") % 0
                     label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
@@ -247,7 +251,7 @@ class TargetingMiscViewMinimal(StatsView):
                     cachedCargo = self._cachedValues[counter]
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
-                    tipLines = ["Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"])]
+                    tipLines = [_t("Cargohold: ")+"{:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"])]
                     for attrName, tipAlias in list(cargoNamesOrder.items()):
                         if cachedCargo[attrName] > 0:
                             tipLines.append("{}: {:,.2f}m\u00B3".format(tipAlias, cachedCargo[attrName]))
@@ -258,7 +262,7 @@ class TargetingMiscViewMinimal(StatsView):
             # forces update of probe size, since this stat is used by both sig radius and sensor str
             if labelName == "labelFullSigRadius":
                 if fit:
-                    label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0)))
+                    label.SetToolTip(wx.ToolTip(_t("Probe Size: %.3f") % (fit.probeSize or 0)))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
 

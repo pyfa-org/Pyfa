@@ -369,10 +369,10 @@ class SkillTreeView(wx.Panel):
 
         bSizerButtons.AddStretchSpacer()
 
-        importExport = ((_t("Import"), wx.ART_FILE_OPEN, _t("from")),
-                        (_t("Export"), wx.ART_FILE_SAVE_AS, _t("to")))
+        importExport = ((_t("Import skills from clipboard"), wx.ART_FILE_OPEN, "import"),
+                        (_t("Export skills from clipboard"), wx.ART_FILE_SAVE_AS, "export"))
 
-        for name, art, direction in importExport:
+        for tooltip, art, attr in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
@@ -380,11 +380,11 @@ class SkillTreeView(wx.Panel):
             btn.SetMaxSize(btn.GetSize())
 
             btn.Layout()
-            setattr(self, "{}Btn".format(name.lower()), btn)
+            setattr(self, "{}Btn".format(attr), btn)
             btn.Enable(True)
-            btn.SetToolTip(_t("%s skills %s clipboard") % (name, direction))
+            btn.SetToolTip(tooltip)
             bSizerButtons.Add(btn, 0, wx.ALL, 5)
-            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Skills".format(name.lower())))
+            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Skills".format(attr)))
 
         pmainSizer.Add(bSizerButtons, 0, wx.EXPAND, 5)
 
@@ -605,7 +605,7 @@ class SkillTreeView(wx.Panel):
         eveItem = Market.getInstance().getItem(id)
 
         srcContext = "skillItem"
-        itemContext = "Skill"
+        itemContext = _t("Skill")
         context = (srcContext, itemContext)
         menu = ContextMenu.getMenu(self, eveItem, [eveItem], context)
         char = self.charEditor.entityEditor.getActiveEntity()
@@ -646,7 +646,7 @@ class SkillTreeView(wx.Panel):
             lvl, dirty = sChar.getSkillLevel(char.ID, skillID)
             self.skillTreeListCtrl.SetItemText(treeItem,
                                                1,
-                                               _("Level {}").format(int(lvl)) if not isinstance(lvl, str) else lvl)
+                                               _t("Level {}").format(int(lvl)) if not isinstance(lvl, str) else lvl)
 
             if not dirty:
                 self.skillTreeListCtrl.SetItemImage(treeItem, self.skillBookImageId)

@@ -1,3 +1,5 @@
+import wx
+
 import gui.mainFrame
 from gui import fitCommands as cmd
 from gui.contextMenu import ContextMenuUnconditional
@@ -5,25 +7,25 @@ from gui.utils.clipboard import fromClipboard
 from service.fit import Fit
 from service.port.eft import parseAdditions
 
-
-viewSpecMap = {
-    'droneItemMisc': ('Drones', lambda i: i.isDrone, cmd.GuiImportLocalDronesCommand),
-    'fighterItemMisc': ('Fighters', lambda i: i.isFighter, cmd.GuiImportLocalFightersCommand),
-    'cargoItemMisc': ('Cargo Items', lambda i: not i.isAbyssal, cmd.GuiImportCargosCommand),
-    'implantItemMisc': ('Implants', lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
-    'implantItemMiscChar': ('Implants', lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
-    'boosterItemMisc': ('Boosters', lambda i: i.isBooster, cmd.GuiImportBoostersCommand)}
+_t = wx.GetTranslation
 
 
 class AdditionsImport(ContextMenuUnconditional):
-
     visibilitySetting = 'additionsCopyPaste'
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.viewSpecMap = {
+            'droneItemMisc': (_t('Drones'), lambda i: i.isDrone, cmd.GuiImportLocalDronesCommand),
+            'fighterItemMisc': (_t('Fighters'), lambda i: i.isFighter, cmd.GuiImportLocalFightersCommand),
+            'cargoItemMisc': (_t('Cargo Items'), lambda i: not i.isAbyssal, cmd.GuiImportCargosCommand),
+            'implantItemMisc': (_t('Implants'), lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
+            'implantItemMiscChar': (_t('Implants'), lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
+            'boosterItemMisc': (_t('Boosters'), lambda i: i.isBooster, cmd.GuiImportBoostersCommand)
+        }
 
     def display(self, callingWindow, srcContext):
-        if srcContext not in viewSpecMap:
+        if srcContext not in self.viewSpecMap:
             return False
         fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
         if fit is None:
@@ -35,16 +37,16 @@ class AdditionsImport(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, itmContext):
-        return 'Paste {}'.format(viewSpecMap[self.srcContext][0])
+        return _t('Paste {}').format(self.viewSpecMap[self.srcContext][0])
 
     def activate(self, callingWindow, fullContext, i):
         text = fromClipboard()
         items = parseAdditions(text)
-        filterFunc = viewSpecMap[self.srcContext][1]
+        filterFunc = self.viewSpecMap[self.srcContext][1]
         items = [(i.ID, a) for i, a in items if filterFunc(i)]
         if not items:
             return
-        command = viewSpecMap[self.srcContext][2]
+        command = self.viewSpecMap[self.srcContext][2]
         self.mainFrame.command.Submit(command(self.mainFrame.getActiveFit(), items))
 
 

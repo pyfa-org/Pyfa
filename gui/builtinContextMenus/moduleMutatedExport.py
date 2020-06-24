@@ -1,7 +1,11 @@
+import wx
+
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from gui.utils.clipboard import toClipboard
 from service.port.muta import renderMutant
+
+_t = wx.GetTranslation
 
 
 class ExportMutatedModule(ContextMenuSingle):
@@ -21,7 +25,7 @@ class ExportMutatedModule(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return 'Copy Module to Clipboard'
+        return _t('Copy Module to Clipboard')
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         export = renderMutant(mainItem, prefix='  ')

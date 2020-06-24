@@ -11,6 +11,8 @@ from enum import IntEnum
 from gui.builtinItemStatsViews.attributeGrouping import *
 from service.const import GuiAttrGroup
 
+_t = wx.GetTranslation
+
 
 class AttributeView(IntEnum):
     NORMAL = 1
@@ -25,7 +27,8 @@ class ItemParams(wx.Panel):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
+        self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY,
+                                                                agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
         self.paramList.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
@@ -38,25 +41,25 @@ class ItemParams(wx.Panel):
         self.attrValues = {}
         self._fetchValues()
 
-        self.paramList.AddColumn("Attribute")
-        self.paramList.AddColumn("Current Value")
+        self.paramList.AddColumn(_t("Attribute"))
+        self.paramList.AddColumn(_t("Current Value"))
         if self.stuff is not None:
-            self.paramList.AddColumn("Base Value")
+            self.paramList.AddColumn(_t("Base Value"))
 
         self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "View Raw Data", wx.DefaultPosition, wx.DefaultSize,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, _t("View Raw Data"), wx.DefaultPosition, wx.DefaultSize,
                                              0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, "Export Item Stats", wx.DefaultPosition, wx.DefaultSize,
+        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, _t("Export Item Stats"), wx.DefaultPosition, wx.DefaultSize,
                                               0)
         bSizer.Add(self.exportStatsBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, _t("Refresh"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
             bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
 
@@ -111,8 +114,8 @@ class ItemParams(wx.Panel):
         exportFileName = self.item.name + " (" + str(self.item.ID) + ").csv"
 
         with wx.FileDialog(
-            self, "Save CSV file", "", exportFileName,
-            "CSV files (*.csv)|*.csv", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
+                self, _t("Save CSV file"), "", exportFileName,
+                _t("CSV files") + " (*.csv)|*.csv", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
         ) as dlg:
 
             if dlg.ShowModal() == wx.ID_CANCEL:
@@ -266,7 +269,7 @@ class ItemParams(wx.Panel):
         for i in range(self.paramList.GetMainWindow().GetColumnCount()):
             self.paramList.SetColumnWidth(i, wx.LIST_AUTOSIZE)
 
-    def GetData(self, attr, displayOveride = None):
+    def GetData(self, attr, displayOveride=None):
         info = self.attrInfo.get(attr)
         att = self.attrValues[attr]
 
@@ -285,7 +288,8 @@ class ItemParams(wx.Panel):
         val = getattr(att, "value", None)
         value = val if val is not None else att
 
-        if self.toggleView == AttributeView.NORMAL and ((attr not in GroupedAttributes and not (value or valueDefault)) or info is None or not info.published or attr in RequiredSkillAttrs):
+        if self.toggleView == AttributeView.NORMAL and (
+                (attr not in GroupedAttributes and not (value or valueDefault)) or info is None or not info.published or attr in RequiredSkillAttrs):
             return None
 
         if info and info.displayName and self.toggleView == AttributeView.NORMAL:

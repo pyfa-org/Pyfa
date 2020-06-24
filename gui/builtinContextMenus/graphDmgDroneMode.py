@@ -1,6 +1,5 @@
 from collections import OrderedDict
 
-# noinspection PyPackageRequirements
 import wx
 
 import gui.globalEvents as GE
@@ -8,6 +7,10 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
+
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
 
 
 class GraphDmgDroneModeMenu(ContextMenuUnconditional):
@@ -20,7 +23,7 @@ class GraphDmgDroneModeMenu(ContextMenuUnconditional):
         return srcContext == 'dmgStatsGraph'
 
     def getText(self, callingWindow, itmContext):
-        return 'Drone Mode'
+        return _t('Drone Mode')
 
     def handleModeSwitch(self, event):
         option = self.idOptionMap[event.Id]

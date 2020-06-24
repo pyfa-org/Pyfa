@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from gui import fitCommands as cmd
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class BoosterSideEffects(ContextMenuSingle):
@@ -28,7 +31,7 @@ class BoosterSideEffects(ContextMenuSingle):
         return False
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Side Effects"
+        return _t("Side Effects")
 
     def addEffect(self, menu, ability):
         label = ability.name
@@ -67,7 +70,7 @@ class BoosterSideEffects(ContextMenuSingle):
         if booster in fit.boosters:
             index = fit.boosters.index(booster)
             self.mainFrame.command.Submit(cmd.GuiToggleBoosterSideEffectStateCommand(
-                fitID=fitID, position=index, effectID=effect.effectID))
+                    fitID=fitID, position=index, effectID=effect.effectID))
 
 
 BoosterSideEffects.register()

@@ -1,10 +1,13 @@
+import wx
+
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 
+_t = wx.GetTranslation
+
 
 class FillWithItem(ContextMenuSingle):
-
     visibilitySetting = 'moduleFill'
 
     def __init__(self):
@@ -26,12 +29,12 @@ class FillWithItem(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Fill With Module"
+        return _t("Fill With Module")
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(
-            fitID=self.mainFrame.getActiveFit(),
-            itemID=int(mainItem.ID)))
+                fitID=self.mainFrame.getActiveFit(),
+                itemID=int(mainItem.ID)))
 
 
 FillWithItem.register()

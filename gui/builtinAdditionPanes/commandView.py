@@ -30,6 +30,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 
+_t = wx.GetTranslation
 
 class DummyItem:
 
@@ -197,7 +198,7 @@ class CommandView(d.Display):
                 pass
         contexts = []
         if mainCommandFit is not None:
-            contexts.append(('commandFit', 'Command Fit'))
+            contexts.append(('commandFit', _t('Command Fit')))
         contexts.append(('commandView',))
         menu = ContextMenu.getMenu(self, mainCommandFit, selection, *contexts)
         if menu:

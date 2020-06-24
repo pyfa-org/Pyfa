@@ -1,7 +1,11 @@
+import wx
+
 import gui.mainFrame
 from graphs.wrapper import TargetWrapper
 from gui.contextMenu import ContextMenuSingle
 from gui.targetProfileEditor import TargetProfileEditor
+
+_t = wx.GetTranslation
 
 
 class TargetProfileEditorMenu(ContextMenuSingle):

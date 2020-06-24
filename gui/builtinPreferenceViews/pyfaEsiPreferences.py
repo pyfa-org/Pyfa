@@ -6,15 +6,14 @@ from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.settings import EsiSettings
 
-
 # noinspection PyPackageRequirements
+_t = wx.GetTranslation
 
 
 class PFEsiPref(PreferenceView):
-    title = "EVE SSO"
 
     def populatePanel(self, panel):
-
+        self.title = _t("EVE SSO")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = EsiSettings.getInstance()
         self.dirtySettings = False
@@ -30,25 +29,25 @@ class PFEsiPref(PreferenceView):
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         self.stInfo = wx.StaticText(panel, wx.ID_ANY,
-                                    "Please see the pyfa wiki on GitHub for information regarding these options.",
+                                    _t("Please see the pyfa wiki on GitHub for information regarding these options."),
                                     wx.DefaultPosition, wx.DefaultSize, 0)
         self.stInfo.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stInfo, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         rbSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.rbMode = wx.RadioBox(panel, -1, "Login Authentication Method", wx.DefaultPosition, wx.DefaultSize,
-                                  ['Local Server', 'Manual'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetItemToolTip(0, "This options starts a local webserver that the web application will call back to"
-                                      " with information about the character login.")
-        self.rbMode.SetItemToolTip(1, "This option prompts users to copy and paste information from the web application "
-                                      "to allow for character login. Use this if having issues with the local server.")
+        self.rbMode = wx.RadioBox(panel, -1, _t("Login Authentication Method"), wx.DefaultPosition, wx.DefaultSize,
+                                  [_t('Local Server'), _t('Manual')], 1, wx.RA_SPECIFY_COLS)
+        self.rbMode.SetItemToolTip(0, _t("This options starts a local webserver that the web application will call back to"
+                                         " with information about the character login."))
+        self.rbMode.SetItemToolTip(1, _t("This option prompts users to copy and paste information from the web application "
+                                         "to allow for character login. Use this if having issues with the local server."))
 
-        self.rbSsoMode = wx.RadioBox(panel, -1, "SSO Mode", wx.DefaultPosition, wx.DefaultSize,
-                                     ['pyfa.io', 'Custom application'], 1, wx.RA_SPECIFY_COLS)
-        self.rbSsoMode.SetItemToolTip(0, "This options routes SSO Logins through pyfa.io, allowing you to easily login "
-                                         "without any configuration. When in doubt, use this option.")
-        self.rbSsoMode.SetItemToolTip(1, "This option goes through EVE SSO directly, but requires more configuration. Use "
-                                         "this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io.")
+        self.rbSsoMode = wx.RadioBox(panel, -1, _t("SSO Mode"), wx.DefaultPosition, wx.DefaultSize,
+                                     [_t('pyfa.io'), _t('Custom application')], 1, wx.RA_SPECIFY_COLS)
+        self.rbSsoMode.SetItemToolTip(0, _t("This options routes SSO Logins through pyfa.io, allowing you to easily login "
+                                            "without any configuration. When in doubt, use this option."))
+        self.rbSsoMode.SetItemToolTip(1, _t("This option goes through EVE SSO directly, but requires more configuration. Use "
+                                            "this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."))
 
         self.rbMode.SetSelection(self.settings.get('loginMode'))
         self.rbSsoMode.SetSelection(self.settings.get('ssoMode'))
@@ -61,7 +60,7 @@ class PFEsiPref(PreferenceView):
 
         mainSizer.Add(rbSizer, 1, wx.ALL | wx.EXPAND, 0)
 
-        detailsTitle = wx.StaticText(panel, wx.ID_ANY, "Custom Application", wx.DefaultPosition, wx.DefaultSize, 0)
+        detailsTitle = wx.StaticText(panel, wx.ID_ANY, _t("Custom Application"), wx.DefaultPosition, wx.DefaultSize, 0)
         detailsTitle.Wrap(-1)
         detailsTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
@@ -74,7 +73,7 @@ class PFEsiPref(PreferenceView):
         fgAddrSizer.SetFlexibleDirection(wx.BOTH)
         fgAddrSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.stSetID = wx.StaticText(panel, wx.ID_ANY, "Client ID:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetID = wx.StaticText(panel, wx.ID_ANY, _t("Client ID:"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetID.Wrap(-1)
         fgAddrSizer.Add(self.stSetID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -83,7 +82,7 @@ class PFEsiPref(PreferenceView):
 
         fgAddrSizer.Add(self.inputClientID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
-        self.stSetSecret = wx.StaticText(panel, wx.ID_ANY, "Client Secret:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetSecret = wx.StaticText(panel, wx.ID_ANY, _t("Client Secret:"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetSecret.Wrap(-1)
 
         fgAddrSizer.Add(self.stSetSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)

@@ -126,14 +126,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         if not toggle:
             self.shipBrowser.recentFits = False
-            self.btnRecent.label = "Recent Fits"
+            self.btnRecent.label = _t("Recent Fits")
             self.btnRecent.normalBmp = self.recentBmpD
 
             if emitEvent:
                 wx.PostEvent(self.shipBrowser, Stage1Selected())
         else:
             self.shipBrowser.recentFits = True
-            self.btnRecent.label = "Hide Recent Fits"
+            self.btnRecent.label = _t("Hide Recent Fits")
             self.btnRecent.normalBmp = self.recentBmp
 
             if emitEvent:
