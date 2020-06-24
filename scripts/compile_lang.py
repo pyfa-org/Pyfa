@@ -1,5 +1,5 @@
 import os, glob
-from scripts import msgfmt
+import msgfmt
 
 import sys
 
