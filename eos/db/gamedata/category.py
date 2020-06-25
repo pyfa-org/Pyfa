@@ -26,8 +26,7 @@ import eos.config
 
 categories_table = Table("invcategories", gamedata_meta,
                          Column("categoryID", Integer, primary_key=True),
-                         Column("name", String),
-                         Column("name_zh", String),
+                         *[Column("name{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
                          Column("description", String), # deprecated
                          Column("published", Boolean),
                          Column("iconID", Integer))

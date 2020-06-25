@@ -28,6 +28,8 @@ import sqlite3
 import sys
 
 
+# todo: need to set the EOS language to en, becasuse this assumes it's being run within an English context
+# Need to know what that would do if called from pyfa
 ROOT_DIR = os.path.realpath(os.path.dirname(__file__))
 DB_PATH = os.path.join(ROOT_DIR, 'eve.db')
 JSON_DIR = os.path.join(ROOT_DIR, 'staticdata')
@@ -85,6 +87,7 @@ def update_db():
 
     import eos.db
     import eos.gamedata
+    import eos.config
 
     # Create the database tables
     eos.db.gamedata_meta.create_all()
@@ -159,10 +162,9 @@ def update_db():
     def processEveCategories():
         print('processing evecategories')
         data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
-        _addRows(data, eos.gamedata.Category, fieldMap={
-            'categoryName_en-us': 'displayName',
-            'categoryName_zh': 'name_zh'
-        })
+        map = { 'categoryName_en-us': 'displayName' }
+        map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        _addRows(data, eos.gamedata.Category, fieldMap=map)
 
     def processDogmaAttributes():
         print('processing dogmaattributes')
