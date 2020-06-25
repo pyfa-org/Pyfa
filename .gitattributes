@@ -1,11 +1,9 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
-
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
 # *.c text
 # *.h text
-
 # Declare files that will always have CRLF line endings on checkout.
 # Source files
 # ============
@@ -15,7 +13,6 @@
 *.pyw 		text eol=crlf
 *.pyx  		text eol=crlf
 pyfa.py     text eol=lf
-
 # Denote all files that are truly binary and should not be modified.
 # Binary files
 # ============
@@ -25,12 +22,10 @@ pyfa.py     text eol=lf
 *.pyc 		binary
 *.pyd		binary
 *.pyo 		binary
-
 # Note: .db, .p, and .pkl files are associated
 # with the python modules ``pickle``, ``dbm.*``,
 # ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
 # (among others).
-
 # Denote all files that are truly binary and should not be modified.
 # Image files
 # ============
@@ -38,3 +33,4 @@ pyfa.py     text eol=lf
 *.jpg binary
 *.icns binary
 *.ico binary
+staticdata/ filter=lfs diff=lfs merge=lfs -text
