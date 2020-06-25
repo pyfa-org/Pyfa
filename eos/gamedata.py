@@ -344,7 +344,7 @@ class Item(EqBase):
 
             try:
                 if (
-                    self.category.categoryName == 'Structure' or
+                    self.category.name == 'Structure' or
                     # Here until CCP puts their shit together
                     self.name in ("Thunderchild", "Stormbringer", "Skybreaker")
                 ):
