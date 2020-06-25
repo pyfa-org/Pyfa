@@ -33,5 +33,6 @@ pyfa.py     text eol=lf
 *.jpg binary
 *.icns binary
 *.ico binary
-staticdata/ filter=lfs diff=lfs merge=lfs -text
 staticdata/fsd_binary/* filter=lfs diff=lfs merge=lfs -text
+staticdata/fsd_lite/* filter=lfs diff=lfs merge=lfs -text
+staticdata/phobos/* filter=lfs diff=lfs merge=lfs -text
