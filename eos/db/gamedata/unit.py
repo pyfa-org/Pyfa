@@ -26,7 +26,9 @@ from eos.gamedata import Unit
 groups_table = Table("dgmunits", gamedata_meta,
                      Column("unitID", Integer, primary_key=True),
                      Column("unitName", String),
-                     Column("displayName", String))
+                     Column("displayName", String),
+                     Column("displayName_zh", String),
+                     )
 
 mapper(Unit, groups_table,
        properties={

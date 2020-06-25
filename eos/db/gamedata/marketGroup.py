@@ -22,14 +22,17 @@ from sqlalchemy.orm import relation, mapper, synonym, deferred
 
 from eos.db import gamedata_meta
 from eos.gamedata import Item, MarketGroup
+import eos.config
 
 marketgroups_table = Table("invmarketgroups", gamedata_meta,
                            Column("marketGroupID", Integer, primary_key=True),
                            Column("marketGroupName", String),
-                           Column("description", String),
+                           Column("marketGroupName_zh", String),
+                           Column("marketGroupDescription", String),
+                           Column("marketGroupDescription_zh", String),
                            Column("hasTypes", Boolean),
                            Column("parentGroupID", Integer,
-                                  ForeignKey("invmarketgroups.marketGroupID", initially="DEFERRED", deferrable=True)),
+                                ForeignKey("invmarketgroups.marketGroupID", initially="DEFERRED", deferrable=True)),
                            Column("iconID", Integer))
 
 mapper(MarketGroup, marketgroups_table,
@@ -38,6 +41,8 @@ mapper(MarketGroup, marketgroups_table,
            "parent"     : relation(MarketGroup, backref="children",
                                    remote_side=[marketgroups_table.c.marketGroupID]),
            "ID"         : synonym("marketGroupID"),
-           "name"       : synonym("marketGroupName"),
-           "description": deferred(marketgroups_table.c.description)
+           "name"       : synonym("marketGroupName{}".format(eos.config.lang)),
+           # "name_en-us"       : synonym("marketGroupName_en-us"),
+           "description": deferred(marketgroups_table.c["marketGroupDescription{}".format(eos.config.lang)]),
         })
+

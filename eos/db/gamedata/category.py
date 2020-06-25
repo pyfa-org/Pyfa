@@ -22,17 +22,19 @@ from sqlalchemy.orm import deferred, mapper, synonym
 
 from eos.db import gamedata_meta
 from eos.gamedata import Category
+import eos.config
 
 categories_table = Table("invcategories", gamedata_meta,
                          Column("categoryID", Integer, primary_key=True),
-                         Column("categoryName", String),
-                         Column("description", String),
+                         Column("name", String),
+                         Column("name_zh", String),
+                         Column("description", String), # deprecated
                          Column("published", Boolean),
                          Column("iconID", Integer))
 
 mapper(Category, categories_table,
        properties={
            "ID"         : synonym("categoryID"),
-           "name"       : synonym("categoryName"),
-           "description": deferred(categories_table.c.description)
+           "displayName": synonym("name{}".format(eos.config.lang)),
+           "description": deferred(categories_table.c.description) # deprecated
        })

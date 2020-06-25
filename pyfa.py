@@ -74,7 +74,7 @@ parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set
 parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
 parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.", default=None)
 
-parser.add_option("-i", "--language", action="store", dest="language", help="Set the language for pyfa", default=None)
+parser.add_option("-i", "--language", action="store", dest="language", help="Set the language for pyfa", default='zh_CN')
 
 (options, args) = parser.parse_args()
 
@@ -105,11 +105,12 @@ if __name__ == "__main__":
 
     config.debug = options.debug
     config.loggingLevel = config.LOGLEVEL_MAP.get(options.logginglevel.lower(), config.LOGLEVEL_MAP['error'])
-    config.defPaths(options.savepath)
-    config.defLogging()
 
     from service.settings import LocaleSettings
     config.language = options.language or LocaleSettings.getInstance().get('locale')
+
+    config.defPaths(options.savepath)
+    config.defLogging()
 
     with config.logging_setup.threadbound():
 

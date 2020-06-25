@@ -121,13 +121,13 @@ def update_db():
         for row in data:
             if (
                 # Apparently people really want Civilian modules available
-                (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
-                row['typeName'] == 'Capsule' or
+                (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us']) or
+                row['typeName_en-us'] == 'Capsule' or
                 row['groupID'] == 4033  # destructible effect beacons
             ):
                 row['published'] = True
             # Nearly useless and clutter search results too much
-            elif row['typeName'].startswith('Limited Synth '):
+            elif row['typeName_en-us'].startswith('Limited Synth '):
                 row['published'] = False
 
         newData = []
@@ -147,24 +147,30 @@ def update_db():
             ):
                 newData.append(row)
 
-        _addRows(newData, eos.gamedata.Item)
+        _addRows(newData, eos.gamedata.Item, fieldMap={'typeName_en-us': 'typeName', 'description_en-us': 'description'})
         return newData
 
     def processEveGroups():
         print('processing evegroups')
         data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
-        _addRows(data, eos.gamedata.Group)
+        _addRows(data, eos.gamedata.Group, fieldMap={'groupName_en-us': 'groupName'})
         return data
 
     def processEveCategories():
         print('processing evecategories')
         data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
-        _addRows(data, eos.gamedata.Category)
+        _addRows(data, eos.gamedata.Category, fieldMap={
+            'categoryName_en-us': 'displayName',
+            'categoryName_zh': 'name_zh'
+        })
 
     def processDogmaAttributes():
         print('processing dogmaattributes')
         data = _readData('fsd_binary', 'dogmaattributes', keyIdName='attributeID')
-        _addRows(data, eos.gamedata.AttributeInfo)
+        _addRows(data, eos.gamedata.AttributeInfo, fieldMap={
+            'displayName_en-us': 'displayName',
+            'tooltipDescription_en-us': 'tooltipDescription'
+        })
 
     def processDogmaTypeAttributes(eveTypesData):
         print('processing dogmatypeattributes')
@@ -239,17 +245,28 @@ def update_db():
     def processDogmaUnits():
         print('processing dogmaunits')
         data = _readData('fsd_binary', 'dogmaunits', keyIdName='unitID')
-        _addRows(data, eos.gamedata.Unit, fieldMap={'name': 'unitName'})
+        _addRows(data, eos.gamedata.Unit, fieldMap={
+            'name': 'unitName',
+            'displayName_en-us': 'displayName'
+        })
 
     def processMarketGroups():
         print('processing marketgroups')
         data = _readData('fsd_binary', 'marketgroups', keyIdName='marketGroupID')
-        _addRows(data, eos.gamedata.MarketGroup, fieldMap={'name': 'marketGroupName'})
+        _addRows(data, eos.gamedata.MarketGroup, fieldMap={
+            'name_en-us': 'name',
+            'name_zh': 'marketGroupName_zh',
+            'description_en-us': 'description',
+            'description_zh': 'marketGroupDescription_zh'
+        })
 
     def processMetaGroups():
         print('processing metagroups')
         data = _readData('fsd_binary', 'metagroups', keyIdName='metaGroupID')
-        _addRows(data, eos.gamedata.MetaGroup)
+        _addRows(data, eos.gamedata.MetaGroup, fieldMap={
+            'name_en-us': 'metaGroupName',
+            'name_zh': 'metaGroupName_zh'
+        })
 
     def processCloneGrades():
         print('processing clonegrades')
@@ -305,7 +322,7 @@ def update_db():
         for row in data:
             typeLines = []
             typeId = row['typeID']
-            traitData = row['traits']
+            traitData = row['traits_en-us']
             for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
                 typeLines.append(convertSection(skillData))
             if 'role' in traitData:
@@ -483,7 +500,7 @@ def update_db():
                 continue
             if row.get('groupID') not in implant_groups:
                 continue
-            typeName = row.get('typeName', '')
+            typeName = row.get('typeName_en-us', '')
             # Regular sets matching
             m = re.match('(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName, re.IGNORECASE)
             if m:

@@ -91,7 +91,7 @@ def getItem(lookfor, eager=None):
                 item = get_gamedata_session().query(Item).options(*processEager(eager)).filter(Item.ID == id).first()
         else:
             # Item names are unique, so we can use first() instead of one()
-            item = get_gamedata_session().query(Item).options(*processEager(eager)).filter(Item.name == lookfor).first()
+            item = get_gamedata_session().query(Item).options(*processEager(eager)).filter(Item.typeName == lookfor).first()
             if item is not None:
                 itemNameMap[lookfor] = item.ID
     else:
@@ -205,7 +205,7 @@ def getGroup(lookfor, eager=None):
                 group = get_gamedata_session().query(Group).options(*processEager(eager)).filter(Group.ID == id).first()
         else:
             # Group names are unique, so we can use first() instead of one()
-            group = get_gamedata_session().query(Group).options(*processEager(eager)).filter(Group.name == lookfor).first()
+            group = get_gamedata_session().query(Group).options(*processEager(eager)).filter(Group.groupName == lookfor).first()
             if group is not None:
                 groupNameMap[lookfor] = group.ID
     else:
@@ -265,7 +265,7 @@ def getMetaGroup(lookfor, eager=None):
         else:
             # MetaGroup names are unique, so we can use first() instead of one()
             metaGroup = get_gamedata_session().query(MetaGroup).options(*processEager(eager)).filter(
-                    MetaGroup.name == lookfor).first()
+                    MetaGroup.metaGroupName == lookfor).first()
             if metaGroup is not None:
                 metaGroupNameMap[lookfor] = metaGroup.ID
     else:

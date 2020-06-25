@@ -37,10 +37,11 @@ attributes_table = Table("dgmattribs", gamedata_meta,
                          Column("description", Unicode),
                          Column("published", Boolean),
                          Column("displayName", String),
+                         Column("displayName_zh", String),
                          Column("highIsGood", Boolean),
                          Column("iconID", Integer),
                          Column("attributeCategory", Integer),
-                         Column("tooltipDescription", Integer),
+                         Column("tooltipDescription", Integer), # deprecated...?
                          Column("unitID", Integer, ForeignKey("dgmunits.unitID")))
 
 mapper(Attribute, typeattributes_table,
@@ -51,7 +52,7 @@ mapper(AttributeInfo, attributes_table,
            "unit"       : relation(Unit),
            "ID"         : synonym("attributeID"),
            "name"       : synonym("attributeName"),
-           "description": deferred(attributes_table.c.description)
+           "description": deferred(attributes_table.c.description),
        })
 
 Attribute.ID = association_proxy("info", "attributeID")

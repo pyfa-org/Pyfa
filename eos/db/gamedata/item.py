@@ -27,10 +27,14 @@ from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table
 from eos.db.gamedata.effect import typeeffects_table
 from eos.gamedata import Attribute, DynamicItem, Effect, Group, Item, Traits, MetaGroup
 
+import eos.config
+
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
                     Column("typeName", String, index=True),
+                    Column("typeName_zh", String),
                     Column("description", String),
+                    Column("description_zh", String),
                     Column("raceID", Integer),
                     Column("factionID", Integer),
                     Column("published", Boolean),
@@ -43,7 +47,8 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("variationParentTypeID", Integer, ForeignKey("invtypes.typeID"), index=True),
                     Column("replacements", String),
                     Column("reqskills", String),
-                    Column("requiredfor", String))
+                    Column("requiredfor", String),
+                    )
 
 from .traits import traits_table  # noqa
 
@@ -55,8 +60,8 @@ mapper(Item, items_table,
            "metaGroup"        : relation(MetaGroup, backref=backref("items", cascade="all,delete")),
            "varParent"        : relation(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
            "ID"               : synonym("typeID"),
-           "name"             : synonym("typeName"),
-           "description"      : deferred(items_table.c.description),
+           "name"             : synonym("typeName{}".format(eos.config.lang)),
+           "description"      : deferred(items_table.c["description"]), # point this to the translated one doesn't work, need a solution
            "traits"           : relation(Traits,
                                          primaryjoin=traits_table.c.typeID == items_table.c.typeID,
                                          uselist=False),
