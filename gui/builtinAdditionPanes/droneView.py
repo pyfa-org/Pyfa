@@ -195,7 +195,7 @@ class DroneView(Display):
     def droneKey(drone):
         sMkt = Market.getInstance()
 
-        groupName = sMkt.getMarketGroupByItem(drone.item).name
+        groupName = sMkt.getMarketGroupByItem(drone.item).marketGroupName
 
         return (DRONE_ORDER.index(groupName), drone.item.name)
 

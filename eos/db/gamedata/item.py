@@ -31,10 +31,8 @@ import eos.config
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
-                    Column("typeName", String, index=True),
-                    Column("typeName_zh", String),
-                    Column("description", String),
-                    Column("description_zh", String),
+                    *[Column("typeName{}".format(lang), String, index=True) for lang in eos.config.translation_mapping.values()],
+                    *[Column("description{}".format(lang), String, index=True) for lang in eos.config.translation_mapping.values()],
                     Column("raceID", Integer),
                     Column("factionID", Integer),
                     Column("published", Boolean),
