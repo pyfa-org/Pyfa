@@ -156,7 +156,8 @@ def update_db():
     def processEveGroups():
         print('processing evegroups')
         data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
-        _addRows(data, eos.gamedata.Group, fieldMap={'groupName_en-us': 'groupName'})
+        map = {'groupName_en-us': 'groupName'}
+        _addRows(data, eos.gamedata.Group, fieldMap=map)
         return data
 
     def processEveCategories():
@@ -169,10 +170,11 @@ def update_db():
     def processDogmaAttributes():
         print('processing dogmaattributes')
         data = _readData('fsd_binary', 'dogmaattributes', keyIdName='attributeID')
-        _addRows(data, eos.gamedata.AttributeInfo, fieldMap={
+        map = {
             'displayName_en-us': 'displayName',
             'tooltipDescription_en-us': 'tooltipDescription'
-        })
+        }
+        _addRows(data, eos.gamedata.AttributeInfo, fieldMap=map)
 
     def processDogmaTypeAttributes(eveTypesData):
         print('processing dogmatypeattributes')

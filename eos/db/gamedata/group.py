@@ -26,8 +26,7 @@ import eos.config
 
 groups_table = Table("invgroups", gamedata_meta,
                      Column("groupID", Integer, primary_key=True),
-                     Column("groupName", String),
-                     Column("groupName_zh", String),
+                     *[Column("groupName{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
                      Column("description", String), # deprecated
                      Column("published", Boolean),
                      Column("categoryID", Integer, ForeignKey("invcategories.categoryID")),

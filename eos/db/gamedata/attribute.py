@@ -23,7 +23,7 @@ from sqlalchemy.orm import relation, mapper, synonym, deferred
 
 from eos.db import gamedata_meta
 from eos.gamedata import Attribute, AttributeInfo, Unit
-
+import eos.config
 typeattributes_table = Table("dgmtypeattribs", gamedata_meta,
                              Column("value", Float),
                              Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True, index=True),
@@ -36,8 +36,7 @@ attributes_table = Table("dgmattribs", gamedata_meta,
                          Column("maxAttributeID", Integer, ForeignKey("dgmattribs.attributeID")),
                          Column("description", Unicode),
                          Column("published", Boolean),
-                         Column("displayName", String),
-                         Column("displayName_zh", String),
+                         *[Column("displayName{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
                          Column("highIsGood", Boolean),
                          Column("iconID", Integer),
                          Column("attributeCategory", Integer),
@@ -59,7 +58,7 @@ Attribute.ID = association_proxy("info", "attributeID")
 Attribute.name = association_proxy("info", "attributeName")
 Attribute.description = association_proxy("info", "description")
 Attribute.published = association_proxy("info", "published")
-Attribute.displayName = association_proxy("info", "displayName")
+Attribute.displayName = association_proxy("info", "displayName{}".format(eos.config.lang)) # todo: this will probably have to be updated... maybe?
 Attribute.highIsGood = association_proxy("info", "highIsGood")
 Attribute.iconID = association_proxy("info", "iconID")
 Attribute.icon = association_proxy("info", "icon")
