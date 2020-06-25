@@ -34,3 +34,4 @@ pyfa.py     text eol=lf
 *.icns binary
 *.ico binary
 staticdata/ filter=lfs diff=lfs merge=lfs -text
+staticdata/fsd_binary/* filter=lfs diff=lfs merge=lfs -text
