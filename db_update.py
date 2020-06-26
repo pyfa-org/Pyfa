@@ -173,7 +173,7 @@ def update_db():
         data = _readData('fsd_binary', 'dogmaattributes', keyIdName='attributeID')
         map = {
             'displayName_en-us': 'displayName',
-            'tooltipDescription_en-us': 'tooltipDescription'
+            # 'tooltipDescription_en-us': 'tooltipDescription'
         }
         _addRows(data, eos.gamedata.AttributeInfo, fieldMap=map)
 
