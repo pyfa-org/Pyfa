@@ -149,8 +149,9 @@ def update_db():
                     1983)  # the "container" for the abyssal environments
             ):
                 newData.append(row)
-
-        _addRows(newData, eos.gamedata.Item, fieldMap={'typeName_en-us': 'typeName', 'description_en-us': 'description'})
+        map = {'typeName_en-us': 'typeName', 'description_en-us': 'description'}
+        map.update({'description'+v: '_description'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        _addRows(newData, eos.gamedata.Item, fieldMap=map)
         return newData
 
     def processEveGroups():

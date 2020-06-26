@@ -32,7 +32,7 @@ import eos.config
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
                     *[Column("typeName{}".format(lang), String, index=True) for lang in eos.config.translation_mapping.values()],
-                    *[Column("description{}".format(lang), String, index=True) for lang in eos.config.translation_mapping.values()],
+                    *[Column("typeDescription{}".format(lang), String, index=True) for lang in eos.config.translation_mapping.values()],
                     Column("raceID", Integer),
                     Column("factionID", Integer),
                     Column("published", Boolean),
@@ -75,7 +75,7 @@ props = {
 
 # Create deferred columns shadowing all the description fields. The literal `description` property will dynamically
 # be assigned as synonym to one of these
-props.update({'_description' + v: deferred(items_table.c['description' + v]) for (k, v) in eos.config.translation_mapping.items()})
+props.update({'_description' + v: deferred(items_table.c['typeDescription' + v]) for (k, v) in eos.config.translation_mapping.items()})
 
 mapper(Item, items_table, properties=props)
 
