@@ -27,7 +27,7 @@ import eos.config
 categories_table = Table("invcategories", gamedata_meta,
                          Column("categoryID", Integer, primary_key=True),
                          *[Column("name{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
-                         Column("description", String), # deprecated
+                         # Column("description", String), # deprecated
                          Column("published", Boolean),
                          Column("iconID", Integer))
 
@@ -35,5 +35,5 @@ mapper(Category, categories_table,
        properties={
            "ID"         : synonym("categoryID"),
            "displayName": synonym("name{}".format(eos.config.lang)),
-           "description": deferred(categories_table.c.description) # deprecated
+           # "description": deferred(categories_table.c.description) # deprecated
        })

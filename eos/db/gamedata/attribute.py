@@ -40,7 +40,7 @@ attributes_table = Table("dgmattribs", gamedata_meta,
                          Column("highIsGood", Boolean),
                          Column("iconID", Integer),
                          Column("attributeCategory", Integer),
-                         Column("tooltipDescription", Integer), # deprecated...?
+                         # Column("tooltipDescription", Integer), # deprecated...?
                          Column("unitID", Integer, ForeignKey("dgmunits.unitID")))
 
 mapper(Attribute, typeattributes_table,

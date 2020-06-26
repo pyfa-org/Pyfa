@@ -33,14 +33,16 @@ marketgroups_table = Table("invmarketgroups", gamedata_meta,
                                 ForeignKey("invmarketgroups.marketGroupID", initially="DEFERRED", deferrable=True)),
                            Column("iconID", Integer))
 
-mapper(MarketGroup, marketgroups_table,
-       properties={
-           "items"      : relation(Item, backref="marketGroup"),
-           "parent"     : relation(MarketGroup, backref="children",
-                                   remote_side=[marketgroups_table.c.marketGroupID]),
-           "ID"         : synonym("marketGroupID"),
-           "name"       : synonym("marketGroupName{}".format(eos.config.lang)),
-           # "name_en-us"       : synonym("marketGroupName_en-us"),
-           "description": deferred(marketgroups_table.c["marketGroupDescription{}".format(eos.config.lang)]),
-        })
+mapper(
+    MarketGroup,
+    marketgroups_table,
+    properties={
+        "items"      : relation(Item, backref="marketGroup"),
+        "parent"     : relation(MarketGroup, backref="children",
+                               remote_side=[marketgroups_table.c.marketGroupID]),
+        "ID"         : synonym("marketGroupID"),
+        "name"       : synonym("marketGroupName{}".format(eos.config.lang)),
+        "description": deferred(marketgroups_table.c["marketGroupDescription{}".format(eos.config.lang)]),
+    }
+)
 
