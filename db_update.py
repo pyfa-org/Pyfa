@@ -269,10 +269,9 @@ def update_db():
     def processMetaGroups():
         print('processing metagroups')
         data = _readData('fsd_binary', 'metagroups', keyIdName='metaGroupID')
-        _addRows(data, eos.gamedata.MetaGroup, fieldMap={
-            'name_en-us': 'metaGroupName',
-            'name_zh': 'metaGroupName_zh'
-        })
+        map = {'name_en-us': 'metaGroupName'}
+        map.update({'name' + v: 'metaGroupName' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        _addRows(data, eos.gamedata.MetaGroup, fieldMap=map)
 
     def processCloneGrades():
         print('processing clonegrades')
@@ -344,7 +343,7 @@ def update_db():
                 newRow['traitText{}'.format(v)] = traitLine
 
             newData.append(newRow)
-        _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'displayName'})
+        _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'display'})
 
     def processMetadata():
         print('processing metadata')
