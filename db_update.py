@@ -326,20 +326,25 @@ def update_db():
 
         newData = []
         for row in data:
-            typeLines = []
-            typeId = row['typeID']
-            traitData = row['traits_en-us']
-            for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
-                typeLines.append(convertSection(skillData))
-            if 'role' in traitData:
-                typeLines.append(convertSection(traitData['role']))
-            if 'misc' in traitData:
-                typeLines.append(convertSection(traitData['misc']))
-            traitLine = '<br />\n<br />\n'.join(typeLines)
-            newRow = {'typeID': typeId, 'traitText': traitLine}
-            newData.append(newRow)
+            newRow = {
+                'typeID': row['typeID'],
+            }
+            for (k, v) in eos.config.translation_mapping.items():
+                if v == '':
+                    v = '_en-us'
+                typeLines = []
+                traitData = row['traits{}'.format(v)]
+                for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
+                    typeLines.append(convertSection(skillData))
+                if 'role' in traitData:
+                    typeLines.append(convertSection(traitData['role']))
+                if 'misc' in traitData:
+                    typeLines.append(convertSection(traitData['misc']))
+                traitLine = '<br />\n<br />\n'.join(typeLines)
+                newRow['traitText{}'.format(v)] = traitLine
 
-        _addRows(newData, eos.gamedata.Traits)
+            newData.append(newRow)
+        _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'displayName'})
 
     def processMetadata():
         print('processing metadata')

@@ -13,7 +13,7 @@ class ItemTraits(wx.Panel):
         self.SetSizer(mainSizer)
 
         self.traits = wx.html.HtmlWindow(self)
-        self.traits.SetPage(item.traits.traitText)
+        self.traits.SetPage(item.traits.display)
 
         self.traits.Bind(wx.EVT_CONTEXT_MENU, self.onPopupMenu)
         self.traits.Bind(wx.EVT_KEY_UP, self.onKeyUp)
