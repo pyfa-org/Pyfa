@@ -26,10 +26,8 @@ import eos.config
 
 marketgroups_table = Table("invmarketgroups", gamedata_meta,
                            Column("marketGroupID", Integer, primary_key=True),
-                           Column("marketGroupName", String),
-                           Column("marketGroupName_zh", String),
-                           Column("marketGroupDescription", String),
-                           Column("marketGroupDescription_zh", String),
+                           *[Column("marketGroupName{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
+                           *[Column("marketGroupDescription{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
                            Column("hasTypes", Boolean),
                            Column("parentGroupID", Integer,
                                 ForeignKey("invmarketgroups.marketGroupID", initially="DEFERRED", deferrable=True)),

@@ -257,12 +257,13 @@ def update_db():
     def processMarketGroups():
         print('processing marketgroups')
         data = _readData('fsd_binary', 'marketgroups', keyIdName='marketGroupID')
-        _addRows(data, eos.gamedata.MarketGroup, fieldMap={
+        map = {
             'name_en-us': 'name',
-            'name_zh': 'marketGroupName_zh',
             'description_en-us': 'description',
-            'description_zh': 'marketGroupDescription_zh'
-        })
+        }
+        map.update({'name'+v: 'marketGroupName'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        map.update({'description' + v: 'marketGroupDescription' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        _addRows(data, eos.gamedata.MarketGroup, fieldMap=map)
 
     def processMetaGroups():
         print('processing metagroups')
