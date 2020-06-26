@@ -324,7 +324,7 @@ class DroneView(Display):
                 if drone in self.original:
                     mainDrone = drone
         selection = self.getSelectedDrones()
-        itemContext = None if mainDrone is None else Market.getInstance().getCategoryByItem(mainDrone.item).name
+        itemContext = None if mainDrone is None else Market.getInstance().getCategoryByItem(mainDrone.item).displayName
         menu = ContextMenu.getMenu(self, mainDrone, selection, ("droneItem", itemContext), ("droneItemMisc", itemContext))
         if menu:
             self.PopupMenu(menu)

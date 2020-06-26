@@ -952,7 +952,7 @@ class Market:
             mktgrpid = self.getMarketGroupByItem(item).ID
         except AttributeError:
             mktgrpid = -1
-            pyfalog.warning("unable to find market group for {}".format(item.name))
+            pyfalog.warning("unable to find market group for {}".format(item.typeName))
         if reverseMktGrp:
             mktgrpid = -mktgrpid
         parentname = self.getParentItemByItem(item).name

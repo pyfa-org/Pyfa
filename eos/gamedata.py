@@ -506,8 +506,8 @@ class Item(EqBase):
         return False
 
     def __repr__(self):
-        return "Item(ID={}, name={}) at {}".format(
-                self.ID, self.name, hex(id(self))
+        return "Item(ID={}, name={}, display={}) at {}".format(
+                self.ID, self.typeName, self.name, hex(id(self))
         )
 
 

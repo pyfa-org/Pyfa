@@ -642,13 +642,13 @@ class FittingView(d.Display):
         contexts = []
         if isinstance(mainMod, Module) and not mainMod.isEmpty:
             srcContext = "fittingModule"
-            itemContext = sMkt.getCategoryByItem(mainMod.item).name
+            itemContext = sMkt.getCategoryByItem(mainMod.item).displayName
             fullContext = (srcContext, itemContext)
             if srcContext not in tuple(fCtx[0] for fCtx in contexts):
                 contexts.append(fullContext)
             if mainMod.charge is not None:
                 srcContext = "fittingCharge"
-                itemContext = sMkt.getCategoryByItem(mainMod.charge).name
+                itemContext = sMkt.getCategoryByItem(mainMod.charge).displayName
                 fullContext = (srcContext, itemContext)
                 if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
