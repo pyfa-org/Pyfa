@@ -50,23 +50,33 @@ items_table = Table("invtypes", gamedata_meta,
 
 from .traits import traits_table  # noqa
 
-mapper(Item, items_table,
-       properties={
-           "group"            : relation(Group, backref=backref("items", cascade="all,delete")),
+props = {
+           "group": relation(Group, backref=backref("items", cascade="all,delete")),
            "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
-           "metaGroup"        : relation(MetaGroup, backref=backref("items", cascade="all,delete")),
-           "varParent"        : relation(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
-           "ID"               : synonym("typeID"),
-           "name"             : synonym("typeName{}".format(eos.config.lang)),
-           "description"      : deferred(items_table.c["description"]), # point this to the translated one doesn't work, need a solution
-           "traits"           : relation(Traits,
-                                         primaryjoin=traits_table.c.typeID == items_table.c.typeID,
-                                         uselist=False),
-           "mutaplasmids": relation(DynamicItem,
-                   primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
-                   secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
-                   secondary=dynamicApplicable_table,
-                   backref="applicableItems")})
+           "metaGroup": relation(MetaGroup, backref=backref("items", cascade="all,delete")),
+           "varParent": relation(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
+           "ID": synonym("typeID"),
+           "name": synonym("typeName{}".format(eos.config.lang)),
+           "description" : synonym("_description{}".format(eos.config.lang)),
+           "traits": relation(
+               Traits,
+               primaryjoin=traits_table.c.typeID == items_table.c.typeID,
+               uselist=False
+           ),
+           "mutaplasmids": relation(
+               DynamicItem,
+               primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
+               secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
+               secondary=dynamicApplicable_table,
+               backref="applicableItems"
+           )
+}
+
+# Create deferred columns shadowing all the description fields. The literal `description` property will dynamically
+# be assigned as synonym to one of these
+props.update({'_description' + v: deferred(items_table.c['description' + v]) for (k, v) in eos.config.translation_mapping.items()})
+
+mapper(Item, items_table, properties=props)
 
 Item.category = association_proxy("group", "category")
