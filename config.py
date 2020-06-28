@@ -107,6 +107,7 @@ def defPaths(customSavePath=None):
     global clientHash
     global version
     global experimentalFeatures
+    global language
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -184,12 +185,13 @@ def defPaths(customSavePath=None):
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
-    eos.config.set_lang(language)
 
     # initialize the settings
-    from service.settings import EOSSettings
+    from service.settings import EOSSettings, LocaleSettings
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
 
+    language = language or LocaleSettings.getInstance().get('locale')
+    eos.config.set_lang(language)
 
 def defLogging():
     global debug
