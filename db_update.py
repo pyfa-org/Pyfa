@@ -169,7 +169,8 @@ def update_db():
     def processEveGroups():
         print('processing evegroups')
         data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
-        map = {'groupName_en-us': 'groupName'}
+        map = {'groupName_en-us': 'displayName'}
+        map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
         _addRows(data, eos.gamedata.Group, fieldMap=map)
         return data
 

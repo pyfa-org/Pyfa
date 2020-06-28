@@ -91,7 +91,7 @@ class Booster(HandledItem, ItemAttrShortcut):
 
     @property
     def isInvalid(self):
-        return self.__item is None or self.__item.group.groupName != "Booster"
+        return self.__item is None or self.__item.group.name != "Booster"
 
     @property
     def slot(self):

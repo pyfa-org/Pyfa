@@ -255,7 +255,7 @@ class FighterDisplay(d.Display):
 
     @staticmethod
     def fighterKey(fighter):
-        groupName = Market.getInstance().getGroupByItem(fighter.item).groupName
+        groupName = Market.getInstance().getGroupByItem(fighter.item).name
         orderPos = FIGHTER_ORDER.index(groupName)
         # Sort support fighters by name, ignore their abilities
         if groupName == 'Support Fighter':

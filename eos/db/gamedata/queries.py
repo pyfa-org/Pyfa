@@ -205,7 +205,7 @@ def getGroup(lookfor, eager=None):
                 group = get_gamedata_session().query(Group).options(*processEager(eager)).filter(Group.ID == id).first()
         else:
             # Group names are unique, so we can use first() instead of one()
-            group = get_gamedata_session().query(Group).options(*processEager(eager)).filter(Group.groupName == lookfor).first()
+            group = get_gamedata_session().query(Group).options(*processEager(eager)).filter(Group.name == lookfor).first()
             if group is not None:
                 groupNameMap[lookfor] = group.ID
     else:
