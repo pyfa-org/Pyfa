@@ -68,7 +68,7 @@ class Miscellanea(ViewColumn):
         item = stuff.item
         if item is None:
             return "", None
-        itemGroup = item.group.name
+        itemGroup = item.group.groupName
         itemCategory = item.category.name
 
         if itemGroup == "Ship Modifiers":
