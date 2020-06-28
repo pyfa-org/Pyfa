@@ -188,7 +188,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                     continue
                 # Localized effects, currently, have a name like "(size) (type) Cloud"
                 # Until this inevitably changes, do a simple split
-                name_parts = beacon.name.split(" ")
+                name_parts = beacon.typeName.split(" ")
 
                 key = name_parts[1].strip()
                 subsubdata = subdata.groups.setdefault(key, Group())
