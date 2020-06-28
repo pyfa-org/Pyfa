@@ -2508,3 +2508,44 @@ msgstr "复制{}"
 #: gui/builtinContextMenus/itemStats.py:38
 msgid "{} Stats"
 msgstr "{}属性"
+
+# These aren't typical translations. They need to map exactly to sub strings of the item names in the database
+# to produce the proper context menu tree for environmental effects
+msgid "System Effects"
+msgstr "星系效果"
+
+msgid "Effects"
+msgstr "效果光束"
+
+msgid "Black Hole"
+msgstr "黑洞"
+
+msgid "Cataclysmic Variable"
+msgstr "激变变星"
+
+msgid "Magnetar"
+msgstr "磁星"
+
+msgid "Pulsar"
+msgstr "脉冲星"
+
+msgid "Red Giant"
+msgstr "红巨星"
+
+msgid "Wolf Rayet"
+msgstr "沃尔夫-拉叶星"
+
+msgid "Sansha Incursion"
+msgstr "萨沙入侵"
+
+msgid "Triglavian Invasion"
+msgstr "三神裔入侵"
+
+msgid "Bioluminescence"
+msgstr "型生物荧光"
+
+msgid "Caustic"
+msgstr "腐蚀"
+
+msgid "Filament"
+msgstr "纤维"

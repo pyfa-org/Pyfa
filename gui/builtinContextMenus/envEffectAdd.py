@@ -102,13 +102,13 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def getData(self):
         data = Group()
-        data.groups['Wormhole'] = self.getEffectBeacons(
-                'Black Hole', 'Cataclysmic Variable', 'Magnetar',
-                'Pulsar', 'Red Giant', 'Wolf Rayet')
-        data.groups['Sansha Incursion'] = self.getEffectBeacons('Sansha Incursion')
-        data.groups['Triglavian Invasion'] = self.getEffectBeacons('Triglavian Invasion')
-        data.groups['Triglavian Invasion'].groups['Destructible Beacons'] = self.getDestructibleBeacons()
-        data.groups['Abyssal Weather'] = self.getAbyssalWeather()
+        data.groups[_t('Wormhole')] = self.getEffectBeacons(
+                _t('Black Hole'), _t('Cataclysmic Variable'), _t('Magnetar'),
+                _t('Pulsar'), _t('Red Giant'), _t('Wolf Rayet'))
+        data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(_t('Sansha Incursion'))
+        data.groups[_t('Triglavian Invasion')] = self.getEffectBeacons(_t('Triglavian Invasion'))
+        data.groups[_t('Triglavian Invasion')].groups[_t('Destructible Beacons')] = self.getDestructibleBeacons()
+        data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         return data
 
     def getEffectBeacons(self, *groups):
@@ -122,7 +122,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data = Group()
 
         # Stuff we don't want to see in names
-        garbages = ("System Effects", "Effects")
+        garbages = (_t("System Effects"), _t("Effects"))
 
         # Get group with all the system-wide beacons
         grp = sMkt.getGroup("Effect Beacon")
@@ -182,21 +182,24 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         # Localized abyssal hazards
         items = sMkt.getGroup("Abyssal Hazards").items
         if items:
-            subdata = data.groups.setdefault('Localized', Group())
+            subdata = data.groups.setdefault(_t('Localized'), Group())
             for beacon in sMkt.getGroup("Abyssal Hazards").items:
                 if not beacon.isType('projected'):
                     continue
-                # Localized effects, currently, have a name like "(size) (type) Cloud"
-                # Until this inevitably changes, do a simple split
-                name_parts = beacon.typeName.split(" ")
+                groups = (_t('Bioluminescence'), _t('Caustic'), _t('Filament'))
+                for group in groups:
+                    if re.search(group, beacon.name):
+                        key = group
+                        break
+                else:
+                    continue
 
-                key = name_parts[1].strip()
                 subsubdata = subdata.groups.setdefault(key, Group())
                 subsubdata.items.append(Entry(beacon.ID, beacon.name, beacon.name))
             subdata.sort()
 
         # PVP weather
-        data.items.append(Entry(49766, 'PvP Weather', 'PvP Weather'))
+        data.items.append(Entry(49766, _t('PvP Weather'), _t('PvP Weather')))
 
         return data
 
