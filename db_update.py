@@ -93,13 +93,25 @@ def update_db():
     eos.db.gamedata_meta.create_all()
 
     def _readData(minerName, jsonName, keyIdName=None):
-        with open(os.path.join(JSON_DIR, minerName, '{}.json'.format(jsonName)), encoding='utf-8') as f:
-            rawData = json.load(f)
+        compiled_data = None
+        for i in itertools.count(0):
+            try:
+                with open(os.path.join(JSON_DIR, minerName, '{}.{}.json'.format(jsonName, i)), encoding='utf-8') as f:
+                    rawData = json.load(f)
+                    if i == 0:
+                        compiled_data = {} if type(rawData) == dict else []
+                    if type(rawData) == dict:
+                        compiled_data.update(rawData)
+                    else:
+                        compiled_data.extend(rawData)
+            except FileNotFoundError:
+                break
+
         if not keyIdName:
             return rawData
         # IDs in keys, rows in values
         data = []
-        for k, v in rawData.items():
+        for k, v in compiled_data.items():
             row = {}
             row.update(v)
             if keyIdName not in row:
@@ -325,24 +337,27 @@ def update_db():
 
         newData = []
         for row in data:
-            newRow = {
-                'typeID': row['typeID'],
-            }
-            for (k, v) in eos.config.translation_mapping.items():
-                if v == '':
-                    v = '_en-us'
-                typeLines = []
-                traitData = row['traits{}'.format(v)]
-                for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
-                    typeLines.append(convertSection(skillData))
-                if 'role' in traitData:
-                    typeLines.append(convertSection(traitData['role']))
-                if 'misc' in traitData:
-                    typeLines.append(convertSection(traitData['misc']))
-                traitLine = '<br />\n<br />\n'.join(typeLines)
-                newRow['traitText{}'.format(v)] = traitLine
+            try:
+                newRow = {
+                    'typeID': row['typeID'],
+                }
+                for (k, v) in eos.config.translation_mapping.items():
+                    if v == '':
+                        v = '_en-us'
+                    typeLines = []
+                    traitData = row['traits{}'.format(v)]
+                    for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
+                        typeLines.append(convertSection(skillData))
+                    if 'role' in traitData:
+                        typeLines.append(convertSection(traitData['role']))
+                    if 'misc' in traitData:
+                        typeLines.append(convertSection(traitData['misc']))
+                    traitLine = '<br />\n<br />\n'.join(typeLines)
+                    newRow['traitText{}'.format(v)] = traitLine
 
-            newData.append(newRow)
+                newData.append(newRow)
+            except:
+                pass
         _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'display'})
 
     def processMetadata():
