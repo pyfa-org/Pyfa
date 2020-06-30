@@ -74,9 +74,9 @@ class ChangeAffectingSkills(ContextMenuSingle):
 
     def addSkill(self, rootMenu, skill, i):
         if i < 0:
-            label = "Not Learned"
+            label = _t("Not Learned")
         else:
-            label = "Level %s" % i
+            label = _t("Level %s") % i
 
         id = ContextMenuSingle.nextID()
         self.skillIds[id] = (skill, i)
