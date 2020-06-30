@@ -43,15 +43,6 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 
 pyfalog = Logger(__name__)
 
-
-EFT_OPTIONS = (
-    (PortEftOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortEftOptions.MUTATIONS, 'Mutated Attributes', 'Export mutated modules\' stats', True),
-    (PortEftOptions.IMPLANTS, 'Implants', 'Export implants', True),
-    (PortEftOptions.BOOSTERS, 'Boosters', 'Export boosters', True),
-    (PortEftOptions.CARGO, 'Cargo', 'Export cargo hold contents', True))
-
-
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'

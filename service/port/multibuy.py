@@ -22,15 +22,6 @@ from service.const import PortMultiBuyOptions
 from service.price import Price as sPrc
 
 
-MULTIBUY_OPTIONS = (
-    (PortMultiBuyOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortMultiBuyOptions.IMPLANTS, 'Implants', 'Export implants', False),
-    (PortMultiBuyOptions.BOOSTERS, 'Boosters', 'Export boosters', False),
-    (PortMultiBuyOptions.CARGO, 'Cargo', 'Export cargo contents', True),
-    (PortMultiBuyOptions.OPTIMIZE_PRICES, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
-)
-
-
 def exportMultiBuy(fit, options, callback):
     itemAmounts = {}
 
