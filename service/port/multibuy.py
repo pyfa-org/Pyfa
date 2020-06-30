@@ -88,12 +88,12 @@ def _addItem(container, item, quantity=1):
 
 def _prepareString(shipItem, itemAmounts):
     exportLines = []
-    exportLines.append(shipItem.name)
+    exportLines.append(shipItem.typeName)
     for item in sorted(itemAmounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
         count = itemAmounts[item]
         if count == 1:
-            exportLines.append(item.name)
+            exportLines.append(item.typeName)
         else:
-            exportLines.append('{} x{}'.format(item.name, count))
+            exportLines.append('{} x{}'.format(item.typeName, count))
 
     return "\n".join(exportLines)
