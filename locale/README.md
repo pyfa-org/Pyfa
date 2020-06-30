@@ -12,7 +12,7 @@ For Linux and macOS users these tools might be available out-of-box.
 ### To generate new template for translation:
 
 ```console
-$ find gui/ *.py -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k_t -f -
+$ find gui/ *.py -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k_t -f - -s
 ```
 
 explanation:
@@ -24,13 +24,14 @@ explanation:
     * `-d lang`: default language domain is `lang`
     * `-k_t`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t`
     * `-f -`: let `xgettext` to read from stdin, which is connected to `find` stdout
+    * `-s`: sort output according to `msgid`
 
 this `locale/lang.pot` is called PO template, which is throwed away once actual `ll_CC/LC_MESSAGES/lang.po` is ready for use.
 
 ### To initialize PO file for new language
 
 ```console
-$ msginit -i locale/lang.pot -l ll_CC -o locale/ll_CC/LC_MESSAGES/lang.po
+$ msginit -i locale/lang.pot -l ll_CC -o locale/ll_CC/LC_MESSAGES/lang.po -s
 ```
 
 explanation:
@@ -47,7 +48,7 @@ this `locale/ll_CC/LC_MESSAGES/lang.po` should be checked into VCS, later it wil
 ### To update PO file for existing translation
 
 ```console
-$ msgmerge locale/ll_CC/LC_MESSAGES/lang.po locale/lang.pot
+$ msgmerge -s locale/ll_CC/LC_MESSAGES/lang.po locale/lang.pot
 ```
 
 ### To do actual translation
@@ -68,6 +69,15 @@ for f in locale/*/; do
     msgfmt $f/LC_MESSAGES/lang.po -o $f/LC_MESSAGES/lang.mo
 done
 ```
+
+### To merge 2 or more PO file
+
+```console
+$ msgcat -s path/to/old.po [path/to/another.po] -o path/to/new.po
+```
+
+Note that `msgcat` cannot perform a 3-way merge, it will simply stack translations with same `msgid` on top of each other.
+If you use `msgcat` to merge multiple PO file, please check and fix the output before commit to Git. 
 
 ## i18n with Poedit
 
