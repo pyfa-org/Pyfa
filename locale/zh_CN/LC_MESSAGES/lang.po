@@ -2,13 +2,13 @@
 # Copyright (C) 2020 THE pyfa'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the pyfa package.
 # zhaoweny <zhaoweny@users.noreply.github.com>, 2020.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-29 20:32-0400\n"
-"PO-Revision-Date: 2020-06-29 10:48+0800\n"
+"POT-Creation-Date: 2020-06-30 17:04+0800\n"
+"PO-Revision-Date: 2020-06-30 17:08+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -24,7 +24,7 @@ msgstr " DPS: "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
-msgstr "小队"
+msgstr "堆"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
@@ -183,7 +183,7 @@ msgstr "铁骑技能"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "深渊环境"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
@@ -302,7 +302,7 @@ msgstr "使用突变质体"
 
 #: gui/builtinContextMenus/graphDmgApplyProjected.py:23
 msgid "Apply Projected Items"
-msgstr ""
+msgstr "应用远程效果物品"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:144
 msgid "Apply Proxy Settings"
@@ -398,7 +398,8 @@ msgstr "增效剂"
 
 #: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
-#: gui/builtinContextMenus/additionsImport.py:24
+#: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
+#: gui/copySelectDialog.py:56
 msgid "Boosters"
 msgstr "增效剂"
 
@@ -430,6 +431,7 @@ msgstr "电容稳定性"
 #: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
+#: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
 msgid "Cargo"
 msgstr "货舱"
 
@@ -526,7 +528,7 @@ msgstr "堡垒"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:38
 msgid "Citadel System Security"
-msgstr ""
+msgstr "堡垒星系安等"
 
 #: gui/propertyEditor.py:40
 msgid "Clear All"
@@ -563,15 +565,15 @@ msgstr "用背景色区分槽位"
 
 #: gui/additionsPane.py:84
 msgid "Command"
-msgstr "指令"
+msgstr "指挥效果"
 
 #: gui/builtinAdditionPanes/commandView.py:201
 msgid "Command Fit"
-msgstr ""
+msgstr "指挥装配"
 
 #: gui/builtinContextMenus/commandFitAdd.py:51
 msgid "Command Fits"
-msgstr ""
+msgstr "指挥装配"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:127
 msgid "Command center hold"
@@ -669,8 +671,7 @@ msgstr "拷贝选中的{}"
 msgid "Copy and paste the block of text provided by pyfa.io"
 msgstr "请复制和粘贴pyfa.io提供的字符串"
 
-#: gui/patternEditor.py:290 gui/setEditor.py:222
-#: gui/targetProfileEditor.py:366
+#: gui/patternEditor.py:290 gui/setEditor.py:222 gui/targetProfileEditor.py:366
 msgid "Could not import from clipboard"
 msgstr "无法从剪贴板导入"
 
@@ -717,7 +718,7 @@ msgstr "数据库"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:56
 msgid "Debug Logging Enabled"
-msgstr "调试日子已开启"
+msgstr "调试日志已开启"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:58
 msgid "Default Market Prices:"
@@ -804,6 +805,14 @@ msgstr "列表中没有你的EvE角色？"
 msgid "Download"
 msgstr "下载"
 
+#: gui/builtinAdditionPanes/commandView.py:163
+msgid "Drag a fit to this area"
+msgstr "拖拽装配到此处"
+
+#: gui/builtinAdditionPanes/projectedView.py:226
+msgid "Drag an item or fit, or use right-click menu for wormhole effects"
+msgstr "拖拽一个物品或装配以启用投射效果，或使用右键菜单选择一个虫洞环境效果"
+
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Drone"
 msgstr "无人机"
@@ -856,7 +865,7 @@ msgstr "EHP"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
 msgid "EM"
-msgstr ""
+msgstr "电磁"
 
 #: gui/targetProfileEditor.py:119
 msgid "EM resistance"
@@ -918,9 +927,8 @@ msgid "Electromagnetic resistance"
 msgstr "电磁抗性"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:59
-#, fuzzy
 msgid "Empty"
-msgstr "空白标签页"
+msgstr "空"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:105
 msgid "Empty Market View"
@@ -1010,9 +1018,8 @@ msgid "Expand All"
 msgstr "展开所有"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:26
-#, fuzzy
 msgid "Explosive"
-msgstr "爆炸抗性"
+msgstr "爆炸"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:88
 #: gui/targetProfileEditor.py:122
@@ -1045,6 +1052,10 @@ msgstr "导出装配为极简版网页，仅保留装配链接，不包含样式
 msgid "Export Item Stats"
 msgstr "导出物品属性"
 
+#: gui/esiFittings.py:229
+msgid "Export Loaded Charges"
+msgstr "导出已装填弹药"
+
 #: gui/mainFrame.py:807
 msgid "Export Skills Needed As..."
 msgstr "导出所需技能列表到..."
@@ -1052,6 +1063,22 @@ msgstr "导出所需技能列表到..."
 #: gui/mainMenuBar.py:87
 msgid "Export a fit to the clipboard"
 msgstr "导出装配到剪贴板"
+
+#: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
+msgid "Export boosters"
+msgstr "导出增效剂"
+
+#: gui/copySelectDialog.py:49
+msgid "Export cargo contents"
+msgstr "导出货舱物品"
+
+#: gui/copySelectDialog.py:57
+msgid "Export cargo hold contents"
+msgstr "导出货舱物品信息"
+
+#: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
+msgid "Export charges loaded into modules"
+msgstr "导出已装填到模块中的弹药信息"
 
 #: gui/esiFittings.py:211
 msgid "Export fit to EVE"
@@ -1068,6 +1095,14 @@ msgstr "导出装配为其他格式"
 #: gui/setEditor.py:149
 msgid "Export implant sets to clipboard"
 msgstr "导出植入体配置到剪贴板"
+
+#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
+msgid "Export implants"
+msgstr "导出植入体"
+
+#: gui/copySelectDialog.py:54
+msgid "Export mutated modules' stats"
+msgstr "导出变异模块的属性"
 
 #: gui/patternEditor.py:172
 msgid "Export patterns to clipboard"
@@ -1162,6 +1197,10 @@ msgstr "用该模块填满空白槽位"
 msgid "Firepower"
 msgstr "火力"
 
+#: graphs/gui/lists.py:305
+msgid "Fit"
+msgstr "装配"
+
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:47
 msgid "Fitting Database:"
 msgstr "装配数据库："
@@ -1178,6 +1217,10 @@ msgstr "装配"
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:113
 msgid "Fleet hangar"
 msgstr "舰队机库"
+
+#: gui/copySelectDialog.py:59
+msgid "Formatting Tags"
+msgstr "格式化标签"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Frigate"
@@ -1252,6 +1295,10 @@ msgstr ""
 "HTML导出（文件>导出到所有装配到网页）可以导出你的所有装配为HTML网页，放在指定"
 "路径下。网页版装配应用可以很容易的打开该HTML网页"
 
+#: gui/builtinAdditionPanes/fighterView.py:62
+msgid "Heavy"
+msgstr "重型"
+
 #: gui/builtinShipBrowser/navigationPanel.py:136
 msgid "Hide Recent Fits"
 msgstr "隐藏最近使用的装配"
@@ -1263,7 +1310,7 @@ msgstr "隐藏空的舰船类型"
 
 #: gui/builtinViewColumns/baseName.py:59
 msgid "High"
-msgstr ""
+msgstr "高"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:78
 msgid "Hull repair amount"
@@ -1311,6 +1358,7 @@ msgstr "植入体配置名已使用，请选择其他名称。"
 #: gui/builtinContextMenus/additionsExportSelection.py:22
 #: gui/builtinContextMenus/additionsImport.py:22
 #: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
+#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
 msgid "Implants"
 msgstr "植入体"
 
@@ -1388,6 +1436,11 @@ msgstr ""
 "导入技能到该角色将设置技能等级为等待状态。若需要永久保存技能，请在导入后点击"
 "窗口底部的保存按钮"
 
+#: gui/copySelectDialog.py:59
+msgid ""
+"Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
+msgstr "包含适用于直接粘贴装配到聊天频道的格式化标签"
+
 #: gui/builtinStatsViews/resistancesViewFull.py:115
 msgid "Incoming damage pattern"
 msgstr "伤害分布"
@@ -1434,7 +1487,7 @@ msgstr "物品属性"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:27
 msgid "Kinetic"
-msgstr ""
+msgstr "动能"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:87
 #: gui/targetProfileEditor.py:121
@@ -1461,11 +1514,16 @@ msgstr "发射器"
 #: gui/builtinContextMenus/moduleAmmoChange.py:94
 #: gui/builtinContextMenus/moduleAmmoChange.py:109
 msgid "Less Damage"
-msgstr ""
+msgstr "更少伤害"
 
 #: gui/characterEditor.py:343
 msgid "Level"
 msgstr "技能等级"
+
+#: gui/builtinContextMenus/skillAffectors.py:79
+#, python-format
+msgid "Level %s"
+msgstr "等级%s"
 
 #: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
 #: gui/characterEditor.py:616 gui/characterEditor.py:649
@@ -1475,6 +1533,18 @@ msgstr "等级{}"
 #: gui/characterEditor.py:532
 msgid "Level {}d"
 msgstr "等级{}d"
+
+#: gui/builtinAdditionPanes/fighterView.py:62
+msgid "Light"
+msgstr "轻型"
+
+#: service/market.py:266
+msgid "Limited Issue Ships"
+msgstr "限量版舰船"
+
+#: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
+msgid "Loaded Charges"
+msgstr "已装填弹药"
 
 #: gui/mainFrame.py:273
 msgid "Loading previous fits..."
@@ -1486,7 +1556,7 @@ msgstr "本地服务器"
 
 #: gui/builtinContextMenus/envEffectAdd.py:193
 msgid "Localized"
-msgstr ""
+msgstr "局部"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:201
 msgid "Lock Times"
@@ -1509,13 +1579,12 @@ msgid "Login Authentication Method"
 msgstr "登录鉴权模式"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:82
-#, fuzzy
 msgid "Long Range"
-msgstr "锁定范围"
+msgstr "更长距离"
 
 #: gui/builtinViewColumns/baseName.py:61
 msgid "Low"
-msgstr ""
+msgstr "低"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
@@ -1577,7 +1646,7 @@ msgstr "亚光速航速"
 
 #: gui/builtinViewColumns/baseName.py:60
 msgid "Med"
-msgstr ""
+msgstr "中"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:119
 msgid "Medium ship hold"
@@ -1612,7 +1681,7 @@ msgstr "杂项"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:28
 msgid "Mixed"
-msgstr ""
+msgstr "混合"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:83
 msgid "Mode:"
@@ -1625,7 +1694,11 @@ msgstr "模块"
 #: gui/builtinContextMenus/moduleAmmoChange.py:97
 #: gui/builtinContextMenus/moduleAmmoChange.py:112
 msgid "More Damage"
-msgstr ""
+msgstr "更多伤害"
+
+#: gui/copySelectDialog.py:54
+msgid "Mutated Attributes"
+msgstr "已变异属性"
 
 #: gui/itemStats.py:170
 msgid "Mutations"
@@ -1696,6 +1769,14 @@ msgstr "无代理"
 msgid "None"
 msgstr "无"
 
+#: gui/builtinContextMenus/skillAffectors.py:77
+msgid "Not Learned"
+msgstr "未学习"
+
+#: gui/characterEditor.py:399 service/character.py:322
+msgid "Not learned"
+msgstr "未学习"
+
 #: gui/additionsPane.py:87
 msgid "Notes"
 msgstr "备注"
@@ -1735,6 +1816,10 @@ msgstr "默认在新标签页打开装配"
 #: gui/builtinContextMenus/shipJump.py:35
 msgid "Open in Fitting Browser"
 msgstr "在装配浏览器中打开"
+
+#: gui/copySelectDialog.py:50
+msgid "Optimize Prices"
+msgstr "优化价格"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Ore hold"
@@ -1835,12 +1920,12 @@ msgstr "已成功从剪贴板导入目标属性"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:61
 msgid "Project onto Fit"
-msgstr ""
+msgstr "施加远程效果到装配"
 
 #: gui/builtinContextMenus/itemProject.py:34
 #, python-brace-format
 msgid "Project {0} onto Fit"
-msgstr ""
+msgstr "施加{0}远程效果到装配"
 
 #: gui/additionsPane.py:81
 msgid "Projected"
@@ -1851,7 +1936,7 @@ msgstr "环境效果"
 #: gui/builtinAdditionPanes/projectedView.py:321
 #: gui/builtinAdditionPanes/projectedView.py:326
 msgid "Projected Item"
-msgstr ""
+msgstr "远程效果物品"
 
 #: gui/itemStats.py:200
 msgid "Properties"
@@ -1863,7 +1948,7 @@ msgstr "代理设置"
 
 #: gui/builtinContextMenus/envEffectAdd.py:210
 msgid "PvP Weather"
-msgstr ""
+msgstr "PvP环境"
 
 #: gui/aboutData.py:49
 msgid ""
@@ -1933,6 +2018,10 @@ msgstr "重新启用装配限制将删除所有无效物品。您要继续吗？
 msgid "Recent Fits"
 msgstr "最近使用的装配"
 
+#: gui/builtinMarketBrowser/marketTree.py:37
+msgid "Recently Used Items"
+msgstr "最近使用的物品"
+
 #: gui/builtinStatsViews/rechargeViewFull.py:43
 msgid "Recharge rates"
 msgstr "回充速度"
@@ -1976,6 +2065,10 @@ msgstr "移除{}{}"
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
 msgid "Reopen previous fits on startup"
 msgstr "重新启动时打开之前的装配"
+
+#: gui/copySelectDialog.py:50
+msgid "Replace items by cheaper alternatives"
+msgstr "使用较便宜的物品替代更贵的物品"
 
 #: gui/itemStats.py:185
 msgid "Requirements"
@@ -2021,7 +2114,7 @@ msgstr "还原为{}"
 
 #: gui/builtinViewColumns/baseName.py:63
 msgid "Rig"
-msgstr ""
+msgstr "改装"
 
 #: gui/builtinItemStatsViews/itemEffects.py:34
 msgid "Run Time"
@@ -2093,6 +2186,10 @@ msgstr "安全等级: {0:.2f}"
 msgid "Security Status is used in some CONCORD hull calculations"
 msgstr "安全等级会用于计算CONCORD警察船体属性"
 
+#: gui/copySelectDialog.py:62
+msgid "Select a format"
+msgstr "选择格式"
+
 #: gui/esiFittings.py:284
 msgid "Sending request and awaiting response"
 msgstr "正在发送请求和接收响应"
@@ -2152,7 +2249,7 @@ msgstr "船体"
 
 #: gui/builtinShipBrowser/shipItem.py:111
 msgid "Ship Basic"
-msgstr ""
+msgstr "舰船基础"
 
 #: gui/builtinShipBrowser/navigationPanel.py:48
 msgid "Ship groups"
@@ -2163,9 +2260,8 @@ msgid "Ship hold"
 msgstr "舰船仓"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:100
-#, fuzzy
 msgid "Short Range"
-msgstr "锁定范围"
+msgstr "更短距离"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:63
 msgid "Show Rack Labels"
@@ -2250,7 +2346,7 @@ msgstr "属性面板"
 
 #: gui/builtinViewColumns/baseName.py:62
 msgid "Subsystem"
-msgstr ""
+msgstr "子系统"
 
 #: gui/characterEditor.py:901
 msgid "Success"
@@ -2259,6 +2355,10 @@ msgstr "成功"
 #: gui/characterEditor.py:901
 msgid "Successfully fetched skills"
 msgstr "成功获取到技能列表"
+
+#: gui/builtinAdditionPanes/fighterView.py:62
+msgid "Support"
+msgstr "支援"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:48
 #, python-brace-format
@@ -2273,6 +2373,10 @@ msgstr "持续回充"
 #: gui/builtinViewColumns/baseName.py:101 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr "战术模式"
+
+#: graphs/gui/lists.py:358
+msgid "Target"
+msgstr "目标"
 
 #: gui/targetProfileEditor.py:86
 msgid "Target Profile"
@@ -2358,7 +2462,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:25
 msgid "Thermal"
-msgstr ""
+msgstr "热能"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:86
 #: gui/targetProfileEditor.py:120
@@ -2490,6 +2594,14 @@ msgstr "有更新可用"
 msgid "Updates"
 msgstr "更新"
 
+#: gui/builtinAdditionPanes/implantView.py:68
+msgid "Use Character Implants"
+msgstr "使用角色植入体组"
+
+#: gui/builtinAdditionPanes/implantView.py:67
+msgid "Use Fit-specific Implants"
+msgstr "使用装配指定的植入体组"
+
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
 msgid "Use character implants by default for new fits"
 msgstr "新装配默认使用角色植入体组"
@@ -2543,7 +2655,7 @@ msgstr "武器"
 msgid ""
 "When damage profile is Uniform, set Reactive Armor Hardener to match (old "
 "behavior)."
-msgstr "当伤害分布为均匀模式时，重置反应式装甲增强器（兼容模式）。"
+msgstr "当伤害分布为均匀模式时，重置反应式装甲增强器（旧模式）。"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
 msgid ""
@@ -2565,7 +2677,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/envEffectAdd.py:105
 msgid "Wormhole"
-msgstr ""
+msgstr "虫洞"
 
 #: gui/builtinItemStatsViews/itemEffects.py:56
 msgid "Yes"
@@ -2651,4 +2763,4 @@ msgstr "{}属性"
 
 #: gui/builtinViewColumns/baseName.py:103
 msgid "{} {} Slot"
-msgstr ""
+msgstr "{}{}槽"
