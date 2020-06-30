@@ -33,16 +33,23 @@ marketgroups_table = Table("invmarketgroups", gamedata_meta,
                                 ForeignKey("invmarketgroups.marketGroupID", initially="DEFERRED", deferrable=True)),
                            Column("iconID", Integer))
 
+props = {
+    "items": relation(Item, backref="marketGroup"),
+    "parent": relation(MarketGroup, backref="children", remote_side=[marketgroups_table.c.marketGroupID]),
+    "ID": synonym("marketGroupID"),
+    "name": synonym("marketGroupName{}".format(eos.config.lang)),
+    "description": synonym("_description{}".format(eos.config.lang)),
+}
+
+# Create deferred columns shadowing all the description fields. The literal `description` property will dynamically
+# be assigned as synonym to one of these
+# this is mostly here to allow the db_update to be language-agnostic
+# todo: determine if we ever use market group descriptions... can we just get with of these?
+props.update({'_description' + v: deferred(marketgroups_table.c['marketGroupDescription' + v]) for (k, v) in eos.config.translation_mapping.items()})
+
 mapper(
     MarketGroup,
     marketgroups_table,
-    properties={
-        "items"      : relation(Item, backref="marketGroup"),
-        "parent"     : relation(MarketGroup, backref="children",
-                               remote_side=[marketgroups_table.c.marketGroupID]),
-        "ID"         : synonym("marketGroupID"),
-        "name"       : synonym("marketGroupName{}".format(eos.config.lang)),
-        "description": deferred(marketgroups_table.c["marketGroupDescription{}".format(eos.config.lang)]),
-    }
+    properties=props
 )
 
