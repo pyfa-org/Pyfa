@@ -160,7 +160,7 @@ class CommandView(d.Display):
             self.fits.sort(key=self.fitSort)
             stuff.extend(self.fits)
         if not stuff:
-            stuff = [DummyEntry("Drag a fit to this area")]
+            stuff = [DummyEntry(_t("Drag a fit to this area"))]
         self.update(stuff)
 
     def click(self, event):

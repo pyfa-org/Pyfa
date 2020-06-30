@@ -35,6 +35,7 @@ from service.market import Market
 
 
 FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
+_t = wx.GetTranslation
 
 
 class FighterViewDrop(wx.DropTarget):
@@ -58,7 +59,7 @@ class FighterView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.labels = ["Light", "Heavy", "Support"]
+        self.labels = [("Light", _t("Light")), ("Heavy", _t("Heavy")), ("Support", _t("Support"))]
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -68,18 +69,18 @@ class FighterView(wx.Panel):
         textSizer = wx.BoxSizer(wx.HORIZONTAL)
         textSizer.AddStretchSpacer()
 
-        for x in self.labels:
-            lbl = wx.StaticText(self, wx.ID_ANY, x.capitalize())
+        for attr, label in self.labels:
+            lbl = wx.StaticText(self, wx.ID_ANY, label)
             textSizer.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
 
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
-            setattr(self, "label%sUsed" % (x.capitalize()), lbl)
+            setattr(self, "label%sUsed" % attr, lbl)
             textSizer.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
 
             textSizer.Add(wx.StaticText(self, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
-            setattr(self, "label%sTotal" % (x.capitalize()), lbl)
+            setattr(self, "label%sTotal" % attr, lbl)
             textSizer.Add(lbl, 0, wx.ALIGN_CENTER)
             textSizer.AddStretchSpacer()
 
@@ -100,7 +101,7 @@ class FighterView(wx.Panel):
         fit = sFit.getFit(activeFitID)
 
         if fit:
-            for x in self.labels:
+            for x, _ in self.labels:
                 if fit.isStructure:
                     slot = getattr(FittingSlot, "FS_{}".format(x.upper()))
                 else:

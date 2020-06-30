@@ -25,12 +25,11 @@ import wx
 
 from eos.db import getFit
 from gui.utils.clipboard import toClipboard
-from service.const import PortMultiBuyOptions
+from service.const import PortDnaOptions, PortEftOptions, PortMultiBuyOptions
 from service.port import EfsPort, Port
-from service.port.dna import DNA_OPTIONS
-from service.port.eft import EFT_OPTIONS
-from service.port.multibuy import MULTIBUY_OPTIONS
 from service.settings import SettingsProvider
+
+_t = wx.GetTranslation
 
 
 class CopySelectDialog(wx.Dialog):
@@ -43,15 +42,32 @@ class CopySelectDialog(wx.Dialog):
     copyFormatFitStats = 6
 
     def __init__(self, parent):
-        super().__init__(parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
+        self.MULTIBUY_OPTIONS = (
+            (PortMultiBuyOptions.LOADED_CHARGES, _t('Loaded Charges'), _t('Export charges loaded into modules'), True),
+            (PortMultiBuyOptions.IMPLANTS, _t('Implants'), _t('Export implants'), False),
+            (PortMultiBuyOptions.BOOSTERS, _t('Boosters'), _t('Export boosters'), False),
+            (PortMultiBuyOptions.CARGO, _t('Cargo'), _t('Export cargo contents'), True),
+            (PortMultiBuyOptions.OPTIMIZE_PRICES, _t('Optimize Prices'), _t('Replace items by cheaper alternatives'), False),
+        )
+        self.EFT_OPTIONS = (
+            (PortEftOptions.LOADED_CHARGES, _t('Loaded Charges'), _t('Export charges loaded into modules'), True),
+            (PortEftOptions.MUTATIONS, _t('Mutated Attributes'), _t('Export mutated modules\' stats'), True),
+            (PortEftOptions.IMPLANTS, _t('Implants'), _t('Export implants'), True),
+            (PortEftOptions.BOOSTERS, _t('Boosters'), _t('Export boosters'), True),
+            (PortEftOptions.CARGO, _t('Cargo'), _t('Export cargo hold contents'), True))
+        self.DNA_OPTIONS = (
+            (PortDnaOptions.FORMATTING, _t('Formatting Tags'), _t('Include formatting tags to paste fit directly into corp bulletins, MOTD, etc.'), True),
+        )
+
+        super().__init__(parent, id=wx.ID_ANY, title=_t("Select a format"), size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.CopySelectDict = {
-            CopySelectDialog.copyFormatEft     : self.exportEft,
-            CopySelectDialog.copyFormatXml     : self.exportXml,
-            CopySelectDialog.copyFormatDna     : self.exportDna,
-            CopySelectDialog.copyFormatEsi     : self.exportEsi,
+            CopySelectDialog.copyFormatEft: self.exportEft,
+            CopySelectDialog.copyFormatXml: self.exportXml,
+            CopySelectDialog.copyFormatDna: self.exportDna,
+            CopySelectDialog.copyFormatEsi: self.exportEsi,
             CopySelectDialog.copyFormatMultiBuy: self.exportMultiBuy,
-            CopySelectDialog.copyFormatEfs     : self.exportEfs,
+            CopySelectDialog.copyFormatEfs: self.exportEfs,
             CopySelectDialog.copyFormatFitStats: self.exportFitStats
         }
 
@@ -59,10 +75,10 @@ class CopySelectDialog(wx.Dialog):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.copyFormats = OrderedDict((
-            ("EFT", (CopySelectDialog.copyFormatEft, EFT_OPTIONS)),
-            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, MULTIBUY_OPTIONS)),
+            ("EFT", (CopySelectDialog.copyFormatEft, self.EFT_OPTIONS)),
+            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, self.MULTIBUY_OPTIONS)),
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
-            ("DNA", (CopySelectDialog.copyFormatDna, DNA_OPTIONS)),
+            ("DNA", (CopySelectDialog.copyFormatDna, self.DNA_OPTIONS)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
             ("Stats", (CopySelectDialog.copyFormatFitStats, None)),
             # ("XML", (CopySelectDialog.copyFormatXml, None)),
@@ -196,4 +212,3 @@ class CopySelectDialog(wx.Dialog):
         """ Puts fit stats in textual format into the clipboard """
         fit = getFit(self.mainFrame.getActiveFit())
         Port.exportFitStats(fit, callback)
-
