@@ -344,7 +344,7 @@ class Item(EqBase):
 
             try:
                 if (
-                    self.category.categoryName == 'Structure' or
+                    self.category.name == 'Structure' or
                     # Here until CCP puts their shit together
                     self.name in ("Thunderchild", "Stormbringer", "Skybreaker")
                 ):
@@ -506,8 +506,8 @@ class Item(EqBase):
         return False
 
     def __repr__(self):
-        return "Item(ID={}, name={}) at {}".format(
-                self.ID, self.name, hex(id(self))
+        return "Item(ID={}, name={}, display={}) at {}".format(
+                self.ID, self.typeName, self.name, hex(id(self))
         )
 
 

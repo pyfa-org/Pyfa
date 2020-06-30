@@ -27,10 +27,12 @@ from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table
 from eos.db.gamedata.effect import typeeffects_table
 from eos.gamedata import Attribute, DynamicItem, Effect, Group, Item, Traits, MetaGroup
 
+import eos.config
+
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
-                    Column("typeName", String, index=True),
-                    Column("description", String),
+                    *[Column("typeName{}".format(lang), String, index=True) for lang in eos.config.translation_mapping.values()],
+                    *[Column("typeDescription{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
                     Column("raceID", Integer),
                     Column("factionID", Integer),
                     Column("published", Boolean),
@@ -43,27 +45,38 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("variationParentTypeID", Integer, ForeignKey("invtypes.typeID"), index=True),
                     Column("replacements", String),
                     Column("reqskills", String),
-                    Column("requiredfor", String))
+                    Column("requiredfor", String),
+                    )
 
 from .traits import traits_table  # noqa
 
-mapper(Item, items_table,
-       properties={
-           "group"            : relation(Group, backref=backref("items", cascade="all,delete")),
+props = {
+           "group": relation(Group, backref=backref("items", cascade="all,delete")),
            "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
-           "metaGroup"        : relation(MetaGroup, backref=backref("items", cascade="all,delete")),
-           "varParent"        : relation(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
-           "ID"               : synonym("typeID"),
-           "name"             : synonym("typeName"),
-           "description"      : deferred(items_table.c.description),
-           "traits"           : relation(Traits,
-                                         primaryjoin=traits_table.c.typeID == items_table.c.typeID,
-                                         uselist=False),
-           "mutaplasmids": relation(DynamicItem,
-                   primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
-                   secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
-                   secondary=dynamicApplicable_table,
-                   backref="applicableItems")})
+           "metaGroup": relation(MetaGroup, backref=backref("items", cascade="all,delete")),
+           "varParent": relation(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
+           "ID": synonym("typeID"),
+           "name": synonym("typeName{}".format(eos.config.lang)),
+           "description" : synonym("_description{}".format(eos.config.lang)),
+           "traits": relation(
+               Traits,
+               primaryjoin=traits_table.c.typeID == items_table.c.typeID,
+               uselist=False
+           ),
+           "mutaplasmids": relation(
+               DynamicItem,
+               primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
+               secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
+               secondary=dynamicApplicable_table,
+               backref="applicableItems"
+           )
+}
+
+# Create deferred columns shadowing all the description fields. The literal `description` property will dynamically
+# be assigned as synonym to one of these
+props.update({'_description' + v: deferred(items_table.c['typeDescription' + v]) for (k, v) in eos.config.translation_mapping.items()})
+
+mapper(Item, items_table, properties=props)
 
 Item.category = association_proxy("group", "category")

@@ -308,7 +308,7 @@ class ProjectedView(d.Display):
                 contexts.append(modFullContext)
                 if mainItem.charge is not None:
                     chargeSrcContext = 'projectedCharge'
-                    chargeItemContext = sMkt.getCategoryByItem(mainItem.charge).name
+                    chargeItemContext = sMkt.getCategoryByItem(mainItem.charge).displayName
                     chargeFullContext = (chargeSrcContext, chargeItemContext)
                     contexts.append(chargeFullContext)
             elif isinstance(mainItem, EosDrone):

@@ -102,13 +102,21 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def getData(self):
         data = Group()
-        data.groups['Wormhole'] = self.getEffectBeacons(
-                'Black Hole', 'Cataclysmic Variable', 'Magnetar',
-                'Pulsar', 'Red Giant', 'Wolf Rayet')
-        data.groups['Sansha Incursion'] = self.getEffectBeacons('Sansha Incursion')
-        data.groups['Triglavian Invasion'] = self.getEffectBeacons('Triglavian Invasion')
-        data.groups['Triglavian Invasion'].groups['Destructible Beacons'] = self.getDestructibleBeacons()
-        data.groups['Abyssal Weather'] = self.getAbyssalWeather()
+        data.groups[_t('Wormhole')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Black Hole'),
+            _t('ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable'),
+            _t('ContextMenu|ProjectedEffectManipulation|Magnetar'),
+            _t('ContextMenu|ProjectedEffectManipulation|Pulsar'),
+            _t('ContextMenu|ProjectedEffectManipulation|Red Giant'),
+            _t('ContextMenu|ProjectedEffectManipulation|Wolf Rayet'))
+        data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion')
+        )
+        data.groups[_t('Triglavian Invasion')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Triglavian Invasion')
+        )
+        data.groups[_t('Triglavian Invasion')].groups[_t('Destructible Beacons')] = self.getDestructibleBeacons()
+        data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         return data
 
     def getEffectBeacons(self, *groups):
@@ -122,7 +130,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data = Group()
 
         # Stuff we don't want to see in names
-        garbages = ("System Effects", "Effects")
+        garbages = (_t("ContextMenu|ProjectedEffectManipulation|System Effects"), _t("ContextMenu|ProjectedEffectManipulation|Effects"))
 
         # Get group with all the system-wide beacons
         grp = sMkt.getGroup("Effect Beacon")
@@ -182,21 +190,24 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         # Localized abyssal hazards
         items = sMkt.getGroup("Abyssal Hazards").items
         if items:
-            subdata = data.groups.setdefault('Localized', Group())
+            subdata = data.groups.setdefault(_t('Localized'), Group())
             for beacon in sMkt.getGroup("Abyssal Hazards").items:
                 if not beacon.isType('projected'):
                     continue
-                # Localized effects, currently, have a name like "(size) (type) Cloud"
-                # Until this inevitably changes, do a simple split
-                name_parts = beacon.name.split(" ")
+                groups = (_t('Bioluminescence'), _t('Caustic'), _t('Filament'))
+                for group in groups:
+                    if re.search(group, beacon.name):
+                        key = group
+                        break
+                else:
+                    continue
 
-                key = name_parts[1].strip()
                 subsubdata = subdata.groups.setdefault(key, Group())
                 subsubdata.items.append(Entry(beacon.ID, beacon.name, beacon.name))
             subdata.sort()
 
         # PVP weather
-        data.items.append(Entry(49766, 'PvP Weather', 'PvP Weather'))
+        data.items.append(Entry(49766, _t('PvP Weather'), _t('PvP Weather')))
 
         return data
 

@@ -12,13 +12,14 @@ For Linux and macOS users these tools might be available out-of-box.
 ### To generate new template for translation:
 
 ```console
-$ find */ *.py -name "*.py" | xgettext -o locale/lang.pot -d lang -k_t -f -
+$ find gui/ *.py -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k_t -f -
 ```
 
 explanation:
 
-* `find */ *.py -name "*.py"`: collect all `.py` file path in root folder and all sub-folder, write it to stdout
+* `find gui/ *.py -name "*.py"`: collect all `.py` file path in `gui` folder and all sub-folders, write it to stdout
 * `xgettext`: a utility looking for keyword and put string literals in a specific format for human translation
+    * `--from-code=UTF-8`: designates encoding of files 
     * `-o locale/lang.pot`: let `xgettext` write to `locale/lang.pot`
     * `-d lang`: default language domain is `lang`
     * `-k_t`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t`

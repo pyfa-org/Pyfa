@@ -22,11 +22,12 @@ from sqlalchemy.orm import relation, mapper, synonym, deferred, backref
 
 from eos.db import gamedata_meta
 from eos.gamedata import Category, Group
+import eos.config
 
 groups_table = Table("invgroups", gamedata_meta,
                      Column("groupID", Integer, primary_key=True),
-                     Column("groupName", String),
-                     Column("description", String),
+                     *[Column("name{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
+                     # Column("description", String), # deprecated
                      Column("published", Boolean),
                      Column("categoryID", Integer, ForeignKey("invcategories.categoryID")),
                      Column("iconID", Integer))
@@ -35,6 +36,6 @@ mapper(Group, groups_table,
        properties={
            "category"   : relation(Category, backref=backref("groups", cascade="all,delete")),
            "ID"         : synonym("groupID"),
-           "name"       : synonym("groupName"),
-           "description": deferred(groups_table.c.description)
+           "displayName"       : synonym("name{}".format(eos.config.lang)),
+           # "description": deferred(groups_table.c.description) # deprecated
        })

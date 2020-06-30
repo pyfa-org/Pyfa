@@ -69,16 +69,16 @@ class Ammo:
                         damage += d
                 # Take optimal and falloff as range factor
                 rangeFactor = range_ + falloff
-                return -rangeFactor, charge.name.rsplit()[-2:], damage, charge.name
+                return -rangeFactor, charge.typeName.rsplit()[-2:], damage, charge.name
 
             all = OrderedDict()
             sub = []
             prevNameBase = None
             prevRange = None
             for charge in sorted(chargesFlat, key=turretSorter):
-                if 'civilian' in charge.name.lower():
+                if 'civilian' in charge.typeName.lower():
                     continue
-                currNameBase = ' '.join(charge.name.rsplit()[-2:])
+                currNameBase = ' '.join(charge.typeName.rsplit()[-2:])
                 currRange = charge.getAttribute('weaponRangeMultiplier')
                 if sub and (currRange != prevRange or currNameBase != prevNameBase):
                     all[sub[0].name] = sub

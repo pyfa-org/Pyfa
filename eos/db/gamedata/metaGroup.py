@@ -22,12 +22,20 @@ from sqlalchemy.orm import mapper, synonym
 
 from eos.db import gamedata_meta
 from eos.gamedata import MetaGroup
+import eos.config
 
-metagroups_table = Table("invmetagroups", gamedata_meta,
-                         Column("metaGroupID", Integer, primary_key=True),
-                         Column("metaGroupName", String))
+metagroups_table = Table(
+    "invmetagroups",
+    gamedata_meta,
+    Column("metaGroupID", Integer, primary_key=True),
+    *[Column("metaGroupName{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
+)
 
-mapper(MetaGroup, metagroups_table,
-       properties={
-           "ID"  : synonym("metaGroupID"),
-           "name": synonym("metaGroupName")})
+mapper(
+    MetaGroup,
+    metagroups_table,
+    properties={
+        "ID"  : synonym("metaGroupID"),
+        "name": synonym("metaGroupName{}".format(eos.config.lang))
+    }
+)
