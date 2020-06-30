@@ -29,7 +29,7 @@ translation_mapping = {
 
 def set_lang(i18n_lang):
     global lang
-    lang = translation_mapping.get(i18n_lang, translation_mapping.get("en-US"))
+    lang = translation_mapping.get(i18n_lang, translation_mapping.get("en_US"))
 
 pyfalog.debug("Gamedata connection string: {0}", gamedata_connectionstring)
 

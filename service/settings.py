@@ -538,6 +538,7 @@ class GraphSettings:
 
 class LocaleSettings:
     _instance = None
+    DEFAULT  = "en_US"
 
     supported_langauges = {
             "en_US": wx.LANGUAGE_ENGLISH_US,
@@ -554,7 +555,7 @@ class LocaleSettings:
     def __init__(self):
 
         defaults = {
-            'locale': "en_US"
+            'locale': self.DEFAULT
         }
         self.settings = SettingsProvider.getInstance().getSettings('localeSettings', defaults)
 
@@ -562,4 +563,6 @@ class LocaleSettings:
         return self.settings[key]
 
     def set(self, key, value):
+        if key == 'locale' and value not in self.supported_langauges:
+            self.settings[key] = self.DEFAULT
         self.settings[key] = value
