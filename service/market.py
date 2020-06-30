@@ -37,6 +37,7 @@ from service.jargon import JargonLoader
 from service.settings import SettingsProvider
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
@@ -262,6 +263,7 @@ class Market:
         self.les_grp = types_Group()
         self.les_grp.ID = -1
         self.les_grp.name = "Limited Issue Ships"
+        self.les_grp.displayName = _t("Limited Issue Ships")
         self.les_grp.published = True
         ships = self.getCategory("Ship")
         self.les_grp.category = ships

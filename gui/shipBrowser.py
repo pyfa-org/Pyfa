@@ -164,7 +164,7 @@ class ShipBrowser(wx.Panel):
         if len(self.categoryList) == 0:
             # set cache of category list
             self.categoryList = list(sMkt.getShipRoot())
-            self.categoryList.sort(key=lambda _ship: _ship.name)
+            self.categoryList.sort(key=lambda _ship: _ship.displayName)
 
             counts = sFit.countAllFitsGroupedByShip()
 
@@ -176,7 +176,7 @@ class ShipBrowser(wx.Panel):
             if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:
                 continue
             else:
-                self.lpane.AddWidget(CategoryItem(self.lpane, ship.ID, (ship.name, 0)))
+                self.lpane.AddWidget(CategoryItem(self.lpane, ship.ID, (ship.displayName, 0)))
 
         self.navpanel.ShowSwitchEmptyGroupsButton(True)
 

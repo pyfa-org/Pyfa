@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-23 16:36+0800\n"
-"PO-Revision-Date: 2020-06-23 16:43+0800\n"
+"PO-Revision-Date: 2020-06-29 10:48+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -384,6 +384,12 @@ msgstr "战列"
 msgid "Be aware that already processed fits were not saved"
 msgstr "请注意已处理的装配未作保存"
 
+msgid "Bioluminescence"
+msgstr "生物荧光"
+
+msgid "Black Hole"
+msgstr "黑洞"
+
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
 msgstr "增效剂"
@@ -444,6 +450,12 @@ msgstr "货舱："
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
 msgstr "航母"
+
+msgid "Cataclysmic Variable"
+msgstr "激变变星"
+
+msgid "Caustic"
+msgstr "腐蚀"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:47
 msgid "Cert Path:"
@@ -1069,6 +1081,9 @@ msgstr "激活的铁骑舰载机中队"
 msgid "Fighters"
 msgstr "铁骑舰载机"
 
+msgid "Filament"
+msgstr "纤维"
+
 #: gui/builtinContextMenus/itemFill.py:32
 msgid "Fill With Module"
 msgstr "用该模块填满空白槽位"
@@ -1420,6 +1435,9 @@ msgstr "日志"
 msgid "Login Authentication Method"
 msgstr "登录鉴权模式"
 
+msgid "Magnetar"
+msgstr "磁星"
+
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
 msgstr "维护舱"
@@ -1751,6 +1769,9 @@ msgstr "属性"
 msgid "Proxy settings"
 msgstr "代理设置"
 
+msgid "Pulsar"
+msgstr "脉冲星"
+
 #: gui/aboutData.py:49
 msgid ""
 "Pyfa (the Python Fitting Assistant) is an open-source standalone application "
@@ -1822,6 +1843,9 @@ msgstr "最近使用的装配"
 #: gui/builtinStatsViews/rechargeViewFull.py:43
 msgid "Recharge rates"
 msgstr "回充速度"
+
+msgid "Red Giant"
+msgstr "红巨星"
 
 #: gui/mainMenuBar.py:84
 msgid "Redo the most recent undone action"
@@ -1924,6 +1948,9 @@ msgstr "单点登录(SSO)模式"
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:126
 msgid "Salvage hold"
 msgstr "打捞件仓"
+
+msgid "Sansha Incursion"
+msgstr "萨沙入侵"
 
 #: gui/mainFrame.py:860
 msgid "Save Backup As..."
@@ -2138,6 +2165,11 @@ msgstr "有{0}个未提示的版本更新"
 msgid "Sustained"
 msgstr "持续回充"
 
+# These aren't typical translations. They need to map exactly to sub strings of the item names in the database
+# to produce the proper context menu tree for environmental effects
+msgid "System Effects"
+msgstr "星系效果"
+
 #: gui/builtinContextMenus/shipModeChange.py:32
 #: gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
@@ -2321,6 +2353,9 @@ msgstr "总计："
 msgid "Traits"
 msgstr "特征"
 
+msgid "Triglavian Invasion"
+msgstr "三神裔入侵"
+
 #: gui/builtinStatsViews/resourcesViewFull.py:111
 msgid "Turret hardpoints"
 msgstr "炮台"
@@ -2427,6 +2462,9 @@ msgstr ""
 "启用时，技能级别变化时将检查并移除未达等级要求的相关技能。\n"
 "例如：将无人机从5级设置为4级将移除重型无人机操作技能，因为该技能要求无人机5级"
 
+msgid "Wolf Rayet"
+msgstr "沃尔夫-拉叶星"
+
 #: gui/builtinItemStatsViews/itemEffects.py:56
 msgid "Yes"
 msgstr "是"
@@ -2508,44 +2546,3 @@ msgstr "复制{}"
 #: gui/builtinContextMenus/itemStats.py:38
 msgid "{} Stats"
 msgstr "{}属性"
-
-# These aren't typical translations. They need to map exactly to sub strings of the item names in the database
-# to produce the proper context menu tree for environmental effects
-msgid "System Effects"
-msgstr "星系效果"
-
-msgid "Effects"
-msgstr "效果光束"
-
-msgid "Black Hole"
-msgstr "黑洞"
-
-msgid "Cataclysmic Variable"
-msgstr "激变变星"
-
-msgid "Magnetar"
-msgstr "磁星"
-
-msgid "Pulsar"
-msgstr "脉冲星"
-
-msgid "Red Giant"
-msgstr "红巨星"
-
-msgid "Wolf Rayet"
-msgstr "沃尔夫-拉叶星"
-
-msgid "Sansha Incursion"
-msgstr "萨沙入侵"
-
-msgid "Triglavian Invasion"
-msgstr "三神裔入侵"
-
-msgid "Bioluminescence"
-msgstr "型生物荧光"
-
-msgid "Caustic"
-msgstr "腐蚀"
-
-msgid "Filament"
-msgstr "纤维"
