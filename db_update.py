@@ -41,7 +41,7 @@ GAMEDATA_SCHEMA_VERSION = 4
 def db_needs_update():
     """True if needs, false if it does not, none if we cannot check it."""
     try:
-        with open(os.path.join(JSON_DIR, 'phobos', 'metadata.json')) as f:
+        with open(os.path.join(JSON_DIR, 'phobos', 'metadata.0.json')) as f:
             data_version = next((r['field_value'] for r in json.load(f) if r['field_name'] == 'client_build'))
     except (KeyboardInterrupt, SystemExit):
         raise
@@ -161,7 +161,7 @@ def update_db():
                     1983)  # the "container" for the abyssal environments
             ):
                 newData.append(row)
-        map = {'typeName_en-us': 'typeName', 'description_en-us': 'description'}
+        map = {'typeName_en-us': 'typeName', 'description_en-us': '_description'}
         map.update({'description'+v: '_description'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
         _addRows(newData, eos.gamedata.Item, fieldMap=map)
         return newData
@@ -169,7 +169,7 @@ def update_db():
     def processEveGroups():
         print('processing evegroups')
         data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
-        map = {'groupName_en-us': 'displayName'}
+        map = {'groupName_en-us': 'name'}
         map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
         _addRows(data, eos.gamedata.Group, fieldMap=map)
         return data
@@ -177,7 +177,7 @@ def update_db():
     def processEveCategories():
         print('processing evecategories')
         data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
-        map = { 'categoryName_en-us': 'displayName' }
+        map = { 'categoryName_en-us': 'name' }
         map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
         _addRows(data, eos.gamedata.Category, fieldMap=map)
 
@@ -272,8 +272,8 @@ def update_db():
         print('processing marketgroups')
         data = _readData('fsd_binary', 'marketgroups', keyIdName='marketGroupID')
         map = {
-            'name_en-us': 'name',
-            'description_en-us': 'description',
+            'name_en-us': 'marketGroupName',
+            'description_en-us': 'marketGroupDescription',
         }
         map.update({'name'+v: 'marketGroupName'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
         map.update({'description' + v: 'marketGroupDescription' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
@@ -359,7 +359,7 @@ def update_db():
                 newData.append(newRow)
             except:
                 pass
-        _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'display'})
+        _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'traitText'})
 
     def processMetadata():
         print('processing metadata')
