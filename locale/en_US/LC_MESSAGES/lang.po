@@ -1,0 +1,58 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#  <holmes.ryan.90@gmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-29 20:32-0400\n"
+"PO-Revision-Date: 2020-06-29 20:35-0400\n"
+"Last-Translator:  <holmes.ryan.90@gmail.com>\n"
+"Language-Team: English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gui/builtinContextMenus/envEffectAdd.py:106
+msgid "ContextMenu|ProjectedEffectManipulation|Black Hole"
+msgstr "Black Hole"
+
+#: gui/builtinContextMenus/envEffectAdd.py:107
+msgid "ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable"
+msgstr "Cataclysmic Variable"
+
+#: gui/builtinContextMenus/envEffectAdd.py:108
+msgid "ContextMenu|ProjectedEffectManipulation|Magnetar"
+msgstr "Magnetar"
+
+#: gui/builtinContextMenus/envEffectAdd.py:109
+msgid "ContextMenu|ProjectedEffectManipulation|Pulsar"
+msgstr "Pulsar"
+
+#: gui/builtinContextMenus/envEffectAdd.py:110
+msgid "ContextMenu|ProjectedEffectManipulation|Red Giant"
+msgstr "Red Giant"
+
+#: gui/builtinContextMenus/envEffectAdd.py:111
+msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
+msgstr "Wolf Rayet"
+
+#: gui/builtinContextMenus/envEffectAdd.py:113
+msgid "ContextMenu|ProjectedEffectManipulation|Sansha Incursion"
+msgstr "Sansha Incursion"
+
+#: gui/builtinContextMenus/envEffectAdd.py:116
+msgid "ContextMenu|ProjectedEffectManipulation|Triglavian Invasion"
+msgstr "Triglavian Invasion"
+
+#: gui/builtinContextMenus/envEffectAdd.py:133
+msgid "ContextMenu|ProjectedEffectManipulation|System Effects"
+msgstr "System Effects"
+
+#: gui/builtinContextMenus/envEffectAdd.py:133
+msgid "ContextMenu|ProjectedEffectManipulation|Effects"
+msgstr "Effects"

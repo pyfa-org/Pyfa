@@ -103,10 +103,18 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
     def getData(self):
         data = Group()
         data.groups[_t('Wormhole')] = self.getEffectBeacons(
-                _t('Black Hole'), _t('Cataclysmic Variable'), _t('Magnetar'),
-                _t('Pulsar'), _t('Red Giant'), _t('Wolf Rayet'))
-        data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(_t('Sansha Incursion'))
-        data.groups[_t('Triglavian Invasion')] = self.getEffectBeacons(_t('Triglavian Invasion'))
+            _t('ContextMenu|ProjectedEffectManipulation|Black Hole'),
+            _t('ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable'),
+            _t('ContextMenu|ProjectedEffectManipulation|Magnetar'),
+            _t('ContextMenu|ProjectedEffectManipulation|Pulsar'),
+            _t('ContextMenu|ProjectedEffectManipulation|Red Giant'),
+            _t('ContextMenu|ProjectedEffectManipulation|Wolf Rayet'))
+        data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion')
+        )
+        data.groups[_t('Triglavian Invasion')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Triglavian Invasion')
+        )
         data.groups[_t('Triglavian Invasion')].groups[_t('Destructible Beacons')] = self.getDestructibleBeacons()
         data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         return data
@@ -122,7 +130,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data = Group()
 
         # Stuff we don't want to see in names
-        garbages = (_t("System Effects"), _t("Effects"))
+        garbages = (_t("ContextMenu|ProjectedEffectManipulation|System Effects"), _t("ContextMenu|ProjectedEffectManipulation|Effects"))
 
         # Get group with all the system-wide beacons
         grp = sMkt.getGroup("Effect Beacon")

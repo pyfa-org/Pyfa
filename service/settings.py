@@ -540,7 +540,7 @@ class LocaleSettings:
     _instance = None
 
     supported_langauges = {
-            "en_US": wx.LANGUAGE_ENGLISH,
+            "en_US": wx.LANGUAGE_ENGLISH_US,
             "zh_CN": wx.LANGUAGE_CHINESE_SIMPLIFIED,
             # todo: add the others that EVE supports
         }

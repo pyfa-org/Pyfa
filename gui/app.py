@@ -62,7 +62,7 @@ class PyfaApp(wx.App):
         if lang in supLang:
             selLang = supLang[lang]
         else:
-            selLang = wx.LANGUAGE_ENGLISH
+            selLang = wx.LANGUAGE_ENGLISH_US
 
         if self.locale:
             assert sys.getrefcount(self.locale) <= 2
