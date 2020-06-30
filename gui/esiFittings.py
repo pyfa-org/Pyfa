@@ -226,7 +226,7 @@ class ExportToEve(AuxiliaryFrame):
 
         mainSizer.Add(hSizer, 0, wx.EXPAND, 5)
 
-        self.exportChargesCb = wx.CheckBox(self, wx.ID_ANY, 'Export Loaded Charges', wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportChargesCb = wx.CheckBox(self, wx.ID_ANY, _t('Export Loaded Charges'), wx.DefaultPosition, wx.DefaultSize, 0)
         self.exportChargesCb.SetValue(EsiSettings.getInstance().get('exportCharges'))
         self.exportChargesCb.Bind(wx.EVT_CHECKBOX, self.OnChargeExportChange)
         mainSizer.Add(self.exportChargesCb, 0, 0, 5)

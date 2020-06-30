@@ -223,7 +223,7 @@ class ProjectedView(d.Display):
             stuff.extend(self.drones)
             stuff.extend(self.fighters)
         if not stuff:
-            stuff = [DummyEntry('Drag an item or fit, or use right-click menu for wormhole effects')]
+            stuff = [DummyEntry(_t('Drag an item or fit, or use right-click menu for wormhole effects'))]
         self.update(stuff)
 
     def get(self, row):
