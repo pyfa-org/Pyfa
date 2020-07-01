@@ -44,7 +44,7 @@ msgstr "点击切换有效HP和原始HP"
 ##### To update PO file for existing translation
 
 1. open a existing `locale/ll_CC/LC_MESSAGES/lang.po`
-2. *Catalog* -> *Update form POT file*
+2. *Catalog* -> *Update from POT file*
 3. select pre-prepared `lang.pot` file
 
 ##### To translate and generate MO file
