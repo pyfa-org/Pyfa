@@ -37,11 +37,8 @@ class ChangeShipTacticalMode(ContextMenuUnconditional):
         return _t("Tactical Mode")
 
     def addMode(self, menu, mode):
-        label = None
-        for raw, locaized in self.modeMap.items():
-            if raw in mode.item.typeName:
-                label = locaized
-                break
+        key = mode.item.typeName.rsplit()[-2]
+        label = self.modeMap[key]
 
         id = ContextMenuUnconditional.nextID()
         self.modeIds[id] = mode
