@@ -538,13 +538,17 @@ class GraphSettings:
 
 class LocaleSettings:
     _instance = None
-    DEFAULT  = "en_US"
+    DEFAULT  = "en"
 
     supported_langauges = {
-            "en_US": wx.LANGUAGE_ENGLISH_US,
-            "zh_CN": wx.LANGUAGE_CHINESE_SIMPLIFIED,
-            # todo: add the others that EVE supports
-        }
+        "en": wx.LANGUAGE_ENGLISH_US,
+        "fr": wx.LANGUAGE_FRENCH,
+        "it": wx.LANGUAGE_ITALIAN,
+        "ja": wx.LANGUAGE_JAPANESE,
+        "ko": wx.LANGUAGE_KOREAN,
+        "ru": wx.LANGUAGE_RUSSIAN,
+        "zh": wx.LANGUAGE_CHINESE_SIMPLIFIED,
+    }
 
     @classmethod
     def getInstance(cls):

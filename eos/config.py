@@ -18,13 +18,13 @@ lang = ""
 
 # Maps supported langauges to their suffix in the database
 translation_mapping = {
-    "en_US": "",
+    "en": "",
     "fr": "_fr",
     "it": "_it",
     "ja": "_ja",
     "ko": "_ko",
     "ru": "_ru",
-    "zh_CN": "_zh",
+    "zh": "_zh",
 }
 
 def set_lang(i18n_lang):

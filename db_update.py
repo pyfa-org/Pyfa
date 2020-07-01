@@ -162,7 +162,7 @@ def update_db():
             ):
                 newData.append(row)
         map = {'typeName_en-us': 'typeName', 'description_en-us': '_description'}
-        map.update({'description'+v: '_description'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        map.update({'description'+v: '_description'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(newData, eos.gamedata.Item, fieldMap=map)
         return newData
 
@@ -170,7 +170,7 @@ def update_db():
         print('processing evegroups')
         data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
         map = {'groupName_en-us': 'name'}
-        map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Group, fieldMap=map)
         return data
 
@@ -178,7 +178,7 @@ def update_db():
         print('processing evecategories')
         data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
         map = { 'categoryName_en-us': 'name' }
-        map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Category, fieldMap=map)
 
     def processDogmaAttributes():
@@ -275,15 +275,15 @@ def update_db():
             'name_en-us': 'marketGroupName',
             'description_en-us': '_description',
         }
-        map.update({'name'+v: 'marketGroupName'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
-        map.update({'description' + v: '_description' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        map.update({'name'+v: 'marketGroupName'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
+        map.update({'description' + v: '_description' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.MarketGroup, fieldMap=map)
 
     def processMetaGroups():
         print('processing metagroups')
         data = _readData('fsd_binary', 'metagroups', keyIdName='metaGroupID')
         map = {'name_en-us': 'metaGroupName'}
-        map.update({'name' + v: 'metaGroupName' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en_US'})
+        map.update({'name' + v: 'metaGroupName' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.MetaGroup, fieldMap=map)
 
     def processCloneGrades():
