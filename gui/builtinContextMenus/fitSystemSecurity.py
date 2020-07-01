@@ -10,17 +10,16 @@ from service.fit import Fit
 
 _t = wx.GetTranslation
 
-optionMap = OrderedDict((
-    ('High Security', FitSystemSecurity.HISEC),
-    ('Low Security', FitSystemSecurity.LOWSEC),
-    ('Null Security', FitSystemSecurity.NULLSEC),
-    ('W-Space', FitSystemSecurity.WSPACE)))
-
 
 class FitSystemSecurityMenu(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.optionMap = OrderedDict((
+            (_t('High Security'), FitSystemSecurity.HISEC),
+            (_t('Low Security'), FitSystemSecurity.LOWSEC),
+            (_t('Null Security'), FitSystemSecurity.NULLSEC),
+            (_t('W-Space'), FitSystemSecurity.WSPACE)))
 
     def display(self, callingWindow, srcContext):
         if srcContext != "fittingShip":
@@ -50,7 +49,7 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.optionIds = {}
         sub = wx.Menu()
-        for optionLabel, optionValue in optionMap.items():
+        for optionLabel, optionValue in self.optionMap.items():
             menuItem = self.addOption(rootMenu if msw else sub, optionLabel)
             sub.Append(menuItem)
             menuItem.Check(fit.getSystemSecurity() == optionValue)
@@ -59,7 +58,7 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
 
     def handleMode(self, event):
         optionLabel = self.optionIds[event.Id]
-        optionValue = optionMap[optionLabel]
+        optionValue = self.optionMap[optionLabel]
         self.mainFrame.command.Submit(cmd.GuiChangeFitSystemSecurityCommand(
                 fitID=self.mainFrame.getActiveFit(),
                 secStatus=optionValue))

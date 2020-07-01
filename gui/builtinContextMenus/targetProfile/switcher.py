@@ -30,7 +30,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
 
     def getText(self, callingWindow, itmContext):
         # We take into consideration just target resists, so call menu item accordingly
-        return 'Target Resists'
+        return _t('Target Resists')
 
     def handleResistSwitch(self, event):
         profile = self.profileEventMap.get(event.Id, False)
@@ -80,7 +80,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         def makeMenu(container, parentMenu, first=False):
             menu = wx.Menu()
             if first:
-                mitem, checked = self._addProfile(rootMenu if msw else parentMenu, None, 'No Profile')
+                mitem, checked = self._addProfile(rootMenu if msw else parentMenu, None, _t('No Profile'))
                 menu.Append(mitem)
                 mitem.Check(checked)
                 if len(container[0]) > 0 or len(container[1]) > 0:
