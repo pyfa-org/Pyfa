@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-30 17:04+0800\n"
-"PO-Revision-Date: 2020-06-30 17:08+0800\n"
+"POT-Creation-Date: 2020-07-01 11:18+0800\n"
+"PO-Revision-Date: 2020-07-01 11:19+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -208,6 +208,10 @@ msgstr "添加角色"
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
 msgstr "添加角色错误"
+
+#: gui/builtinShipBrowser/fitItem.py:233
+msgid "Add Command Booster"
+msgstr "添加指挥增效剂"
 
 #: gui/builtinContextMenus/fitAddCurrentlyOpen.py:29
 msgid "Add Currently Open Fit"
@@ -526,7 +530,7 @@ msgstr "弹药"
 msgid "Citadel"
 msgstr "堡垒"
 
-#: gui/builtinContextMenus/fitSystemSecurity.py:38
+#: gui/builtinContextMenus/fitSystemSecurity.py:37
 msgid "Citadel System Security"
 msgstr "堡垒星系安等"
 
@@ -648,6 +652,7 @@ msgstr "沃尔夫-拉叶星"
 
 #: gui/builtinItemStatsViews/itemDescription.py:43
 #: gui/builtinItemStatsViews/itemTraits.py:25
+#: gui/builtinShipBrowser/fitItem.py:107
 msgid "Copy"
 msgstr "复制"
 
@@ -729,6 +734,14 @@ msgstr "默认价格源："
 msgid "Default Value: %0.3f"
 msgstr "默认值：%0.3f"
 
+#: gui/builtinContextMenus/shipModeChange.py:18
+msgid "Defense"
+msgstr "防御"
+
+#: gui/builtinShipBrowser/fitItem.py:109
+msgid "Delete"
+msgstr "删除"
+
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:79
 msgid "Delete All Damage Pattern Profiles"
 msgstr "删除所有伤害模型配置"
@@ -759,7 +772,7 @@ msgstr "驱逐"
 
 #: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "Destructible Beacons"
-msgstr ""
+msgstr "可破坏信标"
 
 #: gui/mainMenuBar.py:167
 msgid "Dev Tools"
@@ -1312,6 +1325,10 @@ msgstr "隐藏空的舰船类型"
 msgid "High"
 msgstr "高"
 
+#: gui/builtinContextMenus/fitSystemSecurity.py:19
+msgid "High Security"
+msgstr "高安"
+
 #: gui/builtinStatsViews/rechargeViewFull.py:78
 msgid "Hull repair amount"
 msgstr "结构修量"
@@ -1586,6 +1603,10 @@ msgstr "更长距离"
 msgid "Low"
 msgstr "低"
 
+#: gui/builtinContextMenus/fitSystemSecurity.py:20
+msgid "Low Security"
+msgstr "低安"
+
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
 msgstr "维护舱"
@@ -1741,6 +1762,10 @@ msgstr "新装配"
 msgid "No"
 msgstr "否"
 
+#: gui/builtinContextMenus/targetProfile/switcher.py:83
+msgid "No Profile"
+msgstr "无伤害模型"
+
 #: gui/characterSelection.py:230
 msgid "No active fit"
 msgstr "没有选中的装配"
@@ -1781,6 +1806,10 @@ msgstr "未学习"
 msgid "Notes"
 msgstr "备注"
 
+#: gui/builtinContextMenus/fitSystemSecurity.py:21
+msgid "Null Security"
+msgstr "零安"
+
 #: gui/mainMenuBar.py:167
 msgid "Open &Dev Tools"
 msgstr "打开开发者工具(&D)"
@@ -1816,6 +1845,10 @@ msgstr "默认在新标签页打开装配"
 #: gui/builtinContextMenus/shipJump.py:35
 msgid "Open in Fitting Browser"
 msgstr "在装配浏览器中打开"
+
+#: gui/builtinShipBrowser/fitItem.py:227
+msgid "Open in new tab"
+msgstr "在新标签页打开"
 
 #: gui/copySelectDialog.py:50
 msgid "Optimize Prices"
@@ -1872,7 +1905,7 @@ msgstr "请确认Pyfa偏好保存位置。"
 
 #: gui/builtinContextMenus/graphFitAmmoPicker.py:29
 msgid "Plot with Different Ammo..."
-msgstr ""
+msgstr "使用不同的弹药..."
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Pod"
@@ -1918,6 +1951,10 @@ msgstr "目标属性已导出到剪贴板"
 msgid "Profiles successfully imported from clipboard"
 msgstr "已成功从剪贴板导入目标属性"
 
+#: gui/builtinShipBrowser/fitItem.py:230
+msgid "Project onto Active Fit"
+msgstr "施加远程效果到当前装配"
+
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:61
 msgid "Project onto Fit"
 msgstr "施加远程效果到装配"
@@ -1941,6 +1978,10 @@ msgstr "远程效果物品"
 #: gui/itemStats.py:200
 msgid "Properties"
 msgstr "属性"
+
+#: gui/builtinContextMenus/shipModeChange.py:19
+msgid "Propulsion"
+msgstr "高速"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:49
 msgid "Proxy settings"
@@ -2061,6 +2102,10 @@ msgstr "删除物品的自定义属性"
 #: gui/builtinContextMenus/itemRemove.py:42
 msgid "Remove {}{}"
 msgstr "移除{}{}"
+
+#: gui/builtinShipBrowser/fitItem.py:108
+msgid "Rename"
+msgstr "重命名"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
 msgid "Reopen previous fits on startup"
@@ -2229,6 +2274,10 @@ msgid ""
 msgstr ""
 "设置为阿尔法克隆不会替换角色技能等级，但会设置技能等级上限为阿尔法状态。"
 
+#: gui/builtinContextMenus/shipModeChange.py:20
+msgid "Sharpshooter"
+msgstr "狙击"
+
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
 msgstr "护盾抗性"
@@ -2369,7 +2418,7 @@ msgstr "有{0}个未提示的版本更新"
 msgid "Sustained"
 msgstr "持续回充"
 
-#: gui/builtinContextMenus/shipModeChange.py:32
+#: gui/builtinContextMenus/shipModeChange.py:37
 #: gui/builtinViewColumns/baseName.py:101 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr "战术模式"
@@ -2389,6 +2438,10 @@ msgstr "目标属性编辑器"
 #: gui/targetProfileEditor.py:73
 msgid "Target Profile name already in use, please choose another."
 msgstr "目标属性名已使用，请选择其他名称。"
+
+#: gui/builtinContextMenus/targetProfile/switcher.py:33
+msgid "Target Resists"
+msgstr "目标抗性"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:40
 msgid "Targeting && Misc"
@@ -2631,6 +2684,10 @@ msgstr "变种"
 msgid "View Raw Data"
 msgstr "显示原始数据"
 
+#: gui/builtinContextMenus/fitSystemSecurity.py:22
+msgid "W-Space"
+msgstr "虫洞"
+
 #: gui/ssoLogin.py:62
 msgid "Waiting for character login through EVE Single Sign-On."
 msgstr "正在等待角色通过EvE登录。"
@@ -2763,4 +2820,4 @@ msgstr "{}属性"
 
 #: gui/builtinViewColumns/baseName.py:103
 msgid "{} {} Slot"
-msgstr "{}{}槽"
+msgstr "{} {}槽"

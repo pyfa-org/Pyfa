@@ -14,6 +14,11 @@ class ChangeShipTacticalMode(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.modeMap = {
+            'Defense': _t('Defense'),
+            'Propulsion': _t('Propulsion'),
+            'Sharpshooter': _t('Sharpshooter')
+        }
 
     def display(self, callingWindow, srcContext):
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
@@ -32,7 +37,9 @@ class ChangeShipTacticalMode(ContextMenuUnconditional):
         return _t("Tactical Mode")
 
     def addMode(self, menu, mode):
-        label = mode.item.name.rsplit()[-2]
+        key = mode.item.typeName.rsplit()[-2]
+        label = self.modeMap[key]
+
         id = ContextMenuUnconditional.nextID()
         self.modeIds[id] = mode
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_RADIO)
