@@ -108,7 +108,7 @@ def update_db():
                 break
 
         if not keyIdName:
-            return rawData
+            return compiled_data
         # IDs in keys, rows in values
         data = []
         for k, v in compiled_data.items():
