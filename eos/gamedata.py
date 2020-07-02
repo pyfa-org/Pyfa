@@ -423,7 +423,7 @@ class Item(EqBase):
     def requiresSkill(self, skill, level=None):
         for s, l in self.requiredSkills.items():
             if isinstance(skill, str):
-                if s.name == skill and (level is None or l == level):
+                if s.typeName == skill and (level is None or l == level):
                     return True
 
             elif isinstance(skill, int) and (level is None or l == level):
