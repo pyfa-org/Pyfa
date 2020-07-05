@@ -560,8 +560,8 @@ class Market:
 
     def getGroupByItem(self, item):
         """Get group by item"""
-        if item.name in self.ITEMS_FORCEGROUP:
-            group = self.ITEMS_FORCEGROUP[item.name]
+        if item.typeName in self.ITEMS_FORCEGROUP:
+            group = self.ITEMS_FORCEGROUP[item.typeName]
         else:
             group = item.group
         return group
@@ -813,8 +813,8 @@ class Market:
 
     def getPublicityByItem(self, item):
         """Return if an item is published"""
-        if item.name in self.ITEMS_FORCEPUBLISHED:
-            pub = self.ITEMS_FORCEPUBLISHED[item.name]
+        if item.typeName in self.ITEMS_FORCEPUBLISHED:
+            pub = self.ITEMS_FORCEPUBLISHED[item.typeName]
         else:
             pub = item.published
         return pub
