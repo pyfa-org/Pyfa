@@ -73,7 +73,6 @@ parser.add_option("-t", "--title", action="store", dest="title", help="Set Windo
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
 parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
 parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.", default=None)
-
 parser.add_option("-i", "--language", action="store", dest="language", help="Set the language for pyfa", default='zh')
 
 (options, args) = parser.parse_args()
@@ -139,13 +138,14 @@ if __name__ == "__main__":
 
         eos.db.saveddata_meta.create_all()
         from gui.app import PyfaApp
-        from gui.mainFrame import MainFrame
 
         # set title if it wasn't supplied by argument
         if options.title is None:
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
         pyfa = PyfaApp(False)
+
+        from gui.mainFrame import MainFrame
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 
