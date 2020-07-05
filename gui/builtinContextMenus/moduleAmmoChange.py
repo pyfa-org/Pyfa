@@ -102,6 +102,9 @@ class ChangeModuleAmmo(ContextMenuCombined):
             menuItems = []
             for chargeCatName, charges in chargeDict.items():
                 menuItem = wx.MenuItem(menu, wx.ID_ANY, self.ddMissileChargeCatTrans.get(chargeCatName, chargeCatName))
+                bitmap = BitmapLoader.getBitmap("%s_small" % chargeCatName, "gui")
+                if bitmap is not None:
+                    menuItem.SetBitmap(bitmap)
                 menuItems.append(menuItem)
                 subMenu = wx.Menu()
                 subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)

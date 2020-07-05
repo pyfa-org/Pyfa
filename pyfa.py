@@ -74,7 +74,7 @@ parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set
 parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
 parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.", default=None)
 
-parser.add_option("-i", "--language", action="store", dest="language", help="Set the language for pyfa", default=None)
+parser.add_option("-i", "--language", action="store", dest="language", help="Set the language for pyfa", default='zh')
 
 (options, args) = parser.parse_args()
 
