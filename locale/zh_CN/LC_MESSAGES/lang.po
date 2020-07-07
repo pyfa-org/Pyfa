@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-01 11:18+0800\n"
-"PO-Revision-Date: 2020-07-01 11:19+0800\n"
+"POT-Creation-Date: 2020-07-07 15:40+0800\n"
+"PO-Revision-Date: 2020-07-07 15:41+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -2805,6 +2805,16 @@ msgstr "{0}市场分类"
 #, python-brace-format
 msgid "{context}Stats: {name}{debug_info}"
 msgstr "{context}属性：{name}{debug_info}"
+
+#: gui/pyfa_gauge.py:347
+#, python-brace-format
+msgid "{{0:.{0}f}} left"
+msgstr "剩余{{0:.{0}f}}"
+
+#: gui/pyfa_gauge.py:344
+#, python-brace-format
+msgid "{{0:.{0}f}} over"
+msgstr "超出{{0:.{0}f}}"
 
 #: gui/builtinContextMenus/moduleSpool.py:83
 msgid "{} (default)"
