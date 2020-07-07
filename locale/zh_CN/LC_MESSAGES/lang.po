@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 15:40+0800\n"
-"PO-Revision-Date: 2020-07-07 15:41+0800\n"
+"POT-Creation-Date: 2020-07-07 16:06+0800\n"
+"PO-Revision-Date: 2020-07-07 16:09+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -2247,6 +2247,10 @@ msgstr "传感器强度"
 msgid "Separate Racks"
 msgstr "分隔不同槽位类型"
 
+#: gui/builtinViewColumns/baseName.py:64
+msgid "Service"
+msgstr "服务"
+
 #: gui/characterEditor.py:907
 msgid "Set Security Status"
 msgstr "设置安全等级"
@@ -2419,7 +2423,7 @@ msgid "Sustained"
 msgstr "持续回充"
 
 #: gui/builtinContextMenus/shipModeChange.py:37
-#: gui/builtinViewColumns/baseName.py:101 gui/builtinViews/fittingView.py:657
+#: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr "战术模式"
 
@@ -2828,6 +2832,6 @@ msgstr "复制{}"
 msgid "{} Stats"
 msgstr "{}属性"
 
-#: gui/builtinViewColumns/baseName.py:103
+#: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
 msgstr "{} {}槽"
