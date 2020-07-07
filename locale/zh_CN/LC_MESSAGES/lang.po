@@ -2,13 +2,13 @@
 # Copyright (C) 2020 THE pyfa'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the pyfa package.
 # zhaoweny <zhaoweny@users.noreply.github.com>, 2020.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-07 16:06+0800\n"
-"PO-Revision-Date: 2020-07-07 16:09+0800\n"
+"PO-Revision-Date: 2020-07-07 17:10+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -620,7 +620,7 @@ msgstr "激变变星"
 
 #: gui/builtinContextMenus/envEffectAdd.py:133
 msgid "ContextMenu|ProjectedEffectManipulation|Effects"
-msgstr "效果"
+msgstr "效果光束"
 
 #: gui/builtinContextMenus/envEffectAdd.py:108
 msgid "ContextMenu|ProjectedEffectManipulation|Magnetar"
@@ -676,7 +676,8 @@ msgstr "拷贝选中的{}"
 msgid "Copy and paste the block of text provided by pyfa.io"
 msgstr "请复制和粘贴pyfa.io提供的字符串"
 
-#: gui/patternEditor.py:290 gui/setEditor.py:222 gui/targetProfileEditor.py:366
+#: gui/patternEditor.py:290 gui/setEditor.py:222
+#: gui/targetProfileEditor.py:366
 msgid "Could not import from clipboard"
 msgstr "无法从剪贴板导入"
 
@@ -1966,7 +1967,7 @@ msgstr "施加{0}远程效果到装配"
 
 #: gui/additionsPane.py:81
 msgid "Projected"
-msgstr "环境效果"
+msgstr "远程效果"
 
 #: gui/builtinAdditionPanes/projectedView.py:306
 #: gui/builtinAdditionPanes/projectedView.py:316
