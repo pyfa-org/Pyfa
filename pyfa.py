@@ -77,7 +77,6 @@ parser.add_option("-i", "--language", action="store", dest="language", help="Set
 
 (options, args) = parser.parse_args()
 
-
 if __name__ == "__main__":
 
     try:
@@ -92,6 +91,7 @@ if __name__ == "__main__":
     import wx
 
     from logbook import Logger
+
     pyfalog = Logger(__name__)
 
     from gui.errorDialog import ErrorHandler
@@ -125,6 +125,10 @@ if __name__ == "__main__":
         if db_needs_update() is True:
             update_db()
 
+        from gui.app import PyfaApp
+
+        pyfa = PyfaApp(False)
+
         # Lets get to the good stuff, shall we?
         import eos.db
         import eos.events  # todo: move this to eos initialization?
@@ -137,15 +141,13 @@ if __name__ == "__main__":
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
-        from gui.app import PyfaApp
 
         # set title if it wasn't supplied by argument
         if options.title is None:
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
-        pyfa = PyfaApp(False)
-
         from gui.mainFrame import MainFrame
+
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 
@@ -153,6 +155,7 @@ if __name__ == "__main__":
             profile_path = os.path.join(options.profile_path, 'pyfa-{}.profile'.format(datetime.datetime.now().strftime('%Y%m%d_%H%M%S')))
             pyfalog.debug("Starting pyfa with a profiler, saving to {}".format(profile_path))
             import cProfile
+
             cProfile.run('pyfa.MainLoop()', profile_path)
         else:
             pyfa.MainLoop()
