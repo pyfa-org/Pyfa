@@ -2,21 +2,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-11 21:04+0800\n"
-"PO-Revision-Date: 2020-07-11 22:02\n"
-"Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
+"POT-Creation-Date: 2020-07-11 18:24-0400\n"
+"PO-Revision-Date: 2020-07-11 22:41\n"
+"Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3.1\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: pyfa\n"
 "X-Crowdin-Project-ID: 411502\n"
 "X-Crowdin-Language: ru\n"
-"X-Crowdin-File: /i18n/locale/zh_CN/LC_MESSAGES/lang.po\n"
-"X-Crowdin-File-ID: 46\n"
+"X-Crowdin-File: /i18n/locale/lang.pot\n"
+"X-Crowdin-File-ID: 52\n"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
@@ -75,7 +74,7 @@ msgstr ""
 msgid "&Export Skills Needed"
 msgstr ""
 
-#: gui/propertyEditor.py:42 gui/mainMenuBar.py:66
+#: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
 msgstr ""
 
@@ -151,7 +150,7 @@ msgstr ""
 msgid "&Turn Overrides Off"
 msgstr ""
 
-#: gui/mainMenuBar.py:131 gui/mainFrame.py:690
+#: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
 msgstr ""
 
@@ -305,7 +304,7 @@ msgstr ""
 msgid "Affected by"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:227
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 #, python-format
 msgid "Agility:\t%.3fx"
 msgstr ""
@@ -314,7 +313,7 @@ msgstr ""
 msgid "Align time"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
 msgid "Align:\t%.3fs"
 msgstr ""
@@ -431,8 +430,8 @@ msgstr ""
 msgid "Asteroid"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemProperties.py:56
 #: gui/builtinItemStatsViews/itemAttributes.py:44
+#: gui/builtinItemStatsViews/itemProperties.py:56
 msgid "Attribute"
 msgstr ""
 
@@ -511,11 +510,10 @@ msgstr ""
 msgid "Booster"
 msgstr ""
 
-#: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
-#: gui/additionsPane.py:78
+#: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
-#: gui/builtinContextMenus/additionsImport.py:24
-#: gui/builtinContextMenus/additionsExportAll.py:23
+#: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
+#: gui/copySelectDialog.py:56
 msgid "Boosters"
 msgstr ""
 
@@ -579,16 +577,16 @@ msgstr ""
 msgid "Carbonized Lead"
 msgstr ""
 
+#: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
-#: gui/additionsPane.py:72 gui/builtinStatsViews/targetingMiscViewMinimal.py:90
-#: gui/builtinContextMenus/priceOptions.py:47
 msgid "Cargo"
 msgstr ""
 
+#: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:20
 msgid "Cargo Items"
 msgstr ""
 
@@ -597,8 +595,8 @@ msgstr ""
 msgid "Cargo bay"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:230
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:255
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
 msgid "Cargohold: "
 msgstr ""
 
@@ -644,8 +642,8 @@ msgstr ""
 msgid "Changes require restart of pyfa to take effect."
 msgstr ""
 
-#: gui/characterEditor.py:90 gui/esiFittings.py:341
-#: gui/builtinStatsViews/priceViewFull.py:57
+#: gui/builtinStatsViews/priceViewFull.py:57 gui/characterEditor.py:90
+#: gui/esiFittings.py:341
 msgid "Character"
 msgstr ""
 
@@ -749,7 +747,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: gui/propertyEditor.py:147 gui/esiFittings.py:157
+#: gui/esiFittings.py:157 gui/propertyEditor.py:147
 msgid "Confirm Delete"
 msgstr ""
 
@@ -801,9 +799,9 @@ msgstr ""
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
 msgstr ""
 
-#: gui/builtinShipBrowser/fitItem.py:107
-#: gui/builtinItemStatsViews/itemTraits.py:25
 #: gui/builtinItemStatsViews/itemDescription.py:43
+#: gui/builtinItemStatsViews/itemTraits.py:25
+#: gui/builtinShipBrowser/fitItem.py:107
 msgid "Copy"
 msgstr ""
 
@@ -847,8 +845,8 @@ msgstr ""
 msgid "Cruor (Blood Raiders)"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemProperties.py:57
 #: gui/builtinItemStatsViews/itemAttributes.py:45
+#: gui/builtinItemStatsViews/itemProperties.py:57
 msgid "Current Value"
 msgstr ""
 
@@ -988,8 +986,8 @@ msgstr ""
 msgid "Don't see your EVE character in the list?"
 msgstr ""
 
-#: gui/updateDialog.py:113
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
+#: gui/updateDialog.py:113
 msgid "Download"
 msgstr ""
 
@@ -1044,19 +1042,19 @@ msgstr ""
 msgid "Drone range"
 msgstr ""
 
-#: eos/saveddata/damagePattern.py:97 eos/saveddata/targetProfile.py:99
-#: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:113
-#: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:127
-#: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:141
-#: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:155
-#: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:169
-#: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:183
-#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
-#: gui/additionsPane.py:66 gui/builtinStatsViews/priceViewFull.py:58
+#: gui/additionsPane.py:66 gui/builtinContextMenus/additionsExportAll.py:18
 #: gui/builtinContextMenus/additionsExportSelection.py:18
-#: gui/builtinContextMenus/priceOptions.py:40
 #: gui/builtinContextMenus/additionsImport.py:19
-#: gui/builtinContextMenus/additionsExportAll.py:18
+#: gui/builtinContextMenus/priceOptions.py:40
+#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
+#: gui/builtinStatsViews/priceViewFull.py:58 eos/saveddata/damagePattern.py:97
+#: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:106
+#: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:120
+#: eos/saveddata/targetProfile.py:127 eos/saveddata/targetProfile.py:134
+#: eos/saveddata/targetProfile.py:141 eos/saveddata/targetProfile.py:148
+#: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:162
+#: eos/saveddata/targetProfile.py:169 eos/saveddata/targetProfile.py:176
+#: eos/saveddata/targetProfile.py:183
 msgid "Drones"
 msgstr ""
 
@@ -1081,8 +1079,8 @@ msgstr ""
 msgid "EHP"
 msgstr ""
 
-#: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
+#: eos/saveddata/damagePattern.py:39
 msgid "EM"
 msgstr ""
 
@@ -1106,8 +1104,8 @@ msgstr ""
 msgid "EVE IGB HTML fitting file"
 msgstr ""
 
-#: gui/characterEditor.py:162
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
+#: gui/characterEditor.py:162
 msgid "EVE SSO"
 msgstr ""
 
@@ -1252,8 +1250,8 @@ msgstr ""
 
 #: gui/characterEditor.py:83 gui/characterEditor.py:463
 #: gui/characterEditor.py:898 gui/characterSelection.py:174
-#: gui/patternEditor.py:58 gui/setEditor.py:55 gui/targetProfileEditor.py:78
-#: gui/mainFrame.py:898
+#: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
+#: gui/targetProfileEditor.py:78
 msgid "Error"
 msgstr ""
 
@@ -1296,8 +1294,8 @@ msgstr ""
 msgid "Expand All"
 msgstr ""
 
-#: eos/saveddata/damagePattern.py:42
 #: gui/builtinContextMenus/moduleAmmoChange.py:26
+#: eos/saveddata/damagePattern.py:42
 msgid "Explosive"
 msgstr ""
 
@@ -1446,10 +1444,9 @@ msgstr ""
 msgid "Fighter squadrons active"
 msgstr ""
 
-#: gui/additionsPane.py:69
+#: gui/additionsPane.py:69 gui/builtinContextMenus/additionsExportAll.py:19
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
-#: gui/builtinContextMenus/additionsExportAll.py:19
 msgid "Fighters"
 msgstr ""
 
@@ -1494,10 +1491,6 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:145 eos/saveddata/targetProfile.py:146
 #: eos/saveddata/targetProfile.py:147
 msgid "Firestorm T4/T5"
-msgstr ""
-
-#: graphs/gui/lists.py:305
-msgid "Fit"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:47
@@ -1735,19 +1728,18 @@ msgstr ""
 msgid "Implant Set name already in use, please choose another."
 msgstr ""
 
-#: gui/characterEditor.py:161 gui/copySelectDialog.py:47
-#: gui/copySelectDialog.py:55 gui/additionsPane.py:75
+#: gui/additionsPane.py:75 gui/builtinContextMenus/additionsExportAll.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:22
 #: gui/builtinContextMenus/additionsExportSelection.py:21
 #: gui/builtinContextMenus/additionsExportSelection.py:22
 #: gui/builtinContextMenus/additionsImport.py:22
-#: gui/builtinContextMenus/additionsImport.py:23
-#: gui/builtinContextMenus/additionsExportAll.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:22
+#: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
+#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
 msgid "Implants"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 #: gui/builtinContextMenus/priceOptions.py:54
+#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 msgid "Implants && Boosters"
 msgstr ""
 
@@ -1880,11 +1872,11 @@ msgstr ""
 msgid "Iron"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemCompare.py:147
-#: gui/builtinContextMenus/itemMarketJump.py:44
-#: gui/builtinContextMenus/itemStats.py:38
 #: gui/builtinContextMenus/ammoToDmgPattern.py:32
+#: gui/builtinContextMenus/itemMarketJump.py:44
 #: gui/builtinContextMenus/itemRemove.py:43
+#: gui/builtinContextMenus/itemStats.py:38
+#: gui/builtinItemStatsViews/itemCompare.py:147
 msgid "Item"
 msgstr ""
 
@@ -1904,8 +1896,8 @@ msgstr ""
 msgid "Khanid"
 msgstr ""
 
-#: eos/saveddata/damagePattern.py:41
 #: gui/builtinContextMenus/moduleAmmoChange.py:27
+#: eos/saveddata/damagePattern.py:41
 msgid "Kinetic"
 msgstr ""
 
@@ -1949,8 +1941,8 @@ msgstr ""
 msgid "Level %s"
 msgstr ""
 
-#: gui/characterEditor.py:591 gui/characterEditor.py:616
-#: gui/characterEditor.py:649 gui/builtinItemStatsViews/itemDependants.py:46
+#: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
+#: gui/characterEditor.py:616 gui/characterEditor.py:649
 msgid "Level {}"
 msgstr ""
 
@@ -1960,10 +1952,6 @@ msgstr ""
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Light"
-msgstr ""
-
-#: service/market.py:266
-msgid "Limited Issue Ships"
 msgstr ""
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
@@ -2054,7 +2042,7 @@ msgstr ""
 msgid "Market Search Delay (ms):"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
 msgid "Mass:\t{:,.0f}kg"
 msgstr ""
 
@@ -2063,7 +2051,7 @@ msgid "Material bay"
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:208
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:242
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:241
 #, python-format
 msgid "Max Warp Distance: %.1f AU"
 msgstr ""
@@ -2274,8 +2262,8 @@ msgstr ""
 msgid "NPC"
 msgstr ""
 
-#: gui/builtinViewColumns/baseName.py:55
 #: gui/builtinItemStatsViews/itemEffects.py:30
+#: gui/builtinViewColumns/baseName.py:55
 msgid "Name"
 msgstr ""
 
@@ -2330,7 +2318,7 @@ msgstr ""
 msgid "No proxy"
 msgstr ""
 
-#: gui/characterEditor.py:855
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -2339,7 +2327,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/characterEditor.py:855
 msgid "None"
 msgstr ""
 
@@ -2351,7 +2339,7 @@ msgstr ""
 msgid "Not Learned"
 msgstr ""
 
-#: gui/characterEditor.py:399 service/character.py:322
+#: gui/characterEditor.py:399
 msgid "Not learned"
 msgstr ""
 
@@ -2509,9 +2497,9 @@ msgstr ""
 msgid "Pressing this button will cause all logs in memory to write to the log file:"
 msgstr ""
 
+#: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinStatsViews/priceViewFull.py:40
-#: gui/builtinItemStatsViews/itemCompare.py:155
 msgid "Price"
 msgstr ""
 
@@ -2519,7 +2507,7 @@ msgstr ""
 msgid "Pricing updates"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:266
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:265
 #, python-format
 msgid "Probe Size: %.3f"
 msgstr ""
@@ -2670,8 +2658,8 @@ msgid "Reinforced"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinStatsViews/outgoingViewMinimal.py:65
 #: gui/builtinStatsViews/outgoingViewFull.py:66
+#: gui/builtinStatsViews/outgoingViewMinimal.py:65
 msgid "Remote Reps"
 msgstr ""
 
@@ -2791,8 +2779,8 @@ msgstr ""
 msgid "Salvage hold"
 msgstr ""
 
-#: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
+#: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 msgid "Sansha Incursion"
 msgstr ""
 
@@ -3125,18 +3113,13 @@ msgstr ""
 msgid "T2 Resist"
 msgstr ""
 
-#: gui/builtinViewColumns/baseName.py:102
 #: gui/builtinContextMenus/shipModeChange.py:37
-#: gui/builtinViews/fittingView.py:657
+#: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:91
 msgid "Talos"
-msgstr ""
-
-#: graphs/gui/lists.py:358
-msgid "Target"
 msgstr ""
 
 #: gui/targetProfileEditor.py:86
@@ -3207,8 +3190,8 @@ msgstr ""
 msgid "There was an issue starting up the localized server, try setting Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login Authentication Method. If this doesn't fix the problem please file an issue on Github."
 msgstr ""
 
-#: eos/saveddata/damagePattern.py:40
 #: gui/builtinContextMenus/moduleAmmoChange.py:25
+#: eos/saveddata/damagePattern.py:40
 msgid "Thermal"
 msgstr ""
 
@@ -3272,9 +3255,9 @@ msgstr ""
 msgid "Toggle view mode"
 msgstr ""
 
+#: gui/builtinStatsViews/miningyieldViewFull.py:89
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/priceViewMinimal.py:57
-#: gui/builtinStatsViews/miningyieldViewFull.py:89
 msgid "Total"
 msgstr ""
 
@@ -3317,12 +3300,12 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:219
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:218
 #, python-brace-format
 msgid "Type: {0}\n"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:223
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:222
 msgid "Type: {}"
 msgstr ""
 
@@ -3398,8 +3381,8 @@ msgstr ""
 msgid "Using Executable Path for Saved Fit Database and Settings"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 #: gui/builtinContextMenus/itemVariationChange.py:49
+#: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 msgid "Variations"
 msgstr ""
 
@@ -3421,8 +3404,8 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:210
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:212
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:244
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:246
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:243
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:245
 #, python-format
 msgid "Warp Core Strength: %.1f"
 msgstr ""
@@ -3606,7 +3589,8 @@ msgstr ""
 msgid "{} {} Slot"
 msgstr ""
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:221
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
+#, no-python-format, python-brace-format
 msgid "{}% chance to be jammed"
 msgstr ""
 
