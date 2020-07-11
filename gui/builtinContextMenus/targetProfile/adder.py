@@ -59,8 +59,10 @@ class TargetProfileAdder(ContextMenuUnconditional):
         for profile in profiles:
             container = items
             for categoryName in profile.hierarchy:
+                categoryName = _t(categoryName) if profile.builtin else categoryName
                 container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
-            container[0][profile.shortName] = profile
+            shortName = _t(profile.shortName) if profile.builtin else profile.shortName
+            container[0][shortName] = profile
 
         # Category as menu item - expands further
         msw = "wxMSW" in wx.PlatformInfo

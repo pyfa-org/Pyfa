@@ -45,9 +45,9 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         for pattern in self.patterns:
             container = self.items
             for categoryName in pattern.hierarchy:
-                categoryName = _t('[' + categoryName + ']')[1:-1] if pattern.isBuiltin else categoryName
+                categoryName = _t(categoryName) if pattern.builtin else categoryName
                 container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
-            shortName = _t(pattern.shortName) if pattern.isBuiltin else pattern.shortName
+            shortName = _t(pattern.shortName) if pattern.builtin else pattern.shortName
             container[0][shortName] = pattern
 
         return list(self.items[0].keys()) + list(self.items[1].keys())
