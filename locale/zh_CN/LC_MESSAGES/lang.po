@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa 2.22.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-11 15:41+0800\n"
-"PO-Revision-Date: 2020-07-11 15:42+0800\n"
+"POT-Creation-Date: 2020-07-11 21:04+0800\n"
+"PO-Revision-Date: 2020-07-11 21:07+0800\n"
 "Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: zh_CN\n"
@@ -29,10 +29,6 @@ msgstr "堆"
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
 msgstr "齐射"
-
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:219
-msgid " chance to be jammed"
-msgstr "概率丢失目标"
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
@@ -79,7 +75,7 @@ msgstr "导出装配(&E)"
 msgid "&Export Skills Needed"
 msgstr "导出所需技能列表(&E)"
 
-#: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
+#: gui/propertyEditor.py:42 gui/mainMenuBar.py:66
 msgid "&File"
 msgstr "文件(&F)"
 
@@ -155,7 +151,7 @@ msgstr "导出到剪贴板(&T)"
 msgid "&Turn Overrides Off"
 msgstr "启用自定义属性(&T)"
 
-#: gui/mainFrame.py:690 gui/mainMenuBar.py:131
+#: gui/mainMenuBar.py:131 gui/mainFrame.py:690
 msgid "&Turn Overrides On"
 msgstr "启用自定义属性(&T)"
 
@@ -310,7 +306,7 @@ msgstr "地址："
 msgid "Affected by"
 msgstr "影响因素"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:227
 #, python-format
 msgid "Agility:\t%.3fx"
 msgstr "灵活性：%.3fx"
@@ -319,7 +315,7 @@ msgstr "灵活性：%.3fx"
 msgid "Align time"
 msgstr "起跳时间"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
 #, python-format
 msgid "Align:\t%.3fs"
 msgstr "起跳时间：%.3fs"
@@ -358,7 +354,7 @@ msgstr "艾玛（护甲）"
 msgid "Amarr (Shield)"
 msgstr "艾玛（护盾）"
 
-#: eos/saveddata/damagePattern.py:138 eos/saveddata/targetProfile.py:72
+#: eos/saveddata/damagePattern.py:148 eos/saveddata/targetProfile.py:72
 msgid "Amarr Empire"
 msgstr "艾玛帝国"
 
@@ -438,8 +434,8 @@ msgstr "阿什姆级（血袭者）"
 msgid "Asteroid"
 msgstr "小行星"
 
-#: gui/builtinItemStatsViews/itemAttributes.py:44
 #: gui/builtinItemStatsViews/itemProperties.py:56
+#: gui/builtinItemStatsViews/itemAttributes.py:44
 msgid "Attribute"
 msgstr "属性"
 
@@ -518,10 +514,11 @@ msgstr "炸弹"
 msgid "Booster"
 msgstr "增效剂"
 
-#: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
+#: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
+#: gui/additionsPane.py:78
 #: gui/builtinContextMenus/additionsExportSelection.py:23
-#: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
-#: gui/copySelectDialog.py:56
+#: gui/builtinContextMenus/additionsImport.py:24
+#: gui/builtinContextMenus/additionsExportAll.py:23
 msgid "Boosters"
 msgstr "增效剂"
 
@@ -544,7 +541,7 @@ msgstr "浏览游戏内装配"
 msgid "Burner"
 msgstr "燃烧者"
 
-#: eos/saveddata/damagePattern.py:140 eos/saveddata/targetProfile.py:74
+#: eos/saveddata/damagePattern.py:150 eos/saveddata/targetProfile.py:74
 msgid "CONCORD"
 msgstr "统合部"
 
@@ -564,7 +561,7 @@ msgstr "加达里（护甲）"
 msgid "Caldari (Shield)"
 msgstr "加达里（护盾）"
 
-#: eos/saveddata/damagePattern.py:139 eos/saveddata/targetProfile.py:73
+#: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:73
 msgid "Caldari State"
 msgstr "加达里合众国"
 
@@ -585,16 +582,16 @@ msgstr "电容稳定性"
 msgid "Carbonized Lead"
 msgstr "碳铅弹"
 
-#: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
+#: gui/additionsPane.py:72 gui/builtinStatsViews/targetingMiscViewMinimal.py:90
+#: gui/builtinContextMenus/priceOptions.py:47
 msgid "Cargo"
 msgstr "货舱"
 
-#: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:20
 msgid "Cargo Items"
 msgstr "货舱物品"
 
@@ -603,8 +600,8 @@ msgstr "货舱物品"
 msgid "Cargo bay"
 msgstr "货舱"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:230
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:255
 msgid "Cargohold: "
 msgstr "货舱："
 
@@ -650,8 +647,8 @@ msgstr "变更{}半径"
 msgid "Changes require restart of pyfa to take effect."
 msgstr "变更将在重启Pyfa之后生效。"
 
-#: gui/builtinStatsViews/priceViewFull.py:57 gui/characterEditor.py:90
-#: gui/esiFittings.py:341
+#: gui/characterEditor.py:90 gui/esiFittings.py:341
+#: gui/builtinStatsViews/priceViewFull.py:57
 msgid "Character"
 msgstr "角色"
 
@@ -755,7 +752,7 @@ msgstr "震荡炸弹"
 msgid "Confirm"
 msgstr "确认"
 
-#: gui/esiFittings.py:157 gui/propertyEditor.py:147
+#: gui/propertyEditor.py:147 gui/esiFittings.py:157
 msgid "Confirm Delete"
 msgstr "删除确认"
 
@@ -807,9 +804,9 @@ msgstr "三神裔入侵"
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
 msgstr "沃尔夫-拉叶星"
 
-#: gui/builtinItemStatsViews/itemDescription.py:43
-#: gui/builtinItemStatsViews/itemTraits.py:25
 #: gui/builtinShipBrowser/fitItem.py:107
+#: gui/builtinItemStatsViews/itemTraits.py:25
+#: gui/builtinItemStatsViews/itemDescription.py:43
 msgid "Copy"
 msgstr "复制"
 
@@ -853,8 +850,8 @@ msgstr "巡洋"
 msgid "Cruor (Blood Raiders)"
 msgstr "凝血级（血袭者）"
 
-#: gui/builtinItemStatsViews/itemAttributes.py:45
 #: gui/builtinItemStatsViews/itemProperties.py:57
+#: gui/builtinItemStatsViews/itemAttributes.py:45
 msgid "Current Value"
 msgstr "当前值"
 
@@ -998,8 +995,8 @@ msgstr "不再提示此更新"
 msgid "Don't see your EVE character in the list?"
 msgstr "列表中没有你的EvE角色？"
 
-#: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
+#: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 msgid "Download"
 msgstr "下载"
 
@@ -1015,12 +1012,12 @@ msgstr "拖拽一个物品或装配以启用投射效果，或使用右键菜单
 msgid "Dramiel (Angel)"
 msgstr "德拉米尔级（天使）"
 
-#: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:133
-#: eos/saveddata/damagePattern.py:136
+#: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:143
+#: eos/saveddata/damagePattern.py:146
 msgid "Dread"
 msgstr "无畏"
 
-#: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
+#: eos/saveddata/damagePattern.py:142 eos/saveddata/damagePattern.py:145
 msgid "Dread/Subcaps"
 msgstr "无畏/常规"
 
@@ -1061,12 +1058,12 @@ msgstr "无人机半径"
 #: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:155
 #: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:169
 #: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:183
-#: gui/additionsPane.py:66 gui/builtinContextMenus/additionsExportAll.py:18
-#: gui/builtinContextMenus/additionsExportSelection.py:18
-#: gui/builtinContextMenus/additionsImport.py:19
-#: gui/builtinContextMenus/priceOptions.py:40
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
-#: gui/builtinStatsViews/priceViewFull.py:58
+#: gui/additionsPane.py:66 gui/builtinStatsViews/priceViewFull.py:58
+#: gui/builtinContextMenus/additionsExportSelection.py:18
+#: gui/builtinContextMenus/priceOptions.py:40
+#: gui/builtinContextMenus/additionsImport.py:19
+#: gui/builtinContextMenus/additionsExportAll.py:18
 msgid "Drones"
 msgstr "无人机"
 
@@ -1116,8 +1113,8 @@ msgstr "EvE API XML角色文件"
 msgid "EVE IGB HTML fitting file"
 msgstr "EvE IGB 装配HTML网页文件"
 
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 #: gui/characterEditor.py:162
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 msgid "EVE SSO"
 msgstr "EvE单点登录(SSO)"
 
@@ -1262,8 +1259,8 @@ msgstr "恩尤"
 
 #: gui/characterEditor.py:83 gui/characterEditor.py:463
 #: gui/characterEditor.py:898 gui/characterSelection.py:174
-#: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
-#: gui/targetProfileEditor.py:78
+#: gui/patternEditor.py:58 gui/setEditor.py:55 gui/targetProfileEditor.py:78
+#: gui/mainFrame.py:898
 msgid "Error"
 msgstr "错误"
 
@@ -1459,9 +1456,10 @@ msgstr "铁骑舰载机仓库"
 msgid "Fighter squadrons active"
 msgstr "激活的铁骑舰载机中队"
 
-#: gui/additionsPane.py:69 gui/builtinContextMenus/additionsExportAll.py:19
+#: gui/additionsPane.py:69
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
+#: gui/builtinContextMenus/additionsExportAll.py:19
 msgid "Fighters"
 msgstr "铁骑舰载机"
 
@@ -1573,7 +1571,7 @@ msgstr "盖伦特（护甲）"
 msgid "Gallente (Shield)"
 msgstr "盖伦特（护盾）"
 
-#: eos/saveddata/damagePattern.py:141 eos/saveddata/targetProfile.py:75
+#: eos/saveddata/damagePattern.py:151 eos/saveddata/targetProfile.py:75
 msgid "Gallente Federation"
 msgstr "盖伦特联邦"
 
@@ -1752,18 +1750,19 @@ msgstr "植入体配置编辑器"
 msgid "Implant Set name already in use, please choose another."
 msgstr "植入体配置名已使用，请选择其他名称。"
 
-#: gui/additionsPane.py:75 gui/builtinContextMenus/additionsExportAll.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:22
+#: gui/characterEditor.py:161 gui/copySelectDialog.py:47
+#: gui/copySelectDialog.py:55 gui/additionsPane.py:75
 #: gui/builtinContextMenus/additionsExportSelection.py:21
 #: gui/builtinContextMenus/additionsExportSelection.py:22
 #: gui/builtinContextMenus/additionsImport.py:22
-#: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
-#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
+#: gui/builtinContextMenus/additionsImport.py:23
+#: gui/builtinContextMenus/additionsExportAll.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:22
 msgid "Implants"
 msgstr "植入体"
 
-#: gui/builtinContextMenus/priceOptions.py:54
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
+#: gui/builtinContextMenus/priceOptions.py:54
 msgid "Implants && Boosters"
 msgstr "植入体和增效剂"
 
@@ -1870,8 +1869,8 @@ msgid "Interceptor"
 msgstr "截击"
 
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
-#: eos/saveddata/damagePattern.py:129 eos/saveddata/damagePattern.py:130
-#: eos/saveddata/damagePattern.py:131 eos/saveddata/targetProfile.py:94
+#: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
+#: eos/saveddata/damagePattern.py:138 eos/saveddata/targetProfile.py:94
 msgid "Invading Precursor Entities"
 msgstr "入侵的先驱者实体"
 
@@ -1884,11 +1883,11 @@ msgid "Invalid Token"
 msgstr "无效登录信息"
 
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
-#: eos/saveddata/damagePattern.py:129 eos/saveddata/damagePattern.py:130
-#: eos/saveddata/damagePattern.py:131 eos/saveddata/damagePattern.py:132
-#: eos/saveddata/damagePattern.py:133 eos/saveddata/damagePattern.py:134
-#: eos/saveddata/damagePattern.py:135 eos/saveddata/damagePattern.py:136
-#: eos/saveddata/damagePattern.py:137 eos/saveddata/targetProfile.py:94
+#: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
+#: eos/saveddata/damagePattern.py:138 eos/saveddata/damagePattern.py:142
+#: eos/saveddata/damagePattern.py:143 eos/saveddata/damagePattern.py:144
+#: eos/saveddata/damagePattern.py:145 eos/saveddata/damagePattern.py:146
+#: eos/saveddata/damagePattern.py:147 eos/saveddata/targetProfile.py:94
 #: eos/saveddata/targetProfile.py:95 eos/saveddata/targetProfile.py:96
 #: eos/saveddata/targetProfile.py:97 eos/saveddata/targetProfile.py:98
 msgid "Invasion"
@@ -1902,11 +1901,11 @@ msgstr "铱质"
 msgid "Iron"
 msgstr "铁质"
 
-#: gui/builtinContextMenus/ammoToDmgPattern.py:32
-#: gui/builtinContextMenus/itemMarketJump.py:44
-#: gui/builtinContextMenus/itemRemove.py:43
-#: gui/builtinContextMenus/itemStats.py:38
 #: gui/builtinItemStatsViews/itemCompare.py:147
+#: gui/builtinContextMenus/itemMarketJump.py:44
+#: gui/builtinContextMenus/itemStats.py:38
+#: gui/builtinContextMenus/ammoToDmgPattern.py:32
+#: gui/builtinContextMenus/itemRemove.py:43
 msgid "Item"
 msgstr "物品"
 
@@ -1922,7 +1921,7 @@ msgstr "物品属性"
 msgid "Jaguar"
 msgstr "美洲豹"
 
-#: eos/saveddata/damagePattern.py:142 eos/saveddata/targetProfile.py:76
+#: eos/saveddata/damagePattern.py:152 eos/saveddata/targetProfile.py:76
 msgid "Khanid"
 msgstr "卡尼迪"
 
@@ -1971,8 +1970,8 @@ msgstr "技能等级"
 msgid "Level %s"
 msgstr "等级%s"
 
-#: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
-#: gui/characterEditor.py:616 gui/characterEditor.py:649
+#: gui/characterEditor.py:591 gui/characterEditor.py:616
+#: gui/characterEditor.py:649 gui/builtinItemStatsViews/itemDependants.py:46
 msgid "Level {}"
 msgstr "等级{}"
 
@@ -2076,7 +2075,7 @@ msgstr "搜索和显示最近使用列表时"
 msgid "Market Search Delay (ms):"
 msgstr "市场搜索延迟（毫秒）："
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 msgid "Mass:\t{:,.0f}kg"
 msgstr "质量：{:,.0f}kg"
 
@@ -2085,7 +2084,7 @@ msgid "Material bay"
 msgstr "物料仓"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:208
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:241
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:242
 #, python-format
 msgid "Max Warp Distance: %.1f AU"
 msgstr "最大跃迁距离：%.1f AU"
@@ -2137,7 +2136,7 @@ msgstr "米玛塔尔(护甲）"
 msgid "Minmatar (Shield)"
 msgstr "米玛塔尔(护盾）"
 
-#: eos/saveddata/damagePattern.py:143 eos/saveddata/targetProfile.py:77
+#: eos/saveddata/damagePattern.py:153 eos/saveddata/targetProfile.py:77
 msgid "Minmatar Republic"
 msgstr "米玛塔尔共和国"
 
@@ -2154,10 +2153,10 @@ msgstr "杂项"
 msgid "Missiles"
 msgstr "导弹"
 
-#: eos/saveddata/damagePattern.py:138 eos/saveddata/damagePattern.py:139
-#: eos/saveddata/damagePattern.py:140 eos/saveddata/damagePattern.py:141
-#: eos/saveddata/damagePattern.py:142 eos/saveddata/damagePattern.py:143
-#: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:145
+#: eos/saveddata/damagePattern.py:148 eos/saveddata/damagePattern.py:149
+#: eos/saveddata/damagePattern.py:150 eos/saveddata/damagePattern.py:151
+#: eos/saveddata/damagePattern.py:152 eos/saveddata/damagePattern.py:153
+#: eos/saveddata/damagePattern.py:154 eos/saveddata/damagePattern.py:155
 #: eos/saveddata/targetProfile.py:72 eos/saveddata/targetProfile.py:73
 #: eos/saveddata/targetProfile.py:74 eos/saveddata/targetProfile.py:75
 #: eos/saveddata/targetProfile.py:76 eos/saveddata/targetProfile.py:77
@@ -2181,7 +2180,7 @@ msgstr "模式"
 msgid "Module"
 msgstr "模块"
 
-#: eos/saveddata/damagePattern.py:144 eos/saveddata/targetProfile.py:78
+#: eos/saveddata/damagePattern.py:154 eos/saveddata/targetProfile.py:78
 msgid "Mordus Legion"
 msgstr "莫德团"
 
@@ -2218,16 +2217,16 @@ msgstr "变质"
 #: eos/saveddata/damagePattern.py:121 eos/saveddata/damagePattern.py:122
 #: eos/saveddata/damagePattern.py:123 eos/saveddata/damagePattern.py:124
 #: eos/saveddata/damagePattern.py:125 eos/saveddata/damagePattern.py:127
-#: eos/saveddata/damagePattern.py:128 eos/saveddata/damagePattern.py:129
-#: eos/saveddata/damagePattern.py:130 eos/saveddata/damagePattern.py:131
-#: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:133
-#: eos/saveddata/damagePattern.py:134 eos/saveddata/damagePattern.py:135
-#: eos/saveddata/damagePattern.py:136 eos/saveddata/damagePattern.py:137
-#: eos/saveddata/damagePattern.py:138 eos/saveddata/damagePattern.py:139
-#: eos/saveddata/damagePattern.py:140 eos/saveddata/damagePattern.py:141
+#: eos/saveddata/damagePattern.py:128 eos/saveddata/damagePattern.py:132
+#: eos/saveddata/damagePattern.py:135 eos/saveddata/damagePattern.py:138
 #: eos/saveddata/damagePattern.py:142 eos/saveddata/damagePattern.py:143
 #: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:145
 #: eos/saveddata/damagePattern.py:146 eos/saveddata/damagePattern.py:147
+#: eos/saveddata/damagePattern.py:148 eos/saveddata/damagePattern.py:149
+#: eos/saveddata/damagePattern.py:150 eos/saveddata/damagePattern.py:151
+#: eos/saveddata/damagePattern.py:152 eos/saveddata/damagePattern.py:153
+#: eos/saveddata/damagePattern.py:154 eos/saveddata/damagePattern.py:155
+#: eos/saveddata/damagePattern.py:156 eos/saveddata/damagePattern.py:157
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:61
 #: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:63
 #: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:65
@@ -2296,8 +2295,8 @@ msgstr "变质"
 msgid "NPC"
 msgstr "NPC"
 
-#: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
+#: gui/builtinItemStatsViews/itemEffects.py:30
 msgid "Name"
 msgstr "名称"
 
@@ -2352,7 +2351,7 @@ msgstr "不改变衍生分类按钮"
 msgid "No proxy"
 msgstr "无代理"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/characterEditor.py:855
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -2361,7 +2360,7 @@ msgstr "无代理"
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/characterEditor.py:855
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "None"
 msgstr "无"
 
@@ -2533,9 +2532,9 @@ msgid ""
 "Pressing this button will cause all logs in memory to write to the log file:"
 msgstr "点击此按钮以将所有缓存的日志写入到日志文件："
 
-#: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinStatsViews/priceViewFull.py:40
+#: gui/builtinItemStatsViews/itemCompare.py:155
 msgid "Price"
 msgstr "价格"
 
@@ -2543,7 +2542,7 @@ msgstr "价格"
 msgid "Pricing updates"
 msgstr "价格更新"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:265
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:266
 #, python-format
 msgid "Probe Size: %.3f"
 msgstr "Probe Size: %.3f"
@@ -2708,8 +2707,8 @@ msgid "Reinforced"
 msgstr "加强回充"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinStatsViews/outgoingViewFull.py:66
 #: gui/builtinStatsViews/outgoingViewMinimal.py:65
+#: gui/builtinStatsViews/outgoingViewFull.py:66
 msgid "Remote Reps"
 msgstr "遥修"
 
@@ -2771,20 +2770,20 @@ msgstr "抗性"
 msgid "Resources"
 msgstr "装配资源"
 
-#: eos/saveddata/damagePattern.py:132 eos/saveddata/targetProfile.py:95
+#: eos/saveddata/damagePattern.py:142 eos/saveddata/targetProfile.py:95
 msgid "Retaliating Amarr Entities"
 msgstr "反击艾玛单位"
 
-#: eos/saveddata/damagePattern.py:133 eos/saveddata/damagePattern.py:134
+#: eos/saveddata/damagePattern.py:143 eos/saveddata/damagePattern.py:144
 #: eos/saveddata/targetProfile.py:96
 msgid "Retaliating Caldari Entities"
 msgstr "反击加达里单位"
 
-#: eos/saveddata/damagePattern.py:135 eos/saveddata/targetProfile.py:97
+#: eos/saveddata/damagePattern.py:145 eos/saveddata/targetProfile.py:97
 msgid "Retaliating Gallente Entities"
 msgstr "反击盖伦特单位"
 
-#: eos/saveddata/damagePattern.py:136 eos/saveddata/damagePattern.py:137
+#: eos/saveddata/damagePattern.py:146 eos/saveddata/damagePattern.py:147
 #: eos/saveddata/targetProfile.py:98
 msgid "Retaliating Minmatar Entities"
 msgstr "反击米玛塔尔单位"
@@ -2829,7 +2828,7 @@ msgstr "单点登录(SSO)模式"
 msgid "Salvage hold"
 msgstr "打捞件仓"
 
-#: eos/saveddata/damagePattern.py:146 eos/saveddata/targetProfile.py:80
+#: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
 msgstr "萨沙入侵"
@@ -3073,7 +3072,7 @@ msgstr "所需技能："
 msgid "Sleeper"
 msgstr "冬眠者"
 
-#: eos/saveddata/damagePattern.py:147
+#: eos/saveddata/damagePattern.py:157
 msgid "Sleepers"
 msgstr "冬眠者"
 
@@ -3109,22 +3108,22 @@ msgstr "标准"
 msgid "Statistics Panel"
 msgstr "属性面板"
 
-#: eos/saveddata/damagePattern.py:134 eos/saveddata/damagePattern.py:137
+#: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:147
 msgid "Subcaps"
 msgstr "非旗舰"
 
-#: eos/saveddata/damagePattern.py:129
-#, python-format
+#: eos/saveddata/damagePattern.py:134
+#, no-python-format
 msgid "Subcaps w/missiles 0% spool up"
 msgstr "非旗舰0%预热"
 
-#: eos/saveddata/damagePattern.py:131
-#, python-format
+#: eos/saveddata/damagePattern.py:140
+#, no-python-format
 msgid "Subcaps w/missiles 100% spool up"
 msgstr "非旗舰100%预热"
 
-#: eos/saveddata/damagePattern.py:130
-#, python-format
+#: eos/saveddata/damagePattern.py:137
+#, no-python-format
 msgid "Subcaps w/missiles 50% spool up"
 msgstr "非旗舰50%预热"
 
@@ -3170,8 +3169,9 @@ msgstr "T1抗性"
 msgid "T2 Resist"
 msgstr "T2抗性"
 
+#: gui/builtinViewColumns/baseName.py:102
 #: gui/builtinContextMenus/shipModeChange.py:37
-#: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
+#: gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr "战术模式"
 
@@ -3344,7 +3344,7 @@ msgstr "本选项将启动一个本地服务器以接收登录页返回的角色
 msgid "Thorium"
 msgstr "钍质"
 
-#: eos/saveddata/damagePattern.py:145
+#: eos/saveddata/damagePattern.py:155
 msgid "Thukker"
 msgstr "图克尔"
 
@@ -3364,9 +3364,9 @@ msgstr "切换视图"
 msgid "Toggle view mode"
 msgstr "切换显示模式"
 
-#: gui/builtinStatsViews/miningyieldViewFull.py:89
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/priceViewMinimal.py:57
+#: gui/builtinStatsViews/miningyieldViewFull.py:89
 msgid "Total"
 msgstr "总计"
 
@@ -3414,7 +3414,7 @@ msgstr "类型"
 msgid "Type: {0}\n"
 msgstr "扫描类型：{0}\n"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:222
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:223
 msgid "Type: {}"
 msgstr "扫描类型：{}"
 
@@ -3490,8 +3490,8 @@ msgstr "用户名："
 msgid "Using Executable Path for Saved Fit Database and Settings"
 msgstr "使用Pyfa可执行文件路径来保存装配数据库和偏好设置"
 
-#: gui/builtinContextMenus/itemVariationChange.py:49
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
+#: gui/builtinContextMenus/itemVariationChange.py:49
 msgid "Variations"
 msgstr "变种"
 
@@ -3513,8 +3513,8 @@ msgstr "正在等待角色通过EvE登录。"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:210
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:212
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:243
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:245
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:244
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:246
 #, python-format
 msgid "Warp Core Strength: %.1f"
 msgstr "跃迁核心强度：%.1f"
@@ -3714,3 +3714,7 @@ msgstr "{}属性"
 #: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
 msgstr "{} {}槽"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:221
+msgid "{}% chance to be jammed"
+msgstr "{}%概率丢失目标"

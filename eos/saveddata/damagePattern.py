@@ -126,9 +126,19 @@ BUILTINS = OrderedDict([
     # Source: ticket #2067
     (-86, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) + _t('Dread'), 0, 417, 0, 583)),
     (-87, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) + _t('Normal Subcaps'), 0, 610, 0, 390)),
-    (-88, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) + _t('Subcaps w/missiles 0% spool up'), 367, 155, 367, 112)),
-    (-89, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) + _t('Subcaps w/missiles 50% spool up'), 291, 243, 291, 175)),
-    (-90, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) + _t('Subcaps w/missiles 100% spool up'), 241, 301, 241, 217)),
+
+    # To avoid errors on msgfmt, we have to mark that '0%' is meaning literally 0% with no-python-format.
+    # See also: https://github.com/vslavik/poedit/issues/645
+    (-88, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) +
+           # xgettext:no-python-format
+           _t('Subcaps w/missiles 0% spool up'), 367, 155, 367, 112)),
+    (-89, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) +
+           # xgettext:no-python-format
+           _t('Subcaps w/missiles 50% spool up'), 291, 243, 291, 175)),
+    (-90, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Invading Precursor Entities')) +
+           # xgettext:no-python-format
+           _t('Subcaps w/missiles 100% spool up'), 241, 301, 241, 217)),
+
     (-91, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Retaliating Amarr Entities')) + _t('Dread/Subcaps'), 583, 417, 0, 0)),
     (-92, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Retaliating Caldari Entities')) + _t('Dread'), 1000, 0, 0, 0)),
     (-93, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Retaliating Caldari Entities')) + _t('Subcaps'), 511, 21, 29, 440)),
