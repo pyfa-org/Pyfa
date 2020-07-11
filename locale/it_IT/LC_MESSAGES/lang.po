@@ -1,21 +1,21 @@
-# Italian translations for PACKAGE package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-#  <unknown@unknown.com>, 2020.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-30 23:27-0400\n"
-"PO-Revision-Date: 2020-06-30 23:28-0400\n"
+"PO-Revision-Date: 2020-07-11 22:02\n"
 "Last-Translator:  <unknown@unknown.com>\n"
 "Language-Team: Italian\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: pyfa\n"
+"X-Crowdin-Project-ID: 411502\n"
+"X-Crowdin-Language: it\n"
+"X-Crowdin-File: /i18n/locale/it_IT/LC_MESSAGES/lang.po\n"
+"X-Crowdin-File-ID: 38\n"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
@@ -168,8 +168,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:29
-msgid ""
-"(Cannot be changed while pyfa is running. Set via command line switches.)"
+msgid "(Cannot be changed while pyfa is running. Set via command line switches.)"
 msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
@@ -312,9 +311,7 @@ msgid "Are you sure you want to delete all overrides?"
 msgstr ""
 
 #: gui/mainFrame.py:647
-msgid ""
-"Are you sure you wish to ignore fitting restrictions for the current fit? "
-"This could lead to wildly inaccurate results and possible errors."
+msgid "Are you sure you wish to ignore fitting restrictions for the current fit? This could lead to wildly inaccurate results and possible errors."
 msgstr ""
 
 #: gui/builtinStatsViews/rechargeViewFull.py:77
@@ -779,10 +776,8 @@ msgid "Disabled"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:28
-msgid ""
-"Disabling context menus can improve responsiveness.\n"
-"You can hold {} key + right-click to show all menu items regardless of these "
-"settings."
+msgid "Disabling context menus can improve responsiveness.\n"
+"You can hold {} key + right-click to show all menu items regardless of these settings."
 msgstr ""
 
 #: gui/esiFittings.py:156
@@ -1040,9 +1035,7 @@ msgid "Export Fit"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:23
-msgid ""
-"Export Fittings in a minimal HTML Version, just containing the fittings "
-"links without any visual styling"
+msgid "Export Fittings in a minimal HTML Version, just containing the fittings links without any visual styling"
 msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:57
@@ -1134,8 +1127,7 @@ msgid "Factor in Reload Time"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:44
-msgid ""
-"Factor in reload time when calculating capacitor usage, damage, and tank."
+msgid "Factor in reload time when calculating capacitor usage, damage, and tank."
 msgstr ""
 
 #: gui/esiFittings.py:294
@@ -1280,10 +1272,7 @@ msgid "HTML Export"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:20
-msgid ""
-"HTML Export (File > Export HTML) allows you to export your entire fitting "
-"database into an HTML file at the specified location. This file can be used "
-"to easily open your fits in a web-based fitting program"
+msgid "HTML Export (File > Export HTML) allows you to export your entire fitting database into an HTML file at the specified location. This file can be used to easily open your fits in a web-based fitting program"
 msgstr ""
 
 #: gui/builtinAdditionPanes/fighterView.py:62
@@ -1419,15 +1408,11 @@ msgid "Importing fits"
 msgstr ""
 
 #: gui/characterEditor.py:440
-msgid ""
-"Importing skills into this character will set the skill levels as pending. "
-"To save the skills permanently, please click the Save button at the bottom "
-"of the window after importing"
+msgid "Importing skills into this character will set the skill levels as pending. To save the skills permanently, please click the Save button at the bottom of the window after importing"
 msgstr ""
 
 #: gui/copySelectDialog.py:59
-msgid ""
-"Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
+msgid "Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
 msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:115
@@ -1839,8 +1824,7 @@ msgid "Please Wait..."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:32
-msgid ""
-"Please see the pyfa wiki on GitHub for information regarding these options."
+msgid "Please see the pyfa wiki on GitHub for information regarding these options."
 msgstr ""
 
 #: gui/esiFittings.py:281
@@ -1876,8 +1860,7 @@ msgid "Preferences"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:59
-msgid ""
-"Pressing this button will cause all logs in memory to write to the log file:"
+msgid "Pressing this button will cause all logs in memory to write to the log file:"
 msgstr ""
 
 #: gui/builtinItemStatsViews/itemCompare.py:155
@@ -1936,11 +1919,7 @@ msgid "PvP Weather"
 msgstr ""
 
 #: gui/aboutData.py:49
-msgid ""
-"Pyfa (the Python Fitting Assistant) is an open-source standalone application "
-"able to create and simulate fittings for EVE-Online SciFi MMORPG with a very "
-"high degree of accuracy. Pyfa can run on all platforms where Python and "
-"wxWidgets are supported."
+msgid "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of accuracy. Pyfa can run on all platforms where Python and wxWidgets are supported."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:44
@@ -1948,10 +1927,7 @@ msgid "Pyfa Update checks"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:15
-msgid ""
-"Pyfa can automatically check and notify you of new releases. This feature is "
-"toggled in the Network settings. Here, you may allow pre-release "
-"notifications and view suppressed release notifications, if any."
+msgid "Pyfa can automatically check and notify you of new releases. This feature is toggled in the Network settings. Here, you may allow pre-release notifications and view suppressed release notifications, if any."
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:129
@@ -1988,9 +1964,7 @@ msgid "Raw: %d HP"
 msgstr ""
 
 #: gui/mainFrame.py:654
-msgid ""
-"Re-enabling fitting restrictions for this fit will also remove any illegal "
-"items from the fit. Do you want to continue?"
+msgid "Re-enabling fitting restrictions for this fit will also remove any illegal items from the fit. Do you want to continue?"
 msgstr ""
 
 #: gui/builtinShipBrowser/navigationPanel.py:56
@@ -2203,9 +2177,7 @@ msgid "Sets exported to clipboard"
 msgstr ""
 
 #: gui/characterEditor.py:326
-msgid ""
-"Setting an Alpha clone does not replace the character's skills, but rather "
-"caps them to Alpha levels."
+msgid "Setting an Alpha clone does not replace the character's skills, but rather caps them to Alpha levels."
 msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
@@ -2271,14 +2243,12 @@ msgid "Signature"
 msgstr ""
 
 #: gui/targetProfileEditor.py:125
-msgid ""
-"Signature radius\n"
+msgid "Signature radius\n"
 "Leave blank for infinitely big value"
 msgstr ""
 
 #: gui/aboutData.py:33
-msgid ""
-"Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
+msgid "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
 msgstr ""
 
 #: gui/characterEditor.py:342 gui/characterEditor.py:608
@@ -2376,15 +2346,11 @@ msgid "Text skills training file"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:72
-msgid ""
-"The amount of spoolup to use by default on module which support it. Can be "
-"changed on a per-module basis"
+msgid "The amount of spoolup to use by default on module which support it. Can be changed on a per-module basis"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:44
-msgid ""
-"The delay between a keystroke and the market search. Can help reduce lag "
-"when typing fast in the market search box."
+msgid "The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box."
 msgstr ""
 
 #: gui/mainFrame.py:951
@@ -2396,17 +2362,11 @@ msgid "The following path is invalid or does not exist:"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:64
-msgid ""
-"The source you choose will be tried first, but subsequent sources will be "
-"used if the preferred source fails. The system you choose will also be tried "
-"first, and if no data is available, global price will be used."
+msgid "The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose will also be tried first, and if no data is available, global price will be used."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:53
-msgid ""
-"There is a release available which you have chosen to suppress. You can "
-"choose to reset notification suppression for this release, or download the "
-"new release from GitHub."
+msgid "There is a release available which you have chosen to suppress. You can choose to reset notification suppression for this release, or download the new release from GitHub."
 msgstr ""
 
 #: gui/characterEditor.py:463
@@ -2414,17 +2374,11 @@ msgid "There was an error importing skills, please see log file"
 msgstr ""
 
 #: gui/esiFittings.py:196
-msgid ""
-"There was an error validating characters' SSO token. Please try logging into "
-"the character again to reset the token."
+msgid "There was an error validating characters' SSO token. Please try logging into the character again to reset the token."
 msgstr ""
 
 #: gui/esiFittings.py:179
-msgid ""
-"There was an issue starting up the localized server, try setting Login "
-"Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login "
-"Authentication Method. If this doesn't fix the problem please file an issue "
-"on Github."
+msgid "There was an issue starting up the localized server, try setting Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login Authentication Method. If this doesn't fix the problem please file an issue on Github."
 msgstr ""
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:25
@@ -2437,48 +2391,34 @@ msgid "Thermal resistance"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:107
-msgid ""
-"This is a destructive action that will delete all cached prices out of the "
-"database.\n"
+msgid "This is a destructive action that will delete all cached prices out of the database.\n"
 "Are you sure you want to do this?"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:97
-msgid ""
-"This is a destructive action that will delete all damage pattern profiles.\n"
+msgid "This is a destructive action that will delete all damage pattern profiles.\n"
 "Are you sure you want to do this?"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:102
-msgid ""
-"This is a destructive action that will delete all target profiles.\n"
+msgid "This is a destructive action that will delete all target profiles.\n"
 "Are you sure you want to do this?"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
-msgid ""
-"This option goes through EVE SSO directly, but requires more configuration. "
-"Use this is pyfa.io is blocked for some reason, or if you do not wish to "
-"route data throguh pyfa.io."
+msgid "This option goes through EVE SSO directly, but requires more configuration. Use this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
-msgid ""
-"This option prompts users to copy and paste information from the web "
-"application to allow for character login. Use this if having issues with the "
-"local server."
+msgid "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:47
-msgid ""
-"This options routes SSO Logins through pyfa.io, allowing you to easily login "
-"without any configuration. When in doubt, use this option."
+msgid "This options routes SSO Logins through pyfa.io, allowing you to easily login without any configuration. When in doubt, use this option."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:40
-msgid ""
-"This options starts a local webserver that the web application will call "
-"back to with information about the character login."
+msgid "This options starts a local webserver that the web application will call back to with information about the character login."
 msgstr ""
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:70
@@ -2607,23 +2547,16 @@ msgid "Weapon"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:61
-msgid ""
-"When damage profile is Uniform, set Reactive Armor Hardener to match (old "
-"behavior)."
+msgid "When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior)."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
-msgid ""
-"When disabled, reloads charges just in selected modules. Action can be "
-"reversed by holding Ctrl or Alt key while changing charge."
+msgid "When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:54
-msgid ""
-"When enabled, skills will check their dependencies' requirements when their "
-"levels change and reset skills that no longer meet the requirement.\n"
-"eg: Setting Drones from level V to IV will reset the Heavy Drone Operation "
-"skill, as that requires Drones V"
+msgid "When enabled, skills will check their dependencies' requirements when their levels change and reset skills that no longer meet the requirement.\n"
+"eg: Setting Drones from level V to IV will reset the Heavy Drone Operation skill, as that requires Drones V"
 msgstr ""
 
 #: gui/builtinContextMenus/envEffectAdd.py:105
@@ -2663,11 +2596,8 @@ msgid "pyfa error"
 msgstr ""
 
 #: gui/errorDialog.py:76
-msgid ""
-"pyfa has experienced an unexpected issue. Below is a message that contains "
-"crucial \n"
-"information about how this was triggered. Please contact the developers with "
-"the \n"
+msgid "pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
+"information about how this was triggered. Please contact the developers with the \n"
 "information provided through the EVE Online forums or file a GitHub issue."
 msgstr ""
 
@@ -2712,3 +2642,4 @@ msgstr ""
 #: gui/builtinViewColumns/baseName.py:103
 msgid "{} {} Slot"
 msgstr ""
+
