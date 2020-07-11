@@ -11,6 +11,8 @@ from gui.utils.sorter import smartSort
 from service.damagePattern import DamagePattern as DmgPatternSvc
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class ChangeDamagePattern(ContextMenuUnconditional):
 
@@ -43,8 +45,10 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         for pattern in self.patterns:
             container = self.items
             for categoryName in pattern.hierarchy:
+                categoryName = _t('[' + categoryName + ']')[1:-1] if pattern.isBuiltin else categoryName
                 container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
-            container[0][pattern.shortName] = pattern
+            shortName = _t(pattern.shortName) if pattern.isBuiltin else pattern.shortName
+            container[0][shortName] = pattern
 
         return list(self.items[0].keys()) + list(self.items[1].keys())
 
