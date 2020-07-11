@@ -14,8 +14,8 @@ msgstr ""
 "X-Crowdin-Project: pyfa\n"
 "X-Crowdin-Project-ID: 411502\n"
 "X-Crowdin-Language: ja\n"
-"X-Crowdin-File: /i18n/locale/it_IT/LC_MESSAGES/lang.po\n"
-"X-Crowdin-File-ID: 38\n"
+"X-Crowdin-File: /i18n/locale/ja_JP/LC_MESSAGES/lang.po\n"
+"X-Crowdin-File-ID: 40\n"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
