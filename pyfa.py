@@ -125,10 +125,6 @@ if __name__ == "__main__":
         if db_needs_update() is True:
             update_db()
 
-        from gui.app import PyfaApp
-
-        pyfa = PyfaApp(False)
-
         # Lets get to the good stuff, shall we?
         import eos.db
         import eos.events  # todo: move this to eos initialization?
@@ -141,10 +137,13 @@ if __name__ == "__main__":
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
+        from gui.app import PyfaApp
 
         # set title if it wasn't supplied by argument
         if options.title is None:
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
+
+        pyfa = PyfaApp(False)
 
         from gui.mainFrame import MainFrame
 
