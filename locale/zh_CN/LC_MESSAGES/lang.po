@@ -2,20 +2,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-30 23:27-0400\n"
+"POT-Creation-Date: 2020-07-11 21:04+0800\n"
 "PO-Revision-Date: 2020-07-11 22:02\n"
-"Last-Translator:  <unknown@unknown.com>\n"
+"Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
 "Language-Team: Chinese Simplified\n"
-"Language: zh\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Crowdin-Project: pyfa\n"
 "X-Crowdin-Project-ID: 411502\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /i18n/locale/ru_RU/LC_MESSAGES/lang.po\n"
-"X-Crowdin-File-ID: 44\n"
+"X-Crowdin-File: /i18n/locale/zh_CN/LC_MESSAGES/lang.po\n"
+"X-Crowdin-File-ID: 46\n"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
@@ -23,385 +24,523 @@ msgstr ""
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
-msgstr ""
+msgstr "堆"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
-msgstr ""
-
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:219
-msgid " chance to be jammed"
-msgstr ""
+msgstr "齐射"
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
 msgid "%d attribute."
-msgstr ""
+msgstr "共%d个属性。"
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
-msgstr ""
+msgstr "备份所有装配(&B)"
 
 #: gui/mainMenuBar.py:104
 msgid "&Browse ESI Fittings"
-msgstr ""
+msgstr "浏览游戏内装配(&B)"
 
 #: gui/mainMenuBar.py:111
 msgid "&Character"
-msgstr ""
+msgstr "角色(&C)"
 
 #: gui/mainMenuBar.py:144
 msgid "&Character Editor"
-msgstr ""
+msgstr "角色编辑器(&C)"
 
 #: gui/mainMenuBar.py:70
 msgid "&Close All Tabs"
-msgstr ""
+msgstr "关闭所有标签页(&C)"
 
 #: gui/mainMenuBar.py:69
 msgid "&Close Tab"
-msgstr ""
+msgstr "关闭标签页(&C)"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr ""
+msgstr "伤害模型编辑器(&D)"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
-msgstr ""
+msgstr "编辑器(&E)"
 
 #: gui/mainMenuBar.py:92
 msgid "&Export Fitting"
-msgstr ""
+msgstr "导出装配(&E)"
 
 #: gui/mainMenuBar.py:119
 msgid "&Export Skills Needed"
-msgstr ""
+msgstr "导出所需技能列表(&E)"
 
-#: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
+#: gui/propertyEditor.py:42 gui/mainMenuBar.py:66
 msgid "&File"
-msgstr ""
+msgstr "文件(&F)"
 
 #: gui/mainMenuBar.py:161
 msgid "&Forums"
-msgstr ""
+msgstr "论坛(&F)"
 
 #: gui/mainMenuBar.py:88
 msgid "&From Clipboard"
-msgstr ""
+msgstr "从剪贴板导入(&F)"
 
 #: gui/mainMenuBar.py:135
 msgid "&Global"
-msgstr ""
+msgstr "全局设置(&G)"
 
 #: gui/mainMenuBar.py:96
 msgid "&Graphs"
-msgstr ""
+msgstr "图表(&G)"
 
 #: gui/mainMenuBar.py:159
 msgid "&Help"
-msgstr ""
+msgstr "帮助(&H)"
 
 #: gui/mainMenuBar.py:147
 msgid "&Implant Set Editor"
-msgstr ""
+msgstr "植入体配置编辑器(&I)"
 
 #: gui/mainMenuBar.py:118
 msgid "&Import Character File"
-msgstr ""
+msgstr "导入角色文件(&I)"
 
 #: gui/mainMenuBar.py:91
 msgid "&Import Fittings"
-msgstr ""
+msgstr "导入装配(&I)"
 
 #: gui/mainMenuBar.py:122
 msgid "&Manage ESI Characters"
-msgstr ""
+msgstr "管理游戏内角色(&M)"
 
 #: gui/mainMenuBar.py:68
 msgid "&New Tab"
-msgstr ""
+msgstr "新标签页(&N)"
 
 #: gui/mainMenuBar.py:95
 msgid "&Optimize Fit Price"
-msgstr ""
+msgstr "优化装配价格(&O)"
 
 #: gui/mainMenuBar.py:137
 msgid "&Preferences"
-msgstr ""
+msgstr "偏好设置(&P)"
 
 #: gui/mainMenuBar.py:84
 msgid "&Redo"
-msgstr ""
+msgstr "恢复(&R)"
 
 #: gui/mainMenuBar.py:115
 msgid "&Revert Character"
-msgstr ""
+msgstr "还原角色(&R)"
 
 #: gui/mainMenuBar.py:113
 msgid "&Save Character"
-msgstr ""
+msgstr "保存角色(&S)"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
-msgstr ""
+msgstr "目标属性编辑器(&T)"
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
-msgstr ""
+msgstr "导出到剪贴板(&T)"
 
 #: gui/mainFrame.py:690
 msgid "&Turn Overrides Off"
-msgstr ""
+msgstr "启用自定义属性(&T)"
 
-#: gui/mainFrame.py:690 gui/mainMenuBar.py:131
+#: gui/mainMenuBar.py:131 gui/mainFrame.py:690
 msgid "&Turn Overrides On"
-msgstr ""
+msgstr "启用自定义属性(&T)"
 
 #: gui/mainMenuBar.py:83
 msgid "&Undo"
-msgstr ""
+msgstr "撤销(&R)"
 
 #: gui/mainMenuBar.py:160
 msgid "&Wiki"
-msgstr ""
+msgstr "百科(&W)"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:29
 msgid "(Cannot be changed while pyfa is running. Set via command line switches.)"
-msgstr ""
+msgstr "（无法在Pyfa运行时更改。请通过命令行开关设置。）"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
-msgstr ""
+msgstr "0秒"
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
-msgstr ""
+msgstr "铁骑技能"
+
+#: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
+#: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
+#: eos/saveddata/damagePattern.py:99 eos/saveddata/damagePattern.py:100
+#: eos/saveddata/damagePattern.py:101 eos/saveddata/targetProfile.py:99
+#: eos/saveddata/targetProfile.py:100 eos/saveddata/targetProfile.py:101
+#: eos/saveddata/targetProfile.py:102 eos/saveddata/targetProfile.py:103
+#: eos/saveddata/targetProfile.py:104 eos/saveddata/targetProfile.py:105
+#: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:107
+#: eos/saveddata/targetProfile.py:108 eos/saveddata/targetProfile.py:109
+#: eos/saveddata/targetProfile.py:110 eos/saveddata/targetProfile.py:111
+#: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:113
+#: eos/saveddata/targetProfile.py:114 eos/saveddata/targetProfile.py:115
+#: eos/saveddata/targetProfile.py:116 eos/saveddata/targetProfile.py:117
+#: eos/saveddata/targetProfile.py:118 eos/saveddata/targetProfile.py:119
+#: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:121
+#: eos/saveddata/targetProfile.py:122 eos/saveddata/targetProfile.py:123
+#: eos/saveddata/targetProfile.py:124 eos/saveddata/targetProfile.py:125
+#: eos/saveddata/targetProfile.py:126 eos/saveddata/targetProfile.py:127
+#: eos/saveddata/targetProfile.py:128 eos/saveddata/targetProfile.py:129
+#: eos/saveddata/targetProfile.py:130 eos/saveddata/targetProfile.py:131
+#: eos/saveddata/targetProfile.py:132 eos/saveddata/targetProfile.py:133
+#: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:135
+#: eos/saveddata/targetProfile.py:136 eos/saveddata/targetProfile.py:137
+#: eos/saveddata/targetProfile.py:138 eos/saveddata/targetProfile.py:139
+#: eos/saveddata/targetProfile.py:140 eos/saveddata/targetProfile.py:141
+#: eos/saveddata/targetProfile.py:142 eos/saveddata/targetProfile.py:143
+#: eos/saveddata/targetProfile.py:144 eos/saveddata/targetProfile.py:145
+#: eos/saveddata/targetProfile.py:146 eos/saveddata/targetProfile.py:147
+#: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:149
+#: eos/saveddata/targetProfile.py:150 eos/saveddata/targetProfile.py:151
+#: eos/saveddata/targetProfile.py:152 eos/saveddata/targetProfile.py:153
+#: eos/saveddata/targetProfile.py:154 eos/saveddata/targetProfile.py:155
+#: eos/saveddata/targetProfile.py:156 eos/saveddata/targetProfile.py:157
+#: eos/saveddata/targetProfile.py:158 eos/saveddata/targetProfile.py:159
+#: eos/saveddata/targetProfile.py:160 eos/saveddata/targetProfile.py:161
+#: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:163
+#: eos/saveddata/targetProfile.py:164 eos/saveddata/targetProfile.py:165
+#: eos/saveddata/targetProfile.py:166 eos/saveddata/targetProfile.py:167
+#: eos/saveddata/targetProfile.py:168 eos/saveddata/targetProfile.py:169
+#: eos/saveddata/targetProfile.py:170 eos/saveddata/targetProfile.py:171
+#: eos/saveddata/targetProfile.py:172 eos/saveddata/targetProfile.py:173
+#: eos/saveddata/targetProfile.py:174 eos/saveddata/targetProfile.py:175
+#: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:177
+#: eos/saveddata/targetProfile.py:178 eos/saveddata/targetProfile.py:179
+#: eos/saveddata/targetProfile.py:180 eos/saveddata/targetProfile.py:181
+#: eos/saveddata/targetProfile.py:182 eos/saveddata/targetProfile.py:183
+#: eos/saveddata/targetProfile.py:184 eos/saveddata/targetProfile.py:185
+#: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
+#: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
+msgid "Abyssal"
+msgstr "深渊"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "深渊环境"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
-msgstr ""
+msgstr "激活"
 
 #: gui/builtinViewColumns/abilities.py:37
 msgid "Active Abilities"
-msgstr ""
+msgstr "铁骑技能"
 
 #: gui/builtinViewColumns/sideEffects.py:37
 msgid "Active Side Effects"
-msgstr ""
+msgstr "副作用"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:76
 msgid "Active shield boost"
-msgstr ""
+msgstr "主动维修"
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
-msgstr ""
+msgstr "添加角色"
 
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
-msgstr ""
+msgstr "添加角色错误"
+
+#: gui/builtinShipBrowser/fitItem.py:233
+msgid "Add Command Booster"
+msgstr "添加指挥增效剂"
 
 #: gui/builtinContextMenus/fitAddCurrentlyOpen.py:29
 msgid "Add Currently Open Fit"
-msgstr ""
+msgstr "添加当前装配"
 
 #: gui/builtinContextMenus/envEffectAdd.py:56
 msgid "Add Environmental Effect"
-msgstr ""
+msgstr "添加环境效果"
 
 #: gui/builtinContextMenus/fitAddBrowse.py:22
 msgid "Add Fit..."
-msgstr ""
+msgstr "添加装配..."
 
 #: gui/fitBrowserLite.py:17
 msgid "Add Fits"
-msgstr ""
+msgstr "添加装配"
 
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
 msgid "Add {0} to Cargo (x1000)"
-msgstr ""
+msgstr "添加 {0} 到货舱(x1000)"
 
 #: gui/builtinContextMenus/cargoAdd.py:33
 msgid "Add {} to Cargo"
-msgstr ""
+msgstr "添加{}到货舱"
 
 #: gui/builtinContextMenus/droneAddStack.py:40
 msgid "Add {} to Drone Bay{}"
-msgstr ""
+msgstr "添加{}到无人机机库{}"
 
 #: gui/additionsPane.py:45
 msgid "Additions"
-msgstr ""
+msgstr "附加装备"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Additions Panel Copy/Paste"
-msgstr ""
+msgstr "附加装备栏复制/粘贴"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:101
 msgid "Addr:"
-msgstr ""
+msgstr "地址："
 
 #: gui/itemStats.py:196
 msgid "Affected by"
-msgstr ""
+msgstr "影响因素"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:227
 #, python-format
 msgid "Agility:\t%.3fx"
-msgstr ""
+msgstr "灵活性：%.3fx"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr ""
+msgstr "起跳时间"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
 #, python-format
 msgid "Align:\t%.3fs"
-msgstr ""
+msgstr "起跳时间：%.3fs"
+
+#: eos/saveddata/damagePattern.py:95 eos/saveddata/targetProfile.py:105
+#: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:119
+#: eos/saveddata/targetProfile.py:126 eos/saveddata/targetProfile.py:133
+#: eos/saveddata/targetProfile.py:140 eos/saveddata/targetProfile.py:147
+#: eos/saveddata/targetProfile.py:154 eos/saveddata/targetProfile.py:161
+#: eos/saveddata/targetProfile.py:168 eos/saveddata/targetProfile.py:175
+#: eos/saveddata/targetProfile.py:182 eos/saveddata/targetProfile.py:189
+msgid "All"
+msgstr "全部"
 
 #: gui/aboutData.py:32
 msgid "All EVE-Online related materials are property of CCP hf."
-msgstr ""
+msgstr "所有 EvE Online 相关材料版权归CCP所有"
 
 #: gui/mainFrame.py:840 gui/mainFrame.py:1015
 msgid "All Files"
-msgstr ""
+msgstr "所有文件"
 
 #: gui/characterSelection.py:238
 msgid "All skill prerequisites have been met"
-msgstr ""
+msgstr "已达到所有技能要求"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:38
 msgid "Allow pre-release notifications"
-msgstr ""
+msgstr "允许预发布版本更新通知"
+
+#: eos/saveddata/targetProfile.py:53
+msgid "Amarr (Armor)"
+msgstr "艾玛（护甲）"
+
+#: eos/saveddata/targetProfile.py:52
+msgid "Amarr (Shield)"
+msgstr "艾玛（护盾）"
+
+#: eos/saveddata/damagePattern.py:148 eos/saveddata/targetProfile.py:72
+msgid "Amarr Empire"
+msgstr "艾玛帝国"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:115
 msgid "Ammo hold"
-msgstr ""
+msgstr "弹药仓"
+
+#: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:120
+#: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
+msgid "Angel Cartel"
+msgstr "天使联合企业"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
 msgid "Animate gauges"
-msgstr ""
+msgstr "启用属性进度条动画"
+
+#: eos/saveddata/damagePattern.py:71
+msgid "Antimatter"
+msgstr "反物质"
 
 #: gui/builtinContextMenus/implantSetApply.py:25
 msgid "Apply Implant Set"
-msgstr ""
+msgstr "应用植入体配置"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Apply Mutaplasmid"
-msgstr ""
+msgstr "使用突变质体"
 
 #: gui/builtinContextMenus/graphDmgApplyProjected.py:23
 msgid "Apply Projected Items"
-msgstr ""
+msgstr "应用远程效果物品"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:144
 msgid "Apply Proxy Settings"
-msgstr ""
+msgstr "应用代理配置"
 
 #: gui/propertyEditor.py:146
 msgid "Are you sure you want to delete all overrides?"
-msgstr ""
+msgstr "您确定要删除所有自定义属性吗？"
 
 #: gui/mainFrame.py:647
 msgid "Are you sure you wish to ignore fitting restrictions for the current fit? This could lead to wildly inaccurate results and possible errors."
-msgstr ""
+msgstr "您确定要忽略当前装配资源限制吗？这可能导致不准确或错误的结果。"
+
+#: eos/saveddata/targetProfile.py:47
+msgid "Armor"
+msgstr "装甲"
+
+#: eos/saveddata/targetProfile.py:50
+msgid "Armor (+T2 DCU)"
+msgstr "护甲（+T2损控）"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:77
 msgid "Armor repair amount"
-msgstr ""
+msgstr "装甲修量"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Armor resistance"
-msgstr ""
+msgstr "装甲抗性"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
-msgstr ""
+msgstr "装甲："
 
-#: gui/builtinItemStatsViews/itemAttributes.py:44
+#: eos/saveddata/damagePattern.py:117 eos/saveddata/targetProfile.py:90
+msgid "Ashimmu (Blood Raiders)"
+msgstr "阿什姆级（血袭者）"
+
+#: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:103
+#: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:105
+#: eos/saveddata/damagePattern.py:106 eos/saveddata/damagePattern.py:107
+#: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:61
+#: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:63
+#: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:65
+msgid "Asteroid"
+msgstr "小行星"
+
 #: gui/builtinItemStatsViews/itemProperties.py:56
+#: gui/builtinItemStatsViews/itemAttributes.py:44
 msgid "Attribute"
-msgstr ""
+msgstr "属性"
 
 #: gui/mainMenuBar.py:128
 msgid "Attribute &Overrides"
-msgstr ""
+msgstr "自定义属性(&O)"
 
 #: gui/propertyEditor.py:28
 msgid "Attribute Editor"
-msgstr ""
+msgstr "属性编辑器"
 
 #: gui/itemStats.py:177
 msgid "Attributes"
-msgstr ""
+msgstr "属性"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Auto-detected proxy settings"
-msgstr ""
+msgstr "自动检测代理设置"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:136
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:158
 msgid "Auto-detected: "
-msgstr ""
+msgstr "自动检测结果："
 
 #: gui/builtinShipBrowser/navigationPanel.py:50
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 #: gui/mainFrame.py:875
 msgid "Backing up {} fits to: {}"
-msgstr ""
+msgstr "正在备份{}个装配到：{}"
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
-msgstr ""
+msgstr "备份所有装配到XML文件"
 
 #: gui/mainFrame.py:874 gui/mainFrame.py:905
 msgid "Backup fits"
-msgstr ""
+msgstr "备份装配"
+
+#: eos/saveddata/damagePattern.py:59
+msgid "Baryon"
+msgstr "重子"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:47
 msgid "Base Value"
-msgstr ""
+msgstr "基础值"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
-msgstr ""
+msgstr "战巡"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battleship"
-msgstr ""
+msgstr "战列"
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
-msgstr ""
+msgstr "请注意已处理的装配未作保存"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Bioluminescence"
-msgstr ""
+msgstr "生物荧光"
+
+#: eos/saveddata/damagePattern.py:103 eos/saveddata/damagePattern.py:121
+#: eos/saveddata/targetProfile.py:61 eos/saveddata/targetProfile.py:67
+msgid "Blood Raiders"
+msgstr "血袭者"
+
+#: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
+#: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
+msgid "Bombs"
+msgstr "炸弹"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
-msgstr ""
+msgstr "增效剂"
 
-#: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
+#: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
+#: gui/additionsPane.py:78
 #: gui/builtinContextMenus/additionsExportSelection.py:23
-#: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
-#: gui/copySelectDialog.py:56
+#: gui/builtinContextMenus/additionsImport.py:24
+#: gui/builtinContextMenus/additionsExportAll.py:23
 msgid "Boosters"
-msgstr ""
+msgstr "增效剂"
 
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
-msgstr ""
+msgstr "浏览游戏内装配"
+
+#: eos/saveddata/damagePattern.py:108 eos/saveddata/damagePattern.py:109
+#: eos/saveddata/damagePattern.py:110 eos/saveddata/damagePattern.py:111
+#: eos/saveddata/damagePattern.py:112 eos/saveddata/damagePattern.py:113
+#: eos/saveddata/damagePattern.py:114 eos/saveddata/damagePattern.py:115
+#: eos/saveddata/damagePattern.py:116 eos/saveddata/damagePattern.py:117
+#: eos/saveddata/damagePattern.py:118 eos/saveddata/damagePattern.py:119
+#: eos/saveddata/targetProfile.py:81 eos/saveddata/targetProfile.py:82
+#: eos/saveddata/targetProfile.py:83 eos/saveddata/targetProfile.py:84
+#: eos/saveddata/targetProfile.py:85 eos/saveddata/targetProfile.py:86
+#: eos/saveddata/targetProfile.py:87 eos/saveddata/targetProfile.py:88
+#: eos/saveddata/targetProfile.py:89 eos/saveddata/targetProfile.py:90
+#: eos/saveddata/targetProfile.py:91 eos/saveddata/targetProfile.py:92
+msgid "Burner"
+msgstr "燃烧者"
+
+#: eos/saveddata/damagePattern.py:150 eos/saveddata/targetProfile.py:74
+msgid "CONCORD"
+msgstr "统合部"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
@@ -409,361 +548,418 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
-msgstr ""
+msgstr "逗号分隔符(CSV)文件"
+
+#: eos/saveddata/targetProfile.py:55
+msgid "Caldari (Armor)"
+msgstr "加达里（护甲）"
+
+#: eos/saveddata/targetProfile.py:54
+msgid "Caldari (Shield)"
+msgstr "加达里（护盾）"
+
+#: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:73
+msgid "Caldari State"
+msgstr "加达里合众国"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:115
 msgid "Calibration"
-msgstr ""
+msgstr "校准"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 msgid "Capacitor"
-msgstr ""
+msgstr "电容"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
-msgstr ""
+msgstr "电容稳定性"
 
-#: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
+#: eos/saveddata/damagePattern.py:76
+msgid "Carbonized Lead"
+msgstr "碳铅弹"
+
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
+#: gui/additionsPane.py:72 gui/builtinStatsViews/targetingMiscViewMinimal.py:90
+#: gui/builtinContextMenus/priceOptions.py:47
 msgid "Cargo"
-msgstr ""
+msgstr "货舱"
 
-#: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:20
 msgid "Cargo Items"
-msgstr ""
+msgstr "货舱物品"
 
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/resourcesViewFull.py:158
 msgid "Cargo bay"
-msgstr ""
+msgstr "货舱"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:230
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:255
 msgid "Cargohold: "
-msgstr ""
+msgstr "货舱："
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
-msgstr ""
+msgstr "航母"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Caustic"
-msgstr ""
+msgstr "腐蚀"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:47
 msgid "Cert Path:"
-msgstr ""
+msgstr "证书路径："
 
 #: gui/builtinContextMenus/skillAffectors.py:73
 #, python-format
 msgid "Change %s Skills"
-msgstr ""
+msgstr "修改%s技能等级"
 
 #: gui/builtinContextMenus/itemAmountChange.py:92
 msgid "Change Amount"
-msgstr ""
+msgstr "更改数量"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
 msgid "Change Skills"
-msgstr ""
+msgstr "修改技能等级"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:81
 msgid "Change charge in all modules of the same type"
-msgstr ""
+msgstr "同时更换所有同类型模块的弹药"
 
 #: gui/builtinContextMenus/itemAmountChange.py:34
 #, python-brace-format
 msgid "Change {0} Quantity"
-msgstr ""
+msgstr "更改{0}数量"
 
 #: gui/builtinContextMenus/itemProjectionRange.py:34
 msgid "Change {} Range"
-msgstr ""
+msgstr "变更{}半径"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:31
 msgid "Changes require restart of pyfa to take effect."
-msgstr ""
+msgstr "变更将在重启Pyfa之后生效。"
 
-#: gui/builtinStatsViews/priceViewFull.py:57 gui/characterEditor.py:90
-#: gui/esiFittings.py:341
+#: gui/characterEditor.py:90 gui/esiFittings.py:341
+#: gui/builtinStatsViews/priceViewFull.py:57
 msgid "Character"
-msgstr ""
+msgstr "角色"
 
 #: gui/characterEditor.py:137
 msgid "Character Editor"
-msgstr ""
+msgstr "角色编辑器"
 
 #: gui/esiFittings.py:342
 msgid "Character ID"
-msgstr ""
+msgstr "角色ID"
 
 #: gui/characterEditor.py:78
 msgid "Character name already in use, please choose another."
-msgstr ""
+msgstr "角色名已占用，请使用其他名称。"
 
 #: gui/characterEditor.py:771
 msgid "Character:"
-msgstr ""
+msgstr "角色："
 
 #: gui/characterSelection.py:47
 msgid "Character: "
-msgstr ""
+msgstr "角色："
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:48
 msgid "Charge"
-msgstr ""
+msgstr "弹药"
 
 #: gui/builtinViews/fittingView.py:661
 msgid "Citadel"
-msgstr ""
+msgstr "堡垒"
 
-#: gui/builtinContextMenus/fitSystemSecurity.py:38
+#: gui/builtinContextMenus/fitSystemSecurity.py:37
 msgid "Citadel System Security"
-msgstr ""
+msgstr "堡垒星系安等"
 
 #: gui/propertyEditor.py:40
 msgid "Clear All"
-msgstr ""
+msgstr "清除所有"
 
 #: gui/propertyEditor.py:40
 msgid "Clear all overrides"
-msgstr ""
+msgstr "清除所有自定义属性"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:97
 #: gui/builtinStatsViews/resistancesViewFull.py:169
 msgid "Click to toggle between effective HP and raw HP"
-msgstr ""
+msgstr "点击切换有效HP和原始HP"
 
 #: gui/builtinStatsViews/miningyieldViewFull.py:102
 msgid "Click to toggle to Firepower View"
-msgstr ""
+msgstr "点击切换到火力视图"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:115
 msgid "Click to toggle to Mining Yield"
-msgstr ""
+msgstr "点击切换到矿物产出视图"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:76
 msgid "Client ID:"
-msgstr ""
+msgstr "客户ID(Client ID)："
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:85
 msgid "Client Secret:"
-msgstr ""
+msgstr "客户密钥(Client Secret)："
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:51
 msgid "Color fitting view by slot"
-msgstr ""
+msgstr "用背景色区分槽位"
 
 #: gui/additionsPane.py:84
 msgid "Command"
-msgstr ""
+msgstr "指挥效果"
 
 #: gui/builtinAdditionPanes/commandView.py:201
 msgid "Command Fit"
-msgstr ""
+msgstr "指挥装配"
 
 #: gui/builtinContextMenus/commandFitAdd.py:51
 msgid "Command Fits"
-msgstr ""
+msgstr "指挥装配"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:127
 msgid "Command center hold"
-msgstr ""
+msgstr "指挥中心仓"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
 msgid "Compact skills needed tooltip"
-msgstr ""
+msgstr "简洁技能需求提示"
 
 #: gui/itemStats.py:182
 msgid "Compare"
-msgstr ""
+msgstr "对比"
+
+#: eos/saveddata/damagePattern.py:92
+msgid "Concussion Bomb"
+msgstr "震荡炸弹"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:98
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:103
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:108
 #: gui/mainFrame.py:649 gui/mainFrame.py:655
 msgid "Confirm"
-msgstr ""
+msgstr "确认"
 
-#: gui/esiFittings.py:157 gui/propertyEditor.py:147
+#: gui/propertyEditor.py:147 gui/esiFittings.py:157
 msgid "Confirm Delete"
-msgstr ""
+msgstr "删除确认"
 
 #: gui/esiFittings.py:126 gui/esiFittings.py:169 gui/esiFittings.py:311
 msgid "Connection error, please check your internet connection"
-msgstr ""
+msgstr "连接错误，请检查您的网络连接"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:14
 msgid "Context Menus"
-msgstr ""
+msgstr "右键菜单"
 
 #: gui/builtinContextMenus/envEffectAdd.py:106
 msgid "ContextMenu|ProjectedEffectManipulation|Black Hole"
-msgstr ""
+msgstr "黑洞"
 
 #: gui/builtinContextMenus/envEffectAdd.py:107
 msgid "ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable"
-msgstr ""
+msgstr "激变变星"
 
 #: gui/builtinContextMenus/envEffectAdd.py:133
 msgid "ContextMenu|ProjectedEffectManipulation|Effects"
-msgstr ""
+msgstr "效果光束"
 
 #: gui/builtinContextMenus/envEffectAdd.py:108
 msgid "ContextMenu|ProjectedEffectManipulation|Magnetar"
-msgstr ""
+msgstr "磁星"
 
 #: gui/builtinContextMenus/envEffectAdd.py:109
 msgid "ContextMenu|ProjectedEffectManipulation|Pulsar"
-msgstr ""
+msgstr "脉冲星"
 
 #: gui/builtinContextMenus/envEffectAdd.py:110
 msgid "ContextMenu|ProjectedEffectManipulation|Red Giant"
-msgstr ""
+msgstr "红巨星"
 
 #: gui/builtinContextMenus/envEffectAdd.py:113
 msgid "ContextMenu|ProjectedEffectManipulation|Sansha Incursion"
-msgstr ""
+msgstr "萨沙入侵"
 
 #: gui/builtinContextMenus/envEffectAdd.py:133
 msgid "ContextMenu|ProjectedEffectManipulation|System Effects"
-msgstr ""
+msgstr "星系效果"
 
 #: gui/builtinContextMenus/envEffectAdd.py:116
 msgid "ContextMenu|ProjectedEffectManipulation|Triglavian Invasion"
-msgstr ""
+msgstr "三神裔入侵"
 
 #: gui/builtinContextMenus/envEffectAdd.py:111
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
-msgstr ""
+msgstr "沃尔夫-拉叶星"
 
-#: gui/builtinItemStatsViews/itemDescription.py:43
+#: gui/builtinShipBrowser/fitItem.py:107
 #: gui/builtinItemStatsViews/itemTraits.py:25
+#: gui/builtinItemStatsViews/itemDescription.py:43
 msgid "Copy"
-msgstr ""
+msgstr "复制"
 
 #: gui/builtinContextMenus/additionsExportAll.py:39
 msgid "Copy All {}"
-msgstr ""
+msgstr "复制所有{}"
 
 #: gui/characterSelection.py:105
 msgid "Copy Missing Skills"
-msgstr ""
+msgstr "复制所需技能"
 
 #: gui/builtinContextMenus/moduleMutatedExport.py:28
 msgid "Copy Module to Clipboard"
-msgstr ""
+msgstr "复制模块到剪贴板"
 
 #: gui/builtinContextMenus/additionsExportSelection.py:39
 msgid "Copy Selected {}"
-msgstr ""
+msgstr "拷贝选中的{}"
 
 #: gui/ssoLogin.py:20
 msgid "Copy and paste the block of text provided by pyfa.io"
-msgstr ""
+msgstr "请复制和粘贴pyfa.io提供的字符串"
 
 #: gui/patternEditor.py:290 gui/setEditor.py:222 gui/targetProfileEditor.py:366
 msgid "Could not import from clipboard"
-msgstr ""
+msgstr "无法从剪贴板导入"
 
 #: gui/targetProfileEditor.py:359
 msgid "Could not import from clipboard:"
-msgstr ""
+msgstr "无法从剪贴板导入："
 
 #: gui/patternEditor.py:283 gui/setEditor.py:218
 msgid "Could not import from clipboard: unknown errors"
-msgstr ""
+msgstr "无法从剪贴板导入：未知错误"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Cruiser"
-msgstr ""
+msgstr "巡洋"
 
-#: gui/builtinItemStatsViews/itemAttributes.py:45
+#: eos/saveddata/damagePattern.py:108 eos/saveddata/targetProfile.py:81
+msgid "Cruor (Blood Raiders)"
+msgstr "凝血级（血袭者）"
+
 #: gui/builtinItemStatsViews/itemProperties.py:57
+#: gui/builtinItemStatsViews/itemAttributes.py:45
 msgid "Current Value"
-msgstr ""
+msgstr "当前值"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:63
 msgid "Custom Application"
-msgstr ""
+msgstr "自定义应用"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "Custom application"
-msgstr ""
+msgstr "自定义应用"
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
-msgstr ""
+msgstr "伤害模型编辑器"
 
 #: gui/patternEditor.py:65
 msgid "Damage Profile"
-msgstr ""
+msgstr "伤害模型"
 
 #: gui/patternEditor.py:53
 msgid "Damage Profile name already in use, please choose another."
-msgstr ""
+msgstr "伤害模型名已占用，请使用其他名称。"
+
+#: eos/saveddata/damagePattern.py:110 eos/saveddata/targetProfile.py:83
+msgid "Daredevil (Serpentis)"
+msgstr "夜魔侠级（天蛇）"
+
+#: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:100
+#: eos/saveddata/targetProfile.py:101 eos/saveddata/targetProfile.py:102
+#: eos/saveddata/targetProfile.py:103 eos/saveddata/targetProfile.py:104
+#: eos/saveddata/targetProfile.py:105
+msgid "Dark Matter All Tiers"
+msgstr "暗物质全部级别"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:15
 msgid "Database"
-msgstr ""
+msgstr "数据库"
+
+#: eos/saveddata/damagePattern.py:120 eos/saveddata/damagePattern.py:121
+#: eos/saveddata/damagePattern.py:122 eos/saveddata/damagePattern.py:123
+#: eos/saveddata/damagePattern.py:124 eos/saveddata/damagePattern.py:125
+#: eos/saveddata/targetProfile.py:66 eos/saveddata/targetProfile.py:67
+#: eos/saveddata/targetProfile.py:68 eos/saveddata/targetProfile.py:69
+#: eos/saveddata/targetProfile.py:70 eos/saveddata/targetProfile.py:71
+msgid "Deadspace"
+msgstr "死亡空间"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:56
 msgid "Debug Logging Enabled"
-msgstr ""
+msgstr "调试日志已开启"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:58
 msgid "Default Market Prices:"
-msgstr ""
+msgstr "默认价格源："
 
 #: gui/propertyEditor.py:271
 #, python-format
 msgid "Default Value: %0.3f"
-msgstr ""
+msgstr "默认值：%0.3f"
+
+#: gui/builtinContextMenus/shipModeChange.py:18
+msgid "Defense"
+msgstr "防御"
+
+#: gui/builtinShipBrowser/fitItem.py:109
+msgid "Delete"
+msgstr "删除"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:79
 msgid "Delete All Damage Pattern Profiles"
-msgstr ""
+msgstr "删除所有伤害模型配置"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:87
 msgid "Delete All Prices"
-msgstr ""
+msgstr "删除所有价格缓存数据"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:83
 msgid "Delete All Target Profiles"
-msgstr ""
+msgstr "删除所有目标属性配置"
 
 #: gui/esiFittings.py:65
 msgid "Delete from EVE"
-msgstr ""
+msgstr "删除游戏内装配"
 
 #: gui/itemStats.py:189
 msgid "Dependents"
-msgstr ""
+msgstr "依赖"
+
+#: eos/saveddata/damagePattern.py:79
+msgid "Depleted Uranium"
+msgstr "硬钼弹"
 
 #: gui/itemStats.py:174
 msgid "Description"
-msgstr ""
+msgstr "简介"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Destroyer"
-msgstr ""
+msgstr "驱逐"
 
 #: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "Destructible Beacons"
-msgstr ""
+msgstr "可破坏信标"
 
 #: gui/mainMenuBar.py:167
 msgid "Dev Tools"
-msgstr ""
+msgstr "开发者工具"
 
 #: gui/mainMenuBar.py:101 gui/mainMenuBar.py:202
 msgid "Disable Fitting Re&strictions"
-msgstr ""
+msgstr "关闭装配资源限制(&S)"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
@@ -773,200 +969,261 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Disabled"
-msgstr ""
+msgstr "关闭"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:28
 msgid "Disabling context menus can improve responsiveness.\n"
 "You can hold {} key + right-click to show all menu items regardless of these settings."
-msgstr ""
+msgstr "关闭右键菜单可提升响应速度。\n"
+"如果按住{}键+右键单击，可以无视这些设置显示完整的右键菜单。"
 
 #: gui/esiFittings.py:156
 msgid "Do you really want to delete {} ({}) from EVE?"
-msgstr ""
+msgstr "真的要从游戏内删除 {} ({})吗？"
 
 #: gui/updateDialog.py:102
 msgid "Don't remind me again for this release"
-msgstr ""
+msgstr "不再提示此更新"
 
 #: gui/characterEditor.py:789
 msgid "Don't see your EVE character in the list?"
-msgstr ""
+msgstr "列表中没有你的EvE角色？"
 
-#: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
+#: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 msgid "Download"
-msgstr ""
+msgstr "下载"
 
 #: gui/builtinAdditionPanes/commandView.py:163
 msgid "Drag a fit to this area"
-msgstr ""
+msgstr "拖拽装配到此处"
 
 #: gui/builtinAdditionPanes/projectedView.py:226
 msgid "Drag an item or fit, or use right-click menu for wormhole effects"
-msgstr ""
+msgstr "拖拽一个物品或装配以启用投射效果，或使用右键菜单选择一个虫洞环境效果"
+
+#: eos/saveddata/damagePattern.py:109 eos/saveddata/targetProfile.py:82
+msgid "Dramiel (Angel)"
+msgstr "德拉米尔级（天使）"
+
+#: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:143
+#: eos/saveddata/damagePattern.py:146
+msgid "Dread"
+msgstr "无畏"
+
+#: eos/saveddata/damagePattern.py:142 eos/saveddata/damagePattern.py:145
+msgid "Dread/Subcaps"
+msgstr "无畏/常规"
+
+#: eos/saveddata/damagePattern.py:96 eos/saveddata/targetProfile.py:103
+#: eos/saveddata/targetProfile.py:110 eos/saveddata/targetProfile.py:117
+#: eos/saveddata/targetProfile.py:124 eos/saveddata/targetProfile.py:131
+#: eos/saveddata/targetProfile.py:138 eos/saveddata/targetProfile.py:145
+#: eos/saveddata/targetProfile.py:152 eos/saveddata/targetProfile.py:159
+#: eos/saveddata/targetProfile.py:166 eos/saveddata/targetProfile.py:173
+#: eos/saveddata/targetProfile.py:180 eos/saveddata/targetProfile.py:187
+msgid "Drifter"
+msgstr "流浪者"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Drone"
-msgstr ""
+msgstr "无人机"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:26
 msgid "Drone Mode"
-msgstr ""
+msgstr "无人机模式"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:157
 msgid "Drone bandwidth"
-msgstr ""
+msgstr "无人机带宽"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:155
 msgid "Drone bay"
-msgstr ""
+msgstr "无人机仓库"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:66
 msgid "Drone range"
-msgstr ""
+msgstr "无人机半径"
 
-#: gui/additionsPane.py:66 gui/builtinContextMenus/additionsExportAll.py:18
-#: gui/builtinContextMenus/additionsExportSelection.py:18
-#: gui/builtinContextMenus/additionsImport.py:19
-#: gui/builtinContextMenus/priceOptions.py:40
+#: eos/saveddata/damagePattern.py:97 eos/saveddata/targetProfile.py:99
+#: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:113
+#: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:127
+#: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:141
+#: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:155
+#: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:169
+#: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:183
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
-#: gui/builtinStatsViews/priceViewFull.py:58
+#: gui/additionsPane.py:66 gui/builtinStatsViews/priceViewFull.py:58
+#: gui/builtinContextMenus/additionsExportSelection.py:18
+#: gui/builtinContextMenus/priceOptions.py:40
+#: gui/builtinContextMenus/additionsImport.py:19
+#: gui/builtinContextMenus/additionsExportAll.py:18
 msgid "Drones"
-msgstr ""
+msgstr "无人机"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:113
 msgid "Drones active"
-msgstr ""
+msgstr "激活的无人机"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:62
 msgid "Dump All Logs"
-msgstr ""
+msgstr "将所有日志写入文件"
 
 #: gui/mainMenuBar.py:105
 msgid "E&xport to ESI"
-msgstr ""
+msgstr "导出到游戏(&X)"
 
 #: gui/mainFrame.py:839
 msgid "EFT text fitting files"
-msgstr ""
+msgstr "EFT装配文本文件"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:96
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "EHP"
 msgstr ""
 
+#: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
 msgid "EM"
-msgstr ""
+msgstr "电磁"
 
 #: gui/targetProfileEditor.py:119
 msgid "EM resistance"
-msgstr ""
+msgstr "电磁抗性"
+
+#: eos/saveddata/damagePattern.py:81
+msgid "EMP"
+msgstr "电磁脉冲弹"
 
 #: gui/esiFittings.py:313 gui/esiFittings.py:317 gui/esiFittings.py:325
 msgid "ERROR"
-msgstr ""
+msgstr "错误"
 
 #: gui/mainFrame.py:1014
 msgid "EVE API XML character files"
-msgstr ""
+msgstr "EvE API XML角色文件"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:49
 msgid "EVE IGB HTML fitting file"
-msgstr ""
+msgstr "EvE IGB 装配HTML网页文件"
 
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 #: gui/characterEditor.py:162
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 msgid "EVE SSO"
-msgstr ""
+msgstr "EvE单点登录(SSO)"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:37
 msgid "EVE Servers (API && CREST import)"
-msgstr ""
+msgstr "连接到EvE服务器（API 和 CREST 导入）"
 
 #: gui/mainFrame.py:861
 msgid "EVE XML fitting file"
-msgstr ""
+msgstr "EvE装配XML文件"
 
 #: gui/mainFrame.py:468 gui/mainFrame.py:838
 msgid "EVE XML fitting files"
-msgstr ""
+msgstr "EvE装配XML文件"
 
 #: gui/mainFrame.py:810
 msgid "EVEMon skills training XML file"
-msgstr ""
+msgstr "EvEMon技能训练XML文件"
 
 #: gui/mainFrame.py:809
 msgid "EVEMon skills training file"
-msgstr ""
+msgstr "EvEMon技能训练文件"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:61
 #: gui/builtinStatsViews/resistancesViewFull.py:219
 msgid "Effective HP: "
-msgstr ""
+msgstr "有效HP："
 
 #: gui/builtinStatsViews/resistancesViewFull.py:220
 #, python-format
 msgid "Effective: %d HP"
-msgstr ""
+msgstr "有效：%dHP"
 
 #: gui/itemStats.py:192
 msgid "Effects"
-msgstr ""
+msgstr "效果"
+
+#: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:107
+#: eos/saveddata/targetProfile.py:108 eos/saveddata/targetProfile.py:109
+#: eos/saveddata/targetProfile.py:110 eos/saveddata/targetProfile.py:111
+#: eos/saveddata/targetProfile.py:112
+msgid "Electrical T1/T2"
+msgstr "电子 T1/T2"
+
+#: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:114
+#: eos/saveddata/targetProfile.py:115 eos/saveddata/targetProfile.py:116
+#: eos/saveddata/targetProfile.py:117 eos/saveddata/targetProfile.py:118
+#: eos/saveddata/targetProfile.py:119
+msgid "Electrical T3 (Some T5 Rooms)"
+msgstr "电子 T3 （含部分T5关卡）"
+
+#: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:121
+#: eos/saveddata/targetProfile.py:122 eos/saveddata/targetProfile.py:123
+#: eos/saveddata/targetProfile.py:124 eos/saveddata/targetProfile.py:125
+#: eos/saveddata/targetProfile.py:126
+msgid "Electrical T4/T5"
+msgstr "电子 T4/T5"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:85
 msgid "Electromagnetic resistance"
-msgstr ""
+msgstr "电磁抗性"
+
+#: eos/saveddata/damagePattern.py:90
+msgid "Electron Bomb"
+msgstr "电子炸弹"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:59
 msgid "Empty"
-msgstr ""
+msgstr "空"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:105
 msgid "Empty Market View"
-msgstr ""
+msgstr "空白搜索结果时"
 
 #: gui/multiSwitch.py:41
 msgid "Empty Tab"
-msgstr ""
+msgstr "空白标签页"
 
 #: gui/mainMenuBar.py:200
 msgid "Enable Fitting Re&strictions"
-msgstr ""
+msgstr "开启装配限制(&S)"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:33
 msgid "Enable Network"
-msgstr ""
+msgstr "启用网络功能"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:106
 msgid "Enable all available meta buttons"
-msgstr ""
+msgstr "启用所有可用衍生分类按钮"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:93
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:100
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:114
 msgid "Enable all meta buttons"
-msgstr ""
+msgstr "启用所有衍生分类按钮"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:92
 msgid "Enable all meta buttons for a duration of search / recents"
-msgstr ""
+msgstr "一段时间内启用所有衍生分类按钮"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:113
 msgid "Enable item's meta button"
-msgstr ""
+msgstr "启用该物品所在衍生分类按钮"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:113
 msgid "Enable item's meta button, disable others"
-msgstr ""
+msgstr "启用该物品所在衍生分类按钮，禁用其他按钮"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:106
 msgid "Enable leftmost available meta button"
-msgstr ""
+msgstr "启用最左侧可用衍生分类按钮"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:61
 msgid "Enable minimal format"
-msgstr ""
+msgstr "使用极简风格"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
@@ -976,244 +1233,311 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Enabled"
-msgstr ""
+msgstr "打开"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:50
 msgid "Enforce strict skill level requirements"
-msgstr ""
+msgstr "使用严格的技能等级检查"
 
 #: gui/characterEditor.py:281
 msgid "Enter a name for your new Character:"
-msgstr ""
+msgstr "请为新角色输入一个名称："
 
 #: gui/builtinContextMenus/implantSetSave.py:51
 msgid "Enter a name for your new Implant Set:"
-msgstr ""
+msgstr "请为新植入体配置输入一个名称："
+
+#: eos/saveddata/damagePattern.py:113 eos/saveddata/targetProfile.py:86
+msgid "Enyo"
+msgstr "恩尤"
 
 #: gui/characterEditor.py:83 gui/characterEditor.py:463
 #: gui/characterEditor.py:898 gui/characterSelection.py:174
-#: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
-#: gui/targetProfileEditor.py:78
+#: gui/patternEditor.py:58 gui/setEditor.py:55 gui/targetProfileEditor.py:78
+#: gui/mainFrame.py:898
 msgid "Error"
-msgstr ""
+msgstr "错误"
 
 #: gui/characterEditor.py:897 gui/characterSelection.py:173
 msgid "Error fetching skill information"
-msgstr ""
+msgstr "无法获取技能信息"
 
 #: gui/errorDialog.py:68
 msgid "Error!"
-msgstr ""
+msgstr "错误！"
+
+#: eos/saveddata/damagePattern.py:57 eos/saveddata/damagePattern.py:58
+#: eos/saveddata/damagePattern.py:59 eos/saveddata/damagePattern.py:60
+#: eos/saveddata/damagePattern.py:61
+msgid "Exotic Plasma"
+msgstr "异种等离子"
+
+#: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:149
+#: eos/saveddata/targetProfile.py:150 eos/saveddata/targetProfile.py:151
+#: eos/saveddata/targetProfile.py:152 eos/saveddata/targetProfile.py:153
+#: eos/saveddata/targetProfile.py:154
+msgid "Exotic T1/T2"
+msgstr "异种 T1/T2"
+
+#: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:156
+#: eos/saveddata/targetProfile.py:157 eos/saveddata/targetProfile.py:158
+#: eos/saveddata/targetProfile.py:159 eos/saveddata/targetProfile.py:160
+#: eos/saveddata/targetProfile.py:161
+msgid "Exotic T3 (Some T5 Rooms)"
+msgstr "异种 T3 （含部分T5关卡）"
+
+#: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:163
+#: eos/saveddata/targetProfile.py:164 eos/saveddata/targetProfile.py:165
+#: eos/saveddata/targetProfile.py:166 eos/saveddata/targetProfile.py:167
+#: eos/saveddata/targetProfile.py:168
+msgid "Exotic T4/T5"
+msgstr "异种 T4/T5"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:67
 msgid "Expand All"
-msgstr ""
+msgstr "展开所有"
 
+#: eos/saveddata/damagePattern.py:42
 #: gui/builtinContextMenus/moduleAmmoChange.py:26
 msgid "Explosive"
-msgstr ""
+msgstr "爆炸"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:88
 #: gui/targetProfileEditor.py:122
 msgid "Explosive resistance"
-msgstr ""
+msgstr "爆炸抗性"
 
 #: gui/propertyEditor.py:39
 msgid "Export"
-msgstr ""
+msgstr "导出"
 
 #: gui/mainMenuBar.py:74
 msgid "Export All Fittings to &HTML"
-msgstr ""
+msgstr "导出所有装配到网页"
 
 #: gui/mainFrame.py:948
 msgid "Export Error"
-msgstr ""
+msgstr "导出错误"
 
 #: gui/esiFittings.py:224
 msgid "Export Fit"
-msgstr ""
+msgstr "导出装配"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:23
 msgid "Export Fittings in a minimal HTML Version, just containing the fittings links without any visual styling"
-msgstr ""
+msgstr "导出装配为极简版网页，仅保留装配链接，不包含样式设计"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:57
 msgid "Export Item Stats"
-msgstr ""
+msgstr "导出物品属性"
 
 #: gui/esiFittings.py:229
 msgid "Export Loaded Charges"
-msgstr ""
+msgstr "导出已装填弹药"
 
 #: gui/mainFrame.py:807
 msgid "Export Skills Needed As..."
-msgstr ""
+msgstr "导出所需技能列表到..."
 
 #: gui/mainMenuBar.py:87
 msgid "Export a fit to the clipboard"
-msgstr ""
+msgstr "导出装配到剪贴板"
 
 #: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
 msgid "Export boosters"
-msgstr ""
+msgstr "导出增效剂"
 
 #: gui/copySelectDialog.py:49
 msgid "Export cargo contents"
-msgstr ""
+msgstr "导出货舱物品"
 
 #: gui/copySelectDialog.py:57
 msgid "Export cargo hold contents"
-msgstr ""
+msgstr "导出货舱物品信息"
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Export charges loaded into modules"
-msgstr ""
+msgstr "导出已装填到模块中的弹药信息"
 
 #: gui/esiFittings.py:211
 msgid "Export fit to EVE"
-msgstr ""
+msgstr "导出装配到游戏"
 
 #: gui/mainMenuBar.py:74
 msgid "Export fits to HTML file (set in Preferences)"
-msgstr ""
+msgstr "导出装配到HTML网页文件（通过偏好设置指定）"
 
 #: gui/mainMenuBar.py:92
 msgid "Export fitting to another format"
-msgstr ""
+msgstr "导出装配为其他格式"
 
 #: gui/setEditor.py:149
 msgid "Export implant sets to clipboard"
-msgstr ""
+msgstr "导出植入体配置到剪贴板"
 
 #: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
 msgid "Export implants"
-msgstr ""
+msgstr "导出植入体"
 
 #: gui/copySelectDialog.py:54
 msgid "Export mutated modules' stats"
-msgstr ""
+msgstr "导出变异模块的属性"
 
 #: gui/patternEditor.py:172
 msgid "Export patterns to clipboard"
-msgstr ""
+msgstr "导出伤害模型到剪贴板"
 
 #: gui/targetProfileEditor.py:222
 msgid "Export profiles to clipboard"
-msgstr ""
+msgstr "导出目标属性到剪贴板"
 
 #: gui/characterEditor.py:373
 msgid "Export skills from clipboard"
-msgstr ""
+msgstr "导出技能列表到剪贴板"
 
 #: gui/mainMenuBar.py:119
 msgid "Export skills needed for this fitting"
-msgstr ""
+msgstr "导出使用本装配所需技能"
 
 #: gui/mainFrame.py:829
 msgid "Exporting skills needed..."
-msgstr ""
+msgstr "正在导出所需技能..."
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:89
 msgid "Extra info in Additions panel tab names"
-msgstr ""
+msgstr "附加装备标签名显示额外信息"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:90
 msgid "Extra stats"
-msgstr ""
+msgstr "额外状态"
 
 #: gui/builtinContextMenus/factorReload.py:26
 msgid "Factor in Reload Time"
-msgstr ""
+msgstr "考虑换弹时间"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:44
 msgid "Factor in reload time when calculating capacitor usage, damage, and tank."
-msgstr ""
+msgstr "计算电容用量、伤害、防御时考虑换弹时间。"
 
 #: gui/esiFittings.py:294
 msgid "Failed to generate export data"
-msgstr ""
+msgstr "无法生成导出数据"
 
 #: gui/aboutData.py:34
 msgid "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
-msgstr ""
+msgstr "胖奶牛系列图标来自 fatcow.com - 基于知识共享署名3.0许可使用"
 
 #: gui/esiFittings.py:44
 msgid "Fetch Fits"
-msgstr ""
+msgstr "获取装配"
 
 #: gui/esiFittings.py:111
 msgid "Fetching fits, please wait..."
-msgstr ""
+msgstr "正在获取装配，请稍候..."
 
 #: gui/mainMenuBar.py:81
 msgid "Fi&t"
-msgstr ""
+msgstr "装配(&T)"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:156
 msgid "Fighter bay"
-msgstr ""
+msgstr "铁骑舰载机仓库"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:114
 msgid "Fighter squadrons active"
-msgstr ""
+msgstr "激活的铁骑舰载机中队"
 
-#: gui/additionsPane.py:69 gui/builtinContextMenus/additionsExportAll.py:19
+#: gui/additionsPane.py:69
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
+#: gui/builtinContextMenus/additionsExportAll.py:19
 msgid "Fighters"
-msgstr ""
+msgstr "铁骑舰载机"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Filament"
-msgstr ""
+msgstr "纤维"
 
 #: gui/builtinContextMenus/itemFill.py:32
 msgid "Fill With Module"
-msgstr ""
+msgstr "用该模块填满空白槽位"
 
 #: gui/builtinContextMenus/moduleFill.py:24
 #, python-brace-format
 msgid "Fill With {0}"
-msgstr ""
+msgstr "用{0}填满"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:66
 msgid "Fill with module"
-msgstr ""
+msgstr "用该模块填满空白槽位"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:71
 #: gui/builtinStatsViews/firepowerViewFull.py:43
 msgid "Firepower"
-msgstr ""
+msgstr "火力"
+
+#: eos/saveddata/targetProfile.py:127 eos/saveddata/targetProfile.py:128
+#: eos/saveddata/targetProfile.py:129 eos/saveddata/targetProfile.py:130
+#: eos/saveddata/targetProfile.py:131 eos/saveddata/targetProfile.py:132
+#: eos/saveddata/targetProfile.py:133
+msgid "Firestorm T1/T2"
+msgstr "火瀑 T1/T2"
+
+#: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:135
+#: eos/saveddata/targetProfile.py:136 eos/saveddata/targetProfile.py:137
+#: eos/saveddata/targetProfile.py:138 eos/saveddata/targetProfile.py:139
+#: eos/saveddata/targetProfile.py:140
+msgid "Firestorm T3 (Some T5 Rooms)"
+msgstr "火瀑 T3 （含部分T5关卡）"
+
+#: eos/saveddata/targetProfile.py:141 eos/saveddata/targetProfile.py:142
+#: eos/saveddata/targetProfile.py:143 eos/saveddata/targetProfile.py:144
+#: eos/saveddata/targetProfile.py:145 eos/saveddata/targetProfile.py:146
+#: eos/saveddata/targetProfile.py:147
+msgid "Firestorm T4/T5"
+msgstr "火瀑 T4/T5"
+
+#: graphs/gui/lists.py:305
+msgid "Fit"
+msgstr "装配"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:47
 msgid "Fitting Database:"
-msgstr ""
+msgstr "装配数据库："
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:27
 msgid "Fitting Engine"
-msgstr ""
+msgstr "装配引擎"
 
 #: gui/builtinStatsViews/priceViewFull.py:57
 #: gui/builtinStatsViews/priceViewMinimal.py:57 gui/mainFrame.py:186
 msgid "Fittings"
-msgstr ""
+msgstr "装配"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:113
 msgid "Fleet hangar"
-msgstr ""
+msgstr "舰队机库"
 
 #: gui/copySelectDialog.py:59
 msgid "Formatting Tags"
-msgstr ""
+msgstr "格式化标签"
+
+#: eos/saveddata/damagePattern.py:43 eos/saveddata/damagePattern.py:44
+#: eos/saveddata/damagePattern.py:45 eos/saveddata/damagePattern.py:46
+#: eos/saveddata/damagePattern.py:47 eos/saveddata/damagePattern.py:48
+#: eos/saveddata/damagePattern.py:49 eos/saveddata/damagePattern.py:50
+#: eos/saveddata/damagePattern.py:51 eos/saveddata/damagePattern.py:52
+#: eos/saveddata/damagePattern.py:53 eos/saveddata/damagePattern.py:54
+msgid "Frequency Crystals"
+msgstr "频率晶体"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Frigate"
-msgstr ""
+msgstr "护卫"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:116
 msgid "Fuel bay"
-msgstr ""
+msgstr "燃料仓"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
@@ -1224,43 +1548,94 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 msgid "Full"
-msgstr ""
+msgstr "完整"
+
+#: eos/saveddata/damagePattern.py:83
+msgid "Fusion"
+msgstr "聚变弹"
+
+#: eos/saveddata/targetProfile.py:57
+msgid "Gallente (Armor)"
+msgstr "盖伦特（护甲）"
+
+#: eos/saveddata/targetProfile.py:56
+msgid "Gallente (Shield)"
+msgstr "盖伦特（护盾）"
+
+#: eos/saveddata/damagePattern.py:151 eos/saveddata/targetProfile.py:75
+msgid "Gallente Federation"
+msgstr "盖伦特联邦"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:57
 msgid "Game Database:"
-msgstr ""
+msgstr "游戏数据库："
+
+#: eos/saveddata/damagePattern.py:51
+msgid "Gamma"
+msgstr "伽玛"
+
+#: eos/saveddata/targetProfile.py:169 eos/saveddata/targetProfile.py:170
+#: eos/saveddata/targetProfile.py:171 eos/saveddata/targetProfile.py:172
+#: eos/saveddata/targetProfile.py:173 eos/saveddata/targetProfile.py:174
+#: eos/saveddata/targetProfile.py:175
+msgid "Gamma T1/T2"
+msgstr "伽玛 T1/T2"
+
+#: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:177
+#: eos/saveddata/targetProfile.py:178 eos/saveddata/targetProfile.py:179
+#: eos/saveddata/targetProfile.py:180 eos/saveddata/targetProfile.py:181
+#: eos/saveddata/targetProfile.py:182
+msgid "Gamma T3 (Some T5 Rooms)"
+msgstr "伽玛 T3 （含部分T5关卡）"
+
+#: eos/saveddata/targetProfile.py:183 eos/saveddata/targetProfile.py:184
+#: eos/saveddata/targetProfile.py:185 eos/saveddata/targetProfile.py:186
+#: eos/saveddata/targetProfile.py:187 eos/saveddata/targetProfile.py:188
+#: eos/saveddata/targetProfile.py:189
+msgid "Gamma T4/T5"
+msgstr "伽玛 T4/T5"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:125
 msgid "Gas hold"
-msgstr ""
+msgstr "气体矿物仓库"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:17
 msgid "General"
-msgstr ""
+msgstr "通用"
 
 #: gui/mainFrame.py:906
 msgid "Generating HTML file at: {}"
-msgstr ""
+msgstr "正在生成HTML网页到：{}"
+
+#: eos/saveddata/damagePattern.py:39 eos/saveddata/damagePattern.py:40
+#: eos/saveddata/damagePattern.py:41 eos/saveddata/damagePattern.py:42
+msgid "Generic"
+msgstr "通用"
 
 #: gui/characterEditor.py:778
 msgid "Get Skills"
-msgstr ""
+msgstr "获取技能列表"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:68
 msgid "Global Default Spoolup Percentage:"
-msgstr ""
+msgstr "全局默认预热百分比："
 
 #: gui/mainMenuBar.py:161
 msgid "Go to EVE Online Forum thread"
-msgstr ""
+msgstr "转到EvE Online论坛讨论贴"
 
 #: gui/mainMenuBar.py:160
 msgid "Go to wiki on GitHub"
-msgstr ""
+msgstr "转到GitHub上的百科页"
 
 #: gui/characterSelection.py:102
 msgid "Grant Missing Skills"
-msgstr ""
+msgstr "习得所需技能"
+
+#: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:122
+#: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:68
+msgid "Guristas"
+msgstr "古斯塔斯"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:172
 #: gui/builtinStatsViews/resistancesViewFull.py:187
@@ -1269,362 +1644,454 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:19
 msgid "HTML Export"
-msgstr ""
+msgstr "HTML导出"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:20
 msgid "HTML Export (File > Export HTML) allows you to export your entire fitting database into an HTML file at the specified location. This file can be used to easily open your fits in a web-based fitting program"
-msgstr ""
+msgstr "HTML导出（文件>导出到所有装配到网页）可以导出你的所有装配为HTML网页，放在指定路径下。网页版装配应用可以很容易的打开该HTML网页"
+
+#: eos/saveddata/damagePattern.py:114 eos/saveddata/targetProfile.py:87
+msgid "Hawk"
+msgstr "战鹰级"
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Heavy"
-msgstr ""
+msgstr "重型"
 
 #: gui/builtinShipBrowser/navigationPanel.py:136
 msgid "Hide Recent Fits"
-msgstr ""
+msgstr "隐藏最近使用的装配"
 
 #: gui/builtinShipBrowser/navigationPanel.py:53
 #: gui/builtinShipBrowser/navigationPanel.py:147
 msgid "Hide empty ship groups"
-msgstr ""
+msgstr "隐藏空的舰船类型"
 
 #: gui/builtinViewColumns/baseName.py:59
 msgid "High"
-msgstr ""
+msgstr "高"
+
+#: gui/builtinContextMenus/fitSystemSecurity.py:19
+msgid "High Security"
+msgstr "高安"
+
+#: eos/saveddata/targetProfile.py:48
+msgid "Hull"
+msgstr "结构"
+
+#: eos/saveddata/targetProfile.py:51
+msgid "Hull (+T2 DCU)"
+msgstr "结构（+T2 损控）"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:78
 msgid "Hull repair amount"
-msgstr ""
+msgstr "结构修量"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:114
 msgid "Hull resistance"
-msgstr ""
+msgstr "结构抗性"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Hull: "
-msgstr ""
+msgstr "结构："
+
+#: eos/saveddata/damagePattern.py:62 eos/saveddata/damagePattern.py:63
+#: eos/saveddata/damagePattern.py:64 eos/saveddata/damagePattern.py:65
+#: eos/saveddata/damagePattern.py:66 eos/saveddata/damagePattern.py:67
+#: eos/saveddata/damagePattern.py:68 eos/saveddata/damagePattern.py:69
+#: eos/saveddata/damagePattern.py:70 eos/saveddata/damagePattern.py:71
+#: eos/saveddata/damagePattern.py:72 eos/saveddata/damagePattern.py:73
+msgid "Hybrid Charges"
+msgstr "混合弹药"
 
 #: gui/builtinItemStatsViews/itemEffects.py:35
 msgid "ID"
 msgstr ""
 
+#: eos/saveddata/targetProfile.py:250
+msgid "Ideal Target"
+msgstr "理想目标"
+
 #: gui/builtinContextMenus/graphDroneControlRange.py:23
 msgid "Ignore Drone Control Range"
-msgstr ""
+msgstr "忽略无人机控制半径"
 
 #: gui/builtinContextMenus/graphLockRange.py:23
 msgid "Ignore Lock Range"
-msgstr ""
+msgstr "忽略锁定半径"
 
 #: gui/builtinContextMenus/graphDmgIgnoreResists.py:23
 msgid "Ignore Target Resists"
-msgstr ""
+msgstr "忽略目标抗性"
 
 #: gui/setEditor.py:62
 msgid "Implant Set"
-msgstr ""
+msgstr "植入体配置"
 
 #: gui/setEditor.py:122
 msgid "Implant Set Editor"
-msgstr ""
+msgstr "植入体配置编辑器"
 
 #: gui/setEditor.py:50
 msgid "Implant Set name already in use, please choose another."
-msgstr ""
+msgstr "植入体配置名已使用，请选择其他名称。"
 
-#: gui/additionsPane.py:75 gui/builtinContextMenus/additionsExportAll.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:22
+#: gui/characterEditor.py:161 gui/copySelectDialog.py:47
+#: gui/copySelectDialog.py:55 gui/additionsPane.py:75
 #: gui/builtinContextMenus/additionsExportSelection.py:21
 #: gui/builtinContextMenus/additionsExportSelection.py:22
 #: gui/builtinContextMenus/additionsImport.py:22
-#: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
-#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
+#: gui/builtinContextMenus/additionsImport.py:23
+#: gui/builtinContextMenus/additionsExportAll.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:22
 msgid "Implants"
-msgstr ""
+msgstr "植入体"
 
-#: gui/builtinContextMenus/priceOptions.py:54
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
+#: gui/builtinContextMenus/priceOptions.py:54
 msgid "Implants && Boosters"
-msgstr ""
+msgstr "植入体和增效剂"
 
 #: gui/propertyEditor.py:38
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 #: gui/mainFrame.py:948
 msgid "Import Error"
-msgstr ""
+msgstr "导入错误"
 
 #: gui/characterEditor.py:442
 msgid "Import Skills"
-msgstr ""
+msgstr "导入技能"
 
 #: gui/mainMenuBar.py:88
 msgid "Import a fit from the clipboard"
-msgstr ""
+msgstr "从剪贴板导入装配"
 
 #: gui/mainMenuBar.py:118
 msgid "Import characters into pyfa from file"
-msgstr ""
+msgstr "从文件导入角色信息"
 
 #: gui/mainMenuBar.py:91
 msgid "Import fittings into pyfa"
-msgstr ""
+msgstr "从文件导入装配"
 
 #: gui/setEditor.py:148
 msgid "Import implant sets from clipboard"
-msgstr ""
+msgstr "从剪贴板导入植入体配置"
 
 #: gui/propertyEditor.py:38 gui/propertyEditor.py:39
 msgid "Import overrides"
-msgstr ""
+msgstr "导入自定义属性"
 
 #: gui/patternEditor.py:171
 msgid "Import patterns from clipboard"
-msgstr ""
+msgstr "从剪贴板导入伤害模型"
 
 #: gui/targetProfileEditor.py:221
 msgid "Import profiles from clipboard"
-msgstr ""
+msgstr "从剪贴板导入目标属性"
 
 #: gui/propertyEditor.py:107
 msgid "Import pyfa override file"
-msgstr ""
+msgstr "导入Pyfa属性自定义文件"
 
 #: gui/characterEditor.py:372
 msgid "Import skills from clipboard"
-msgstr ""
+msgstr "从剪贴板导入技能列表"
 
 #: gui/esiFittings.py:64
 msgid "Import to pyfa"
-msgstr ""
+msgstr "导入到Pyfa"
 
 #: gui/mainFrame.py:1021
 msgid "Importing Character..."
-msgstr ""
+msgstr "正在导入角色..."
 
 #: gui/mainFrame.py:846
 msgid "Importing fits"
-msgstr ""
+msgstr "正在导入装配"
 
 #: gui/characterEditor.py:440
 msgid "Importing skills into this character will set the skill levels as pending. To save the skills permanently, please click the Save button at the bottom of the window after importing"
-msgstr ""
+msgstr "导入技能到该角色将设置技能等级为等待状态。若需要永久保存技能，请在导入后点击窗口底部的保存按钮"
 
 #: gui/copySelectDialog.py:59
 msgid "Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
-msgstr ""
+msgstr "包含适用于直接粘贴装配到聊天频道的格式化标签"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:115
 msgid "Incoming damage pattern"
-msgstr ""
+msgstr "伤害分布"
 
 #: gui/targetProfileEditor.py:50
 msgid "Incorrect formatting (decimals only)"
-msgstr ""
+msgstr "格式无效（仅允许小数）"
 
 #: gui/targetProfileEditor.py:52
 msgid "Incorrect range (must be 0-100)"
-msgstr ""
+msgstr "范围无效（必须是 0-100）"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:121
 msgid "Industrial ship hold"
-msgstr ""
+msgstr "工业舰船仓"
+
+#: eos/saveddata/damagePattern.py:87
+msgid "Inferno"
+msgstr "炼狱"
+
+#: eos/saveddata/damagePattern.py:47
+msgid "Infrared"
+msgstr "红外"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Interceptor"
-msgstr ""
+msgstr "截击"
+
+#: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
+#: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
+#: eos/saveddata/damagePattern.py:138 eos/saveddata/targetProfile.py:94
+msgid "Invading Precursor Entities"
+msgstr "入侵的先驱者实体"
 
 #: gui/mainFrame.py:894
 msgid "Invalid Path"
-msgstr ""
+msgstr "无效路径"
 
 #: gui/esiFittings.py:198
 msgid "Invalid Token"
-msgstr ""
+msgstr "无效登录信息"
 
-#: gui/builtinContextMenus/ammoToDmgPattern.py:32
-#: gui/builtinContextMenus/itemMarketJump.py:44
-#: gui/builtinContextMenus/itemRemove.py:43
-#: gui/builtinContextMenus/itemStats.py:38
+#: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
+#: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
+#: eos/saveddata/damagePattern.py:138 eos/saveddata/damagePattern.py:142
+#: eos/saveddata/damagePattern.py:143 eos/saveddata/damagePattern.py:144
+#: eos/saveddata/damagePattern.py:145 eos/saveddata/damagePattern.py:146
+#: eos/saveddata/damagePattern.py:147 eos/saveddata/targetProfile.py:94
+#: eos/saveddata/targetProfile.py:95 eos/saveddata/targetProfile.py:96
+#: eos/saveddata/targetProfile.py:97 eos/saveddata/targetProfile.py:98
+msgid "Invasion"
+msgstr "入侵"
+
+#: eos/saveddata/damagePattern.py:66
+msgid "Iridium"
+msgstr "铱质"
+
+#: eos/saveddata/damagePattern.py:64
+msgid "Iron"
+msgstr "铁质"
+
 #: gui/builtinItemStatsViews/itemCompare.py:147
+#: gui/builtinContextMenus/itemMarketJump.py:44
+#: gui/builtinContextMenus/itemStats.py:38
+#: gui/builtinContextMenus/ammoToDmgPattern.py:32
+#: gui/builtinContextMenus/itemRemove.py:43
 msgid "Item"
-msgstr ""
+msgstr "物品"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:112
 msgid "Item Market Group Jump"
-msgstr ""
+msgstr "切换物品分类时"
 
 #: gui/itemStats.py:58
 msgid "Item stats"
-msgstr ""
+msgstr "物品属性"
 
+#: eos/saveddata/damagePattern.py:115 eos/saveddata/targetProfile.py:88
+msgid "Jaguar"
+msgstr "美洲豹"
+
+#: eos/saveddata/damagePattern.py:152 eos/saveddata/targetProfile.py:76
+msgid "Khanid"
+msgstr "卡尼迪"
+
+#: eos/saveddata/damagePattern.py:41
 #: gui/builtinContextMenus/moduleAmmoChange.py:27
 msgid "Kinetic"
-msgstr ""
+msgstr "动能"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:87
 #: gui/targetProfileEditor.py:121
 msgid "Kinetic resistance"
-msgstr ""
+msgstr "动能抗性"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:96
 msgid "Language (restart required):"
-msgstr ""
+msgstr "语言（重启后生效）："
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
 msgid "Large ship hold"
-msgstr ""
+msgstr "大型舰船仓"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:77
 #: gui/builtinStatsViews/capacitorViewFull.py:171
 msgid "Lasts "
-msgstr ""
+msgstr "可维持"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:112
 msgid "Launcher hardpoints"
-msgstr ""
+msgstr "发射器"
+
+#: eos/saveddata/damagePattern.py:67
+msgid "Lead"
+msgstr "铅质"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:94
-#: gui/builtinContextMenus/moduleAmmoChange.py:109
+#: gui/builtinContextMenus/moduleAmmoChange.py:112
 msgid "Less Damage"
-msgstr ""
+msgstr "更少伤害"
 
 #: gui/characterEditor.py:343
 msgid "Level"
-msgstr ""
+msgstr "技能等级"
 
 #: gui/builtinContextMenus/skillAffectors.py:79
 #, python-format
 msgid "Level %s"
-msgstr ""
+msgstr "等级%s"
 
-#: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
-#: gui/characterEditor.py:616 gui/characterEditor.py:649
+#: gui/characterEditor.py:591 gui/characterEditor.py:616
+#: gui/characterEditor.py:649 gui/builtinItemStatsViews/itemDependants.py:46
 msgid "Level {}"
-msgstr ""
+msgstr "等级{}"
 
 #: gui/characterEditor.py:532
 msgid "Level {}d"
-msgstr ""
+msgstr "等级{}d"
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Light"
-msgstr ""
+msgstr "轻型"
+
+#: service/market.py:266
+msgid "Limited Issue Ships"
+msgstr "限量版舰船"
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Loaded Charges"
-msgstr ""
+msgstr "已装填弹药"
 
 #: gui/mainFrame.py:273
 msgid "Loading previous fits..."
-msgstr ""
+msgstr "正在打开之前的装配..."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Local Server"
-msgstr ""
+msgstr "本地服务器"
 
 #: gui/builtinContextMenus/envEffectAdd.py:193
 msgid "Localized"
-msgstr ""
+msgstr "局部"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:201
 msgid "Lock Times"
-msgstr ""
+msgstr "锁定时间"
 
 #: gui/characterEditor.py:794
 msgid "Log In with EVE SSO"
-msgstr ""
+msgstr "通过EVE登录"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:38
 msgid "Log file location:"
-msgstr ""
+msgstr "日志文件路径："
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:19
 msgid "Logging"
-msgstr ""
+msgstr "日志"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:38
 msgid "Login Authentication Method"
-msgstr ""
+msgstr "登录鉴权模式"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:82
 msgid "Long Range"
-msgstr ""
+msgstr "更长距离"
 
 #: gui/builtinViewColumns/baseName.py:61
 msgid "Low"
-msgstr ""
+msgstr "低"
+
+#: gui/builtinContextMenus/fitSystemSecurity.py:20
+msgid "Low Security"
+msgstr "低安"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
-msgstr ""
+msgstr "维护舱"
 
 #: gui/mainFrame.py:673
 msgid "Manage Characters"
-msgstr ""
+msgstr "管理角色"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Manual"
-msgstr ""
+msgstr "手动"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Manual proxy settings"
-msgstr ""
+msgstr "手动配置代理"
 
 #: gui/mainFrame.py:182
 msgid "Market"
-msgstr ""
+msgstr "市场"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:23
 msgid "Market & Prices"
-msgstr ""
+msgstr "市场和价格"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:30
 msgid "Market && Prices"
-msgstr ""
+msgstr "市场和价格"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:99
 msgid "Market Group Selection"
-msgstr ""
+msgstr "选择物品类别时"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:91
 msgid "Market Search && Recent Items"
-msgstr ""
+msgstr "搜索和显示最近使用列表时"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:39
 msgid "Market Search Delay (ms):"
-msgstr ""
+msgstr "市场搜索延迟（毫秒）："
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 msgid "Mass:\t{:,.0f}kg"
-msgstr ""
+msgstr "质量：{:,.0f}kg"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:124
 msgid "Material bay"
-msgstr ""
+msgstr "物料仓"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:208
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:241
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:242
 #, python-format
 msgid "Max Warp Distance: %.1f AU"
-msgstr ""
+msgstr "最大跃迁距离：%.1f AU"
 
 #: gui/targetProfileEditor.py:124
 msgid "Maximum speed"
-msgstr ""
+msgstr "亚光速航速"
 
 #: gui/builtinViewColumns/baseName.py:60
 msgid "Med"
-msgstr ""
+msgstr "中"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:119
 msgid "Medium ship hold"
-msgstr ""
+msgstr "中型舰船仓"
+
+#: eos/saveddata/damagePattern.py:58
+msgid "Meson"
+msgstr "介子"
+
+#: eos/saveddata/damagePattern.py:46
+msgid "Microwave"
+msgstr "微波"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:123
 msgid "Mineral hold"
-msgstr ""
+msgstr "矿物仓"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
@@ -1635,98 +2102,236 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 msgid "Minimal"
-msgstr ""
+msgstr "简洁"
 
 #: gui/builtinStatsViews/miningyieldViewFull.py:39
 msgid "Mining Yield"
-msgstr ""
+msgstr "矿物产出"
+
+#: eos/saveddata/targetProfile.py:59
+msgid "Minmatar (Armor)"
+msgstr "米玛塔尔(护甲）"
+
+#: eos/saveddata/targetProfile.py:58
+msgid "Minmatar (Shield)"
+msgstr "米玛塔尔(护盾）"
+
+#: eos/saveddata/damagePattern.py:153 eos/saveddata/targetProfile.py:77
+msgid "Minmatar Republic"
+msgstr "米玛塔尔共和国"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 msgid "Misc"
-msgstr ""
+msgstr "杂项"
 
 #: gui/builtinViewColumns/misc.py:50
 msgid "Misc data"
-msgstr ""
+msgstr "杂项"
+
+#: eos/saveddata/damagePattern.py:86 eos/saveddata/damagePattern.py:87
+#: eos/saveddata/damagePattern.py:88 eos/saveddata/damagePattern.py:89
+msgid "Missiles"
+msgstr "导弹"
+
+#: eos/saveddata/damagePattern.py:148 eos/saveddata/damagePattern.py:149
+#: eos/saveddata/damagePattern.py:150 eos/saveddata/damagePattern.py:151
+#: eos/saveddata/damagePattern.py:152 eos/saveddata/damagePattern.py:153
+#: eos/saveddata/damagePattern.py:154 eos/saveddata/damagePattern.py:155
+#: eos/saveddata/targetProfile.py:72 eos/saveddata/targetProfile.py:73
+#: eos/saveddata/targetProfile.py:74 eos/saveddata/targetProfile.py:75
+#: eos/saveddata/targetProfile.py:76 eos/saveddata/targetProfile.py:77
+#: eos/saveddata/targetProfile.py:78
+msgid "Mission"
+msgstr "任务"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:28
 msgid "Mixed"
-msgstr ""
+msgstr "混合"
+
+#: eos/saveddata/damagePattern.py:86
+msgid "Mjolnir"
+msgstr "雷神"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:83
 msgid "Mode:"
-msgstr ""
+msgstr "模式"
 
 #: gui/builtinContextMenus/moduleFill.py:24
 msgid "Module"
-msgstr ""
+msgstr "模块"
+
+#: eos/saveddata/damagePattern.py:154 eos/saveddata/targetProfile.py:78
+msgid "Mordus Legion"
+msgstr "莫德团"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:97
-#: gui/builtinContextMenus/moduleAmmoChange.py:112
+#: gui/builtinContextMenus/moduleAmmoChange.py:115
 msgid "More Damage"
-msgstr ""
+msgstr "更多伤害"
+
+#: eos/saveddata/damagePattern.py:52
+msgid "Multifrequency"
+msgstr "多频"
 
 #: gui/copySelectDialog.py:54
 msgid "Mutated Attributes"
-msgstr ""
+msgstr "已变异属性"
 
 #: gui/itemStats.py:170
 msgid "Mutations"
+msgstr "变质"
+
+#: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
+#: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
+#: eos/saveddata/damagePattern.py:99 eos/saveddata/damagePattern.py:100
+#: eos/saveddata/damagePattern.py:101 eos/saveddata/damagePattern.py:102
+#: eos/saveddata/damagePattern.py:103 eos/saveddata/damagePattern.py:104
+#: eos/saveddata/damagePattern.py:105 eos/saveddata/damagePattern.py:106
+#: eos/saveddata/damagePattern.py:107 eos/saveddata/damagePattern.py:108
+#: eos/saveddata/damagePattern.py:109 eos/saveddata/damagePattern.py:110
+#: eos/saveddata/damagePattern.py:111 eos/saveddata/damagePattern.py:112
+#: eos/saveddata/damagePattern.py:113 eos/saveddata/damagePattern.py:114
+#: eos/saveddata/damagePattern.py:115 eos/saveddata/damagePattern.py:116
+#: eos/saveddata/damagePattern.py:117 eos/saveddata/damagePattern.py:118
+#: eos/saveddata/damagePattern.py:119 eos/saveddata/damagePattern.py:120
+#: eos/saveddata/damagePattern.py:121 eos/saveddata/damagePattern.py:122
+#: eos/saveddata/damagePattern.py:123 eos/saveddata/damagePattern.py:124
+#: eos/saveddata/damagePattern.py:125 eos/saveddata/damagePattern.py:127
+#: eos/saveddata/damagePattern.py:128 eos/saveddata/damagePattern.py:132
+#: eos/saveddata/damagePattern.py:135 eos/saveddata/damagePattern.py:138
+#: eos/saveddata/damagePattern.py:142 eos/saveddata/damagePattern.py:143
+#: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:145
+#: eos/saveddata/damagePattern.py:146 eos/saveddata/damagePattern.py:147
+#: eos/saveddata/damagePattern.py:148 eos/saveddata/damagePattern.py:149
+#: eos/saveddata/damagePattern.py:150 eos/saveddata/damagePattern.py:151
+#: eos/saveddata/damagePattern.py:152 eos/saveddata/damagePattern.py:153
+#: eos/saveddata/damagePattern.py:154 eos/saveddata/damagePattern.py:155
+#: eos/saveddata/damagePattern.py:156 eos/saveddata/damagePattern.py:157
+#: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:61
+#: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:63
+#: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:65
+#: eos/saveddata/targetProfile.py:66 eos/saveddata/targetProfile.py:67
+#: eos/saveddata/targetProfile.py:68 eos/saveddata/targetProfile.py:69
+#: eos/saveddata/targetProfile.py:70 eos/saveddata/targetProfile.py:71
+#: eos/saveddata/targetProfile.py:72 eos/saveddata/targetProfile.py:73
+#: eos/saveddata/targetProfile.py:74 eos/saveddata/targetProfile.py:75
+#: eos/saveddata/targetProfile.py:76 eos/saveddata/targetProfile.py:77
+#: eos/saveddata/targetProfile.py:78 eos/saveddata/targetProfile.py:79
+#: eos/saveddata/targetProfile.py:80 eos/saveddata/targetProfile.py:81
+#: eos/saveddata/targetProfile.py:82 eos/saveddata/targetProfile.py:83
+#: eos/saveddata/targetProfile.py:84 eos/saveddata/targetProfile.py:85
+#: eos/saveddata/targetProfile.py:86 eos/saveddata/targetProfile.py:87
+#: eos/saveddata/targetProfile.py:88 eos/saveddata/targetProfile.py:89
+#: eos/saveddata/targetProfile.py:90 eos/saveddata/targetProfile.py:91
+#: eos/saveddata/targetProfile.py:92 eos/saveddata/targetProfile.py:94
+#: eos/saveddata/targetProfile.py:95 eos/saveddata/targetProfile.py:96
+#: eos/saveddata/targetProfile.py:97 eos/saveddata/targetProfile.py:98
+#: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:100
+#: eos/saveddata/targetProfile.py:101 eos/saveddata/targetProfile.py:102
+#: eos/saveddata/targetProfile.py:103 eos/saveddata/targetProfile.py:104
+#: eos/saveddata/targetProfile.py:105 eos/saveddata/targetProfile.py:106
+#: eos/saveddata/targetProfile.py:107 eos/saveddata/targetProfile.py:108
+#: eos/saveddata/targetProfile.py:109 eos/saveddata/targetProfile.py:110
+#: eos/saveddata/targetProfile.py:111 eos/saveddata/targetProfile.py:112
+#: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:114
+#: eos/saveddata/targetProfile.py:115 eos/saveddata/targetProfile.py:116
+#: eos/saveddata/targetProfile.py:117 eos/saveddata/targetProfile.py:118
+#: eos/saveddata/targetProfile.py:119 eos/saveddata/targetProfile.py:120
+#: eos/saveddata/targetProfile.py:121 eos/saveddata/targetProfile.py:122
+#: eos/saveddata/targetProfile.py:123 eos/saveddata/targetProfile.py:124
+#: eos/saveddata/targetProfile.py:125 eos/saveddata/targetProfile.py:126
+#: eos/saveddata/targetProfile.py:127 eos/saveddata/targetProfile.py:128
+#: eos/saveddata/targetProfile.py:129 eos/saveddata/targetProfile.py:130
+#: eos/saveddata/targetProfile.py:131 eos/saveddata/targetProfile.py:132
+#: eos/saveddata/targetProfile.py:133 eos/saveddata/targetProfile.py:134
+#: eos/saveddata/targetProfile.py:135 eos/saveddata/targetProfile.py:136
+#: eos/saveddata/targetProfile.py:137 eos/saveddata/targetProfile.py:138
+#: eos/saveddata/targetProfile.py:139 eos/saveddata/targetProfile.py:140
+#: eos/saveddata/targetProfile.py:141 eos/saveddata/targetProfile.py:142
+#: eos/saveddata/targetProfile.py:143 eos/saveddata/targetProfile.py:144
+#: eos/saveddata/targetProfile.py:145 eos/saveddata/targetProfile.py:146
+#: eos/saveddata/targetProfile.py:147 eos/saveddata/targetProfile.py:148
+#: eos/saveddata/targetProfile.py:149 eos/saveddata/targetProfile.py:150
+#: eos/saveddata/targetProfile.py:151 eos/saveddata/targetProfile.py:152
+#: eos/saveddata/targetProfile.py:153 eos/saveddata/targetProfile.py:154
+#: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:156
+#: eos/saveddata/targetProfile.py:157 eos/saveddata/targetProfile.py:158
+#: eos/saveddata/targetProfile.py:159 eos/saveddata/targetProfile.py:160
+#: eos/saveddata/targetProfile.py:161 eos/saveddata/targetProfile.py:162
+#: eos/saveddata/targetProfile.py:163 eos/saveddata/targetProfile.py:164
+#: eos/saveddata/targetProfile.py:165 eos/saveddata/targetProfile.py:166
+#: eos/saveddata/targetProfile.py:167 eos/saveddata/targetProfile.py:168
+#: eos/saveddata/targetProfile.py:169 eos/saveddata/targetProfile.py:170
+#: eos/saveddata/targetProfile.py:171 eos/saveddata/targetProfile.py:172
+#: eos/saveddata/targetProfile.py:173 eos/saveddata/targetProfile.py:174
+#: eos/saveddata/targetProfile.py:175 eos/saveddata/targetProfile.py:176
+#: eos/saveddata/targetProfile.py:177 eos/saveddata/targetProfile.py:178
+#: eos/saveddata/targetProfile.py:179 eos/saveddata/targetProfile.py:180
+#: eos/saveddata/targetProfile.py:181 eos/saveddata/targetProfile.py:182
+#: eos/saveddata/targetProfile.py:183 eos/saveddata/targetProfile.py:184
+#: eos/saveddata/targetProfile.py:185 eos/saveddata/targetProfile.py:186
+#: eos/saveddata/targetProfile.py:187 eos/saveddata/targetProfile.py:188
+#: eos/saveddata/targetProfile.py:189
+msgid "NPC"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
+#: gui/builtinItemStatsViews/itemEffects.py:30
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 #: gui/esiFittings.py:300
 msgid "Need at least one ESI character to export"
-msgstr ""
+msgstr "请为导出至少选择一个游戏内角色"
 
 #: gui/esiFittings.py:114
 msgid "Need at least one ESI character to fetch"
-msgstr ""
+msgstr "请为获取至少选择一个游戏内角色"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:17
 msgid "Network"
-msgstr ""
+msgstr "网络"
 
 #: gui/builtinContextMenus/itemAmountChange.py:98
 msgid "New Amount ({}-{})"
-msgstr ""
+msgstr "新数量 ({}-{})"
 
 #: gui/builtinContextMenus/itemAmountChange.py:98
 msgid "New Amount:"
-msgstr ""
+msgstr "新数量："
 
 #: gui/builtinContextMenus/implantSetSave.py:45
 msgid "New Implant Set"
-msgstr ""
+msgstr "新建植入体配置"
 
 #: gui/builtinShipBrowser/navigationPanel.py:51
 msgid "New fitting"
-msgstr ""
+msgstr "新装配"
 
 #: gui/builtinItemStatsViews/itemEffects.py:58
 msgid "No"
-msgstr ""
+msgstr "否"
+
+#: gui/builtinContextMenus/targetProfile/switcher.py:85
+msgid "No Profile"
+msgstr "无伤害模型"
 
 #: gui/characterSelection.py:230
 msgid "No active fit"
-msgstr ""
+msgstr "没有选中的装配"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:92
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:100
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:106
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:113
 msgid "No changes to meta buttons"
-msgstr ""
+msgstr "不改变衍生分类按钮"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "No proxy"
-msgstr ""
+msgstr "无代理"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/characterEditor.py:855
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -1735,883 +2340,1238 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/characterEditor.py:855
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "None"
-msgstr ""
+msgstr "无"
+
+#: eos/saveddata/damagePattern.py:128
+msgid "Normal Subcaps"
+msgstr "常规非旗舰"
 
 #: gui/builtinContextMenus/skillAffectors.py:77
 msgid "Not Learned"
-msgstr ""
+msgstr "未学习"
 
-#: gui/characterEditor.py:399
+#: gui/characterEditor.py:399 service/character.py:322
 msgid "Not learned"
-msgstr ""
+msgstr "未学习"
 
 #: gui/additionsPane.py:87
 msgid "Notes"
-msgstr ""
+msgstr "备注"
+
+#: eos/saveddata/damagePattern.py:89
+msgid "Nova"
+msgstr "星爆"
+
+#: eos/saveddata/damagePattern.py:77
+msgid "Nuclear"
+msgstr "核芯弹"
+
+#: gui/builtinContextMenus/fitSystemSecurity.py:21
+msgid "Null Security"
+msgstr "零安"
 
 #: gui/mainMenuBar.py:167
 msgid "Open &Dev Tools"
-msgstr ""
+msgstr "打开开发者工具(&D)"
 
 #: gui/characterSelection.py:150
 msgid "Open Character Editor"
-msgstr ""
+msgstr "打开角色编辑器"
 
 #: gui/builtinContextMenus/fitOpenNewTab.py:37
 msgid "Open Fit in New Tab"
-msgstr ""
+msgstr "在新标签页打开装配"
 
 #: gui/mainFrame.py:1012
 msgid "Open One Or More Character Files"
-msgstr ""
+msgstr "打开角色文件"
 
 #: gui/mainFrame.py:836
 msgid "Open One Or More Fitting Files"
-msgstr ""
+msgstr "打开装配文件"
 
 #: gui/mainMenuBar.py:166
 msgid "Open Wid&gets Inspect tool"
-msgstr ""
+msgstr "打开控件检查工具(&G)"
 
 #: gui/mainMenuBar.py:166
 msgid "Open Widgets Inspect tool"
-msgstr ""
+msgstr "打开控件检查工具"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
 msgid "Open fittings in a new page by default"
-msgstr ""
+msgstr "默认在新标签页打开装配"
 
 #: gui/builtinContextMenus/shipJump.py:35
 msgid "Open in Fitting Browser"
-msgstr ""
+msgstr "在装配浏览器中打开"
+
+#: gui/builtinShipBrowser/fitItem.py:227
+msgid "Open in new tab"
+msgstr "在新标签页打开"
 
 #: gui/copySelectDialog.py:50
 msgid "Optimize Prices"
-msgstr ""
+msgstr "优化价格"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Ore hold"
-msgstr ""
+msgstr "矿石仓"
+
+#: eos/saveddata/targetProfile.py:79 eos/saveddata/targetProfile.py:80
+msgid "Other"
+msgstr "其他"
+
+#: eos/saveddata/damagePattern.py:98 eos/saveddata/targetProfile.py:100
+#: eos/saveddata/targetProfile.py:107 eos/saveddata/targetProfile.py:114
+#: eos/saveddata/targetProfile.py:121 eos/saveddata/targetProfile.py:128
+#: eos/saveddata/targetProfile.py:135 eos/saveddata/targetProfile.py:142
+#: eos/saveddata/targetProfile.py:149 eos/saveddata/targetProfile.py:156
+#: eos/saveddata/targetProfile.py:163 eos/saveddata/targetProfile.py:170
+#: eos/saveddata/targetProfile.py:177 eos/saveddata/targetProfile.py:184
+msgid "Overmind"
+msgstr "主宰"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:75
 msgid "Passive shield recharge"
-msgstr ""
+msgstr "被动回充"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:125
 msgid "Password:"
-msgstr ""
+msgstr "密码："
 
 #: gui/builtinContextMenus/additionsImport.py:40
 msgid "Paste {}"
-msgstr ""
+msgstr "粘贴{}"
 
 #: gui/patternEditor.py:295
 msgid "Patterns exported to clipboard"
-msgstr ""
+msgstr "伤害模型已导出到剪贴板"
 
 #: gui/patternEditor.py:276 gui/setEditor.py:210
 msgid "Patterns successfully imported from clipboard"
-msgstr ""
+msgstr "从剪贴板导入伤害模型成功"
+
+#: eos/saveddata/damagePattern.py:82
+msgid "Phased Plasma"
+msgstr "定相等离子弹"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:128
 msgid "Planetary goods hold"
-msgstr ""
+msgstr "星系物质仓"
 
 #: gui/mainFrame.py:723
 msgid "Please Wait..."
-msgstr ""
+msgstr "请稍候..."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:32
 msgid "Please see the pyfa wiki on GitHub for information regarding these options."
-msgstr ""
+msgstr "关于下列选项，详情请参考GitHub上的百科。"
 
 #: gui/esiFittings.py:281
 msgid "Please select an active fitting in the main window"
-msgstr ""
+msgstr "请在主窗口选择一个装配"
 
 #: gui/characterEditor.py:758
 msgid "Please select another character or make a new one."
-msgstr ""
+msgstr "请选择另一角色或创建新角色。"
 
 #: gui/mainFrame.py:897
 msgid "Please verify path location pyfa's preferences."
-msgstr ""
+msgstr "请确认Pyfa偏好保存位置。"
 
 #: gui/builtinContextMenus/graphFitAmmoPicker.py:29
 msgid "Plot with Different Ammo..."
-msgstr ""
+msgstr "使用不同的弹药..."
+
+#: eos/saveddata/damagePattern.py:70
+msgid "Plutonium"
+msgstr "锰质"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Pod"
-msgstr ""
+msgstr "逃生舱"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:109
 msgid "Port:"
-msgstr ""
+msgstr "端口："
 
 #: gui/builtinStatsViews/resourcesViewFull.py:154
 msgid "PowerGrid"
-msgstr ""
+msgstr "PG"
 
 #: gui/preferenceDialog.py:31
 msgid "Preferences"
-msgstr ""
+msgstr "偏好设置"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:59
 msgid "Pressing this button will cause all logs in memory to write to the log file:"
-msgstr ""
+msgstr "点击此按钮以将所有缓存的日志写入到日志文件："
 
-#: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinStatsViews/priceViewFull.py:40
+#: gui/builtinItemStatsViews/itemCompare.py:155
 msgid "Price"
-msgstr ""
+msgstr "价格"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:41
 msgid "Pricing updates"
-msgstr ""
+msgstr "价格更新"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:265
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:266
 #, python-format
 msgid "Probe Size: %.3f"
 msgstr ""
 
 #: gui/targetProfileEditor.py:372
 msgid "Profiles exported to clipboard"
-msgstr ""
+msgstr "目标属性已导出到剪贴板"
 
 #: gui/targetProfileEditor.py:352
 msgid "Profiles successfully imported from clipboard"
-msgstr ""
+msgstr "已成功从剪贴板导入目标属性"
+
+#: gui/builtinShipBrowser/fitItem.py:230
+msgid "Project onto Active Fit"
+msgstr "施加远程效果到当前装配"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:61
 msgid "Project onto Fit"
-msgstr ""
+msgstr "施加远程效果到装配"
 
 #: gui/builtinContextMenus/itemProject.py:34
 #, python-brace-format
 msgid "Project {0} onto Fit"
-msgstr ""
+msgstr "施加{0}远程效果到装配"
 
 #: gui/additionsPane.py:81
 msgid "Projected"
-msgstr ""
+msgstr "远程效果"
 
 #: gui/builtinAdditionPanes/projectedView.py:306
 #: gui/builtinAdditionPanes/projectedView.py:316
 #: gui/builtinAdditionPanes/projectedView.py:321
 #: gui/builtinAdditionPanes/projectedView.py:326
 msgid "Projected Item"
-msgstr ""
+msgstr "远程效果物品"
+
+#: eos/saveddata/damagePattern.py:74 eos/saveddata/damagePattern.py:75
+#: eos/saveddata/damagePattern.py:76 eos/saveddata/damagePattern.py:77
+#: eos/saveddata/damagePattern.py:78 eos/saveddata/damagePattern.py:79
+#: eos/saveddata/damagePattern.py:80 eos/saveddata/damagePattern.py:81
+#: eos/saveddata/damagePattern.py:82 eos/saveddata/damagePattern.py:83
+#: eos/saveddata/damagePattern.py:84 eos/saveddata/damagePattern.py:85
+msgid "Projectile Ammo"
+msgstr "射弹弹药"
 
 #: gui/itemStats.py:200
 msgid "Properties"
-msgstr ""
+msgstr "属性"
+
+#: gui/builtinContextMenus/shipModeChange.py:19
+msgid "Propulsion"
+msgstr "高速"
+
+#: eos/saveddata/damagePattern.py:78
+msgid "Proton"
+msgstr "质子弹"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:49
 msgid "Proxy settings"
-msgstr ""
+msgstr "代理设置"
 
 #: gui/builtinContextMenus/envEffectAdd.py:210
 msgid "PvP Weather"
-msgstr ""
+msgstr "PvP环境"
 
 #: gui/aboutData.py:49
 msgid "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of accuracy. Pyfa can run on all platforms where Python and wxWidgets are supported."
-msgstr ""
+msgstr "Python装配助手（the Python Fitting Assistant, Pyfa）是一个开源独立应用，可用于为星战前线（EvE Online）创建和模拟非常准确的装配方案。Pyfa可在python和wxWidgets支持的所有平台运行。"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:44
 msgid "Pyfa Update checks"
-msgstr ""
+msgstr "Pyfa更新检查"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:15
 msgid "Pyfa can automatically check and notify you of new releases. This feature is toggled in the Network settings. Here, you may allow pre-release notifications and view suppressed release notifications, if any."
-msgstr ""
+msgstr "Pyfa可以自动检查更新并提示。这个功能可在网络设置中开启。在这里你可以开启预发布版本更新通知，并查看未提示的版本更新（如果有的话）。"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:129
 msgid "Quafe hold"
-msgstr ""
+msgstr "酷菲(Quafe)仓"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "Quantity of active items"
-msgstr ""
+msgstr "激活的物品数量"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "Quantity of all items"
-msgstr ""
+msgstr "所有物品数量"
+
+#: eos/saveddata/damagePattern.py:45
+msgid "Radio"
+msgstr "射频"
 
 #: gui/targetProfileEditor.py:126
 msgid "Radius"
-msgstr ""
+msgstr "信号半径"
 
 #: gui/builtinItemStatsViews/itemMutator.py:54
 msgid "Random stats"
-msgstr ""
+msgstr "随机化属性"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:63
 msgid "Range"
-msgstr ""
+msgstr "锁定范围"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:222
 msgid "Raw HP: "
-msgstr ""
+msgstr "原始HP："
 
 #: gui/builtinStatsViews/resistancesViewFull.py:223
 #, python-format
 msgid "Raw: %d HP"
-msgstr ""
+msgstr "原始：%dHP"
 
 #: gui/mainFrame.py:654
 msgid "Re-enabling fitting restrictions for this fit will also remove any illegal items from the fit. Do you want to continue?"
-msgstr ""
+msgstr "重新启用装配限制将删除所有无效物品。您要继续吗？"
 
 #: gui/builtinShipBrowser/navigationPanel.py:56
 #: gui/builtinShipBrowser/navigationPanel.py:129
 msgid "Recent Fits"
-msgstr ""
+msgstr "最近使用的装配"
 
 #: gui/builtinMarketBrowser/marketTree.py:37
 msgid "Recently Used Items"
-msgstr ""
+msgstr "最近使用的物品"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:43
 msgid "Recharge rates"
-msgstr ""
+msgstr "回充速度"
 
 #: gui/mainMenuBar.py:84
 msgid "Redo the most recent undone action"
-msgstr ""
+msgstr "恢复最近一次撤销的操作"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:77
 #: gui/builtinItemStatsViews/itemAttributes.py:62
 #: gui/builtinItemStatsViews/itemCompare.py:79
 msgid "Refresh"
-msgstr ""
+msgstr "刷新"
 
 #: gui/characterSelection.py:68
 msgid "Refresh Skills"
-msgstr ""
+msgstr "刷新技能"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:86
 msgid "Reinforced"
-msgstr ""
+msgstr "加强回充"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinStatsViews/outgoingViewFull.py:66
 #: gui/builtinStatsViews/outgoingViewMinimal.py:65
+#: gui/builtinStatsViews/outgoingViewFull.py:66
 msgid "Remote Reps"
-msgstr ""
+msgstr "遥修"
 
 #: gui/esiFittings.py:353
 msgid "Remove Character"
-msgstr ""
+msgstr "删除角色"
 
 #: gui/propertyEditor.py:71
 msgid "Remove Overides for Item"
-msgstr ""
+msgstr "删除物品的自定义属性"
 
 #: gui/builtinContextMenus/itemRemove.py:42
 msgid "Remove {}{}"
-msgstr ""
+msgstr "移除{}{}"
+
+#: gui/builtinShipBrowser/fitItem.py:108
+msgid "Rename"
+msgstr "重命名"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
 msgid "Reopen previous fits on startup"
-msgstr ""
+msgstr "重新启动时打开之前的装配"
 
 #: gui/copySelectDialog.py:50
 msgid "Replace items by cheaper alternatives"
-msgstr ""
+msgstr "使用较便宜的物品替代更贵的物品"
 
 #: gui/itemStats.py:185
 msgid "Requirements"
-msgstr ""
+msgstr "技能需求"
 
 #: gui/builtinContextMenus/moduleSpool.py:98
 msgid "Reset"
-msgstr ""
+msgstr "重置"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:76
 msgid "Reset Suppression"
-msgstr ""
+msgstr "重置版本更新提示"
 
 #: gui/builtinItemStatsViews/itemMutator.py:51
 msgid "Reset defaults"
-msgstr ""
+msgstr "重置为默认值"
 
 #: gui/builtinContextMenus/resistMode.py:41
 msgid "Resist Mode"
-msgstr ""
+msgstr "抗性模式"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:213
 msgid "Resist Multiplier: "
-msgstr ""
+msgstr "抗性倍率："
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinStatsViews/resistancesViewFull.py:47
 msgid "Resistances"
-msgstr ""
+msgstr "抗性"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinStatsViews/resourcesViewFull.py:84
 msgid "Resources"
-msgstr ""
+msgstr "装配资源"
+
+#: eos/saveddata/damagePattern.py:142 eos/saveddata/targetProfile.py:95
+msgid "Retaliating Amarr Entities"
+msgstr "反击艾玛单位"
+
+#: eos/saveddata/damagePattern.py:143 eos/saveddata/damagePattern.py:144
+#: eos/saveddata/targetProfile.py:96
+msgid "Retaliating Caldari Entities"
+msgstr "反击加达里单位"
+
+#: eos/saveddata/damagePattern.py:145 eos/saveddata/targetProfile.py:97
+msgid "Retaliating Gallente Entities"
+msgstr "反击盖伦特单位"
+
+#: eos/saveddata/damagePattern.py:146 eos/saveddata/damagePattern.py:147
+#: eos/saveddata/targetProfile.py:98
+msgid "Retaliating Minmatar Entities"
+msgstr "反击米玛塔尔单位"
 
 #: gui/builtinItemStatsViews/itemMutator.py:57
 msgid "Revert changes"
-msgstr ""
+msgstr "还原到初始状态"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Revert to {}"
-msgstr ""
+msgstr "还原为{}"
 
 #: gui/builtinViewColumns/baseName.py:63
 msgid "Rig"
-msgstr ""
+msgstr "改装"
+
+#: eos/saveddata/damagePattern.py:105 eos/saveddata/damagePattern.py:123
+msgid "Rogue Drone"
+msgstr "自由无人机"
+
+#: eos/saveddata/targetProfile.py:63 eos/saveddata/targetProfile.py:69
+msgid "Rogue Drones"
+msgstr "自由无人机"
 
 #: gui/builtinItemStatsViews/itemEffects.py:34
 msgid "Run Time"
-msgstr ""
+msgstr "运行时长"
 
 #: gui/esiFittings.py:334
 msgid "SSO Character Management"
-msgstr ""
+msgstr "游戏内人物管理"
 
 #: gui/ssoLogin.py:15 gui/ssoLogin.py:49
 msgid "SSO Login"
-msgstr ""
+msgstr "通过EVE登录"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:45
 msgid "SSO Mode"
-msgstr ""
+msgstr "单点登录(SSO)模式"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:126
 msgid "Salvage hold"
-msgstr ""
+msgstr "打捞件仓"
 
+#: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
-msgstr ""
+msgstr "萨沙入侵"
+
+#: eos/saveddata/damagePattern.py:106 eos/saveddata/damagePattern.py:124
+#: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:70
+msgid "Sanshas Nation"
+msgstr "萨沙国度"
 
 #: gui/mainFrame.py:860
 msgid "Save Backup As..."
-msgstr ""
+msgstr "保存备份为..."
 
 #: gui/builtinItemStatsViews/itemAttributes.py:117
 msgid "Save CSV file"
-msgstr ""
+msgstr "保存为逗号分隔符(CSV)文件"
 
 #: gui/mainMenuBar.py:114
 msgid "Save Character &As..."
-msgstr ""
+msgstr "保存角色为...(&A)"
 
 #: gui/characterEditor.py:282
 msgid "Save Character As..."
-msgstr ""
+msgstr "保存角色为..."
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:48
 #: gui/mainFrame.py:467
 msgid "Save Fitting As..."
-msgstr ""
+msgstr "保存装配为..."
 
 #: gui/propertyEditor.py:130
 msgid "Save Overrides As..."
-msgstr ""
+msgstr "保存自定义属性为..."
 
 #: gui/builtinContextMenus/implantSetSave.py:27
 msgid "Save as New Implant Set"
-msgstr ""
+msgstr "保存为新的植入体配置"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:64
 msgid "Scan res."
-msgstr ""
+msgstr "扫描精度"
+
+#: eos/saveddata/damagePattern.py:91
+msgid "Scorch Bomb"
+msgstr "灼烧炸弹"
+
+#: eos/saveddata/damagePattern.py:88
+msgid "Scourge"
+msgstr "鞭挞"
 
 #: gui/builtinShipBrowser/navigationPanel.py:61
 msgid "Search fittings"
-msgstr ""
+msgstr "搜索装配"
 
 #: gui/characterEditor.py:356
 #, python-brace-format
 msgid "Sec Status: {0:.2f}"
-msgstr ""
+msgstr "安全等级: {0:.2f}"
 
 #: gui/characterEditor.py:914
 msgid "Security Status is used in some CONCORD hull calculations"
-msgstr ""
+msgstr "安全等级会用于计算统合部船体属性"
+
+#: eos/saveddata/damagePattern.py:99 eos/saveddata/targetProfile.py:101
+#: eos/saveddata/targetProfile.py:108 eos/saveddata/targetProfile.py:115
+#: eos/saveddata/targetProfile.py:122 eos/saveddata/targetProfile.py:129
+#: eos/saveddata/targetProfile.py:136 eos/saveddata/targetProfile.py:143
+#: eos/saveddata/targetProfile.py:150 eos/saveddata/targetProfile.py:157
+#: eos/saveddata/targetProfile.py:164 eos/saveddata/targetProfile.py:171
+#: eos/saveddata/targetProfile.py:178 eos/saveddata/targetProfile.py:185
+msgid "Seeker"
+msgstr "探寻者"
 
 #: gui/copySelectDialog.py:62
 msgid "Select a format"
-msgstr ""
+msgstr "选择格式"
 
 #: gui/esiFittings.py:284
 msgid "Sending request and awaiting response"
-msgstr ""
+msgstr "正在发送请求和接收响应"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:65
 msgid "Sensor str."
-msgstr ""
+msgstr "传感器强度"
+
+#: eos/saveddata/damagePattern.py:119 eos/saveddata/targetProfile.py:92
+msgid "Sentinel"
+msgstr "哨兵级"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:59
 msgid "Separate Racks"
-msgstr ""
+msgstr "分隔不同槽位类型"
+
+#: eos/saveddata/damagePattern.py:107 eos/saveddata/damagePattern.py:125
+#: eos/saveddata/targetProfile.py:65 eos/saveddata/targetProfile.py:71
+msgid "Serpentis"
+msgstr "天蛇"
+
+#: gui/builtinViewColumns/baseName.py:64
+msgid "Service"
+msgstr "服务"
 
 #: gui/characterEditor.py:907
 msgid "Set Security Status"
-msgstr ""
+msgstr "设置安全等级"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 msgid "Set as Damage Pattern"
-msgstr ""
+msgstr "设置为伤害模型"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:53
 msgid "Set export destination"
-msgstr ""
+msgstr "设置导出路径"
 
 #: gui/builtinContextMenus/ammoToDmgPattern.py:32
 msgid "Set {} as Damage Pattern"
-msgstr ""
+msgstr "设置{}为伤害模型"
 
 #: gui/setEditor.py:229
 msgid "Sets exported to clipboard"
-msgstr ""
+msgstr "植入体配置已导出到剪贴板"
 
 #: gui/characterEditor.py:326
 msgid "Setting an Alpha clone does not replace the character's skills, but rather caps them to Alpha levels."
-msgstr ""
+msgstr "设置为阿尔法克隆不会替换角色技能等级，但会设置技能等级上限为阿尔法状态。"
+
+#: gui/builtinContextMenus/shipModeChange.py:20
+msgid "Sharpshooter"
+msgstr "狙击"
+
+#: eos/saveddata/targetProfile.py:46
+msgid "Shield"
+msgstr "护盾"
+
+#: eos/saveddata/targetProfile.py:49
+msgid "Shield (+T2 DCU)"
+msgstr "护盾（+T2损控）"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
-msgstr ""
+msgstr "护盾抗性"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
-msgstr ""
+msgstr "恢复"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Shield: "
-msgstr ""
+msgstr "护盾："
 
 #: gui/builtinStatsViews/priceViewFull.py:57
 #: gui/builtinStatsViews/priceViewMinimal.py:57
 #: gui/builtinViews/fittingView.py:661
 msgid "Ship"
-msgstr ""
+msgstr "船体"
 
 #: gui/builtinShipBrowser/shipItem.py:111
 msgid "Ship Basic"
-msgstr ""
+msgstr "舰船基础"
 
 #: gui/builtinShipBrowser/navigationPanel.py:48
 msgid "Ship groups"
-msgstr ""
+msgstr "舰船类型"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:117
 msgid "Ship hold"
-msgstr ""
+msgstr "舰船仓"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:100
 msgid "Short Range"
-msgstr ""
+msgstr "更短距离"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:63
 msgid "Show Rack Labels"
-msgstr ""
+msgstr "显示槽位类型标签"
 
 #: gui/builtinShipBrowser/navigationPanel.py:151
 msgid "Show empty ship groups"
-msgstr ""
+msgstr "显示空的舰船类型"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:67
 msgid "Show fitting tab tooltips"
-msgstr ""
+msgstr "装配标签页显示预览"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:52
 msgid "Show market shortcuts"
-msgstr ""
+msgstr "显示市场快捷方式"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:77
 msgid "Show ship browser tooltip"
-msgstr ""
+msgstr "船体列表显示预览"
+
+#: eos/saveddata/damagePattern.py:93
+msgid "Shrapnel Bomb"
+msgstr "榴霰炸弹"
 
 #: gui/builtinContextMenus/boosterSideEffects.py:34
 msgid "Side Effects"
-msgstr ""
+msgstr "副作用"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:88
 msgid "Signature"
-msgstr ""
+msgstr "信号半径"
 
 #: gui/targetProfileEditor.py:125
 msgid "Signature radius\n"
 "Leave blank for infinitely big value"
-msgstr ""
+msgstr "信号半径\n"
+"保持为空表示信号半径无限大"
 
 #: gui/aboutData.py:33
 msgid "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
-msgstr ""
+msgstr "技能系列图标来自 famfamfam.com - 基于知识共享署名2.5许可使用"
 
 #: gui/characterEditor.py:342 gui/characterEditor.py:608
 msgid "Skill"
-msgstr ""
+msgstr "技能"
 
 #: gui/characterEditor.py:160
 msgid "Skills"
-msgstr ""
+msgstr "技能列表"
 
 #: gui/characterSelection.py:242
 msgid "Skills required:"
-msgstr ""
+msgstr "所需技能："
+
+#: eos/saveddata/damagePattern.py:100 eos/saveddata/targetProfile.py:79
+#: eos/saveddata/targetProfile.py:104 eos/saveddata/targetProfile.py:111
+#: eos/saveddata/targetProfile.py:118 eos/saveddata/targetProfile.py:125
+#: eos/saveddata/targetProfile.py:132 eos/saveddata/targetProfile.py:139
+#: eos/saveddata/targetProfile.py:146 eos/saveddata/targetProfile.py:153
+#: eos/saveddata/targetProfile.py:160 eos/saveddata/targetProfile.py:167
+#: eos/saveddata/targetProfile.py:174 eos/saveddata/targetProfile.py:181
+#: eos/saveddata/targetProfile.py:188
+msgid "Sleeper"
+msgstr "冬眠者"
+
+#: eos/saveddata/damagePattern.py:157
+msgid "Sleepers"
+msgstr "冬眠者"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:118
 msgid "Small ship hold"
-msgstr ""
+msgstr "小型舰船仓"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:86
 msgid "Speed"
-msgstr ""
+msgstr "亚光速航速"
 
 #: gui/builtinContextMenus/droneSplitStack.py:29
 msgid "Split {} Stack"
-msgstr ""
+msgstr "分离"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 msgid "Spoolup"
-msgstr ""
+msgstr "预热"
 
 #: gui/builtinContextMenus/moduleSpool.py:37
 msgid "Spoolup Cycles"
-msgstr ""
+msgstr "预热周期"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:171
 msgid "Stable: "
-msgstr ""
+msgstr "稳定："
+
+#: eos/saveddata/damagePattern.py:48
+msgid "Standard"
+msgstr "标准"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:22
 msgid "Statistics Panel"
-msgstr ""
+msgstr "属性面板"
+
+#: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:147
+msgid "Subcaps"
+msgstr "非旗舰"
+
+#: eos/saveddata/damagePattern.py:134
+#, no-python-format
+msgid "Subcaps w/missiles 0% spool up"
+msgstr "非旗舰0%预热"
+
+#: eos/saveddata/damagePattern.py:140
+#, no-python-format
+msgid "Subcaps w/missiles 100% spool up"
+msgstr "非旗舰100%预热"
+
+#: eos/saveddata/damagePattern.py:137
+#, no-python-format
+msgid "Subcaps w/missiles 50% spool up"
+msgstr "非旗舰50%预热"
 
 #: gui/builtinViewColumns/baseName.py:62
 msgid "Subsystem"
-msgstr ""
+msgstr "子系统"
 
 #: gui/characterEditor.py:901
 msgid "Success"
-msgstr ""
+msgstr "成功"
 
 #: gui/characterEditor.py:901
 msgid "Successfully fetched skills"
-msgstr ""
+msgstr "成功获取到技能列表"
+
+#: eos/saveddata/damagePattern.py:111 eos/saveddata/targetProfile.py:84
+msgid "Succubus (Sanshas Nation)"
+msgstr "魔女级（萨沙）"
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Support"
-msgstr ""
+msgstr "支援"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:48
 #, python-brace-format
 msgid "Suppressing {0} Notifications"
-msgstr ""
+msgstr "有{0}个未提示的版本更新"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:87
 msgid "Sustained"
-msgstr ""
+msgstr "持续回充"
 
-#: gui/builtinContextMenus/shipModeChange.py:32
-#: gui/builtinViewColumns/baseName.py:101 gui/builtinViews/fittingView.py:657
+#: eos/saveddata/targetProfile.py:46 eos/saveddata/targetProfile.py:47
+#: eos/saveddata/targetProfile.py:48 eos/saveddata/targetProfile.py:49
+#: eos/saveddata/targetProfile.py:50 eos/saveddata/targetProfile.py:51
+msgid "T1 Resist"
+msgstr "T1抗性"
+
+#: eos/saveddata/targetProfile.py:52 eos/saveddata/targetProfile.py:53
+#: eos/saveddata/targetProfile.py:54 eos/saveddata/targetProfile.py:55
+#: eos/saveddata/targetProfile.py:56 eos/saveddata/targetProfile.py:57
+#: eos/saveddata/targetProfile.py:58 eos/saveddata/targetProfile.py:59
+msgid "T2 Resist"
+msgstr "T2抗性"
+
+#: gui/builtinViewColumns/baseName.py:102
+#: gui/builtinContextMenus/shipModeChange.py:37
+#: gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
-msgstr ""
+msgstr "战术模式"
+
+#: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:91
+msgid "Talos"
+msgstr "塔洛斯级"
+
+#: graphs/gui/lists.py:358
+msgid "Target"
+msgstr "目标"
 
 #: gui/targetProfileEditor.py:86
 msgid "Target Profile"
-msgstr ""
+msgstr "目标属性"
 
 #: gui/targetProfileEditor.py:130
 msgid "Target Profile Editor"
-msgstr ""
+msgstr "目标属性编辑器"
 
 #: gui/targetProfileEditor.py:73
 msgid "Target Profile name already in use, please choose another."
-msgstr ""
+msgstr "目标属性名已使用，请选择其他名称。"
+
+#: gui/builtinContextMenus/targetProfile/switcher.py:33
+msgid "Target Resists"
+msgstr "目标抗性"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:40
 msgid "Targeting && Misc"
-msgstr ""
+msgstr "目标和杂项"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:62
 msgid "Targets"
-msgstr ""
+msgstr "最大锁定数"
+
+#: eos/saveddata/damagePattern.py:60
+msgid "Tetryon"
+msgstr "四重子"
 
 #: gui/mainFrame.py:811
 msgid "Text skills training file"
-msgstr ""
+msgstr "技能列表文本文件"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:72
 msgid "The amount of spoolup to use by default on module which support it. Can be changed on a per-module basis"
-msgstr ""
+msgstr "默认模块预热量。可以分模块单独设置"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:44
 msgid "The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box."
-msgstr ""
+msgstr "按键与触发市场搜索的延迟。较大的值可以缓解在市场搜索框快速打字造成的卡顿。"
 
 #: gui/mainFrame.py:951
 msgid "The following error was generated"
-msgstr ""
+msgstr "Pyfa 遇到以下错误"
 
 #: gui/mainFrame.py:895
 msgid "The following path is invalid or does not exist:"
-msgstr ""
+msgstr "下述路径无效或不存在："
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:64
 msgid "The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose will also be tried first, and if no data is available, global price will be used."
-msgstr ""
+msgstr "Pyfa将优先使用指定的价格源，但指定价格源不可用时将使用其他价格源。同理，Pyfa将优先使用指定的星系，但星系价格不可用时将使用全局价格。"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:53
 msgid "There is a release available which you have chosen to suppress. You can choose to reset notification suppression for this release, or download the new release from GitHub."
-msgstr ""
+msgstr "当前有不提示的版本更新。你可以选择重置版本更新提示，或从GitHub下载版本更新。"
 
 #: gui/characterEditor.py:463
 msgid "There was an error importing skills, please see log file"
-msgstr ""
+msgstr "导入技能列表出错，详见日志文件"
 
 #: gui/esiFittings.py:196
 msgid "There was an error validating characters' SSO token. Please try logging into the character again to reset the token."
-msgstr ""
+msgstr "验证EvE角色登录信息出错，请重试登录以刷新信息。"
 
 #: gui/esiFittings.py:179
 msgid "There was an issue starting up the localized server, try setting Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login Authentication Method. If this doesn't fix the problem please file an issue on Github."
-msgstr ""
+msgstr "无法启动本地服务器，请尝试转到偏好设置->EVE SSO->登录验证方法并设置为手动模式。如果仍然遇到问题，请在Github填写issue以报告该问题。"
 
+#: eos/saveddata/damagePattern.py:40
 #: gui/builtinContextMenus/moduleAmmoChange.py:25
 msgid "Thermal"
-msgstr ""
+msgstr "热能"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:86
 #: gui/targetProfileEditor.py:120
 msgid "Thermal resistance"
-msgstr ""
+msgstr "热能抗性"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:107
 msgid "This is a destructive action that will delete all cached prices out of the database.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "本操作将永久删除所有价格缓存数据。\n"
+"您确定要继续吗？"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:97
 msgid "This is a destructive action that will delete all damage pattern profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "本操作将永久删除所有伤害模型配置。\n"
+"您确定要继续吗？"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:102
 msgid "This is a destructive action that will delete all target profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "本操作将永久删除所有目标属性配置。\n"
+"您确定要继续吗？"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
 msgid "This option goes through EVE SSO directly, but requires more configuration. Use this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
-msgstr ""
+msgstr "本选项将直接发送EvE单点登录请求，但这需要更多配置。如果pyfa.io无法访问，或你不想让pyfa.io处理登录请求，请使用该选项。"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
 msgid "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server."
-msgstr ""
+msgstr "本选项将在角色登录时提示您复制和粘贴登录页相关信息。如果本地服务器出现问题，可使用该选项。"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:47
 msgid "This options routes SSO Logins through pyfa.io, allowing you to easily login without any configuration. When in doubt, use this option."
-msgstr ""
+msgstr "本选项将通过pyfa.io处理单点登录(SSO)请求，使你无需配置即可登录到EVE。不清除时可以使用该选项。"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:40
 msgid "This options starts a local webserver that the web application will call back to with information about the character login."
-msgstr ""
+msgstr "本选项将启动一个本地服务器以接收登录页返回的角色信息。"
+
+#: eos/saveddata/damagePattern.py:68
+msgid "Thorium"
+msgstr "钍质"
+
+#: eos/saveddata/damagePattern.py:155
+msgid "Thukker"
+msgstr "图克尔"
+
+#: eos/saveddata/damagePattern.py:80
+msgid "Titanium Sabot"
+msgstr "钛合金萨博弹"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:70
 msgid "Toggle Names"
-msgstr ""
+msgstr "切换名称"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:73
 msgid "Toggle View"
-msgstr ""
+msgstr "切换视图"
 
 #: gui/builtinItemStatsViews/itemCompare.py:75
 msgid "Toggle view mode"
-msgstr ""
+msgstr "切换显示模式"
 
-#: gui/builtinStatsViews/miningyieldViewFull.py:89
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/priceViewMinimal.py:57
+#: gui/builtinStatsViews/miningyieldViewFull.py:89
 msgid "Total"
-msgstr ""
+msgstr "总计"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:76
 msgid "Total Price Includes"
-msgstr ""
+msgstr "价格总计包括"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:67
 msgid "Total: "
-msgstr ""
+msgstr "总计："
 
 #: gui/itemStats.py:166
 msgid "Traits"
-msgstr ""
+msgstr "特征"
+
+#: eos/saveddata/damagePattern.py:101 eos/saveddata/targetProfile.py:102
+#: eos/saveddata/targetProfile.py:109 eos/saveddata/targetProfile.py:116
+#: eos/saveddata/targetProfile.py:123 eos/saveddata/targetProfile.py:130
+#: eos/saveddata/targetProfile.py:137 eos/saveddata/targetProfile.py:144
+#: eos/saveddata/targetProfile.py:151 eos/saveddata/targetProfile.py:158
+#: eos/saveddata/targetProfile.py:165 eos/saveddata/targetProfile.py:172
+#: eos/saveddata/targetProfile.py:179 eos/saveddata/targetProfile.py:186
+msgid "Triglavian"
+msgstr "三神裔"
 
 #: gui/builtinContextMenus/envEffectAdd.py:115
 #: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "Triglavian Invasion"
-msgstr ""
+msgstr "三神裔入侵"
+
+#: eos/saveddata/damagePattern.py:65
+msgid "Tungsten"
+msgstr "钨质"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:111
 msgid "Turret hardpoints"
-msgstr ""
+msgstr "炮台"
 
 #: gui/builtinItemStatsViews/itemEffects.py:32
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:219
 #, python-brace-format
 msgid "Type: {0}\n"
-msgstr ""
+msgstr "扫描类型：{0}\n"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:222
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:223
 msgid "Type: {}"
-msgstr ""
+msgstr "扫描类型：{}"
+
+#: eos/saveddata/damagePattern.py:49
+msgid "Ultraviolet"
+msgstr "紫外"
 
 #: gui/mainMenuBar.py:83
 msgid "Undo the most recent action"
-msgstr ""
+msgstr "撤销最近一次操作"
+
+#: eos/saveddata/damagePattern.py:38
+msgid "Uniform"
+msgstr "均匀"
+
+#: eos/saveddata/targetProfile.py:42
+msgid "Uniform (25%)"
+msgstr "均匀(25%)"
+
+#: eos/saveddata/targetProfile.py:43
+msgid "Uniform (50%)"
+msgstr "均匀(50%)"
+
+#: eos/saveddata/targetProfile.py:44
+msgid "Uniform (75%)"
+msgstr "均匀(75%)"
+
+#: eos/saveddata/targetProfile.py:45
+msgid "Uniform (90%)"
+msgstr "均匀(90%)"
 
 #: gui/characterEditor.py:614
 msgid "Unlearn"
-msgstr ""
+msgstr "未学习"
 
 #: gui/updateDialog.py:54
 msgid "Update Available"
-msgstr ""
+msgstr "有更新可用"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:14
 msgid "Updates"
-msgstr ""
+msgstr "更新"
+
+#: eos/saveddata/damagePattern.py:69
+msgid "Uranium"
+msgstr "钼质"
 
 #: gui/builtinAdditionPanes/implantView.py:68
 msgid "Use Character Implants"
-msgstr ""
+msgstr "使用角色植入体组"
 
 #: gui/builtinAdditionPanes/implantView.py:67
 msgid "Use Fit-specific Implants"
-msgstr ""
+msgstr "使用装配指定的植入体组"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
 msgid "Use character implants by default for new fits"
-msgstr ""
+msgstr "新装配默认使用角色植入体组"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:35
 msgid "Use global character"
-msgstr ""
+msgstr "使用全局角色"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:43
 msgid "Use global damage pattern"
-msgstr ""
+msgstr "使用全局伤害分布配置"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:121
 msgid "Username:"
-msgstr ""
+msgstr "用户名："
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:34
 msgid "Using Executable Path for Saved Fit Database and Settings"
-msgstr ""
+msgstr "使用Pyfa可执行文件路径来保存装配数据库和偏好设置"
 
-#: gui/builtinContextMenus/itemVariationChange.py:49
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
+#: gui/builtinContextMenus/itemVariationChange.py:49
 msgid "Variations"
-msgstr ""
+msgstr "变种"
+
+#: eos/saveddata/damagePattern.py:116 eos/saveddata/targetProfile.py:89
+msgid "Vengeance"
+msgstr "复仇级"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:53
 msgid "View Raw Data"
-msgstr ""
+msgstr "显示原始数据"
+
+#: gui/builtinContextMenus/fitSystemSecurity.py:22
+msgid "W-Space"
+msgstr "虫洞"
 
 #: gui/ssoLogin.py:62
 msgid "Waiting for character login through EVE Single Sign-On."
-msgstr ""
+msgstr "正在等待角色通过EvE登录。"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:210
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:212
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:243
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:245
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:244
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:246
 #, python-format
 msgid "Warp Core Strength: %.1f"
-msgstr ""
+msgstr "跃迁核心强度：%.1f"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:89
 msgid "Warp Speed"
-msgstr ""
+msgstr "曲速航速"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Weapon"
-msgstr ""
+msgstr "武器"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:61
 msgid "When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior)."
-msgstr ""
+msgstr "当伤害分布为均匀模式时，重置反应式装甲增强器（旧模式）。"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
 msgid "When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge."
-msgstr ""
+msgstr "关闭该选项时，更换弹药仅更换选中的模块。按住Ctrl或Alt以更换所有同类型武器弹药。"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:54
 msgid "When enabled, skills will check their dependencies' requirements when their levels change and reset skills that no longer meet the requirement.\n"
 "eg: Setting Drones from level V to IV will reset the Heavy Drone Operation skill, as that requires Drones V"
-msgstr ""
+msgstr "启用时，技能级别变化时将检查并移除未达等级要求的相关技能。\n"
+"例如：将无人机从5级设置为4级将移除重型无人机操作技能，因为该技能要求无人机5级"
+
+#: eos/saveddata/damagePattern.py:112 eos/saveddata/targetProfile.py:85
+msgid "Worm (Guristas)"
+msgstr "潜龙级（古斯塔斯）"
 
 #: gui/builtinContextMenus/envEffectAdd.py:105
 msgid "Wormhole"
-msgstr ""
+msgstr "虫洞"
+
+#: eos/saveddata/damagePattern.py:50
+msgid "Xray"
+msgstr "X射线"
 
 #: gui/builtinItemStatsViews/itemEffects.py:56
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: gui/characterEditor.py:757
 msgid "You cannot link All 0 or All 5 characters to an EVE character."
-msgstr ""
+msgstr "你不能关联全0级或全5级到一个EvE角色。"
 
 #: gui/characterEditor.py:76
 msgid "You must supply a name for the Character!"
-msgstr ""
+msgstr "您必须填写一个角色名！"
 
 #: gui/setEditor.py:48
 msgid "You must supply a name for the Implant Set!"
-msgstr ""
+msgstr "您必须填写一个植入体配置名！"
 
 #: gui/patternEditor.py:51
 msgid "You must supply a name for your Damage Profile!"
-msgstr ""
+msgstr "您必须填写一个伤害模型名！"
 
 #: gui/targetProfileEditor.py:71
 msgid "You must supply a name for your Target Profile!"
-msgstr ""
+msgstr "您必须填写一个目标属性名！"
+
+#: eos/saveddata/damagePattern.py:43
+msgid "[T2] Aurora"
+msgstr "[T2] 极光"
+
+#: eos/saveddata/damagePattern.py:75
+msgid "[T2] Barrage"
+msgstr "[T2] 雷暴"
+
+#: eos/saveddata/damagePattern.py:54
+msgid "[T2] Conflagration"
+msgstr "[T2] 爆燃"
+
+#: eos/saveddata/damagePattern.py:53
+msgid "[T2] Gleam"
+msgstr "[T2] 微光"
+
+#: eos/saveddata/damagePattern.py:85
+msgid "[T2] Hail"
+msgstr "[T2] 冰雹"
+
+#: eos/saveddata/damagePattern.py:72
+msgid "[T2] Javelin"
+msgstr "[T2] 标枪"
+
+#: eos/saveddata/damagePattern.py:57
+msgid "[T2] Mystic"
+msgstr "[T2] 奥秘"
+
+#: eos/saveddata/damagePattern.py:63
+msgid "[T2] Null"
+msgstr "[T2] 虚空"
+
+#: eos/saveddata/damagePattern.py:61
+msgid "[T2] Occult"
+msgstr "[T2] 神秘"
+
+#: eos/saveddata/damagePattern.py:84
+msgid "[T2] Quake"
+msgstr "[T2] 地震"
+
+#: eos/saveddata/damagePattern.py:44
+msgid "[T2] Scorch"
+msgstr "[T2] 灼烧"
+
+#: eos/saveddata/damagePattern.py:62
+msgid "[T2] Spike"
+msgstr "[T2] 钉刺"
+
+#: eos/saveddata/damagePattern.py:74
+msgid "[T2] Tremor"
+msgstr "[T2] 战栗"
+
+#: eos/saveddata/damagePattern.py:73
+msgid "[T2] Void"
+msgstr "[T2] 涅槃"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
-msgstr ""
+msgstr "pyfa用户数据路径："
 
 #: gui/errorDialog.py:69
 msgid "pyfa error"
-msgstr ""
+msgstr "Pyfa错误"
 
 #: gui/errorDialog.py:76
 msgid "pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
 "information about how this was triggered. Please contact the developers with the \n"
 "information provided through the EVE Online forums or file a GitHub issue."
-msgstr ""
+msgstr "Pyfa遇到了未知问题。下方文本框显示了该问题如何发生的关键信息。\n"
+"请通过EvE论坛或GitHub issue联系开发者，并提供下方文本框中的信息。"
 
 #: gui/aboutData.py:31
 msgid "pyfa is released under GNU GPLv3 - see included LICENSE file"
-msgstr ""
+msgstr "pyfa基于GNU通用公共许可证第三版(GPLv3)发布 - 详见应用目录下的LICENSE文件"
 
 #: gui/propertyEditor.py:108
 msgid "pyfa override file"
-msgstr ""
+msgstr "Pyfa属性自定义文件"
 
 #: gui/propertyEditor.py:131
 msgid "pyfa overrides"
-msgstr ""
+msgstr "Pyfa属性自定义文件"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
@@ -2620,26 +3580,40 @@ msgstr ""
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #, python-brace-format
 msgid "{0} Market Group"
-msgstr ""
+msgstr "{0}市场分类"
 
 #: gui/itemStats.py:87
 #, python-brace-format
 msgid "{context}Stats: {name}{debug_info}"
-msgstr ""
+msgstr "{context}属性：{name}{debug_info}"
+
+#: gui/pyfa_gauge.py:347
+#, python-brace-format
+msgid "{{0:.{0}f}} left"
+msgstr "剩余{{0:.{0}f}}"
+
+#: gui/pyfa_gauge.py:344
+#, python-brace-format
+msgid "{{0:.{0}f}} over"
+msgstr "超出{{0:.{0}f}}"
 
 #: gui/builtinContextMenus/moduleSpool.py:83
 msgid "{} (default)"
-msgstr ""
+msgstr "{}（默认值）"
 
 #: gui/characterEditor.py:284
 msgid "{} Copy"
-msgstr ""
+msgstr "复制{}"
 
 #: gui/builtinContextMenus/itemStats.py:38
 msgid "{} Stats"
-msgstr ""
+msgstr "{}属性"
 
-#: gui/builtinViewColumns/baseName.py:103
+#: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
-msgstr ""
+msgstr "{} {}槽"
+
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:221
+msgid "{}% chance to be jammed"
+msgstr "{}%概率丢失目标"
 
