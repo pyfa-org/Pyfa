@@ -2,21 +2,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-11 21:04+0800\n"
-"PO-Revision-Date: 2020-07-11 22:02\n"
-"Last-Translator: zhaoweny <zhaoweny@users.noreply.github.com>\n"
+"POT-Creation-Date: 2020-07-11 18:24-0400\n"
+"PO-Revision-Date: 2020-07-11 22:41\n"
+"Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Crowdin-Project: pyfa\n"
 "X-Crowdin-Project-ID: 411502\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /i18n/locale/zh_CN/LC_MESSAGES/lang.po\n"
-"X-Crowdin-File-ID: 46\n"
+"X-Crowdin-File: /i18n/locale/lang.pot\n"
+"X-Crowdin-File-ID: 52\n"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
@@ -75,7 +74,7 @@ msgstr "导出装配(&E)"
 msgid "&Export Skills Needed"
 msgstr "导出所需技能列表(&E)"
 
-#: gui/propertyEditor.py:42 gui/mainMenuBar.py:66
+#: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
 msgstr "文件(&F)"
 
@@ -151,7 +150,7 @@ msgstr "导出到剪贴板(&T)"
 msgid "&Turn Overrides Off"
 msgstr "启用自定义属性(&T)"
 
-#: gui/mainMenuBar.py:131 gui/mainFrame.py:690
+#: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
 msgstr "启用自定义属性(&T)"
 
@@ -305,7 +304,7 @@ msgstr "地址："
 msgid "Affected by"
 msgstr "影响因素"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:227
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 #, python-format
 msgid "Agility:\t%.3fx"
 msgstr "灵活性：%.3fx"
@@ -314,7 +313,7 @@ msgstr "灵活性：%.3fx"
 msgid "Align time"
 msgstr "起跳时间"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
 msgid "Align:\t%.3fs"
 msgstr "起跳时间：%.3fs"
@@ -431,8 +430,8 @@ msgstr "阿什姆级（血袭者）"
 msgid "Asteroid"
 msgstr "小行星"
 
-#: gui/builtinItemStatsViews/itemProperties.py:56
 #: gui/builtinItemStatsViews/itemAttributes.py:44
+#: gui/builtinItemStatsViews/itemProperties.py:56
 msgid "Attribute"
 msgstr "属性"
 
@@ -511,11 +510,10 @@ msgstr "炸弹"
 msgid "Booster"
 msgstr "增效剂"
 
-#: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
-#: gui/additionsPane.py:78
+#: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
-#: gui/builtinContextMenus/additionsImport.py:24
-#: gui/builtinContextMenus/additionsExportAll.py:23
+#: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
+#: gui/copySelectDialog.py:56
 msgid "Boosters"
 msgstr "增效剂"
 
@@ -579,16 +577,16 @@ msgstr "电容稳定性"
 msgid "Carbonized Lead"
 msgstr "碳铅弹"
 
+#: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
-#: gui/additionsPane.py:72 gui/builtinStatsViews/targetingMiscViewMinimal.py:90
-#: gui/builtinContextMenus/priceOptions.py:47
 msgid "Cargo"
 msgstr "货舱"
 
+#: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:20
 msgid "Cargo Items"
 msgstr "货舱物品"
 
@@ -597,8 +595,8 @@ msgstr "货舱物品"
 msgid "Cargo bay"
 msgstr "货舱"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:230
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:255
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
 msgid "Cargohold: "
 msgstr "货舱："
 
@@ -644,8 +642,8 @@ msgstr "变更{}半径"
 msgid "Changes require restart of pyfa to take effect."
 msgstr "变更将在重启Pyfa之后生效。"
 
-#: gui/characterEditor.py:90 gui/esiFittings.py:341
-#: gui/builtinStatsViews/priceViewFull.py:57
+#: gui/builtinStatsViews/priceViewFull.py:57 gui/characterEditor.py:90
+#: gui/esiFittings.py:341
 msgid "Character"
 msgstr "角色"
 
@@ -749,7 +747,7 @@ msgstr "震荡炸弹"
 msgid "Confirm"
 msgstr "确认"
 
-#: gui/propertyEditor.py:147 gui/esiFittings.py:157
+#: gui/esiFittings.py:157 gui/propertyEditor.py:147
 msgid "Confirm Delete"
 msgstr "删除确认"
 
@@ -801,9 +799,9 @@ msgstr "三神裔入侵"
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
 msgstr "沃尔夫-拉叶星"
 
-#: gui/builtinShipBrowser/fitItem.py:107
-#: gui/builtinItemStatsViews/itemTraits.py:25
 #: gui/builtinItemStatsViews/itemDescription.py:43
+#: gui/builtinItemStatsViews/itemTraits.py:25
+#: gui/builtinShipBrowser/fitItem.py:107
 msgid "Copy"
 msgstr "复制"
 
@@ -847,8 +845,8 @@ msgstr "巡洋"
 msgid "Cruor (Blood Raiders)"
 msgstr "凝血级（血袭者）"
 
-#: gui/builtinItemStatsViews/itemProperties.py:57
 #: gui/builtinItemStatsViews/itemAttributes.py:45
+#: gui/builtinItemStatsViews/itemProperties.py:57
 msgid "Current Value"
 msgstr "当前值"
 
@@ -989,8 +987,8 @@ msgstr "不再提示此更新"
 msgid "Don't see your EVE character in the list?"
 msgstr "列表中没有你的EvE角色？"
 
-#: gui/updateDialog.py:113
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
+#: gui/updateDialog.py:113
 msgid "Download"
 msgstr "下载"
 
@@ -1045,19 +1043,19 @@ msgstr "无人机仓库"
 msgid "Drone range"
 msgstr "无人机半径"
 
-#: eos/saveddata/damagePattern.py:97 eos/saveddata/targetProfile.py:99
-#: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:113
-#: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:127
-#: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:141
-#: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:155
-#: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:169
-#: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:183
-#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
-#: gui/additionsPane.py:66 gui/builtinStatsViews/priceViewFull.py:58
+#: gui/additionsPane.py:66 gui/builtinContextMenus/additionsExportAll.py:18
 #: gui/builtinContextMenus/additionsExportSelection.py:18
-#: gui/builtinContextMenus/priceOptions.py:40
 #: gui/builtinContextMenus/additionsImport.py:19
-#: gui/builtinContextMenus/additionsExportAll.py:18
+#: gui/builtinContextMenus/priceOptions.py:40
+#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
+#: gui/builtinStatsViews/priceViewFull.py:58 eos/saveddata/damagePattern.py:97
+#: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:106
+#: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:120
+#: eos/saveddata/targetProfile.py:127 eos/saveddata/targetProfile.py:134
+#: eos/saveddata/targetProfile.py:141 eos/saveddata/targetProfile.py:148
+#: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:162
+#: eos/saveddata/targetProfile.py:169 eos/saveddata/targetProfile.py:176
+#: eos/saveddata/targetProfile.py:183
 msgid "Drones"
 msgstr "无人机"
 
@@ -1082,8 +1080,8 @@ msgstr "EFT装配文本文件"
 msgid "EHP"
 msgstr ""
 
-#: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
+#: eos/saveddata/damagePattern.py:39
 msgid "EM"
 msgstr "电磁"
 
@@ -1107,8 +1105,8 @@ msgstr "EvE API XML角色文件"
 msgid "EVE IGB HTML fitting file"
 msgstr "EvE IGB 装配HTML网页文件"
 
-#: gui/characterEditor.py:162
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
+#: gui/characterEditor.py:162
 msgid "EVE SSO"
 msgstr "EvE单点登录(SSO)"
 
@@ -1253,8 +1251,8 @@ msgstr "恩尤"
 
 #: gui/characterEditor.py:83 gui/characterEditor.py:463
 #: gui/characterEditor.py:898 gui/characterSelection.py:174
-#: gui/patternEditor.py:58 gui/setEditor.py:55 gui/targetProfileEditor.py:78
-#: gui/mainFrame.py:898
+#: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
+#: gui/targetProfileEditor.py:78
 msgid "Error"
 msgstr "错误"
 
@@ -1297,8 +1295,8 @@ msgstr "异种 T4/T5"
 msgid "Expand All"
 msgstr "展开所有"
 
-#: eos/saveddata/damagePattern.py:42
 #: gui/builtinContextMenus/moduleAmmoChange.py:26
+#: eos/saveddata/damagePattern.py:42
 msgid "Explosive"
 msgstr "爆炸"
 
@@ -1447,10 +1445,9 @@ msgstr "铁骑舰载机仓库"
 msgid "Fighter squadrons active"
 msgstr "激活的铁骑舰载机中队"
 
-#: gui/additionsPane.py:69
+#: gui/additionsPane.py:69 gui/builtinContextMenus/additionsExportAll.py:19
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
-#: gui/builtinContextMenus/additionsExportAll.py:19
 msgid "Fighters"
 msgstr "铁骑舰载机"
 
@@ -1496,10 +1493,6 @@ msgstr "火瀑 T3 （含部分T5关卡）"
 #: eos/saveddata/targetProfile.py:147
 msgid "Firestorm T4/T5"
 msgstr "火瀑 T4/T5"
-
-#: graphs/gui/lists.py:305
-msgid "Fit"
-msgstr "装配"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:47
 msgid "Fitting Database:"
@@ -1736,19 +1729,18 @@ msgstr "植入体配置编辑器"
 msgid "Implant Set name already in use, please choose another."
 msgstr "植入体配置名已使用，请选择其他名称。"
 
-#: gui/characterEditor.py:161 gui/copySelectDialog.py:47
-#: gui/copySelectDialog.py:55 gui/additionsPane.py:75
+#: gui/additionsPane.py:75 gui/builtinContextMenus/additionsExportAll.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:22
 #: gui/builtinContextMenus/additionsExportSelection.py:21
 #: gui/builtinContextMenus/additionsExportSelection.py:22
 #: gui/builtinContextMenus/additionsImport.py:22
-#: gui/builtinContextMenus/additionsImport.py:23
-#: gui/builtinContextMenus/additionsExportAll.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:22
+#: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
+#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
 msgid "Implants"
 msgstr "植入体"
 
-#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 #: gui/builtinContextMenus/priceOptions.py:54
+#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 msgid "Implants && Boosters"
 msgstr "植入体和增效剂"
 
@@ -1881,11 +1873,11 @@ msgstr "铱质"
 msgid "Iron"
 msgstr "铁质"
 
-#: gui/builtinItemStatsViews/itemCompare.py:147
-#: gui/builtinContextMenus/itemMarketJump.py:44
-#: gui/builtinContextMenus/itemStats.py:38
 #: gui/builtinContextMenus/ammoToDmgPattern.py:32
+#: gui/builtinContextMenus/itemMarketJump.py:44
 #: gui/builtinContextMenus/itemRemove.py:43
+#: gui/builtinContextMenus/itemStats.py:38
+#: gui/builtinItemStatsViews/itemCompare.py:147
 msgid "Item"
 msgstr "物品"
 
@@ -1905,8 +1897,8 @@ msgstr "美洲豹"
 msgid "Khanid"
 msgstr "卡尼迪"
 
-#: eos/saveddata/damagePattern.py:41
 #: gui/builtinContextMenus/moduleAmmoChange.py:27
+#: eos/saveddata/damagePattern.py:41
 msgid "Kinetic"
 msgstr "动能"
 
@@ -1950,8 +1942,8 @@ msgstr "技能等级"
 msgid "Level %s"
 msgstr "等级%s"
 
-#: gui/characterEditor.py:591 gui/characterEditor.py:616
-#: gui/characterEditor.py:649 gui/builtinItemStatsViews/itemDependants.py:46
+#: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
+#: gui/characterEditor.py:616 gui/characterEditor.py:649
 msgid "Level {}"
 msgstr "等级{}"
 
@@ -1962,10 +1954,6 @@ msgstr "等级{}d"
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Light"
 msgstr "轻型"
-
-#: service/market.py:266
-msgid "Limited Issue Ships"
-msgstr "限量版舰船"
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Loaded Charges"
@@ -2055,7 +2043,7 @@ msgstr "搜索和显示最近使用列表时"
 msgid "Market Search Delay (ms):"
 msgstr "市场搜索延迟（毫秒）："
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
 msgid "Mass:\t{:,.0f}kg"
 msgstr "质量：{:,.0f}kg"
 
@@ -2064,7 +2052,7 @@ msgid "Material bay"
 msgstr "物料仓"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:208
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:242
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:241
 #, python-format
 msgid "Max Warp Distance: %.1f AU"
 msgstr "最大跃迁距离：%.1f AU"
@@ -2275,8 +2263,8 @@ msgstr "变质"
 msgid "NPC"
 msgstr ""
 
-#: gui/builtinViewColumns/baseName.py:55
 #: gui/builtinItemStatsViews/itemEffects.py:30
+#: gui/builtinViewColumns/baseName.py:55
 msgid "Name"
 msgstr "名称"
 
@@ -2331,7 +2319,7 @@ msgstr "不改变衍生分类按钮"
 msgid "No proxy"
 msgstr "无代理"
 
-#: gui/characterEditor.py:855
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -2340,7 +2328,7 @@ msgstr "无代理"
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/characterEditor.py:855
 msgid "None"
 msgstr "无"
 
@@ -2352,7 +2340,7 @@ msgstr "常规非旗舰"
 msgid "Not Learned"
 msgstr "未学习"
 
-#: gui/characterEditor.py:399 service/character.py:322
+#: gui/characterEditor.py:399
 msgid "Not learned"
 msgstr "未学习"
 
@@ -2510,9 +2498,9 @@ msgstr "偏好设置"
 msgid "Pressing this button will cause all logs in memory to write to the log file:"
 msgstr "点击此按钮以将所有缓存的日志写入到日志文件："
 
+#: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinStatsViews/priceViewFull.py:40
-#: gui/builtinItemStatsViews/itemCompare.py:155
 msgid "Price"
 msgstr "价格"
 
@@ -2520,7 +2508,7 @@ msgstr "价格"
 msgid "Pricing updates"
 msgstr "价格更新"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:266
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:265
 #, python-format
 msgid "Probe Size: %.3f"
 msgstr ""
@@ -2671,8 +2659,8 @@ msgid "Reinforced"
 msgstr "加强回充"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinStatsViews/outgoingViewMinimal.py:65
 #: gui/builtinStatsViews/outgoingViewFull.py:66
+#: gui/builtinStatsViews/outgoingViewMinimal.py:65
 msgid "Remote Reps"
 msgstr "遥修"
 
@@ -2792,8 +2780,8 @@ msgstr "单点登录(SSO)模式"
 msgid "Salvage hold"
 msgstr "打捞件仓"
 
-#: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
+#: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 msgid "Sansha Incursion"
 msgstr "萨沙入侵"
 
@@ -3127,19 +3115,14 @@ msgstr "T1抗性"
 msgid "T2 Resist"
 msgstr "T2抗性"
 
-#: gui/builtinViewColumns/baseName.py:102
 #: gui/builtinContextMenus/shipModeChange.py:37
-#: gui/builtinViews/fittingView.py:657
+#: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr "战术模式"
 
 #: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:91
 msgid "Talos"
 msgstr "塔洛斯级"
-
-#: graphs/gui/lists.py:358
-msgid "Target"
-msgstr "目标"
 
 #: gui/targetProfileEditor.py:86
 msgid "Target Profile"
@@ -3209,8 +3192,8 @@ msgstr "验证EvE角色登录信息出错，请重试登录以刷新信息。"
 msgid "There was an issue starting up the localized server, try setting Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login Authentication Method. If this doesn't fix the problem please file an issue on Github."
 msgstr "无法启动本地服务器，请尝试转到偏好设置->EVE SSO->登录验证方法并设置为手动模式。如果仍然遇到问题，请在Github填写issue以报告该问题。"
 
-#: eos/saveddata/damagePattern.py:40
 #: gui/builtinContextMenus/moduleAmmoChange.py:25
+#: eos/saveddata/damagePattern.py:40
 msgid "Thermal"
 msgstr "热能"
 
@@ -3277,9 +3260,9 @@ msgstr "切换视图"
 msgid "Toggle view mode"
 msgstr "切换显示模式"
 
+#: gui/builtinStatsViews/miningyieldViewFull.py:89
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/priceViewMinimal.py:57
-#: gui/builtinStatsViews/miningyieldViewFull.py:89
 msgid "Total"
 msgstr "总计"
 
@@ -3322,12 +3305,12 @@ msgstr "炮台"
 msgid "Type"
 msgstr "类型"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:219
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:218
 #, python-brace-format
 msgid "Type: {0}\n"
 msgstr "扫描类型：{0}\n"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:223
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:222
 msgid "Type: {}"
 msgstr "扫描类型：{}"
 
@@ -3403,8 +3386,8 @@ msgstr "用户名："
 msgid "Using Executable Path for Saved Fit Database and Settings"
 msgstr "使用Pyfa可执行文件路径来保存装配数据库和偏好设置"
 
-#: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 #: gui/builtinContextMenus/itemVariationChange.py:49
+#: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 msgid "Variations"
 msgstr "变种"
 
@@ -3426,8 +3409,8 @@ msgstr "正在等待角色通过EvE登录。"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:210
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:212
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:244
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:246
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:243
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:245
 #, python-format
 msgid "Warp Core Strength: %.1f"
 msgstr "跃迁核心强度：%.1f"
@@ -3613,7 +3596,8 @@ msgstr "{}属性"
 msgid "{} {} Slot"
 msgstr "{} {}槽"
 
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:221
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
+#, no-python-format, python-brace-format
 msgid "{}% chance to be jammed"
 msgstr "{}%概率丢失目标"
 
