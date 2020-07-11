@@ -60,7 +60,8 @@ class BaseName(ViewColumn):
             FittingSlot.MED: _t('Med'),
             FittingSlot.LOW: _t('Low'),
             FittingSlot.SUBSYSTEM: _t('Subsystem'),
-            FittingSlot.RIG: _t('Rig')
+            FittingSlot.RIG: _t('Rig'),
+            FittingSlot.SERVICE: _t('Service')
         }
 
 

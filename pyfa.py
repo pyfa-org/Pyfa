@@ -77,7 +77,6 @@ parser.add_option("-i", "--language", action="store", dest="language", help="Set
 
 (options, args) = parser.parse_args()
 
-
 if __name__ == "__main__":
 
     try:
@@ -92,6 +91,7 @@ if __name__ == "__main__":
     import wx
 
     from logbook import Logger
+
     pyfalog = Logger(__name__)
 
     from gui.errorDialog import ErrorHandler
@@ -146,6 +146,7 @@ if __name__ == "__main__":
         pyfa = PyfaApp(False)
 
         from gui.mainFrame import MainFrame
+
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 
@@ -153,6 +154,7 @@ if __name__ == "__main__":
             profile_path = os.path.join(options.profile_path, 'pyfa-{}.profile'.format(datetime.datetime.now().strftime('%Y%m%d_%H%M%S')))
             pyfalog.debug("Starting pyfa with a profiler, saving to {}".format(profile_path))
             import cProfile
+
             cProfile.run('pyfa.MainLoop()', profile_path)
         else:
             pyfa.MainLoop()

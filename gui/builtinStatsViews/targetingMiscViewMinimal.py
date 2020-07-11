@@ -215,9 +215,9 @@ class TargetingMiscViewMinimal(StatsView):
                         ecmChance = otherValues["jamChance"]
                         ecmChance = round(ecmChance, 1)
                         if ecmChance > 0:
-                            label.SetToolTip(wx.ToolTip(
-                                _t("Type: {0}\n").foramt(fit.scanType) + "{}%".format(formatAmount(ecmChance, 3, 0, 0)) + _t(" chance to be jammed").format(
-                                    formatAmount(ecmChance, 3, 0, 0))))
+                            label.SetToolTip(wx.ToolTip(_t("Type: {0}\n").foramt(fit.scanType) +
+                                                        # xgettext:no-python-format,python-brace-format
+                                                        _t("{}% chance to be jammed").format(formatAmount(ecmChance, 3, 0, 0))))
                         else:
                             label.SetToolTip(wx.ToolTip(_t("Type: {}").format(fit.scanType)))
                     elif labelName == "labelFullAlignTime":
@@ -226,7 +226,7 @@ class TargetingMiscViewMinimal(StatsView):
                         agility = _t("Agility:\t%.3fx") % (fit.ship.getModifiedItemAttr("agility") or 0)
                         label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
-                        tipLines = [_t("Cargohold: ")+"{:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"])]
+                        tipLines = [_t("Cargohold: ") + "{:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"])]
                         for attrName, tipAlias in list(cargoNamesOrder.items()):
                             if newValues[attrName] > 0:
                                 tipLines.append("{}: {:,.2f}m\u00B3".format(tipAlias, newValues[attrName]))
@@ -251,7 +251,7 @@ class TargetingMiscViewMinimal(StatsView):
                     cachedCargo = self._cachedValues[counter]
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
-                    tipLines = [_t("Cargohold: ")+"{:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"])]
+                    tipLines = [_t("Cargohold: ") + "{:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"])]
                     for attrName, tipAlias in list(cargoNamesOrder.items()):
                         if cachedCargo[attrName] > 0:
                             tipLines.append("{}: {:,.2f}m\u00B3".format(tipAlias, cachedCargo[attrName]))
