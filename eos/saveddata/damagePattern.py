@@ -25,7 +25,7 @@ from sqlalchemy.orm import reconstructor
 
 import eos.db
 
-_t = wx.GetTranslation
+_t = lambda x: x
 
 # Order is significant here - UI uses order as-is for built-in patterns
 BUILTINS = OrderedDict([
@@ -339,6 +339,10 @@ class DamagePattern:
                 return categories, remainingName[1:]
             categories.append(remainingName[start + 1:end])
             remainingName = remainingName[end + 1:].strip()
+
+    @property
+    def isBuiltin(self):
+        return self.ID < 0
 
     def __deepcopy__(self, memo):
         p = DamagePattern(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
