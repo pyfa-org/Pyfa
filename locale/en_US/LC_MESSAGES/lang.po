@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-11 18:24-0400\n"
-"PO-Revision-Date: 2020-07-11 22:41\n"
+"PO-Revision-Date: 2020-07-11 23:37\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
 "Language: en_US\n"
@@ -761,43 +761,43 @@ msgstr ""
 
 #: gui/builtinContextMenus/envEffectAdd.py:106
 msgid "ContextMenu|ProjectedEffectManipulation|Black Hole"
-msgstr ""
+msgstr "Black Hole"
 
 #: gui/builtinContextMenus/envEffectAdd.py:107
 msgid "ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable"
-msgstr ""
+msgstr "Cataclysmic Variable"
 
 #: gui/builtinContextMenus/envEffectAdd.py:133
 msgid "ContextMenu|ProjectedEffectManipulation|Effects"
-msgstr ""
+msgstr "Effects"
 
 #: gui/builtinContextMenus/envEffectAdd.py:108
 msgid "ContextMenu|ProjectedEffectManipulation|Magnetar"
-msgstr ""
+msgstr "Magnetar"
 
 #: gui/builtinContextMenus/envEffectAdd.py:109
 msgid "ContextMenu|ProjectedEffectManipulation|Pulsar"
-msgstr ""
+msgstr "Pulsar"
 
 #: gui/builtinContextMenus/envEffectAdd.py:110
 msgid "ContextMenu|ProjectedEffectManipulation|Red Giant"
-msgstr ""
+msgstr "Red Giant"
 
 #: gui/builtinContextMenus/envEffectAdd.py:113
 msgid "ContextMenu|ProjectedEffectManipulation|Sansha Incursion"
-msgstr ""
+msgstr "Sansha Incursion"
 
 #: gui/builtinContextMenus/envEffectAdd.py:133
 msgid "ContextMenu|ProjectedEffectManipulation|System Effects"
-msgstr ""
+msgstr "System Effects"
 
 #: gui/builtinContextMenus/envEffectAdd.py:116
 msgid "ContextMenu|ProjectedEffectManipulation|Triglavian Invasion"
-msgstr ""
+msgstr "Triglavian Invasion"
 
 #: gui/builtinContextMenus/envEffectAdd.py:111
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
-msgstr ""
+msgstr "Wolf Rayet"
 
 #: gui/builtinItemStatsViews/itemDescription.py:43
 #: gui/builtinItemStatsViews/itemTraits.py:25
