@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-11 18:24-0400\n"
-"PO-Revision-Date: 2020-07-13 01:11\n"
+"PO-Revision-Date: 2020-07-13 02:10\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
-msgstr ""
+msgstr " DPS: "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
@@ -542,7 +542,7 @@ msgstr "统合部"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
@@ -1078,7 +1078,7 @@ msgstr "EFT装配文本文件"
 #: gui/builtinStatsViews/resistancesViewFull.py:96
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "EHP"
-msgstr ""
+msgstr "有效HP"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
 #: eos/saveddata/damagePattern.py:39
@@ -1633,7 +1633,7 @@ msgstr "古斯塔斯"
 #: gui/builtinStatsViews/resistancesViewFull.py:172
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "HP"
-msgstr ""
+msgstr "HP"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:19
 msgid "HTML Export"
@@ -1699,7 +1699,7 @@ msgstr "混合弹药"
 
 #: gui/builtinItemStatsViews/itemEffects.py:35
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: eos/saveddata/targetProfile.py:250
 msgid "Ideal Target"
@@ -2261,7 +2261,7 @@ msgstr "变质"
 #: eos/saveddata/targetProfile.py:187 eos/saveddata/targetProfile.py:188
 #: eos/saveddata/targetProfile.py:189
 msgid "NPC"
-msgstr ""
+msgstr "NPC"
 
 #: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
