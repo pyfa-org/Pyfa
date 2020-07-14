@@ -61,7 +61,7 @@ class CEveMarketBase:
 
 class CEveMarketTq(CEveMarketBase):
 
-    name = 'www.ceve-market.org (Tranquility)'
+    name = 'ceve-market.org (Tranquility)'
     group = 'tranquility'
 
     def __init__(self, priceMap, system, fetchTimeout):
@@ -74,7 +74,7 @@ class CEveMarketTq(CEveMarketBase):
 
 class CEveMarketCn(CEveMarketBase):
 
-    name = 'www.ceve-market.org (Serenity)'
+    name = 'ceve-market.org (Serenity)'
     group = 'serenity'
 
     def __init__(self, priceMap, system, fetchTimeout):
