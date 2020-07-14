@@ -31,6 +31,7 @@ pyfalog = Logger(__name__)
 
 
 class CEveMarketBase:
+
     @staticmethod
     def fetchPrices(priceMap, fetchTimeout, system=None, serenity=False):
         params = {'typeid': {typeID for typeID in priceMap}}
@@ -52,10 +53,6 @@ class CEveMarketBase:
             except (TypeError, ValueError):
                 pyfalog.warning('Failed to get price for: {0}', type_)
                 continue
-
-            # Price is 0 if evemarketer has info on this item, but it is not available
-            # for current scope limit. If we provided scope limit - make sure to skip
-            # such items to check globally, and do not skip if requested globally
             if percprice == 0 and system is not None:
                 continue
             priceMap[typeID].update(PriceStatus.fetchSuccess, percprice)
@@ -63,7 +60,9 @@ class CEveMarketBase:
 
 
 class CEveMarketTq(CEveMarketBase):
-    name = 'www.ceve-market.org (Tranquility)' #let me at last
+
+    name = 'www.ceve-market.org (Tranquility)'
+    group = 'tranquility'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first
@@ -72,8 +71,11 @@ class CEveMarketTq(CEveMarketBase):
         if priceMap:
             self.fetchPrices(priceMap, max(fetchTimeout / 3, 2), serenity=False)
 
+
 class CEveMarketCn(CEveMarketBase):
-    name = 'www.ceve-market.org (Serenity)' #let me at last
+
+    name = 'www.ceve-market.org (Serenity)'
+    group = 'serenity'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first
@@ -81,6 +83,7 @@ class CEveMarketCn(CEveMarketBase):
         # If price was not available - try globally
         if priceMap:
             self.fetchPrices(priceMap, max(fetchTimeout / 3, 2), serenity=True)
+
 
 Price.register(CEveMarketCn)
 Price.register(CEveMarketTq)

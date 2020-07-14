@@ -32,6 +32,7 @@ pyfalog = Logger(__name__)
 class EveMarketData:
 
     name = 'eve-marketdata.com'
+    group = 'tranquility'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first

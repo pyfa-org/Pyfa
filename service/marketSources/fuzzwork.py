@@ -39,6 +39,7 @@ locations = {
 class FuzzworkMarket:
 
     name = 'fuzzwork market'
+    group = 'tranquility'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first
