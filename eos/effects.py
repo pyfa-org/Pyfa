@@ -440,7 +440,7 @@ class Effect63(BaseEffect):
     armorHPMultiply
 
     Used by:
-    Modules from group: Armor Coating (202 of 202)
+    Modules from group: Armor Coating (184 of 184)
     Modules from group: Armor Plating Energized (187 of 187)
     """
 
@@ -6077,7 +6077,7 @@ class Effect2041(BaseEffect):
     modifyArmorResonancePostPercent
 
     Used by:
-    Modules from group: Armor Coating (202 of 202)
+    Modules from group: Armor Coating (184 of 184)
     Modules from group: Armor Plating Energized (187 of 187)
     """
 
@@ -36112,7 +36112,7 @@ class Effect7232(BaseEffect):
     modifyDamageMultiplierBonusMax
 
     Used by:
-    Implants named like: Grade Mimesis (15 of 18)
+    Implants named like: grade Mimesis (15 of 18)
     """
 
     type = 'passive'
@@ -36129,7 +36129,7 @@ class Effect7233(BaseEffect):
     modifyDamageMultiplierBonusPerCycle
 
     Used by:
-    Implants named like: Grade Mimesis (15 of 18)
+    Implants named like: grade Mimesis (15 of 18)
     """
 
     type = 'passive'
@@ -36146,7 +36146,7 @@ class Effect7234(BaseEffect):
     implantSetMimesis
 
     Used by:
-    Implants named like: Grade Mimesis (18 of 18)
+    Implants named like: grade Mimesis (18 of 18)
     """
 
     runTime = 'early'
