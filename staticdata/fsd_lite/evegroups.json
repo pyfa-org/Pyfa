@@ -4646,7 +4646,7 @@
     "groupName": "Money", 
     "groupNameID": 63592, 
     "iconID": 21, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "170": {
@@ -7177,7 +7177,7 @@
     "groupName": "Triglavian Data", 
     "groupNameID": 536625, 
     "published": true, 
-    "useBasePrice": false
+    "useBasePrice": true
   }, 
   "1996": {
     "anchorable": false, 
@@ -9567,6 +9567,17 @@
     "published": false, 
     "useBasePrice": false
   }, 
+  "4050": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 17, 
+    "fittableNonSingleton": false, 
+    "groupID": 4050, 
+    "groupName": "Abyssal Proving Filaments", 
+    "groupNameID": 559431, 
+    "published": true, 
+    "useBasePrice": false
+  }, 
   "4052": {
     "anchorable": false, 
     "anchored": false, 
@@ -9754,6 +9765,18 @@
     "groupName": "Expired Jump Filaments", 
     "groupNameID": 567348, 
     "published": true, 
+    "useBasePrice": false
+  }, 
+  "4073": {
+    "anchorable": false, 
+    "anchored": true, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4073, 
+    "groupName": "Temporary Collidable Structure", 
+    "groupNameID": 567507, 
+    "iconID": 0, 
+    "published": false, 
     "useBasePrice": false
   }, 
   "408": {

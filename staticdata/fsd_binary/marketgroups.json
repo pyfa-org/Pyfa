@@ -2519,11 +2519,11 @@
     "parentGroupID": 14
   }, 
   "540": {
-    "description": "Mechanically enhanced armor plating augmentation.", 
+    "description": "Armor Resistance Coatings", 
     "descriptionID": 64722, 
     "hasTypes": 0, 
     "iconID": 1030, 
-    "name": "Resistance Plating", 
+    "name": "Armor Resistance Coatings", 
     "nameID": 65796, 
     "parentGroupID": 14
   }, 
@@ -9060,11 +9060,11 @@
     "parentGroupID": 214
   }, 
   "1544": {
-    "description": "Blueprints for Resistance Plating", 
+    "description": "Blueprints for Armor Coatings", 
     "descriptionID": 281323, 
     "hasTypes": 1, 
     "iconID": 2703, 
-    "name": "Resistance Plating", 
+    "name": "Armor Coatings", 
     "nameID": 281322, 
     "parentGroupID": 214
   }, 
@@ -9856,56 +9856,56 @@
     "parentGroupID": 1659
   }, 
   "1665": {
-    "description": "Thermal Resistance Plating", 
+    "description": "Thermal Coatings", 
     "descriptionID": 285353, 
     "hasTypes": 1, 
     "iconID": 1394, 
-    "name": "Thermal Resistance Plating", 
+    "name": "Thermal Coatings", 
     "nameID": 285352, 
     "parentGroupID": 540
   }, 
   "1666": {
-    "description": "Kinetic Resistance Plating", 
+    "description": "Kinetic Coatings", 
     "descriptionID": 285355, 
     "hasTypes": 1, 
     "iconID": 1393, 
-    "name": "Kinetic Resistance Plating", 
+    "name": "Kinetic Coatings", 
     "nameID": 285354, 
     "parentGroupID": 540
   }, 
   "1667": {
-    "description": "Explosive Resistance Plating", 
+    "description": "Explosive Coatings", 
     "descriptionID": 285357, 
     "hasTypes": 1, 
     "iconID": 1395, 
-    "name": "Explosive Resistance Plating", 
+    "name": "Explosive Coatings", 
     "nameID": 285356, 
     "parentGroupID": 540
   }, 
   "1668": {
-    "description": "EM Resistance Plating", 
+    "description": "EM Coatings", 
     "descriptionID": 285359, 
     "hasTypes": 1, 
     "iconID": 1396, 
-    "name": "EM Resistance Plating", 
+    "name": "EM Coatings", 
     "nameID": 285358, 
     "parentGroupID": 540
   }, 
   "1669": {
-    "description": "Layered Plating", 
+    "description": "Layered Armor Coatings", 
     "descriptionID": 285361, 
     "hasTypes": 1, 
     "iconID": 1030, 
-    "name": "Layered Plating", 
+    "name": "Layered Armor Coatings", 
     "nameID": 285360, 
     "parentGroupID": 14
   }, 
   "1670": {
-    "description": "Adaptive Resistance Plating", 
+    "description": "Multispectrum Coatings", 
     "descriptionID": 285363, 
     "hasTypes": 1, 
     "iconID": 1030, 
-    "name": "Adaptive Resistance Plating", 
+    "name": "Multispectrum Coatings", 
     "nameID": 285362, 
     "parentGroupID": 540
   }, 
@@ -15477,10 +15477,10 @@
     "parentGroupID": 1031
   }, 
   "2480": {
-    "description": "Data found in Abyssal Deadspace", 
+    "description": "Triglavian Data Storage Devices", 
     "descriptionID": 317920, 
     "hasTypes": 1, 
-    "iconID": 2037, 
+    "iconID": 21982, 
     "name": "Triglavian Data", 
     "nameID": 317919, 
     "parentGroupID": 19
@@ -16173,5 +16173,14 @@
     "name": "Large", 
     "nameID": 564569, 
     "parentGroupID": 2741
+  }, 
+  "2747": {
+    "description": "Filaments that connect to the Abyssal Proving Grounds for limited time PVP events.", 
+    "descriptionID": 567625, 
+    "hasTypes": 1, 
+    "iconID": 21925, 
+    "name": "Proving Ground Filaments", 
+    "nameID": 567624, 
+    "parentGroupID": 2456
   }
 }
