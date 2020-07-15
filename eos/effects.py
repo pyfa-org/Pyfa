@@ -2335,7 +2335,8 @@ class Effect763(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
-            fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation') or
+                                                           mod.charge.requiresSkill('Defender Missiles'),
                                                '%sDamage' % dmgType,
                                                container.getModifiedItemAttr('missileDamageMultiplierBonus'),
                                                stackingPenalties=True, **kwargs)
