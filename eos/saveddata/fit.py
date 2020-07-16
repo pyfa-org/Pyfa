@@ -752,6 +752,8 @@ class Fit:
 
                 if warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
                     self.ship.boostItemAttr("signatureRadius", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "signatureRadius", value)
 
                 if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_local_repair
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
