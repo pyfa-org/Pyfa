@@ -751,66 +751,92 @@ class Fit:
                 # Localized environment effects
 
                 if warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
-                    self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("signatureRadius", value)
 
                 if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_local_repair
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
-                                                   "armorDamageAmount", value, stackingPenalties=True)
+                                                   "armorDamageAmount", value)
 
                 if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_remote_repair
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
-                                                   "armorDamageAmount", value, stackingPenalties=True)
+                                                   "armorDamageAmount", value)
 
                 if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster_shield_bonus
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
-                                                   "shieldBonus", value, stackingPenalties=True)
+                                                   "shieldBonus", value)
 
                 if warfareBuffID == 89:  # AOE_Beacon_filament_cloud_shield_booster_duration
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
-                                                   "duration", value, stackingPenalties=True)
+                                                   "duration", value)
 
                 # Abyssal Weather Effects
 
                 if warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}EmDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}EmDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("emDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "emDamageResonance", value)  #for hull
 
                 if warfareBuffID == 92:  # Weather_electric_storm_capacitor_recharge_bonus
-                    self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("rechargeRate", value)
 
                 if warfareBuffID == 93:  # Weather_xenon_gas_explosive_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}ExplosiveDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}ExplosiveDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("explosiveDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "explosiveDamageResonance", value)  # for hull
 
                 if warfareBuffID == 94:  # Weather_xenon_gas_shield_hp_bonus
-                    self.ship.boostItemAttr("shieldCapacity", value)  # for hull
+                    self.ship.boostItemAttr("shieldCapacity", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "shieldCapacity", value)
 
                 if warfareBuffID == 95:  # Weather_infernal_thermal_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}ThermalDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}ThermalDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("thermalDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "thermalDamageResonance", value)  # for hull
 
                 if warfareBuffID == 96:  # Weather_infernal_armor_hp_bonus
-                    self.ship.boostItemAttr("armorHP", value)  # for hull
+                    self.ship.boostItemAttr("armorHP", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "armorHP", value)
 
                 if warfareBuffID == 97:  # Weather_darkness_turret_range_penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                                   "maxRange", value, stackingPenalties=True)
+                                                   "maxRange", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "maxRange", value)
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                                   "falloff", value, stackingPenalties=True)
+                                                   "falloff", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "falloff", value)
 
                 if warfareBuffID == 98:  # Weather_darkness_velocity_bonus
                     self.ship.boostItemAttr("maxVelocity", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "maxVelocity", value)
 
                 if warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}KineticDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}KineticDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("kineticDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "kineticDamageResonance", value)  # for hull
 
                 if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
-                    self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("scanResolution", value)
 
             del self.commandBonuses[warfareBuffID]
 
