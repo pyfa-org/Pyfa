@@ -18,30 +18,31 @@
 # =============================================================================
 
 
+import wx
+
 from graphs.data.base import FitGraph, Input, XDef, YDef
-from .getter import (
-    Distance2NeutingStrGetter, Distance2WebbingStrGetter, Distance2EcmStrMaxGetter,
-    Distance2DampStrLockRangeGetter, Distance2TdStrOptimalGetter, Distance2GdStrRangeGetter,
-    Distance2TpStrGetter)
+from .getter import (Distance2DampStrLockRangeGetter, Distance2EcmStrMaxGetter, Distance2GdStrRangeGetter, Distance2NeutingStrGetter, Distance2TdStrOptimalGetter,
+                     Distance2TpStrGetter, Distance2WebbingStrGetter)
+
+_t = wx.GetTranslation
 
 
 class FitEwarStatsGraph(FitGraph):
-
     # UI stuff
     internalName = 'ewarStatsGraph'
-    name = 'Electronic Warfare Stats'
-    xDefs = [XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
+    name = _t('Electronic Warfare Stats')
+    xDefs = [XDef(handle='distance', unit='km', label=_t('Distance'), mainInput=('distance', 'km'))]
     yDefs = [
-        YDef(handle='neutStr', unit=None, label='Cap neutralized per second', selectorLabel='Neuts: cap per second'),
-        YDef(handle='webStr', unit='%', label='Speed reduction', selectorLabel='Webs: speed reduction'),
-        YDef(handle='ecmStrMax', unit=None, label='Combined ECM strength', selectorLabel='ECM: combined strength'),
-        YDef(handle='dampStrLockRange', unit='%', label='Lock range reduction', selectorLabel='Damps: lock range reduction'),
-        YDef(handle='tdStrOptimal', unit='%', label='Turret optimal range reduction', selectorLabel='TDs: turret optimal range reduction'),
-        YDef(handle='gdStrRange', unit='%', label='Missile flight range reduction', selectorLabel='GDs: missile flight range reduction'),
-        YDef(handle='tpStr', unit='%', label='Signature radius increase', selectorLabel='TPs: signature radius increase')]
+        YDef(handle='neutStr', unit=None, label=_t('Cap neutralized per second'), selectorLabel=_t('Neuts: cap per second')),
+        YDef(handle='webStr', unit='%', label=_t('Speed reduction'), selectorLabel=_t('Webs: speed reduction')),
+        YDef(handle='ecmStrMax', unit=None, label=_t('Combined ECM strength'), selectorLabel=_t('ECM: combined strength')),
+        YDef(handle='dampStrLockRange', unit='%', label=_t('Lock range reduction'), selectorLabel=_t('Damps: lock range reduction')),
+        YDef(handle='tdStrOptimal', unit='%', label=_t('Turret optimal range reduction'), selectorLabel=_t('TDs: turret optimal range reduction')),
+        YDef(handle='gdStrRange', unit='%', label=_t('Missile flight range reduction'), selectorLabel=_t('GDs: missile flight range reduction')),
+        YDef(handle='tpStr', unit='%', label=_t('Signature radius increase'), selectorLabel=_t('TPs: signature radius increase'))]
     inputs = [
-        Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100)),
-        Input(handle='resist', unit='%', label='Target resistance', iconID=1393, defaultValue=0, defaultRange=(0, 100))]
+        Input(handle='distance', unit='km', label=_t('Distance'), iconID=1391, defaultValue=None, defaultRange=(0, 100)),
+        Input(handle='resist', unit='%', label=_t('Target resistance'), iconID=1393, defaultValue=0, defaultRange=(0, 100))]
 
     # Calculation stuff
     _normalizers = {
