@@ -90,8 +90,6 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
-        self.droneView = gui.builtinAdditionPanes.droneView.DroneView
-
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.SetDropTarget(ProjectedViewDrop(self.handleListDrag))
@@ -162,7 +160,7 @@ class ProjectedView(d.Display):
         if item.marketGroup is None:
             item = item.metaGroup.parent
 
-        return (self.droneView.DRONE_ORDER.index(item.marketGroup.name),
+        return (gui.builtinAdditionPanes.droneView.DRONE_ORDER.index(item.marketGroup.name),
                 drone.item.name)
 
     @staticmethod
