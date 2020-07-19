@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-19 18:04\n"
+"PO-Revision-Date: 2020-07-19 18:18\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -346,7 +346,7 @@ msgstr "允许预发布版本更新通知"
 
 #: graphs/gui/ctrlPanel.py:75
 msgid "Always show Y = 0"
-msgstr ""
+msgstr "总是显示Y = 0"
 
 #: eos/saveddata/targetProfile.py:53
 msgid "Amarr (Armor)"
@@ -436,7 +436,7 @@ msgstr "小行星"
 
 #: graphs/data/fitDamageStats/graph.py:74
 msgid "Attacker"
-msgstr ""
+msgstr "攻击者"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:44
 #: gui/builtinItemStatsViews/itemProperties.py:56
@@ -457,7 +457,7 @@ msgstr "属性"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:43
 msgid "Auto"
-msgstr ""
+msgstr "自动"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Auto-detected proxy settings"
@@ -470,11 +470,11 @@ msgstr "自动检测结果："
 
 #: graphs/gui/ctrlPanel.py:64
 msgid "Axis X:"
-msgstr ""
+msgstr "X轴："
 
 #: graphs/gui/ctrlPanel.py:56
 msgid "Axis Y:"
-msgstr ""
+msgstr "Y轴："
 
 #: gui/builtinShipBrowser/navigationPanel.py:50
 msgid "Back"
@@ -523,7 +523,7 @@ msgstr "血袭者"
 
 #: graphs/style.py:54
 msgid "Blue"
-msgstr ""
+msgstr "蓝色"
 
 #: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
 #: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
@@ -543,7 +543,7 @@ msgstr "增效剂"
 
 #: graphs/style.py:82
 msgid "Bright"
-msgstr ""
+msgstr "亮色"
 
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
@@ -551,11 +551,11 @@ msgstr "浏览游戏内装配"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Bump distance"
-msgstr ""
+msgstr "撞击距离"
 
 #: graphs/data/fitMobility/graph.py:38
 msgid "Bump speed"
-msgstr ""
+msgstr "撞击速度"
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/damagePattern.py:109
 #: eos/saveddata/damagePattern.py:110 eos/saveddata/damagePattern.py:111
@@ -603,15 +603,15 @@ msgstr "校准"
 #: graphs/data/fitCapacitor/graph.py:35 graphs/data/fitCapacitor/graph.py:36
 #: graphs/data/fitCapacitor/graph.py:38 graphs/data/fitCapacitor/graph.py:43
 msgid "Cap amount"
-msgstr ""
+msgstr "电容量"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Cap neutralized per second"
-msgstr ""
+msgstr "毁电速度"
 
 #: graphs/data/fitCapacitor/graph.py:39
 msgid "Cap regen"
-msgstr ""
+msgstr "电容回充"
 
 #: graphs/data/fitCapacitor/graph.py:32
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
@@ -764,7 +764,7 @@ msgstr "用背景色区分槽位"
 
 #: graphs/data/fitEwarStats/graph.py:38
 msgid "Combined ECM strength"
-msgstr ""
+msgstr "ECM综合强度"
 
 #: gui/additionsPane.py:84
 msgid "Command"
@@ -914,7 +914,7 @@ msgstr "自定义应用"
 
 #: graphs/style.py:57
 msgid "Cyan"
-msgstr ""
+msgstr "青色"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "DPS"
@@ -934,15 +934,15 @@ msgstr "伤害模型名已占用，请使用其他名称。"
 
 #: graphs/data/fitDamageStats/graph.py:56
 msgid "Damage Stats"
-msgstr ""
+msgstr "伤害属性"
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Damage inflicted"
-msgstr ""
+msgstr "造成伤害量"
 
 #: graphs/data/fitEwarStats/graph.py:39
 msgid "Damps: lock range reduction"
-msgstr ""
+msgstr "感应抑制：锁定半径减少百分比"
 
 #: eos/saveddata/damagePattern.py:110 eos/saveddata/targetProfile.py:83
 msgid "Daredevil (Serpentis)"
@@ -950,7 +950,7 @@ msgstr "夜魔侠级（天蛇）"
 
 #: graphs/style.py:81
 msgid "Dark"
-msgstr ""
+msgstr "深色"
 
 #: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:100
 #: eos/saveddata/targetProfile.py:101 eos/saveddata/targetProfile.py:102
@@ -961,11 +961,11 @@ msgstr "暗物质全部级别"
 
 #: graphs/style.py:89
 msgid "Dash-dotted"
-msgstr ""
+msgstr "点线式"
 
 #: graphs/style.py:87
 msgid "Dashed"
-msgstr ""
+msgstr "线段式"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:15
 msgid "Database"
@@ -999,7 +999,7 @@ msgstr "防御"
 
 #: graphs/data/fitMobility/graph.py:44
 msgid "Defined in millions of kilograms"
-msgstr ""
+msgstr "定义为百万千克"
 
 #: gui/builtinShipBrowser/fitItem.py:109
 msgid "Delete"
@@ -1072,21 +1072,23 @@ msgstr "关闭右键菜单可提升响应速度。\n"
 #: graphs/data/fitWarpTime/graph.py:47 graphs/data/fitWarpTime/graph.py:48
 #: graphs/data/fitWarpTime/graph.py:51 graphs/data/fitWarpTime/graph.py:52
 msgid "Distance"
-msgstr ""
+msgstr "距离"
 
 #: graphs/data/fitDamageStats/graph.py:66
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "进攻者与目标间的距离，如总览显示（表面到表面）"
 
 #: graphs/data/fitDamageStats/graph.py:67
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)\n"
 "When set, places the target that far away from the attacker\n"
 "When not set, attacker's weapons always hit the target"
-msgstr ""
+msgstr "进攻者与目标间的距离，如总览显示（表面到表面）\n"
+"设置后，目标处于攻击者指定距离处\n"
+"未设置时，攻击者的武器总能击中目标"
 
 #: graphs/data/fitRemoteReps/graph.py:59 graphs/data/fitRemoteReps/graph.py:60
 msgid "Distance between the repairing ship and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "遥修船与目标间的距离，如总览显示（表面到表面）"
 
 #: gui/esiFittings.py:156
 msgid "Do you really want to delete {} ({}) from EVE?"
@@ -1102,7 +1104,7 @@ msgstr "列表中没有你的EvE角色？"
 
 #: graphs/style.py:88
 msgid "Dotted"
-msgstr ""
+msgstr "虚线式"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
@@ -1111,11 +1113,11 @@ msgstr "下载"
 
 #: graphs/gui/lists.py:313
 msgid "Drag a fit into this list to graph it"
-msgstr ""
+msgstr "拖拽装配到这里来绘图"
 
 #: graphs/gui/lists.py:370
 msgid "Drag a fit into this list to have your fits graphed against it"
-msgstr ""
+msgstr "拖拽受害者装配到这里，并用你的装配针对性绘图"
 
 #: gui/builtinAdditionPanes/commandView.py:163
 msgid "Drag a fit to this area"
@@ -1198,7 +1200,7 @@ msgstr "导出到游戏(&X)"
 
 #: graphs/data/fitEwarStats/graph.py:38
 msgid "ECM: combined strength"
-msgstr ""
+msgstr "ECM：综合强度"
 
 #: gui/mainFrame.py:839
 msgid "EFT text fitting files"
@@ -1261,7 +1263,7 @@ msgstr "EvEMon技能训练文件"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "Effective DPS"
-msgstr ""
+msgstr "有效DPS"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:61
 #: gui/builtinStatsViews/resistancesViewFull.py:219
@@ -1270,11 +1272,11 @@ msgstr "有效HP："
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Effective damage inflicted"
-msgstr ""
+msgstr "有效伤害量"
 
 #: graphs/data/fitDamageStats/graph.py:84
 msgid "Effective volley"
-msgstr ""
+msgstr "有效齐射伤害"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:220
 #, python-format
@@ -1316,7 +1318,7 @@ msgstr "电子炸弹"
 
 #: graphs/data/fitEwarStats/graph.py:33
 msgid "Electronic Warfare Stats"
-msgstr ""
+msgstr "电子战属性"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:59
 msgid "Empty"
@@ -1641,7 +1643,7 @@ msgstr "火瀑 T4/T5"
 
 #: graphs/gui/lists.py:306
 msgid "Fit"
-msgstr ""
+msgstr "装配"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:47
 msgid "Fitting Database:"
@@ -1698,7 +1700,7 @@ msgstr "聚变弹"
 
 #: graphs/data/fitEwarStats/graph.py:41
 msgid "GDs: missile flight range reduction"
-msgstr ""
+msgstr "导航抑制：导弹飞行距离减少百分比"
 
 #: eos/saveddata/targetProfile.py:57
 msgid "Gallente (Armor)"
@@ -1780,11 +1782,11 @@ msgstr "习得所需技能"
 
 #: graphs/gui/frame.py:51
 msgid "Graphs"
-msgstr ""
+msgstr "图表"
 
 #: graphs/style.py:53
 msgid "Green"
-msgstr ""
+msgstr "绿色"
 
 #: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:122
 #: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:68
@@ -2122,7 +2124,7 @@ msgstr "轻型"
 
 #: service/market.py:266
 msgid "Limited Issue Ships"
-msgstr ""
+msgstr "限量版舰船"
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Loaded Charges"
@@ -2142,7 +2144,7 @@ msgstr "局部"
 
 #: graphs/data/fitLockTime/graph.py:34
 msgid "Lock Time"
-msgstr ""
+msgstr "锁定时间"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:201
 msgid "Lock Times"
@@ -2150,11 +2152,11 @@ msgstr "锁定时间"
 
 #: graphs/data/fitEwarStats/graph.py:39
 msgid "Lock range reduction"
-msgstr ""
+msgstr "锁定半径减少百分比"
 
 #: graphs/data/fitLockTime/graph.py:36
 msgid "Lock time"
-msgstr ""
+msgstr "锁定时间"
 
 #: gui/characterEditor.py:794
 msgid "Log In with EVE SSO"
@@ -2186,7 +2188,7 @@ msgstr "低安"
 
 #: graphs/style.py:56
 msgid "Magenta"
-msgstr ""
+msgstr "粉色"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
@@ -2303,7 +2305,7 @@ msgstr "杂项"
 
 #: graphs/data/fitEwarStats/graph.py:41
 msgid "Missile flight range reduction"
-msgstr ""
+msgstr "导弹射程减少百分比"
 
 #: eos/saveddata/damagePattern.py:86 eos/saveddata/damagePattern.py:87
 #: eos/saveddata/damagePattern.py:88 eos/saveddata/damagePattern.py:89
@@ -2331,7 +2333,7 @@ msgstr "雷神"
 
 #: graphs/data/fitMobility/graph.py:32
 msgid "Mobility"
-msgstr ""
+msgstr "机动性"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:83
 msgid "Mode:"
@@ -2343,7 +2345,7 @@ msgstr "模块"
 
 #: graphs/data/fitMobility/graph.py:37
 msgid "Momentum"
-msgstr ""
+msgstr "动量"
 
 #: eos/saveddata/damagePattern.py:154 eos/saveddata/targetProfile.py:78
 msgid "Mordus Legion"
@@ -2479,7 +2481,7 @@ msgstr "网络"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
-msgstr ""
+msgstr "毁电：毁电速度"
 
 #: gui/builtinContextMenus/itemAmountChange.py:98
 msgid "New Amount ({}-{})"
@@ -2535,7 +2537,7 @@ msgstr "无"
 
 #: graphs/style.py:80
 msgid "Normal"
-msgstr ""
+msgstr "常规"
 
 #: eos/saveddata/damagePattern.py:128
 msgid "Normal Subcaps"
@@ -2611,7 +2613,7 @@ msgstr "优化价格"
 
 #: graphs/style.py:55
 msgid "Orange"
-msgstr ""
+msgstr "橘色"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Ore hold"
@@ -2781,7 +2783,7 @@ msgstr "代理设置"
 
 #: graphs/style.py:58
 msgid "Purple"
-msgstr ""
+msgstr "紫色"
 
 #: gui/builtinContextMenus/envEffectAdd.py:210
 msgid "PvP Weather"
@@ -2855,7 +2857,7 @@ msgstr "回充速度"
 
 #: graphs/style.py:52
 msgid "Red"
-msgstr ""
+msgstr "红色"
 
 #: gui/mainMenuBar.py:84
 msgid "Redo the most recent undone action"
@@ -2877,11 +2879,11 @@ msgstr "加强回充"
 
 #: graphs/data/fitRemoteReps/graph.py:62
 msgid "Reload ancillary RRs"
-msgstr ""
+msgstr "重新装填辅助遥修装置"
 
 #: graphs/data/fitRemoteReps/graph.py:48
 msgid "Remote Repairs"
-msgstr ""
+msgstr "遥修"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 #: gui/builtinStatsViews/outgoingViewFull.py:66
@@ -2911,7 +2913,7 @@ msgstr "重新启动时打开之前的装配"
 
 #: graphs/data/fitRemoteReps/graph.py:53
 msgid "Repair speed"
-msgstr ""
+msgstr "修复速度"
 
 #: gui/copySelectDialog.py:50
 msgid "Replace items by cheaper alternatives"
@@ -3150,18 +3152,18 @@ msgstr "护盾（+T2损控）"
 
 #: graphs/data/fitShieldRegen/graph.py:38
 msgid "Shield Regeneration"
-msgstr ""
+msgstr "护盾回充"
 
 #: graphs/data/fitShieldRegen/graph.py:42
 #: graphs/data/fitShieldRegen/graph.py:55
 #: graphs/data/fitShieldRegen/graph.py:56
 #: graphs/data/fitShieldRegen/graph.py:61
 msgid "Shield amount"
-msgstr ""
+msgstr "护盾量"
 
 #: graphs/data/fitShieldRegen/graph.py:62
 msgid "Shield regen"
-msgstr ""
+msgstr "护盾回充"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
@@ -3211,7 +3213,7 @@ msgstr "装配标签页显示预览"
 
 #: graphs/gui/ctrlPanel.py:71
 msgid "Show legend"
-msgstr ""
+msgstr "显示图例"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:52
 msgid "Show market shortcuts"
@@ -3241,7 +3243,7 @@ msgstr "信号半径\n"
 
 #: graphs/data/fitEwarStats/graph.py:42
 msgid "Signature radius increase"
-msgstr ""
+msgstr "信号半径增加量"
 
 #: gui/aboutData.py:33
 msgid "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
@@ -3280,7 +3282,7 @@ msgstr "小型舰船仓"
 
 #: graphs/style.py:86
 msgid "Solid"
-msgstr ""
+msgstr "实线"
 
 #: graphs/data/fitMobility/graph.py:35
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:86
@@ -3289,7 +3291,7 @@ msgstr "亚光速航速"
 
 #: graphs/data/fitEwarStats/graph.py:37
 msgid "Speed reduction"
-msgstr ""
+msgstr "速度减缓百分比"
 
 #: gui/builtinContextMenus/droneSplitStack.py:29
 msgid "Split {} Stack"
@@ -3313,11 +3315,11 @@ msgstr "标准"
 
 #: graphs/data/fitCapacitor/graph.py:46
 msgid "Starting cap amount"
-msgstr ""
+msgstr "初始电容量"
 
 #: graphs/data/fitShieldRegen/graph.py:46
 msgid "Starting shield amount"
-msgstr ""
+msgstr "初始护盾量"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:22
 msgid "Statistics Panel"
@@ -3325,11 +3327,11 @@ msgstr "属性面板"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:45
 msgid "Stick to Attacker"
-msgstr ""
+msgstr "紧贴攻击者"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:44
 msgid "Stick to Target"
-msgstr ""
+msgstr "紧贴目标"
 
 #: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:147
 msgid "Subcaps"
@@ -3394,11 +3396,11 @@ msgstr "T2抗性"
 
 #: graphs/data/fitEwarStats/graph.py:40
 msgid "TDs: turret optimal range reduction"
-msgstr ""
+msgstr "追踪抑制：炮台最佳射程百分比"
 
 #: graphs/data/fitEwarStats/graph.py:42
 msgid "TPs: signature radius increase"
-msgstr ""
+msgstr "标记：信号半径增加量"
 
 #: gui/builtinContextMenus/shipModeChange.py:37
 #: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
@@ -3411,7 +3413,7 @@ msgstr "塔洛斯级"
 
 #: graphs/data/fitDamageStats/graph.py:75 graphs/gui/lists.py:359
 msgid "Target"
-msgstr ""
+msgstr "目标"
 
 #: gui/targetProfileEditor.py:86
 msgid "Target Profile"
@@ -3431,34 +3433,34 @@ msgstr "目标抗性"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Target distance traveled"
-msgstr ""
+msgstr "目标移动距离"
 
 #: graphs/data/fitMobility/graph.py:45
 msgid "Target inertia factor"
-msgstr ""
+msgstr "目标惯性系数"
 
 #: graphs/data/fitMobility/graph.py:43
 msgid "Target mass"
-msgstr ""
+msgstr "目标质量"
 
 #: graphs/data/fitEwarStats/graph.py:45
 msgid "Target resistance"
-msgstr ""
+msgstr "目标抗性"
 
 #: graphs/data/fitDamageStats/graph.py:71 graphs/data/fitLockTime/graph.py:37
 msgid "Target signature"
-msgstr ""
+msgstr "目标信号半径"
 
 #: graphs/data/fitDamageStats/graph.py:62
 #: graphs/data/fitDamageStats/graph.py:63 graphs/data/fitLockTime/graph.py:35
 msgid "Target signature radius"
-msgstr ""
+msgstr "目标信号半径"
 
 #: graphs/data/fitDamageStats/graph.py:60
 #: graphs/data/fitDamageStats/graph.py:61
 #: graphs/data/fitDamageStats/graph.py:70 graphs/data/fitMobility/graph.py:38
 msgid "Target speed"
-msgstr ""
+msgstr "目标速度"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:40
 msgid "Targeting && Misc"
@@ -3571,7 +3573,7 @@ msgstr "图克尔"
 #: graphs/data/fitRemoteReps/graph.py:56 graphs/data/fitShieldRegen/graph.py:40
 #: graphs/data/fitShieldRegen/graph.py:54
 msgid "Time"
-msgstr ""
+msgstr "时间"
 
 #: eos/saveddata/damagePattern.py:80
 msgid "Titanium Sabot"
@@ -3601,7 +3603,7 @@ msgstr "价格总计包括"
 
 #: graphs/data/fitRemoteReps/graph.py:54
 msgid "Total repaired"
-msgstr ""
+msgstr "修复总量"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:67
 msgid "Total: "
@@ -3636,7 +3638,7 @@ msgstr "炮台"
 
 #: graphs/data/fitEwarStats/graph.py:40
 msgid "Turret optimal range reduction"
-msgstr ""
+msgstr "炮台最佳射程减少百分比"
 
 #: gui/builtinItemStatsViews/itemEffects.py:32
 msgid "Type"
@@ -3705,7 +3707,7 @@ msgstr "使用装配指定的植入体组"
 
 #: graphs/data/fitCapacitor/graph.py:48
 msgid "Use capacitor simulator"
-msgstr ""
+msgstr "使用电容模拟器"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
 msgid "Use character implants by default for new fits"
@@ -3742,7 +3744,7 @@ msgstr "显示原始数据"
 
 #: graphs/data/fitDamageStats/graph.py:84
 msgid "Volley"
-msgstr ""
+msgstr "齐射伤害"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:22
 msgid "W-Space"
@@ -3766,11 +3768,11 @@ msgstr "曲速航速"
 
 #: graphs/data/fitWarpTime/graph.py:45
 msgid "Warp Time"
-msgstr ""
+msgstr "曲速时长"
 
 #: graphs/data/fitWarpTime/graph.py:49
 msgid "Warp time"
-msgstr ""
+msgstr "曲速时长"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Weapon"
@@ -3778,7 +3780,7 @@ msgstr "武器"
 
 #: graphs/data/fitEwarStats/graph.py:37
 msgid "Webs: speed reduction"
-msgstr ""
+msgstr "网子：速度减缓百分比"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:61
 msgid "When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior)."
@@ -3797,12 +3799,14 @@ msgstr "启用时，技能级别变化时将检查并移除未达等级要求的
 #: graphs/data/fitDamageStats/graph.py:69
 msgid "When set, uses attacker's exact damage stats at a given time\n"
 "When not set, uses attacker's damage stats as shown in stats panel of main window"
-msgstr ""
+msgstr "设置后，使用攻击者特定时间的特定伤害属性\n"
+"未设置时，使用主窗口属性面板中攻击者伤害属性"
 
 #: graphs/data/fitRemoteReps/graph.py:57
 msgid "When set, uses repairing ship's exact RR stats at a given time\n"
 "When not set, uses repairing ship's RR stats as shown in stats panel of main window"
-msgstr ""
+msgstr "设置后，使用后勤船特定时间的特定遥修属性\n"
+"未设置时，使用主窗口属性面板中后勤船的遥修属性"
 
 #: eos/saveddata/damagePattern.py:112 eos/saveddata/targetProfile.py:85
 msgid "Worm (Guristas)"
@@ -3818,7 +3822,7 @@ msgstr "X射线"
 
 #: graphs/style.py:59
 msgid "Yellow"
-msgstr ""
+msgstr "黄色"
 
 #: gui/builtinItemStatsViews/itemEffects.py:56
 msgid "Yes"
