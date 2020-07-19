@@ -26,7 +26,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, itmContext):
-        return 'Add Target Profile'
+        return _t('Add Target Profile')
 
     def handleProfileAdd(self, event):
         profile = self.eventProfileMap.get(event.Id, False)
