@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 17:38\n"
+"PO-Revision-Date: 2020-07-20 18:41\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -140,7 +140,7 @@ msgstr "&Salva Personaggio"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
-msgstr "&Editor Caratteristiche del Bersaglio"
+msgstr "&Editor Caratteristiche Bersaglio"
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
@@ -494,7 +494,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:59
 msgid "Baryon"
-msgstr "Barione"
+msgstr "Baryon"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:47
 msgid "Base Value"
@@ -502,11 +502,11 @@ msgstr "Valore Base"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
-msgstr "Incrociatore da Battaglia"
+msgstr "Battlecruiser"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battleship"
-msgstr "Corazzata"
+msgstr "Battleship"
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
@@ -3291,7 +3291,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/droneSplitStack.py:29
 msgid "Split {} Stack"
-msgstr ""
+msgstr "Dividi {} Pila"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 msgid "Spoolup"
@@ -3303,35 +3303,35 @@ msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:171
 msgid "Stable: "
-msgstr ""
+msgstr "Stabile: "
 
 #: eos/saveddata/damagePattern.py:48
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 #: graphs/data/fitCapacitor/graph.py:46
 msgid "Starting cap amount"
-msgstr ""
+msgstr "Quantità iniziale di condensatore"
 
 #: graphs/data/fitShieldRegen/graph.py:46
 msgid "Starting shield amount"
-msgstr ""
+msgstr "Quantità iniziale di scudo"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:22
 msgid "Statistics Panel"
-msgstr ""
+msgstr "Pannello Statistiche"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:45
 msgid "Stick to Attacker"
-msgstr ""
+msgstr "Fissa sull'Aggressore"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:44
 msgid "Stick to Target"
-msgstr ""
+msgstr "Fissa al Bersaglio"
 
 #: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:147
 msgid "Subcaps"
-msgstr ""
+msgstr "Subcaps"
 
 #: eos/saveddata/damagePattern.py:134
 #, no-python-format
@@ -3350,45 +3350,45 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:62
 msgid "Subsystem"
-msgstr ""
+msgstr "Sottosistema"
 
 #: gui/characterEditor.py:901
 msgid "Success"
-msgstr ""
+msgstr "Successo"
 
 #: gui/characterEditor.py:901
 msgid "Successfully fetched skills"
-msgstr ""
+msgstr "Abilità acquisite con successo"
 
 #: eos/saveddata/damagePattern.py:111 eos/saveddata/targetProfile.py:84
 msgid "Succubus (Sanshas Nation)"
-msgstr ""
+msgstr "Succubus (Sanshas Nation)"
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Support"
-msgstr ""
+msgstr "Supporto"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:48
 #, python-brace-format
 msgid "Suppressing {0} Notifications"
-msgstr ""
+msgstr "Soppressione di {0} Notifiche"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:87
 msgid "Sustained"
-msgstr ""
+msgstr "Sostenuto"
 
 #: eos/saveddata/targetProfile.py:46 eos/saveddata/targetProfile.py:47
 #: eos/saveddata/targetProfile.py:48 eos/saveddata/targetProfile.py:49
 #: eos/saveddata/targetProfile.py:50 eos/saveddata/targetProfile.py:51
 msgid "T1 Resist"
-msgstr ""
+msgstr "Resistenze T1"
 
 #: eos/saveddata/targetProfile.py:52 eos/saveddata/targetProfile.py:53
 #: eos/saveddata/targetProfile.py:54 eos/saveddata/targetProfile.py:55
 #: eos/saveddata/targetProfile.py:56 eos/saveddata/targetProfile.py:57
 #: eos/saveddata/targetProfile.py:58 eos/saveddata/targetProfile.py:59
 msgid "T2 Resist"
-msgstr ""
+msgstr "Resistenze T2"
 
 #: graphs/data/fitEwarStats/graph.py:40
 msgid "TDs: turret optimal range reduction"
@@ -3401,47 +3401,47 @@ msgstr ""
 #: gui/builtinContextMenus/shipModeChange.py:37
 #: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
-msgstr ""
+msgstr "Modalità Tattica"
 
 #: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:91
 msgid "Talos"
-msgstr ""
+msgstr "Talos"
 
 #: graphs/data/fitDamageStats/graph.py:75 graphs/gui/lists.py:359
 msgid "Target"
-msgstr ""
+msgstr "Bersaglio"
 
 #: gui/targetProfileEditor.py:86
 msgid "Target Profile"
-msgstr ""
+msgstr "Profilo Bersaglio"
 
 #: gui/targetProfileEditor.py:130
 msgid "Target Profile Editor"
-msgstr ""
+msgstr "Editor Profilo Bersaglio"
 
 #: gui/targetProfileEditor.py:73
 msgid "Target Profile name already in use, please choose another."
-msgstr ""
+msgstr "Nome del Profilo Bersaglio già in uso, sceglierne un altro."
 
 #: gui/builtinContextMenus/targetProfile/switcher.py:33
 msgid "Target Resists"
-msgstr ""
+msgstr "Resistenze Del Bersaglio"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Target distance traveled"
-msgstr ""
+msgstr "Distanza percorsa dal bersaglio"
 
 #: graphs/data/fitMobility/graph.py:45
 msgid "Target inertia factor"
-msgstr ""
+msgstr "Fattore di inerzia del bersaglio"
 
 #: graphs/data/fitMobility/graph.py:43
 msgid "Target mass"
-msgstr ""
+msgstr "Massa del bersaglio"
 
 #: graphs/data/fitEwarStats/graph.py:45
 msgid "Target resistance"
-msgstr ""
+msgstr "Resistenze Del Bersaglio"
 
 #: graphs/data/fitDamageStats/graph.py:71 graphs/data/fitLockTime/graph.py:37
 msgid "Target signature"
@@ -3456,23 +3456,23 @@ msgstr ""
 #: graphs/data/fitDamageStats/graph.py:61
 #: graphs/data/fitDamageStats/graph.py:70 graphs/data/fitMobility/graph.py:38
 msgid "Target speed"
-msgstr ""
+msgstr "Velocità del bersaglio"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:40
 msgid "Targeting && Misc"
-msgstr ""
+msgstr "Bersaglio && Varie"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:62
 msgid "Targets"
-msgstr ""
+msgstr "Bersagli"
 
 #: eos/saveddata/damagePattern.py:60
 msgid "Tetryon"
-msgstr ""
+msgstr "Tetryon"
 
 #: gui/mainFrame.py:811
 msgid "Text skills training file"
-msgstr ""
+msgstr "File di testo di addestramento di abilità"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:72
 msgid "The amount of spoolup to use by default on module which support it. Can be changed on a per-module basis"
@@ -3480,15 +3480,15 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:44
 msgid "The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box."
-msgstr ""
+msgstr "Il ritardo tra la pressione del pulsante e la ricerca nel mercato. Può aiutare a ridurre il lag quando si digita velocemente nella casella di ricerca del mercato."
 
 #: gui/mainFrame.py:951
 msgid "The following error was generated"
-msgstr ""
+msgstr "Si è verificato il seguente errore"
 
 #: gui/mainFrame.py:895
 msgid "The following path is invalid or does not exist:"
-msgstr ""
+msgstr "Il seguente percorso non è valido o non esiste:"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:64
 msgid "The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose will also be tried first, and if no data is available, global price will be used."
@@ -3723,7 +3723,7 @@ msgstr "Nome Utente:"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:34
 msgid "Using Executable Path for Saved Fit Database and Settings"
-msgstr ""
+msgstr "Utilizzo il Percorso dell'Eseguibile per il Database degli Equipaggiamenti Salvati e le Impostazioni"
 
 #: gui/builtinContextMenus/itemVariationChange.py:49
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
