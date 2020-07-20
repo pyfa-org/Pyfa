@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-19 18:04\n"
+"PO-Revision-Date: 2020-07-20 12:15\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -169,11 +169,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
-msgstr ""
+msgstr "0초"
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
-msgstr ""
+msgstr "스킬"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
@@ -225,11 +225,11 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
 #: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
 msgid "Abyssal"
-msgstr ""
+msgstr "아비살"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "아비살 환경"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
@@ -249,7 +249,7 @@ msgstr ""
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
-msgstr ""
+msgstr "캐릭터 추가"
 
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
@@ -643,12 +643,12 @@ msgstr ""
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/resourcesViewFull.py:158
 msgid "Cargo bay"
-msgstr ""
+msgstr "화물 저장고"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
 msgid "Cargohold: "
-msgstr ""
+msgstr "화물칸:"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
