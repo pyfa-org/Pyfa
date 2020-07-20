@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 05:48\n"
+"PO-Revision-Date: 2020-07-20 06:44\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -120,15 +120,15 @@ msgstr "&Новая вкладка"
 
 #: gui/mainMenuBar.py:95
 msgid "&Optimize Fit Price"
-msgstr ""
+msgstr "&Оптимизировать Цену Фита"
 
 #: gui/mainMenuBar.py:137
 msgid "&Preferences"
-msgstr ""
+msgstr "&Параметры"
 
 #: gui/mainMenuBar.py:84
 msgid "&Redo"
-msgstr ""
+msgstr "&Повторить"
 
 #: gui/mainMenuBar.py:115
 msgid "&Revert Character"
@@ -136,15 +136,15 @@ msgstr ""
 
 #: gui/mainMenuBar.py:113
 msgid "&Save Character"
-msgstr ""
+msgstr "&Сохранить Персонажа"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
-msgstr ""
+msgstr "&Редактор профиля цели"
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
-msgstr ""
+msgstr "&В буфер"
 
 #: gui/mainFrame.py:690
 msgid "&Turn Overrides Off"
@@ -156,24 +156,24 @@ msgstr ""
 
 #: gui/mainMenuBar.py:83
 msgid "&Undo"
-msgstr ""
+msgstr "&Отменить"
 
 #: gui/mainMenuBar.py:160
 msgid "&Wiki"
-msgstr ""
+msgstr "&Вики"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:29
 msgid "(Cannot be changed while pyfa is running. Set via command line switches.)"
-msgstr ""
+msgstr "(Нельзя изменить пока работает pyfa. Настройте через переключатели командной строки)"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
-msgstr ""
+msgstr "0с"
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
-msgstr ""
+msgstr "Способности"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
@@ -225,47 +225,47 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
 #: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
 msgid "Abyssal"
-msgstr ""
+msgstr "Бездна"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "Погода бездны"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
-msgstr ""
+msgstr "Активный"
 
 #: gui/builtinViewColumns/abilities.py:37
 msgid "Active Abilities"
-msgstr ""
+msgstr "Активные способности"
 
 #: gui/builtinViewColumns/sideEffects.py:37
 msgid "Active Side Effects"
-msgstr ""
+msgstr "Активные побочные эффекты"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:76
 msgid "Active shield boost"
-msgstr ""
+msgstr "Активное востановление щита"
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
-msgstr ""
+msgstr "Добавить Персонажа"
 
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
-msgstr ""
+msgstr "Ошибка Добавления Персонажа"
 
 #: gui/builtinShipBrowser/fitItem.py:233
 msgid "Add Command Booster"
-msgstr ""
+msgstr "Дрбавить Флотовые Бонусы"
 
 #: gui/builtinContextMenus/fitAddCurrentlyOpen.py:29
 msgid "Add Currently Open Fit"
-msgstr ""
+msgstr "Добавить текущий окрытый фит"
 
 #: gui/builtinContextMenus/envEffectAdd.py:56
 msgid "Add Environmental Effect"
-msgstr ""
+msgstr "Добавить Эффекты Окружения"
 
 #: gui/builtinContextMenus/fitAddBrowse.py:22
 msgid "Add Fit..."
@@ -474,23 +474,23 @@ msgstr ""
 
 #: graphs/gui/ctrlPanel.py:56
 msgid "Axis Y:"
-msgstr ""
+msgstr "Ось Y:"
 
 #: gui/builtinShipBrowser/navigationPanel.py:50
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #: gui/mainFrame.py:875
 msgid "Backing up {} fits to: {}"
-msgstr ""
+msgstr "Востановление {} фитов в: {}"
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
-msgstr ""
+msgstr "Резервное копирование всех фитов в XML файл"
 
 #: gui/mainFrame.py:874 gui/mainFrame.py:905
 msgid "Backup fits"
-msgstr ""
+msgstr "Резервное копирование фитов"
 
 #: eos/saveddata/damagePattern.py:59
 msgid "Baryon"
@@ -498,7 +498,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:47
 msgid "Base Value"
-msgstr ""
+msgstr "Базовое Значение"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
@@ -510,7 +510,7 @@ msgstr ""
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
-msgstr ""
+msgstr "Имейте в виду, что уже обработанные фиты не будут сохранены"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Bioluminescence"
@@ -523,12 +523,12 @@ msgstr ""
 
 #: graphs/style.py:54
 msgid "Blue"
-msgstr ""
+msgstr "Синий"
 
 #: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
 #: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
 msgid "Bombs"
-msgstr ""
+msgstr "Бомбы"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
@@ -543,11 +543,11 @@ msgstr ""
 
 #: graphs/style.py:82
 msgid "Bright"
-msgstr ""
+msgstr "Ярко"
 
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
-msgstr ""
+msgstr "Просмотр фитов EVE"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Bump distance"
@@ -578,19 +578,19 @@ msgstr ""
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
-msgstr ""
+msgstr "ЦПУ"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
-msgstr ""
+msgstr "CSV файлы"
 
 #: eos/saveddata/targetProfile.py:55
 msgid "Caldari (Armor)"
-msgstr ""
+msgstr "Калдари (Броня)"
 
 #: eos/saveddata/targetProfile.py:54
 msgid "Caldari (Shield)"
-msgstr ""
+msgstr "Калдари (Щит)"
 
 #: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:73
 msgid "Caldari State"
