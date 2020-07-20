@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 07:53\n"
+"PO-Revision-Date: 2020-07-20 08:59\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -711,19 +711,19 @@ msgstr ""
 
 #: gui/characterEditor.py:771
 msgid "Character:"
-msgstr ""
+msgstr "Персонаж:"
 
 #: gui/characterSelection.py:47
 msgid "Character: "
-msgstr ""
+msgstr "Персонаж: "
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:48
 msgid "Charge"
-msgstr ""
+msgstr "Заряд"
 
 #: gui/builtinViews/fittingView.py:661
 msgid "Citadel"
-msgstr ""
+msgstr "Цитадель"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:37
 msgid "Citadel System Security"
@@ -788,7 +788,7 @@ msgstr ""
 
 #: gui/itemStats.py:182
 msgid "Compare"
-msgstr ""
+msgstr "Cравнить"
 
 #: eos/saveddata/damagePattern.py:92
 msgid "Concussion Bomb"
@@ -799,19 +799,19 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:108
 #: gui/mainFrame.py:649 gui/mainFrame.py:655
 msgid "Confirm"
-msgstr ""
+msgstr "Подтвердить"
 
 #: gui/esiFittings.py:157 gui/propertyEditor.py:147
 msgid "Confirm Delete"
-msgstr ""
+msgstr "Подтвердить Удаление"
 
 #: gui/esiFittings.py:126 gui/esiFittings.py:169 gui/esiFittings.py:311
 msgid "Connection error, please check your internet connection"
-msgstr ""
+msgstr "Ошибка соединения, пожалуйста проверте Ваше интернет соединение"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:14
 msgid "Context Menus"
-msgstr ""
+msgstr "Контекстные меню"
 
 #: gui/builtinContextMenus/envEffectAdd.py:106
 msgid "ContextMenu|ProjectedEffectManipulation|Black Hole"
@@ -1043,11 +1043,11 @@ msgstr ""
 
 #: gui/mainMenuBar.py:167
 msgid "Dev Tools"
-msgstr ""
+msgstr "Инструменты Разработчика"
 
 #: gui/mainMenuBar.py:101 gui/mainMenuBar.py:202
 msgid "Disable Fitting Re&strictions"
-msgstr ""
+msgstr "Отключить Ог&раничения Фита"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
@@ -1071,54 +1071,56 @@ msgstr ""
 #: graphs/data/fitWarpTime/graph.py:47 graphs/data/fitWarpTime/graph.py:48
 #: graphs/data/fitWarpTime/graph.py:51 graphs/data/fitWarpTime/graph.py:52
 msgid "Distance"
-msgstr ""
+msgstr "Дистанция"
 
 #: graphs/data/fitDamageStats/graph.py:66
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "Дистанция между атакующим и целью, как показано в обзорной панели (поверхность-к-поверхности)"
 
 #: graphs/data/fitDamageStats/graph.py:67
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)\n"
 "When set, places the target that far away from the attacker\n"
 "When not set, attacker's weapons always hit the target"
-msgstr ""
+msgstr "Дистанция между атакующим и целью, как показано в обзорной панели (поверхность-к-поверхности)\n"
+"Когда задано, цель помещена на данную дистанцию от атакующего\n"
+"Когда не установлено, оружие атакующего всегда попадает в цель"
 
 #: graphs/data/fitRemoteReps/graph.py:59 graphs/data/fitRemoteReps/graph.py:60
 msgid "Distance between the repairing ship and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "Дистанция между ремонтирующим кораблём и целью, как показано в обзорной панели (поверхность-к-поверхности)"
 
 #: gui/esiFittings.py:156
 msgid "Do you really want to delete {} ({}) from EVE?"
-msgstr ""
+msgstr "Вы действительно хотите удалить {} ({}) из EVE?"
 
 #: gui/updateDialog.py:102
 msgid "Don't remind me again for this release"
-msgstr ""
+msgstr "Не напоминать мне снова об этом релизе"
 
 #: gui/characterEditor.py:789
 msgid "Don't see your EVE character in the list?"
-msgstr ""
+msgstr "Не видите вашего персонажа EVE в списке?"
 
 #: graphs/style.py:88
 msgid "Dotted"
-msgstr ""
+msgstr "Пунктир"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
 msgid "Download"
-msgstr ""
+msgstr "Загрузить"
 
 #: graphs/gui/lists.py:313
 msgid "Drag a fit into this list to graph it"
-msgstr ""
+msgstr "Перетащите фит в этот список, чтобы построить график"
 
 #: graphs/gui/lists.py:370
 msgid "Drag a fit into this list to have your fits graphed against it"
-msgstr ""
+msgstr "Перетащите фит в этот список, чтобы построить график против него"
 
 #: gui/builtinAdditionPanes/commandView.py:163
 msgid "Drag a fit to this area"
-msgstr ""
+msgstr "Перетащите фит в эту область"
 
 #: gui/builtinAdditionPanes/projectedView.py:226
 msgid "Drag an item or fit, or use right-click menu for wormhole effects"
@@ -1398,7 +1400,7 @@ msgstr ""
 #: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
 #: gui/targetProfileEditor.py:78
 msgid "Error"
-msgstr ""
+msgstr "Ошибка"
 
 #: gui/characterEditor.py:897 gui/characterSelection.py:173
 msgid "Error fetching skill information"
@@ -1451,31 +1453,31 @@ msgstr ""
 
 #: gui/propertyEditor.py:39
 msgid "Export"
-msgstr ""
+msgstr "Экспорт"
 
 #: gui/mainMenuBar.py:74
 msgid "Export All Fittings to &HTML"
-msgstr ""
+msgstr "Экспортировать все фиты в &HTML"
 
 #: gui/mainFrame.py:948
 msgid "Export Error"
-msgstr ""
+msgstr "Ошибка Экспорта"
 
 #: gui/esiFittings.py:224
 msgid "Export Fit"
-msgstr ""
+msgstr "Экспорт фита"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:23
 msgid "Export Fittings in a minimal HTML Version, just containing the fittings links without any visual styling"
-msgstr ""
+msgstr "Экспорт фитов в минимальной HTML версии, содержащей только ссылки на ыиты без какого либо визуального оформления"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:57
 msgid "Export Item Stats"
-msgstr ""
+msgstr "Экспорт Параметров Предмета"
 
 #: gui/esiFittings.py:229
 msgid "Export Loaded Charges"
-msgstr ""
+msgstr "Экспорт Загруженных Зарядов"
 
 #: gui/mainFrame.py:807
 msgid "Export Skills Needed As..."
@@ -1483,7 +1485,7 @@ msgstr ""
 
 #: gui/mainMenuBar.py:87
 msgid "Export a fit to the clipboard"
-msgstr ""
+msgstr "Экспортировать фит в буфер"
 
 #: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
 msgid "Export boosters"
@@ -1779,11 +1781,11 @@ msgstr ""
 
 #: graphs/gui/frame.py:51
 msgid "Graphs"
-msgstr ""
+msgstr "Графики"
 
 #: graphs/style.py:53
 msgid "Green"
-msgstr ""
+msgstr "Зеленый"
 
 #: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:122
 #: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:68
@@ -1797,11 +1799,11 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:19
 msgid "HTML Export"
-msgstr ""
+msgstr "Экспорт HTML"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:20
 msgid "HTML Export (File > Export HTML) allows you to export your entire fitting database into an HTML file at the specified location. This file can be used to easily open your fits in a web-based fitting program"
-msgstr ""
+msgstr "HTML экспорт (Файл > Экспорт HTML) позволяет экспортировать всю базу данных фитов в HTML файл в заданном расположении. Этот файл может быть использован для простого открытия Ваших фитов в веб-приложениях фитинга"
 
 #: eos/saveddata/damagePattern.py:114 eos/saveddata/targetProfile.py:87
 msgid "Hawk"
@@ -1813,12 +1815,12 @@ msgstr ""
 
 #: gui/builtinShipBrowser/navigationPanel.py:136
 msgid "Hide Recent Fits"
-msgstr ""
+msgstr "Скрыть Недавние Фиты"
 
 #: gui/builtinShipBrowser/navigationPanel.py:53
 #: gui/builtinShipBrowser/navigationPanel.py:147
 msgid "Hide empty ship groups"
-msgstr ""
+msgstr "Скрыть пустые группы кораблей"
 
 #: gui/builtinViewColumns/baseName.py:59
 msgid "High"
@@ -1914,27 +1916,27 @@ msgstr "Ошибка Импорта"
 
 #: gui/characterEditor.py:442
 msgid "Import Skills"
-msgstr ""
+msgstr "Импорт Навыков"
 
 #: gui/mainMenuBar.py:88
 msgid "Import a fit from the clipboard"
-msgstr ""
+msgstr "Импорт фита из буфера"
 
 #: gui/mainMenuBar.py:118
 msgid "Import characters into pyfa from file"
-msgstr ""
+msgstr "Импорт персонажа в pyfa из файла"
 
 #: gui/mainMenuBar.py:91
 msgid "Import fittings into pyfa"
-msgstr ""
+msgstr "Импорт фитов в pyfa"
 
 #: gui/setEditor.py:148
 msgid "Import implant sets from clipboard"
-msgstr ""
+msgstr "Импорт наборов имплантов из буфера"
 
 #: gui/propertyEditor.py:38 gui/propertyEditor.py:39
 msgid "Import overrides"
-msgstr ""
+msgstr "Импорт переопределений"
 
 #: gui/patternEditor.py:171
 msgid "Import patterns from clipboard"
@@ -1942,11 +1944,11 @@ msgstr ""
 
 #: gui/targetProfileEditor.py:221
 msgid "Import profiles from clipboard"
-msgstr ""
+msgstr "Импорт профилей из буфера"
 
 #: gui/propertyEditor.py:107
 msgid "Import pyfa override file"
-msgstr ""
+msgstr "Импорт файла переобределений pyfa"
 
 #: gui/characterEditor.py:372
 msgid "Import skills from clipboard"
@@ -2012,11 +2014,11 @@ msgstr ""
 
 #: gui/mainFrame.py:894
 msgid "Invalid Path"
-msgstr ""
+msgstr "Неверный Путь"
 
 #: gui/esiFittings.py:198
 msgid "Invalid Token"
-msgstr ""
+msgstr "Неверный Токен"
 
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
 #: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
@@ -2027,7 +2029,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:95 eos/saveddata/targetProfile.py:96
 #: eos/saveddata/targetProfile.py:97 eos/saveddata/targetProfile.py:98
 msgid "Invasion"
-msgstr ""
+msgstr "Вторжение"
 
 #: eos/saveddata/damagePattern.py:66
 msgid "Iridium"
@@ -2043,7 +2045,7 @@ msgstr ""
 #: gui/builtinContextMenus/itemStats.py:38
 #: gui/builtinItemStatsViews/itemCompare.py:147
 msgid "Item"
-msgstr ""
+msgstr "Предмет"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:112
 msgid "Item Market Group Jump"
@@ -2051,7 +2053,7 @@ msgstr ""
 
 #: gui/itemStats.py:58
 msgid "Item stats"
-msgstr ""
+msgstr "Параметры предмета"
 
 #: eos/saveddata/damagePattern.py:115 eos/saveddata/targetProfile.py:88
 msgid "Jaguar"
@@ -2099,21 +2101,21 @@ msgstr ""
 
 #: gui/characterEditor.py:343
 msgid "Level"
-msgstr ""
+msgstr "Уровень"
 
 #: gui/builtinContextMenus/skillAffectors.py:79
 #, python-format
 msgid "Level %s"
-msgstr ""
+msgstr "Уровень %s"
 
 #: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
 #: gui/characterEditor.py:616 gui/characterEditor.py:649
 msgid "Level {}"
-msgstr ""
+msgstr "Уровень {}"
 
 #: gui/characterEditor.py:532
 msgid "Level {}d"
-msgstr ""
+msgstr "Уровень {}d"
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Light"
@@ -2125,19 +2127,19 @@ msgstr ""
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Loaded Charges"
-msgstr ""
+msgstr "Загруженные Заряды"
 
 #: gui/mainFrame.py:273
 msgid "Loading previous fits..."
-msgstr ""
+msgstr "Загрузка предыдущих фитов..."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Local Server"
-msgstr ""
+msgstr "Локальный Сервер"
 
 #: gui/builtinContextMenus/envEffectAdd.py:193
 msgid "Localized"
-msgstr ""
+msgstr "Переведено"
 
 #: graphs/data/fitLockTime/graph.py:34
 msgid "Lock Time"
@@ -2161,7 +2163,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:38
 msgid "Log file location:"
-msgstr ""
+msgstr "Расположение файла логов:"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:19
 msgid "Logging"
@@ -2201,19 +2203,19 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Manual proxy settings"
-msgstr ""
+msgstr "Ручные настройки прокси"
 
 #: gui/mainFrame.py:182
 msgid "Market"
-msgstr ""
+msgstr "Рынок"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:23
 msgid "Market & Prices"
-msgstr ""
+msgstr "Рынок и Цены"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:30
 msgid "Market && Prices"
-msgstr ""
+msgstr "Рынок и Цены"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:99
 msgid "Market Group Selection"
@@ -2318,7 +2320,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:76 eos/saveddata/targetProfile.py:77
 #: eos/saveddata/targetProfile.py:78
 msgid "Mission"
-msgstr ""
+msgstr "Миссия"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:28
 msgid "Mixed"
@@ -2338,11 +2340,11 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleFill.py:24
 msgid "Module"
-msgstr ""
+msgstr "Modul"
 
 #: graphs/data/fitMobility/graph.py:37
 msgid "Momentum"
-msgstr ""
+msgstr "Импульс"
 
 #: eos/saveddata/damagePattern.py:154 eos/saveddata/targetProfile.py:78
 msgid "Mordus Legion"
@@ -2457,16 +2459,16 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:187 eos/saveddata/targetProfile.py:188
 #: eos/saveddata/targetProfile.py:189
 msgid "NPC"
-msgstr ""
+msgstr "NPC"
 
 #: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 #: gui/esiFittings.py:300
 msgid "Need at least one ESI character to export"
-msgstr ""
+msgstr "Необходим хотя бы один ESI персонаж для экспорта"
 
 #: gui/esiFittings.py:114
 msgid "Need at least one ESI character to fetch"
@@ -2474,7 +2476,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:17
 msgid "Network"
-msgstr ""
+msgstr "Сеть"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
@@ -2482,31 +2484,31 @@ msgstr ""
 
 #: gui/builtinContextMenus/itemAmountChange.py:98
 msgid "New Amount ({}-{})"
-msgstr ""
+msgstr "Новая количество ({}-{})"
 
 #: gui/builtinContextMenus/itemAmountChange.py:98
 msgid "New Amount:"
-msgstr ""
+msgstr "Новое количество:"
 
 #: gui/builtinContextMenus/implantSetSave.py:45
 msgid "New Implant Set"
-msgstr ""
+msgstr "Новый Набор Имплантов"
 
 #: gui/builtinShipBrowser/navigationPanel.py:51
 msgid "New fitting"
-msgstr ""
+msgstr "Новый фит"
 
 #: gui/builtinItemStatsViews/itemEffects.py:58
 msgid "No"
-msgstr ""
+msgstr "Нет"
 
 #: gui/builtinContextMenus/targetProfile/switcher.py:85
 msgid "No Profile"
-msgstr ""
+msgstr "Нет Профиля"
 
 #: gui/characterSelection.py:230
 msgid "No active fit"
-msgstr ""
+msgstr "Нет активного фита"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:92
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:100
@@ -2517,7 +2519,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "No proxy"
-msgstr ""
+msgstr "Нет прокси"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
@@ -2530,11 +2532,11 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 #: gui/characterEditor.py:855
 msgid "None"
-msgstr ""
+msgstr "Пусто"
 
 #: graphs/style.py:80
 msgid "Normal"
-msgstr ""
+msgstr "Нормальный"
 
 #: eos/saveddata/damagePattern.py:128
 msgid "Normal Subcaps"
@@ -2542,15 +2544,15 @@ msgstr ""
 
 #: gui/builtinContextMenus/skillAffectors.py:77
 msgid "Not Learned"
-msgstr ""
+msgstr "Не Изучено"
 
 #: gui/characterEditor.py:399 service/character.py:322
 msgid "Not learned"
-msgstr ""
+msgstr "Не изучено"
 
 #: gui/additionsPane.py:87
 msgid "Notes"
-msgstr ""
+msgstr "Примечания"
 
 #: eos/saveddata/damagePattern.py:89
 msgid "Nova"
@@ -2566,35 +2568,35 @@ msgstr ""
 
 #: gui/mainMenuBar.py:167
 msgid "Open &Dev Tools"
-msgstr ""
+msgstr "Открыть &Инструменты Разработчика"
 
 #: gui/characterSelection.py:150
 msgid "Open Character Editor"
-msgstr ""
+msgstr "Открыть Редактор Персонажа"
 
 #: gui/builtinContextMenus/fitOpenNewTab.py:37
 msgid "Open Fit in New Tab"
-msgstr ""
+msgstr "Открыть Фит в Новой Вкладке"
 
 #: gui/mainFrame.py:1012
 msgid "Open One Or More Character Files"
-msgstr ""
+msgstr "Открыть Один Или Несколько Файлов Персонажей"
 
 #: gui/mainFrame.py:836
 msgid "Open One Or More Fitting Files"
-msgstr ""
+msgstr "Открыть Один Или Несколько Файлов Фитов"
 
 #: gui/mainMenuBar.py:166
 msgid "Open Wid&gets Inspect tool"
-msgstr ""
+msgstr "Открыть Инструмент Проверки Ви&джетов"
 
 #: gui/mainMenuBar.py:166
 msgid "Open Widgets Inspect tool"
-msgstr ""
+msgstr "Открыть Инструмент Проверки Виджетов"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
 msgid "Open fittings in a new page by default"
-msgstr ""
+msgstr "Открывать фиты в новой вкладке по умолчанию"
 
 #: gui/builtinContextMenus/shipJump.py:35
 msgid "Open in Fitting Browser"
@@ -2602,15 +2604,15 @@ msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:227
 msgid "Open in new tab"
-msgstr ""
+msgstr "Открыть в новой вкладке"
 
 #: gui/copySelectDialog.py:50
 msgid "Optimize Prices"
-msgstr ""
+msgstr "Оптимизировать Цену"
 
 #: graphs/style.py:55
 msgid "Orange"
-msgstr ""
+msgstr "Оранжевый"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Ore hold"
@@ -2764,7 +2766,7 @@ msgstr ""
 
 #: gui/itemStats.py:200
 msgid "Properties"
-msgstr ""
+msgstr "Свойства"
 
 #: gui/builtinContextMenus/shipModeChange.py:19
 msgid "Propulsion"
@@ -2776,11 +2778,11 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:49
 msgid "Proxy settings"
-msgstr ""
+msgstr "Настройки прокси"
 
 #: graphs/style.py:58
 msgid "Purple"
-msgstr ""
+msgstr "Пурпурный"
 
 #: gui/builtinContextMenus/envEffectAdd.py:210
 msgid "PvP Weather"
@@ -2788,15 +2790,15 @@ msgstr ""
 
 #: gui/aboutData.py:49
 msgid "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of accuracy. Pyfa can run on all platforms where Python and wxWidgets are supported."
-msgstr ""
+msgstr "Pyfa (Python Fitting Assistant) это отдельное приложение с открытом исходным кодом, которое может создавать и симулировать фиты для СайФай ММОРПГ EVE Online с высокой степенью точности. Pyfa может работать на всех платформах которые поддерживают Python и wxWidgets."
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:44
 msgid "Pyfa Update checks"
-msgstr ""
+msgstr "Проверка Обновления Pyfa"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:15
 msgid "Pyfa can automatically check and notify you of new releases. This feature is toggled in the Network settings. Here, you may allow pre-release notifications and view suppressed release notifications, if any."
-msgstr ""
+msgstr "Pyfa может автоматически проверять и уведомлять о новых версиях. Эта функция может быть включена в Настойках сети. Здесь Вы можете разрешиь пререлизные уведомления и просмотреть отключённые уведомления, если таковые имеются."
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:129
 msgid "Quafe hold"
@@ -2804,11 +2806,11 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "Quantity of active items"
-msgstr ""
+msgstr "Количество активных предметов"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "Quantity of all items"
-msgstr ""
+msgstr "Количество всех предметов"
 
 #: eos/saveddata/damagePattern.py:45
 msgid "Radio"
@@ -2816,15 +2818,15 @@ msgstr ""
 
 #: gui/targetProfileEditor.py:126
 msgid "Radius"
-msgstr ""
+msgstr "Радиус"
 
 #: gui/builtinItemStatsViews/itemMutator.py:54
 msgid "Random stats"
-msgstr ""
+msgstr "Случайные параметры"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:63
 msgid "Range"
-msgstr ""
+msgstr "Дальность"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:222
 msgid "Raw HP: "
@@ -2837,16 +2839,16 @@ msgstr ""
 
 #: gui/mainFrame.py:654
 msgid "Re-enabling fitting restrictions for this fit will also remove any illegal items from the fit. Do you want to continue?"
-msgstr ""
+msgstr "Включение ограничений фита превидёт к удалению любых неподходящих предметов из фита. Вы хотите продолжить?"
 
 #: gui/builtinShipBrowser/navigationPanel.py:56
 #: gui/builtinShipBrowser/navigationPanel.py:129
 msgid "Recent Fits"
-msgstr ""
+msgstr "Недавние Фиты"
 
 #: gui/builtinMarketBrowser/marketTree.py:37
 msgid "Recently Used Items"
-msgstr ""
+msgstr "Недавно Использованные Предметы"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:43
 msgid "Recharge rates"
@@ -2854,17 +2856,17 @@ msgstr ""
 
 #: graphs/style.py:52
 msgid "Red"
-msgstr ""
+msgstr "Красный"
 
 #: gui/mainMenuBar.py:84
 msgid "Redo the most recent undone action"
-msgstr ""
+msgstr "Повтор последнего отменённого действия"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:77
 #: gui/builtinItemStatsViews/itemAttributes.py:62
 #: gui/builtinItemStatsViews/itemCompare.py:79
 msgid "Refresh"
-msgstr ""
+msgstr "Обновить"
 
 #: gui/characterSelection.py:68
 msgid "Refresh Skills"
