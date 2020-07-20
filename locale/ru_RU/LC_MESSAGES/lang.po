@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 11:01\n"
+"PO-Revision-Date: 2020-07-20 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -148,11 +148,11 @@ msgstr "&В буфер"
 
 #: gui/mainFrame.py:690
 msgid "&Turn Overrides Off"
-msgstr ""
+msgstr "&Выключить Переопределения"
 
 #: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
-msgstr ""
+msgstr "&Включить Переопределения"
 
 #: gui/mainMenuBar.py:83
 msgid "&Undo"
@@ -594,7 +594,7 @@ msgstr "Калдари (Щит)"
 
 #: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:73
 msgid "Caldari State"
-msgstr ""
+msgstr "Государство Калдари"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:115
 msgid "Calibration"
@@ -934,7 +934,7 @@ msgstr "Имя профиля урона уже используется, пож
 
 #: graphs/data/fitDamageStats/graph.py:56
 msgid "Damage Stats"
-msgstr ""
+msgstr "Параметры Урона"
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Damage inflicted"
@@ -1390,7 +1390,7 @@ msgstr "Введите имя для вашего нового Персонаж�
 
 #: gui/builtinContextMenus/implantSetSave.py:51
 msgid "Enter a name for your new Implant Set:"
-msgstr ""
+msgstr "Введите имя для вашего нового Набора Имплантов:"
 
 #: eos/saveddata/damagePattern.py:113 eos/saveddata/targetProfile.py:86
 msgid "Enyo"
@@ -1409,7 +1409,7 @@ msgstr ""
 
 #: gui/errorDialog.py:68
 msgid "Error!"
-msgstr ""
+msgstr "Ошибка!"
 
 #: eos/saveddata/damagePattern.py:57 eos/saveddata/damagePattern.py:58
 #: eos/saveddata/damagePattern.py:59 eos/saveddata/damagePattern.py:60
@@ -1440,7 +1440,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:67
 msgid "Expand All"
-msgstr ""
+msgstr "Развернуть Всё"
 
 #: eos/saveddata/damagePattern.py:42
 #: gui/builtinContextMenus/moduleAmmoChange.py:26
@@ -1770,11 +1770,11 @@ msgstr ""
 
 #: gui/mainMenuBar.py:161
 msgid "Go to EVE Online Forum thread"
-msgstr ""
+msgstr "Перейдите к теме на форуме EVE"
 
 #: gui/mainMenuBar.py:160
 msgid "Go to wiki on GitHub"
-msgstr ""
+msgstr "Перейдите к вики на GitHub"
 
 #: gui/characterSelection.py:102
 msgid "Grant Missing Skills"
@@ -1957,23 +1957,23 @@ msgstr ""
 
 #: gui/esiFittings.py:64
 msgid "Import to pyfa"
-msgstr ""
+msgstr "Импорт в pyfa"
 
 #: gui/mainFrame.py:1021
 msgid "Importing Character..."
-msgstr ""
+msgstr "Импортирование Персонажа..."
 
 #: gui/mainFrame.py:846
 msgid "Importing fits"
-msgstr ""
+msgstr "Импортирование фитов"
 
 #: gui/characterEditor.py:440
 msgid "Importing skills into this character will set the skill levels as pending. To save the skills permanently, please click the Save button at the bottom of the window after importing"
-msgstr ""
+msgstr "Импортирование навыков в этого персонажа временно установит уровни навыков. Для сохранения навыков на постоянной основе, пожалуйста, нажмите кнопку Сохранить внизу этого окна после импорта"
 
 #: gui/copySelectDialog.py:59
 msgid "Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
-msgstr ""
+msgstr "Вкючить теги форматирования для вставки фита напрямую в корп. биллютени, МОТД, и т. д."
 
 #: gui/builtinStatsViews/resistancesViewFull.py:115
 msgid "Incoming damage pattern"
@@ -1981,7 +1981,7 @@ msgstr ""
 
 #: gui/targetProfileEditor.py:50
 msgid "Incorrect formatting (decimals only)"
-msgstr ""
+msgstr "Неверное форматирование (только десятичные дроби)"
 
 #: gui/targetProfileEditor.py:52
 msgid "Incorrect range (must be 0-100)"
@@ -2085,7 +2085,7 @@ msgstr ""
 #: gui/builtinStatsViews/capacitorViewFull.py:77
 #: gui/builtinStatsViews/capacitorViewFull.py:171
 msgid "Lasts "
-msgstr ""
+msgstr "Хватит на "
 
 #: gui/builtinStatsViews/resourcesViewFull.py:112
 msgid "Launcher hardpoints"
@@ -2196,11 +2196,11 @@ msgstr ""
 
 #: gui/mainFrame.py:673
 msgid "Manage Characters"
-msgstr ""
+msgstr "Управление Персонажами"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Manual"
-msgstr ""
+msgstr "Ручной"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Manual proxy settings"
@@ -2277,7 +2277,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 msgid "Minimal"
-msgstr ""
+msgstr "Минимум"
 
 #: gui/builtinStatsViews/miningyieldViewFull.py:39
 msgid "Mining Yield"
@@ -2285,15 +2285,15 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:59
 msgid "Minmatar (Armor)"
-msgstr ""
+msgstr "Минматар (Броня)"
 
 #: eos/saveddata/targetProfile.py:58
 msgid "Minmatar (Shield)"
-msgstr ""
+msgstr "Минматар (Щит)"
 
 #: eos/saveddata/damagePattern.py:153 eos/saveddata/targetProfile.py:77
 msgid "Minmatar Republic"
-msgstr ""
+msgstr "Республика Минматар"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 msgid "Misc"
@@ -2354,7 +2354,7 @@ msgstr ""
 #: gui/builtinContextMenus/moduleAmmoChange.py:97
 #: gui/builtinContextMenus/moduleAmmoChange.py:115
 msgid "More Damage"
-msgstr ""
+msgstr "Больше Урона"
 
 #: eos/saveddata/damagePattern.py:52
 msgid "Multifrequency"
@@ -2621,7 +2621,7 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:79 eos/saveddata/targetProfile.py:80
 msgid "Other"
-msgstr ""
+msgstr "Другое"
 
 #: eos/saveddata/damagePattern.py:98 eos/saveddata/targetProfile.py:100
 #: eos/saveddata/targetProfile.py:107 eos/saveddata/targetProfile.py:114
@@ -2853,7 +2853,7 @@ msgstr "Недавно Использованные Предметы"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:43
 msgid "Recharge rates"
-msgstr ""
+msgstr "Скорость перезарядки"
 
 #: graphs/style.py:52
 msgid "Red"
@@ -2951,7 +2951,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinStatsViews/resourcesViewFull.py:84
 msgid "Resources"
-msgstr ""
+msgstr "Ресурсы"
 
 #: eos/saveddata/damagePattern.py:142 eos/saveddata/targetProfile.py:95
 msgid "Retaliating Amarr Entities"
@@ -3019,7 +3019,7 @@ msgstr "Вторжение Саньши"
 #: eos/saveddata/damagePattern.py:106 eos/saveddata/damagePattern.py:124
 #: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:70
 msgid "Sanshas Nation"
-msgstr ""
+msgstr "Нация Саньши"
 
 #: gui/mainFrame.py:860
 msgid "Save Backup As..."
@@ -3682,7 +3682,7 @@ msgstr ""
 
 #: gui/characterEditor.py:614
 msgid "Unlearn"
-msgstr ""
+msgstr "Забыть"
 
 #: gui/updateDialog.py:54
 msgid "Update Available"
