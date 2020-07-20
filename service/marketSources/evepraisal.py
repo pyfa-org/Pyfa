@@ -38,6 +38,7 @@ systemAliases = {
 class EvePraisal:
 
     name = 'evepraisal'
+    group = 'tranquility'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first

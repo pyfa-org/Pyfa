@@ -42049,6 +42049,46 @@
     "published": 0, 
     "stackable": 1
   }, 
+  "3050": {
+    "attributeID": 3050, 
+    "dataType": 4, 
+    "defaultValue": 2.0, 
+    "description": "The amount of fleets needed for a single pvp filament match ", 
+    "highIsGood": 0, 
+    "name": "AmountOfFleetsPerMatch", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "3051": {
+    "attributeID": 3051, 
+    "categoryID": 17, 
+    "dataType": 5, 
+    "defaultValue": 1000.0, 
+    "description": "The range players in fleet need to be within fleet member doing an action", 
+    "displayName": "Area Effect Radius", 
+    "displayNameID": 564554, 
+    "highIsGood": 1, 
+    "iconID": 1391, 
+    "name": "FleetMemberPickupRadius", 
+    "published": 1, 
+    "stackable": 1, 
+    "tooltipTitleID": 564555, 
+    "unitID": 1
+  }, 
+  "3052": {
+    "attributeID": 3052, 
+    "categoryID": 17, 
+    "dataType": 4, 
+    "defaultValue": 1.0, 
+    "description": "Amount of players in fleet needed to be valid", 
+    "displayName": "Number Of Ships required", 
+    "displayNameID": 564556, 
+    "highIsGood": 1, 
+    "iconID": 1391, 
+    "name": "FleetMembersNeeded", 
+    "published": 1, 
+    "stackable": 1
+  }, 
   "3093": {
     "attributeID": 3093, 
     "dataType": 4, 

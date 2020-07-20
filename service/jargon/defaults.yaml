@@ -586,7 +586,10 @@ enam:  # mistype of "eanm"
   - 'energized adaptive nano membrane'
 anp:
   - 'anp'
-  - 'adaptive nano plating'
+  - 'multispectrum coating'
+plating:
+  - 'plating'
+  - 'coating'
 rah:
   - 'rah'
   - 'reactive armor hardener'
