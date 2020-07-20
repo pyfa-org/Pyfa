@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 12:15\n"
+"PO-Revision-Date: 2020-07-20 14:35\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
-msgstr ""
+msgstr " DPS: "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
@@ -169,7 +169,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
-msgstr ""
+msgstr "0秒"
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
@@ -225,15 +225,15 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
 #: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
 msgid "Abyssal"
-msgstr ""
+msgstr "アビサル"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "アビサル環境"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
-msgstr ""
+msgstr "アクティブ"
 
 #: gui/builtinViewColumns/abilities.py:37
 msgid "Active Abilities"
@@ -350,19 +350,19 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:53
 msgid "Amarr (Armor)"
-msgstr ""
+msgstr "アマー (アーマー)"
 
 #: eos/saveddata/targetProfile.py:52
 msgid "Amarr (Shield)"
-msgstr ""
+msgstr "アマー (シールド)"
 
 #: eos/saveddata/damagePattern.py:148 eos/saveddata/targetProfile.py:72
 msgid "Amarr Empire"
-msgstr ""
+msgstr "アマー帝国"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:115
 msgid "Ammo hold"
-msgstr ""
+msgstr "弾薬ホールド"
 
 #: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:120
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
@@ -403,7 +403,7 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:47
 msgid "Armor"
-msgstr ""
+msgstr "アーマー"
 
 #: eos/saveddata/targetProfile.py:50
 msgid "Armor (+T2 DCU)"
@@ -415,11 +415,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Armor resistance"
-msgstr ""
+msgstr "アーマー レジスタンス"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
-msgstr ""
+msgstr "アーマー: "
 
 #: eos/saveddata/damagePattern.py:117 eos/saveddata/targetProfile.py:90
 msgid "Ashimmu (Blood Raiders)"
@@ -436,12 +436,12 @@ msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:74
 msgid "Attacker"
-msgstr ""
+msgstr "アタッカー"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:44
 #: gui/builtinItemStatsViews/itemProperties.py:56
 msgid "Attribute"
-msgstr ""
+msgstr "属性"
 
 #: gui/mainMenuBar.py:128
 msgid "Attribute &Overrides"
@@ -453,7 +453,7 @@ msgstr ""
 
 #: gui/itemStats.py:177
 msgid "Attributes"
-msgstr ""
+msgstr "属性"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:43
 msgid "Auto"
@@ -502,11 +502,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
-msgstr ""
+msgstr "巡洋戦艦"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battleship"
-msgstr ""
+msgstr "戦艦"
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
@@ -532,14 +532,14 @@ msgstr ""
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
-msgstr ""
+msgstr "ブースター"
 
 #: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
 #: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
 #: gui/copySelectDialog.py:56
 msgid "Boosters"
-msgstr ""
+msgstr "ブースター"
 
 #: graphs/style.py:82
 msgid "Bright"
@@ -574,11 +574,11 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:150 eos/saveddata/targetProfile.py:74
 msgid "CONCORD"
-msgstr ""
+msgstr "CONCORD"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
@@ -586,24 +586,24 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:55
 msgid "Caldari (Armor)"
-msgstr ""
+msgstr "カルダリ (アーマー)"
 
 #: eos/saveddata/targetProfile.py:54
 msgid "Caldari (Shield)"
-msgstr ""
+msgstr "カルダリ (シールド)"
 
 #: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:73
 msgid "Caldari State"
-msgstr ""
+msgstr "カルダリ連合"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:115
 msgid "Calibration"
-msgstr ""
+msgstr "キャリブレーション"
 
 #: graphs/data/fitCapacitor/graph.py:35 graphs/data/fitCapacitor/graph.py:36
 #: graphs/data/fitCapacitor/graph.py:38 graphs/data/fitCapacitor/graph.py:43
 msgid "Cap amount"
-msgstr ""
+msgstr "キャパシタ容量"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Cap neutralized per second"
@@ -617,7 +617,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 msgid "Capacitor"
-msgstr ""
+msgstr "キャパシタ"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
@@ -632,7 +632,7 @@ msgstr ""
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
 msgid "Cargo"
-msgstr ""
+msgstr "カーゴ"
 
 #: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
@@ -643,16 +643,16 @@ msgstr ""
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/resourcesViewFull.py:158
 msgid "Cargo bay"
-msgstr ""
+msgstr "カーゴベイ"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
 msgid "Cargohold: "
-msgstr ""
+msgstr "カーゴホールド: "
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
-msgstr ""
+msgstr "艦載機母艦"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Caustic"
@@ -711,11 +711,11 @@ msgstr ""
 
 #: gui/characterEditor.py:771
 msgid "Character:"
-msgstr ""
+msgstr "キャラクター:"
 
 #: gui/characterSelection.py:47
 msgid "Character: "
-msgstr ""
+msgstr "キャラクター: "
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:48
 msgid "Charge"
@@ -723,7 +723,7 @@ msgstr ""
 
 #: gui/builtinViews/fittingView.py:661
 msgid "Citadel"
-msgstr ""
+msgstr "シタデル"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:37
 msgid "Citadel System Security"
@@ -857,7 +857,7 @@ msgstr ""
 #: gui/builtinItemStatsViews/itemTraits.py:25
 #: gui/builtinShipBrowser/fitItem.py:107
 msgid "Copy"
-msgstr ""
+msgstr "コピー"
 
 #: gui/builtinContextMenus/additionsExportAll.py:39
 msgid "Copy All {}"
@@ -893,7 +893,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Cruiser"
-msgstr ""
+msgstr "巡洋艦"
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/targetProfile.py:81
 msgid "Cruor (Blood Raiders)"
@@ -914,11 +914,11 @@ msgstr ""
 
 #: graphs/style.py:57
 msgid "Cyan"
-msgstr ""
+msgstr "シアン"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "DPS"
-msgstr ""
+msgstr "DPS"
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
@@ -950,14 +950,14 @@ msgstr ""
 
 #: graphs/style.py:81
 msgid "Dark"
-msgstr ""
+msgstr "ダーク"
 
 #: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:100
 #: eos/saveddata/targetProfile.py:101 eos/saveddata/targetProfile.py:102
 #: eos/saveddata/targetProfile.py:103 eos/saveddata/targetProfile.py:104
 #: eos/saveddata/targetProfile.py:105
 msgid "Dark Matter All Tiers"
-msgstr ""
+msgstr "ダークマター 全段階"
 
 #: graphs/style.py:89
 msgid "Dash-dotted"
@@ -969,7 +969,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:15
 msgid "Database"
-msgstr ""
+msgstr "データベース"
 
 #: eos/saveddata/damagePattern.py:120 eos/saveddata/damagePattern.py:121
 #: eos/saveddata/damagePattern.py:122 eos/saveddata/damagePattern.py:123
@@ -978,7 +978,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:68 eos/saveddata/targetProfile.py:69
 #: eos/saveddata/targetProfile.py:70 eos/saveddata/targetProfile.py:71
 msgid "Deadspace"
-msgstr ""
+msgstr "デッドスペース"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:56
 msgid "Debug Logging Enabled"
@@ -1035,7 +1035,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Destroyer"
-msgstr ""
+msgstr "駆逐艦"
 
 #: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "Destructible Beacons"
@@ -1106,7 +1106,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
 msgid "Download"
-msgstr ""
+msgstr "ダウンロード"
 
 #: graphs/gui/lists.py:313
 msgid "Drag a fit into this list to graph it"
@@ -1131,7 +1131,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:143
 #: eos/saveddata/damagePattern.py:146
 msgid "Dread"
-msgstr ""
+msgstr "攻城艦"
 
 #: eos/saveddata/damagePattern.py:142 eos/saveddata/damagePattern.py:145
 msgid "Dread/Subcaps"
@@ -1149,7 +1149,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Drone"
-msgstr ""
+msgstr "ドローン"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:26
 msgid "Drone Mode"
@@ -1157,15 +1157,15 @@ msgstr ""
 
 #: gui/builtinStatsViews/resourcesViewFull.py:157
 msgid "Drone bandwidth"
-msgstr ""
+msgstr "ドローン帯域幅"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:155
 msgid "Drone bay"
-msgstr ""
+msgstr "ドローンベイ"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:66
 msgid "Drone range"
-msgstr ""
+msgstr "ドローン制御範囲"
 
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/targetProfile.py:99
 #: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:113
@@ -1181,7 +1181,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
 #: gui/builtinStatsViews/priceViewFull.py:58
 msgid "Drones"
-msgstr ""
+msgstr "ドローン"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:113
 msgid "Drones active"
@@ -1211,19 +1211,19 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
 msgid "EM"
-msgstr ""
+msgstr "EM"
 
 #: gui/targetProfileEditor.py:119
 msgid "EM resistance"
-msgstr ""
+msgstr "EM レジスタンス"
 
 #: eos/saveddata/damagePattern.py:81
 msgid "EMP"
-msgstr ""
+msgstr "EMP"
 
 #: gui/esiFittings.py:313 gui/esiFittings.py:317 gui/esiFittings.py:325
 msgid "ERROR"
-msgstr ""
+msgstr "エラー"
 
 #: gui/mainFrame.py:1014
 msgid "EVE API XML character files"
@@ -1236,7 +1236,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 #: gui/characterEditor.py:162
 msgid "EVE SSO"
-msgstr ""
+msgstr "EVE SSO"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:37
 msgid "EVE Servers (API && CREST import)"
@@ -1289,21 +1289,21 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:110 eos/saveddata/targetProfile.py:111
 #: eos/saveddata/targetProfile.py:112
 msgid "Electrical T1/T2"
-msgstr ""
+msgstr "電気 T1/T2"
 
 #: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:114
 #: eos/saveddata/targetProfile.py:115 eos/saveddata/targetProfile.py:116
 #: eos/saveddata/targetProfile.py:117 eos/saveddata/targetProfile.py:118
 #: eos/saveddata/targetProfile.py:119
 msgid "Electrical T3 (Some T5 Rooms)"
-msgstr ""
+msgstr "電気T3（一部T5層）"
 
 #: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:121
 #: eos/saveddata/targetProfile.py:122 eos/saveddata/targetProfile.py:123
 #: eos/saveddata/targetProfile.py:124 eos/saveddata/targetProfile.py:125
 #: eos/saveddata/targetProfile.py:126
 msgid "Electrical T4/T5"
-msgstr ""
+msgstr "電気 T4/T5"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:85
 msgid "Electromagnetic resistance"
@@ -1398,7 +1398,7 @@ msgstr ""
 #: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
 #: gui/targetProfileEditor.py:78
 msgid "Error"
-msgstr ""
+msgstr "エラー"
 
 #: gui/characterEditor.py:897 gui/characterSelection.py:173
 msgid "Error fetching skill information"
@@ -1406,34 +1406,34 @@ msgstr ""
 
 #: gui/errorDialog.py:68
 msgid "Error!"
-msgstr ""
+msgstr "エラー!"
 
 #: eos/saveddata/damagePattern.py:57 eos/saveddata/damagePattern.py:58
 #: eos/saveddata/damagePattern.py:59 eos/saveddata/damagePattern.py:60
 #: eos/saveddata/damagePattern.py:61
 msgid "Exotic Plasma"
-msgstr ""
+msgstr "エキゾチック プラズマ"
 
 #: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:149
 #: eos/saveddata/targetProfile.py:150 eos/saveddata/targetProfile.py:151
 #: eos/saveddata/targetProfile.py:152 eos/saveddata/targetProfile.py:153
 #: eos/saveddata/targetProfile.py:154
 msgid "Exotic T1/T2"
-msgstr ""
+msgstr "エキゾチック T1/T2"
 
 #: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:156
 #: eos/saveddata/targetProfile.py:157 eos/saveddata/targetProfile.py:158
 #: eos/saveddata/targetProfile.py:159 eos/saveddata/targetProfile.py:160
 #: eos/saveddata/targetProfile.py:161
 msgid "Exotic T3 (Some T5 Rooms)"
-msgstr ""
+msgstr "エキゾチック T3 (一部T5層)"
 
 #: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:163
 #: eos/saveddata/targetProfile.py:164 eos/saveddata/targetProfile.py:165
 #: eos/saveddata/targetProfile.py:166 eos/saveddata/targetProfile.py:167
 #: eos/saveddata/targetProfile.py:168
 msgid "Exotic T4/T5"
-msgstr ""
+msgstr "エキゾチック T4/T5"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:67
 msgid "Expand All"
@@ -1442,12 +1442,12 @@ msgstr "すべてを展開"
 #: eos/saveddata/damagePattern.py:42
 #: gui/builtinContextMenus/moduleAmmoChange.py:26
 msgid "Explosive"
-msgstr ""
+msgstr "Exp"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:88
 #: gui/targetProfileEditor.py:122
 msgid "Explosive resistance"
-msgstr ""
+msgstr "Exp レジスタンス"
 
 #: gui/propertyEditor.py:39
 msgid "Export"
@@ -1583,7 +1583,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/resourcesViewFull.py:156
 msgid "Fighter bay"
-msgstr ""
+msgstr "戦闘機ベイ"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:114
 msgid "Fighter squadrons active"
@@ -1593,11 +1593,11 @@ msgstr ""
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
 msgid "Fighters"
-msgstr ""
+msgstr "戦闘機"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Filament"
-msgstr ""
+msgstr "フィラメント"
 
 #: gui/builtinContextMenus/itemFill.py:32
 msgid "Fill With Module"
@@ -1622,25 +1622,25 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:131 eos/saveddata/targetProfile.py:132
 #: eos/saveddata/targetProfile.py:133
 msgid "Firestorm T1/T2"
-msgstr ""
+msgstr "ファイアストーム T1/T2"
 
 #: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:135
 #: eos/saveddata/targetProfile.py:136 eos/saveddata/targetProfile.py:137
 #: eos/saveddata/targetProfile.py:138 eos/saveddata/targetProfile.py:139
 #: eos/saveddata/targetProfile.py:140
 msgid "Firestorm T3 (Some T5 Rooms)"
-msgstr ""
+msgstr "ファイアストーム T3 (一部T5層)"
 
 #: eos/saveddata/targetProfile.py:141 eos/saveddata/targetProfile.py:142
 #: eos/saveddata/targetProfile.py:143 eos/saveddata/targetProfile.py:144
 #: eos/saveddata/targetProfile.py:145 eos/saveddata/targetProfile.py:146
 #: eos/saveddata/targetProfile.py:147
 msgid "Firestorm T4/T5"
-msgstr ""
+msgstr "ファイアストーム T4/T5"
 
 #: graphs/gui/lists.py:306
 msgid "Fit"
-msgstr ""
+msgstr "フィット"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:47
 msgid "Fitting Database:"
@@ -1657,7 +1657,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:113
 msgid "Fleet hangar"
-msgstr ""
+msgstr "フリートハンガー"
 
 #: gui/copySelectDialog.py:59
 msgid "Formatting Tags"
@@ -1674,11 +1674,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Frigate"
-msgstr ""
+msgstr "フリゲート"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:116
 msgid "Fuel bay"
-msgstr ""
+msgstr "燃料ベイ"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
@@ -1701,15 +1701,15 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:57
 msgid "Gallente (Armor)"
-msgstr ""
+msgstr "ガレンテ (アーマー)"
 
 #: eos/saveddata/targetProfile.py:56
 msgid "Gallente (Shield)"
-msgstr ""
+msgstr "ガレンテ (シールド)"
 
 #: eos/saveddata/damagePattern.py:151 eos/saveddata/targetProfile.py:75
 msgid "Gallente Federation"
-msgstr ""
+msgstr "ガレンテ連邦"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:57
 msgid "Game Database:"
@@ -1717,28 +1717,28 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:51
 msgid "Gamma"
-msgstr ""
+msgstr "ガンマ"
 
 #: eos/saveddata/targetProfile.py:169 eos/saveddata/targetProfile.py:170
 #: eos/saveddata/targetProfile.py:171 eos/saveddata/targetProfile.py:172
 #: eos/saveddata/targetProfile.py:173 eos/saveddata/targetProfile.py:174
 #: eos/saveddata/targetProfile.py:175
 msgid "Gamma T1/T2"
-msgstr ""
+msgstr "ガンマ T1/T2"
 
 #: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:177
 #: eos/saveddata/targetProfile.py:178 eos/saveddata/targetProfile.py:179
 #: eos/saveddata/targetProfile.py:180 eos/saveddata/targetProfile.py:181
 #: eos/saveddata/targetProfile.py:182
 msgid "Gamma T3 (Some T5 Rooms)"
-msgstr ""
+msgstr "ガンマ　T3 (一部T5層)"
 
 #: eos/saveddata/targetProfile.py:183 eos/saveddata/targetProfile.py:184
 #: eos/saveddata/targetProfile.py:185 eos/saveddata/targetProfile.py:186
 #: eos/saveddata/targetProfile.py:187 eos/saveddata/targetProfile.py:188
 #: eos/saveddata/targetProfile.py:189
 msgid "Gamma T4/T5"
-msgstr ""
+msgstr "ガンマ T4/T4"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:125
 msgid "Gas hold"
@@ -1788,12 +1788,12 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:122
 #: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:68
 msgid "Guristas"
-msgstr ""
+msgstr "ガリスタス"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:172
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "HP"
-msgstr ""
+msgstr "HP"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:19
 msgid "HTML Export"
@@ -1830,7 +1830,7 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:48
 msgid "Hull"
-msgstr ""
+msgstr "船体"
 
 #: eos/saveddata/targetProfile.py:51
 msgid "Hull (+T2 DCU)"
@@ -1838,15 +1838,15 @@ msgstr ""
 
 #: gui/builtinStatsViews/rechargeViewFull.py:78
 msgid "Hull repair amount"
-msgstr ""
+msgstr "船体回復量"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:114
 msgid "Hull resistance"
-msgstr ""
+msgstr "船体 レジスタンス"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Hull: "
-msgstr ""
+msgstr "船体: "
 
 #: eos/saveddata/damagePattern.py:62 eos/saveddata/damagePattern.py:63
 #: eos/saveddata/damagePattern.py:64 eos/saveddata/damagePattern.py:65
@@ -1859,7 +1859,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemEffects.py:35
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: eos/saveddata/targetProfile.py:250
 msgid "Ideal Target"
@@ -1867,7 +1867,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/graphDroneControlRange.py:23
 msgid "Ignore Drone Control Range"
-msgstr ""
+msgstr "ドローン制御範囲を無視"
 
 #: gui/builtinContextMenus/graphLockRange.py:23
 msgid "Ignore Lock Range"
@@ -2064,12 +2064,12 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:41
 #: gui/builtinContextMenus/moduleAmmoChange.py:27
 msgid "Kinetic"
-msgstr ""
+msgstr "Kin"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:87
 #: gui/targetProfileEditor.py:121
 msgid "Kinetic resistance"
-msgstr ""
+msgstr "Kinレジスタンス"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:96
 msgid "Language (restart required):"
@@ -2099,7 +2099,7 @@ msgstr ""
 
 #: gui/characterEditor.py:343
 msgid "Level"
-msgstr ""
+msgstr "レベル"
 
 #: gui/builtinContextMenus/skillAffectors.py:79
 #, python-format
@@ -2185,7 +2185,7 @@ msgstr ""
 
 #: graphs/style.py:56
 msgid "Magenta"
-msgstr ""
+msgstr "マゼンタ"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
@@ -2282,15 +2282,15 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:59
 msgid "Minmatar (Armor)"
-msgstr ""
+msgstr "ミンマター (アーマー)"
 
 #: eos/saveddata/targetProfile.py:58
 msgid "Minmatar (Shield)"
-msgstr ""
+msgstr "ミンマター (シールド)"
 
 #: eos/saveddata/damagePattern.py:153 eos/saveddata/targetProfile.py:77
 msgid "Minmatar Republic"
-msgstr ""
+msgstr "ミンマター共和国"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 msgid "Misc"
@@ -2307,7 +2307,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:86 eos/saveddata/damagePattern.py:87
 #: eos/saveddata/damagePattern.py:88 eos/saveddata/damagePattern.py:89
 msgid "Missiles"
-msgstr ""
+msgstr "ミサイル"
 
 #: eos/saveddata/damagePattern.py:148 eos/saveddata/damagePattern.py:149
 #: eos/saveddata/damagePattern.py:150 eos/saveddata/damagePattern.py:151
@@ -2318,7 +2318,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:76 eos/saveddata/targetProfile.py:77
 #: eos/saveddata/targetProfile.py:78
 msgid "Mission"
-msgstr ""
+msgstr "ミッション"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:28
 msgid "Mixed"
@@ -2457,7 +2457,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:187 eos/saveddata/targetProfile.py:188
 #: eos/saveddata/targetProfile.py:189
 msgid "NPC"
-msgstr ""
+msgstr "NPC"
 
 #: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
@@ -2474,7 +2474,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:17
 msgid "Network"
-msgstr ""
+msgstr "ネットワーク"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
@@ -2602,7 +2602,7 @@ msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:227
 msgid "Open in new tab"
-msgstr ""
+msgstr "新しいタブで開く"
 
 #: gui/copySelectDialog.py:50
 msgid "Optimize Prices"
@@ -2610,11 +2610,11 @@ msgstr ""
 
 #: graphs/style.py:55
 msgid "Orange"
-msgstr ""
+msgstr "オレンジ"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Ore hold"
-msgstr ""
+msgstr "鉱石ホールド"
 
 #: eos/saveddata/targetProfile.py:79 eos/saveddata/targetProfile.py:80
 msgid "Other"
@@ -2636,7 +2636,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:125
 msgid "Password:"
-msgstr ""
+msgstr "パスワード："
 
 #: gui/builtinContextMenus/additionsImport.py:40
 msgid "Paste {}"
@@ -2688,7 +2688,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Pod"
-msgstr ""
+msgstr "ポッド"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:109
 msgid "Port:"
@@ -2696,7 +2696,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/resourcesViewFull.py:154
 msgid "PowerGrid"
-msgstr ""
+msgstr "パワーグリッド"
 
 #: gui/preferenceDialog.py:31
 msgid "Preferences"
@@ -2902,7 +2902,7 @@ msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:108
 msgid "Rename"
-msgstr ""
+msgstr "名前を変更"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
 msgid "Reopen previous fits on startup"
@@ -2922,7 +2922,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleSpool.py:98
 msgid "Reset"
-msgstr ""
+msgstr "リセット"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:76
 msgid "Reset Suppression"
@@ -2943,7 +2943,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinStatsViews/resistancesViewFull.py:47
 msgid "Resistances"
-msgstr ""
+msgstr "レジスタンス"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinStatsViews/resourcesViewFull.py:84
@@ -2978,7 +2978,7 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:63
 msgid "Rig"
-msgstr ""
+msgstr "リグ"
 
 #: eos/saveddata/damagePattern.py:105 eos/saveddata/damagePattern.py:123
 msgid "Rogue Drone"
@@ -2998,11 +2998,11 @@ msgstr ""
 
 #: gui/ssoLogin.py:15 gui/ssoLogin.py:49
 msgid "SSO Login"
-msgstr ""
+msgstr "SSO ログイン"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:45
 msgid "SSO Mode"
-msgstr ""
+msgstr "SSO モード"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:126
 msgid "Salvage hold"
@@ -3016,7 +3016,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:106 eos/saveddata/damagePattern.py:124
 #: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:70
 msgid "Sanshas Nation"
-msgstr ""
+msgstr "サンシャ国"
 
 #: gui/mainFrame.py:860
 msgid "Save Backup As..."
@@ -3049,7 +3049,7 @@ msgstr "新規インプラントセットとして保存"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:64
 msgid "Scan res."
-msgstr ""
+msgstr "スキャン解像度"
 
 #: eos/saveddata/damagePattern.py:91
 msgid "Scorch Bomb"
@@ -3092,7 +3092,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:65
 msgid "Sensor str."
-msgstr ""
+msgstr "センサー強度"
 
 #: eos/saveddata/damagePattern.py:119 eos/saveddata/targetProfile.py:92
 msgid "Sentinel"
@@ -3141,7 +3141,7 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:46
 msgid "Shield"
-msgstr ""
+msgstr "シールド"
 
 #: eos/saveddata/targetProfile.py:49
 msgid "Shield (+T2 DCU)"
@@ -3156,7 +3156,7 @@ msgstr ""
 #: graphs/data/fitShieldRegen/graph.py:56
 #: graphs/data/fitShieldRegen/graph.py:61
 msgid "Shield amount"
-msgstr ""
+msgstr "シールド容量"
 
 #: graphs/data/fitShieldRegen/graph.py:62
 msgid "Shield regen"
@@ -3164,15 +3164,15 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
-msgstr ""
+msgstr "シールド レジスタンス"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
-msgstr ""
+msgstr "シールド/アーマー タンク"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Shield: "
-msgstr ""
+msgstr "シールド: "
 
 #: gui/builtinStatsViews/priceViewFull.py:57
 #: gui/builtinStatsViews/priceViewMinimal.py:57
@@ -3230,12 +3230,13 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:88
 msgid "Signature"
-msgstr ""
+msgstr "シグネチャ"
 
 #: gui/targetProfileEditor.py:125
 msgid "Signature radius\n"
 "Leave blank for infinitely big value"
-msgstr ""
+msgstr "シグネチャ半径\n"
+"空白にすると無限に大きな値になります"
 
 #: graphs/data/fitEwarStats/graph.py:42
 msgid "Signature radius increase"
@@ -3247,15 +3248,15 @@ msgstr ""
 
 #: gui/characterEditor.py:342 gui/characterEditor.py:608
 msgid "Skill"
-msgstr ""
+msgstr "スキル"
 
 #: gui/characterEditor.py:160
 msgid "Skills"
-msgstr ""
+msgstr "スキル"
 
 #: gui/characterSelection.py:242
 msgid "Skills required:"
-msgstr ""
+msgstr "必要なスキル:"
 
 #: eos/saveddata/damagePattern.py:100 eos/saveddata/targetProfile.py:79
 #: eos/saveddata/targetProfile.py:104 eos/saveddata/targetProfile.py:111
@@ -3283,7 +3284,7 @@ msgstr ""
 #: graphs/data/fitMobility/graph.py:35
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:86
 msgid "Speed"
-msgstr ""
+msgstr "速度"
 
 #: graphs/data/fitEwarStats/graph.py:37
 msgid "Speed reduction"
@@ -3350,7 +3351,7 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:62
 msgid "Subsystem"
-msgstr ""
+msgstr "サブシステム"
 
 #: gui/characterEditor.py:901
 msgid "Success"
@@ -3366,7 +3367,7 @@ msgstr ""
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Support"
-msgstr ""
+msgstr "サポート"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:48
 #, python-brace-format
@@ -3513,12 +3514,12 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:40
 #: gui/builtinContextMenus/moduleAmmoChange.py:25
 msgid "Thermal"
-msgstr ""
+msgstr "Therm"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:86
 #: gui/targetProfileEditor.py:120
 msgid "Thermal resistance"
-msgstr ""
+msgstr "Thermレジスタンス"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:107
 msgid "This is a destructive action that will delete all cached prices out of the database.\n"
@@ -3716,7 +3717,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:121
 msgid "Username:"
-msgstr ""
+msgstr "ユーザー名："
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:34
 msgid "Using Executable Path for Saved Fit Database and Settings"
@@ -3757,7 +3758,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:89
 msgid "Warp Speed"
-msgstr ""
+msgstr "ワープ速度"
 
 #: graphs/data/fitWarpTime/graph.py:45
 msgid "Warp Time"
@@ -3804,7 +3805,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/envEffectAdd.py:105
 msgid "Wormhole"
-msgstr ""
+msgstr "ワームホール"
 
 #: eos/saveddata/damagePattern.py:50
 msgid "Xray"
@@ -3922,7 +3923,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
-msgstr ""
+msgstr "pyfa.io"
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #, python-brace-format
