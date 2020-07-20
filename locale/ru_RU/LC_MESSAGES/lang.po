@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 13:19\n"
+"PO-Revision-Date: 2020-07-20 16:41\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -367,7 +367,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:120
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
 msgid "Angel Cartel"
-msgstr ""
+msgstr "Картель Ангелов"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
 msgid "Animate gauges"
@@ -502,11 +502,11 @@ msgstr "Базовое Значение"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
-msgstr ""
+msgstr "Линейный крейсер"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battleship"
-msgstr ""
+msgstr "Линкор"
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
@@ -519,7 +519,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:103 eos/saveddata/damagePattern.py:121
 #: eos/saveddata/targetProfile.py:61 eos/saveddata/targetProfile.py:67
 msgid "Blood Raiders"
-msgstr ""
+msgstr "Союз Охотников за Кровью"
 
 #: graphs/style.py:54
 msgid "Blue"
@@ -532,14 +532,14 @@ msgstr "Бомбы"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
-msgstr ""
+msgstr "Боевой стимулятор"
 
 #: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
 #: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
 #: gui/copySelectDialog.py:56
 msgid "Boosters"
-msgstr ""
+msgstr "Боевые стимуляторы"
 
 #: graphs/style.py:82
 msgid "Bright"
@@ -574,7 +574,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:150 eos/saveddata/targetProfile.py:74
 msgid "CONCORD"
-msgstr ""
+msgstr "КОНКОРД"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
@@ -598,7 +598,7 @@ msgstr "Государство Калдари"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:115
 msgid "Calibration"
-msgstr ""
+msgstr "Калибровка"
 
 #: graphs/data/fitCapacitor/graph.py:35 graphs/data/fitCapacitor/graph.py:36
 #: graphs/data/fitCapacitor/graph.py:38 graphs/data/fitCapacitor/graph.py:43
@@ -617,7 +617,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 msgid "Capacitor"
-msgstr ""
+msgstr "Накопитель"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
@@ -703,7 +703,7 @@ msgstr "Редактор Персонажа"
 
 #: gui/esiFittings.py:342
 msgid "Character ID"
-msgstr ""
+msgstr "ID Персонажа"
 
 #: gui/characterEditor.py:78
 msgid "Character name already in use, please choose another."
@@ -893,7 +893,7 @@ msgstr "Не удалось импортировать из буфера: неи
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Cruiser"
-msgstr ""
+msgstr "Крейсер"
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/targetProfile.py:81
 msgid "Cruor (Blood Raiders)"
@@ -1035,7 +1035,7 @@ msgstr "Описание"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Destroyer"
-msgstr ""
+msgstr "Эсминец"
 
 #: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "Destructible Beacons"
@@ -1164,7 +1164,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/resourcesViewFull.py:155
 msgid "Drone bay"
-msgstr ""
+msgstr "Отсек для дронов"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:66
 msgid "Drone range"
@@ -1596,11 +1596,11 @@ msgstr ""
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
 msgid "Fighters"
-msgstr ""
+msgstr "Истребители"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Filament"
-msgstr ""
+msgstr "Нить"
 
 #: gui/builtinContextMenus/itemFill.py:32
 msgid "Fill With Module"
@@ -1677,11 +1677,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Frigate"
-msgstr ""
+msgstr "Фрегат"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:116
 msgid "Fuel bay"
-msgstr ""
+msgstr "Отсек для топлива"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
@@ -1745,7 +1745,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:125
 msgid "Gas hold"
-msgstr ""
+msgstr "Отсек для газа"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:17
 msgid "General"
@@ -1791,7 +1791,7 @@ msgstr "Зеленый"
 #: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:122
 #: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:68
 msgid "Guristas"
-msgstr ""
+msgstr "Организация «Гуристас»"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:172
 #: gui/builtinStatsViews/resistancesViewFull.py:187
@@ -1812,7 +1812,7 @@ msgstr ""
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Heavy"
-msgstr ""
+msgstr "Тяжёлые"
 
 #: gui/builtinShipBrowser/navigationPanel.py:136
 msgid "Hide Recent Fits"
@@ -1833,7 +1833,7 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:48
 msgid "Hull"
-msgstr ""
+msgstr "Корпус"
 
 #: eos/saveddata/targetProfile.py:51
 msgid "Hull (+T2 DCU)"
@@ -1953,7 +1953,7 @@ msgstr "Импорт файла переобределений pyfa"
 
 #: gui/characterEditor.py:372
 msgid "Import skills from clipboard"
-msgstr ""
+msgstr "Импорт навыков из буфера"
 
 #: gui/esiFittings.py:64
 msgid "Import to pyfa"
@@ -1989,7 +1989,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:121
 msgid "Industrial ship hold"
-msgstr ""
+msgstr "Отсек для индустриальных кораблей"
 
 #: graphs/data/fitMobility/graph.py:46
 msgid "Inertia Modifier attribute value of the target ship"
@@ -2062,7 +2062,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:152 eos/saveddata/targetProfile.py:76
 msgid "Khanid"
-msgstr ""
+msgstr "Ханидское Королевство"
 
 #: eos/saveddata/damagePattern.py:41
 #: gui/builtinContextMenus/moduleAmmoChange.py:27
@@ -2236,7 +2236,7 @@ msgstr "Масса:\t{:,.0f}кг"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:124
 msgid "Material bay"
-msgstr ""
+msgstr "Отсек для минералов"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:208
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:241
@@ -2310,7 +2310,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:86 eos/saveddata/damagePattern.py:87
 #: eos/saveddata/damagePattern.py:88 eos/saveddata/damagePattern.py:89
 msgid "Missiles"
-msgstr ""
+msgstr "Ракеты"
 
 #: eos/saveddata/damagePattern.py:148 eos/saveddata/damagePattern.py:149
 #: eos/saveddata/damagePattern.py:150 eos/saveddata/damagePattern.py:151
@@ -2617,7 +2617,7 @@ msgstr "Оранжевый"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
 msgid "Ore hold"
-msgstr ""
+msgstr "Отсек для руды"
 
 #: eos/saveddata/targetProfile.py:79 eos/saveddata/targetProfile.py:80
 msgid "Other"
@@ -2691,7 +2691,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Pod"
-msgstr ""
+msgstr "Капсула"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:109
 msgid "Port:"
@@ -2699,7 +2699,7 @@ msgstr "Порт:"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:154
 msgid "PowerGrid"
-msgstr ""
+msgstr "Реактор"
 
 #: gui/preferenceDialog.py:31
 msgid "Preferences"
@@ -2946,7 +2946,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinStatsViews/resistancesViewFull.py:47
 msgid "Resistances"
-msgstr ""
+msgstr "Сопротивляемости"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinStatsViews/resourcesViewFull.py:84
@@ -2981,15 +2981,15 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:63
 msgid "Rig"
-msgstr ""
+msgstr "Тюнинг-модуль"
 
 #: eos/saveddata/damagePattern.py:105 eos/saveddata/damagePattern.py:123
 msgid "Rogue Drone"
-msgstr ""
+msgstr "Восставшие дрон"
 
 #: eos/saveddata/targetProfile.py:63 eos/saveddata/targetProfile.py:69
 msgid "Rogue Drones"
-msgstr ""
+msgstr "Восставшие дроны"
 
 #: gui/builtinItemStatsViews/itemEffects.py:34
 msgid "Run Time"
@@ -3009,7 +3009,7 @@ msgstr "SSO режим"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:126
 msgid "Salvage hold"
-msgstr ""
+msgstr "Отсек для сальвага"
 
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
@@ -3052,7 +3052,7 @@ msgstr "Сохраниь как Новый Набор Имплантов"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:64
 msgid "Scan res."
-msgstr ""
+msgstr "Разреш. сканера"
 
 #: eos/saveddata/damagePattern.py:91
 msgid "Scorch Bomb"
@@ -3069,11 +3069,11 @@ msgstr "Поиск фитов"
 #: gui/characterEditor.py:356
 #, python-brace-format
 msgid "Sec Status: {0:.2f}"
-msgstr ""
+msgstr "Статус Безопасности: {0:.2f}"
 
 #: gui/characterEditor.py:914
 msgid "Security Status is used in some CONCORD hull calculations"
-msgstr ""
+msgstr "Статус Безопасности используется в некоторых расчётах для корпусов КОНКОРДа"
 
 #: eos/saveddata/damagePattern.py:99 eos/saveddata/targetProfile.py:101
 #: eos/saveddata/targetProfile.py:108 eos/saveddata/targetProfile.py:115
@@ -3167,7 +3167,7 @@ msgstr "Реген. щита"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
-msgstr ""
+msgstr "Сопротивление щита"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
@@ -3193,7 +3193,7 @@ msgstr "Группы кораблей"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:117
 msgid "Ship hold"
-msgstr ""
+msgstr "Отсек для кораблей"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:100
 msgid "Short Range"
