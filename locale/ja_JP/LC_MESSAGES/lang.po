@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-19 18:04\n"
+"PO-Revision-Date: 2020-07-20 12:15\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -470,15 +470,15 @@ msgstr ""
 
 #: graphs/gui/ctrlPanel.py:64
 msgid "Axis X:"
-msgstr ""
+msgstr "X 軸"
 
 #: graphs/gui/ctrlPanel.py:56
 msgid "Axis Y:"
-msgstr ""
+msgstr "Y 軸"
 
 #: gui/builtinShipBrowser/navigationPanel.py:50
 msgid "Back"
-msgstr ""
+msgstr "戻る"
 
 #: gui/mainFrame.py:875
 msgid "Backing up {} fits to: {}"
@@ -1437,7 +1437,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:67
 msgid "Expand All"
-msgstr ""
+msgstr "すべてを展開"
 
 #: eos/saveddata/damagePattern.py:42
 #: gui/builtinContextMenus/moduleAmmoChange.py:26
@@ -2618,7 +2618,7 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:79 eos/saveddata/targetProfile.py:80
 msgid "Other"
-msgstr ""
+msgstr "その他"
 
 #: eos/saveddata/damagePattern.py:98 eos/saveddata/targetProfile.py:100
 #: eos/saveddata/targetProfile.py:107 eos/saveddata/targetProfile.py:114
@@ -3045,7 +3045,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/implantSetSave.py:27
 msgid "Save as New Implant Set"
-msgstr ""
+msgstr "新規インプラントセットとして保存"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:64
 msgid "Scan res."
