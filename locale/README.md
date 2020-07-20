@@ -2,12 +2,12 @@
 
 pyfa provides community-driven translations for the following languages:
 
-* Chinese (locale/zh_CH)
-* French (locale/fr_FR)
-* Italian (locale/it_IT)
-* Japanese (locale/ja_JP)
-* Korean (locale/ko_KR)
-* Russian (locale/ru_RU)
+* Chinese (zh_CH)
+* French (fr_FR)
+* Italian (it_IT)
+* Japanese (ja_JP)
+* Korean (ko_KR)
+* Russian (ru_RU)
 
 It is important to keep in mind that pyfa translations are not the same as the translations that come from EVE data. These translations are dumped directly from the game, and the pyfa team has no control over them. This includes, but is not limited to:
 
@@ -17,14 +17,24 @@ It is important to keep in mind that pyfa translations are not the same as the t
 
 If there is a tranlation issue in EVE data, you must submit a ticket to CCP instead.
 
-## Getting involved 
+## Getting Involved 
 
-Translations are community-driven. The pyfa team isn't going to
+Translations are done mainly through [Crowdin](https://crowdin.com/project/pyfa). This platform allows translations to be done by anyone without any real need to understand the project's internals. Simply sign up, join the project as a Translator, and start translating!
+ 
+As a general rule of thumb, we consider translations community-driven. The pyfa team isn't going to
 
  1) Maintain individual language packs as a part of general development work, or
  2) Delay a release if translations aren't available
-   
-This is because the pyfa team is only versed in a few languages, at best. If you are interested in getting involved, then either start a discussion in the language thread (linked above) or, if you're interested in contributing directly, please read the short synopsis of how it works below and submit a Pull Request. 
+
+This is because the pyfa team is only versed in a few languages, at best, and we do not wish to hold up development in the case of not having translations available.
+
+### Proofreader
+
+By default, signing up on Crowdin allows you to *suggest* translations. These will still produce a PR on GitHub and can still be included in the project. But, if you wish to adopt a language as a proofreader - someone with the ability to "approve" translations to ensure that they are correct and work well in pyfa - then please get in touch with us and we can set your account on Crowdin as a proofreader.
+
+## `gettext`
+
+The following is more for developers or those that wish to understand better the translation system pyfa uses. If you're looking to simply help us translate, please read the Getting Involved section above.
 
 ### How it works
 
@@ -53,14 +63,14 @@ edit the translation and hit Save :)
 
 ## FAQ
 
-Q: The English text isn't in the `.po` file for me to translate<br />
+Q: The English text isn't in the `.pot`/`.po` file for me to translate<br />
 A: This is probably one of two things:
 
 1. Missing annotations in the source code. All text that needs to be translated needs to be wrapped with `_t()` to make it locale-aware
 2. Out of date `.po` file. As pyfa development continues, the `.po` file may fall behind. See next question.
     
 Q: How do I update the `.po` file for my language?<br />
-A: See `Commands`  section below for a number of useful commands
+A: See `Commands` section below for a number of useful commands
 
 Q: I run pyfa in Linux but the translations don't work<br />
 A: If you're running from source / your own method, this is because the `.mo` files aren't checked into the repo and thus aren't available by default. Running `python3 scripts\compile_lang.py` should compile all language files. If you're running from a package from a third-party repository, YMMV - please contact the maintainer of that package.
