@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 08:59\n"
+"PO-Revision-Date: 2020-07-20 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -23,153 +23,153 @@ msgstr " DPS: "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
-msgstr ""
+msgstr " Impila"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
-msgstr ""
+msgstr " Raffica: "
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
 msgid "%d attribute."
-msgstr ""
+msgstr "%d attributo."
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
-msgstr ""
+msgstr "&Backup di Tutti gli Equipaggiamenti"
 
 #: gui/mainMenuBar.py:104
 msgid "&Browse ESI Fittings"
-msgstr ""
+msgstr "&Sfoglia Equipaggiamenti ESI"
 
 #: gui/mainMenuBar.py:111
 msgid "&Character"
-msgstr ""
+msgstr "&Personaggio"
 
 #: gui/mainMenuBar.py:144
 msgid "&Character Editor"
-msgstr ""
+msgstr "&Editor del Personaggio"
 
 #: gui/mainMenuBar.py:70
 msgid "&Close All Tabs"
-msgstr ""
+msgstr "&Chiudi Tutti le Schede"
 
 #: gui/mainMenuBar.py:69
 msgid "&Close Tab"
-msgstr ""
+msgstr "&Chiudi Scheda"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr ""
+msgstr "&Editor Schema del Danno"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
-msgstr ""
+msgstr "&Editor"
 
 #: gui/mainMenuBar.py:92
 msgid "&Export Fitting"
-msgstr ""
+msgstr "&Esporta Equipaggiamenti"
 
 #: gui/mainMenuBar.py:119
 msgid "&Export Skills Needed"
-msgstr ""
+msgstr "&Esporta Abilità Necessarie"
 
 #: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
-msgstr ""
+msgstr "&File"
 
 #: gui/mainMenuBar.py:161
 msgid "&Forums"
-msgstr ""
+msgstr "&Forum"
 
 #: gui/mainMenuBar.py:88
 msgid "&From Clipboard"
-msgstr ""
+msgstr "&Dagli Appunti"
 
 #: gui/mainMenuBar.py:135
 msgid "&Global"
-msgstr ""
+msgstr "&Generale"
 
 #: gui/mainMenuBar.py:96
 msgid "&Graphs"
-msgstr ""
+msgstr "&Grafici"
 
 #: gui/mainMenuBar.py:159
 msgid "&Help"
-msgstr ""
+msgstr "&Aiuto"
 
 #: gui/mainMenuBar.py:147
 msgid "&Implant Set Editor"
-msgstr ""
+msgstr "&Editor Set di Impianti"
 
 #: gui/mainMenuBar.py:118
 msgid "&Import Character File"
-msgstr ""
+msgstr "&Importa File del Personaggio"
 
 #: gui/mainMenuBar.py:91
 msgid "&Import Fittings"
-msgstr ""
+msgstr "&Importa Equipaggiamento"
 
 #: gui/mainMenuBar.py:122
 msgid "&Manage ESI Characters"
-msgstr ""
+msgstr "&Gestione ESI dei Personaggi"
 
 #: gui/mainMenuBar.py:68
 msgid "&New Tab"
-msgstr ""
+msgstr "&Nuova Scheda"
 
 #: gui/mainMenuBar.py:95
 msgid "&Optimize Fit Price"
-msgstr ""
+msgstr "&Ottimizza Prezzo Equipaggiamento"
 
 #: gui/mainMenuBar.py:137
 msgid "&Preferences"
-msgstr ""
+msgstr "&Preferenze"
 
 #: gui/mainMenuBar.py:84
 msgid "&Redo"
-msgstr ""
+msgstr "&Ripristina"
 
 #: gui/mainMenuBar.py:115
 msgid "&Revert Character"
-msgstr ""
+msgstr "&Ripristina Personaggio"
 
 #: gui/mainMenuBar.py:113
 msgid "&Save Character"
-msgstr ""
+msgstr "&Salva Personaggio"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
-msgstr ""
+msgstr "&Editor Caratteristiche del Bersaglio"
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
-msgstr ""
+msgstr "&Copia negli Appunti"
 
 #: gui/mainFrame.py:690
 msgid "&Turn Overrides Off"
-msgstr ""
+msgstr "&Disattiva Sovraccarico"
 
 #: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
-msgstr ""
+msgstr "&Attiva Sovraccarico"
 
 #: gui/mainMenuBar.py:83
 msgid "&Undo"
-msgstr ""
+msgstr "&Annulla"
 
 #: gui/mainMenuBar.py:160
 msgid "&Wiki"
-msgstr ""
+msgstr "&Wiki"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:29
 msgid "(Cannot be changed while pyfa is running. Set via command line switches.)"
-msgstr ""
+msgstr "(Non può essere cambiato mentre pyfa è in esecuzione. Imposta tramite interfaccia a riga di comando)"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
-msgstr ""
+msgstr "0s"
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
@@ -225,55 +225,55 @@ msgstr "Abilità"
 #: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
 #: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
 msgid "Abyssal"
-msgstr ""
+msgstr "Abissale"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "Meteo Abissale"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
-msgstr ""
+msgstr "Attivo"
 
 #: gui/builtinViewColumns/abilities.py:37
 msgid "Active Abilities"
-msgstr ""
+msgstr "Abilità Attive"
 
 #: gui/builtinViewColumns/sideEffects.py:37
 msgid "Active Side Effects"
-msgstr ""
+msgstr "Effetti Collaterali Attivi"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:76
 msgid "Active shield boost"
-msgstr ""
+msgstr "Attiva Booster dello Scudo"
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
-msgstr ""
+msgstr "Aggiungi Personaggio"
 
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
-msgstr ""
+msgstr "Errore nell'Aggiunta del Personaggio"
 
 #: gui/builtinShipBrowser/fitItem.py:233
 msgid "Add Command Booster"
-msgstr ""
+msgstr "Aggiungi Booster dei Comandi"
 
 #: gui/builtinContextMenus/fitAddCurrentlyOpen.py:29
 msgid "Add Currently Open Fit"
-msgstr ""
+msgstr "Aggiungi Equipaggiamento Attualmente Aperto"
 
 #: gui/builtinContextMenus/envEffectAdd.py:56
 msgid "Add Environmental Effect"
-msgstr ""
+msgstr "Aggiungi Effetto Ambientale"
 
 #: gui/builtinContextMenus/fitAddBrowse.py:22
 msgid "Add Fit..."
-msgstr ""
+msgstr "Aggiungi Equipaggiamento..."
 
 #: gui/fitBrowserLite.py:17
 msgid "Add Fits"
-msgstr ""
+msgstr "Aggiungi Equipaggiamenti"
 
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
@@ -494,41 +494,41 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:59
 msgid "Baryon"
-msgstr ""
+msgstr "Barione"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:47
 msgid "Base Value"
-msgstr ""
+msgstr "Valore Base"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
-msgstr ""
+msgstr "Incrociatore da Battaglia"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battleship"
-msgstr ""
+msgstr "Corazzata"
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
-msgstr ""
+msgstr "Sii consapevole che gli equipaggiamenti già processati non sono stati salvati"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Bioluminescence"
-msgstr ""
+msgstr "Bioluminescenza"
 
 #: eos/saveddata/damagePattern.py:103 eos/saveddata/damagePattern.py:121
 #: eos/saveddata/targetProfile.py:61 eos/saveddata/targetProfile.py:67
 msgid "Blood Raiders"
-msgstr ""
+msgstr "Blood Raiders"
 
 #: graphs/style.py:54
 msgid "Blue"
-msgstr ""
+msgstr "Blu"
 
 #: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
 #: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
 msgid "Bombs"
-msgstr ""
+msgstr "Bombe"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
@@ -3725,27 +3725,27 @@ msgstr ""
 #: gui/builtinContextMenus/itemVariationChange.py:49
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 msgid "Variations"
-msgstr ""
+msgstr "Variazioni"
 
 #: eos/saveddata/damagePattern.py:116 eos/saveddata/targetProfile.py:89
 msgid "Vengeance"
-msgstr ""
+msgstr "Vengeance"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:53
 msgid "View Raw Data"
-msgstr ""
+msgstr "Visualizza Dati Grezzi"
 
 #: graphs/data/fitDamageStats/graph.py:84
 msgid "Volley"
-msgstr ""
+msgstr "Raffica"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:22
 msgid "W-Space"
-msgstr ""
+msgstr "Spazio-W"
 
 #: gui/ssoLogin.py:62
 msgid "Waiting for character login through EVE Single Sign-On."
-msgstr ""
+msgstr "Aspettando il login del personaggio attraverso EVE Single Sign-On."
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:210
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:212
@@ -3753,40 +3753,41 @@ msgstr ""
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:245
 #, python-format
 msgid "Warp Core Strength: %.1f"
-msgstr ""
+msgstr "Forza del Nucleo di Curvatura: %.1f"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:89
 msgid "Warp Speed"
-msgstr ""
+msgstr "Velocità di Curvatura"
 
 #: graphs/data/fitWarpTime/graph.py:45
 msgid "Warp Time"
-msgstr ""
+msgstr "Tempo di Curvatura"
 
 #: graphs/data/fitWarpTime/graph.py:49
 msgid "Warp time"
-msgstr ""
+msgstr "Tempo di Curvatura"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Weapon"
-msgstr ""
+msgstr "Arma"
 
 #: graphs/data/fitEwarStats/graph.py:37
 msgid "Webs: speed reduction"
-msgstr ""
+msgstr "Ragnatela: riduzione della velocità"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:61
 msgid "When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior)."
-msgstr ""
+msgstr "Quando il profilo dei danni è uniforme, imposta Reactive Armor Hardener di conseguenza (vecchio funzionamento)."
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
 msgid "When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge."
-msgstr ""
+msgstr "Quando è disabilitato, ricarica le cariche solo nei moduli selezionati. L'azione può essere invertita tenendo premuto Ctrl o Alt mentre si cambiano le cariche."
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:54
 msgid "When enabled, skills will check their dependencies' requirements when their levels change and reset skills that no longer meet the requirement.\n"
 "eg: Setting Drones from level V to IV will reset the Heavy Drone Operation skill, as that requires Drones V"
-msgstr ""
+msgstr "Quando è abilitato, le abilità controlleranno la loro dipendenza da requisiti quando cambiano di livello e ripristineranno le abilità che non soddisfano più i requisiti.\n"
+"es: Impostare Drones dal livello V a IV ripristinerà l'abilità Heavy Drone Operation, poiché richiede Drones V"
 
 #: graphs/data/fitDamageStats/graph.py:69
 msgid "When set, uses attacker's exact damage stats at a given time\n"
@@ -3937,31 +3938,31 @@ msgstr ""
 #: gui/pyfa_gauge.py:347
 #, python-brace-format
 msgid "{{0:.{0}f}} left"
-msgstr ""
+msgstr "{{0:.{0}f}} mancanti"
 
 #: gui/pyfa_gauge.py:344
 #, python-brace-format
 msgid "{{0:.{0}f}} over"
-msgstr ""
+msgstr "{{0:.{0}f}} in più"
 
 #: gui/builtinContextMenus/moduleSpool.py:83
 msgid "{} (default)"
-msgstr ""
+msgstr "{} (predefinito)"
 
 #: gui/characterEditor.py:284
 msgid "{} Copy"
-msgstr ""
+msgstr "{} Copia"
 
 #: gui/builtinContextMenus/itemStats.py:38
 msgid "{} Stats"
-msgstr ""
+msgstr "{} Statistiche"
 
 #: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
-msgstr ""
+msgstr "{} {} Slot"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
 #, no-python-format, python-brace-format
 msgid "{}% chance to be jammed"
-msgstr ""
+msgstr "{}% probabilità di essere inceppato"
 
