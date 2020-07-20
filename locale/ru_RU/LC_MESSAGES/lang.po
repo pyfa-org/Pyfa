@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 10:09\n"
+"PO-Revision-Date: 2020-07-20 11:01\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -27,7 +27,7 @@ msgstr " Стопка"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
-msgstr " Альфа: "
+msgstr " Залп: "
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
@@ -3492,23 +3492,23 @@ msgstr ""
 
 #: gui/mainFrame.py:895
 msgid "The following path is invalid or does not exist:"
-msgstr ""
+msgstr "Следующий путь неверен или не существует:"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:64
 msgid "The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose will also be tried first, and if no data is available, global price will be used."
-msgstr ""
+msgstr "Выбраный Вами источник будет попробован в первую очередь, но последующие источники будут использованы, если желаемый источник не сработает. Выбраная Вами система также будет испробована в первую очередь, при отсутствии данных будут использованы глобальные цены."
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:53
 msgid "There is a release available which you have chosen to suppress. You can choose to reset notification suppression for this release, or download the new release from GitHub."
-msgstr ""
+msgstr "Это релиз, который Вы решили заглушить. Вы можете сбросить заглушение уведомления для этого релиза либо загрузить новый релиз с GitHub."
 
 #: gui/characterEditor.py:463
 msgid "There was an error importing skills, please see log file"
-msgstr ""
+msgstr "Произошла ошибка импорта навыков, пожалуйста, смотрите файл журнала"
 
 #: gui/esiFittings.py:196
 msgid "There was an error validating characters' SSO token. Please try logging into the character again to reset the token."
-msgstr ""
+msgstr "Произошла ошибка проверки SSO токена персонажа. Пожалуйста попробуйте залогиниться за персонажа ещё раз, чтобы сбросить токен."
 
 #: gui/esiFittings.py:179
 msgid "There was an issue starting up the localized server, try setting Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login Authentication Method. If this doesn't fix the problem please file an issue on Github."
@@ -3527,7 +3527,8 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:107
 msgid "This is a destructive action that will delete all cached prices out of the database.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "Это действие приведёт к удалению всех кешированных цен из базы данных.\n"
+"Вы уверены, что хотите продолжить?"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:97
 msgid "This is a destructive action that will delete all damage pattern profiles.\n"
@@ -3537,7 +3538,8 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:102
 msgid "This is a destructive action that will delete all target profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "Это действие приведёт к удалению всех профилей цели.\n"
+"Вы уверены, что хотите продолжить?"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
 msgid "This option goes through EVE SSO directly, but requires more configuration. Use this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
@@ -3570,7 +3572,7 @@ msgstr ""
 #: graphs/data/fitRemoteReps/graph.py:56 graphs/data/fitShieldRegen/graph.py:40
 #: graphs/data/fitShieldRegen/graph.py:54
 msgid "Time"
-msgstr ""
+msgstr "Время"
 
 #: eos/saveddata/damagePattern.py:80
 msgid "Titanium Sabot"
@@ -3592,7 +3594,7 @@ msgstr ""
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/priceViewMinimal.py:57
 msgid "Total"
-msgstr ""
+msgstr "Итого"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:76
 msgid "Total Price Includes"
@@ -3604,11 +3606,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:67
 msgid "Total: "
-msgstr ""
+msgstr "Всего: "
 
 #: gui/itemStats.py:166
 msgid "Traits"
-msgstr ""
+msgstr "Особенности"
 
 #: eos/saveddata/damagePattern.py:101 eos/saveddata/targetProfile.py:102
 #: eos/saveddata/targetProfile.py:109 eos/saveddata/targetProfile.py:116
@@ -3639,16 +3641,16 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemEffects.py:32
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:218
 #, python-brace-format
 msgid "Type: {0}\n"
-msgstr ""
+msgstr "Тип: {0}\n"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:222
 msgid "Type: {}"
-msgstr ""
+msgstr "Тип: {}"
 
 #: eos/saveddata/damagePattern.py:49
 msgid "Ultraviolet"
@@ -3656,7 +3658,7 @@ msgstr ""
 
 #: gui/mainMenuBar.py:83
 msgid "Undo the most recent action"
-msgstr ""
+msgstr "Отменить последнее действие"
 
 #: eos/saveddata/damagePattern.py:38
 msgid "Uniform"
@@ -3684,11 +3686,11 @@ msgstr ""
 
 #: gui/updateDialog.py:54
 msgid "Update Available"
-msgstr ""
+msgstr "Доступно Обновление"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:14
 msgid "Updates"
-msgstr ""
+msgstr "Обновления"
 
 #: eos/saveddata/damagePattern.py:69
 msgid "Uranium"
@@ -3696,7 +3698,7 @@ msgstr ""
 
 #: gui/builtinAdditionPanes/implantView.py:68
 msgid "Use Character Implants"
-msgstr ""
+msgstr "Использовать импланты персонажа"
 
 #: gui/builtinAdditionPanes/implantView.py:67
 msgid "Use Fit-specific Implants"
@@ -3708,7 +3710,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
 msgid "Use character implants by default for new fits"
-msgstr ""
+msgstr "Использовать импланты персонажа по умолчанию для новых фитов"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:35
 msgid "Use global character"
@@ -3720,7 +3722,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:121
 msgid "Username:"
-msgstr ""
+msgstr "Имя пользователя:"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:34
 msgid "Using Executable Path for Saved Fit Database and Settings"
@@ -3729,7 +3731,7 @@ msgstr ""
 #: gui/builtinContextMenus/itemVariationChange.py:49
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 msgid "Variations"
-msgstr ""
+msgstr "Варианты"
 
 #: eos/saveddata/damagePattern.py:116 eos/saveddata/targetProfile.py:89
 msgid "Vengeance"
@@ -3737,11 +3739,11 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:53
 msgid "View Raw Data"
-msgstr ""
+msgstr "Просмотр Сырых Данных"
 
 #: graphs/data/fitDamageStats/graph.py:84
 msgid "Volley"
-msgstr ""
+msgstr "Залп"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:22
 msgid "W-Space"
@@ -3773,7 +3775,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Weapon"
-msgstr ""
+msgstr "Оружие"
 
 #: graphs/data/fitEwarStats/graph.py:37
 msgid "Webs: speed reduction"
@@ -3785,7 +3787,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
 msgid "When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge."
-msgstr ""
+msgstr "Когда отключено, перезарежает заряды только в выбраных модулях. Действие может быть инвертировано зажатием кнопки Ctrl или Alt во время изменения заряда."
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:54
 msgid "When enabled, skills will check their dependencies' requirements when their levels change and reset skills that no longer meet the requirement.\n"
@@ -3816,31 +3818,31 @@ msgstr ""
 
 #: graphs/style.py:59
 msgid "Yellow"
-msgstr ""
+msgstr "Жёлтый"
 
 #: gui/builtinItemStatsViews/itemEffects.py:56
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 #: gui/characterEditor.py:757
 msgid "You cannot link All 0 or All 5 characters to an EVE character."
-msgstr ""
+msgstr "Вы не можете привязать Всё 0 и Всё 5 персонажей к персонажу EVE."
 
 #: gui/characterEditor.py:76
 msgid "You must supply a name for the Character!"
-msgstr ""
+msgstr "Вы должны указать имя персонажа!"
 
 #: gui/setEditor.py:48
 msgid "You must supply a name for the Implant Set!"
-msgstr ""
+msgstr "Вы должны указать имя для Набора Имплантатов!"
 
 #: gui/patternEditor.py:51
 msgid "You must supply a name for your Damage Profile!"
-msgstr ""
+msgstr "Вы должны указать имя для вашего Профиля Урона!"
 
 #: gui/targetProfileEditor.py:71
 msgid "You must supply a name for your Target Profile!"
-msgstr ""
+msgstr "Вы должны указать имя для вашего Профиля Цели!"
 
 #: eos/saveddata/damagePattern.py:43
 msgid "[T2] Aurora"
@@ -3904,7 +3906,7 @@ msgstr ""
 
 #: gui/errorDialog.py:69
 msgid "pyfa error"
-msgstr ""
+msgstr "ошибка pyfa"
 
 #: gui/errorDialog.py:76
 msgid "pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
@@ -3918,15 +3920,15 @@ msgstr ""
 
 #: gui/propertyEditor.py:108
 msgid "pyfa override file"
-msgstr ""
+msgstr "файл переопределений pyfa"
 
 #: gui/propertyEditor.py:131
 msgid "pyfa overrides"
-msgstr ""
+msgstr "переопределения pyfa"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
-msgstr ""
+msgstr "pyfa.io"
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #, python-brace-format
@@ -3941,7 +3943,7 @@ msgstr ""
 #: gui/pyfa_gauge.py:347
 #, python-brace-format
 msgid "{{0:.{0}f}} left"
-msgstr ""
+msgstr "{{0:.{0}f}} осталось"
 
 #: gui/pyfa_gauge.py:344
 #, python-brace-format
@@ -3950,11 +3952,11 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleSpool.py:83
 msgid "{} (default)"
-msgstr ""
+msgstr "{} (по умолчанию)"
 
 #: gui/characterEditor.py:284
 msgid "{} Copy"
-msgstr ""
+msgstr "{} Копировать"
 
 #: gui/builtinContextMenus/itemStats.py:38
 msgid "{} Stats"
@@ -3962,7 +3964,7 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
-msgstr ""
+msgstr "{} {} Слот"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
 #, no-python-format, python-brace-format
