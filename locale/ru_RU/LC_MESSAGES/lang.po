@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 16:41\n"
+"PO-Revision-Date: 2020-07-20 17:38\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -362,7 +362,7 @@ msgstr "Империя Амарр"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:115
 msgid "Ammo hold"
-msgstr ""
+msgstr "Отсек для боеприпасов"
 
 #: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:120
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
@@ -415,7 +415,7 @@ msgstr "Количество ремонтируемой брони"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Armor resistance"
-msgstr ""
+msgstr "Сопротивление брони"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
@@ -648,7 +648,7 @@ msgstr "Трюм"
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
 msgid "Cargohold: "
-msgstr ""
+msgstr "Трюм: "
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
@@ -660,7 +660,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:47
 msgid "Cert Path:"
-msgstr ""
+msgstr "Путь к сертификату:"
 
 #: gui/builtinContextMenus/skillAffectors.py:73
 #, python-format
@@ -780,7 +780,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:127
 msgid "Command center hold"
-msgstr ""
+msgstr "Отсек для командных центров"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
 msgid "Compact skills needed tooltip"
@@ -995,7 +995,7 @@ msgstr "Значение по умолчанию: %0.3f"
 
 #: gui/builtinContextMenus/shipModeChange.py:18
 msgid "Defense"
-msgstr ""
+msgstr "Защитный"
 
 #: graphs/data/fitMobility/graph.py:44
 msgid "Defined in millions of kilograms"
@@ -1015,7 +1015,7 @@ msgstr "Удалить Все Цены"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:83
 msgid "Delete All Target Profiles"
-msgstr ""
+msgstr "Удалить Все Профили Целей"
 
 #: gui/esiFittings.py:65
 msgid "Delete from EVE"
@@ -1168,7 +1168,7 @@ msgstr "Отсек для дронов"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:66
 msgid "Drone range"
-msgstr ""
+msgstr "Дальность дронов"
 
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/targetProfile.py:99
 #: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:113
@@ -3229,7 +3229,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/boosterSideEffects.py:34
 msgid "Side Effects"
-msgstr ""
+msgstr "Побочные эффекты"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:88
 msgid "Signature"
@@ -3278,7 +3278,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:118
 msgid "Small ship hold"
-msgstr ""
+msgstr "Отсек для малых кораблей"
 
 #: graphs/style.py:86
 msgid "Solid"
@@ -3429,7 +3429,7 @@ msgstr "Имя профиля цели уже используется, пожа
 
 #: gui/builtinContextMenus/targetProfile/switcher.py:33
 msgid "Target Resists"
-msgstr ""
+msgstr "Сопротивления цели"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Target distance traveled"
@@ -3441,11 +3441,11 @@ msgstr ""
 
 #: graphs/data/fitMobility/graph.py:43
 msgid "Target mass"
-msgstr ""
+msgstr "Масса цели"
 
 #: graphs/data/fitEwarStats/graph.py:45
 msgid "Target resistance"
-msgstr ""
+msgstr "Сопротивление цели"
 
 #: graphs/data/fitDamageStats/graph.py:71 graphs/data/fitLockTime/graph.py:37
 msgid "Target signature"
@@ -3468,7 +3468,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:62
 msgid "Targets"
-msgstr ""
+msgstr "Цели"
 
 #: eos/saveddata/damagePattern.py:60
 msgid "Tetryon"
@@ -3620,12 +3620,12 @@ msgstr "Особенности"
 #: eos/saveddata/targetProfile.py:165 eos/saveddata/targetProfile.py:172
 #: eos/saveddata/targetProfile.py:179 eos/saveddata/targetProfile.py:186
 msgid "Triglavian"
-msgstr ""
+msgstr "Сообщество Триглава"
 
 #: gui/builtinContextMenus/envEffectAdd.py:115
 #: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "Triglavian Invasion"
-msgstr ""
+msgstr "Вторжение Триглава"
 
 #: eos/saveddata/damagePattern.py:65
 msgid "Tungsten"
@@ -3633,7 +3633,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/resourcesViewFull.py:111
 msgid "Turret hardpoints"
-msgstr ""
+msgstr "Точки монтажа орудий"
 
 #: graphs/data/fitEwarStats/graph.py:40
 msgid "Turret optimal range reduction"
@@ -3763,15 +3763,15 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:89
 msgid "Warp Speed"
-msgstr ""
+msgstr "Скорость Варпа"
 
 #: graphs/data/fitWarpTime/graph.py:45
 msgid "Warp Time"
-msgstr ""
+msgstr "Время Варпа"
 
 #: graphs/data/fitWarpTime/graph.py:49
 msgid "Warp time"
-msgstr ""
+msgstr "Время варпа"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Weapon"
