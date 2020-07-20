@@ -7974,7 +7974,7 @@
     "groupName_ru": "Деньги", 
     "groupName_zh": "钱", 
     "iconID": 21, 
-    "published": false, 
+    "published": true, 
     "useBasePrice": false
   }, 
   "170": {
@@ -12321,7 +12321,7 @@
     "groupName_ru": "Сведения о Триглаве", 
     "groupName_zh": "三神裔数据", 
     "published": true, 
-    "useBasePrice": false
+    "useBasePrice": true
   }, 
   "1996": {
     "anchorable": false, 
@@ -16351,6 +16351,25 @@
     "published": false, 
     "useBasePrice": false
   }, 
+  "4050": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 17, 
+    "fittableNonSingleton": false, 
+    "groupID": 4050, 
+    "groupNameID": 559431, 
+    "groupName_de": "Testfilamente des Abgrunds", 
+    "groupName_en-us": "Abyssal Proving Filaments", 
+    "groupName_es": "Abyssal Proving Filaments", 
+    "groupName_fr": "Filaments d'expérimentation abyssaux", 
+    "groupName_it": "Abyssal Proving Filaments", 
+    "groupName_ja": "Abyssal Proving Filaments", 
+    "groupName_ko": "어비설 격전 필라멘트", 
+    "groupName_ru": "Полигонные нити Бездны", 
+    "groupName_zh": "Abyssal Proving Filaments", 
+    "published": true, 
+    "useBasePrice": false
+  }, 
   "4052": {
     "anchorable": false, 
     "anchored": false, 
@@ -16664,16 +16683,36 @@
     "fittableNonSingleton": false, 
     "groupID": 4072, 
     "groupNameID": 567348, 
-    "groupName_de": "Expired Jump Filaments", 
+    "groupName_de": "Abgelaufene Sprungfilamente", 
     "groupName_en-us": "Expired Jump Filaments", 
     "groupName_es": "Expired Jump Filaments", 
-    "groupName_fr": "Expired Jump Filaments", 
+    "groupName_fr": "Filaments de saut expirés", 
     "groupName_it": "Expired Jump Filaments", 
     "groupName_ja": "Expired Jump Filaments", 
-    "groupName_ko": "Expired Jump Filaments", 
-    "groupName_ru": "Expired Jump Filaments", 
+    "groupName_ko": "만료된 점프 필라멘트", 
+    "groupName_ru": "Просроченные прыжковые нити", 
     "groupName_zh": "过期的跳跃纤维", 
     "published": true, 
+    "useBasePrice": false
+  }, 
+  "4073": {
+    "anchorable": false, 
+    "anchored": true, 
+    "categoryID": 11, 
+    "fittableNonSingleton": false, 
+    "groupID": 4073, 
+    "groupNameID": 567507, 
+    "groupName_de": "Temporäre, statische Struktur", 
+    "groupName_en-us": "Temporary Collidable Structure", 
+    "groupName_es": "Temporary Collidable Structure", 
+    "groupName_fr": "Structure solide temporaire", 
+    "groupName_it": "Temporary Collidable Structure", 
+    "groupName_ja": "Temporary Collidable Structure", 
+    "groupName_ko": "임시 충돌체 (구조물)", 
+    "groupName_ru": "Временное разрушаемое сооружение", 
+    "groupName_zh": "Temporary Collidable Structure", 
+    "iconID": 0, 
+    "published": false, 
     "useBasePrice": false
   }, 
   "408": {
