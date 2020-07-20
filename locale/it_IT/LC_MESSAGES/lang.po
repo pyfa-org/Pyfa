@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 14:35\n"
+"PO-Revision-Date: 2020-07-20 17:38\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -60,7 +60,7 @@ msgstr "&Chiudi Scheda"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr "&Editor Schema del Danno"
+msgstr "&Editor Schema dei Danni"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
@@ -3529,28 +3529,30 @@ msgstr "Questa è un'azione distruttiva che cancellerà tutti i prezzi salvati n
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:97
 msgid "This is a destructive action that will delete all damage pattern profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "Questa è un'azione distruttiva che eliminerà tutti i profili di schema dei danni.\n"
+"Sei sicuro di volerlo fare?"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:102
 msgid "This is a destructive action that will delete all target profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "Questa è un'azione distruttiva che eliminerà tutti i profili dei bersagli.\n"
+"Sei sicuro di volerlo fare?"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
 msgid "This option goes through EVE SSO directly, but requires more configuration. Use this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
-msgstr ""
+msgstr "Quest'opzione passa direttamente attraverso EVE SSO, ma richiede più configurazione. Usa questo se pyfa.io è bloccato per qualche motivo, o se non si desidera dirigere i data attraverso pyfa.io."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
 msgid "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server."
-msgstr ""
+msgstr "Questa opzione suggerisce all'utente di copiare e incollare le informazioni per l'accesso al personaggio dall'applicazione web. Usa questo se hai problemi con il server locale."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:47
 msgid "This options routes SSO Logins through pyfa.io, allowing you to easily login without any configuration. When in doubt, use this option."
-msgstr ""
+msgstr "Quest'opzione dirige i Login SSO attraverso pyfa.io, permettendoti di accedere facilmente senza alcuna configurazione. In caso di dubbio, usare quest'opzione."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:40
 msgid "This options starts a local webserver that the web application will call back to with information about the character login."
-msgstr ""
+msgstr "Quest'opzione avvia un webserver locale al quale la web application riferirà le informazioni sul login del personaggio."
 
 #: eos/saveddata/damagePattern.py:68
 msgid "Thorium"
@@ -3705,15 +3707,15 @@ msgstr "Usa simulatore di condensatore"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
 msgid "Use character implants by default for new fits"
-msgstr ""
+msgstr "Utilizza gli impianti del personaggio per i nuovi equipaggiamenti automaticamente"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:35
 msgid "Use global character"
-msgstr ""
+msgstr "Utilizza personaggio globale"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:43
 msgid "Use global damage pattern"
-msgstr ""
+msgstr "Usa schema di danno globale"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:121
 msgid "Username:"
