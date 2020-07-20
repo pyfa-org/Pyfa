@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-11 18:24-0400\n"
-"PO-Revision-Date: 2020-07-13 01:11\n"
+"POT-Creation-Date: 2020-07-17 11:42+0800\n"
+"PO-Revision-Date: 2020-07-19 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
-msgstr ""
+msgstr "Abilità"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
@@ -344,6 +344,10 @@ msgstr ""
 msgid "Allow pre-release notifications"
 msgstr ""
 
+#: graphs/gui/ctrlPanel.py:75
+msgid "Always show Y = 0"
+msgstr ""
+
 #: eos/saveddata/targetProfile.py:53
 msgid "Amarr (Armor)"
 msgstr ""
@@ -430,6 +434,10 @@ msgstr ""
 msgid "Asteroid"
 msgstr ""
 
+#: graphs/data/fitDamageStats/graph.py:74
+msgid "Attacker"
+msgstr ""
+
 #: gui/builtinItemStatsViews/itemAttributes.py:44
 #: gui/builtinItemStatsViews/itemProperties.py:56
 msgid "Attribute"
@@ -447,6 +455,10 @@ msgstr ""
 msgid "Attributes"
 msgstr ""
 
+#: gui/builtinContextMenus/graphDmgDroneMode.py:43
+msgid "Auto"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Auto-detected proxy settings"
 msgstr ""
@@ -454,6 +466,14 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:136
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:158
 msgid "Auto-detected: "
+msgstr ""
+
+#: graphs/gui/ctrlPanel.py:64
+msgid "Axis X:"
+msgstr ""
+
+#: graphs/gui/ctrlPanel.py:56
+msgid "Axis Y:"
 msgstr ""
 
 #: gui/builtinShipBrowser/navigationPanel.py:50
@@ -501,6 +521,10 @@ msgstr ""
 msgid "Blood Raiders"
 msgstr ""
 
+#: graphs/style.py:54
+msgid "Blue"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
 #: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
 msgid "Bombs"
@@ -517,8 +541,20 @@ msgstr ""
 msgid "Boosters"
 msgstr ""
 
+#: graphs/style.py:82
+msgid "Bright"
+msgstr ""
+
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:39
+msgid "Bump distance"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:38
+msgid "Bump speed"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/damagePattern.py:109
@@ -564,6 +600,20 @@ msgstr ""
 msgid "Calibration"
 msgstr ""
 
+#: graphs/data/fitCapacitor/graph.py:35 graphs/data/fitCapacitor/graph.py:36
+#: graphs/data/fitCapacitor/graph.py:38 graphs/data/fitCapacitor/graph.py:43
+msgid "Cap amount"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:36
+msgid "Cap neutralized per second"
+msgstr ""
+
+#: graphs/data/fitCapacitor/graph.py:39
+msgid "Cap regen"
+msgstr ""
+
+#: graphs/data/fitCapacitor/graph.py:32
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 msgid "Capacitor"
@@ -712,6 +762,10 @@ msgstr ""
 msgid "Color fitting view by slot"
 msgstr ""
 
+#: graphs/data/fitEwarStats/graph.py:38
+msgid "Combined ECM strength"
+msgstr ""
+
 #: gui/additionsPane.py:84
 msgid "Command"
 msgstr ""
@@ -858,6 +912,14 @@ msgstr ""
 msgid "Custom application"
 msgstr ""
 
+#: graphs/style.py:57
+msgid "Cyan"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:83
+msgid "DPS"
+msgstr ""
+
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
 msgstr ""
@@ -870,8 +932,24 @@ msgstr ""
 msgid "Damage Profile name already in use, please choose another."
 msgstr ""
 
+#: graphs/data/fitDamageStats/graph.py:56
+msgid "Damage Stats"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:85
+msgid "Damage inflicted"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:39
+msgid "Damps: lock range reduction"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:110 eos/saveddata/targetProfile.py:83
 msgid "Daredevil (Serpentis)"
+msgstr ""
+
+#: graphs/style.py:81
+msgid "Dark"
 msgstr ""
 
 #: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:100
@@ -879,6 +957,14 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:103 eos/saveddata/targetProfile.py:104
 #: eos/saveddata/targetProfile.py:105
 msgid "Dark Matter All Tiers"
+msgstr ""
+
+#: graphs/style.py:89
+msgid "Dash-dotted"
+msgstr ""
+
+#: graphs/style.py:87
+msgid "Dashed"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:15
@@ -909,6 +995,10 @@ msgstr ""
 
 #: gui/builtinContextMenus/shipModeChange.py:18
 msgid "Defense"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:44
+msgid "Defined in millions of kilograms"
 msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:109
@@ -974,6 +1064,29 @@ msgid "Disabling context menus can improve responsiveness.\n"
 "You can hold {} key + right-click to show all menu items regardless of these settings."
 msgstr ""
 
+#: graphs/data/fitDamageStats/graph.py:58
+#: graphs/data/fitDamageStats/graph.py:65 graphs/data/fitEwarStats/graph.py:34
+#: graphs/data/fitEwarStats/graph.py:44 graphs/data/fitMobility/graph.py:36
+#: graphs/data/fitRemoteReps/graph.py:50 graphs/data/fitRemoteReps/graph.py:58
+#: graphs/data/fitWarpTime/graph.py:47 graphs/data/fitWarpTime/graph.py:48
+#: graphs/data/fitWarpTime/graph.py:51 graphs/data/fitWarpTime/graph.py:52
+msgid "Distance"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:66
+msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:67
+msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)\n"
+"When set, places the target that far away from the attacker\n"
+"When not set, attacker's weapons always hit the target"
+msgstr ""
+
+#: graphs/data/fitRemoteReps/graph.py:59 graphs/data/fitRemoteReps/graph.py:60
+msgid "Distance between the repairing ship and the target, as seen in overview (surface-to-surface)"
+msgstr ""
+
 #: gui/esiFittings.py:156
 msgid "Do you really want to delete {} ({}) from EVE?"
 msgstr ""
@@ -986,9 +1099,21 @@ msgstr ""
 msgid "Don't see your EVE character in the list?"
 msgstr ""
 
+#: graphs/style.py:88
+msgid "Dotted"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
 msgid "Download"
+msgstr ""
+
+#: graphs/gui/lists.py:313
+msgid "Drag a fit into this list to graph it"
+msgstr ""
+
+#: graphs/gui/lists.py:370
+msgid "Drag a fit into this list to have your fits graphed against it"
 msgstr ""
 
 #: gui/builtinAdditionPanes/commandView.py:163
@@ -1042,19 +1167,19 @@ msgstr ""
 msgid "Drone range"
 msgstr ""
 
+#: eos/saveddata/damagePattern.py:97 eos/saveddata/targetProfile.py:99
+#: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:113
+#: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:127
+#: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:141
+#: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:155
+#: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:169
+#: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:183
 #: gui/additionsPane.py:66 gui/builtinContextMenus/additionsExportAll.py:18
 #: gui/builtinContextMenus/additionsExportSelection.py:18
 #: gui/builtinContextMenus/additionsImport.py:19
 #: gui/builtinContextMenus/priceOptions.py:40
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
-#: gui/builtinStatsViews/priceViewFull.py:58 eos/saveddata/damagePattern.py:97
-#: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:106
-#: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:120
-#: eos/saveddata/targetProfile.py:127 eos/saveddata/targetProfile.py:134
-#: eos/saveddata/targetProfile.py:141 eos/saveddata/targetProfile.py:148
-#: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:162
-#: eos/saveddata/targetProfile.py:169 eos/saveddata/targetProfile.py:176
-#: eos/saveddata/targetProfile.py:183
+#: gui/builtinStatsViews/priceViewFull.py:58
 msgid "Drones"
 msgstr ""
 
@@ -1070,6 +1195,10 @@ msgstr ""
 msgid "E&xport to ESI"
 msgstr ""
 
+#: graphs/data/fitEwarStats/graph.py:38
+msgid "ECM: combined strength"
+msgstr ""
+
 #: gui/mainFrame.py:839
 msgid "EFT text fitting files"
 msgstr ""
@@ -1079,8 +1208,8 @@ msgstr ""
 msgid "EHP"
 msgstr ""
 
-#: gui/builtinContextMenus/moduleAmmoChange.py:24
 #: eos/saveddata/damagePattern.py:39
+#: gui/builtinContextMenus/moduleAmmoChange.py:24
 msgid "EM"
 msgstr ""
 
@@ -1129,9 +1258,21 @@ msgstr ""
 msgid "EVEMon skills training file"
 msgstr ""
 
+#: graphs/data/fitDamageStats/graph.py:83
+msgid "Effective DPS"
+msgstr ""
+
 #: gui/builtinStatsViews/resistancesViewFull.py:61
 #: gui/builtinStatsViews/resistancesViewFull.py:219
 msgid "Effective HP: "
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:85
+msgid "Effective damage inflicted"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:84
+msgid "Effective volley"
 msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:220
@@ -1170,6 +1311,10 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:90
 msgid "Electron Bomb"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:33
+msgid "Electronic Warfare Stats"
 msgstr ""
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:59
@@ -1294,8 +1439,8 @@ msgstr ""
 msgid "Expand All"
 msgstr ""
 
-#: gui/builtinContextMenus/moduleAmmoChange.py:26
 #: eos/saveddata/damagePattern.py:42
+#: gui/builtinContextMenus/moduleAmmoChange.py:26
 msgid "Explosive"
 msgstr ""
 
@@ -1493,6 +1638,10 @@ msgstr ""
 msgid "Firestorm T4/T5"
 msgstr ""
 
+#: graphs/gui/lists.py:306
+msgid "Fit"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:47
 msgid "Fitting Database:"
 msgstr ""
@@ -1544,6 +1693,10 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:83
 msgid "Fusion"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:41
+msgid "GDs: missile flight range reduction"
 msgstr ""
 
 #: eos/saveddata/targetProfile.py:57
@@ -1622,6 +1775,14 @@ msgstr ""
 
 #: gui/characterSelection.py:102
 msgid "Grant Missing Skills"
+msgstr ""
+
+#: graphs/gui/frame.py:51
+msgid "Graphs"
+msgstr ""
+
+#: graphs/style.py:53
+msgid "Green"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:122
@@ -1827,6 +1988,10 @@ msgstr ""
 msgid "Industrial ship hold"
 msgstr ""
 
+#: graphs/data/fitMobility/graph.py:46
+msgid "Inertia Modifier attribute value of the target ship"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:87
 msgid "Inferno"
 msgstr ""
@@ -1896,8 +2061,8 @@ msgstr ""
 msgid "Khanid"
 msgstr ""
 
-#: gui/builtinContextMenus/moduleAmmoChange.py:27
 #: eos/saveddata/damagePattern.py:41
+#: gui/builtinContextMenus/moduleAmmoChange.py:27
 msgid "Kinetic"
 msgstr ""
 
@@ -1954,6 +2119,10 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
+#: service/market.py:266
+msgid "Limited Issue Ships"
+msgstr ""
+
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Loaded Charges"
 msgstr ""
@@ -1970,8 +2139,20 @@ msgstr ""
 msgid "Localized"
 msgstr ""
 
+#: graphs/data/fitLockTime/graph.py:34
+msgid "Lock Time"
+msgstr ""
+
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:201
 msgid "Lock Times"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:39
+msgid "Lock range reduction"
+msgstr ""
+
+#: graphs/data/fitLockTime/graph.py:36
+msgid "Lock time"
 msgstr ""
 
 #: gui/characterEditor.py:794
@@ -2000,6 +2181,10 @@ msgstr ""
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:20
 msgid "Low Security"
+msgstr ""
+
+#: graphs/style.py:56
+msgid "Magenta"
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
@@ -2115,6 +2300,10 @@ msgstr ""
 msgid "Misc data"
 msgstr ""
 
+#: graphs/data/fitEwarStats/graph.py:41
+msgid "Missile flight range reduction"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:86 eos/saveddata/damagePattern.py:87
 #: eos/saveddata/damagePattern.py:88 eos/saveddata/damagePattern.py:89
 msgid "Missiles"
@@ -2139,12 +2328,20 @@ msgstr ""
 msgid "Mjolnir"
 msgstr ""
 
+#: graphs/data/fitMobility/graph.py:32
+msgid "Mobility"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:83
 msgid "Mode:"
 msgstr ""
 
 #: gui/builtinContextMenus/moduleFill.py:24
 msgid "Module"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:37
+msgid "Momentum"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:154 eos/saveddata/targetProfile.py:78
@@ -2279,6 +2476,10 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
+#: graphs/data/fitEwarStats/graph.py:36
+msgid "Neuts: cap per second"
+msgstr ""
+
 #: gui/builtinContextMenus/itemAmountChange.py:98
 msgid "New Amount ({}-{})"
 msgstr ""
@@ -2331,6 +2532,10 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+#: graphs/style.py:80
+msgid "Normal"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:128
 msgid "Normal Subcaps"
 msgstr ""
@@ -2339,7 +2544,7 @@ msgstr ""
 msgid "Not Learned"
 msgstr ""
 
-#: gui/characterEditor.py:399
+#: gui/characterEditor.py:399 service/character.py:322
 msgid "Not learned"
 msgstr ""
 
@@ -2401,6 +2606,10 @@ msgstr ""
 
 #: gui/copySelectDialog.py:50
 msgid "Optimize Prices"
+msgstr ""
+
+#: graphs/style.py:55
+msgid "Orange"
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:122
@@ -2569,6 +2778,10 @@ msgstr ""
 msgid "Proxy settings"
 msgstr ""
 
+#: graphs/style.py:58
+msgid "Purple"
+msgstr ""
+
 #: gui/builtinContextMenus/envEffectAdd.py:210
 msgid "PvP Weather"
 msgstr ""
@@ -2639,6 +2852,10 @@ msgstr ""
 msgid "Recharge rates"
 msgstr ""
 
+#: graphs/style.py:52
+msgid "Red"
+msgstr ""
+
 #: gui/mainMenuBar.py:84
 msgid "Redo the most recent undone action"
 msgstr ""
@@ -2655,6 +2872,14 @@ msgstr ""
 
 #: gui/builtinStatsViews/rechargeViewFull.py:86
 msgid "Reinforced"
+msgstr ""
+
+#: graphs/data/fitRemoteReps/graph.py:62
+msgid "Reload ancillary RRs"
+msgstr ""
+
+#: graphs/data/fitRemoteReps/graph.py:48
+msgid "Remote Repairs"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
@@ -2681,6 +2906,10 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
 msgid "Reopen previous fits on startup"
+msgstr ""
+
+#: graphs/data/fitRemoteReps/graph.py:53
+msgid "Repair speed"
 msgstr ""
 
 #: gui/copySelectDialog.py:50
@@ -2779,8 +3008,8 @@ msgstr ""
 msgid "Salvage hold"
 msgstr ""
 
-#: gui/builtinContextMenus/envEffectAdd.py:112
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
+#: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
 msgstr ""
 
@@ -2918,6 +3147,21 @@ msgstr ""
 msgid "Shield (+T2 DCU)"
 msgstr ""
 
+#: graphs/data/fitShieldRegen/graph.py:38
+msgid "Shield Regeneration"
+msgstr ""
+
+#: graphs/data/fitShieldRegen/graph.py:42
+#: graphs/data/fitShieldRegen/graph.py:55
+#: graphs/data/fitShieldRegen/graph.py:56
+#: graphs/data/fitShieldRegen/graph.py:61
+msgid "Shield amount"
+msgstr ""
+
+#: graphs/data/fitShieldRegen/graph.py:62
+msgid "Shield regen"
+msgstr ""
+
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
 msgstr ""
@@ -2964,6 +3208,10 @@ msgstr ""
 msgid "Show fitting tab tooltips"
 msgstr ""
 
+#: graphs/gui/ctrlPanel.py:71
+msgid "Show legend"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:52
 msgid "Show market shortcuts"
 msgstr ""
@@ -2987,6 +3235,10 @@ msgstr ""
 #: gui/targetProfileEditor.py:125
 msgid "Signature radius\n"
 "Leave blank for infinitely big value"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:42
+msgid "Signature radius increase"
 msgstr ""
 
 #: gui/aboutData.py:33
@@ -3024,8 +3276,17 @@ msgstr ""
 msgid "Small ship hold"
 msgstr ""
 
+#: graphs/style.py:86
+msgid "Solid"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:35
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:86
 msgid "Speed"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:37
+msgid "Speed reduction"
 msgstr ""
 
 #: gui/builtinContextMenus/droneSplitStack.py:29
@@ -3048,8 +3309,24 @@ msgstr ""
 msgid "Standard"
 msgstr ""
 
+#: graphs/data/fitCapacitor/graph.py:46
+msgid "Starting cap amount"
+msgstr ""
+
+#: graphs/data/fitShieldRegen/graph.py:46
+msgid "Starting shield amount"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:22
 msgid "Statistics Panel"
+msgstr ""
+
+#: gui/builtinContextMenus/graphDmgDroneMode.py:45
+msgid "Stick to Attacker"
+msgstr ""
+
+#: gui/builtinContextMenus/graphDmgDroneMode.py:44
+msgid "Stick to Target"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:147
@@ -3113,6 +3390,14 @@ msgstr ""
 msgid "T2 Resist"
 msgstr ""
 
+#: graphs/data/fitEwarStats/graph.py:40
+msgid "TDs: turret optimal range reduction"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:42
+msgid "TPs: signature radius increase"
+msgstr ""
+
 #: gui/builtinContextMenus/shipModeChange.py:37
 #: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
@@ -3120,6 +3405,10 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:91
 msgid "Talos"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:75 graphs/gui/lists.py:359
+msgid "Target"
 msgstr ""
 
 #: gui/targetProfileEditor.py:86
@@ -3136,6 +3425,37 @@ msgstr ""
 
 #: gui/builtinContextMenus/targetProfile/switcher.py:33
 msgid "Target Resists"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:39
+msgid "Target distance traveled"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:45
+msgid "Target inertia factor"
+msgstr ""
+
+#: graphs/data/fitMobility/graph.py:43
+msgid "Target mass"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:45
+msgid "Target resistance"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:71 graphs/data/fitLockTime/graph.py:37
+msgid "Target signature"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:62
+#: graphs/data/fitDamageStats/graph.py:63 graphs/data/fitLockTime/graph.py:35
+msgid "Target signature radius"
+msgstr ""
+
+#: graphs/data/fitDamageStats/graph.py:60
+#: graphs/data/fitDamageStats/graph.py:61
+#: graphs/data/fitDamageStats/graph.py:70 graphs/data/fitMobility/graph.py:38
+msgid "Target speed"
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:40
@@ -3190,8 +3510,8 @@ msgstr ""
 msgid "There was an issue starting up the localized server, try setting Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login Authentication Method. If this doesn't fix the problem please file an issue on Github."
 msgstr ""
 
-#: gui/builtinContextMenus/moduleAmmoChange.py:25
 #: eos/saveddata/damagePattern.py:40
+#: gui/builtinContextMenus/moduleAmmoChange.py:25
 msgid "Thermal"
 msgstr ""
 
@@ -3239,6 +3559,15 @@ msgstr ""
 msgid "Thukker"
 msgstr ""
 
+#: graphs/data/fitCapacitor/graph.py:34 graphs/data/fitCapacitor/graph.py:41
+#: graphs/data/fitDamageStats/graph.py:59
+#: graphs/data/fitDamageStats/graph.py:68 graphs/data/fitMobility/graph.py:33
+#: graphs/data/fitMobility/graph.py:41 graphs/data/fitRemoteReps/graph.py:51
+#: graphs/data/fitRemoteReps/graph.py:56 graphs/data/fitShieldRegen/graph.py:40
+#: graphs/data/fitShieldRegen/graph.py:54
+msgid "Time"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:80
 msgid "Titanium Sabot"
 msgstr ""
@@ -3263,6 +3592,10 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:76
 msgid "Total Price Includes"
+msgstr ""
+
+#: graphs/data/fitRemoteReps/graph.py:54
+msgid "Total repaired"
 msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:67
@@ -3294,6 +3627,10 @@ msgstr ""
 
 #: gui/builtinStatsViews/resourcesViewFull.py:111
 msgid "Turret hardpoints"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:40
+msgid "Turret optimal range reduction"
 msgstr ""
 
 #: gui/builtinItemStatsViews/itemEffects.py:32
@@ -3361,6 +3698,10 @@ msgstr ""
 msgid "Use Fit-specific Implants"
 msgstr ""
 
+#: graphs/data/fitCapacitor/graph.py:48
+msgid "Use capacitor simulator"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
 msgid "Use character implants by default for new fits"
 msgstr ""
@@ -3394,6 +3735,10 @@ msgstr ""
 msgid "View Raw Data"
 msgstr ""
 
+#: graphs/data/fitDamageStats/graph.py:84
+msgid "Volley"
+msgstr ""
+
 #: gui/builtinContextMenus/fitSystemSecurity.py:22
 msgid "W-Space"
 msgstr ""
@@ -3414,8 +3759,20 @@ msgstr ""
 msgid "Warp Speed"
 msgstr ""
 
+#: graphs/data/fitWarpTime/graph.py:45
+msgid "Warp Time"
+msgstr ""
+
+#: graphs/data/fitWarpTime/graph.py:49
+msgid "Warp time"
+msgstr ""
+
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Weapon"
+msgstr ""
+
+#: graphs/data/fitEwarStats/graph.py:37
+msgid "Webs: speed reduction"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:61
@@ -3431,6 +3788,16 @@ msgid "When enabled, skills will check their dependencies' requirements when the
 "eg: Setting Drones from level V to IV will reset the Heavy Drone Operation skill, as that requires Drones V"
 msgstr ""
 
+#: graphs/data/fitDamageStats/graph.py:69
+msgid "When set, uses attacker's exact damage stats at a given time\n"
+"When not set, uses attacker's damage stats as shown in stats panel of main window"
+msgstr ""
+
+#: graphs/data/fitRemoteReps/graph.py:57
+msgid "When set, uses repairing ship's exact RR stats at a given time\n"
+"When not set, uses repairing ship's RR stats as shown in stats panel of main window"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:112 eos/saveddata/targetProfile.py:85
 msgid "Worm (Guristas)"
 msgstr ""
@@ -3441,6 +3808,10 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:50
 msgid "Xray"
+msgstr ""
+
+#: graphs/style.py:59
+msgid "Yellow"
 msgstr ""
 
 #: gui/builtinItemStatsViews/itemEffects.py:56
