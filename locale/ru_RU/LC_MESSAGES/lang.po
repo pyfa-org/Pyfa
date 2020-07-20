@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 08:59\n"
+"PO-Revision-Date: 2020-07-20 10:09\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -1031,7 +1031,7 @@ msgstr ""
 
 #: gui/itemStats.py:174
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Destroyer"
@@ -1057,12 +1057,13 @@ msgstr "Отключить Ог&раничения Фита"
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Disabled"
-msgstr ""
+msgstr "Выкл"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:28
 msgid "Disabling context menus can improve responsiveness.\n"
 "You can hold {} key + right-click to show all menu items regardless of these settings."
-msgstr ""
+msgstr "Отключение контекстных меню может улучшить производитеьность.\n"
+"Вы можете зажать кнопку {} + Пкм для показа всех пунктов меню независимо от этой настройки."
 
 #: graphs/data/fitDamageStats/graph.py:58
 #: graphs/data/fitDamageStats/graph.py:65 graphs/data/fitEwarStats/graph.py:34
@@ -1151,7 +1152,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Drone"
-msgstr ""
+msgstr "Дрон"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:26
 msgid "Drone Mode"
@@ -1183,11 +1184,11 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
 #: gui/builtinStatsViews/priceViewFull.py:58
 msgid "Drones"
-msgstr ""
+msgstr "Дроны"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:113
 msgid "Drones active"
-msgstr ""
+msgstr "Активные дроны"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:62
 msgid "Dump All Logs"
@@ -2227,11 +2228,11 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:39
 msgid "Market Search Delay (ms):"
-msgstr ""
+msgstr "Задержка Поиска по Рынку (мс):"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:225
 msgid "Mass:\t{:,.0f}kg"
-msgstr ""
+msgstr "Масса:\t{:,.0f}кг"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:124
 msgid "Material bay"
@@ -2245,7 +2246,7 @@ msgstr ""
 
 #: gui/targetProfileEditor.py:124
 msgid "Maximum speed"
-msgstr ""
+msgstr "Максимальная скорость"
 
 #: gui/builtinViewColumns/baseName.py:60
 msgid "Med"
@@ -2296,11 +2297,11 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 msgid "Misc"
-msgstr ""
+msgstr "Прочее"
 
 #: gui/builtinViewColumns/misc.py:50
 msgid "Misc data"
-msgstr ""
+msgstr "Прочие данные"
 
 #: graphs/data/fitEwarStats/graph.py:41
 msgid "Missile flight range reduction"
@@ -2630,19 +2631,19 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:163 eos/saveddata/targetProfile.py:170
 #: eos/saveddata/targetProfile.py:177 eos/saveddata/targetProfile.py:184
 msgid "Overmind"
-msgstr ""
+msgstr "Надмозг"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:75
 msgid "Passive shield recharge"
-msgstr ""
+msgstr "Пассивная перезарядка щита"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:125
 msgid "Password:"
-msgstr ""
+msgstr "Пароль:"
 
 #: gui/builtinContextMenus/additionsImport.py:40
 msgid "Paste {}"
-msgstr ""
+msgstr "Вставить {}"
 
 #: gui/patternEditor.py:295
 msgid "Patterns exported to clipboard"
@@ -2662,27 +2663,27 @@ msgstr ""
 
 #: gui/mainFrame.py:723
 msgid "Please Wait..."
-msgstr ""
+msgstr "Пожалуйста, подождите..."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:32
 msgid "Please see the pyfa wiki on GitHub for information regarding these options."
-msgstr ""
+msgstr "Пожалуйста посмотрите pyfa вики на GitHub для информации относительно этих опций."
 
 #: gui/esiFittings.py:281
 msgid "Please select an active fitting in the main window"
-msgstr ""
+msgstr "Пожалуйста, выберите активный фит в основном окне"
 
 #: gui/characterEditor.py:758
 msgid "Please select another character or make a new one."
-msgstr ""
+msgstr "Пожалуйста, выберите другого персонажа или создайте нового."
 
 #: gui/mainFrame.py:897
 msgid "Please verify path location pyfa's preferences."
-msgstr ""
+msgstr "Пожалуйста, проверьте путь к настройкам pyfa."
 
 #: gui/builtinContextMenus/graphFitAmmoPicker.py:29
 msgid "Plot with Different Ammo..."
-msgstr ""
+msgstr "Построить с другими патронами..."
 
 #: eos/saveddata/damagePattern.py:70
 msgid "Plutonium"
@@ -2694,7 +2695,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:109
 msgid "Port:"
-msgstr ""
+msgstr "Порт:"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:154
 msgid "PowerGrid"
@@ -2702,21 +2703,21 @@ msgstr ""
 
 #: gui/preferenceDialog.py:31
 msgid "Preferences"
-msgstr ""
+msgstr "Параметры"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:59
 msgid "Pressing this button will cause all logs in memory to write to the log file:"
-msgstr ""
+msgstr "Нажатие этой кнопки приведёт к записи всех логов из памяти в файл:"
 
 #: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinStatsViews/priceViewFull.py:40
 msgid "Price"
-msgstr ""
+msgstr "Цена"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:41
 msgid "Pricing updates"
-msgstr ""
+msgstr "Обновления цен"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:265
 #, python-format
@@ -2725,28 +2726,28 @@ msgstr ""
 
 #: gui/targetProfileEditor.py:372
 msgid "Profiles exported to clipboard"
-msgstr ""
+msgstr "Профили экспортированы в буфер"
 
 #: gui/targetProfileEditor.py:352
 msgid "Profiles successfully imported from clipboard"
-msgstr ""
+msgstr "Профили успешно импортированы из буфера"
 
 #: gui/builtinShipBrowser/fitItem.py:230
 msgid "Project onto Active Fit"
-msgstr ""
+msgstr "Спроецировать на Активный Фит"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:61
 msgid "Project onto Fit"
-msgstr ""
+msgstr "Спроецировать на Фит"
 
 #: gui/builtinContextMenus/itemProject.py:34
 #, python-brace-format
 msgid "Project {0} onto Fit"
-msgstr ""
+msgstr "Споецировать {0} на Фит"
 
 #: gui/additionsPane.py:81
 msgid "Projected"
-msgstr ""
+msgstr "Спроецированно"
 
 #: gui/builtinAdditionPanes/projectedView.py:306
 #: gui/builtinAdditionPanes/projectedView.py:316
@@ -2870,7 +2871,7 @@ msgstr "Обновить"
 
 #: gui/characterSelection.py:68
 msgid "Refresh Skills"
-msgstr ""
+msgstr "Обновить Навыки"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:86
 msgid "Reinforced"
@@ -2892,47 +2893,47 @@ msgstr ""
 
 #: gui/esiFittings.py:353
 msgid "Remove Character"
-msgstr ""
+msgstr "Удалить Персонажа"
 
 #: gui/propertyEditor.py:71
 msgid "Remove Overides for Item"
-msgstr ""
+msgstr "Удалить Переопределения для Предмета"
 
 #: gui/builtinContextMenus/itemRemove.py:42
 msgid "Remove {}{}"
-msgstr ""
+msgstr "Удалить {}{}"
 
 #: gui/builtinShipBrowser/fitItem.py:108
 msgid "Rename"
-msgstr ""
+msgstr "Переименовать"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
 msgid "Reopen previous fits on startup"
-msgstr ""
+msgstr "Открывать предыдущие фиты при запуске"
 
 #: graphs/data/fitRemoteReps/graph.py:53
 msgid "Repair speed"
-msgstr ""
+msgstr "Скорость ремонта"
 
 #: gui/copySelectDialog.py:50
 msgid "Replace items by cheaper alternatives"
-msgstr ""
+msgstr "Заменить предметы более дешёвой альтернативой"
 
 #: gui/itemStats.py:185
 msgid "Requirements"
-msgstr ""
+msgstr "Требования"
 
 #: gui/builtinContextMenus/moduleSpool.py:98
 msgid "Reset"
-msgstr ""
+msgstr "Сбросить"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:76
 msgid "Reset Suppression"
-msgstr ""
+msgstr "Сбросить заглушённое"
 
 #: gui/builtinItemStatsViews/itemMutator.py:51
 msgid "Reset defaults"
-msgstr ""
+msgstr "Восстановить по умолчанию"
 
 #: gui/builtinContextMenus/resistMode.py:41
 msgid "Resist Mode"
@@ -2996,15 +2997,15 @@ msgstr ""
 
 #: gui/esiFittings.py:334
 msgid "SSO Character Management"
-msgstr ""
+msgstr "SSO Менеджер Персонажей"
 
 #: gui/ssoLogin.py:15 gui/ssoLogin.py:49
 msgid "SSO Login"
-msgstr ""
+msgstr "SSO Логин"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:45
 msgid "SSO Mode"
-msgstr ""
+msgstr "SSO режим"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:126
 msgid "Salvage hold"
@@ -3013,7 +3014,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
-msgstr ""
+msgstr "Вторжение Саньши"
 
 #: eos/saveddata/damagePattern.py:106 eos/saveddata/damagePattern.py:124
 #: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:70
@@ -3022,32 +3023,32 @@ msgstr ""
 
 #: gui/mainFrame.py:860
 msgid "Save Backup As..."
-msgstr ""
+msgstr "Сохранить резервную копию как..."
 
 #: gui/builtinItemStatsViews/itemAttributes.py:117
 msgid "Save CSV file"
-msgstr ""
+msgstr "Сохранить CSV файл"
 
 #: gui/mainMenuBar.py:114
 msgid "Save Character &As..."
-msgstr ""
+msgstr "Сохранить Персонажа &как..."
 
 #: gui/characterEditor.py:282
 msgid "Save Character As..."
-msgstr ""
+msgstr "Сохранить Персонажа Как..."
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:48
 #: gui/mainFrame.py:467
 msgid "Save Fitting As..."
-msgstr ""
+msgstr "Сохранить фит как..."
 
 #: gui/propertyEditor.py:130
 msgid "Save Overrides As..."
-msgstr ""
+msgstr "Сохранить Переопределения Как..."
 
 #: gui/builtinContextMenus/implantSetSave.py:27
 msgid "Save as New Implant Set"
-msgstr ""
+msgstr "Сохраниь как Новый Набор Имплантов"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:64
 msgid "Scan res."
@@ -3063,7 +3064,7 @@ msgstr ""
 
 #: gui/builtinShipBrowser/navigationPanel.py:61
 msgid "Search fittings"
-msgstr ""
+msgstr "Поиск фитов"
 
 #: gui/characterEditor.py:356
 #, python-brace-format
@@ -3086,11 +3087,11 @@ msgstr ""
 
 #: gui/copySelectDialog.py:62
 msgid "Select a format"
-msgstr ""
+msgstr "Выберите формат"
 
 #: gui/esiFittings.py:284
 msgid "Sending request and awaiting response"
-msgstr ""
+msgstr "Отправка запроса и ожидание ответа"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:65
 msgid "Sensor str."
@@ -3111,7 +3112,7 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:64
 msgid "Service"
-msgstr ""
+msgstr "Сервис"
 
 #: gui/characterEditor.py:907
 msgid "Set Security Status"
@@ -3143,7 +3144,7 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:46
 msgid "Shield"
-msgstr ""
+msgstr "Щит"
 
 #: eos/saveddata/targetProfile.py:49
 msgid "Shield (+T2 DCU)"
@@ -3151,18 +3152,18 @@ msgstr ""
 
 #: graphs/data/fitShieldRegen/graph.py:38
 msgid "Shield Regeneration"
-msgstr ""
+msgstr "Регенерация Щита"
 
 #: graphs/data/fitShieldRegen/graph.py:42
 #: graphs/data/fitShieldRegen/graph.py:55
 #: graphs/data/fitShieldRegen/graph.py:56
 #: graphs/data/fitShieldRegen/graph.py:61
 msgid "Shield amount"
-msgstr ""
+msgstr "Количество щита"
 
 #: graphs/data/fitShieldRegen/graph.py:62
 msgid "Shield regen"
-msgstr ""
+msgstr "Реген. щита"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
@@ -3174,13 +3175,13 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Shield: "
-msgstr ""
+msgstr "Щит: "
 
 #: gui/builtinStatsViews/priceViewFull.py:57
 #: gui/builtinStatsViews/priceViewMinimal.py:57
 #: gui/builtinViews/fittingView.py:661
 msgid "Ship"
-msgstr ""
+msgstr "Корабль"
 
 #: gui/builtinShipBrowser/shipItem.py:111
 msgid "Ship Basic"
@@ -3188,7 +3189,7 @@ msgstr ""
 
 #: gui/builtinShipBrowser/navigationPanel.py:48
 msgid "Ship groups"
-msgstr ""
+msgstr "Группы кораблей"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:117
 msgid "Ship hold"
@@ -3212,7 +3213,7 @@ msgstr ""
 
 #: graphs/gui/ctrlPanel.py:71
 msgid "Show legend"
-msgstr ""
+msgstr "Показать легенду"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:52
 msgid "Show market shortcuts"
@@ -3232,32 +3233,33 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:88
 msgid "Signature"
-msgstr ""
+msgstr "Сигнатура"
 
 #: gui/targetProfileEditor.py:125
 msgid "Signature radius\n"
 "Leave blank for infinitely big value"
-msgstr ""
+msgstr "Радиус сигнатуры\n"
+"Оставте пустым для бесконечно большого числа"
 
 #: graphs/data/fitEwarStats/graph.py:42
 msgid "Signature radius increase"
-msgstr ""
+msgstr "Увелечение радиуса сигнатуры"
 
 #: gui/aboutData.py:33
 msgid "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
-msgstr ""
+msgstr "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
 
 #: gui/characterEditor.py:342 gui/characterEditor.py:608
 msgid "Skill"
-msgstr ""
+msgstr "Навык"
 
 #: gui/characterEditor.py:160
 msgid "Skills"
-msgstr ""
+msgstr "Навыки"
 
 #: gui/characterSelection.py:242
 msgid "Skills required:"
-msgstr ""
+msgstr "Необходимые навыки:"
 
 #: eos/saveddata/damagePattern.py:100 eos/saveddata/targetProfile.py:79
 #: eos/saveddata/targetProfile.py:104 eos/saveddata/targetProfile.py:111
@@ -3285,15 +3287,15 @@ msgstr ""
 #: graphs/data/fitMobility/graph.py:35
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:86
 msgid "Speed"
-msgstr ""
+msgstr "Скорость"
 
 #: graphs/data/fitEwarStats/graph.py:37
 msgid "Speed reduction"
-msgstr ""
+msgstr "Снижение скорости"
 
 #: gui/builtinContextMenus/droneSplitStack.py:29
 msgid "Split {} Stack"
-msgstr ""
+msgstr "Разделить {} Стопку"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 msgid "Spoolup"
@@ -3305,11 +3307,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:171
 msgid "Stable: "
-msgstr ""
+msgstr "Стабильно: "
 
 #: eos/saveddata/damagePattern.py:48
 msgid "Standard"
-msgstr ""
+msgstr "Стандарт"
 
 #: graphs/data/fitCapacitor/graph.py:46
 msgid "Starting cap amount"
@@ -3321,7 +3323,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:22
 msgid "Statistics Panel"
-msgstr ""
+msgstr "Панель статистики"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:45
 msgid "Stick to Attacker"
@@ -3352,11 +3354,11 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:62
 msgid "Subsystem"
-msgstr ""
+msgstr "Подсистема"
 
 #: gui/characterEditor.py:901
 msgid "Success"
-msgstr ""
+msgstr "Успешно"
 
 #: gui/characterEditor.py:901
 msgid "Successfully fetched skills"
@@ -3373,11 +3375,11 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:48
 #, python-brace-format
 msgid "Suppressing {0} Notifications"
-msgstr ""
+msgstr "Заглушено {0} Уведомлений"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:87
 msgid "Sustained"
-msgstr ""
+msgstr "Поддерживаемый"
 
 #: eos/saveddata/targetProfile.py:46 eos/saveddata/targetProfile.py:47
 #: eos/saveddata/targetProfile.py:48 eos/saveddata/targetProfile.py:49
@@ -3411,19 +3413,19 @@ msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:75 graphs/gui/lists.py:359
 msgid "Target"
-msgstr ""
+msgstr "Цель"
 
 #: gui/targetProfileEditor.py:86
 msgid "Target Profile"
-msgstr ""
+msgstr "Профиль Цели"
 
 #: gui/targetProfileEditor.py:130
 msgid "Target Profile Editor"
-msgstr ""
+msgstr "Редактор Профиля Цели"
 
 #: gui/targetProfileEditor.py:73
 msgid "Target Profile name already in use, please choose another."
-msgstr ""
+msgstr "Имя профиля цели уже используется, пожалуйста выберете другое."
 
 #: gui/builtinContextMenus/targetProfile/switcher.py:33
 msgid "Target Resists"
@@ -3447,18 +3449,18 @@ msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:71 graphs/data/fitLockTime/graph.py:37
 msgid "Target signature"
-msgstr ""
+msgstr "Сигнатура цели"
 
 #: graphs/data/fitDamageStats/graph.py:62
 #: graphs/data/fitDamageStats/graph.py:63 graphs/data/fitLockTime/graph.py:35
 msgid "Target signature radius"
-msgstr ""
+msgstr "Радиус сигнатуры цели"
 
 #: graphs/data/fitDamageStats/graph.py:60
 #: graphs/data/fitDamageStats/graph.py:61
 #: graphs/data/fitDamageStats/graph.py:70 graphs/data/fitMobility/graph.py:38
 msgid "Target speed"
-msgstr ""
+msgstr "Скорость цели"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:40
 msgid "Targeting && Misc"
