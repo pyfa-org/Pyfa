@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 12:15\n"
+"PO-Revision-Date: 2020-07-21 09:01\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -19,15 +19,15 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
-msgstr ""
+msgstr " 초당 피해량: "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
-msgstr ""
+msgstr " 모듈 합치기"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
-msgstr ""
+msgstr " 알파 샷: "
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
@@ -36,107 +36,107 @@ msgstr ""
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
-msgstr ""
+msgstr "&모든 피팅 백업"
 
 #: gui/mainMenuBar.py:104
 msgid "&Browse ESI Fittings"
-msgstr ""
+msgstr "&ESI 피팅 보기"
 
 #: gui/mainMenuBar.py:111
 msgid "&Character"
-msgstr ""
+msgstr "&캐릭터"
 
 #: gui/mainMenuBar.py:144
 msgid "&Character Editor"
-msgstr ""
+msgstr "&캐릭터 에디터"
 
 #: gui/mainMenuBar.py:70
 msgid "&Close All Tabs"
-msgstr ""
+msgstr "&모든 탭 닫기"
 
 #: gui/mainMenuBar.py:69
 msgid "&Close Tab"
-msgstr ""
+msgstr "&탭 닫기"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr ""
+msgstr "&데미지 패턴 에디터"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
-msgstr ""
+msgstr "&에디터"
 
 #: gui/mainMenuBar.py:92
 msgid "&Export Fitting"
-msgstr ""
+msgstr "&피팅 내보내기"
 
 #: gui/mainMenuBar.py:119
 msgid "&Export Skills Needed"
-msgstr ""
+msgstr "&필요한 스킬 내보내기"
 
 #: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
-msgstr ""
+msgstr "&파일"
 
 #: gui/mainMenuBar.py:161
 msgid "&Forums"
-msgstr ""
+msgstr "&포럼"
 
 #: gui/mainMenuBar.py:88
 msgid "&From Clipboard"
-msgstr ""
+msgstr "&클립보드에서"
 
 #: gui/mainMenuBar.py:135
 msgid "&Global"
-msgstr ""
+msgstr "&글로벌"
 
 #: gui/mainMenuBar.py:96
 msgid "&Graphs"
-msgstr ""
+msgstr "&그래프"
 
 #: gui/mainMenuBar.py:159
 msgid "&Help"
-msgstr ""
+msgstr "&도움말"
 
 #: gui/mainMenuBar.py:147
 msgid "&Implant Set Editor"
-msgstr ""
+msgstr "&임플란트 세트 에디터"
 
 #: gui/mainMenuBar.py:118
 msgid "&Import Character File"
-msgstr ""
+msgstr "&캐릭터 파일 불러오기"
 
 #: gui/mainMenuBar.py:91
 msgid "&Import Fittings"
-msgstr ""
+msgstr "&피팅 불러오기"
 
 #: gui/mainMenuBar.py:122
 msgid "&Manage ESI Characters"
-msgstr ""
+msgstr "&ESI 캐릭터 관리"
 
 #: gui/mainMenuBar.py:68
 msgid "&New Tab"
-msgstr ""
+msgstr "&새 탭"
 
 #: gui/mainMenuBar.py:95
 msgid "&Optimize Fit Price"
-msgstr ""
+msgstr "&피팅 가격 최적화"
 
 #: gui/mainMenuBar.py:137
 msgid "&Preferences"
-msgstr ""
+msgstr "&설정"
 
 #: gui/mainMenuBar.py:84
 msgid "&Redo"
-msgstr ""
+msgstr "&다시하기"
 
 #: gui/mainMenuBar.py:115
 msgid "&Revert Character"
-msgstr ""
+msgstr "&캐릭터 되돌리기"
 
 #: gui/mainMenuBar.py:113
 msgid "&Save Character"
-msgstr ""
+msgstr "&캐릭터 저장"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
@@ -144,28 +144,28 @@ msgstr ""
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
-msgstr ""
+msgstr "&클립보드로"
 
 #: gui/mainFrame.py:690
 msgid "&Turn Overrides Off"
-msgstr ""
+msgstr "&오버라이드 끄기"
 
 #: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
-msgstr ""
+msgstr "&오버라이드 켜기"
 
 #: gui/mainMenuBar.py:83
 msgid "&Undo"
-msgstr ""
+msgstr "&실행 취소"
 
 #: gui/mainMenuBar.py:160
 msgid "&Wiki"
-msgstr ""
+msgstr "&위키"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:29
 msgid "(Cannot be changed while pyfa is running. Set via command line switches.)"
-msgstr ""
+msgstr "(pyfa가 실행중인 동안에는 수정할 수 없습니다. 커맨드 라인 교체를 통해 설정하시기 바랍니다.)"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
