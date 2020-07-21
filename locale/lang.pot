@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-21 23:30+0800\n"
+"POT-Creation-Date: 2020-07-22 01:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -424,6 +424,11 @@ msgstr ""
 msgid "Armor resistance"
 msgstr ""
 
+#: gui/builtinStatsViews/outgoingViewMinimal.py:43
+#: gui/builtinStatsViews/outgoingViewFull.py:44
+msgid "Armor restored"
+msgstr ""
+
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
 msgstr ""
@@ -625,6 +630,15 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 msgid "Capacitor"
+msgstr ""
+
+#: gui/builtinStatsViews/capacitorViewFull.py:139
+msgid "Capacitor delta:"
+msgstr ""
+
+#: gui/builtinStatsViews/outgoingViewMinimal.py:31
+#: gui/builtinStatsViews/outgoingViewFull.py:32
+msgid "Capacitor restored"
 msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:57
@@ -905,6 +919,10 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/targetProfile.py:81
 msgid "Cruor (Blood Raiders)"
+msgstr ""
+
+#: gui/builtinStatsViews/firepowerViewFull.py:175
+msgid "Current"
 msgstr ""
 
 #: gui/builtinItemStatsViews/itemProperties.py:57
@@ -1281,6 +1299,10 @@ msgstr ""
 #: gui/builtinStatsViews/resistancesViewFull.py:61
 #: gui/builtinStatsViews/resistancesViewFull.py:219
 msgid "Effective HP: "
+msgstr ""
+
+#: gui/builtinStatsViews/capacitorViewFull.py:151
+msgid "Effective capacity"
 msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:85
@@ -1871,6 +1893,11 @@ msgstr ""
 msgid "Hull resistance"
 msgstr ""
 
+#: gui/builtinStatsViews/outgoingViewMinimal.py:49
+#: gui/builtinStatsViews/outgoingViewFull.py:50
+msgid "Hull restored"
+msgstr ""
+
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Hull: "
 msgstr ""
@@ -2116,7 +2143,7 @@ msgid "Large ship hold"
 msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:77
-#: gui/builtinStatsViews/capacitorViewFull.py:171
+#: gui/builtinStatsViews/capacitorViewFull.py:170
 msgid "Lasts "
 msgstr ""
 
@@ -2518,6 +2545,10 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:17
 msgid "Network"
+msgstr ""
+
+#: gui/builtinStatsViews/capacitorViewFull.py:149
+msgid "Neutralizer resistance"
 msgstr ""
 
 #: graphs/data/fitEwarStats/graph.py:36
@@ -3227,6 +3258,11 @@ msgstr ""
 msgid "Shield resistance"
 msgstr ""
 
+#: gui/builtinStatsViews/outgoingViewMinimal.py:37
+#: gui/builtinStatsViews/outgoingViewFull.py:38
+msgid "Shield restored"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
 msgstr ""
@@ -3356,6 +3392,10 @@ msgstr ""
 msgid "Split {} Stack"
 msgstr ""
 
+#: gui/builtinStatsViews/firepowerViewFull.py:169
+msgid "Spool up"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 msgid "Spoolup"
 msgstr ""
@@ -3364,7 +3404,7 @@ msgstr ""
 msgid "Spoolup Cycles"
 msgstr ""
 
-#: gui/builtinStatsViews/capacitorViewFull.py:171
+#: gui/builtinStatsViews/capacitorViewFull.py:170
 msgid "Stable: "
 msgstr ""
 
@@ -3999,6 +4039,26 @@ msgstr ""
 msgid "[T2] Void"
 msgstr ""
 
+#: eos/utils/stats.py:123
+msgid "em"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "exp"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "explosive"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "kin"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "kinetic"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
 msgstr ""
@@ -4030,6 +4090,14 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "th"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "thermal"
 msgstr ""
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
