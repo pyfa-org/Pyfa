@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 18:41\n"
+"PO-Revision-Date: 2020-07-21 11:04\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -278,40 +278,40 @@ msgstr "Aggiungi Equipaggiamenti"
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
 msgid "Add {0} to Cargo (x1000)"
-msgstr ""
+msgstr "Aggiungi {0} alla Stiva(x1000)"
 
 #: gui/builtinContextMenus/cargoAdd.py:33
 msgid "Add {} to Cargo"
-msgstr ""
+msgstr "Aggiungi {} alla Stiva"
 
 #: gui/builtinContextMenus/droneAddStack.py:40
 msgid "Add {} to Drone Bay{}"
-msgstr ""
+msgstr "Aggiungi {} al Vano Droni{}"
 
 #: gui/additionsPane.py:45
 msgid "Additions"
-msgstr ""
+msgstr "Aggiunte"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Additions Panel Copy/Paste"
-msgstr ""
+msgstr "Pannello Aggiunte Copia/Incolla"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:101
 msgid "Addr:"
-msgstr ""
+msgstr "Addr:"
 
 #: gui/itemStats.py:196
 msgid "Affected by"
-msgstr ""
+msgstr "Affetto da"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 #, python-format
 msgid "Agility:\t%.3fx"
-msgstr ""
+msgstr "Agilità:\t%.3fx"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr ""
+msgstr "Tempo di allineamento"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
