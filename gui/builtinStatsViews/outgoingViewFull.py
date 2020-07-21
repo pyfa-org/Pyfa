@@ -29,25 +29,25 @@ _t = wx.GetTranslation
 
 stats = [
     (
-        "labelRemoteCapacitor", "Capacitor:", "{}{} GJ/s", "capacitorInfo", "Capacitor restored",
+        "labelRemoteCapacitor", "Capacitor:", "{}{} GJ/s", "capacitorInfo", _t("Capacitor restored"),
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).capacitor,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).capacitor,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).capacitor,
         3, 0, 0),
     (
-        "labelRemoteShield", "Shield:", "{}{} HP/s", "shieldActive", "Shield restored",
+        "labelRemoteShield", "Shield:", "{}{} HP/s", "shieldActive", _t("Shield restored"),
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).shield,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).shield,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).shield,
         3, 0, 0),
     (
-        "labelRemoteArmor", "Armor:", "{}{} HP/s", "armorActive", "Armor restored",
+        "labelRemoteArmor", "Armor:", "{}{} HP/s", "armorActive", _t("Armor restored"),
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).armor,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).armor,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).armor,
         3, 0, 0),
     (
-        "labelRemoteHull", "Hull:", "{}{} HP/s", "hullActive", "Hull restored",
+        "labelRemoteHull", "Hull:", "{}{} HP/s", "hullActive", _t("Hull restored"),
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, spool, False)).hull,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).hull,
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).hull,

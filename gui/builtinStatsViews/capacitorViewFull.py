@@ -136,10 +136,9 @@ class CapacitorViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
             if labelName == 'label%sCapacitorDelta' and (cap_recharge or cap_use):
-                lines = []
-                lines.append('Capacitor delta:')
-                lines.append('  +{} GJ/s'.format(formatAmount(cap_recharge, 3, 0, 3)))
-                lines.append('  -{} GJ/s'.format(formatAmount(cap_use, 3, 0, 3)))
+                lines = [_t('Capacitor delta:'),
+                         '  +{} GJ/s'.format(formatAmount(cap_recharge, 3, 0, 3)),
+                         '  -{} GJ/s'.format(formatAmount(cap_use, 3, 0, 3))]
                 delta = round(cap_recharge - cap_use, 3)
                 if delta > 0 and 0 < round(neut_res, 4) < 1:
                     lines.append('')
@@ -147,9 +146,9 @@ class CapacitorViewFull(StatsView):
                     lines.append('  +{} GJ/s'.format(formatAmount(delta / neut_res, 3, 0, 3)))
                 label.SetToolTip(wx.ToolTip('\n'.join(lines)))
             if labelName == 'label%sCapacitorResist':
-                texts = ['Neutralizer resistance']
+                texts = [_t('Neutralizer resistance')]
                 if cap_amount > 0 and 0 < round(neut_res, 4) < 1:
-                    texts.append('Effective capacity: {} GJ'.format(formatAmount(cap_amount / neut_res, 3, 0, 9)))
+                    texts.append(_t('Effective capacity') + ': {} GJ'.format(formatAmount(cap_amount / neut_res, 3, 0, 9)))
                 label.SetToolTip(wx.ToolTip('\n'.join(texts)))
 
         capState = fit.capState if fit is not None else 0
