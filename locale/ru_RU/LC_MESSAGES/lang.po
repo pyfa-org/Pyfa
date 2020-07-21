@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-21 16:52\n"
+"PO-Revision-Date: 2020-07-21 17:53\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -311,12 +311,12 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr ""
+msgstr "Время разгона"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
 msgid "Align:\t%.3fs"
-msgstr ""
+msgstr "Разгон:\t%.3fс"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/targetProfile.py:105
 #: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:119
@@ -342,7 +342,7 @@ msgstr "Все требования по навыкам выполнены"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:38
 msgid "Allow pre-release notifications"
-msgstr ""
+msgstr "Разрешить пререлизные уведомления"
 
 #: graphs/gui/ctrlPanel.py:75
 msgid "Always show Y = 0"
@@ -407,7 +407,7 @@ msgstr "Броня"
 
 #: eos/saveddata/targetProfile.py:50
 msgid "Armor (+T2 DCU)"
-msgstr ""
+msgstr "Броня (+Т2 DCU)"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:77
 msgid "Armor repair amount"
@@ -652,7 +652,7 @@ msgstr "Трюм: "
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
-msgstr ""
+msgstr "КАР"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Caustic"
@@ -1586,11 +1586,11 @@ msgstr "Фи&т"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:156
 msgid "Fighter bay"
-msgstr ""
+msgstr "Отсек для истребителей"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:114
 msgid "Fighter squadrons active"
-msgstr ""
+msgstr "Активные отряды истребителей"
 
 #: gui/additionsPane.py:69 gui/builtinContextMenus/additionsExportAll.py:19
 #: gui/builtinContextMenus/additionsExportSelection.py:19
@@ -1660,7 +1660,7 @@ msgstr "Фит"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:113
 msgid "Fleet hangar"
-msgstr ""
+msgstr "Отсек с общим доступом"
 
 #: gui/copySelectDialog.py:59
 msgid "Formatting Tags"
@@ -1673,7 +1673,7 @@ msgstr "Теги Форматирования"
 #: eos/saveddata/damagePattern.py:51 eos/saveddata/damagePattern.py:52
 #: eos/saveddata/damagePattern.py:53 eos/saveddata/damagePattern.py:54
 msgid "Frequency Crystals"
-msgstr ""
+msgstr "Частотные кристаллы"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Frigate"
@@ -1837,7 +1837,7 @@ msgstr "Корпус"
 
 #: eos/saveddata/targetProfile.py:51
 msgid "Hull (+T2 DCU)"
-msgstr ""
+msgstr "Корпус (+Т2 DCU)"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:78
 msgid "Hull repair amount"
@@ -1849,7 +1849,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Hull: "
-msgstr ""
+msgstr "Корпус: "
 
 #: eos/saveddata/damagePattern.py:62 eos/saveddata/damagePattern.py:63
 #: eos/saveddata/damagePattern.py:64 eos/saveddata/damagePattern.py:65
@@ -1858,7 +1858,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:70 eos/saveddata/damagePattern.py:71
 #: eos/saveddata/damagePattern.py:72 eos/saveddata/damagePattern.py:73
 msgid "Hybrid Charges"
-msgstr ""
+msgstr "Гибридные заряды"
 
 #: gui/builtinItemStatsViews/itemEffects.py:35
 msgid "ID"
@@ -2192,7 +2192,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
-msgstr ""
+msgstr "Док-камера"
 
 #: gui/mainFrame.py:673
 msgid "Manage Characters"
@@ -2266,7 +2266,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:123
 msgid "Mineral hold"
-msgstr ""
+msgstr "Отсек для минералов"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
@@ -2349,7 +2349,7 @@ msgstr "Импульс"
 
 #: eos/saveddata/damagePattern.py:154 eos/saveddata/targetProfile.py:78
 msgid "Mordus Legion"
-msgstr ""
+msgstr "Легион Морду"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:97
 #: gui/builtinContextMenus/moduleAmmoChange.py:115
@@ -2601,7 +2601,7 @@ msgstr "Открывать фиты в новой вкладке по умолч
 
 #: gui/builtinContextMenus/shipJump.py:35
 msgid "Open in Fitting Browser"
-msgstr ""
+msgstr "Открыть в браузере фитов"
 
 #: gui/builtinShipBrowser/fitItem.py:227
 msgid "Open in new tab"
@@ -2771,7 +2771,7 @@ msgstr "Свойства"
 
 #: gui/builtinContextMenus/shipModeChange.py:19
 msgid "Propulsion"
-msgstr ""
+msgstr "Скоростной"
 
 #: eos/saveddata/damagePattern.py:78
 msgid "Proton"
@@ -2941,7 +2941,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:213
 msgid "Resist Multiplier: "
-msgstr ""
+msgstr "Множитель сопротивления: "
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinStatsViews/resistancesViewFull.py:47
@@ -2973,7 +2973,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemMutator.py:57
 msgid "Revert changes"
-msgstr ""
+msgstr "Отменить изменения"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Revert to {}"
@@ -3014,12 +3014,12 @@ msgstr "Отсек для сальвага"
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
-msgstr "Вторжение Саньши"
+msgstr "Вторжение Санши"
 
 #: eos/saveddata/damagePattern.py:106 eos/saveddata/damagePattern.py:124
 #: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:70
 msgid "Sanshas Nation"
-msgstr "Нация Саньши"
+msgstr "Нация Санши"
 
 #: gui/mainFrame.py:860
 msgid "Save Backup As..."
@@ -3108,7 +3108,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:107 eos/saveddata/damagePattern.py:125
 #: eos/saveddata/targetProfile.py:65 eos/saveddata/targetProfile.py:71
 msgid "Serpentis"
-msgstr ""
+msgstr "Организация «Гуристас»"
 
 #: gui/builtinViewColumns/baseName.py:64
 msgid "Service"
@@ -3116,7 +3116,7 @@ msgstr "Сервис"
 
 #: gui/characterEditor.py:907
 msgid "Set Security Status"
-msgstr ""
+msgstr "Установить Статус Безопасности"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 msgid "Set as Damage Pattern"
@@ -3124,7 +3124,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:53
 msgid "Set export destination"
-msgstr ""
+msgstr "Выбрать путь для экспорта"
 
 #: gui/builtinContextMenus/ammoToDmgPattern.py:32
 msgid "Set {} as Damage Pattern"
@@ -3140,7 +3140,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/shipModeChange.py:20
 msgid "Sharpshooter"
-msgstr ""
+msgstr "Снайперский"
 
 #: eos/saveddata/targetProfile.py:46
 msgid "Shield"
@@ -3148,7 +3148,7 @@ msgstr "Щит"
 
 #: eos/saveddata/targetProfile.py:49
 msgid "Shield (+T2 DCU)"
-msgstr ""
+msgstr "Щит (+Т2 DCU)"
 
 #: graphs/data/fitShieldRegen/graph.py:38
 msgid "Shield Regeneration"
@@ -3239,11 +3239,11 @@ msgstr "Сигнатура"
 msgid "Signature radius\n"
 "Leave blank for infinitely big value"
 msgstr "Радиус сигнатуры\n"
-"Оставте пустым для бесконечно большого числа"
+"Оставьте пустым для бесконечно большого числа"
 
 #: graphs/data/fitEwarStats/graph.py:42
 msgid "Signature radius increase"
-msgstr "Увелечение радиуса сигнатуры"
+msgstr "Увеличение радиуса сигнатуры"
 
 #: gui/aboutData.py:33
 msgid "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
@@ -3295,7 +3295,7 @@ msgstr "Снижение скорости"
 
 #: gui/builtinContextMenus/droneSplitStack.py:29
 msgid "Split {} Stack"
-msgstr "Разделить {} Стопку"
+msgstr "Разделить стопку {}"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 msgid "Spoolup"
@@ -3311,7 +3311,7 @@ msgstr "Стабильно: "
 
 #: eos/saveddata/damagePattern.py:48
 msgid "Standard"
-msgstr "Стандарт"
+msgstr ""
 
 #: graphs/data/fitCapacitor/graph.py:46
 msgid "Starting cap amount"
@@ -3496,7 +3496,7 @@ msgstr "Следующий путь неверен или не существу�
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:64
 msgid "The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose will also be tried first, and if no data is available, global price will be used."
-msgstr "Выбраный Вами источник будет попробован в первую очередь, но последующие источники будут использованы, если желаемый источник не сработает. Выбраная Вами система также будет испробована в первую очередь, при отсутствии данных будут использованы глобальные цены."
+msgstr "Выбранный Вами источник будет попробован в первую очередь, но последующие источники будут использованы, если желаемый источник не сработает. Выбранная Вами система также будет испробована в первую очередь, при отсутствии данных будут использованы глобальные цены."
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:53
 msgid "There is a release available which you have chosen to suppress. You can choose to reset notification suppression for this release, or download the new release from GitHub."
@@ -3606,7 +3606,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:67
 msgid "Total: "
-msgstr "Всего: "
+msgstr "Итого: "
 
 #: gui/itemStats.py:166
 msgid "Traits"
@@ -3787,7 +3787,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
 msgid "When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge."
-msgstr "Когда отключено, перезарежает заряды только в выбраных модулях. Действие может быть инвертировано зажатием кнопки Ctrl или Alt во время изменения заряда."
+msgstr "Когда отключено, перезаряжает заряды только в выбранных модулях. Действие может быть инвертировано зажатием кнопки Ctrl или Alt во время изменения заряда."
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:54
 msgid "When enabled, skills will check their dependencies' requirements when their levels change and reset skills that no longer meet the requirement.\n"
@@ -3826,7 +3826,7 @@ msgstr "Да"
 
 #: gui/characterEditor.py:757
 msgid "You cannot link All 0 or All 5 characters to an EVE character."
-msgstr "Вы не можете привязать Всё 0 и Всё 5 персонажей к персонажу EVE."
+msgstr "Вы не можете привязать All 0 и All 5 персонажей к персонажу EVE."
 
 #: gui/characterEditor.py:76
 msgid "You must supply a name for the Character!"
