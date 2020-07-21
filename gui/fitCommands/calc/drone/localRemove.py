@@ -10,13 +10,14 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveLocalDroneCommand(wx.Command):
 
-    def __init__(self, fitID, position, amount):
+    def __init__(self, fitID, position, amount, deactivate=False):
         wx.Command.__init__(self, True, 'Remove Local Drone')
         self.fitID = fitID
         self.position = position
         self.amountToRemove = amount
         self.savedDroneInfo = None
         self.removedStack = None
+        self.deactivate = deactivate
 
     def Do(self):
         pyfalog.debug('Doing removal of {} local drones at position {} from fit {}'.format(self.amountToRemove, self.position, self.fitID))
@@ -26,7 +27,10 @@ class CalcRemoveLocalDroneCommand(wx.Command):
 
         drone.amount = max(drone.amount - self.amountToRemove, 0)
         if drone.amountActive > 0:
-            drone.amountActive = min(drone.amountActive, drone.amount)
+            if self.deactivate:
+                drone.amountActive = 0
+            else:
+                drone.amountActive = min(drone.amountActive, drone.amount)
 
         if drone.amount == 0:
             fit.drones.remove(drone)
