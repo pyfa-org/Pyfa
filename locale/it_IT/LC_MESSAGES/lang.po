@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-21 11:04\n"
+"PO-Revision-Date: 2020-07-21 12:02\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -316,7 +316,7 @@ msgstr "Tempo di allineamento"
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
 msgid "Align:\t%.3fs"
-msgstr ""
+msgstr "Allineamento:\t%.3fs"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/targetProfile.py:105
 #: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:119
@@ -326,104 +326,104 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:168 eos/saveddata/targetProfile.py:175
 #: eos/saveddata/targetProfile.py:182 eos/saveddata/targetProfile.py:189
 msgid "All"
-msgstr ""
+msgstr "Tutto"
 
 #: gui/aboutData.py:32
 msgid "All EVE-Online related materials are property of CCP hf."
-msgstr ""
+msgstr "Tutti i materiali relativi a EVE-Online sono di proprietà di CCP hf."
 
 #: gui/mainFrame.py:840 gui/mainFrame.py:1015
 msgid "All Files"
-msgstr ""
+msgstr "Tutti i File"
 
 #: gui/characterSelection.py:238
 msgid "All skill prerequisites have been met"
-msgstr ""
+msgstr "Tutti i prerequisiti dell'abilità sono stati soddisfatti"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:38
 msgid "Allow pre-release notifications"
-msgstr ""
+msgstr "Consenti notifiche pre-rilascio"
 
 #: graphs/gui/ctrlPanel.py:75
 msgid "Always show Y = 0"
-msgstr ""
+msgstr "Mostra sempre Y = 0"
 
 #: eos/saveddata/targetProfile.py:53
 msgid "Amarr (Armor)"
-msgstr ""
+msgstr "Amarr (Armatura)"
 
 #: eos/saveddata/targetProfile.py:52
 msgid "Amarr (Shield)"
-msgstr ""
+msgstr "Amarr (Scudo)"
 
 #: eos/saveddata/damagePattern.py:148 eos/saveddata/targetProfile.py:72
 msgid "Amarr Empire"
-msgstr ""
+msgstr "Amarr Empire"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:115
 msgid "Ammo hold"
-msgstr ""
+msgstr "Vano Munizioni"
 
 #: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:120
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
 msgid "Angel Cartel"
-msgstr ""
+msgstr "Angel Cartel"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
 msgid "Animate gauges"
-msgstr ""
+msgstr "Anima gli indicatori"
 
 #: eos/saveddata/damagePattern.py:71
 msgid "Antimatter"
-msgstr ""
+msgstr "Antimatter"
 
 #: gui/builtinContextMenus/implantSetApply.py:25
 msgid "Apply Implant Set"
-msgstr ""
+msgstr "Applica Set Impianti"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Apply Mutaplasmid"
-msgstr ""
+msgstr "Applica Mutaplasmid"
 
 #: gui/builtinContextMenus/graphDmgApplyProjected.py:23
 msgid "Apply Projected Items"
-msgstr ""
+msgstr "Applica Oggetti Progettati"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:144
 msgid "Apply Proxy Settings"
-msgstr ""
+msgstr "Applica Impostazioni Del Proxy"
 
 #: gui/propertyEditor.py:146
 msgid "Are you sure you want to delete all overrides?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare tutti gli override?"
 
 #: gui/mainFrame.py:647
 msgid "Are you sure you wish to ignore fitting restrictions for the current fit? This could lead to wildly inaccurate results and possible errors."
-msgstr ""
+msgstr "Sei sicuro di voler ignorare le restrizioni dell'attuale equipaggiamento? Potrebbe portare a risultati molto inaccurati e a possibili errori."
 
 #: eos/saveddata/targetProfile.py:47
 msgid "Armor"
-msgstr ""
+msgstr "Armatura"
 
 #: eos/saveddata/targetProfile.py:50
 msgid "Armor (+T2 DCU)"
-msgstr ""
+msgstr "Armatura (+T2 DCU)"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:77
 msgid "Armor repair amount"
-msgstr ""
+msgstr "Quantità di armatura riparata"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Armor resistance"
-msgstr ""
+msgstr "Resistenze dell'armatura"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
-msgstr ""
+msgstr "Armatura: "
 
 #: eos/saveddata/damagePattern.py:117 eos/saveddata/targetProfile.py:90
 msgid "Ashimmu (Blood Raiders)"
-msgstr ""
+msgstr "Ashimmu (Blood Raiders)"
 
 #: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:103
 #: eos/saveddata/damagePattern.py:104 eos/saveddata/damagePattern.py:105
@@ -432,65 +432,65 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:63
 #: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:65
 msgid "Asteroid"
-msgstr ""
+msgstr "Asteroide"
 
 #: graphs/data/fitDamageStats/graph.py:74
 msgid "Attacker"
-msgstr ""
+msgstr "Aggressore"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:44
 #: gui/builtinItemStatsViews/itemProperties.py:56
 msgid "Attribute"
-msgstr ""
+msgstr "Attributo"
 
 #: gui/mainMenuBar.py:128
 msgid "Attribute &Overrides"
-msgstr ""
+msgstr "Attributo &Override"
 
 #: gui/propertyEditor.py:28
 msgid "Attribute Editor"
-msgstr ""
+msgstr "Editor Attributi"
 
 #: gui/itemStats.py:177
 msgid "Attributes"
-msgstr ""
+msgstr "Attributi"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:43
 msgid "Auto"
-msgstr ""
+msgstr "Automatico"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Auto-detected proxy settings"
-msgstr ""
+msgstr "Impostazioni proxy rilevate automaticamente"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:136
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:158
 msgid "Auto-detected: "
-msgstr ""
+msgstr "Rilevato automaticamente: "
 
 #: graphs/gui/ctrlPanel.py:64
 msgid "Axis X:"
-msgstr ""
+msgstr "Asse X:"
 
 #: graphs/gui/ctrlPanel.py:56
 msgid "Axis Y:"
-msgstr ""
+msgstr "Asse Y:"
 
 #: gui/builtinShipBrowser/navigationPanel.py:50
 msgid "Back"
-msgstr ""
+msgstr "Indietro"
 
 #: gui/mainFrame.py:875
 msgid "Backing up {} fits to: {}"
-msgstr ""
+msgstr "Backup {} equipaggiamenti su: {}"
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
-msgstr ""
+msgstr "Esegui backup di tutti gli equipaggiamenti su un file XML"
 
 #: gui/mainFrame.py:874 gui/mainFrame.py:905
 msgid "Backup fits"
-msgstr ""
+msgstr "Backup equipaggiamenti"
 
 #: eos/saveddata/damagePattern.py:59
 msgid "Baryon"
