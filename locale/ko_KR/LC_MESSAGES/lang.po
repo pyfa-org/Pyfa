@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-21 09:01\n"
+"PO-Revision-Date: 2020-07-21 10:02\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -233,19 +233,19 @@ msgstr "아비살 환경"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
-msgstr ""
+msgstr "활성화"
 
 #: gui/builtinViewColumns/abilities.py:37
 msgid "Active Abilities"
-msgstr ""
+msgstr "활성화된 능력"
 
 #: gui/builtinViewColumns/sideEffects.py:37
 msgid "Active Side Effects"
-msgstr ""
+msgstr "활성화된 부작용"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:76
 msgid "Active shield boost"
-msgstr ""
+msgstr "액티브 실드 부스트"
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
@@ -253,40 +253,40 @@ msgstr "캐릭터 추가"
 
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
-msgstr ""
+msgstr "캐릭터 에러 추가"
 
 #: gui/builtinShipBrowser/fitItem.py:233
 msgid "Add Command Booster"
-msgstr ""
+msgstr "커맨드 부스트 추가"
 
 #: gui/builtinContextMenus/fitAddCurrentlyOpen.py:29
 msgid "Add Currently Open Fit"
-msgstr ""
+msgstr "현재 열린 핏 추가"
 
 #: gui/builtinContextMenus/envEffectAdd.py:56
 msgid "Add Environmental Effect"
-msgstr ""
+msgstr "환경 효과 추가"
 
 #: gui/builtinContextMenus/fitAddBrowse.py:22
 msgid "Add Fit..."
-msgstr ""
+msgstr "핏 추가..."
 
 #: gui/fitBrowserLite.py:17
 msgid "Add Fits"
-msgstr ""
+msgstr "여러 핏 추가"
 
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
 msgid "Add {0} to Cargo (x1000)"
-msgstr ""
+msgstr "{0} 를 카고에 추가 (x1000)"
 
 #: gui/builtinContextMenus/cargoAdd.py:33
 msgid "Add {} to Cargo"
-msgstr ""
+msgstr "{} 를 카고에 추가"
 
 #: gui/builtinContextMenus/droneAddStack.py:40
 msgid "Add {} to Drone Bay{}"
-msgstr ""
+msgstr "{} 를 드론 베이에 추가{}"
 
 #: gui/additionsPane.py:45
 msgid "Additions"
@@ -498,48 +498,48 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:47
 msgid "Base Value"
-msgstr ""
+msgstr "기본값"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
-msgstr ""
+msgstr "배틀크루저"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battleship"
-msgstr ""
+msgstr "배틀쉽"
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
-msgstr ""
+msgstr "이미 처리된 핏들은 저장되지 않았음"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Bioluminescence"
-msgstr ""
+msgstr "생물학적 발광"
 
 #: eos/saveddata/damagePattern.py:103 eos/saveddata/damagePattern.py:121
 #: eos/saveddata/targetProfile.py:61 eos/saveddata/targetProfile.py:67
 msgid "Blood Raiders"
-msgstr ""
+msgstr "블러드 레이더"
 
 #: graphs/style.py:54
 msgid "Blue"
-msgstr ""
+msgstr "블루"
 
 #: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
 #: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
 msgid "Bombs"
-msgstr ""
+msgstr "밤"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
-msgstr ""
+msgstr "부스터"
 
 #: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
 #: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
 #: gui/copySelectDialog.py:56
 msgid "Boosters"
-msgstr ""
+msgstr "부스터"
 
 #: graphs/style.py:82
 msgid "Bright"
@@ -547,15 +547,15 @@ msgstr ""
 
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
-msgstr ""
+msgstr "이브 피팅 살펴보기"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Bump distance"
-msgstr ""
+msgstr "범핑 거리"
 
 #: graphs/data/fitMobility/graph.py:38
 msgid "Bump speed"
-msgstr ""
+msgstr "범핑 속도"
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/damagePattern.py:109
 #: eos/saveddata/damagePattern.py:110 eos/saveddata/damagePattern.py:111
@@ -570,27 +570,27 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:89 eos/saveddata/targetProfile.py:90
 #: eos/saveddata/targetProfile.py:91 eos/saveddata/targetProfile.py:92
 msgid "Burner"
-msgstr ""
+msgstr "버너"
 
 #: eos/saveddata/damagePattern.py:150 eos/saveddata/targetProfile.py:74
 msgid "CONCORD"
-msgstr ""
+msgstr "콩코드"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
-msgstr ""
+msgstr "CSV 파일"
 
 #: eos/saveddata/targetProfile.py:55
 msgid "Caldari (Armor)"
-msgstr ""
+msgstr "칼다리 (아머)"
 
 #: eos/saveddata/targetProfile.py:54
 msgid "Caldari (Shield)"
-msgstr ""
+msgstr "칼다리 (실드)"
 
 #: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:73
 msgid "Caldari State"
@@ -603,42 +603,42 @@ msgstr ""
 #: graphs/data/fitCapacitor/graph.py:35 graphs/data/fitCapacitor/graph.py:36
 #: graphs/data/fitCapacitor/graph.py:38 graphs/data/fitCapacitor/graph.py:43
 msgid "Cap amount"
-msgstr ""
+msgstr "캐패시터 용량"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Cap neutralized per second"
-msgstr ""
+msgstr "초당 뉴트량"
 
 #: graphs/data/fitCapacitor/graph.py:39
 msgid "Cap regen"
-msgstr ""
+msgstr "캐패시터 회복량"
 
 #: graphs/data/fitCapacitor/graph.py:32
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 msgid "Capacitor"
-msgstr ""
+msgstr "캐패시터"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
-msgstr ""
+msgstr "캐패시터 안정성"
 
 #: eos/saveddata/damagePattern.py:76
 msgid "Carbonized Lead"
-msgstr ""
+msgstr "탄화납"
 
 #: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
 msgid "Cargo"
-msgstr ""
+msgstr "카고"
 
 #: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
 msgid "Cargo Items"
-msgstr ""
+msgstr "카고 아이템"
 
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/resourcesViewFull.py:158
@@ -652,7 +652,7 @@ msgstr "화물칸:"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
-msgstr ""
+msgstr "캐리어"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Caustic"
