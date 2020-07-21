@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-17 11:42+0800\n"
+"POT-Creation-Date: 2020-07-21 23:30+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "&Export Skills Needed"
 msgstr ""
 
-#: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
+#: gui/propertyEditor.py:42 gui/mainMenuBar.py:66
 msgid "&File"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "&Turn Overrides Off"
 msgstr ""
 
-#: gui/mainFrame.py:690 gui/mainMenuBar.py:131
+#: gui/mainMenuBar.py:131 gui/mainFrame.py:690
 msgid "&Turn Overrides On"
 msgstr ""
 
@@ -274,6 +274,10 @@ msgstr ""
 
 #: gui/fitBrowserLite.py:17
 msgid "Add Fits"
+msgstr ""
+
+#: gui/builtinContextMenus/targetProfile/adder.py:29
+msgid "Add Target Profile"
 msgstr ""
 
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
@@ -441,8 +445,8 @@ msgstr ""
 msgid "Attacker"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemAttributes.py:44
 #: gui/builtinItemStatsViews/itemProperties.py:56
+#: gui/builtinItemStatsViews/itemAttributes.py:44
 msgid "Attribute"
 msgstr ""
 
@@ -537,10 +541,11 @@ msgstr ""
 msgid "Booster"
 msgstr ""
 
-#: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
+#: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
+#: gui/additionsPane.py:78
 #: gui/builtinContextMenus/additionsExportSelection.py:23
-#: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
-#: gui/copySelectDialog.py:56
+#: gui/builtinContextMenus/additionsImport.py:24
+#: gui/builtinContextMenus/additionsExportAll.py:23
 msgid "Boosters"
 msgstr ""
 
@@ -630,16 +635,16 @@ msgstr ""
 msgid "Carbonized Lead"
 msgstr ""
 
-#: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
-#: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
+#: gui/additionsPane.py:72 gui/builtinStatsViews/targetingMiscViewMinimal.py:90
+#: gui/builtinContextMenus/priceOptions.py:47
 msgid "Cargo"
 msgstr ""
 
-#: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:20
 msgid "Cargo Items"
 msgstr ""
 
@@ -695,8 +700,8 @@ msgstr ""
 msgid "Changes require restart of pyfa to take effect."
 msgstr ""
 
-#: gui/builtinStatsViews/priceViewFull.py:57 gui/characterEditor.py:90
-#: gui/esiFittings.py:341
+#: gui/characterEditor.py:90 gui/esiFittings.py:341
+#: gui/builtinStatsViews/priceViewFull.py:57
 msgid "Character"
 msgstr ""
 
@@ -804,7 +809,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: gui/esiFittings.py:157 gui/propertyEditor.py:147
+#: gui/propertyEditor.py:147 gui/esiFittings.py:157
 msgid "Confirm Delete"
 msgstr ""
 
@@ -856,9 +861,9 @@ msgstr ""
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemDescription.py:43
-#: gui/builtinItemStatsViews/itemTraits.py:25
 #: gui/builtinShipBrowser/fitItem.py:107
+#: gui/builtinItemStatsViews/itemTraits.py:25
+#: gui/builtinItemStatsViews/itemDescription.py:43
 msgid "Copy"
 msgstr ""
 
@@ -902,8 +907,8 @@ msgstr ""
 msgid "Cruor (Blood Raiders)"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemAttributes.py:45
 #: gui/builtinItemStatsViews/itemProperties.py:57
+#: gui/builtinItemStatsViews/itemAttributes.py:45
 msgid "Current Value"
 msgstr ""
 
@@ -1069,12 +1074,12 @@ msgid ""
 "settings."
 msgstr ""
 
-#: graphs/data/fitDamageStats/graph.py:58
-#: graphs/data/fitDamageStats/graph.py:65 graphs/data/fitEwarStats/graph.py:34
-#: graphs/data/fitEwarStats/graph.py:44 graphs/data/fitMobility/graph.py:36
-#: graphs/data/fitRemoteReps/graph.py:50 graphs/data/fitRemoteReps/graph.py:58
+#: graphs/data/fitEwarStats/graph.py:34 graphs/data/fitEwarStats/graph.py:44
 #: graphs/data/fitWarpTime/graph.py:47 graphs/data/fitWarpTime/graph.py:48
 #: graphs/data/fitWarpTime/graph.py:51 graphs/data/fitWarpTime/graph.py:52
+#: graphs/data/fitMobility/graph.py:36 graphs/data/fitRemoteReps/graph.py:50
+#: graphs/data/fitRemoteReps/graph.py:58 graphs/data/fitDamageStats/graph.py:58
+#: graphs/data/fitDamageStats/graph.py:65
 msgid "Distance"
 msgstr ""
 
@@ -1114,8 +1119,8 @@ msgstr ""
 msgid "Dotted"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
+#: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 msgid "Download"
 msgstr ""
 
@@ -1131,7 +1136,7 @@ msgstr ""
 msgid "Drag a fit to this area"
 msgstr ""
 
-#: gui/builtinAdditionPanes/projectedView.py:226
+#: gui/builtinAdditionPanes/projectedView.py:224
 msgid "Drag an item or fit, or use right-click menu for wormhole effects"
 msgstr ""
 
@@ -1185,12 +1190,12 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:155
 #: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:169
 #: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:183
-#: gui/additionsPane.py:66 gui/builtinContextMenus/additionsExportAll.py:18
-#: gui/builtinContextMenus/additionsExportSelection.py:18
-#: gui/builtinContextMenus/additionsImport.py:19
-#: gui/builtinContextMenus/priceOptions.py:40
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
-#: gui/builtinStatsViews/priceViewFull.py:58
+#: gui/additionsPane.py:66 gui/builtinStatsViews/priceViewFull.py:58
+#: gui/builtinContextMenus/additionsExportSelection.py:18
+#: gui/builtinContextMenus/priceOptions.py:40
+#: gui/builtinContextMenus/additionsImport.py:19
+#: gui/builtinContextMenus/additionsExportAll.py:18
 msgid "Drones"
 msgstr ""
 
@@ -1244,8 +1249,8 @@ msgstr ""
 msgid "EVE IGB HTML fitting file"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 #: gui/characterEditor.py:162
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 msgid "EVE SSO"
 msgstr ""
 
@@ -1406,8 +1411,8 @@ msgstr ""
 
 #: gui/characterEditor.py:83 gui/characterEditor.py:463
 #: gui/characterEditor.py:898 gui/characterSelection.py:174
-#: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
-#: gui/targetProfileEditor.py:78
+#: gui/patternEditor.py:58 gui/setEditor.py:55 gui/targetProfileEditor.py:78
+#: gui/mainFrame.py:898
 msgid "Error"
 msgstr ""
 
@@ -1603,9 +1608,10 @@ msgstr ""
 msgid "Fighter squadrons active"
 msgstr ""
 
-#: gui/additionsPane.py:69 gui/builtinContextMenus/additionsExportAll.py:19
+#: gui/additionsPane.py:69
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
+#: gui/builtinContextMenus/additionsExportAll.py:19
 msgid "Fighters"
 msgstr ""
 
@@ -1795,6 +1801,10 @@ msgstr ""
 msgid "Graphs"
 msgstr ""
 
+#: eos/saveddata/fit.py:402
+msgid "Gravimetric"
+msgstr ""
+
 #: graphs/style.py:53
 msgid "Green"
 msgstr ""
@@ -1906,18 +1916,19 @@ msgstr ""
 msgid "Implant Set name already in use, please choose another."
 msgstr ""
 
-#: gui/additionsPane.py:75 gui/builtinContextMenus/additionsExportAll.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:22
+#: gui/characterEditor.py:161 gui/copySelectDialog.py:47
+#: gui/copySelectDialog.py:55 gui/additionsPane.py:75
 #: gui/builtinContextMenus/additionsExportSelection.py:21
 #: gui/builtinContextMenus/additionsExportSelection.py:22
 #: gui/builtinContextMenus/additionsImport.py:22
-#: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
-#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
+#: gui/builtinContextMenus/additionsImport.py:23
+#: gui/builtinContextMenus/additionsExportAll.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:22
 msgid "Implants"
 msgstr ""
 
-#: gui/builtinContextMenus/priceOptions.py:54
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
+#: gui/builtinContextMenus/priceOptions.py:54
 msgid "Implants && Boosters"
 msgstr ""
 
@@ -2058,11 +2069,11 @@ msgstr ""
 msgid "Iron"
 msgstr ""
 
-#: gui/builtinContextMenus/ammoToDmgPattern.py:32
-#: gui/builtinContextMenus/itemMarketJump.py:44
-#: gui/builtinContextMenus/itemRemove.py:43
-#: gui/builtinContextMenus/itemStats.py:38
 #: gui/builtinItemStatsViews/itemCompare.py:147
+#: gui/builtinContextMenus/itemMarketJump.py:44
+#: gui/builtinContextMenus/itemStats.py:38
+#: gui/builtinContextMenus/ammoToDmgPattern.py:32
+#: gui/builtinContextMenus/itemRemove.py:43
 msgid "Item"
 msgstr ""
 
@@ -2090,6 +2101,10 @@ msgstr ""
 #: gui/builtinStatsViews/resistancesViewFull.py:87
 #: gui/targetProfileEditor.py:121
 msgid "Kinetic resistance"
+msgstr ""
+
+#: eos/saveddata/fit.py:402
+msgid "Ladar"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:96
@@ -2127,8 +2142,8 @@ msgstr ""
 msgid "Level %s"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
-#: gui/characterEditor.py:616 gui/characterEditor.py:649
+#: gui/characterEditor.py:591 gui/characterEditor.py:616
+#: gui/characterEditor.py:649 gui/builtinItemStatsViews/itemDependants.py:46
 msgid "Level {}"
 msgstr ""
 
@@ -2206,6 +2221,10 @@ msgstr ""
 
 #: graphs/style.py:56
 msgid "Magenta"
+msgstr ""
+
+#: eos/saveddata/fit.py:402
+msgid "Magnetometric"
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
@@ -2378,6 +2397,10 @@ msgstr ""
 msgid "Multifrequency"
 msgstr ""
 
+#: eos/saveddata/fit.py:408
+msgid "Multispectral"
+msgstr ""
+
 #: gui/copySelectDialog.py:54
 msgid "Mutated Attributes"
 msgstr ""
@@ -2480,8 +2503,8 @@ msgstr ""
 msgid "NPC"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
+#: gui/builtinItemStatsViews/itemEffects.py:30
 msgid "Name"
 msgstr ""
 
@@ -2540,7 +2563,7 @@ msgstr ""
 msgid "No proxy"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/characterEditor.py:855
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -2549,7 +2572,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/characterEditor.py:855
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "None"
 msgstr ""
 
@@ -2729,9 +2752,9 @@ msgid ""
 "Pressing this button will cause all logs in memory to write to the log file:"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinStatsViews/priceViewFull.py:40
+#: gui/builtinItemStatsViews/itemCompare.py:155
 msgid "Price"
 msgstr ""
 
@@ -2769,10 +2792,10 @@ msgstr ""
 msgid "Projected"
 msgstr ""
 
-#: gui/builtinAdditionPanes/projectedView.py:306
-#: gui/builtinAdditionPanes/projectedView.py:316
-#: gui/builtinAdditionPanes/projectedView.py:321
-#: gui/builtinAdditionPanes/projectedView.py:326
+#: gui/builtinAdditionPanes/projectedView.py:304
+#: gui/builtinAdditionPanes/projectedView.py:314
+#: gui/builtinAdditionPanes/projectedView.py:319
+#: gui/builtinAdditionPanes/projectedView.py:324
 msgid "Projected Item"
 msgstr ""
 
@@ -2838,6 +2861,10 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
 msgid "Quantity of all items"
+msgstr ""
+
+#: eos/saveddata/fit.py:402
+msgid "Radar"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:45
@@ -2915,8 +2942,8 @@ msgid "Remote Repairs"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinStatsViews/outgoingViewFull.py:66
 #: gui/builtinStatsViews/outgoingViewMinimal.py:65
+#: gui/builtinStatsViews/outgoingViewFull.py:66
 msgid "Remote Reps"
 msgstr ""
 
@@ -3434,8 +3461,9 @@ msgstr ""
 msgid "TPs: signature radius increase"
 msgstr ""
 
+#: gui/builtinViewColumns/baseName.py:102
 #: gui/builtinContextMenus/shipModeChange.py:37
-#: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
+#: gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr ""
 
@@ -3443,7 +3471,7 @@ msgstr ""
 msgid "Talos"
 msgstr ""
 
-#: graphs/data/fitDamageStats/graph.py:75 graphs/gui/lists.py:359
+#: graphs/gui/lists.py:359 graphs/data/fitDamageStats/graph.py:75
 msgid "Target"
 msgstr ""
 
@@ -3479,18 +3507,18 @@ msgstr ""
 msgid "Target resistance"
 msgstr ""
 
-#: graphs/data/fitDamageStats/graph.py:71 graphs/data/fitLockTime/graph.py:37
+#: graphs/data/fitLockTime/graph.py:37 graphs/data/fitDamageStats/graph.py:71
 msgid "Target signature"
 msgstr ""
 
-#: graphs/data/fitDamageStats/graph.py:62
-#: graphs/data/fitDamageStats/graph.py:63 graphs/data/fitLockTime/graph.py:35
+#: graphs/data/fitLockTime/graph.py:35 graphs/data/fitDamageStats/graph.py:62
+#: graphs/data/fitDamageStats/graph.py:63
 msgid "Target signature radius"
 msgstr ""
 
-#: graphs/data/fitDamageStats/graph.py:60
+#: graphs/data/fitMobility/graph.py:38 graphs/data/fitDamageStats/graph.py:60
 #: graphs/data/fitDamageStats/graph.py:61
-#: graphs/data/fitDamageStats/graph.py:70 graphs/data/fitMobility/graph.py:38
+#: graphs/data/fitDamageStats/graph.py:70
 msgid "Target speed"
 msgstr ""
 
@@ -3625,12 +3653,12 @@ msgstr ""
 msgid "Thukker"
 msgstr ""
 
-#: graphs/data/fitCapacitor/graph.py:34 graphs/data/fitCapacitor/graph.py:41
-#: graphs/data/fitDamageStats/graph.py:59
-#: graphs/data/fitDamageStats/graph.py:68 graphs/data/fitMobility/graph.py:33
-#: graphs/data/fitMobility/graph.py:41 graphs/data/fitRemoteReps/graph.py:51
-#: graphs/data/fitRemoteReps/graph.py:56 graphs/data/fitShieldRegen/graph.py:40
-#: graphs/data/fitShieldRegen/graph.py:54
+#: graphs/data/fitMobility/graph.py:33 graphs/data/fitMobility/graph.py:41
+#: graphs/data/fitShieldRegen/graph.py:40
+#: graphs/data/fitShieldRegen/graph.py:54 graphs/data/fitCapacitor/graph.py:34
+#: graphs/data/fitCapacitor/graph.py:41 graphs/data/fitRemoteReps/graph.py:51
+#: graphs/data/fitRemoteReps/graph.py:56 graphs/data/fitDamageStats/graph.py:59
+#: graphs/data/fitDamageStats/graph.py:68
 msgid "Time"
 msgstr ""
 
@@ -3650,9 +3678,9 @@ msgstr ""
 msgid "Toggle view mode"
 msgstr ""
 
-#: gui/builtinStatsViews/miningyieldViewFull.py:89
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/priceViewMinimal.py:57
+#: gui/builtinStatsViews/miningyieldViewFull.py:89
 msgid "Total"
 msgstr ""
 
@@ -3788,8 +3816,8 @@ msgstr ""
 msgid "Using Executable Path for Saved Fit Database and Settings"
 msgstr ""
 
-#: gui/builtinContextMenus/itemVariationChange.py:49
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
+#: gui/builtinContextMenus/itemVariationChange.py:49
 msgid "Variations"
 msgstr ""
 
