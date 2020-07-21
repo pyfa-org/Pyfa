@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-21 15:50\n"
+"PO-Revision-Date: 2020-07-21 16:52\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -482,7 +482,7 @@ msgstr "Назад"
 
 #: gui/mainFrame.py:875
 msgid "Backing up {} fits to: {}"
-msgstr "Востановление {} фитов в: {}"
+msgstr "Восстановление {} фитов в: {}"
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
@@ -682,11 +682,11 @@ msgstr "Изменить заряды во всех модулях того же
 #: gui/builtinContextMenus/itemAmountChange.py:34
 #, python-brace-format
 msgid "Change {0} Quantity"
-msgstr "Изменить {0} Количество"
+msgstr "Изменить количество {0}"
 
 #: gui/builtinContextMenus/itemProjectionRange.py:34
 msgid "Change {} Range"
-msgstr "Изменить {} Дальность"
+msgstr "Изменить дальность {}"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:31
 msgid "Changes require restart of pyfa to take effect."
@@ -788,7 +788,7 @@ msgstr ""
 
 #: gui/itemStats.py:182
 msgid "Compare"
-msgstr "Cравнить"
+msgstr "Сравнить"
 
 #: eos/saveddata/damagePattern.py:92
 msgid "Concussion Bomb"
@@ -807,7 +807,7 @@ msgstr "Подтвердить Удаление"
 
 #: gui/esiFittings.py:126 gui/esiFittings.py:169 gui/esiFittings.py:311
 msgid "Connection error, please check your internet connection"
-msgstr "Ошибка соединения, пожалуйста проверте Ваше интернет соединение"
+msgstr "Ошибка соединения, пожалуйста проверьте Ваше интернет соединение"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:14
 msgid "Context Menus"
@@ -873,7 +873,7 @@ msgstr "Копировать Модули в Буфер"
 
 #: gui/builtinContextMenus/additionsExportSelection.py:39
 msgid "Copy Selected {}"
-msgstr "Копировать выбраное {}"
+msgstr "Копировать выбранное {}"
 
 #: gui/ssoLogin.py:20
 msgid "Copy and paste the block of text provided by pyfa.io"
@@ -1062,8 +1062,8 @@ msgstr "Выкл"
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:28
 msgid "Disabling context menus can improve responsiveness.\n"
 "You can hold {} key + right-click to show all menu items regardless of these settings."
-msgstr "Отключение контекстных меню может улучшить производитеьность.\n"
-"Вы можете зажать кнопку {} + Пкм для показа всех пунктов меню независимо от этой настройки."
+msgstr "Отключение контекстных меню может улучшить производительность.\n"
+"Вы можете зажать кнопку {} + ПКМ для показа всех пунктов меню независимо от этой настройки."
 
 #: graphs/data/fitDamageStats/graph.py:58
 #: graphs/data/fitDamageStats/graph.py:65 graphs/data/fitEwarStats/graph.py:34
@@ -1502,7 +1502,7 @@ msgstr "Экспортировать содержимое трюма"
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Export charges loaded into modules"
-msgstr "Экспрорт зарядов загруженных в модули"
+msgstr "Экспорт зарядов загруженных в модули"
 
 #: gui/esiFittings.py:211
 msgid "Export fit to EVE"
@@ -1712,7 +1712,7 @@ msgstr "Галленте (Щит)"
 
 #: eos/saveddata/damagePattern.py:151 eos/saveddata/targetProfile.py:75
 msgid "Gallente Federation"
-msgstr "Федерация Галленте"
+msgstr "Галлентская Федерация"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:57
 msgid "Game Database:"
@@ -1973,7 +1973,7 @@ msgstr "Импортирование навыков в этого персона
 
 #: gui/copySelectDialog.py:59
 msgid "Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
-msgstr "Вкючить теги форматирования для вставки фита напрямую в корп. биллютени, МОТД, и т. д."
+msgstr "Включить теги форматирования для вставки фита напрямую в корп. бюллетени, МОТД, и т. д."
 
 #: gui/builtinStatsViews/resistancesViewFull.py:115
 msgid "Incoming damage pattern"
@@ -2341,7 +2341,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleFill.py:24
 msgid "Module"
-msgstr "Modul"
+msgstr "Модуль"
 
 #: graphs/data/fitMobility/graph.py:37
 msgid "Momentum"
@@ -2799,7 +2799,7 @@ msgstr "Проверка Обновления Pyfa"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:15
 msgid "Pyfa can automatically check and notify you of new releases. This feature is toggled in the Network settings. Here, you may allow pre-release notifications and view suppressed release notifications, if any."
-msgstr "Pyfa может автоматически проверять и уведомлять о новых версиях. Эта функция может быть включена в Настойках сети. Здесь Вы можете разрешиь пререлизные уведомления и просмотреть отключённые уведомления, если таковые имеются."
+msgstr "Pyfa может автоматически проверять и уведомлять о новых версиях. Эта функция может быть включена в Настойках сети. Здесь Вы можете разрешить пререлизные уведомления и просмотреть отключённые уведомления, если таковые имеются."
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:129
 msgid "Quafe hold"
