@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-21 17:53\n"
+"PO-Revision-Date: 2020-07-21 18:50\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -3282,7 +3282,7 @@ msgstr "Отсек для малых кораблей"
 
 #: graphs/style.py:86
 msgid "Solid"
-msgstr ""
+msgstr "Сплошной"
 
 #: graphs/data/fitMobility/graph.py:35
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:86
@@ -3405,7 +3405,7 @@ msgstr ""
 #: gui/builtinContextMenus/shipModeChange.py:37
 #: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
-msgstr ""
+msgstr "Тактический режим"
 
 #: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:91
 msgid "Talos"
@@ -3484,7 +3484,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:44
 msgid "The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box."
-msgstr ""
+msgstr "Задержка между нажатием кнопки и поиском по рынку. Может помочь снизить лаги при быстром наборе в поле поиска по рынку."
 
 #: gui/mainFrame.py:951
 msgid "The following error was generated"
@@ -3533,7 +3533,8 @@ msgstr "Это действие приведёт к удалению всех к
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:97
 msgid "This is a destructive action that will delete all damage pattern profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "Это действие приведёт к удалению всех профилей урона.\n"
+"Вы уверены, что хотите продолжить?"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:102
 msgid "This is a destructive action that will delete all target profiles.\n"
@@ -3547,15 +3548,15 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
 msgid "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server."
-msgstr ""
+msgstr "Эта опция предлагает пользователям копировать и вставлять информацию в веб приложение для возможности логина персонажа. Используйте эту опцию если испытываете проблемы с локальным сервером."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:47
 msgid "This options routes SSO Logins through pyfa.io, allowing you to easily login without any configuration. When in doubt, use this option."
-msgstr ""
+msgstr "Эта опция направляет SSO логин через pyfa.io, позволяя Вам проще логиниться без каких либо настроек. Если сомневаетесь, используйте эту опцию."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:40
 msgid "This options starts a local webserver that the web application will call back to with information about the character login."
-msgstr ""
+msgstr "Эта опция запускает локальный сервер, к которому будет обращаться веб приложение за информацией о логине персонажа."
 
 #: eos/saveddata/damagePattern.py:68
 msgid "Thorium"
@@ -3563,7 +3564,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:155
 msgid "Thukker"
-msgstr ""
+msgstr "Племя таккеров"
 
 #: graphs/data/fitCapacitor/graph.py:34 graphs/data/fitCapacitor/graph.py:41
 #: graphs/data/fitDamageStats/graph.py:59
@@ -3751,7 +3752,7 @@ msgstr ""
 
 #: gui/ssoLogin.py:62
 msgid "Waiting for character login through EVE Single Sign-On."
-msgstr ""
+msgstr "Ожидание логина персонажа через EVE Single Sign-On."
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:210
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:212
@@ -3810,7 +3811,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/envEffectAdd.py:105
 msgid "Wormhole"
-msgstr ""
+msgstr "Червоточина"
 
 #: eos/saveddata/damagePattern.py:50
 msgid "Xray"
@@ -3916,7 +3917,7 @@ msgstr ""
 
 #: gui/aboutData.py:31
 msgid "pyfa is released under GNU GPLv3 - see included LICENSE file"
-msgstr ""
+msgstr "pyfa выпущена по GNU GPLv3 - смотрите прилагаемый файл LICENSE"
 
 #: gui/propertyEditor.py:108
 msgid "pyfa override file"
