@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-20 17:38\n"
+"PO-Revision-Date: 2020-07-21 15:50\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -245,7 +245,7 @@ msgstr "Активные побочные эффекты"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:76
 msgid "Active shield boost"
-msgstr "Активное востановление щита"
+msgstr "Активное восстановление щита"
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
@@ -257,11 +257,11 @@ msgstr "Ошибка Добавления Персонажа"
 
 #: gui/builtinShipBrowser/fitItem.py:233
 msgid "Add Command Booster"
-msgstr "Дрбавить Флотовые Бонусы"
+msgstr "Добавить Флотовые Бонусы"
 
 #: gui/builtinContextMenus/fitAddCurrentlyOpen.py:29
 msgid "Add Currently Open Fit"
-msgstr "Добавить текущий окрытый фит"
+msgstr "Добавить текущий открытый фит"
 
 #: gui/builtinContextMenus/envEffectAdd.py:56
 msgid "Add Environmental Effect"
@@ -358,7 +358,7 @@ msgstr "Амарр (Щит)"
 
 #: eos/saveddata/damagePattern.py:148 eos/saveddata/targetProfile.py:72
 msgid "Amarr Empire"
-msgstr "Империя Амарр"
+msgstr "Амаррская Империя"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:115
 msgid "Ammo hold"
