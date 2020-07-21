@@ -42,8 +42,11 @@ from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.float import floatUnerr
 from eos.utils.stats import DmgTypes, RRTypes
 
-
 pyfalog = Logger(__name__)
+
+
+def _t(x):
+    return x
 
 
 class FitLite:
@@ -395,16 +398,16 @@ class Fit:
     @property
     def scanType(self):
         maxStr = -1
-        type = None
-        for scanType in ("Magnetometric", "Ladar", "Radar", "Gravimetric"):
+        type_ = None
+        for scanType in (_t("Magnetometric"), _t("Ladar"), _t("Radar"), _t("Gravimetric")):
             currStr = self.ship.getModifiedItemAttr("scan%sStrength" % scanType)
             if currStr > maxStr:
                 maxStr = currStr
-                type = scanType
+                type_ = scanType
             elif currStr == maxStr:
-                type = "Multispectral"
+                type_ = _t("Multispectral")
 
-        return type
+        return type_
 
     @property
     def jamChance(self):
@@ -443,9 +446,9 @@ class Fit:
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
         map = {
-            "ID"     : lambda _val: isinstance(_val, int),
+            "ID": lambda _val: isinstance(_val, int),
             "ownerID": lambda _val: isinstance(_val, int) or _val is None,
-            "shipID" : lambda _val: isinstance(_val, int) or _val is None
+            "shipID": lambda _val: isinstance(_val, int) or _val is None
         }
 
         if not map[key](val):
@@ -578,15 +581,15 @@ class Fit:
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Shield Operation") or
-                                    mod.item.requiresSkill("Shield Emission Systems") or
-                                    mod.item.requiresSkill("Capital Shield Emission Systems"),
-                        "capacitorNeed", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                        mod.item.requiresSkill("Shield Emission Systems") or
+                                        mod.item.requiresSkill("Capital Shield Emission Systems"),
+                            "capacitorNeed", value)
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Shield Operation") or
-                                    mod.item.requiresSkill("Shield Emission Systems") or
-                                    mod.item.requiresSkill("Capital Shield Emission Systems"),
-                        "duration", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                        mod.item.requiresSkill("Shield Emission Systems") or
+                                        mod.item.requiresSkill("Capital Shield Emission Systems"),
+                            "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
                     self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
@@ -597,15 +600,15 @@ class Fit:
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                    mod.item.requiresSkill("Repair Systems") or
-                                    mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
-                        "capacitorNeed", value)
+                            lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                        mod.item.requiresSkill("Repair Systems") or
+                                        mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                            "capacitorNeed", value)
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                    mod.item.requiresSkill("Repair Systems") or
-                                    mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
-                        "duration", value)
+                            lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                        mod.item.requiresSkill("Repair Systems") or
+                                        mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                            "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
@@ -980,14 +983,14 @@ class Fit:
                 for _ in range(projectionInfo.amount):
                     targetFit.register(item, origin=self)
                     item.calculateModifiedAttributes(
-                        targetFit, runTime, forceProjected=True,
-                        forcedProjRange=0)
+                            targetFit, runTime, forceProjected=True,
+                            forcedProjRange=0)
         for mod in self.modules:
             for _ in range(projectionInfo.amount):
                 targetFit.register(mod, origin=self)
                 mod.calculateModifiedAttributes(
-                    targetFit, runTime, forceProjected=True,
-                    forcedProjRange=projectionInfo.projectionRange)
+                        targetFit, runTime, forceProjected=True,
+                        forcedProjRange=projectionInfo.projectionRange)
 
     def fill(self):
         """
@@ -1003,7 +1006,8 @@ class Fit:
 
         # Look for any dummies of that type to remove
         posToRemove = {}
-        for slotType in (FittingSlot.LOW.value, FittingSlot.MED.value, FittingSlot.HIGH.value, FittingSlot.RIG.value, FittingSlot.SUBSYSTEM.value, FittingSlot.SERVICE.value):
+        for slotType in (
+        FittingSlot.LOW.value, FittingSlot.MED.value, FittingSlot.HIGH.value, FittingSlot.RIG.value, FittingSlot.SUBSYSTEM.value, FittingSlot.SERVICE.value):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
                 for _ in range(int(amount)):
@@ -1080,22 +1084,23 @@ class Fit:
 
         for mod in chain(self.modules, self.fighters):
             if mod.slot is type and (not getattr(mod, "isEmpty", False) or countDummies):
-                if type in (FittingSlot.F_HEAVY, FittingSlot.F_SUPPORT, FittingSlot.F_LIGHT, FittingSlot.FS_HEAVY, FittingSlot.FS_LIGHT, FittingSlot.FS_SUPPORT) and not mod.active:
+                if type in (FittingSlot.F_HEAVY, FittingSlot.F_SUPPORT, FittingSlot.F_LIGHT, FittingSlot.FS_HEAVY, FittingSlot.FS_LIGHT,
+                            FittingSlot.FS_SUPPORT) and not mod.active:
                     continue
                 amount += 1
 
         return amount
 
     slots = {
-        FittingSlot.LOW      : "lowSlots",
-        FittingSlot.MED      : "medSlots",
-        FittingSlot.HIGH     : "hiSlots",
-        FittingSlot.RIG      : "rigSlots",
+        FittingSlot.LOW: "lowSlots",
+        FittingSlot.MED: "medSlots",
+        FittingSlot.HIGH: "hiSlots",
+        FittingSlot.RIG: "rigSlots",
         FittingSlot.SUBSYSTEM: "maxSubSystems",
-        FittingSlot.SERVICE  : "serviceSlots",
-        FittingSlot.F_LIGHT  : "fighterLightSlots",
+        FittingSlot.SERVICE: "serviceSlots",
+        FittingSlot.F_LIGHT: "fighterLightSlots",
         FittingSlot.F_SUPPORT: "fighterSupportSlots",
-        FittingSlot.F_HEAVY  : "fighterHeavySlots",
+        FittingSlot.F_HEAVY: "fighterHeavySlots",
         FittingSlot.FS_LIGHT: "fighterStandupLightSlots",
         FittingSlot.FS_SUPPORT: "fighterStandupSupportSlots",
         FittingSlot.FS_HEAVY: "fighterStandupHeavySlots",
@@ -1377,8 +1382,8 @@ class Fit:
         """Return how much cap regen do we gain from having this module"""
         currentRegen = self.calculateCapRecharge()
         nomodRegen = self.calculateCapRecharge(
-            capacity=self.ship.getModifiedItemAttrExtended("capacitorCapacity", ignoreAfflictors=[mod]),
-            rechargeRate=self.ship.getModifiedItemAttrExtended("rechargeRate", ignoreAfflictors=[mod]) / 1000.0)
+                capacity=self.ship.getModifiedItemAttrExtended("capacitorCapacity", ignoreAfflictors=[mod]),
+                rechargeRate=self.ship.getModifiedItemAttrExtended("rechargeRate", ignoreAfflictors=[mod]) / 1000.0)
         return currentRegen - nomodRegen
 
     def getRemoteReps(self, spoolOptions=None):
@@ -1422,7 +1427,8 @@ class Fit:
             "armorRepair": self.extraAttributes["armorRepair"],
             "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
             "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
-            "hullRepair": self.extraAttributes["hullRepair"]}
+            "hullRepair": self.extraAttributes["hullRepair"]
+        }
         return reps
 
     @property
@@ -1462,7 +1468,8 @@ class Fit:
                 "armorRepair": self.extraAttributes["armorRepair"],
                 "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
                 "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
-                "hullRepair": self.extraAttributes["hullRepair"]}
+                "hullRepair": self.extraAttributes["hullRepair"]
+            }
             if not self.capStable or self.factorReload:
                 # Map a local repairer type to the attribute it uses
                 groupAttrMap = {
@@ -1470,14 +1477,16 @@ class Fit:
                     "Ancillary Shield Booster": "shieldBonus",
                     "Armor Repair Unit": "armorDamageAmount",
                     "Ancillary Armor Repairer": "armorDamageAmount",
-                    "Hull Repair Unit": "structureDamageAmount"}
+                    "Hull Repair Unit": "structureDamageAmount"
+                }
                 # Map local repairer type to tank type
                 groupStoreMap = {
                     "Shield Booster": "shieldRepair",
                     "Ancillary Shield Booster": "shieldRepair",
                     "Armor Repair Unit": "armorRepair",
                     "Ancillary Armor Repairer": "armorRepair",
-                    "Hull Repair Unit": "hullRepair"}
+                    "Hull Repair Unit": "hullRepair"
+                }
                 repairers = []
                 localAdjustment = {"shieldRepair": 0, "armorRepair": 0, "hullRepair": 0}
                 capUsed = self.capUsed
@@ -1529,7 +1538,7 @@ class Fit:
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
                 repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
+                        groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
                         "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
@@ -1653,7 +1662,6 @@ class Fit:
         if secstatus is None:
             secstatus = FitSystemSecurity.NULLSEC
         return secstatus
-
 
     def activeModulesIter(self):
         for mod in self.modules:

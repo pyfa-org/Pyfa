@@ -215,11 +215,11 @@ class TargetingMiscViewMinimal(StatsView):
                         ecmChance = otherValues["jamChance"]
                         ecmChance = round(ecmChance, 1)
                         if ecmChance > 0:
-                            label.SetToolTip(wx.ToolTip(_t("Type: {0}\n").foramt(fit.scanType) +
+                            label.SetToolTip(wx.ToolTip(_t("Type: {0}\n").foramt(_t(fit.scanType)) +
                                                         # xgettext:no-python-format,python-brace-format
                                                         _t("{}% chance to be jammed").format(formatAmount(ecmChance, 3, 0, 0))))
                         else:
-                            label.SetToolTip(wx.ToolTip(_t("Type: {}").format(fit.scanType)))
+                            label.SetToolTip(wx.ToolTip(_t("Type: {}").format(_t(fit.scanType))))
                     elif labelName == "labelFullAlignTime":
                         alignTime = _t("Align:\t%.3fs") % mainValue
                         mass = _t('Mass:\t{:,.0f}kg').format(fit.ship.getModifiedItemAttr("mass"))
