@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-21 12:02\n"
+"PO-Revision-Date: 2020-07-22 04:29\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -3539,8 +3539,8 @@ msgstr "Questa è un'azione distruttiva che eliminerà tutti i profili dei bersa
 "Sei sicuro di volerlo fare?"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
-msgid "This option goes through EVE SSO directly, but requires more configuration. Use this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
-msgstr "Quest'opzione passa direttamente attraverso EVE SSO, ma richiede più configurazione. Usa questo se pyfa.io è bloccato per qualche motivo, o se non si desidera dirigere i data attraverso pyfa.io."
+msgid "This option goes through EVE SSO directly, but requires more configuration. Use this if pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
+msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
 msgid "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server."
