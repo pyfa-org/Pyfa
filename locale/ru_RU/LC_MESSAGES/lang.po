@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-22 04:29\n"
+"PO-Revision-Date: 2020-07-22 16:17\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -2140,7 +2140,7 @@ msgstr "Локальный Сервер"
 
 #: gui/builtinContextMenus/envEffectAdd.py:193
 msgid "Localized"
-msgstr "Переведено"
+msgstr "Местная"
 
 #: graphs/data/fitLockTime/graph.py:34
 msgid "Lock Time"
