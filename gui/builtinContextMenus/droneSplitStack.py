@@ -54,22 +54,23 @@ class DroneSplitStackBandwidth(DroneSplitStack):
     def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        bandwidth_per_drone = fit.drones[0].item. \
-            attributes['droneBandwidthUsed'].value
-        ship_bandwidth = fit.ship.item.attributes['droneBandwidth'].value
-        max_active_drones = int(ship_bandwidth/bandwidth_per_drone)
-        if max_active_drones == 0:
-            wx.MessageDialog(
-                None, "Cannot split drone stack to fit bandwidth. Each drone "
-                "uses {0} mbit/s and this ship only has {1} mbit/s."
-                .format(int(bandwidth_per_drone), int(ship_bandwidth)),
-                "Ship drone bandwidth exceeded", wx.OK | wx.ICON_ERROR
-            ).ShowModal()
-        else:
-            if max_active_drones > 5:
-                max_active_drones = 5
+        if mainItem in fit.drones:
+            bandwidth_per_drone = mainItem.item.\
+                                  attributes['droneBandwidthUsed'].value
+            ship_bandwidth = fit.ship.item.attributes['droneBandwidth'].value
+            max_active_drones = int(ship_bandwidth/bandwidth_per_drone)
+            if max_active_drones == 0:
+                wx.MessageDialog(
+                    None, "Cannot split drone stack to fit bandwidth. This "
+                    "drone type uses {0} mbit/s and this ship only has {1} "
+                    "mbit/s.".format(int(bandwidth_per_drone),
+                                     int(ship_bandwidth)),
+                    "Ship drone bandwidth exceeded", wx.OK | wx.ICON_ERROR
+                ).ShowModal()
+            else:
+                if max_active_drones > 5:
+                    max_active_drones = 5
 
-            if mainItem in fit.drones:
                 position = fit.drones.index(mainItem)
                 self.mainFrame.command.Submit(
                     cmd.GuiSplitLocalDroneStackCommand(fitID=fitID,
