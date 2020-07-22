@@ -3594,7 +3594,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
 msgid ""
 "This option goes through EVE SSO directly, but requires more configuration. "
-"Use this is pyfa.io is blocked for some reason, or if you do not wish to "
+"Use this if pyfa.io is blocked for some reason, or if you do not wish to "
 "route data throguh pyfa.io."
 msgstr ""
 

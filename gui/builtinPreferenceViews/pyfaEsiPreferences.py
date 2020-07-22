@@ -47,7 +47,7 @@ class PFEsiPref(PreferenceView):
         self.rbSsoMode.SetItemToolTip(0, _t("This options routes SSO Logins through pyfa.io, allowing you to easily login "
                                             "without any configuration. When in doubt, use this option."))
         self.rbSsoMode.SetItemToolTip(1, _t("This option goes through EVE SSO directly, but requires more configuration. Use "
-                                            "this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."))
+                                            "this if pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."))
 
         self.rbMode.SetSelection(self.settings.get('loginMode'))
         self.rbSsoMode.SetSelection(self.settings.get('ssoMode'))
