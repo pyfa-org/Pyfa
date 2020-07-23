@@ -60,7 +60,7 @@ class PyfaApp(wx.App):
 
         # If an unsupported language is requested default to English.
         if lang in supLang:
-            selLang = supLang[lang]
+            selLang = supLang[lang].wxLocale
         else:
             selLang = wx.LANGUAGE_ENGLISH_US
 

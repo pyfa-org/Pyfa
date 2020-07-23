@@ -22,6 +22,7 @@ import os.path
 import urllib.request
 import urllib.error
 import urllib.parse
+from collections import namedtuple
 import wx
 
 from logbook import Logger
@@ -535,19 +536,25 @@ class GraphSettings:
     def set(self, type, value):
         self.settings[type] = value
 
-
+Locale = namedtuple('Locale', ['wxLocale', 'eosLang'])
 class LocaleSettings:
     _instance = None
     DEFAULT  = "en"
 
     supported_langauges = {
-        "en": wx.LANGUAGE_ENGLISH_US,
-        "fr": wx.LANGUAGE_FRENCH,
-        "it": wx.LANGUAGE_ITALIAN,
-        "ja": wx.LANGUAGE_JAPANESE,
-        "ko": wx.LANGUAGE_KOREAN,
-        "ru": wx.LANGUAGE_RUSSIAN,
-        "zh": wx.LANGUAGE_CHINESE_SIMPLIFIED,
+        "en": Locale(wx.LANGUAGE_ENGLISH_US, 'en'),
+        "fr": Locale(wx.LANGUAGE_FRENCH, 'fr'),
+        "ja": Locale(wx.LANGUAGE_JAPANESE, 'ja'),
+        "ko": Locale(wx.LANGUAGE_KOREAN, 'ko'),
+        "ru": Locale(wx.LANGUAGE_RUSSIAN, 'ru'),
+        "zh": Locale(wx.LANGUAGE_CHINESE_SIMPLIFIED, 'zh'),
+        # Non game client langauges
+        "it": Locale(wx.LANGUAGE_ITALIAN, None),
+    }
+
+    defaults = {
+        'locale': DEFAULT,
+        'eos_locale': 'Auto'  # flag for "Default" which is the same as the locale or, if not available, English
     }
 
     @classmethod
@@ -558,13 +565,18 @@ class LocaleSettings:
 
     def __init__(self):
 
-        defaults = {
-            'locale': self.DEFAULT
-        }
-        self.settings = SettingsProvider.getInstance().getSettings('localeSettings', defaults)
+
+        self.settings = SettingsProvider.getInstance().getSettings('localeSettings', self.defaults)
 
     def get(self, key):
+        """gets the raw value fo the setting"""
         return self.settings[key]
+
+
+    def get_eos_locale(self):
+        """gets the effective value of the setting"""
+        val = self.settings['eos_locale']
+        return val if val != self.defaults['eos_locale'] else self.supported_langauges.get(self.settings['locale'], 'en').eosLang
 
     def set(self, key, value):
         if key == 'locale' and value not in self.supported_langauges:

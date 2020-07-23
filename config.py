@@ -190,10 +190,12 @@ def defPaths(customSavePath=None):
     from service.settings import EOSSettings, LocaleSettings
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
 
-    # set langauge
+    # set langauge, taking the passed argument or falling back to what's saved in the settings
     localeSettings = LocaleSettings.getInstance()
     language = language if language in localeSettings.supported_langauges else localeSettings.get('locale')
-    eos.config.set_lang(language)
+
+    # sets the lang for eos, using the mapped langauge.
+    eos.config.set_lang(localeSettings.get_eos_locale())
 
 def defLogging():
     global debug
