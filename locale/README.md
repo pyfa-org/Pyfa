@@ -1,15 +1,6 @@
 # Pyfa Internationalization (i18n) and Localization (l10n)
 
-pyfa provides community-driven translations for the following languages:
-
-* Chinese (zh_CH)
-* French (fr_FR)
-* Italian (it_IT)
-* Japanese (ja_JP)
-* Korean (ko_KR)
-* Russian (ru_RU)
-
-It is important to keep in mind that pyfa translations are not the same as the translations that come from EVE data. These translations are dumped directly from the game, and the pyfa team has no control over them. This includes, but is not limited to:
+pyfa provides community-driven translations for a variety of languages. It is important to keep in mind that pyfa translations are not the same as the translations that come from EVE data. These translations are dumped directly from the game, and the pyfa team has no control over them. This includes, but is not limited to:
 
 * Market browser
 * Ship browser
