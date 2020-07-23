@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-23 13:30\n"
+"PO-Revision-Date: 2020-07-23 14:29\n"
 "Last-Translator: \n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -19,161 +19,161 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
-msgstr ""
+msgstr " SHM: "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
-msgstr ""
+msgstr " Yığın"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
-msgstr ""
+msgstr " Yaylım Ateşi: "
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
 msgid "%d attribute."
-msgstr ""
+msgstr "%d nitelik."
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
-msgstr ""
+msgstr "&Tüm Kurulumları Yedekle"
 
 #: gui/mainMenuBar.py:104
 msgid "&Browse ESI Fittings"
-msgstr ""
+msgstr "&ESI Kurulumlarını Gezin"
 
 #: gui/mainMenuBar.py:111
 msgid "&Character"
-msgstr ""
+msgstr "&Karakter"
 
 #: gui/mainMenuBar.py:144
 msgid "&Character Editor"
-msgstr ""
+msgstr "&Karakter Düzenleyici"
 
 #: gui/mainMenuBar.py:70
 msgid "&Close All Tabs"
-msgstr ""
+msgstr "&Tüm Pencereleri Kapat"
 
 #: gui/mainMenuBar.py:69
 msgid "&Close Tab"
-msgstr ""
+msgstr "&Pencereyi Kapat"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr ""
+msgstr "&Saldırı Şablonu Düzenle"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
-msgstr ""
+msgstr "&Düzenleyici"
 
 #: gui/mainMenuBar.py:92
 msgid "&Export Fitting"
-msgstr ""
+msgstr "&Kurulumu Dışa Ver"
 
 #: gui/mainMenuBar.py:119
 msgid "&Export Skills Needed"
-msgstr ""
+msgstr "&Gerekli Becerileri Dışa Ver"
 
 #: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
-msgstr ""
+msgstr "&Dosya"
 
 #: gui/mainMenuBar.py:161
 msgid "&Forums"
-msgstr ""
+msgstr "&Forumlar"
 
 #: gui/mainMenuBar.py:88
 msgid "&From Clipboard"
-msgstr ""
+msgstr "&Panodan Al"
 
 #: gui/mainMenuBar.py:135
 msgid "&Global"
-msgstr ""
+msgstr "&Küresel"
 
 #: gui/mainMenuBar.py:96
 msgid "&Graphs"
-msgstr ""
+msgstr "&Grafikler"
 
 #: gui/mainMenuBar.py:159
 msgid "&Help"
-msgstr ""
+msgstr "&Yardım"
 
 #: gui/mainMenuBar.py:147
 msgid "&Implant Set Editor"
-msgstr ""
+msgstr "&Implant Seti Düzenleyici"
 
 #: gui/mainMenuBar.py:118
 msgid "&Import Character File"
-msgstr ""
+msgstr "&Karakter Dosyasını İçe Aktar"
 
 #: gui/mainMenuBar.py:91
 msgid "&Import Fittings"
-msgstr ""
+msgstr "&Kurulumları İçe Aktar"
 
 #: gui/mainMenuBar.py:122
 msgid "&Manage ESI Characters"
-msgstr ""
+msgstr "&ESI Karakterlerini Düzenle"
 
 #: gui/mainMenuBar.py:68
 msgid "&New Tab"
-msgstr ""
+msgstr "&Yeni Pencere"
 
 #: gui/mainMenuBar.py:95
 msgid "&Optimize Fit Price"
-msgstr ""
+msgstr "&Kurulum Ücretini Optimize Et"
 
 #: gui/mainMenuBar.py:137
 msgid "&Preferences"
-msgstr ""
+msgstr "&Seçenekler"
 
 #: gui/mainMenuBar.py:84
 msgid "&Redo"
-msgstr ""
+msgstr "&Yinele"
 
 #: gui/mainMenuBar.py:115
 msgid "&Revert Character"
-msgstr ""
+msgstr "&Karakteri Geri Al"
 
 #: gui/mainMenuBar.py:113
 msgid "&Save Character"
-msgstr ""
+msgstr "&Karakteri Kaydet"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
-msgstr ""
+msgstr "&Hedef Şablonu Düzenle"
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
-msgstr ""
+msgstr "&Panoya aktar"
 
 #: gui/mainFrame.py:690
 msgid "&Turn Overrides Off"
-msgstr ""
+msgstr "&Aşırı Yüklemeleri Kapat"
 
 #: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
-msgstr ""
+msgstr "&Aşırı Yüklemeleri Aç"
 
 #: gui/mainMenuBar.py:83
 msgid "&Undo"
-msgstr ""
+msgstr "&Geri Al"
 
 #: gui/mainMenuBar.py:160
 msgid "&Wiki"
-msgstr ""
+msgstr "&Wiki"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:29
 msgid "(Cannot be changed while pyfa is running. Set via command line switches.)"
-msgstr ""
+msgstr "(Pyfa çalışırken değiştirilemez. Komut satırı Anahtarlarıyla ayarlayın.)"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
-msgstr ""
+msgstr "0s"
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
-msgstr ""
+msgstr "Beceriler"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
@@ -225,47 +225,47 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
 #: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
 msgid "Abyssal"
-msgstr ""
+msgstr "Abyssal"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "Abyssal Şartlar"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #: gui/builtinViewColumns/abilities.py:37
 msgid "Active Abilities"
-msgstr ""
+msgstr "Aktif Beceriler"
 
 #: gui/builtinViewColumns/sideEffects.py:37
 msgid "Active Side Effects"
-msgstr ""
+msgstr "Aktif Yan Etkiler"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:76
 msgid "Active shield boost"
-msgstr ""
+msgstr "Aktif Kalkan Arttırımı"
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
-msgstr ""
+msgstr "Karakter Ekle"
 
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
-msgstr ""
+msgstr "Karakter Ekleme Hatası"
 
 #: gui/builtinShipBrowser/fitItem.py:233
 msgid "Add Command Booster"
-msgstr ""
+msgstr "Komuta Arttırımı Ekle"
 
 #: gui/builtinContextMenus/fitAddCurrentlyOpen.py:29
 msgid "Add Currently Open Fit"
-msgstr ""
+msgstr "Mevcut Açık Kurulumu Ekle"
 
 #: gui/builtinContextMenus/envEffectAdd.py:56
 msgid "Add Environmental Effect"
-msgstr ""
+msgstr "Çevresel Etki Ekle"
 
 #: gui/builtinContextMenus/fitAddBrowse.py:22
 msgid "Add Fit..."
@@ -486,31 +486,31 @@ msgstr ""
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
-msgstr ""
+msgstr "Tüm Kurulumları bir XML Dosyasına kaydet"
 
 #: gui/mainFrame.py:874 gui/mainFrame.py:905
 msgid "Backup fits"
-msgstr ""
+msgstr "Kurulumları Yedekle"
 
 #: eos/saveddata/damagePattern.py:59
 msgid "Baryon"
-msgstr ""
+msgstr "Baryon"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:47
 msgid "Base Value"
-msgstr ""
+msgstr "Temel Değer"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
-msgstr ""
+msgstr "Savaş Kruvazörü"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battleship"
-msgstr ""
+msgstr "Savaş Gemisi"
 
 #: gui/mainFrame.py:953
 msgid "Be aware that already processed fits were not saved"
-msgstr ""
+msgstr "Uyarı, mevcut işlem yapılmış Kurulumlar kaydedilmedi"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Bioluminescence"
