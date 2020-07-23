@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-23 14:29\n"
+"PO-Revision-Date: 2020-07-23 15:24\n"
 "Last-Translator: \n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -60,7 +60,7 @@ msgstr "&Pencereyi Kapat"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr "&Saldırı Şablonu Düzenle"
+msgstr "&Zarar Şablonu Düzenle"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
@@ -269,54 +269,54 @@ msgstr "Çevresel Etki Ekle"
 
 #: gui/builtinContextMenus/fitAddBrowse.py:22
 msgid "Add Fit..."
-msgstr ""
+msgstr "Kurulum Ekle..."
 
 #: gui/fitBrowserLite.py:17
 msgid "Add Fits"
-msgstr ""
+msgstr "Kurulum Ekle"
 
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
 msgid "Add {0} to Cargo (x1000)"
-msgstr ""
+msgstr "Kargoya {0} (x1000) Ekle"
 
 #: gui/builtinContextMenus/cargoAdd.py:33
 msgid "Add {} to Cargo"
-msgstr ""
+msgstr "Kargoya {} Ekle"
 
 #: gui/builtinContextMenus/droneAddStack.py:40
 msgid "Add {} to Drone Bay{}"
-msgstr ""
+msgstr "Dron Bölümü {} ekle {}"
 
 #: gui/additionsPane.py:45
 msgid "Additions"
-msgstr ""
+msgstr "Eklemeler"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Additions Panel Copy/Paste"
-msgstr ""
+msgstr "Eklemeler Paneli Kopyala/Yapıştır"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:101
 msgid "Addr:"
-msgstr ""
+msgstr "Adres:"
 
 #: gui/itemStats.py:196
 msgid "Affected by"
-msgstr ""
+msgstr "Etkileyen"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 #, python-format
 msgid "Agility:\t%.3fx"
-msgstr ""
+msgstr "Atiklik:\t%.3fx"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr ""
+msgstr "Hizalanma süresi"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
 msgid "Align:\t%.3fs"
-msgstr ""
+msgstr "Hizalanma:\t%.3fs"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/targetProfile.py:105
 #: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:119
@@ -326,92 +326,92 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:168 eos/saveddata/targetProfile.py:175
 #: eos/saveddata/targetProfile.py:182 eos/saveddata/targetProfile.py:189
 msgid "All"
-msgstr ""
+msgstr "Tümü"
 
 #: gui/aboutData.py:32
 msgid "All EVE-Online related materials are property of CCP hf."
-msgstr ""
+msgstr "Tüm EVE-Online ile ilgili malzemeler CCP hf Aittir."
 
 #: gui/mainFrame.py:840 gui/mainFrame.py:1015
 msgid "All Files"
-msgstr ""
+msgstr "Tüm Dosyalar"
 
 #: gui/characterSelection.py:238
 msgid "All skill prerequisites have been met"
-msgstr ""
+msgstr "Tüm Gerekli Beceri eğitimleri tamamlanmış"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:38
 msgid "Allow pre-release notifications"
-msgstr ""
+msgstr "Yeni sürüm bildirimlerine izin ver"
 
 #: graphs/gui/ctrlPanel.py:75
 msgid "Always show Y = 0"
-msgstr ""
+msgstr "Her zaman Y = 0 göster"
 
 #: eos/saveddata/targetProfile.py:53
 msgid "Amarr (Armor)"
-msgstr ""
+msgstr "Amarr (Zırh)"
 
 #: eos/saveddata/targetProfile.py:52
 msgid "Amarr (Shield)"
-msgstr ""
+msgstr "Amarr (Kalkan)"
 
 #: eos/saveddata/damagePattern.py:148 eos/saveddata/targetProfile.py:72
 msgid "Amarr Empire"
-msgstr ""
+msgstr "Amarr İmparatorluğu"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:115
 msgid "Ammo hold"
-msgstr ""
+msgstr "Cephane Alanı"
 
 #: eos/saveddata/damagePattern.py:102 eos/saveddata/damagePattern.py:120
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
 msgid "Angel Cartel"
-msgstr ""
+msgstr "Angel Cartel"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
 msgid "Animate gauges"
-msgstr ""
+msgstr "İbreleri haraketli yap"
 
 #: eos/saveddata/damagePattern.py:71
 msgid "Antimatter"
-msgstr ""
+msgstr "Antimatter"
 
 #: gui/builtinContextMenus/implantSetApply.py:25
 msgid "Apply Implant Set"
-msgstr ""
+msgstr "Implant seti uygula"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Apply Mutaplasmid"
-msgstr ""
+msgstr "Mutaplasmid Uygula"
 
 #: gui/builtinContextMenus/graphDmgApplyProjected.py:23
 msgid "Apply Projected Items"
-msgstr ""
+msgstr "Öngörülen öğeleri uygula"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:144
 msgid "Apply Proxy Settings"
-msgstr ""
+msgstr "Proxy Ayarlarını uygula"
 
 #: gui/propertyEditor.py:146
 msgid "Are you sure you want to delete all overrides?"
-msgstr ""
+msgstr "Tüm Aşırı yüklemeleri silmek istediğinize emin misiniz?"
 
 #: gui/mainFrame.py:647
 msgid "Are you sure you wish to ignore fitting restrictions for the current fit? This could lead to wildly inaccurate results and possible errors."
-msgstr ""
+msgstr "Mevcut kurulumdaki sınırlamaları göz ardı etmek istediğinize emin misiniz? Bu aşırı tutarsız sonuçlar ve muhtemel hatalar doğurabilir."
 
 #: eos/saveddata/targetProfile.py:47
 msgid "Armor"
-msgstr ""
+msgstr "Zırh"
 
 #: eos/saveddata/targetProfile.py:50
 msgid "Armor (+T2 DCU)"
-msgstr ""
+msgstr "Zırh (+T2 DCU)"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:77
 msgid "Armor repair amount"
-msgstr ""
+msgstr "Zırh Tamir Miktarı"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Armor resistance"
@@ -514,48 +514,48 @@ msgstr "Uyarı, mevcut işlem yapılmış Kurulumlar kaydedilmedi"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Bioluminescence"
-msgstr ""
+msgstr "Biyoışıldama"
 
 #: eos/saveddata/damagePattern.py:103 eos/saveddata/damagePattern.py:121
 #: eos/saveddata/targetProfile.py:61 eos/saveddata/targetProfile.py:67
 msgid "Blood Raiders"
-msgstr ""
+msgstr "Blood Raiders"
 
 #: graphs/style.py:54
 msgid "Blue"
-msgstr ""
+msgstr "Mavi"
 
 #: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
 #: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
 msgid "Bombs"
-msgstr ""
+msgstr "Bombalar"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
-msgstr ""
+msgstr "Arttırıcı"
 
 #: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
 #: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
 #: gui/copySelectDialog.py:56
 msgid "Boosters"
-msgstr ""
+msgstr "Arttırıcılar"
 
 #: graphs/style.py:82
 msgid "Bright"
-msgstr ""
+msgstr "Parlak"
 
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
-msgstr ""
+msgstr "EVE kurulumlarını Gezin"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Bump distance"
-msgstr ""
+msgstr "Toslama Mesafesi"
 
 #: graphs/data/fitMobility/graph.py:38
 msgid "Bump speed"
-msgstr ""
+msgstr "Toslama Hızı"
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/damagePattern.py:109
 #: eos/saveddata/damagePattern.py:110 eos/saveddata/damagePattern.py:111
@@ -570,148 +570,148 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:89 eos/saveddata/targetProfile.py:90
 #: eos/saveddata/targetProfile.py:91 eos/saveddata/targetProfile.py:92
 msgid "Burner"
-msgstr ""
+msgstr "Burner"
 
 #: eos/saveddata/damagePattern.py:150 eos/saveddata/targetProfile.py:74
 msgid "CONCORD"
-msgstr ""
+msgstr "CONCORD"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
-msgstr ""
+msgstr "CSV dosyaları"
 
 #: eos/saveddata/targetProfile.py:55
 msgid "Caldari (Armor)"
-msgstr ""
+msgstr "Caldari (Zırh)"
 
 #: eos/saveddata/targetProfile.py:54
 msgid "Caldari (Shield)"
-msgstr ""
+msgstr "Caldari (Kalkan)"
 
 #: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:73
 msgid "Caldari State"
-msgstr ""
+msgstr "Caldari Devleti"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:115
 msgid "Calibration"
-msgstr ""
+msgstr "Kalibrasyon"
 
 #: graphs/data/fitCapacitor/graph.py:35 graphs/data/fitCapacitor/graph.py:36
 #: graphs/data/fitCapacitor/graph.py:38 graphs/data/fitCapacitor/graph.py:43
 msgid "Cap amount"
-msgstr ""
+msgstr "Cap miktarı"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Cap neutralized per second"
-msgstr ""
+msgstr "Saniyede boşaltılan Cap"
 
 #: graphs/data/fitCapacitor/graph.py:39
 msgid "Cap regen"
-msgstr ""
+msgstr "Cap Kazanımı"
 
 #: graphs/data/fitCapacitor/graph.py:32
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 msgid "Capacitor"
-msgstr ""
+msgstr "Kapasitör (Cap)"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
-msgstr ""
+msgstr "Kapasitör Kararlılığı"
 
 #: eos/saveddata/damagePattern.py:76
 msgid "Carbonized Lead"
-msgstr ""
+msgstr "Karbonize Kurşun"
 
 #: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
 msgid "Cargo"
-msgstr ""
+msgstr "Kargo"
 
 #: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
 msgid "Cargo Items"
-msgstr ""
+msgstr "Kargo Öğeleri"
 
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/resourcesViewFull.py:158
 msgid "Cargo bay"
-msgstr ""
+msgstr "Kargo Bölümü"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:229
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:254
 msgid "Cargohold: "
-msgstr ""
+msgstr "Kargo Alanı: "
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:167
 msgid "Carrier"
-msgstr ""
+msgstr "Taşıyıcı"
 
 #: gui/builtinContextMenus/envEffectAdd.py:197
 msgid "Caustic"
-msgstr ""
+msgstr "Aşındırıcı"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:47
 msgid "Cert Path:"
-msgstr ""
+msgstr "Sertifika Yolu:"
 
 #: gui/builtinContextMenus/skillAffectors.py:73
 #, python-format
 msgid "Change %s Skills"
-msgstr ""
+msgstr "%s Becerisini değiştir"
 
 #: gui/builtinContextMenus/itemAmountChange.py:92
 msgid "Change Amount"
-msgstr ""
+msgstr "Miktar Değiştir"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
 msgid "Change Skills"
-msgstr ""
+msgstr "Becerileri Değiştir"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:81
 msgid "Change charge in all modules of the same type"
-msgstr ""
+msgstr "Aynı Türdeki tüm modüllerdeki cephaneyi değiştir"
 
 #: gui/builtinContextMenus/itemAmountChange.py:34
 #, python-brace-format
 msgid "Change {0} Quantity"
-msgstr ""
+msgstr "{0} Miktarı Değiştir"
 
 #: gui/builtinContextMenus/itemProjectionRange.py:34
 msgid "Change {} Range"
-msgstr ""
+msgstr "{} Menzili değiştir"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:31
 msgid "Changes require restart of pyfa to take effect."
-msgstr ""
+msgstr "Yapılan değişiklikler Pyfa'nın yeniden başlatılmasını gerektirir."
 
 #: gui/builtinStatsViews/priceViewFull.py:57 gui/characterEditor.py:90
 #: gui/esiFittings.py:341
 msgid "Character"
-msgstr ""
+msgstr "Karakter"
 
 #: gui/characterEditor.py:137
 msgid "Character Editor"
-msgstr ""
+msgstr "Karakter Düzenleyici"
 
 #: gui/esiFittings.py:342
 msgid "Character ID"
-msgstr ""
+msgstr "Karakter ID"
 
 #: gui/characterEditor.py:78
 msgid "Character name already in use, please choose another."
-msgstr ""
+msgstr "Karakter adı zaten kullanılıyor, lütfen bir başkasını seçin."
 
 #: gui/characterEditor.py:771
 msgid "Character:"
-msgstr ""
+msgstr "Karakter:"
 
 #: gui/characterSelection.py:47
 msgid "Character: "
@@ -922,19 +922,19 @@ msgstr ""
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
-msgstr ""
+msgstr "Zarar Şablonu Düzenle"
 
 #: gui/patternEditor.py:65
 msgid "Damage Profile"
-msgstr ""
+msgstr "Zarar Profili"
 
 #: gui/patternEditor.py:53
 msgid "Damage Profile name already in use, please choose another."
-msgstr ""
+msgstr "Zarar Profil adı zaten kullanılıyor, lütfen bir başkasını seçin."
 
 #: graphs/data/fitDamageStats/graph.py:56
 msgid "Damage Stats"
-msgstr ""
+msgstr "Zarar İstatistikleri"
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Damage inflicted"
