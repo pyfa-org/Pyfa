@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-22 04:29\n"
+"PO-Revision-Date: 2020-07-24 14:06\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -532,18 +532,18 @@ msgstr "Bombe"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
-msgstr ""
+msgstr "Booster"
 
 #: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
 #: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
 #: gui/copySelectDialog.py:56
 msgid "Boosters"
-msgstr ""
+msgstr "Booster"
 
 #: graphs/style.py:82
 msgid "Bright"
-msgstr ""
+msgstr "Luminoso"
 
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
