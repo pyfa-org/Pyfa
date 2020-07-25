@@ -12,7 +12,6 @@ params = {
 
 resp = requests.get('https://api.crowdin.com/api/project/pyfa/status', params=params)
 data = resp.json()
-print(data)
 
 for x in data:
     x['code'] = x['code'].replace('-', '_')
