@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-22 01:49+0800\n"
+"POT-Creation-Date: 2020-07-25 10:40+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "&Export Skills Needed"
 msgstr ""
 
-#: gui/propertyEditor.py:42 gui/mainMenuBar.py:66
+#: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "&Turn Overrides Off"
 msgstr ""
 
-#: gui/mainMenuBar.py:131 gui/mainFrame.py:690
+#: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
 msgstr ""
 
@@ -160,6 +160,11 @@ msgstr ""
 
 #: gui/mainMenuBar.py:160
 msgid "&Wiki"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:136
+msgid ""
+"(Auto will use the same language pyfa uses if available, otherwise English)"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
@@ -374,7 +379,7 @@ msgstr ""
 msgid "Angel Cartel"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:72
 msgid "Animate gauges"
 msgstr ""
 
@@ -424,8 +429,8 @@ msgstr ""
 msgid "Armor resistance"
 msgstr ""
 
-#: gui/builtinStatsViews/outgoingViewMinimal.py:43
 #: gui/builtinStatsViews/outgoingViewFull.py:44
+#: gui/builtinStatsViews/outgoingViewMinimal.py:43
 msgid "Armor restored"
 msgstr ""
 
@@ -450,8 +455,8 @@ msgstr ""
 msgid "Attacker"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemProperties.py:56
 #: gui/builtinItemStatsViews/itemAttributes.py:44
+#: gui/builtinItemStatsViews/itemProperties.py:56
 msgid "Attribute"
 msgstr ""
 
@@ -546,11 +551,10 @@ msgstr ""
 msgid "Booster"
 msgstr ""
 
-#: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
-#: gui/additionsPane.py:78
+#: gui/additionsPane.py:78 gui/builtinContextMenus/additionsExportAll.py:23
 #: gui/builtinContextMenus/additionsExportSelection.py:23
-#: gui/builtinContextMenus/additionsImport.py:24
-#: gui/builtinContextMenus/additionsExportAll.py:23
+#: gui/builtinContextMenus/additionsImport.py:24 gui/copySelectDialog.py:48
+#: gui/copySelectDialog.py:56
 msgid "Boosters"
 msgstr ""
 
@@ -636,8 +640,8 @@ msgstr ""
 msgid "Capacitor delta:"
 msgstr ""
 
-#: gui/builtinStatsViews/outgoingViewMinimal.py:31
 #: gui/builtinStatsViews/outgoingViewFull.py:32
+#: gui/builtinStatsViews/outgoingViewMinimal.py:31
 msgid "Capacitor restored"
 msgstr ""
 
@@ -649,16 +653,16 @@ msgstr ""
 msgid "Carbonized Lead"
 msgstr ""
 
+#: gui/additionsPane.py:72 gui/builtinContextMenus/priceOptions.py:47
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:81
+#: gui/builtinStatsViews/targetingMiscViewMinimal.py:90
 #: gui/copySelectDialog.py:49 gui/copySelectDialog.py:57
-#: gui/additionsPane.py:72 gui/builtinStatsViews/targetingMiscViewMinimal.py:90
-#: gui/builtinContextMenus/priceOptions.py:47
 msgid "Cargo"
 msgstr ""
 
+#: gui/builtinContextMenus/additionsExportAll.py:20
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:20
 msgid "Cargo Items"
 msgstr ""
 
@@ -697,7 +701,7 @@ msgstr ""
 msgid "Change Skills"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:81
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:83
 msgid "Change charge in all modules of the same type"
 msgstr ""
 
@@ -714,8 +718,8 @@ msgstr ""
 msgid "Changes require restart of pyfa to take effect."
 msgstr ""
 
-#: gui/characterEditor.py:90 gui/esiFittings.py:341
-#: gui/builtinStatsViews/priceViewFull.py:57
+#: gui/builtinStatsViews/priceViewFull.py:57 gui/characterEditor.py:90
+#: gui/esiFittings.py:341
 msgid "Character"
 msgstr ""
 
@@ -780,7 +784,7 @@ msgstr ""
 msgid "Client Secret:"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:51
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:53
 msgid "Color fitting view by slot"
 msgstr ""
 
@@ -804,7 +808,7 @@ msgstr ""
 msgid "Command center hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:49
 msgid "Compact skills needed tooltip"
 msgstr ""
 
@@ -823,7 +827,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: gui/propertyEditor.py:147 gui/esiFittings.py:157
+#: gui/esiFittings.py:157 gui/propertyEditor.py:147
 msgid "Confirm Delete"
 msgstr ""
 
@@ -875,9 +879,9 @@ msgstr ""
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
 msgstr ""
 
-#: gui/builtinShipBrowser/fitItem.py:107
-#: gui/builtinItemStatsViews/itemTraits.py:25
 #: gui/builtinItemStatsViews/itemDescription.py:43
+#: gui/builtinItemStatsViews/itemTraits.py:25
+#: gui/builtinShipBrowser/fitItem.py:107
 msgid "Copy"
 msgstr ""
 
@@ -925,8 +929,8 @@ msgstr ""
 msgid "Current"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemProperties.py:57
 #: gui/builtinItemStatsViews/itemAttributes.py:45
+#: gui/builtinItemStatsViews/itemProperties.py:57
 msgid "Current Value"
 msgstr ""
 
@@ -1092,12 +1096,12 @@ msgid ""
 "settings."
 msgstr ""
 
-#: graphs/data/fitEwarStats/graph.py:34 graphs/data/fitEwarStats/graph.py:44
+#: graphs/data/fitDamageStats/graph.py:58
+#: graphs/data/fitDamageStats/graph.py:65 graphs/data/fitEwarStats/graph.py:34
+#: graphs/data/fitEwarStats/graph.py:44 graphs/data/fitMobility/graph.py:36
+#: graphs/data/fitRemoteReps/graph.py:50 graphs/data/fitRemoteReps/graph.py:58
 #: graphs/data/fitWarpTime/graph.py:47 graphs/data/fitWarpTime/graph.py:48
 #: graphs/data/fitWarpTime/graph.py:51 graphs/data/fitWarpTime/graph.py:52
-#: graphs/data/fitMobility/graph.py:36 graphs/data/fitRemoteReps/graph.py:50
-#: graphs/data/fitRemoteReps/graph.py:58 graphs/data/fitDamageStats/graph.py:58
-#: graphs/data/fitDamageStats/graph.py:65
 msgid "Distance"
 msgstr ""
 
@@ -1137,8 +1141,8 @@ msgstr ""
 msgid "Dotted"
 msgstr ""
 
-#: gui/updateDialog.py:113
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
+#: gui/updateDialog.py:113
 msgid "Download"
 msgstr ""
 
@@ -1208,12 +1212,12 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:155
 #: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:169
 #: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:183
-#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
-#: gui/additionsPane.py:66 gui/builtinStatsViews/priceViewFull.py:58
+#: gui/additionsPane.py:66 gui/builtinContextMenus/additionsExportAll.py:18
 #: gui/builtinContextMenus/additionsExportSelection.py:18
-#: gui/builtinContextMenus/priceOptions.py:40
 #: gui/builtinContextMenus/additionsImport.py:19
-#: gui/builtinContextMenus/additionsExportAll.py:18
+#: gui/builtinContextMenus/priceOptions.py:40
+#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:77
+#: gui/builtinStatsViews/priceViewFull.py:58
 msgid "Drones"
 msgstr ""
 
@@ -1263,12 +1267,16 @@ msgstr ""
 msgid "EVE API XML character files"
 msgstr ""
 
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:118
+msgid "EVE Data:"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:49
 msgid "EVE IGB HTML fitting file"
 msgstr ""
 
-#: gui/characterEditor.py:162
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
+#: gui/characterEditor.py:162
 msgid "EVE SSO"
 msgstr ""
 
@@ -1433,8 +1441,8 @@ msgstr ""
 
 #: gui/characterEditor.py:83 gui/characterEditor.py:463
 #: gui/characterEditor.py:898 gui/characterSelection.py:174
-#: gui/patternEditor.py:58 gui/setEditor.py:55 gui/targetProfileEditor.py:78
-#: gui/mainFrame.py:898
+#: gui/mainFrame.py:898 gui/patternEditor.py:58 gui/setEditor.py:55
+#: gui/targetProfileEditor.py:78
 msgid "Error"
 msgstr ""
 
@@ -1585,7 +1593,7 @@ msgstr ""
 msgid "Exporting skills needed..."
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:89
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:91
 msgid "Extra info in Additions panel tab names"
 msgstr ""
 
@@ -1630,10 +1638,9 @@ msgstr ""
 msgid "Fighter squadrons active"
 msgstr ""
 
-#: gui/additionsPane.py:69
+#: gui/additionsPane.py:69 gui/builtinContextMenus/additionsExportAll.py:19
 #: gui/builtinContextMenus/additionsExportSelection.py:19
 #: gui/builtinContextMenus/additionsImport.py:20
-#: gui/builtinContextMenus/additionsExportAll.py:19
 msgid "Fighters"
 msgstr ""
 
@@ -1786,7 +1793,7 @@ msgstr ""
 msgid "Gas hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:17
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:19
 msgid "General"
 msgstr ""
 
@@ -1893,8 +1900,8 @@ msgstr ""
 msgid "Hull resistance"
 msgstr ""
 
-#: gui/builtinStatsViews/outgoingViewMinimal.py:49
 #: gui/builtinStatsViews/outgoingViewFull.py:50
+#: gui/builtinStatsViews/outgoingViewMinimal.py:49
 msgid "Hull restored"
 msgstr ""
 
@@ -1943,19 +1950,18 @@ msgstr ""
 msgid "Implant Set name already in use, please choose another."
 msgstr ""
 
-#: gui/characterEditor.py:161 gui/copySelectDialog.py:47
-#: gui/copySelectDialog.py:55 gui/additionsPane.py:75
+#: gui/additionsPane.py:75 gui/builtinContextMenus/additionsExportAll.py:21
+#: gui/builtinContextMenus/additionsExportAll.py:22
 #: gui/builtinContextMenus/additionsExportSelection.py:21
 #: gui/builtinContextMenus/additionsExportSelection.py:22
 #: gui/builtinContextMenus/additionsImport.py:22
-#: gui/builtinContextMenus/additionsImport.py:23
-#: gui/builtinContextMenus/additionsExportAll.py:21
-#: gui/builtinContextMenus/additionsExportAll.py:22
+#: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
+#: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
 msgid "Implants"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 #: gui/builtinContextMenus/priceOptions.py:54
+#: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 msgid "Implants && Boosters"
 msgstr ""
 
@@ -2096,11 +2102,11 @@ msgstr ""
 msgid "Iron"
 msgstr ""
 
-#: gui/builtinItemStatsViews/itemCompare.py:147
-#: gui/builtinContextMenus/itemMarketJump.py:44
-#: gui/builtinContextMenus/itemStats.py:38
 #: gui/builtinContextMenus/ammoToDmgPattern.py:32
+#: gui/builtinContextMenus/itemMarketJump.py:44
 #: gui/builtinContextMenus/itemRemove.py:43
+#: gui/builtinContextMenus/itemStats.py:38
+#: gui/builtinItemStatsViews/itemCompare.py:147
 msgid "Item"
 msgstr ""
 
@@ -2134,10 +2140,6 @@ msgstr ""
 msgid "Ladar"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:96
-msgid "Language (restart required):"
-msgstr ""
-
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
 msgid "Large ship hold"
 msgstr ""
@@ -2169,8 +2171,8 @@ msgstr ""
 msgid "Level %s"
 msgstr ""
 
-#: gui/characterEditor.py:591 gui/characterEditor.py:616
-#: gui/characterEditor.py:649 gui/builtinItemStatsViews/itemDependants.py:46
+#: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
+#: gui/characterEditor.py:616 gui/characterEditor.py:649
 msgid "Level {}"
 msgstr ""
 
@@ -2530,8 +2532,8 @@ msgstr ""
 msgid "NPC"
 msgstr ""
 
-#: gui/builtinViewColumns/baseName.py:55
 #: gui/builtinItemStatsViews/itemEffects.py:30
+#: gui/builtinViewColumns/baseName.py:55
 msgid "Name"
 msgstr ""
 
@@ -2594,7 +2596,7 @@ msgstr ""
 msgid "No proxy"
 msgstr ""
 
-#: gui/characterEditor.py:855
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:92
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -2603,7 +2605,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/characterEditor.py:855
 msgid "None"
 msgstr ""
 
@@ -2667,7 +2669,7 @@ msgstr ""
 msgid "Open Widgets Inspect tool"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:75
 msgid "Open fittings in a new page by default"
 msgstr ""
 
@@ -2783,9 +2785,9 @@ msgid ""
 "Pressing this button will cause all logs in memory to write to the log file:"
 msgstr ""
 
+#: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinStatsViews/priceViewFull.py:40
-#: gui/builtinItemStatsViews/itemCompare.py:155
 msgid "Price"
 msgstr ""
 
@@ -2886,11 +2888,11 @@ msgstr ""
 msgid "Quafe hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:92
 msgid "Quantity of active items"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:92
 msgid "Quantity of all items"
 msgstr ""
 
@@ -2973,8 +2975,8 @@ msgid "Remote Repairs"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinStatsViews/outgoingViewMinimal.py:65
 #: gui/builtinStatsViews/outgoingViewFull.py:66
+#: gui/builtinStatsViews/outgoingViewMinimal.py:65
 msgid "Remote Reps"
 msgstr ""
 
@@ -2987,14 +2989,15 @@ msgid "Remove Overides for Item"
 msgstr ""
 
 #: gui/builtinContextMenus/itemRemove.py:42
-msgid "Remove {}{}"
+#, python-brace-format
+msgid "Remove {item}{stack}"
 msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:108
 msgid "Rename"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:57
 msgid "Reopen previous fits on startup"
 msgstr ""
 
@@ -3098,6 +3101,10 @@ msgstr ""
 msgid "Salvage hold"
 msgstr ""
 
+#: locale_test/getTextLocale.py:4
+msgid "Sample Title Text English"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
@@ -3188,7 +3195,7 @@ msgstr ""
 msgid "Sentinel"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:59
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:61
 msgid "Separate Racks"
 msgstr ""
 
@@ -3258,8 +3265,8 @@ msgstr ""
 msgid "Shield resistance"
 msgstr ""
 
-#: gui/builtinStatsViews/outgoingViewMinimal.py:37
 #: gui/builtinStatsViews/outgoingViewFull.py:38
+#: gui/builtinStatsViews/outgoingViewMinimal.py:37
 msgid "Shield restored"
 msgstr ""
 
@@ -3293,7 +3300,7 @@ msgstr ""
 msgid "Short Range"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:63
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:65
 msgid "Show Rack Labels"
 msgstr ""
 
@@ -3301,7 +3308,7 @@ msgstr ""
 msgid "Show empty ship groups"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:67
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:69
 msgid "Show fitting tab tooltips"
 msgstr ""
 
@@ -3313,7 +3320,7 @@ msgstr ""
 msgid "Show market shortcuts"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:77
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:79
 msgid "Show ship browser tooltip"
 msgstr ""
 
@@ -3501,9 +3508,8 @@ msgstr ""
 msgid "TPs: signature radius increase"
 msgstr ""
 
-#: gui/builtinViewColumns/baseName.py:102
 #: gui/builtinContextMenus/shipModeChange.py:37
-#: gui/builtinViews/fittingView.py:657
+#: gui/builtinViewColumns/baseName.py:102 gui/builtinViews/fittingView.py:657
 msgid "Tactical Mode"
 msgstr ""
 
@@ -3511,7 +3517,7 @@ msgstr ""
 msgid "Talos"
 msgstr ""
 
-#: graphs/gui/lists.py:359 graphs/data/fitDamageStats/graph.py:75
+#: graphs/data/fitDamageStats/graph.py:75 graphs/gui/lists.py:359
 msgid "Target"
 msgstr ""
 
@@ -3547,18 +3553,18 @@ msgstr ""
 msgid "Target resistance"
 msgstr ""
 
-#: graphs/data/fitLockTime/graph.py:37 graphs/data/fitDamageStats/graph.py:71
+#: graphs/data/fitDamageStats/graph.py:71 graphs/data/fitLockTime/graph.py:37
 msgid "Target signature"
 msgstr ""
 
-#: graphs/data/fitLockTime/graph.py:35 graphs/data/fitDamageStats/graph.py:62
-#: graphs/data/fitDamageStats/graph.py:63
+#: graphs/data/fitDamageStats/graph.py:62
+#: graphs/data/fitDamageStats/graph.py:63 graphs/data/fitLockTime/graph.py:35
 msgid "Target signature radius"
 msgstr ""
 
-#: graphs/data/fitMobility/graph.py:38 graphs/data/fitDamageStats/graph.py:60
+#: graphs/data/fitDamageStats/graph.py:60
 #: graphs/data/fitDamageStats/graph.py:61
-#: graphs/data/fitDamageStats/graph.py:70
+#: graphs/data/fitDamageStats/graph.py:70 graphs/data/fitMobility/graph.py:38
 msgid "Target speed"
 msgstr ""
 
@@ -3693,12 +3699,12 @@ msgstr ""
 msgid "Thukker"
 msgstr ""
 
-#: graphs/data/fitMobility/graph.py:33 graphs/data/fitMobility/graph.py:41
-#: graphs/data/fitShieldRegen/graph.py:40
-#: graphs/data/fitShieldRegen/graph.py:54 graphs/data/fitCapacitor/graph.py:34
-#: graphs/data/fitCapacitor/graph.py:41 graphs/data/fitRemoteReps/graph.py:51
-#: graphs/data/fitRemoteReps/graph.py:56 graphs/data/fitDamageStats/graph.py:59
-#: graphs/data/fitDamageStats/graph.py:68
+#: graphs/data/fitCapacitor/graph.py:34 graphs/data/fitCapacitor/graph.py:41
+#: graphs/data/fitDamageStats/graph.py:59
+#: graphs/data/fitDamageStats/graph.py:68 graphs/data/fitMobility/graph.py:33
+#: graphs/data/fitMobility/graph.py:41 graphs/data/fitRemoteReps/graph.py:51
+#: graphs/data/fitRemoteReps/graph.py:56 graphs/data/fitShieldRegen/graph.py:40
+#: graphs/data/fitShieldRegen/graph.py:54
 msgid "Time"
 msgstr ""
 
@@ -3718,9 +3724,9 @@ msgstr ""
 msgid "Toggle view mode"
 msgstr ""
 
+#: gui/builtinStatsViews/miningyieldViewFull.py:89
 #: gui/builtinStatsViews/priceViewFull.py:58
 #: gui/builtinStatsViews/priceViewMinimal.py:57
-#: gui/builtinStatsViews/miningyieldViewFull.py:89
 msgid "Total"
 msgstr ""
 
@@ -3836,15 +3842,15 @@ msgstr ""
 msgid "Use capacitor simulator"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:41
 msgid "Use character implants by default for new fits"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:35
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:37
 msgid "Use global character"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:43
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:45
 msgid "Use global damage pattern"
 msgstr ""
 
@@ -3856,8 +3862,8 @@ msgstr ""
 msgid "Using Executable Path for Saved Fit Database and Settings"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 #: gui/builtinContextMenus/itemVariationChange.py:49
+#: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
 msgid "Variations"
 msgstr ""
 
@@ -3915,7 +3921,7 @@ msgid ""
 "behavior)."
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:88
 msgid ""
 "When disabled, reloads charges just in selected modules. Action can be "
 "reversed by holding Ctrl or Alt key while changing charge."
@@ -4090,6 +4096,10 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:101
+msgid "pyfa:"
 msgstr ""
 
 #: eos/utils/stats.py:123
