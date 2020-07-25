@@ -73,7 +73,7 @@ parser.add_option("-t", "--title", action="store", dest="title", help="Set Windo
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
 parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
 parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.", default=None)
-parser.add_option("-i", "--language", action="store", dest="language", help="Set the language for pyfa", default=None)
+parser.add_option("-i", "--language", action="store", dest="language", help="Sets the language for pyfa. Overrides user's saved settings. Format: xx_YY (eg: en_US). If translation doesn't exist, defaults to en_US", default=None)
 
 (options, args) = parser.parse_args()
 
