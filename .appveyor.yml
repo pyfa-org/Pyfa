@@ -55,6 +55,8 @@ build_script:
   - ps: echo("Build pyfa:")
     # Build language files
   - cmd: "python scripts/compile_lang.py"
+    # Dump language progress
+  - cmd: "python scripts/dump_crowdin_progress.py"
     # Build gamedata DB
   - cmd: "python db_update.py"
   # Build command for PyInstaller
