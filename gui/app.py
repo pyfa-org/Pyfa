@@ -1,6 +1,7 @@
 import wx
 import config
 import os
+
 from logbook import Logger
 pyfalog = Logger(__name__)
 from service.settings import LocaleSettings
@@ -63,7 +64,6 @@ class PyfaApp(wx.App):
             selLang = supLang[lang].wxLocale
         else:
             selLang = wx.LANGUAGE_ENGLISH_US
-
         if self.locale:
             assert sys.getrefcount(self.locale) <= 2
             del self.locale
@@ -72,7 +72,7 @@ class PyfaApp(wx.App):
         pyfalog.debug("Setting language to: " + lang)
         self.locale = wx.Locale(selLang)
         if self.locale.IsOk():
-            success = self.locale.AddCatalog(langDomain, selLang)
+            success = self.locale.AddCatalog(langDomain)
             if not success:
                 print("Langauage catalog not successfully loaded")
 

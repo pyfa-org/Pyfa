@@ -102,8 +102,9 @@ class PFGeneralPref(PreferenceView):
         self.stLangLabel.Wrap(-1)
         langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.langChoices = self.localeSettings.supported_langauges.keys()
-        self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, sorted([x for x in self.langChoices]), 0)
+        self.langChoices = sorted([wx.Locale.FindLanguageInfo(x) for x in wx.Translations.Get().GetAvailableTranslations('lang')], key=lambda x: x.Description)
+
+        self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x.Description for x in self.langChoices], 0)
         self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
 
         self.chLang.SetStringSelection(self.localeSettings.get('locale'))
@@ -167,7 +168,9 @@ class PFGeneralPref(PreferenceView):
         panel.Layout()
 
     def onLangSelection(self, event):
-        self.localeSettings.set('locale', self.chLang.GetString(self.chLang.GetSelection()))
+        selection = self.chLang.GetSelection()
+        locale = self.langChoices[selection]
+        self.localeSettings.set('locale', locale.CanonicalName)
 
     def onEosLangSelection(self, event):
         self.localeSettings.set('eos_locale', self.chEosLang.GetString(self.chEosLang.GetSelection()))

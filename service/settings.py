@@ -576,6 +576,7 @@ class LocaleSettings:
     def get_eos_locale(self):
         """gets the effective value of the setting"""
         val = self.settings['eos_locale']
+        return 'en'
         return val if val != self.defaults['eos_locale'] else self.supported_langauges.get(self.settings['locale'], 'en').eosLang
 
     def set(self, key, value):
