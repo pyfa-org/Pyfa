@@ -3,7 +3,7 @@ import os
 import json
 import wx
 
-key = os.environ.get("CROWDIN_APPI_KEY", "")
+key = os.environ.get("CROWDIN_API_KEY", "")
 
 params = {
     'json': '',
