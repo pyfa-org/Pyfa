@@ -102,12 +102,13 @@ class PFGeneralPref(PreferenceView):
         self.stLangLabel.Wrap(-1)
         langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.langChoices = sorted([wx.Locale.FindLanguageInfo(x) for x in wx.Translations.Get().GetAvailableTranslations('lang')], key=lambda x: x.Description)
+        self.langChoices = sorted([v for x, v in LocaleSettings.supported_langauges().items()], key=lambda x: x.Description)
 
         self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x.Description for x in self.langChoices], 0)
         self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
 
-        self.chLang.SetStringSelection(self.localeSettings.get('locale'))
+        selectedIndex = self.langChoices.index(next((x for x in self.langChoices if x.CanonicalName == self.localeSettings.get('locale')), None))
+        self.chLang.SetSelection(selectedIndex)
 
         langSizer.Add(self.chLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         langBox.Add(langSizer)

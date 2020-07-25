@@ -53,6 +53,8 @@ LOGLEVEL_MAP = {
     "debug": DEBUG,
 }
 
+CATALOG = 'lang'
+
 slotColourMap = {
     FittingSlot.LOW: wx.Colour(250, 235, 204),  # yellow = low slots
     FittingSlot.MED: wx.Colour(188, 215, 241),  # blue   = mid slots
@@ -192,7 +194,7 @@ def defPaths(customSavePath=None):
 
     # set langauge, taking the passed argument or falling back to what's saved in the settings
     localeSettings = LocaleSettings.getInstance()
-    language = language if language in localeSettings.supported_langauges else localeSettings.get('locale')
+    language = language or localeSettings.get('locale')
 
     # sets the lang for eos, using the mapped langauge.
     eos.config.set_lang(localeSettings.get_eos_locale())

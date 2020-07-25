@@ -1,7 +1,7 @@
 import wx
 import config
 import os
-
+import sys
 from logbook import Logger
 pyfalog = Logger(__name__)
 from service.settings import LocaleSettings
@@ -54,27 +54,24 @@ class PyfaApp(wx.App):
         """
 
         # Language domain.
-        langDomain = "lang"
-
-        # Languages you want to support.
-        supLang = LocaleSettings.supported_langauges
+        langDomain = config.CATALOG
 
         # If an unsupported language is requested default to English.
-        if lang in supLang:
-            selLang = supLang[lang].wxLocale
-        else:
-            selLang = wx.LANGUAGE_ENGLISH_US
+
         if self.locale:
             assert sys.getrefcount(self.locale) <= 2
             del self.locale
 
         # Create a locale object for this language.
-        pyfalog.debug("Setting language to: " + lang)
-        self.locale = wx.Locale(selLang)
-        if self.locale.IsOk():
-            success = self.locale.AddCatalog(langDomain)
-            if not success:
-                print("Langauage catalog not successfully loaded")
+        langInfo = wx.Locale.FindLanguageInfo(lang)
+        if langInfo is not None:
+            pyfalog.debug("Setting language to: " + lang)
+            self.locale = wx.Locale(langInfo.Language)
+            if self.locale.IsOk():
+                success = self.locale.AddCatalog(langDomain)
+                if not success:
+                    print("Langauage catalog not successfully loaded")
 
         else:
-            self.locale = None
+            pyfalog.debug("Cannot find langauge: " + lang)
+            self.locale = wx.Locale(wx.Locale.FindLanguageInfo(LocaleSettings.defaults['locale']).Language)

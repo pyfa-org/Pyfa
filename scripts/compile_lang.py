@@ -1,5 +1,6 @@
 import os, glob
 import msgfmt
+import config
 
 import sys
 
@@ -8,6 +9,6 @@ locale_path = os.path.abspath(os.path.join(script_dir, '..', 'locale'))
 
 for name in glob.iglob(locale_path + '/**'):
     if not os.path.isfile(name):
-        path = os.path.join(locale_path, name, 'LC_MESSAGES', 'lang')
+        path = os.path.join(locale_path, name, 'LC_MESSAGES', config.CATALOG)
         sys.argv[1:] = [path + '.po']
         msgfmt.main()

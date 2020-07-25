@@ -539,23 +539,17 @@ class GraphSettings:
 Locale = namedtuple('Locale', ['wxLocale', 'eosLang'])
 class LocaleSettings:
     _instance = None
-    DEFAULT  = "en"
-
-    supported_langauges = {
-        "en": Locale(wx.LANGUAGE_ENGLISH_US, 'en'),
-        "fr": Locale(wx.LANGUAGE_FRENCH, 'fr'),
-        "ja": Locale(wx.LANGUAGE_JAPANESE, 'ja'),
-        "ko": Locale(wx.LANGUAGE_KOREAN, 'ko'),
-        "ru": Locale(wx.LANGUAGE_RUSSIAN, 'ru'),
-        "zh": Locale(wx.LANGUAGE_CHINESE_SIMPLIFIED, 'zh'),
-        # Non game client langauges
-        "it": Locale(wx.LANGUAGE_ITALIAN, None),
-    }
+    DEFAULT  = "en_US"
 
     defaults = {
         'locale': DEFAULT,
         'eos_locale': 'Auto'  # flag for "Default" which is the same as the locale or, if not available, English
     }
+
+    @classmethod
+    def supported_langauges(cls):
+        """Requires the application to be initialized, otherwise wx.Translation isn't set."""
+        return {x: wx.Locale.FindLanguageInfo(x) for x in wx.Translations.Get().GetAvailableTranslations(config.CATALOG)}
 
     @classmethod
     def getInstance(cls):
@@ -564,22 +558,18 @@ class LocaleSettings:
         return cls._instance
 
     def __init__(self):
-
-
         self.settings = SettingsProvider.getInstance().getSettings('localeSettings', self.defaults)
 
     def get(self, key):
         """gets the raw value fo the setting"""
         return self.settings[key]
 
-
     def get_eos_locale(self):
         """gets the effective value of the setting"""
         val = self.settings['eos_locale']
-        return 'en'
-        return val if val != self.defaults['eos_locale'] else self.supported_langauges.get(self.settings['locale'], 'en').eosLang
+        return val if val != self.defaults['eos_locale'] else self.settings['locale'].split("_")[0]
 
     def set(self, key, value):
-        if key == 'locale' and value not in self.supported_langauges:
+        if key == 'locale' and value not in self.supported_langauges():
             self.settings[key] = self.DEFAULT
         self.settings[key] = value
