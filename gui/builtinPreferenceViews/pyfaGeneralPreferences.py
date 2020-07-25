@@ -119,11 +119,15 @@ class PFGeneralPref(PreferenceView):
         self.stEosLangLabel.Wrap(-1)
         eosLangSizer.Add(self.stEosLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.eosLangChoices = eos.config.translation_mapping.keys()
-        self.chEosLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [LocaleSettings.defaults['eos_locale']]+sorted([x for x in self.eosLangChoices]), 0)
+        self.eosLangChoices = [(LocaleSettings.defaults['eos_locale'], LocaleSettings.defaults['eos_locale'])] + \
+                              sorted([(wx.Locale.FindLanguageInfo(x).Description, x) for x in eos.config.translation_mapping.keys()], key=lambda x: x[0])
+
+        self.chEosLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x[0] for x in self.eosLangChoices], 0)
         self.chEosLang.Bind(wx.EVT_CHOICE, self.onEosLangSelection)
 
-        self.chEosLang.SetStringSelection(self.localeSettings.get('eos_locale'))
+        selectedIndex = self.eosLangChoices.index(
+            next((x for x in self.eosLangChoices if x[1] == self.localeSettings.get('eos_locale')), None))
+        self.chEosLang.SetSelection(selectedIndex)
 
         eosLangSizer.Add(self.chEosLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -174,7 +178,9 @@ class PFGeneralPref(PreferenceView):
         self.localeSettings.set('locale', locale.CanonicalName)
 
     def onEosLangSelection(self, event):
-        self.localeSettings.set('eos_locale', self.chEosLang.GetString(self.chEosLang.GetSelection()))
+        selection = self.chEosLang.GetSelection()
+        locale = self.eosLangChoices[selection]
+        self.localeSettings.set('eos_locale', locale[1])
 
     def onCBGlobalColorBySlot(self, event):
         # todo: maybe create a SettingChanged event that we can fire, and have other things hook into, instead of having the preference panel itself handle the
