@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-22 04:29\n"
+"PO-Revision-Date: 2020-07-25 01:59\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -918,7 +918,7 @@ msgstr "青色"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "DPS"
-msgstr ""
+msgstr "DPS"
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
@@ -1993,7 +1993,7 @@ msgstr "工业舰船仓"
 
 #: graphs/data/fitMobility/graph.py:46
 msgid "Inertia Modifier attribute value of the target ship"
-msgstr ""
+msgstr "目标舰船的惯性修饰属性"
 
 #: eos/saveddata/damagePattern.py:87
 msgid "Inferno"
@@ -3544,7 +3544,7 @@ msgstr "本操作将永久删除所有目标属性配置。\n"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
 msgid "This option goes through EVE SSO directly, but requires more configuration. Use this if pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
-msgstr ""
+msgstr "本选项将直接发送EvE单点登录请求，但这需要更多配置。如果pyfa.io无法访问，或你不想让pyfa.io处理登录请求，请使用该选项。"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
 msgid "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server."
