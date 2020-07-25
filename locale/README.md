@@ -80,21 +80,27 @@ For Linux and macOS users these tools might be available out-of-box.
 ### To generate new template for translation:
 
 ```console
-$ find gui/ *.py -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k_t -f - -s
+$ find * -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k_t -k_t:1,2,3t -k_t:1,2c,2t -f - -s
 ```
 
 explanation:
 
-* `find gui/ *.py -name "*.py"`: collect all `.py` file path in `gui` folder and all sub-folders, write it to stdout
+* `find * -name "*.py"`: collect all `.py` file path in current folder and all sub-folders 
+    (except those starts with `.`, e.g. `.env`, `.idea`), write it to stdout
 * `xgettext`: a utility looking for keyword and put string literals in a specific format for human translation
     * `--from-code=UTF-8`: designates encoding of files 
     * `-o locale/lang.pot`: let `xgettext` write to `locale/lang.pot`
     * `-d lang`: default language domain is `lang`
-    * `-k_t`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t`
+    * `-k_t`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t`,
+        where the string literal (`msgid`) will be the first argument of this function call
+    * `-k_t:1,2,3t`: look for `_t`, first arg is `msgid`, second arg is `msgid_plural`, 3 args in total
+    * `-k_t:1,2c,2t`: look for `_t`, first arg is `msgid`, second arg is `msgctxt`, 2 args in total
     * `-f -`: let `xgettext` to read from stdin, which is connected to `find` stdout
     * `-s`: sort output according to `msgid`
 
 this `locale/lang.pot` is called PO template, which is discarded once actual `ll_CC/LC_MESSAGES/lang.po` is ready for use.
+
+SEE ALSO: `xgettext` [documentation](https://www.gnu.org/software/gettext/manual/gettext.html#Template)
 
 ### To initialize PO file for new language
 
