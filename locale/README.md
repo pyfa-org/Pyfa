@@ -85,8 +85,10 @@ $ find * -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k
 
 explanation:
 
-* `find * -name "*.py"`: collect all `.py` file path in current folder and all sub-folders 
-    (except those starts with `.`, e.g. `.env`, `.idea`), write it to stdout
+* `find * -name "*.py"`: collect all `.py` file path in current folder and all sub-folders, write it to stdout
+    * except those starts with `.`, e.g. `.env`, `.idea` which is convient if your python venv starts with `.`
+    * can also append `-not -path 'path/to/venv/*` to exclude `path/to/venv` recursively.
+            
 * `xgettext`: a utility looking for keyword and put string literals in a specific format for human translation
     * `--from-code=UTF-8`: designates encoding of files 
     * `-o locale/lang.pot`: let `xgettext` write to `locale/lang.pot`
