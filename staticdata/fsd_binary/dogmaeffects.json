@@ -44807,7 +44807,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 5503, 
-    "effectName": "eliteBonusCommandShipHeavyDroneTrackingCS2", 
+    "effectName": "eliteBonusCommandShipDroneTrackingCS2", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -44819,7 +44819,7 @@
         "modifiedAttributeID": 160, 
         "modifyingAttributeID": 999, 
         "operation": 6, 
-        "skillTypeID": 3441
+        "skillTypeID": 3436
       }
     ], 
     "propulsionChance": 0, 
@@ -79059,6 +79059,168 @@
         "modifyingAttributeID": 292, 
         "operation": 6, 
         "skillTypeID": 55033
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8068": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8068, 
+    "effectName": "shipShieldResistanceBonusMBC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 271, 
+        "modifyingAttributeID": 748, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 274, 
+        "modifyingAttributeID": 748, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 272, 
+        "modifyingAttributeID": 748, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 273, 
+        "modifyingAttributeID": 748, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8070": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8070, 
+    "effectName": "eliteBonusCommandShipsHeavyHAMvelocityCS2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 999, 
+        "operation": 6, 
+        "skillTypeID": 3324
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 999, 
+        "operation": 6, 
+        "skillTypeID": 25719
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8071": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8071, 
+    "effectName": " eliteBonusCommandShipDroneRangeCS1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 1000, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8072": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8072, 
+    "effectName": "shipArmorResistanceBonusGBC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 267, 
+        "modifyingAttributeID": 746, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 270, 
+        "modifyingAttributeID": 746, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 268, 
+        "modifyingAttributeID": 746, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 269, 
+        "modifyingAttributeID": 746, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8073": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8073, 
+    "effectName": "eliteBonusCommandShipShieldHPCS1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 1000, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 

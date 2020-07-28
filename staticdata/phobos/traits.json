@@ -73,8 +73,8 @@
               "text": "bonus to Heavy Missile and Heavy Assault Missile Launcher rate of fire"
             }, 
             {
-              "number": "5%", 
-              "text": "bonus to Heavy Missile and Heavy Assault Missile explosion velocity"
+              "number": "10%", 
+              "text": "bonus to Heavy Missile and Heavy Assault Missile velocity"
             }, 
             {
               "number": "3%", 
@@ -90,8 +90,8 @@
               "text": "bonus to Heavy Missile and Heavy Assault Missile Launcher rate of fire"
             }, 
             {
-              "number": "7.5%", 
-              "text": "bonus to Shield Booster amount"
+              "number": "4%", 
+              "text": "bonus to all shield resistances"
             }
           ], 
           "header": "Minmatar Battlecruiser bonuses (per skill level):"
@@ -120,10 +120,6 @@
         "bonuses": [
           {
             "text": "·Can use two Command Burst modules"
-          }, 
-          {
-            "number": "100%", 
-            "text": "bonus to Command Burst area of effect range"
           }
         ], 
         "header": "Role Bonus:"
@@ -140,7 +136,7 @@
               "text": "bonus to Medium Hybrid Turret falloff"
             }, 
             {
-              "number": "3%", 
+              "number": "4%", 
               "text": "bonus to Armored Command and Skirmish Command burst strength and duration"
             }
           ], 
@@ -5994,10 +5990,6 @@
         "bonuses": [
           {
             "text": "·Can use two Command Burst modules"
-          }, 
-          {
-            "number": "100%", 
-            "text": "bonus to Command Burst area of effect range"
           }
         ], 
         "header": "Role Bonus:"
@@ -6006,7 +5998,7 @@
         {
           "bonuses": [
             {
-              "number": "7.5%", 
+              "number": "10%", 
               "text": "bonus to Heavy Missile and Heavy Assault Missile Launcher rate of fire"
             }, 
             {
@@ -6014,7 +6006,7 @@
               "text": "bonus to Heavy Missile and Heavy Assault Missile explosion radius"
             }, 
             {
-              "number": "3%", 
+              "number": "4%", 
               "text": "bonus to Shield Command and Information Command burst strength and duration"
             }
           ], 
@@ -8945,11 +8937,11 @@
           "bonuses": [
             {
               "number": "7.5%", 
-              "text": "bonus to Heavy Drone max velocity and tracking speed"
+              "text": "bonus to Drone tracking speed"
             }, 
             {
-              "number": "7.5%", 
-              "text": "bonus to Medium Hybrid Turret tracking speed"
+              "number": "10%", 
+              "text": "bonus to Drone optimal range"
             }, 
             {
               "number": "3%", 
@@ -8965,8 +8957,8 @@
               "text": "bonus to Drone hitpoints and damage"
             }, 
             {
-              "number": "7.5%", 
-              "text": "bonus to Armor Repairer amount"
+              "number": "4%", 
+              "text": "bonus to all armor resistances"
             }
           ], 
           "header": "Gallente Battlecruiser bonuses (per skill level):"
@@ -8981,10 +8973,6 @@
         "bonuses": [
           {
             "text": "·Can use two Command Burst modules"
-          }, 
-          {
-            "number": "100%", 
-            "text": "bonus to Command Burst area of effect range"
           }
         ], 
         "header": "Role Bonus:"
@@ -9001,7 +8989,7 @@
               "text": "bonus to Medium Projectile Turret falloff"
             }, 
             {
-              "number": "3%", 
+              "number": "4%", 
               "text": "bonus to Shield Command and Skirmish Command burst strength and duration"
             }
           ], 
@@ -9043,7 +9031,7 @@
           "bonuses": [
             {
               "number": "10%", 
-              "text": "bonus to Medium Hybrid Turret optimal range"
+              "text": "bonus to shield hitpoints"
             }, 
             {
               "number": "10%", 
@@ -9079,10 +9067,6 @@
         "bonuses": [
           {
             "text": "·Can use two Command Burst modules"
-          }, 
-          {
-            "number": "100%", 
-            "text": "bonus to Command Burst area of effect range"
           }
         ], 
         "header": "Role Bonus:"
@@ -9099,7 +9083,7 @@
               "text": "bonus to Medium Energy Turret rate of fire"
             }, 
             {
-              "number": "3%", 
+              "number": "4%", 
               "text": "bonus to Armored Command and Information Command burst strength and duration"
             }
           ], 
