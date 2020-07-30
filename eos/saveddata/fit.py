@@ -751,25 +751,25 @@ class Fit:
                 # Localized environment effects
 
                 if warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
-                    self.ship.boostItemAttr("signatureRadius", value)
+                    self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
-                        "signatureRadius", value)
+                        "signatureRadius", value, stackingPenalties=True)
 
                 if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_local_repair
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
-                                                   "armorDamageAmount", value)
+                                                   "armorDamageAmount", value, stackingPenalties=True)
 
                 if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_remote_repair
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
-                                                   "armorDamageAmount", value)
+                                                   "armorDamageAmount", value, stackingPenalties=True)
 
                 if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster_shield_bonus
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
-                                                   "shieldBonus", value)
+                                                   "shieldBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 89:  # AOE_Beacon_filament_cloud_shield_booster_duration
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
-                                                   "duration", value)
+                                                   "duration", value, stackingPenalties=True)
 
                 # Abyssal Weather Effects
 
@@ -783,7 +783,7 @@ class Fit:
                         "emDamageResonance", value)  #for hull
 
                 if warfareBuffID == 92:  # Weather_electric_storm_capacitor_recharge_bonus
-                    self.ship.boostItemAttr("rechargeRate", value)
+                    self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
 
                 if warfareBuffID == 93:  # Weather_xenon_gas_explosive_resistance_penalty
                     for tankType in ("shield", "armor"):
@@ -815,13 +815,13 @@ class Fit:
 
                 if warfareBuffID == 97:  # Weather_darkness_turret_range_penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                                   "maxRange", value)
+                                                   "maxRange", value, stackingPenalties=True)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
-                        "maxRange", value)
+                        "maxRange", value, stackingPenalties=True)
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                                   "falloff", value)
+                                                   "falloff", value, stackingPenalties=True)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
-                        "falloff", value)
+                        "falloff", value, stackingPenalties=True)
 
                 if warfareBuffID == 98:  # Weather_darkness_velocity_bonus
                     self.ship.boostItemAttr("maxVelocity", value)
@@ -838,7 +838,7 @@ class Fit:
                         "kineticDamageResonance", value)  # for hull
 
                 if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
-                    self.ship.boostItemAttr("scanResolution", value)
+                    self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
 
             del self.commandBonuses[warfareBuffID]
 
