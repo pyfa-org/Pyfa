@@ -402,6 +402,10 @@ class _TabRenderer:
         width = max(width, self.min_width)
         height = max(height, self.min_height)
 
+        cur_width, cur_height = self.tab_size
+        if (width == cur_width) and (height == cur_height):
+            return
+
         self.tab_size = (width, height)
         self.InitTab()
 
