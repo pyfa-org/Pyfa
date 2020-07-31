@@ -110,8 +110,6 @@ class OpenFitsThread(threading.Thread):
         self.start()
 
     def run(self):
-        time.sleep(0.5)  # Give GUI some time to finish drawing
-
         # `startup` tells FitSpawner that we are loading fits are startup, and
         # has 3 values:
         # False = Set as default in FitSpawner itself, never set here
