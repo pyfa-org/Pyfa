@@ -979,9 +979,6 @@ class _TabsContainer(wx.Panel):
             sel_tab = self.tabs.index(tab)
             self.Parent.SetSelection(sel_tab)
 
-            wx.PostEvent(self.Parent, PageChanged(self.tabs.index(old_sel_tab),
-                                                  self.tabs.index(tab)))
-
             return True
 
         return False
