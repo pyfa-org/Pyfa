@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-17 11:42+0800\n"
-"PO-Revision-Date: 2020-07-25 01:59\n"
+"POT-Creation-Date: 2020-07-27 15:29+0800\n"
+"PO-Revision-Date: 2020-08-02 17:09\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -32,7 +32,8 @@ msgstr "齐射"
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
 msgid "%d attribute."
-msgstr "共%d个属性。"
+msgid_plural "%d attributes."
+msgstr[0] ""
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
@@ -275,6 +276,10 @@ msgstr "添加装配..."
 msgid "Add Fits"
 msgstr "添加装配"
 
+#: gui/builtinContextMenus/targetProfile/adder.py:29
+msgid "Add Target Profile"
+msgstr ""
+
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
 msgid "Add {0} to Cargo (x1000)"
@@ -369,7 +374,7 @@ msgstr "弹药仓"
 msgid "Angel Cartel"
 msgstr "天使联合企业"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
 msgid "Animate gauges"
 msgstr "启用属性进度条动画"
 
@@ -417,6 +422,11 @@ msgstr "装甲修量"
 msgid "Armor resistance"
 msgstr "装甲抗性"
 
+#: gui/builtinStatsViews/outgoingViewFull.py:44
+#: gui/builtinStatsViews/outgoingViewMinimal.py:43
+msgid "Armor restored"
+msgstr ""
+
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
 msgstr "装甲："
@@ -458,6 +468,10 @@ msgstr "属性"
 #: gui/builtinContextMenus/graphDmgDroneMode.py:43
 msgid "Auto"
 msgstr "自动"
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:145
+msgid "Auto will use the same language pyfa uses if available, otherwise English"
+msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Auto-detected proxy settings"
@@ -619,6 +633,15 @@ msgstr "电容回充"
 msgid "Capacitor"
 msgstr "电容"
 
+#: gui/builtinStatsViews/capacitorViewFull.py:139
+msgid "Capacitor delta:"
+msgstr ""
+
+#: gui/builtinStatsViews/outgoingViewFull.py:32
+#: gui/builtinStatsViews/outgoingViewMinimal.py:31
+msgid "Capacitor restored"
+msgstr ""
+
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
 msgstr "电容稳定性"
@@ -675,7 +698,7 @@ msgstr "更改数量"
 msgid "Change Skills"
 msgstr "修改技能等级"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:81
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:84
 msgid "Change charge in all modules of the same type"
 msgstr "同时更换所有同类型模块的弹药"
 
@@ -758,7 +781,7 @@ msgstr "客户ID(Client ID)："
 msgid "Client Secret:"
 msgstr "客户密钥(Client Secret)："
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:51
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:54
 msgid "Color fitting view by slot"
 msgstr "用背景色区分槽位"
 
@@ -782,7 +805,7 @@ msgstr "指挥装配"
 msgid "Command center hold"
 msgstr "指挥中心仓"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:50
 msgid "Compact skills needed tooltip"
 msgstr "简洁技能需求提示"
 
@@ -898,6 +921,10 @@ msgstr "巡洋"
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/targetProfile.py:81
 msgid "Cruor (Blood Raiders)"
 msgstr "凝血级（血袭者）"
+
+#: gui/builtinStatsViews/firepowerViewFull.py:175
+msgid "Current"
+msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:45
 #: gui/builtinItemStatsViews/itemProperties.py:57
@@ -1123,7 +1150,7 @@ msgstr "拖拽受害者装配到这里，并用你的装配针对性绘图"
 msgid "Drag a fit to this area"
 msgstr "拖拽装配到此处"
 
-#: gui/builtinAdditionPanes/projectedView.py:226
+#: gui/builtinAdditionPanes/projectedView.py:224
 msgid "Drag an item or fit, or use right-click menu for wormhole effects"
 msgstr "拖拽一个物品或装配以启用投射效果，或使用右键菜单选择一个虫洞环境效果"
 
@@ -1232,6 +1259,10 @@ msgstr "错误"
 msgid "EVE API XML character files"
 msgstr "EvE API XML角色文件"
 
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:127
+msgid "EVE Data:"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:49
 msgid "EVE IGB HTML fitting file"
 msgstr "EvE IGB 装配HTML网页文件"
@@ -1269,6 +1300,10 @@ msgstr "有效DPS"
 #: gui/builtinStatsViews/resistancesViewFull.py:219
 msgid "Effective HP: "
 msgstr "有效HP："
+
+#: gui/builtinStatsViews/capacitorViewFull.py:151
+msgid "Effective capacity"
+msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Effective damage inflicted"
@@ -1548,7 +1583,7 @@ msgstr "导出使用本装配所需技能"
 msgid "Exporting skills needed..."
 msgstr "正在导出所需技能..."
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:89
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:92
 msgid "Extra info in Additions panel tab names"
 msgstr "附加装备标签名显示额外信息"
 
@@ -1747,7 +1782,7 @@ msgstr "伽玛 T4/T5"
 msgid "Gas hold"
 msgstr "气体矿物仓库"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:17
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:20
 msgid "General"
 msgstr "通用"
 
@@ -1783,6 +1818,10 @@ msgstr "习得所需技能"
 #: graphs/gui/frame.py:51
 msgid "Graphs"
 msgstr "图表"
+
+#: eos/saveddata/fit.py:402
+msgid "Gravimetric"
+msgstr ""
 
 #: graphs/style.py:53
 msgid "Green"
@@ -1846,6 +1885,11 @@ msgstr "结构修量"
 #: gui/builtinStatsViews/resistancesViewFull.py:114
 msgid "Hull resistance"
 msgstr "结构抗性"
+
+#: gui/builtinStatsViews/outgoingViewFull.py:50
+#: gui/builtinStatsViews/outgoingViewMinimal.py:49
+msgid "Hull restored"
+msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Hull: "
@@ -2007,6 +2051,10 @@ msgstr "红外"
 msgid "Interceptor"
 msgstr "截击"
 
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:122
+msgid "Interested in helping with translations?"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
 #: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
 #: eos/saveddata/damagePattern.py:138 eos/saveddata/targetProfile.py:94
@@ -2074,16 +2122,20 @@ msgstr "动能"
 msgid "Kinetic resistance"
 msgstr "动能抗性"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:96
-msgid "Language (restart required):"
-msgstr "语言（重启后生效）："
+#: eos/saveddata/fit.py:402
+msgid "Ladar"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:97
+msgid "Language (requires restart)"
+msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
 msgid "Large ship hold"
 msgstr "大型舰船仓"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:77
-#: gui/builtinStatsViews/capacitorViewFull.py:171
+#: gui/builtinStatsViews/capacitorViewFull.py:170
 msgid "Lasts "
 msgstr "可维持"
 
@@ -2189,6 +2241,10 @@ msgstr "低安"
 #: graphs/style.py:56
 msgid "Magenta"
 msgstr "粉色"
+
+#: eos/saveddata/fit.py:402
+msgid "Magnetometric"
+msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
@@ -2360,6 +2416,10 @@ msgstr "更多伤害"
 msgid "Multifrequency"
 msgstr "多频"
 
+#: eos/saveddata/fit.py:408
+msgid "Multispectral"
+msgstr ""
+
 #: gui/copySelectDialog.py:54
 msgid "Mutated Attributes"
 msgstr "已变异属性"
@@ -2479,6 +2539,10 @@ msgstr "请为获取至少选择一个游戏内角色"
 msgid "Network"
 msgstr "网络"
 
+#: gui/builtinStatsViews/capacitorViewFull.py:149
+msgid "Neutralizer resistance"
+msgstr ""
+
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
 msgstr "毁电：毁电速度"
@@ -2522,7 +2586,7 @@ msgstr "不改变衍生分类按钮"
 msgid "No proxy"
 msgstr "无代理"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -2595,7 +2659,7 @@ msgstr "打开控件检查工具(&G)"
 msgid "Open Widgets Inspect tool"
 msgstr "打开控件检查工具"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:76
 msgid "Open fittings in a new page by default"
 msgstr "默认在新标签页打开装配"
 
@@ -2749,10 +2813,10 @@ msgstr "施加{0}远程效果到装配"
 msgid "Projected"
 msgstr "远程效果"
 
-#: gui/builtinAdditionPanes/projectedView.py:306
-#: gui/builtinAdditionPanes/projectedView.py:316
-#: gui/builtinAdditionPanes/projectedView.py:321
-#: gui/builtinAdditionPanes/projectedView.py:326
+#: gui/builtinAdditionPanes/projectedView.py:304
+#: gui/builtinAdditionPanes/projectedView.py:314
+#: gui/builtinAdditionPanes/projectedView.py:319
+#: gui/builtinAdditionPanes/projectedView.py:324
 msgid "Projected Item"
 msgstr "远程效果物品"
 
@@ -2805,13 +2869,17 @@ msgstr "Pyfa可以自动检查更新并提示。这个功能可在网络设置�
 msgid "Quafe hold"
 msgstr "酷菲(Quafe)仓"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
 msgid "Quantity of active items"
 msgstr "激活的物品数量"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
 msgid "Quantity of all items"
 msgstr "所有物品数量"
+
+#: eos/saveddata/fit.py:402
+msgid "Radar"
+msgstr ""
 
 #: eos/saveddata/damagePattern.py:45
 msgid "Radio"
@@ -2900,14 +2968,15 @@ msgid "Remove Overides for Item"
 msgstr "删除物品的自定义属性"
 
 #: gui/builtinContextMenus/itemRemove.py:42
-msgid "Remove {}{}"
-msgstr "移除{}{}"
+#, python-brace-format
+msgid "Remove {item}{stack}"
+msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:108
 msgid "Rename"
 msgstr "重命名"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:58
 msgid "Reopen previous fits on startup"
 msgstr "重新启动时打开之前的装配"
 
@@ -3011,6 +3080,10 @@ msgstr "单点登录(SSO)模式"
 msgid "Salvage hold"
 msgstr "打捞件仓"
 
+#: locale_test/getTextLocale.py:4
+msgid "Sample Title Text English"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
@@ -3101,7 +3174,7 @@ msgstr "传感器强度"
 msgid "Sentinel"
 msgstr "哨兵级"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:59
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:62
 msgid "Separate Racks"
 msgstr "分隔不同槽位类型"
 
@@ -3169,6 +3242,11 @@ msgstr "护盾回充"
 msgid "Shield resistance"
 msgstr "护盾抗性"
 
+#: gui/builtinStatsViews/outgoingViewFull.py:38
+#: gui/builtinStatsViews/outgoingViewMinimal.py:37
+msgid "Shield restored"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
 msgstr "恢复"
@@ -3199,7 +3277,7 @@ msgstr "舰船仓"
 msgid "Short Range"
 msgstr "更短距离"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:63
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:66
 msgid "Show Rack Labels"
 msgstr "显示槽位类型标签"
 
@@ -3207,7 +3285,7 @@ msgstr "显示槽位类型标签"
 msgid "Show empty ship groups"
 msgstr "显示空的舰船类型"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:67
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
 msgid "Show fitting tab tooltips"
 msgstr "装配标签页显示预览"
 
@@ -3219,7 +3297,7 @@ msgstr "显示图例"
 msgid "Show market shortcuts"
 msgstr "显示市场快捷方式"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:77
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:80
 msgid "Show ship browser tooltip"
 msgstr "船体列表显示预览"
 
@@ -3297,6 +3375,10 @@ msgstr "速度减缓百分比"
 msgid "Split {} Stack"
 msgstr "分离"
 
+#: gui/builtinStatsViews/firepowerViewFull.py:169
+msgid "Spool up"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 msgid "Spoolup"
 msgstr "预热"
@@ -3305,7 +3387,7 @@ msgstr "预热"
 msgid "Spoolup Cycles"
 msgstr "预热周期"
 
-#: gui/builtinStatsViews/capacitorViewFull.py:171
+#: gui/builtinStatsViews/capacitorViewFull.py:170
 msgid "Stable: "
 msgstr "稳定："
 
@@ -3709,15 +3791,15 @@ msgstr "使用装配指定的植入体组"
 msgid "Use capacitor simulator"
 msgstr "使用电容模拟器"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:42
 msgid "Use character implants by default for new fits"
 msgstr "新装配默认使用角色植入体组"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:35
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:38
 msgid "Use global character"
 msgstr "使用全局角色"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:43
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:46
 msgid "Use global damage pattern"
 msgstr "使用全局伤害分布配置"
 
@@ -3786,7 +3868,7 @@ msgstr "网子：速度减缓百分比"
 msgid "When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior)."
 msgstr "当伤害分布为均匀模式时，重置反应式装甲增强器（旧模式）。"
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:89
 msgid "When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge."
 msgstr "关闭该选项时，更换弹药仅更换选中的模块。按住Ctrl或Alt以更换所有同类型武器弹药。"
 
@@ -3904,6 +3986,26 @@ msgstr "[T2] 战栗"
 msgid "[T2] Void"
 msgstr "[T2] 涅槃"
 
+#: eos/utils/stats.py:123
+msgid "em"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "exp"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "explosive"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "kin"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "kinetic"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
 msgstr "pyfa用户数据路径："
@@ -3934,6 +4036,18 @@ msgstr "Pyfa属性自定义文件"
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
 msgstr "pyfa.io"
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:102
+msgid "pyfa:"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "th"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "thermal"
+msgstr ""
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #, python-brace-format
@@ -3969,7 +4083,8 @@ msgstr "{}属性"
 
 #: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
-msgstr "{} {}槽"
+msgid_plural "{} {} Slots"
+msgstr[0] ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
 #, no-python-format, python-brace-format
