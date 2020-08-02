@@ -6,12 +6,12 @@ pyfa provides community-driven translations for a variety of languages. It is im
 * Ship browser
 * Item names, description, traits, attributes
 
-If there is a tranlation issue in EVE data, you must submit a ticket to CCP instead.
+If there is a translation issue in EVE data, you must submit a ticket to CCP instead.
 
 ## Getting Involved 
 
 Translations are done mainly through [Crowdin](https://crowdin.com/project/pyfa). This platform allows translations to be done by anyone without any real need to understand the project's internals. Simply sign up, join the project as a Translator, and start translating!
- 
+
 As a general rule of thumb, we consider translations community-driven. The pyfa team isn't going to
 
  1) Maintain individual language packs as a part of general development work, or
@@ -42,13 +42,13 @@ msgstr "点击切换有效HP和原始HP"
 
 [Poedit](https://poedit.net/) offers a nice GUI for updating translations.  
 
-##### To update PO file for existing translation
+#### To update PO file for existing translation
 
 1. open a existing `locale/ll_CC/LC_MESSAGES/lang.po`
 2. *Catalog* -> *Update from POT file*
 3. select pre-prepared `lang.pot` file
 
-##### To translate and generate MO file
+#### To translate and generate MO file
 
 edit the translation and hit Save :)
 
@@ -59,7 +59,8 @@ A: This is probably one of two things:
 
 1. Missing annotations in the source code. All text that needs to be translated needs to be wrapped with `_t()` to make it locale-aware
 2. Out of date `.po` file. As pyfa development continues, the `.po` file may fall behind. See next question.
-    
+   
+
 Q: How do I update the `.po` file for my language?<br />
 A: See `Commands` section below for a number of useful commands
 
@@ -70,31 +71,32 @@ A: If you're running from source / your own method, this is because the `.mo` fi
 
 Below is a summary of [GNU gettext](https://www.gnu.org/software/gettext/) manual, adapted for Pyfa i18n workflow. 
 
-[Poedit](https://poedit.net/) offers a nice GUI for same GNU gettext translation workflow.
-
-## i18n with command line
-
-Windows users can get these tools via Git for windows, Msys2 or Cygwin; or just use WSL / WSL2.
-For Linux and macOS users these tools might be available out-of-box.
+Windows users can get these tools via Git for windows, Msys2 or Cygwin; or just use WSL / WSL2. For Linux and macOS users these tools might be available out-of-box.
 
 ### To generate new template for translation:
 
 ```console
-$ find gui/ *.py -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k_t -f - -s
+$ find * -name "*.py" | xgettext --from-code=UTF-8 -o locale/lang.pot -d lang -k_t -k_t:1,2,3t -k_t:1,2c,2t -f - -s
 ```
 
 explanation:
 
-* `find gui/ *.py -name "*.py"`: collect all `.py` file path in `gui` folder and all sub-folders, write it to stdout
-* `xgettext`: a utility looking for keyword and put string literals in a specific format for human translation
+* `find * -name "*.py"`: collect all `.py` file path in current folder and all sub-folders, write it to stdout
+    * except those starts with `.`.  E.g.  `.env`, `.idea`, `.venv`.
+    * can also append `-not -path 'path/to/venv/*` to exclude `path/to/venv` recursively.
+    
+* `xgettext` ([doc](https://www.gnu.org/software/gettext/manual/gettext.html#Template)): a utility looking for keyword and put string literals in a specific format for human translation
     * `--from-code=UTF-8`: designates encoding of files 
     * `-o locale/lang.pot`: let `xgettext` write to `locale/lang.pot`
     * `-d lang`: default language domain is `lang`
-    * `-k_t`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t`
-    * `-f -`: let `xgettext` to read from stdin, which is connected to `find` stdout
+    * `-k_t`: besides default keyword (including `_`, see `info xgettext` for detail), also look for `_t`,
+        where the string literal (`msgid`) will be the first argument of this function call
+    * `-k_t:1,2,3t`: look for `_t`, first arg is `msgid`, second arg is `msgid_plural`, 3 args in total
+    * `-k_t:1,2c,2t`: look for `_t`, first arg is `msgid`, second arg is `msgctxt`, 2 args in total
+    * `-f -`: let `xgettext` to read filenames from stdin, which is connected to `find` stdout
     * `-s`: sort output according to `msgid`
 
-this `locale/lang.pot` is called PO template, which is discarded once actual `ll_CC/LC_MESSAGES/lang.po` is ready for use.
+this `locale/lang.pot` is called PO template, which is the source file for Crowdin translation.
 
 ### To initialize PO file for new language
 

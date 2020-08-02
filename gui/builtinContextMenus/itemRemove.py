@@ -39,9 +39,9 @@ class RemoveItem(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return _t('Remove {}{}').format(
-                itmContext if itmContext is not None else _t('Item'),
-                _t(' Stack') if self.srcContext in ('droneItem', 'projectedDrone', 'cargoItem', 'projectedFit') else '')
+        return _t('Remove {item}{stack}').format(
+                item=itmContext if itmContext is not None else _t('Item'),
+                stack=_t(' Stack') if self.srcContext in ('droneItem', 'projectedDrone', 'cargoItem', 'projectedFit') else '')
 
     def activate(self, callingWindow, fullContext, mainItem, selection, i):
         handlerMap = {
