@@ -30,7 +30,6 @@ install:
   - cmd: "appveyor DownloadFile https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip"
   - cmd: "7z x gettext0.20.2-iconv1.16-shared-64.zip -ogettext"
   - cmd: "SET PATH=gettext;%PATH%"
-  - cmd: "msgen"
 
   - cmd: "python --version"
   - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
