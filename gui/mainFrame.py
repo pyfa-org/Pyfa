@@ -909,6 +909,7 @@ class MainFrame(wx.Frame):
         self.__progress_flag = True
 
     def on_port_processing(self, action, data=None):
+        pyfalog.debug("CallAfter, action: {},  data: {}".format(action, data))
         # 2017/03/29 NOTE: implementation like interface
         wx.CallAfter(
             self._on_port_processing, action, data
@@ -930,6 +931,8 @@ class MainFrame(wx.Frame):
                 1: Replace message with data
                 other: Close dialog and handle based on :action (-1 open fits, -2 display error)
         """
+        pyfalog.debug("Interpretting progress")
+
         _message = None
         if action & IPortUser.ID_ERROR:
             self.closeProgressDialog()
@@ -951,17 +954,22 @@ class MainFrame(wx.Frame):
                 _message = data
 
             if _message is not None:
+                pyfalog.debug("\t Pulsing progress dialog with the following message: {}", _message)
                 self.__progress_flag, _unuse = self.progressDialog.Pulse(_message)
             else:
+                pyfalog.debug("\t Closing progress dialog")
                 self.closeProgressDialog()
                 if action & IPortUser.ID_DONE:
                     self._openAfterImport(data)
+
         # data is tuple(int, str)
         elif action & IPortUser.PROCESS_EXPORT:
             if action & IPortUser.ID_DONE:
+                pyfalog.debug("\t Closing progress dialog")
                 self.closeProgressDialog()
             else:
-                self.__progress_flag, _unuse = self.progressDialog.Update(data[0], data[1])
+                pyfalog.debug("\t Updating progress dialog using data: {}", data)
+                # self.__progress_flag, _unuse = self.progressDialog.Update(data[0], data[1])
 
     def _openAfterImport(self, fits):
         if len(fits) > 0:
