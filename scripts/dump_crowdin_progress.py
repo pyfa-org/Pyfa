@@ -23,7 +23,7 @@ for x in data:
 
 data = {x['canonical_name']: x for x in data}
 
-with open("locale/progress.json", 'w') as file:
+with open("locale/progress.json", 'w+') as file:
     file.seek(0)
     file.truncate()
     json.dump(data, file)
