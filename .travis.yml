@@ -10,7 +10,7 @@ matrix:
     osx_image: xcode11.3
     language: generic
 before_install:
-  - bash scripts/install-gettext-osx.sh
+  - bash scripts/osx-translations.sh
   - bash scripts/setup-osx.sh
 install:
   - python3 scripts/compile_lang.py
