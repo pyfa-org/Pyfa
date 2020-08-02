@@ -57,6 +57,7 @@ before_build:
 
 build_script:
   - ps: echo("Build pyfa:")
+  - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
     # Build language files
   - cmd: "python scripts/compile_lang.py"
     # Dump language progress
