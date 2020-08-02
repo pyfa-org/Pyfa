@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-msgen
 echo "Python version:"
 python3 --version
 echo "Upgrading pip..."
