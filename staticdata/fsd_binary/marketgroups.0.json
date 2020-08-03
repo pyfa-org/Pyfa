@@ -7024,7 +7024,7 @@
     "description_ja": "機械的な技術で拡張されたアーマープレート補強。", 
     "description_ko": "장갑 저항력 코팅", 
     "description_ru": "Покрытия сопротивляемости брони", 
-    "description_zh": "机械性增强装甲附甲性能。", 
+    "description_zh": "装甲抗性涂层", 
     "hasTypes": 0, 
     "iconID": 1030, 
     "nameID": 65796, 
@@ -7036,7 +7036,7 @@
     "name_ja": "レジスタンスプレート", 
     "name_ko": "장갑 저항력 코팅", 
     "name_ru": "Покрытия сопротивляемости брони", 
-    "name_zh": "抗性附甲", 
+    "name_zh": "装甲抗性涂层", 
     "parentGroupID": 14
   }, 
   "541": {
@@ -25181,7 +25181,7 @@
     "description_ja": "レジスタンスプレートのブループリント", 
     "description_ko": "장갑 코팅 블루프린트", 
     "description_ru": "Чертежи для покрытий брони", 
-    "description_zh": "抗性附甲蓝图", 
+    "description_zh": "装甲涂层蓝图", 
     "hasTypes": 1, 
     "iconID": 2703, 
     "nameID": 281322, 
@@ -25193,7 +25193,7 @@
     "name_ja": "レジスタンスプレート", 
     "name_ko": "장갑 코팅", 
     "name_ru": "Покрытия брони", 
-    "name_zh": "抗性附甲", 
+    "name_zh": "装甲涂层", 
     "parentGroupID": 214
   }, 
   "1545": {
@@ -27369,7 +27369,7 @@
     "description_ja": "サーマルレジスタンスプレート", 
     "description_ko": "열 저항력 코팅", 
     "description_ru": "Термальные покрытия", 
-    "description_zh": "热能抗性附甲", 
+    "description_zh": "热能涂层", 
     "hasTypes": 1, 
     "iconID": 1394, 
     "nameID": 285352, 
@@ -27381,7 +27381,7 @@
     "name_ja": "サーマルレジスタンスプレート", 
     "name_ko": "열 저항력 코팅", 
     "name_ru": "Термальные покрытия", 
-    "name_zh": "热能抗性附甲", 
+    "name_zh": "热能涂层", 
     "parentGroupID": 540
   }, 
   "1666": {
@@ -27394,7 +27394,7 @@
     "description_ja": "キネティックレジスタンスプレート", 
     "description_ko": "키네틱 저항력 코팅", 
     "description_ru": "Кинетические покрытия", 
-    "description_zh": "动能抗性附甲", 
+    "description_zh": "动能涂层", 
     "hasTypes": 1, 
     "iconID": 1393, 
     "nameID": 285354, 
@@ -27406,7 +27406,7 @@
     "name_ja": "キネティックレジスタンスプレート", 
     "name_ko": "키네틱 저항력 코팅", 
     "name_ru": "Кинетические покрытия", 
-    "name_zh": "动能抗性附甲", 
+    "name_zh": "动能涂层", 
     "parentGroupID": 540
   }, 
   "1667": {
@@ -27419,7 +27419,7 @@
     "description_ja": "エクスプローシブレジスタンスプレート", 
     "description_ko": "폭발 저항력 코팅", 
     "description_ru": "Взрывные покрытия", 
-    "description_zh": "爆炸抗性附甲", 
+    "description_zh": "爆炸涂层", 
     "hasTypes": 1, 
     "iconID": 1395, 
     "nameID": 285356, 
@@ -27431,7 +27431,7 @@
     "name_ja": "エクスプローシブレジスタンスプレート", 
     "name_ko": "폭발 저항력 코팅", 
     "name_ru": "Взрывные покрытия", 
-    "name_zh": "爆炸抗性附甲", 
+    "name_zh": "爆炸涂层", 
     "parentGroupID": 540
   }, 
   "1668": {
@@ -27444,7 +27444,7 @@
     "description_ja": "EMレジスタンスプレート", 
     "description_ko": "EM 저항력 코팅", 
     "description_ru": "ЭМ-покрытия", 
-    "description_zh": "电磁抗性附甲", 
+    "description_zh": "电磁涂层", 
     "hasTypes": 1, 
     "iconID": 1396, 
     "nameID": 285358, 
@@ -27456,7 +27456,7 @@
     "name_ja": "EMレジスタンスプレート", 
     "name_ko": "EM 저항력 코팅", 
     "name_ru": "ЭМ-покрытия", 
-    "name_zh": "电磁抗性附甲", 
+    "name_zh": "电磁涂层", 
     "parentGroupID": 540
   }, 
   "1669": {
@@ -27469,7 +27469,7 @@
     "description_ja": "積層加工プレート", 
     "description_ko": "중첩 장갑 코팅", 
     "description_ru": "Многослойные покрытия брони", 
-    "description_zh": "覆层附甲", 
+    "description_zh": "覆层装甲涂层", 
     "hasTypes": 1, 
     "iconID": 1030, 
     "nameID": 285360, 
@@ -27481,7 +27481,7 @@
     "name_ja": "積層加工プレート", 
     "name_ko": "중첩 장갑 코팅", 
     "name_ru": "Многослойные покрытия брони", 
-    "name_zh": "覆层附甲", 
+    "name_zh": "覆层装甲涂层", 
     "parentGroupID": 14
   }, 
   "1670": {
@@ -27494,7 +27494,7 @@
     "description_ja": "適応レジスタンスプレート", 
     "description_ko": "다중스팩트럼 코팅", 
     "description_ru": "Универсальные покрытия", 
-    "description_zh": "适应性抗性附甲", 
+    "description_zh": "多谱式涂层", 
     "hasTypes": 1, 
     "iconID": 1030, 
     "nameID": 285362, 
@@ -27506,7 +27506,7 @@
     "name_ja": "適応レジスタンスプレート", 
     "name_ko": "다중스팩트럼 코팅", 
     "name_ru": "Универсальные покрытия", 
-    "name_zh": "适应性抗性附甲", 
+    "name_zh": "多谱式涂层", 
     "parentGroupID": 540
   }, 
   "1672": {
@@ -41366,7 +41366,7 @@
     "description_ja": "Triglavian Data Storage Devices", 
     "description_ko": "트리글라비안 데이터 저장장치", 
     "description_ru": "Триглавские устройства хранения данных", 
-    "description_zh": "在深渊空间中发现的数据", 
+    "description_zh": "三神裔数据存储设备", 
     "hasTypes": 1, 
     "iconID": 21982, 
     "nameID": 317919, 
@@ -43224,7 +43224,7 @@
     "description_ja": "Filaments that connect to the Abyssal Proving Grounds for limited time PVP events.", 
     "description_ko": "이 필라멘트는 PVP 이벤트가 이루어지는 어비설 격전지로 함대를 전송합니다.", 
     "description_ru": "Нити, открывающие проход на Испытательный полигон Бездны на время PvP-событий.", 
-    "description_zh": "Filaments that connect to the Abyssal Proving Grounds for limited time PVP events.", 
+    "description_zh": "使用此纤维可以前往深渊试炼场，进行限时PVP交战。", 
     "hasTypes": 1, 
     "iconID": 21925, 
     "nameID": 567624, 
@@ -43236,7 +43236,7 @@
     "name_ja": "Proving Ground Filaments", 
     "name_ko": "격전지 필라멘트", 
     "name_ru": "Нити испытательного полигона", 
-    "name_zh": "Proving Ground Filaments", 
+    "name_zh": "试炼场纤维", 
     "parentGroupID": 2456
   }
 }
