@@ -18,31 +18,34 @@
 # =============================================================================
 
 
-from graphs.data.base import FitGraph, XDef, YDef, Input, InputCheckbox
+import wx
+
+from graphs.data.base import FitGraph, Input, InputCheckbox, XDef, YDef
 from .getter import CapAmount2CapAmountGetter, CapAmount2CapRegenGetter, Time2CapAmountGetter, Time2CapRegenGetter
+
+_t = wx.GetTranslation
 
 
 class FitCapacitorGraph(FitGraph):
-
     # UI stuff
     internalName = 'capacitorGraph'
-    name = 'Capacitor'
+    name = _t('Capacitor')
     xDefs = [
-        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
-        XDef(handle='capAmount', unit='GJ', label='Cap amount', mainInput=('capAmount', '%')),
-        XDef(handle='capAmount', unit='%', label='Cap amount', mainInput=('capAmount', '%'))]
+        XDef(handle='time', unit='s', label=_t('Time'), mainInput=('time', 's')),
+        XDef(handle='capAmount', unit='GJ', label=_t('Cap amount'), mainInput=('capAmount', '%')),
+        XDef(handle='capAmount', unit='%', label=_t('Cap amount'), mainInput=('capAmount', '%'))]
     yDefs = [
-        YDef(handle='capAmount', unit='GJ', label='Cap amount'),
-        YDef(handle='capRegen', unit='GJ/s', label='Cap regen')]
+        YDef(handle='capAmount', unit='GJ', label=_t('Cap amount')),
+        YDef(handle='capRegen', unit='GJ/s', label=_t('Cap regen'))]
     inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=120, defaultRange=(0, 300), conditions=[
+        Input(handle='time', unit='s', label=_t('Time'), iconID=1392, defaultValue=120, defaultRange=(0, 300), conditions=[
             (('time', 's'), None)]),
-        Input(handle='capAmount', unit='%', label='Cap amount', iconID=1668, defaultValue=25, defaultRange=(0, 100), conditions=[
+        Input(handle='capAmount', unit='%', label=_t('Cap amount'), iconID=1668, defaultValue=25, defaultRange=(0, 100), conditions=[
             (('capAmount', 'GJ'), None),
             (('capAmount', '%'), None)]),
-        Input(handle='capAmountT0', unit='%', label='Starting cap amount', iconID=1668, defaultValue=100, defaultRange=(0, 100), conditions=[
+        Input(handle='capAmountT0', unit='%', label=_t('Starting cap amount'), iconID=1668, defaultValue=100, defaultRange=(0, 100), conditions=[
             (('time', 's'), None)])]
-    checkboxes = [InputCheckbox(handle='useCapsim', label='Use capacitor simulator', defaultValue=True, conditions=[
+    checkboxes = [InputCheckbox(handle='useCapsim', label=_t('Use capacitor simulator'), defaultValue=True, conditions=[
         (('time', 's'), ('capAmount', 'GJ'))])]
     srcExtraCols = ('CapAmount', 'CapTime')
 

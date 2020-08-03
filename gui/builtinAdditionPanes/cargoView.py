@@ -227,7 +227,7 @@ class CargoView(d.Display):
             else:
                 if cargo in self.original:
                     mainCargo = cargo
-        itemContext = None if mainCargo is None else Market.getInstance().getCategoryByItem(mainCargo.item).name
+        itemContext = None if mainCargo is None else Market.getInstance().getCategoryByItem(mainCargo.item).displayName
         menu = ContextMenu.getMenu(self, mainCargo, selection, ("cargoItem", itemContext), ("cargoItemMisc", itemContext))
         if menu:
             self.PopupMenu(menu)

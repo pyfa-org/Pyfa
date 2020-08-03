@@ -41,6 +41,7 @@ cipher = None
 clientHash = None
 experimentalFeatures = None
 version = None
+language = None
 
 ESI_CACHE = 'esi_cache'
 
@@ -51,6 +52,8 @@ LOGLEVEL_MAP = {
     "info": INFO,
     "debug": DEBUG,
 }
+
+CATALOG = 'lang'
 
 slotColourMap = {
     FittingSlot.LOW: wx.Colour(250, 235, 204),  # yellow = low slots
@@ -106,6 +109,7 @@ def defPaths(customSavePath=None):
     global clientHash
     global version
     global experimentalFeatures
+    global language
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -185,9 +189,15 @@ def defPaths(customSavePath=None):
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
 
     # initialize the settings
-    from service.settings import EOSSettings
+    from service.settings import EOSSettings, LocaleSettings
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
 
+    # set langauge, taking the passed argument or falling back to what's saved in the settings
+    localeSettings = LocaleSettings.getInstance()
+    language = language or localeSettings.get('locale')
+
+    # sets the lang for eos, using the mapped langauge.
+    eos.config.set_lang(localeSettings.get_eos_locale())
 
 def defLogging():
     global debug

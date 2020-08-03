@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from gui.builtinViews.emptyView import BlankPage
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class AddCurrentlyOpenFit(ContextMenuUnconditional):
@@ -23,7 +26,7 @@ class AddCurrentlyOpenFit(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, itmContext):
-        return 'Add Currently Open Fit'
+        return _t('Add Currently Open Fit')
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         self.fitLookup = {}

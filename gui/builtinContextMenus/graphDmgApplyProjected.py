@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.settings import GraphSettings
+
+_t = wx.GetTranslation
 
 
 class GraphDmgApplyProjectedMenu(ContextMenuUnconditional):
@@ -17,7 +20,7 @@ class GraphDmgApplyProjectedMenu(ContextMenuUnconditional):
         return srcContext == 'dmgStatsGraph'
 
     def getText(self, callingWindow, itmContext):
-        return 'Apply Projected Items'
+        return _t('Apply Projected Items')
 
     def activate(self, callingWindow, fullContext, i):
         self.settings.set('applyProjected', not self.settings.get('applyProjected'))

@@ -1,4 +1,5 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.fitCommands as cmd
@@ -6,11 +7,18 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class ChangeShipTacticalMode(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.modeMap = {
+            'Defense': _t('Defense'),
+            'Propulsion': _t('Propulsion'),
+            'Sharpshooter': _t('Sharpshooter')
+        }
 
     def display(self, callingWindow, srcContext):
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
@@ -26,10 +34,12 @@ class ChangeShipTacticalMode(ContextMenuUnconditional):
         return srcContext == "fittingShip" and self.modes is not None
 
     def getText(self, callingWindow, itmContext):
-        return "Tactical Mode"
+        return _t("Tactical Mode")
 
     def addMode(self, menu, mode):
-        label = mode.item.name.rsplit()[-2]
+        key = mode.item.typeName.rsplit()[-2]
+        label = self.modeMap[key]
+
         id = ContextMenuUnconditional.nextID()
         self.modeIds[id] = mode
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_RADIO)

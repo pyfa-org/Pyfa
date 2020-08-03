@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from gui.builtinShipBrowser.events import Stage3Selected
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class JumpToShip(ContextMenuUnconditional):
@@ -29,7 +32,7 @@ class JumpToShip(ContextMenuUnconditional):
         return False
 
     def getText(self, callingWindow, itmContext):
-        return "Open in Fitting Browser"
+        return _t("Open in Fitting Browser")
 
     def activate(self, callingWindow, fullContext, i):
         fitID = self.mainFrame.getActiveFit()

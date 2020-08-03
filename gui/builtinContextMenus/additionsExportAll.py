@@ -1,44 +1,46 @@
+import wx
+
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.clipboard import toClipboard
 from service.fit import Fit
-from service.port.eft import exportDrones, exportFighters, exportCargo, exportImplants, exportBoosters
+from service.port.eft import exportBoosters, exportCargo, exportDrones, exportFighters, exportImplants
 
-
-viewSpecMap = {
-    'droneItemMisc': ('Drones', lambda cw: cw.drones, exportDrones),
-    'fighterItemMisc': ('Fighters', lambda cw: cw.fighters, exportFighters),
-    'cargoItemMisc': ('Cargo Items', lambda cw: cw.cargo, exportCargo),
-    'implantItemMisc': ('Implants', lambda cw: cw.implants, exportImplants),
-    'implantItemMiscChar': ('Implants', lambda cw: cw.implants, exportImplants),
-    'boosterItemMisc': ('Boosters', lambda cw: cw.boosters, exportBoosters)}
+_t = wx.GetTranslation
 
 
 class AdditionsExportAll(ContextMenuUnconditional):
-
     visibilitySetting = 'additionsCopyPaste'
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.viewSpecMap = {
+            'droneItemMisc': (_t('Drones'), lambda cw: cw.drones, exportDrones),
+            'fighterItemMisc': (_t('Fighters'), lambda cw: cw.fighters, exportFighters),
+            'cargoItemMisc': (_t('Cargo Items'), lambda cw: cw.cargo, exportCargo),
+            'implantItemMisc': (_t('Implants'), lambda cw: cw.implants, exportImplants),
+            'implantItemMiscChar': (_t('Implants'), lambda cw: cw.implants, exportImplants),
+            'boosterItemMisc': (_t('Boosters'), lambda cw: cw.boosters, exportBoosters)
+        }
 
     def display(self, callingWindow, srcContext):
-        if srcContext not in viewSpecMap:
+        if srcContext not in self.viewSpecMap:
             return False
         fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
         if fit is None:
             return False
-        if not viewSpecMap[srcContext][1](callingWindow):
+        if not self.viewSpecMap[srcContext][1](callingWindow):
             return False
 
         self.srcContext = srcContext
         return True
 
     def getText(self, callingWindow, itmContext):
-        return 'Copy All {}'.format(viewSpecMap[self.srcContext][0])
+        return _t('Copy All {}').format(self.viewSpecMap[self.srcContext][0])
 
     def activate(self, callingWindow, fullContext, i):
-        items = viewSpecMap[self.srcContext][1](callingWindow)
-        export = viewSpecMap[self.srcContext][2](items)
+        items = self.viewSpecMap[self.srcContext][1](callingWindow)
+        export = self.viewSpecMap[self.srcContext][2](items)
         if export:
             toClipboard(export)
 

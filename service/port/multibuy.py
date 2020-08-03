@@ -22,15 +22,6 @@ from service.const import PortMultiBuyOptions
 from service.price import Price as sPrc
 
 
-MULTIBUY_OPTIONS = (
-    (PortMultiBuyOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortMultiBuyOptions.IMPLANTS, 'Implants', 'Export implants', False),
-    (PortMultiBuyOptions.BOOSTERS, 'Boosters', 'Export boosters', False),
-    (PortMultiBuyOptions.CARGO, 'Cargo', 'Export cargo contents', True),
-    (PortMultiBuyOptions.OPTIMIZE_PRICES, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
-)
-
-
 def exportMultiBuy(fit, options, callback):
     itemAmounts = {}
 
@@ -88,12 +79,12 @@ def _addItem(container, item, quantity=1):
 
 def _prepareString(shipItem, itemAmounts):
     exportLines = []
-    exportLines.append(shipItem.name)
+    exportLines.append(shipItem.typeName)
     for item in sorted(itemAmounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
         count = itemAmounts[item]
         if count == 1:
-            exportLines.append(item.name)
+            exportLines.append(item.typeName)
         else:
-            exportLines.append('{} x{}'.format(item.name, count))
+            exportLines.append('{} x{}'.format(item.typeName, count))
 
     return "\n".join(exportLines)

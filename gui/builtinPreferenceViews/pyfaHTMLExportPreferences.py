@@ -10,16 +10,18 @@ import gui.mainFrame
 from service.settings import HTMLExportSettings
 import wx.lib.agw.hyperlink
 
+_t = wx.GetTranslation
+
 
 class PFHTMLExportPref(PreferenceView):
-    title = "HTML Export"
-    desc = ("HTML Export (File > Export HTML) allows you to export your entire fitting "
-            "database into an HTML file at the specified location. This file can be "
-            "used to easily open your fits in a web-based fitting program")
-    desc4 = ("Export Fittings in a minimal HTML Version, just containing the fittings links "
-             "without any visual styling")
 
     def populatePanel(self, panel):
+        self.title = _t("HTML Export")
+        self.desc = _t("HTML Export (File > Export HTML) allows you to export your entire fitting "
+                       "database into an HTML file at the specified location. This file can be "
+                       "used to easily open your fits in a web-based fitting program")
+        self.desc4 = _t("Export Fittings in a minimal HTML Version, just containing the fittings links "
+                        "without any visual styling")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.HTMLExportSettings = HTMLExportSettings.getInstance()
         self.dirtySettings = False
@@ -39,16 +41,16 @@ class PFHTMLExportPref(PreferenceView):
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
         self.PathLinkCtrl = wx.lib.agw.hyperlink.HyperLinkCtrl(panel, wx.ID_ANY, self.HTMLExportSettings.getPath(),
-                                             wx.DefaultPosition, wx.DefaultSize,
-                                             URL='file:///{}'.format(self.HTMLExportSettings.getPath()),)
+                                                               wx.DefaultPosition, wx.DefaultSize,
+                                                               URL='file:///{}'.format(self.HTMLExportSettings.getPath()), )
         mainSizer.Add(self.PathLinkCtrl, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.fileSelectDialog = wx.FileDialog(None, "Save Fitting As...",
-                                              wildcard="EVE IGB HTML fitting file (*.html)|*.html", style=wx.FD_SAVE)
+        self.fileSelectDialog = wx.FileDialog(None, _t("Save Fitting As..."),
+                                              wildcard=_t("EVE IGB HTML fitting file") + " (*.html)|*.html", style=wx.FD_SAVE)
         self.fileSelectDialog.SetPath(self.HTMLExportSettings.getPath())
         self.fileSelectDialog.SetFilename(os.path.basename(self.HTMLExportSettings.getPath()))
 
-        self.fileSelectButton = wx.Button(panel, -1, "Set export destination", pos=(0, 0))
+        self.fileSelectButton = wx.Button(panel, -1, _t("Set export destination"), pos=(0, 0))
         self.fileSelectButton.Bind(wx.EVT_BUTTON, self.selectHTMLExportFilePath)
         mainSizer.Add(self.fileSelectButton, 0, wx.ALL, 5)
 
@@ -56,7 +58,7 @@ class PFHTMLExportPref(PreferenceView):
         self.stDesc4.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc4, 0, wx.ALL, 5)
 
-        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, "Enable minimal format", wx.DefaultPosition,
+        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, _t("Enable minimal format"), wx.DefaultPosition,
                                          wx.DefaultSize, 0)
         self.exportMinimal.SetValue(self.HTMLExportSettings.getMinimalEnabled())
         self.exportMinimal.Bind(wx.EVT_CHECKBOX, self.OnMinimalEnabledChange)

@@ -15,6 +15,7 @@ added_files = [
      ('imgs/icons/*.png', 'imgs/icons'),
      ('imgs/renders/*.png', 'imgs/renders'),
      ('service/jargon/*.yaml', 'service/jargon'),
+     ('locale', 'locale'),
      (requests.certs.where(), '.'),  # is this needed anymore?
      ('eve.db', '.'),
      ('README.md', '.'),

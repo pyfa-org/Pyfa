@@ -2,7 +2,7 @@
 import wx
 
 from .helpers import AutoListCtrl
-
+_t = wx.GetTranslation
 
 class ItemProperties(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
@@ -53,8 +53,8 @@ class ItemProperties(wx.Panel):
             return
 
     def PopulateList(self):
-        self.paramList.InsertColumn(0, "Attribute")
-        self.paramList.InsertColumn(1, "Current Value")
+        self.paramList.InsertColumn(0, _t("Attribute"))
+        self.paramList.InsertColumn(1, _t("Current Value"))
         self.paramList.SetColumnWidth(0, 110)
         self.paramList.SetColumnWidth(1, 1500)
         self.paramList.setResizeColumn(0)
@@ -95,5 +95,5 @@ class ItemProperties(wx.Panel):
 
         self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
         self.paramList.RefreshRows()
-        self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
+        self.totalAttrsLabel.SetLabel(_t("%d attribute.", "%d attributes.", idCount) % idCount)
         self.Layout()

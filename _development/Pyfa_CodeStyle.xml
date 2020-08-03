@@ -3,7 +3,6 @@
   <option name="RIGHT_MARGIN" value="165" />
   <Python>
     <option name="NEW_LINE_AFTER_COLON" value="true" />
-    <option name="DICT_ALIGNMENT" value="2" />
     <option name="DICT_NEW_LINE_AFTER_LEFT_BRACE" value="true" />
     <option name="DICT_NEW_LINE_BEFORE_RIGHT_BRACE" value="true" />
     <option name="USE_CONTINUATION_INDENT_FOR_ARGUMENTS" value="true" />

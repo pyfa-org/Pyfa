@@ -3,6 +3,8 @@ import gui.mainFrame
 import webbrowser
 import gui.globalEvents as GE
 
+_t = wx.GetTranslation
+
 
 class SsoLogin(wx.Dialog):
 
@@ -10,12 +12,12 @@ class SsoLogin(wx.Dialog):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         super().__init__(
-            mainFrame, id=wx.ID_ANY, title="SSO Login", style=wx.DEFAULT_DIALOG_STYLE,
-            size=wx.Size(450, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
+                mainFrame, id=wx.ID_ANY, title=_t("SSO Login"), style=wx.DEFAULT_DIALOG_STYLE,
+                size=wx.Size(450, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
-        text = wx.StaticText(self, wx.ID_ANY, "Copy and paste the block of text provided by pyfa.io")
+        text = wx.StaticText(self, wx.ID_ANY, _t("Copy and paste the block of text provided by pyfa.io"))
         bSizer1.Add(text, 0, wx.ALL | wx.EXPAND, 10)
 
         self.ssoInfoCtrl = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, (-1, -1), style=wx.TE_MULTILINE)
@@ -44,7 +46,7 @@ class SsoLoginServer(wx.Dialog):
 
     def __init__(self, port):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        super().__init__(self.mainFrame, id=wx.ID_ANY, title="SSO Login", size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(self.mainFrame, id=wx.ID_ANY, title=_t("SSO Login"), size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
 
         from service.esi import Esi
 
@@ -57,7 +59,7 @@ class SsoLoginServer(wx.Dialog):
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.OnLogin)
         self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy)
 
-        text = wx.StaticText(self, wx.ID_ANY, "Waiting for character login through EVE Single Sign-On.")
+        text = wx.StaticText(self, wx.ID_ANY, _t("Waiting for character login through EVE Single Sign-On."))
         bSizer1.Add(text, 0, wx.ALL | wx.EXPAND, 10)
 
         bSizer3 = wx.BoxSizer(wx.VERTICAL)

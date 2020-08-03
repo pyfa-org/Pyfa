@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.settings import GraphSettings
+
+_t = wx.GetTranslation
 
 
 class GraphIgnoreDcrMenu(ContextMenuUnconditional):
@@ -17,7 +20,7 @@ class GraphIgnoreDcrMenu(ContextMenuUnconditional):
         return srcContext in ('dmgStatsGraph', 'remoteRepsGraph', 'ewarStatsGraph')
 
     def getText(self, callingWindow, itmContext):
-        return 'Ignore Drone Control Range'
+        return _t('Ignore Drone Control Range')
 
     def activate(self, callingWindow, fullContext, i):
         self.settings.set('ignoreDCR', not self.settings.get('ignoreDCR'))

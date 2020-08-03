@@ -39,10 +39,6 @@ from service.market import Market
 
 pyfalog = Logger(__name__)
 
-DNA_OPTIONS = (
-    (PortDnaOptions.FORMATTING, 'Formatting Tags', 'Include formatting tags to paste fit directly into corp bulletins, MOTD, etc.', True),
-)
-
 
 def importDna(string, fitName=None):
     sMkt = Market.getInstance()

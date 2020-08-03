@@ -20,6 +20,7 @@ from service.fit import Fit
 from .events import BoosterListUpdated, FitSelected, ImportSelected, SearchSelected, Stage3Selected
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class FitItem(SFItem.SFBrowserItem):
@@ -103,9 +104,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.SetDraggable()
 
         self.boosterBtn = self.toolbar.AddButton(self.boosterBmp, "Booster", show=self.fitBooster)
-        self.toolbar.AddButton(self.copyBmp, "Copy", self.copyBtnCB)
-        self.renameBtn = self.toolbar.AddButton(self.renameBmp, "Rename", self.renameBtnCB)
-        self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
+        self.toolbar.AddButton(self.copyBmp, _t("Copy"), self.copyBtnCB)
+        self.renameBtn = self.toolbar.AddButton(self.renameBmp, _t("Rename"), self.renameBtnCB)
+        self.toolbar.AddButton(self.deleteBmp, _t("Delete"), self.deleteBtnCB)
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth, -1),
                                      wx.TE_PROCESS_ENTER)
@@ -223,13 +224,13 @@ class FitItem(SFItem.SFBrowserItem):
         #     menu.AppendSubMenu(boosterMenu, 'Set Booster')
 
         if fit:
-            newTabItem = menu.Append(wx.ID_ANY, "Open in new tab")
+            newTabItem = menu.Append(wx.ID_ANY, _t("Open in new tab"))
             self.Bind(wx.EVT_MENU, self.OpenNewTab, newTabItem)
 
-            projectedItem = menu.Append(wx.ID_ANY, "Project onto Active Fit")
+            projectedItem = menu.Append(wx.ID_ANY, _t("Project onto Active Fit"))
             self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
 
-            commandItem = menu.Append(wx.ID_ANY, "Add Command Booster")
+            commandItem = menu.Append(wx.ID_ANY, _t("Add Command Booster"))
             self.Bind(wx.EVT_MENU, self.OnAddCommandFit, commandItem)
 
         self.PopupMenu(menu, pos)

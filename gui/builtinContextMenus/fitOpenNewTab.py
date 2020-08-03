@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.mainFrame
 from graphs.wrapper import BaseWrapper
 from gui.builtinShipBrowser.events import FitSelected
 from gui.contextMenu import ContextMenuSingle
+
+_t = wx.GetTranslation
 
 
 class OpenFitInNewTab(ContextMenuSingle):
@@ -31,7 +34,7 @@ class OpenFitInNewTab(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Open Fit in New Tab"
+        return _t("Open Fit in New Tab")
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         if isinstance(mainItem, BaseWrapper):

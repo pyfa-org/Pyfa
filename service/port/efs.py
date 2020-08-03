@@ -42,7 +42,7 @@ class EfsPort:
         shipHasMedSlots = fit.ship.getModifiedItemAttr("medSlots") > 0
         shipPower = fit.ship.getModifiedItemAttr("powerOutput")
         # Monitors have a 99% reduction to prop mod power requirements
-        if fit.ship.name == "Monitor":
+        if fit.ship.typeName == "Monitor":
             shipPower *= 100
         rigSize = fit.ship.getModifiedItemAttr("rigSize")
         if not shipHasMedSlots:
@@ -52,7 +52,7 @@ class EfsPort:
         propMods = gamedata_session.query(Item).options().filter(filterVal).all()
         mapPropData = lambda propName: \
                       next(map(lambda propMod: {"id": propMod.typeID, "powerReq": propMod.attributes["power"].value},
-                               (filter(lambda mod: mod.name == propName, propMods))))
+                               (filter(lambda mod: mod.typeName == propName, propMods))))
         mwd5mn = mapPropData("5MN Microwarpdrive II")
         mwd50mn = mapPropData("50MN Microwarpdrive II")
         mwd500mn = mapPropData("500MN Microwarpdrive II")
@@ -240,9 +240,9 @@ class EfsPort:
                 stats["type"] = "Micro Jump Drive"
                 EfsPort.attrDirectMap(["moduleReactivationDelay"], stats, mod)
             else:
-                pyfalog.error("Projected module {0} lacks efs export implementation".format(mod.item.name))
+                pyfalog.error("Projected module {0} lacks efs export implementation".format(mod.item.typeName))
             if mod.getModifiedItemAttr("maxRange", None) is None:
-                pyfalog.error("Projected module {0} has no maxRange".format(mod.item.name))
+                pyfalog.error("Projected module {0} has no maxRange".format(mod.item.typeName))
             stats["optimal"] = mod.getModifiedItemAttr("maxRange", maxRangeDefault)
             stats["falloff"] = mod.getModifiedItemAttr("falloffEffectiveness", falloffDefault)
             EfsPort.attrDirectMap(["duration", "capacitorNeed"], stats, mod)
@@ -262,10 +262,10 @@ class EfsPort:
                 if mod.item is not None:
                     if mod.charge is not None:
                         modTypeIDSets[mod.slot].append([mod.item.typeID, mod.charge.typeID])
-                        moduleNameSets[mod.slot].append(mod.item.name + ":  " + mod.charge.name)
+                        moduleNameSets[mod.slot].append(mod.item.typeName + ":  " + mod.charge.typeName)
                     else:
                         modTypeIDSets[mod.slot].append(mod.item.typeID)
-                        moduleNameSets[mod.slot].append(mod.item.name)
+                        moduleNameSets[mod.slot].append(mod.item.typeName)
                 else:
                     modTypeIDSets[mod.slot].append(0)
                     moduleNameSets[mod.slot].append("Empty Slot")
@@ -295,11 +295,11 @@ class EfsPort:
         for drone in fit.drones:
             if drone.amountActive > 0:
                 droneIDs.append(drone.item.typeID)
-                droneNames.append("%s x%s" % (drone.item.name, drone.amount))
+                droneNames.append("%s x%s" % (drone.item.typeName, drone.amount))
         for fighter in fit.fighters:
             if fighter.amount > 0:
                 fighterIDs.append(fighter.item.typeID)
-                fighterNames.append("%s x%s" % (fighter.item.name, fighter.amount))
+                fighterNames.append("%s x%s" % (fighter.item.typeName, fighter.amount))
         if len(droneNames) > 0:
             modTypeIDs.extend([0, 0])
             modTypeIDs.extend(droneIDs)
@@ -315,13 +315,13 @@ class EfsPort:
             moduleNames.extend(["", "Implants:"])
             for implant in fit.implants:
                 modTypeIDs.append(implant.item.typeID)
-                moduleNames.append(implant.item.name)
+                moduleNames.append(implant.item.typeName)
         if len(fit.boosters) > 0:
             modTypeIDs.extend([0, 0])
             moduleNames.extend(["", "Boosters:"])
             for booster in fit.boosters:
                 modTypeIDs.append(booster.item.typeID)
-                moduleNames.append(booster.item.name)
+                moduleNames.append(booster.item.typeName)
         if len(fit.commandFits) > 0:
             modTypeIDs.extend([0, 0])
             moduleNames.extend(["", "Command Fits:"])
@@ -333,7 +333,7 @@ class EfsPort:
             moduleNames.extend(["", "Projected Modules:"])
             for mod in fit.projectedModules:
                 modTypeIDs.append(mod.item.typeID)
-                moduleNames.append(mod.item.name)
+                moduleNames.append(mod.item.typeName)
 
         if fit.character.name != "All 5":
             modTypeIDs.extend([0, 0, 0])
@@ -387,14 +387,14 @@ class EfsPort:
             aoeFieldRange = 0
             typeing = 'None'
             if stats.charge:
-                name = stats.item.name + ", " + stats.charge.name
+                name = stats.item.typeName + ", " + stats.charge.typeName
             else:
-                name = stats.item.name
+                name = stats.item.typeName
             if stats.hardpoint == FittingHardpoint.TURRET:
                 tracking = stats.getModifiedItemAttr("trackingSpeed")
                 typeing = "Turret"
             # Bombs share most attributes with missiles despite not needing the hardpoint
-            elif stats.hardpoint == FittingHardpoint.MISSILE or "Bomb Launcher" in stats.item.name:
+            elif stats.hardpoint == FittingHardpoint.MISSILE or "Bomb Launcher" in stats.item.typeName:
                 maxVelocity = stats.getModifiedChargeAttr("maxVelocity")
                 explosionDelay = stats.getModifiedChargeAttr("explosionDelay")
                 damageReductionFactor = stats.getModifiedChargeAttr("aoeDamageReductionFactor")
@@ -432,7 +432,7 @@ class EfsPort:
                 newTracking = droneAttr("trackingSpeed") / (droneAttr("optimalSigRadius") / 40000)
                 statDict = {
                     "dps": drone.getDps().total, "cycleTime": drone.getCycleParameters().averageTime, "type": "Drone",
-                    "optimal": drone.maxRange, "name": drone.item.name, "falloff": drone.falloff,
+                    "optimal": drone.maxRange, "name": drone.item.typeName, "falloff": drone.falloff,
                     "maxSpeed": droneAttr("maxVelocity"), "tracking": newTracking,
                     "volley": drone.getVolley().total
                 }
@@ -450,7 +450,7 @@ class EfsPort:
                     ability = EfsPort.getFighterAbilityData(fighterAttr, fighter, baseRef)
                     abilities.append(ability)
                 statDict = {
-                    "dps": fighter.getDps().total, "type": "Fighter", "name": fighter.item.name,
+                    "dps": fighter.getDps().total, "type": "Fighter", "name": fighter.item.typeName,
                     "maxSpeed": fighterAttr("maxVelocity"), "abilities": abilities,
                     "ehp": fighterAttr("shieldCapacity") / 0.8875 * fighter.amount,
                     "volley": fighter.getVolley().total, "signatureRadius": fighterAttr("signatureRadius")

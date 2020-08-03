@@ -30,6 +30,8 @@ from eos.const import FittingHardpoint
 
 from gui.utils.numberFormatter import formatAmount
 
+_t = wx.GetTranslation
+
 
 class ResourcesViewFull(StatsView):
     name = "resourcesViewFull"
@@ -79,7 +81,7 @@ class ResourcesViewFull(StatsView):
         self.headerPanel.Layout()
 
     def getHeaderText(self, fit):
-        return "Resources"
+        return _t("Resources")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -105,8 +107,13 @@ class ResourcesViewFull(StatsView):
         base = sizerResources
         sizer.AddStretchSpacer()
         # Turrets & launcher hardslots display
-        tooltipText = {"turret": "Turret hardpoints", "launcher": "Launcher hardpoints", "drones": "Drones active",
-                       "fighter": "Fighter squadrons active", "calibration": "Calibration"}
+        tooltipText = {
+            "turret": _t("Turret hardpoints"),
+            "launcher": _t("Launcher hardpoints"),
+            "drones": _t("Drones active"),
+            "fighter": _t("Fighter squadrons active"),
+            "calibration": _t("Calibration")
+        }
         for type_ in ("turret", "launcher", "drones", "fighter", "calibration"):
             box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -118,8 +125,10 @@ class ResourcesViewFull(StatsView):
 
             sizer.Add(box, 0, wx.ALIGN_CENTER)
 
-            suffix = {'turret': 'Hardpoints', 'launcher': 'Hardpoints', 'drones': 'Active', 'fighter': 'Tubes',
-                      'calibration': 'Points'}
+            suffix = {
+                'turret': 'Hardpoints', 'launcher': 'Hardpoints', 'drones': 'Active', 'fighter': 'Tubes',
+                'calibration': 'Points'
+            }
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
             setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type_.capitalize(), suffix[type_].capitalize()), lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
@@ -140,8 +149,14 @@ class ResourcesViewFull(StatsView):
         gauge_font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         # PG, Cpu & drone stuff
-        tooltipText = {"cpu": "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay",
-                       "droneBandwidth": "Drone bandwidth", "cargoBay": "Cargo bay"}
+        tooltipText = {
+            "cpu": _t("CPU"),
+            "pg": _t("PowerGrid"),
+            "droneBay": _t("Drone bay"),
+            "fighterBay": _t("Fighter bay"),
+            "droneBandwidth": _t("Drone bandwidth"),
+            "cargoBay": _t("Cargo bay")
+        }
         for i, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "fighterBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1, wx.ALIGN_CENTER)

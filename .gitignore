@@ -67,7 +67,6 @@ coverage.xml
 
 # Translations
 *.mo
-*.pot
 
 # Django stuff:
 *.log
@@ -123,3 +122,4 @@ gitversion
 *.swp
 
 *.fsdbinary
+/locale/progress.json

@@ -43,15 +43,6 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 
 pyfalog = Logger(__name__)
 
-
-EFT_OPTIONS = (
-    (PortEftOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortEftOptions.MUTATIONS, 'Mutated Attributes', 'Export mutated modules\' stats', True),
-    (PortEftOptions.IMPLANTS, 'Implants', 'Export implants', True),
-    (PortEftOptions.BOOSTERS, 'Boosters', 'Export boosters', True),
-    (PortEftOptions.CARGO, 'Cargo', 'Export cargo hold contents', True))
-
-
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'
@@ -64,7 +55,7 @@ def exportEft(fit, options, callback):
     # sub-sections, which are separated by 1 blank line
     sections = []
 
-    header = '[{}, {}]'.format(fit.ship.item.name, fit.name)
+    header = '[{}, {}]'.format(fit.ship.item.typeName, fit.name)
 
     # Section 1: modules, rigs, subsystems, services
     modsBySlotType = {}
@@ -81,9 +72,9 @@ def exportEft(fit, options, callback):
             if module.item:
                 # if module was mutated, use base item name for export
                 if module.isMutated:
-                    modName = module.baseItem.name
+                    modName = module.baseItem.typeName
                 else:
-                    modName = module.item.name
+                    modName = module.item.typeName
                 if module.isMutated and options[PortEftOptions.MUTATIONS]:
                     mutants[mutantReference] = module
                     mutationSuffix = ' [{}]'.format(mutantReference)
@@ -93,7 +84,7 @@ def exportEft(fit, options, callback):
                 modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == FittingModuleState.OFFLINE else ''
                 if module.charge and options[PortEftOptions.LOADED_CHARGES]:
                     rackLines.append('{}, {}{}{}'.format(
-                        modName, module.charge.name, modOfflineSuffix, mutationSuffix))
+                        modName, module.charge.typeName, modOfflineSuffix, mutationSuffix))
                 else:
                     rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
             else:
@@ -153,36 +144,36 @@ def exportEft(fit, options, callback):
 
 def exportDrones(drones):
     droneLines = []
-    for drone in sorted(drones, key=lambda d: d.item.name):
-        droneLines.append('{} x{}'.format(drone.item.name, drone.amount))
+    for drone in sorted(drones, key=lambda d: d.item.typeName):
+        droneLines.append('{} x{}'.format(drone.item.typeName, drone.amount))
     return '\n'.join(droneLines)
 
 
 def exportFighters(fighters):
     fighterLines = []
-    for fighter in sorted(fighters, key=lambda f: f.item.name):
-        fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amount))
+    for fighter in sorted(fighters, key=lambda f: f.item.typeName):
+        fighterLines.append('{} x{}'.format(fighter.item.typeName, fighter.amount))
     return '\n'.join(fighterLines)
 
 
 def exportImplants(implants):
     implantLines = []
     for implant in sorted(implants, key=lambda i: i.slot or 0):
-        implantLines.append(implant.item.name)
+        implantLines.append(implant.item.typeName)
     return '\n'.join(implantLines)
 
 
 def exportBoosters(boosters):
     boosterLines = []
     for booster in sorted(boosters, key=lambda b: b.slot or 0):
-        boosterLines.append(booster.item.name)
+        boosterLines.append(booster.item.typeName)
     return '\n'.join(boosterLines)
 
 
 def exportCargo(cargos):
     cargoLines = []
-    for cargo in sorted(cargos, key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)):
-        cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
+    for cargo in sorted(cargos, key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.typeName)):
+        cargoLines.append('{} x{}'.format(cargo.item.typeName, cargo.amount))
     return '\n'.join(cargoLines)
 
 

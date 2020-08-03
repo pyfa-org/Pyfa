@@ -7,9 +7,10 @@ from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 from service.market import Market
 
+_t = wx.GetTranslation
+
 
 class AddCommandFit(ContextMenuUnconditional):
-
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
     grp = sMkt.getGroup(1770)  # Command burst group
@@ -47,7 +48,7 @@ class AddCommandFit(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, itmContext):
-        return "Command Fits"
+        return _t("Command Fits")
 
     def addFit(self, menu, fit, includeShip=False):
         label = fit.name if not includeShip else "({}) {}".format(fit.ship.item.name, fit.name)

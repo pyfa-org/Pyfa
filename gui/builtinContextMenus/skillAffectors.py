@@ -1,4 +1,5 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.globalEvents as GE
@@ -9,9 +10,10 @@ from gui.contextMenu import ContextMenuSingle
 from service.character import Character
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class ChangeAffectingSkills(ContextMenuSingle):
-
     visibilitySetting = 'changeAffectingSkills'
 
     def __init__(self):
@@ -19,9 +21,9 @@ class ChangeAffectingSkills(ContextMenuSingle):
 
     def display(self, callingWindow, srcContext, mainItem):
         if srcContext not in (
-            "fittingModule", "fittingCharge",
-            "fittingShip", "droneItem",
-            "fighterItem"
+                "fittingModule", "fittingCharge",
+                "fittingShip", "droneItem",
+                "fighterItem"
         ):
             return False
 
@@ -68,13 +70,13 @@ class ChangeAffectingSkills(ContextMenuSingle):
         return len(self.skills) > 0
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Change %s Skills" % itmContext
+        return _t("Change %s Skills") % itmContext
 
     def addSkill(self, rootMenu, skill, i):
         if i < 0:
-            label = "Not Learned"
+            label = _t("Not Learned")
         else:
-            label = "Level %s" % i
+            label = _t("Level %s") % i
 
         id = ContextMenuSingle.nextID()
         self.skillIds[id] = (skill, i)

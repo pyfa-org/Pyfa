@@ -1,28 +1,30 @@
+import wx
+
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSelection
 from gui.utils.clipboard import toClipboard
 from service.fit import Fit
-from service.port.eft import exportDrones, exportFighters, exportCargo, exportImplants, exportBoosters
+from service.port.eft import exportBoosters, exportCargo, exportDrones, exportFighters, exportImplants
 
-
-viewSpecMap = {
-    'droneItemMisc': ('Drones', exportDrones),
-    'fighterItemMisc': ('Fighters', exportFighters),
-    'cargoItemMisc': ('Cargo Items', exportCargo),
-    'implantItemMisc': ('Implants', exportImplants),
-    'implantItemMiscChar': ('Implants', exportImplants),
-    'boosterItemMisc': ('Boosters', exportBoosters)}
+_t = wx.GetTranslation
 
 
 class AdditionsExportAll(ContextMenuSelection):
-
     visibilitySetting = 'additionsCopyPaste'
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.viewSpecMap = {
+            'droneItemMisc': (_t('Drones'), exportDrones),
+            'fighterItemMisc': (_t('Fighters'), exportFighters),
+            'cargoItemMisc': (_t('Cargo Items'), exportCargo),
+            'implantItemMisc': (_t('Implants'), exportImplants),
+            'implantItemMiscChar': (_t('Implants'), exportImplants),
+            'boosterItemMisc': (_t('Boosters'), exportBoosters)
+        }
 
     def display(self, callingWindow, srcContext, selection):
-        if srcContext not in viewSpecMap:
+        if srcContext not in self.viewSpecMap:
             return False
         if not selection:
             return False
@@ -34,10 +36,10 @@ class AdditionsExportAll(ContextMenuSelection):
         return True
 
     def getText(self, callingWindow, itmContext, selection):
-        return 'Copy Selected {}'.format(viewSpecMap[self.srcContext][0])
+        return _t('Copy Selected {}').format(self.viewSpecMap[self.srcContext][0])
 
     def activate(self, callingWindow, fullContext, selection, i):
-        export = viewSpecMap[self.srcContext][1](selection)
+        export = self.viewSpecMap[self.srcContext][1](selection)
         if export:
             toClipboard(export)
 

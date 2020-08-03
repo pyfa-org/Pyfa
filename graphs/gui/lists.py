@@ -33,6 +33,7 @@ from service.const import GraphCacheCleanupReason
 from service.fit import Fit
 from .stylePickers import ColorPickerPopup, LightnessPickerPopup, LineStylePickerPopup
 
+_t = wx.GetTranslation
 
 class BaseWrapperList(gui.display.Display):
 
@@ -302,14 +303,14 @@ class SourceWrapperList(BaseWrapperList):
         selection = self.getSelectedWrappers()
         mainItem = self.getWrapper(clickedPos)
 
-        itemContext = None if mainItem is None else 'Fit'
+        itemContext = None if mainItem is None else _t('Fit')
         menu = ContextMenu.getMenu(self, mainItem, selection, ('graphFitList', itemContext), ('graphFitListMisc', itemContext))
         if menu:
             self.PopupMenu(menu)
 
     @property
     def defaultTTText(self):
-        return 'Drag a fit into this list to graph it'
+        return _t('Drag a fit into this list to graph it')
 
 
 class TargetWrapperList(BaseWrapperList):
@@ -355,7 +356,7 @@ class TargetWrapperList(BaseWrapperList):
         selection = self.getSelectedWrappers()
         mainItem = self.getWrapper(clickedPos)
 
-        itemContext = None if mainItem is None else 'Target'
+        itemContext = None if mainItem is None else _t('Target')
         menu = ContextMenu.getMenu(self, mainItem, selection, ('graphTgtList', itemContext), ('graphTgtListMisc', itemContext))
         if menu:
             self.PopupMenu(menu)
@@ -366,7 +367,7 @@ class TargetWrapperList(BaseWrapperList):
 
     @property
     def defaultTTText(self):
-        return 'Drag a fit into this list to have your fits graphed against it'
+        return _t('Drag a fit into this list to have your fits graphed against it')
 
     # Context menu handlers
     def addProfile(self, profile):

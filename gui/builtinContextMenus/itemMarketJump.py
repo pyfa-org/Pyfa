@@ -1,6 +1,10 @@
+import wx
+
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.market import Market
+
+_t = wx.GetTranslation
 
 
 class JumpToMarketItem(ContextMenuSingle):
@@ -37,7 +41,7 @@ class JumpToMarketItem(ContextMenuSingle):
         return doit
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "{0} Market Group".format(itmContext if itmContext is not None else "Item")
+        return _t("{0} Market Group").format(itmContext if itmContext is not None else _t("Item"))
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         srcContext = fullContext[0]

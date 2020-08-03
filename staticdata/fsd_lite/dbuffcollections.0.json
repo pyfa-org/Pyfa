@@ -1,0 +1,2295 @@
+{
+  "1": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "[PROTOTYPE]Test Multi Buff", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }, 
+      {
+        "dogmaAttributeID": 76
+      }
+    ], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "groupID": 46
+      }, 
+      {
+        "dogmaAttributeID": 105, 
+        "groupID": 52
+      }
+    ], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 68
+      }, 
+      {
+        "dogmaAttributeID": 84
+      }
+    ], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3427
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3305
+      }
+    ], 
+    "operationName": "PostMul", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "10": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Shield Burst: Shield Harmonizing: Shield Resistance", 
+    "displayNameID": 518688, 
+    "displayName_de": "Schildresistenzbonus", 
+    "displayName_en-us": "Shield Resistance Bonus", 
+    "displayName_es": "Shield Resistance Bonus", 
+    "displayName_fr": "Bonus aux résistances des boucliers", 
+    "displayName_it": "Shield Resistance Bonus", 
+    "displayName_ja": "シールドレジスタンスボーナス", 
+    "displayName_ko": "실드 저항력 보너스", 
+    "displayName_ru": "Влияние на сопротивляемость щитов", 
+    "displayName_zh": "护盾抗性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 271
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "100": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_caustic_toxin_scan_resolution_bonus", 
+    "displayNameID": 535079, 
+    "displayName_de": "Scanauflösungsbonus", 
+    "displayName_en-us": "Scan Resolution bonus", 
+    "displayName_es": "Scan Resolution bonus", 
+    "displayName_fr": "Bonus de résolution du balayage", 
+    "displayName_it": "Scan Resolution bonus", 
+    "displayName_ja": "Scan Resolution bonus", 
+    "displayName_ko": "스캔 해상도 보너스", 
+    "displayName_ru": "Влияние на разрешающую способность сенсоров", 
+    "displayName_zh": "扫描分辨率加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "101": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Industrial Core Mining Drone Signal Interference", 
+    "displayNameID": 546343, 
+    "displayName_de": "Bonus auf reduzierte Industrial Core-Bergbaudrohnen", 
+    "displayName_en-us": "Reduced Industrial Core Mining Drone Bonus", 
+    "displayName_es": "Reduced Industrial Core Mining Drone Bonus", 
+    "displayName_fr": "Bonus réduit de drone d'extraction de cellule industrielle", 
+    "displayName_it": "Reduced Industrial Core Mining Drone Bonus", 
+    "displayName_ja": "Reduced Industrial Core Mining Drone Bonus", 
+    "displayName_ko": "산업코어 채굴 드론 보너스 감소", 
+    "displayName_ru": "Уменьшен бонус для буровых дронов у промышленного ядра", 
+    "displayName_zh": "降低的工业核心采矿无人机加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 2585, 
+        "skillID": 28585
+      }, 
+      {
+        "dogmaAttributeID": 2586, 
+        "skillID": 28585
+      }
+    ], 
+    "operationName": "PostMul", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "11": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Shield Burst: Active Shielding: Repair Duration/Capacitor", 
+    "displayNameID": 518698, 
+    "displayName_de": "Schildreparaturmodule: Bonus auf Dauer & Energiespeicherverbrauch", 
+    "displayName_en-us": "Shield Repair Modules: Duration & Capacitor-use bonus", 
+    "displayName_es": "Shield Repair Modules: Duration & Capacitor-use bonus", 
+    "displayName_fr": "Bonus à la durée de cycle et à l'économie de capaciteur des modules de réparation de boucliers", 
+    "displayName_it": "Shield Repair Modules: Duration & Capacitor-use bonus", 
+    "displayName_ja": "シールドリペアモジュール： 持続時間とキャパシタ消費量にボーナス", 
+    "displayName_ko": "실드 수리 모듈: 수리 사이클 시간 및 캐패시터 사용량 보너스", 
+    "displayName_ru": "Влияние на цикл и потребление энергии модулями накачки щитов", 
+    "displayName_zh": "护盾维修装备：持续时间和电容消耗加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3422
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 24571
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 3422
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 24571
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "12": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Shield Burst: Shield Extension: Shield HP", 
+    "displayNameID": 518699, 
+    "displayName_de": "Schild-HP-Bonus", 
+    "displayName_en-us": "Shield HP Bonus", 
+    "displayName_es": "Shield HP Bonus", 
+    "displayName_fr": "Bonus aux PV des boucliers", 
+    "displayName_it": "Shield HP Bonus", 
+    "displayName_ja": "シールドHPボーナス", 
+    "displayName_ko": "실드량 보너스", 
+    "displayName_ru": "Влияние на запас прочности щитов", 
+    "displayName_zh": "护盾值加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "13": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Armor Burst: Armor Energizing: Armor Resistance", 
+    "displayNameID": 518709, 
+    "displayName_de": "Panzerungsresistenzbonus", 
+    "displayName_en-us": "Armor Resistance Bonus", 
+    "displayName_es": "Armor Resistance Bonus", 
+    "displayName_fr": "Bonus aux résistances de blindage", 
+    "displayName_it": "Armor Resistance Bonus", 
+    "displayName_ja": "アーマー耐性ボーナス", 
+    "displayName_ko": "장갑 저항력 보너스", 
+    "displayName_ru": "Влияние на сопротивляемость брони", 
+    "displayName_zh": "装甲抗性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 267
+      }, 
+      {
+        "dogmaAttributeID": 268
+      }, 
+      {
+        "dogmaAttributeID": 269
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "14": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Armor Burst: Rapid Repair: Repair Duration/Capacitor", 
+    "displayNameID": 518710, 
+    "displayName_de": "Panzerungsreperaturmodule: Bonus auf Dauer & Energiespeicherverbrauch", 
+    "displayName_en-us": "Armor Repair Modules: Duration & Capacitor-use bonus", 
+    "displayName_es": "Armor Repair Modules: Duration & Capacitor-use bonus", 
+    "displayName_fr": "Bonus à la durée de cycle et à l'économie de capaciteur des modules de réparation de blindage", 
+    "displayName_it": "Armor Repair Modules: Duration & Capacitor-use bonus", 
+    "displayName_ja": "アーマーリペアモジュール： 持続時間とキャパシタ消費量にボーナス", 
+    "displayName_ko": "장갑 수리 모듈: 수리 사이클 시간 및 캐패시터 사용량 보너스", 
+    "displayName_ru": "Влияние на цикл и потребление энергии модулями ремонта брони", 
+    "displayName_zh": "装甲维修装备：持续时间和电容消耗加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 16069
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 24568
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 16069
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 24568
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "15": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Armor Burst: Armor Reinforcement: Armor HP", 
+    "displayNameID": 518711, 
+    "displayName_de": "Panzerung-HP-Bonus", 
+    "displayName_en-us": "Armor HP Bonus", 
+    "displayName_es": "Armor HP Bonus", 
+    "displayName_fr": "Bonus aux PV de blindage", 
+    "displayName_it": "Armor HP Bonus", 
+    "displayName_ja": "アーマーHPボーナス", 
+    "displayName_ko": "장갑 내구도 보너스", 
+    "displayName_ru": "Влияние на запас прочности брони", 
+    "displayName_zh": "装甲值加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "16": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Information Burst: Sensor Optimization: Scan Resolution", 
+    "displayNameID": 518713, 
+    "displayName_de": "Scanauflösungsbonus", 
+    "displayName_en-us": "Scan Resolution bonus", 
+    "displayName_es": "Scan Resolution bonus", 
+    "displayName_fr": "Bonus à la résolution de scan", 
+    "displayName_it": "Scan Resolution bonus", 
+    "displayName_ja": "スキャン解像度ボーナス", 
+    "displayName_ko": "스캔 해상도 보너스", 
+    "displayName_ru": "Влияние на разрешающую способность при захвате целей", 
+    "displayName_zh": "扫描分辨率加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "17": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Information Burst: Electronic Superiority: EWAR Range and Strength", 
+    "displayNameID": 518714, 
+    "displayName_de": "Module zur elektronischen Kriegsführung: Reichweite- und Stärkebonus", 
+    "displayName_en-us": "Electronic Warfare modules: Range and Strength bonus", 
+    "displayName_es": "Electronic Warfare modules: Range and Strength bonus", 
+    "displayName_fr": "Bonus à la portée et à la puissance des modules de guerre électronique", 
+    "displayName_it": "Electronic Warfare modules: Range and Strength bonus", 
+    "displayName_ja": "電子戦モジュール： 範囲と強度ボーナス", 
+    "displayName_ko": "전자전 모듈: 타겟팅 사거리와 강도 보너스", 
+    "displayName_ru": "Влияние на дальность и силу действия средств РЭБ", 
+    "displayName_zh": "电子战装备：范围和强度加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 208
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 379
+      }, 
+      {
+        "dogmaAttributeID": 238, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 239, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 240, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 241, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 309, 
+        "groupID": 208
+      }, 
+      {
+        "dogmaAttributeID": 349, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 351, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 547, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 554, 
+        "groupID": 379
+      }, 
+      {
+        "dogmaAttributeID": 566, 
+        "groupID": 208
+      }, 
+      {
+        "dogmaAttributeID": 596, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 767, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 847, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 848, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 2044, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 2044, 
+        "groupID": 208
+      }, 
+      {
+        "dogmaAttributeID": 2044, 
+        "groupID": 291
+      }, 
+      {
+        "dogmaAttributeID": 2044, 
+        "groupID": 379
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "18": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Information Burst: Electronic Hardening: Sensor Strength", 
+    "displayNameID": 518715, 
+    "displayName_de": "Bonus für Sensorstärke", 
+    "displayName_en-us": "Sensor Strength bonus", 
+    "displayName_es": "Sensor Strength bonus", 
+    "displayName_fr": "Bonus de puissance de détection", 
+    "displayName_it": "Sensor Strength bonus", 
+    "displayName_ja": "センサー強度ボーナス", 
+    "displayName_ko": "센서 강도 보너스", 
+    "displayName_ru": "Влияние на эффективность систем захвата целей", 
+    "displayName_zh": "感应强度加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 208
+      }, 
+      {
+        "dogmaAttributeID": 209
+      }, 
+      {
+        "dogmaAttributeID": 210
+      }, 
+      {
+        "dogmaAttributeID": 211
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "19": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Information Burst: Electronic Hardening: RSD/RWD Resistance", 
+    "displayNameID": 518900, 
+    "displayName_de": "Sensorferndämpfer- / Waffenfernstörer-Resistenzbonus", 
+    "displayName_en-us": "Remote Sensor Dampener / Remote Weapon Disruption Resistance bonus", 
+    "displayName_es": "Remote Sensor Dampener / Remote Weapon Disruption Resistance bonus", 
+    "displayName_fr": "Bonus de résistance contre les atténuateurs de détection à distance et aux perturbateurs d'armement à distance", 
+    "displayName_it": "Remote Sensor Dampener / Remote Weapon Disruption Resistance bonus", 
+    "displayName_ja": "リモートセンサーダンプナー／リモート兵器妨害耐性ボーナス", 
+    "displayName_ko": "원격 센서 교란 / 원격 무기 교란 저항력 보너스", 
+    "displayName_ru": "Влияние на сопротивляемость помехам на наводку орудий/захват целей", 
+    "displayName_zh": "远程感应抑阻器/远程武器扰断器抗性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2112
+      }, 
+      {
+        "dogmaAttributeID": 2113
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "[PROTOTYPE]Test Boost Speed", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "20": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Skirmish Burst: Evasive Maneuvers: Signature Radius", 
+    "displayNameID": 518716, 
+    "displayName_de": "Signaturradius-Bonus", 
+    "displayName_en-us": "Signature Radius bonus", 
+    "displayName_es": "Signature Radius bonus", 
+    "displayName_fr": "Bonus au rayon de signature", 
+    "displayName_it": "Signature Radius bonus", 
+    "displayName_ja": "シグネチャ半径ボーナス", 
+    "displayName_ko": "시그니처 반경 보너스", 
+    "displayName_ru": "Влияние на радиус сигнатуры", 
+    "displayName_zh": "信号半径加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "21": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Skirmish Burst: Interdiction Maneuvers: Tackle Range", 
+    "displayNameID": 518717, 
+    "displayName_de": "Antriebsstörmodul-Reichweitenbonus", 
+    "displayName_en-us": "Propulsion disruption module range bonus", 
+    "displayName_es": "Propulsion disruption module range bonus", 
+    "displayName_fr": "Bonus à la portée des modules de perturbation des propulsions", 
+    "displayName_it": "Propulsion disruption module range bonus", 
+    "displayName_ja": "タックルモジュール範囲ボーナス", 
+    "displayName_ko": "추진 방해 모듈 사거리 보너스", 
+    "displayName_ru": "Повышен радиус действия средств ограничения подвижности", 
+    "displayName_zh": "推进阻扰装备范围加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3435
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2103": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Damage Bonus", 
+    "displayNameID": 551552, 
+    "displayName_de": "Schadensbonus", 
+    "displayName_en-us": "Damage bonus", 
+    "displayName_es": "Damage bonus", 
+    "displayName_fr": "Bonus de dégâts", 
+    "displayName_it": "Damage bonus", 
+    "displayName_ja": "Damage bonus", 
+    "displayName_ko": "피해량 보너스", 
+    "displayName_ru": "Бонус урона", 
+    "displayName_zh": "伤害加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3436
+      }, 
+      {
+        "dogmaAttributeID": 114, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 116, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 117, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 118, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2104": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Wreck Warp Scramble", 
+    "displayNameID": 553815, 
+    "displayName_de": "Nähe zu Wracks stört Warpantriebe", 
+    "displayName_en-us": "Wreck Proximity Disrupting Warp Drives", 
+    "displayName_es": "Wreck Proximity Disrupting Warp Drives", 
+    "displayName_fr": "Une épave à proximité perturbe les propulseurs de warp", 
+    "displayName_it": "Wreck Proximity Disrupting Warp Drives", 
+    "displayName_ja": "Wreck Proximity Disrupting Warp Drives", 
+    "displayName_ko": "잔해로 인한 워프 드라이브 교란", 
+    "displayName_ru": "Близость обломков нарушает работу варп-двигателей", 
+    "displayName_zh": "残骸近距干扰跃迁引擎", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 104
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "22": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase", 
+    "displayNameID": 518718, 
+    "displayName_de": "Bonus auf die Geschwindigkeitserhöhung von AB/MWD-Modulen", 
+    "displayName_en-us": "AB/MWD module speed increase bonus", 
+    "displayName_es": "AB/MWD module speed increase bonus", 
+    "displayName_fr": "Bonus à la vitesse de propulsion des PC et des PMW", 
+    "displayName_it": "AB/MWD module speed increase bonus", 
+    "displayName_ja": "AB/MWDモジュール速度増加ボーナス", 
+    "displayName_ko": "애프터버너/MWD 모듈의 속도 증가 보너스", 
+    "displayName_ru": "Влияние на эффективность форсажных ускорителей/микроварп-ускорителей", 
+    "displayName_zh": "加力燃烧器/微型跃迁推进器速度增量加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "skillID": 3450
+      }, 
+      {
+        "dogmaAttributeID": 20, 
+        "skillID": 3454
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "23": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range", 
+    "displayNameID": 518720, 
+    "displayName_de": "Bergbau-/Überwachungsmodul-Reichweitenbonus", 
+    "displayName_en-us": "Mining/Survey module range bonus", 
+    "displayName_es": "Mining/Survey module range bonus", 
+    "displayName_fr": "Bonus à la portée des modules d'extraction et d'exploration", 
+    "displayName_it": "Mining/Survey module range bonus", 
+    "displayName_ja": "採掘／調査モジュール範囲ボーナス", 
+    "displayName_ko": "채굴/조사 모듈 범위 보너스", 
+    "displayName_ru": "Влияние на дальность действия буровых и досмотровых модулей", 
+    "displayName_zh": "采矿/测量装备距离加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 16281
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 25544
+      }, 
+      {
+        "dogmaAttributeID": 197, 
+        "skillID": 3426
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "24": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration", 
+    "displayNameID": 518721, 
+    "displayName_de": "Bergbaumodule: Bonus auf Dauer & Energiespeicherverbrauch", 
+    "displayName_en-us": "Mining Modules: Duration & Capacitor-use bonus", 
+    "displayName_es": "Mining Modules: Duration & Capacitor-use bonus", 
+    "displayName_fr": "Bonus à la durée de cycle et à l'économie de capaciteur des modules d'extraction minière", 
+    "displayName_it": "Mining Modules: Duration & Capacitor-use bonus", 
+    "displayName_ja": "採掘モジュール： 持続時間とキャパシタ消費量にボーナス", 
+    "displayName_ko": "채굴 모듈: 지속시간 및 캐패시터 사용량 보너스", 
+    "displayName_ru": "Влияние на цикл и потребление энергии буровых модулей", 
+    "displayName_zh": "采矿装备：持续时间和电容消耗加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 16281
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 25544
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 16281
+      }, 
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 25544
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "25": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Mining Burst: Mining Equipment Preservation: Crystal Volatility", 
+    "displayNameID": 518722, 
+    "displayName_de": "Bergbaukristall-Schwankungsbonus", 
+    "displayName_en-us": "Mining crystal volatility bonus", 
+    "displayName_es": "Mining crystal volatility bonus", 
+    "displayName_fr": "Bonus à la durabilité des cristaux d'extraction", 
+    "displayName_it": "Mining crystal volatility bonus", 
+    "displayName_ja": "採掘クリスタル変動性ボーナス", 
+    "displayName_ko": "채광용 크리스탈 휘발성 보너스", 
+    "displayName_ru": "Влияние на хрупкость буровых кристаллов", 
+    "displayName_zh": "采矿晶体耐久度加成", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 783, 
+        "skillID": 3386
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "26": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Information Burst: Sensor Optimization: Targeting Range", 
+    "displayNameID": 519020, 
+    "displayName_de": "Zielaufschaltungsreichweite-Bonus", 
+    "displayName_en-us": "Targeting Range bonus", 
+    "displayName_es": "Targeting Range bonus", 
+    "displayName_fr": "Bonus à la portée de ciblage", 
+    "displayName_it": "Targeting Range bonus", 
+    "displayName_ja": "ターゲット範囲ボーナス", 
+    "displayName_ko": "타겟팅 거리 보너스", 
+    "displayName_ru": "Влияние на дальность захвата целей", 
+    "displayName_zh": "锁定距离加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 76
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "27": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Stasis Webification Burst", 
+    "displayNameID": 519288, 
+    "displayName_de": "Geschwindigkeitsabzug für Stasisnetz", 
+    "displayName_en-us": "Stasis Webification speed penalty", 
+    "displayName_es": "Stasis Webification speed penalty", 
+    "displayName_fr": "Pénalité de vitesse sur la génération de stase", 
+    "displayName_it": "Stasis Webification speed penalty", 
+    "displayName_ja": "ステイシスウェビファイヤー速度ペナルティ", 
+    "displayName_ko": "스테이시스 웹 속도 페널티", 
+    "displayName_ru": "Штраф к скорости от стазис-индукторов", 
+    "displayName_zh": "停滞缠绕光束速度惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "28": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weapon Disruption Burst: Turret Max Range", 
+    "displayNameID": 519290, 
+    "displayName_de": "Geschützturm-Maximalreichweitenabzug", 
+    "displayName_en-us": "Turret maximum range penalty", 
+    "displayName_es": "Turret maximum range penalty", 
+    "displayName_fr": "Pénalité de portée maximale sur les tourelles", 
+    "displayName_it": "Turret maximum range penalty", 
+    "displayName_ja": "タレット最大射程ペナルティ", 
+    "displayName_ko": "터렛 최대사거리 페널티", 
+    "displayName_ru": "Штраф на максимальную дальность орудий", 
+    "displayName_zh": "炮台最大距离惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "29": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weapon Disruption Burst: Turret Falloff Range", 
+    "displayNameID": 519294, 
+    "displayName_de": "Geschützturm-Präzisionsabfall-Reichweitenabzug", 
+    "displayName_en-us": "Turret falloff range penalty", 
+    "displayName_es": "Turret falloff range penalty", 
+    "displayName_fr": "Pénalité de portée de déperdition sur les tourelles", 
+    "displayName_it": "Turret falloff range penalty", 
+    "displayName_ja": "タレット精度低下範囲ペナルティ", 
+    "displayName_ko": "터렛 유효사거리 페널티", 
+    "displayName_ru": "Штраф на добавочную дальность орудий", 
+    "displayName_zh": "炮塔失准范围惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 158, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "3": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Velocity penalty", 
+    "displayNameID": 517442, 
+    "displayName_de": "Geschwindigkeitsabzug", 
+    "displayName_en-us": "Velocity penalty", 
+    "displayName_es": "Velocity penalty", 
+    "displayName_fr": "Pénalité de vitesse", 
+    "displayName_it": "Velocity penalty", 
+    "displayName_ja": "速度ペナルティ", 
+    "displayName_ko": "속도 페널티", 
+    "displayName_ru": "Ограничение скорости", 
+    "displayName_zh": "Velocity penalty", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "30": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weapon Disruption Burst: Turret Tracking", 
+    "displayNameID": 519291, 
+    "displayName_de": "Abzug auf Nachführungsgeschwindigkeit von Geschütztürmen", 
+    "displayName_en-us": "Turret tracking speed penalty", 
+    "displayName_es": "Turret tracking speed penalty", 
+    "displayName_fr": "Pénalité de vitesse de poursuite sur les tourelles", 
+    "displayName_it": "Turret tracking speed penalty", 
+    "displayName_ja": "タレットトラッキング速度ペナルティ", 
+    "displayName_ko": "터렛 트래킹 속도 페널티", 
+    "displayName_ru": "Штраф на скорость наводки орудий", 
+    "displayName_zh": "炮塔跟踪速度惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "31": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weapon Disruption Burst: Missile Velocity", 
+    "displayNameID": 519295, 
+    "displayName_de": "Lenkwaffengeschwindigkeit-Abzug", 
+    "displayName_en-us": "Missile velocity penalty", 
+    "displayName_es": "Missile velocity penalty", 
+    "displayName_fr": "Pénalité de vitesse sur les missiles", 
+    "displayName_it": "Missile velocity penalty", 
+    "displayName_ja": "ミサイル飛行速度ペナルティ", 
+    "displayName_ko": "미사일 속도 페널티", 
+    "displayName_ru": "Штраф к скорости ракет", 
+    "displayName_zh": "导弹飞行速度惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 37, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "32": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weapon Disruption Burst: Missile Duration", 
+    "displayNameID": 519298, 
+    "displayName_de": "Abzug auf Lenkwaffendauer", 
+    "displayName_en-us": "Missile duration penalty", 
+    "displayName_es": "Missile duration penalty", 
+    "displayName_fr": "Pénalité de durée de vol sur les missiles", 
+    "displayName_it": "Missile duration penalty", 
+    "displayName_ja": "ミサイル飛行時間ペナルティ", 
+    "displayName_ko": "미사일 비행시간 페널티", 
+    "displayName_ru": "Штраф на время полёта ракет", 
+    "displayName_zh": "导弹飞行持续时间惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 281, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "33": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weapon Disruption Burst: Missile Explosion Velocity", 
+    "displayNameID": 519292, 
+    "displayName_de": "Lenkwaffen-Explosionsgeschwindigkeitsabzug", 
+    "displayName_en-us": "Missile Explosion Velocity penalty", 
+    "displayName_es": "Missile Explosion Velocity penalty", 
+    "displayName_fr": "Pénalité de vitesse d'explosion sur les missiles", 
+    "displayName_it": "Missile Explosion Velocity penalty", 
+    "displayName_ja": "ミサイル爆発速度ペナルティ", 
+    "displayName_ko": "미사일 폭발속도 페널티", 
+    "displayName_ru": "Штраф на скорость взрыва ракет", 
+    "displayName_zh": "导弹爆炸速度惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 653, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "34": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weapon Disruption Burst: Missile Explosion Radius", 
+    "displayNameID": 519293, 
+    "displayName_de": "Lenkwaffen-Explosionsradiusabzug", 
+    "displayName_en-us": "Missile Explosion Radius penalty", 
+    "displayName_es": "Missile Explosion Radius penalty", 
+    "displayName_fr": "Pénalité de rayon d'explosion sur les missiles", 
+    "displayName_it": "Missile Explosion Radius penalty", 
+    "displayName_ja": "ミサイル爆発半径ペナルティ", 
+    "displayName_ko": "미사일 폭발반경 페널티", 
+    "displayName_ru": "Штраф на сигнатуру взрыва ракет", 
+    "displayName_zh": "导弹爆炸半径惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 654, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "35": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Sensor Dampening Burst: Scan Resolution penalty", 
+    "displayNameID": 519296, 
+    "displayName_de": "Abzug auf Scanauflösung", 
+    "displayName_en-us": "Scan Resolution penalty", 
+    "displayName_es": "Scan Resolution penalty", 
+    "displayName_fr": "Pénalité de résolution de scan", 
+    "displayName_it": "Scan Resolution penalty", 
+    "displayName_ja": "スキャン解像度ペナルティ", 
+    "displayName_ko": "스캔 해상도 페널티", 
+    "displayName_ru": "Штраф на разрешающую способность", 
+    "displayName_zh": "扫描分辨率惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "36": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Sensor Dampening Burst: Max Target Range", 
+    "displayNameID": 519297, 
+    "displayName_de": "Abzug auf Zielaufschaltungsreichweite", 
+    "displayName_en-us": "Targeting Range penalty", 
+    "displayName_es": "Targeting Range penalty", 
+    "displayName_fr": "Pénalité de portée de ciblage", 
+    "displayName_it": "Targeting Range penalty", 
+    "displayName_ja": "ターゲット範囲ペナルティ", 
+    "displayName_ko": "타겟팅 거리 페널티", 
+    "displayName_ru": "Штраф на дальность захвата целей", 
+    "displayName_zh": "锁定距离惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 76
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "37": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Target Illumination Burst", 
+    "displayNameID": 519299, 
+    "displayName_de": "Abzug auf Signaturradius", 
+    "displayName_en-us": "Signature radius penalty", 
+    "displayName_es": "Signature radius penalty", 
+    "displayName_fr": "Pénalité de rayon de signature", 
+    "displayName_it": "Signature radius penalty", 
+    "displayName_ja": "シグネチャ半径ペナルティ", 
+    "displayName_ko": "시그니처 반경 페널티", 
+    "displayName_ru": "Штраф на радиус сигнатуры", 
+    "displayName_zh": "信号半径惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "38": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "ECM Burst", 
+    "displayNameID": 519329, 
+    "displayName_de": "Maximaler Zielabzug", 
+    "displayName_en-us": "Maximum target penalty", 
+    "displayName_es": "Maximum target penalty", 
+    "displayName_fr": "Pénalité du nombre de cibles maximum", 
+    "displayName_it": "Maximum target penalty", 
+    "displayName_ja": "最大ターゲット数ペナルティ", 
+    "displayName_ko": "최대 대상 페널티", 
+    "displayName_ru": "Штраф на предельное число захваченных целей", 
+    "displayName_zh": "最大锁定数惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 192
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "39": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Avatar Effect Generator : Capacitor Recharge bonus", 
+    "displayNameID": 521911, 
+    "displayName_de": "Energiespeichers-Wiederaufladeratenbonus", 
+    "displayName_en-us": "Capacitor Recharge bonus", 
+    "displayName_es": "Capacitor Recharge bonus", 
+    "displayName_fr": "Bonus à la recharge du capaciteur", 
+    "displayName_it": "Capacitor Recharge bonus", 
+    "displayName_ja": "キャパシタリチャージボーナス", 
+    "displayName_ko": "캐패시터 충전 보너스", 
+    "displayName_ru": "Влияние на регенерацию накопителя", 
+    "displayName_zh": "电容回充量加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "4": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Warp penalty", 
+    "displayNameID": 517444, 
+    "displayName_de": "Warpabzug", 
+    "displayName_en-us": "Warp penalty", 
+    "displayName_es": "Warp penalty", 
+    "displayName_fr": "Pénalité de warp", 
+    "displayName_it": "Warp penalty", 
+    "displayName_ja": "ワープペナルティ", 
+    "displayName_ko": "워프 페널티", 
+    "displayName_ru": "Ограничение варп-режима", 
+    "displayName_zh": "跃迁惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 104
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "40": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Avatar Effect Generator : Kinetic resistance bonus", 
+    "displayNameID": 521912, 
+    "displayName_de": "Bonus auf Kinetikresistenz", 
+    "displayName_en-us": "Kinetic Resistance bonus", 
+    "displayName_es": "Kinetic Resistance bonus", 
+    "displayName_fr": "Bonus aux résistances cinétiques", 
+    "displayName_it": "Kinetic Resistance bonus", 
+    "displayName_ja": "キネティック耐性ボーナス", 
+    "displayName_ko": "키네틱 저항력 보너스", 
+    "displayName_ru": "Влияние на сопротивляемость кинетическому урону", 
+    "displayName_zh": "动能抗性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 109
+      }, 
+      {
+        "dogmaAttributeID": 269
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "41": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Avatar Effect Generator : EM resistance penalty", 
+    "displayNameID": 521913, 
+    "displayName_de": "Abzug auf EM-Resistenz", 
+    "displayName_en-us": "EM Resistance penalty", 
+    "displayName_es": "EM Resistance penalty", 
+    "displayName_fr": "Pénalité de résistance EM", 
+    "displayName_it": "EM Resistance penalty", 
+    "displayName_ja": "EM耐性ペナルティ", 
+    "displayName_ko": "EM 저항력 페널티", 
+    "displayName_ru": "Штраф на сопротивление ЭМ-урону", 
+    "displayName_zh": "电磁抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 113
+      }, 
+      {
+        "dogmaAttributeID": 267
+      }, 
+      {
+        "dogmaAttributeID": 271
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "42": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Erebus Effect Generator : Armor HP bonus", 
+    "displayNameID": 521916, 
+    "displayName_de": "Panzerung-HP-Bonus", 
+    "displayName_en-us": "Armor HP bonus", 
+    "displayName_es": "Armor HP bonus", 
+    "displayName_fr": "Bonus aux PV de blindage", 
+    "displayName_it": "Armor HP bonus", 
+    "displayName_ja": "アーマーHPボーナス", 
+    "displayName_ko": "장갑 내구도 보너스", 
+    "displayName_ru": "Влияние на запас прочности брони", 
+    "displayName_zh": "装甲值加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "43": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Erebus Effect Generator : Explosive resistance bonus", 
+    "displayNameID": 521917, 
+    "displayName_de": "Bonus auf Explosionsresistenz", 
+    "displayName_en-us": "Explosive Resistance bonus", 
+    "displayName_es": "Explosive Resistance bonus", 
+    "displayName_fr": "Bonus aux résistances explosives", 
+    "displayName_it": "Explosive Resistance bonus", 
+    "displayName_ja": "爆発耐性ボーナス", 
+    "displayName_ko": "폭발 저항력 보너스", 
+    "displayName_ru": "Влияние на сопротивляемость фугасному урону", 
+    "displayName_zh": "爆炸抗性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 111
+      }, 
+      {
+        "dogmaAttributeID": 268
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "44": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Erebus Effect Generator : Thermal resistance penalty", 
+    "displayNameID": 521918, 
+    "displayName_de": "Abzug auf Thermalresistenz", 
+    "displayName_en-us": "Thermal Resistance penalty", 
+    "displayName_es": "Thermal Resistance penalty", 
+    "displayName_fr": "Pénalité de résistance thermique", 
+    "displayName_it": "Thermal Resistance penalty", 
+    "displayName_ja": "サーマル耐性ペナルティ", 
+    "displayName_ko": "열 저항력 페널티", 
+    "displayName_ru": "Штраф на сопротивляемость термическому урону", 
+    "displayName_zh": "热能抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 110
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "45": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Ragnarok Effect Generator : Signature Radius bonus", 
+    "displayNameID": 521921, 
+    "displayName_de": "Signaturradius-Bonus", 
+    "displayName_en-us": "Signature Radius bonus", 
+    "displayName_es": "Signature Radius bonus", 
+    "displayName_fr": "Bonus au rayon de signature", 
+    "displayName_it": "Signature Radius bonus", 
+    "displayName_ja": "シグネチャ半径ボーナス", 
+    "displayName_ko": "시그니처 반경 보너스", 
+    "displayName_ru": "Влияние на радиус сигнатуры", 
+    "displayName_zh": "信号半径加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "46": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Ragnarok Effect Generator : Thermal resistance bonus", 
+    "displayNameID": 521919, 
+    "displayName_de": "Bonus auf Thermalresistenz", 
+    "displayName_en-us": "Thermal Resistance bonus", 
+    "displayName_es": "Thermal Resistance bonus", 
+    "displayName_fr": "Bonus aux résistances thermiques", 
+    "displayName_it": "Thermal Resistance bonus", 
+    "displayName_ja": "サーマル耐性ボーナス", 
+    "displayName_ko": "열 저항력 보너스", 
+    "displayName_ru": "Влияние на сопротивляемость термическому урону", 
+    "displayName_zh": "热能抗性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 110
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "47": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Ragnarok Effect Generator : Explosive resistance penaly", 
+    "displayNameID": 521920, 
+    "displayName_de": "Abzug auf Explosionsresistenz", 
+    "displayName_en-us": "Explosive Resistance penalty", 
+    "displayName_es": "Explosive Resistance penalty", 
+    "displayName_fr": "Pénalité de résistance explosive", 
+    "displayName_it": "Explosive Resistance penalty", 
+    "displayName_ja": "爆発耐性ペナルティ", 
+    "displayName_ko": "폭발 저항력 페널티", 
+    "displayName_ru": "Штраф на сопротивление фугасному урону", 
+    "displayName_zh": "爆炸抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 111
+      }, 
+      {
+        "dogmaAttributeID": 268
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "48": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Leviathan Effect Generator : Shield HP bonus", 
+    "displayNameID": 521924, 
+    "displayName_de": "Schild-HP-Bonus", 
+    "displayName_en-us": "Shield HP bonus", 
+    "displayName_es": "Shield HP bonus", 
+    "displayName_fr": "Bonus aux PV des boucliers", 
+    "displayName_it": "Shield HP bonus", 
+    "displayName_ja": "シールドHPボーナス", 
+    "displayName_ko": "실드량 보너스", 
+    "displayName_ru": "Влияние на запас прочности щитов", 
+    "displayName_zh": "护盾值加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "49": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Leviathan Effect Generator : EM resistance bonus", 
+    "displayNameID": 521922, 
+    "displayName_de": "Bonus auf EM-Resistenz", 
+    "displayName_en-us": "EM Resistance bonus", 
+    "displayName_es": "EM Resistance bonus", 
+    "displayName_fr": "Bonus aux résistances EM", 
+    "displayName_it": "EM Resistance bonus", 
+    "displayName_ja": "EM耐性ボーナス", 
+    "displayName_ko": "EM 저항력 보너스", 
+    "displayName_ru": "Штраф на сопротивляемость ЭМ-урону", 
+    "displayName_zh": "电磁抗性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 113
+      }, 
+      {
+        "dogmaAttributeID": 267
+      }, 
+      {
+        "dogmaAttributeID": 271
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "5": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disallow Cloak", 
+    "displayNameID": 517760, 
+    "displayName_de": "Tarnung verweigern", 
+    "displayName_en-us": "Disallow Cloak", 
+    "displayName_es": "Disallow Cloak", 
+    "displayName_fr": "Ne plus autoriser le camouflage", 
+    "displayName_it": "Disallow Cloak", 
+    "displayName_ja": "遮蔽不可", 
+    "displayName_ko": "클로킹 차단", 
+    "displayName_ru": "Запрет маскировки", 
+    "displayName_zh": "不允许隐形", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2454
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "50": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Leviathan Effect Generator : Kinetic resistance penalty", 
+    "displayNameID": 521923, 
+    "displayName_de": "Abzug auf Kinetikresistenz", 
+    "displayName_en-us": "Kinetic Resistance penalty", 
+    "displayName_es": "Kinetic Resistance penalty", 
+    "displayName_fr": "Pénalité de résistance cinétique", 
+    "displayName_it": "Kinetic Resistance penalty", 
+    "displayName_ja": "キネティック耐性ペナルティ", 
+    "displayName_ko": "키네틱 저항력 페널티", 
+    "displayName_ru": "Штраф на сопротивление кинетическому урону", 
+    "displayName_zh": "动能抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 109
+      }, 
+      {
+        "dogmaAttributeID": 269
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "51": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Avatar Effect Generator : Velocity penalty", 
+    "displayNameID": 522403, 
+    "displayName_de": "Geschwindigkeitsabzug", 
+    "displayName_en-us": "Velocity Penalty", 
+    "displayName_es": "Velocity Penalty", 
+    "displayName_fr": "Pénalité de vitesse", 
+    "displayName_it": "Velocity Penalty", 
+    "displayName_ja": "速度ペナルティ", 
+    "displayName_ko": "속도 페널티", 
+    "displayName_ru": "Штраф к скорости", 
+    "displayName_zh": "速度惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "52": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Erebus Effect Generator : Shield RR penalty", 
+    "displayNameID": 522404, 
+    "displayName_de": "Schild-Fernreparatursystem-Leistungsabzug", 
+    "displayName_en-us": "Remote Shield Booster Strength Penalty", 
+    "displayName_es": "Remote Shield Booster Strength Penalty", 
+    "displayName_fr": "Pénalité de puissance sur les boosters de boucliers à distance", 
+    "displayName_it": "Remote Shield Booster Strength Penalty", 
+    "displayName_ja": "リモートシールドブースター強度ペナルティ", 
+    "displayName_ko": "원격 실드 충전 강도 페널티", 
+    "displayName_ru": "Влияние на силу модулей дистанционной накачки щита", 
+    "displayName_zh": "远程护盾回充增量器强度惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3422
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "53": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Leviathan Effect Generator : Armor RR penalty", 
+    "displayNameID": 522405, 
+    "displayName_de": "Panzerungs-Fernreparatursystem-Leistungsabzug", 
+    "displayName_en-us": "Remote Armor Repairer Strength Penalty", 
+    "displayName_es": "Remote Armor Repairer Strength Penalty", 
+    "displayName_fr": "Pénalité de puissance sur les réparateurs de blindage à distance", 
+    "displayName_it": "Remote Armor Repairer Strength Penalty", 
+    "displayName_ja": "リモート装甲修復装置強度ペナルティ", 
+    "displayName_ko": "원격 장갑 수리 강도 페널티", 
+    "displayName_ru": "Штраф на силу модулей дистанционного ремонта брони", 
+    "displayName_zh": "远程装甲维修器强度惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 16069
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "54": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Ragnarok Effect Generator : Laser and Hybrid Optimal penalty", 
+    "displayNameID": 522406, 
+    "displayName_de": "Optimaler Abzug von Energie- und Hybridgeschütztürmen", 
+    "displayName_en-us": "Energy and Hybrid Turret Optimal Penalty", 
+    "displayName_es": "Energy and Hybrid Turret Optimal Penalty", 
+    "displayName_fr": "Pénalité de portée optimale sur les tourelles à énergie et les tourelles hybrides", 
+    "displayName_it": "Energy and Hybrid Turret Optimal Penalty", 
+    "displayName_ja": "エネルギータレットとハイブリッドタレット最適射程距離ペナルティ", 
+    "displayName_ko": "에너지 및 하이브리드 터렛 최적사거리 페널티", 
+    "displayName_ru": "Штраф на оптимальную дальность лазерных и гибридных орудий", 
+    "displayName_zh": "能量和混合炮台最佳射程惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 53
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 74
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "55": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "PANIC: Scan Resolution penalty", 
+    "displayNameID": 522786, 
+    "displayName_de": "Abzug auf Scanauflösung", 
+    "displayName_en-us": "Scan Resolution penalty", 
+    "displayName_es": "Scan Resolution penalty", 
+    "displayName_fr": "Pénalité de résolution de scan", 
+    "displayName_it": "Scan Resolution penalty", 
+    "displayName_ja": "スキャン解像度ペナルティ", 
+    "displayName_ko": "스캔 해상도 페널티", 
+    "displayName_ru": "Штраф на разрешающую способность", 
+    "displayName_zh": "扫描分辨率惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "56": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "PANIC: Mass increase", 
+    "displayNameID": 522787, 
+    "displayName_de": "Massenzunahme", 
+    "displayName_en-us": "Mass increase", 
+    "displayName_es": "Mass increase", 
+    "displayName_fr": "Augmentation de masse", 
+    "displayName_it": "Mass increase", 
+    "displayName_ja": "質量増加", 
+    "displayName_ko": "질량 증가", 
+    "displayName_ru": "Увеличение массы", 
+    "displayName_zh": "质量增加", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 4
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "57": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disallow tether", 
+    "displayNameID": 522788, 
+    "displayName_de": "Anbindung blockiert", 
+    "displayName_en-us": "Tether blocked", 
+    "displayName_es": "Tether blocked", 
+    "displayName_fr": "Arrimage bloqué", 
+    "displayName_it": "Tether blocked", 
+    "displayName_ja": "テザリングを禁止", 
+    "displayName_ko": "테더링 차단", 
+    "displayName_ru": "Швартовка недоступна", 
+    "displayName_zh": "驻留被阻止", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2343
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "58": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "PANIC: Drone damage penalty", 
+    "displayNameID": 522792, 
+    "displayName_de": "Drohnen-Schadensabzug", 
+    "displayName_en-us": "Drone damage penalty", 
+    "displayName_es": "Drone damage penalty", 
+    "displayName_fr": "Pénalité de dégâts sur les drones", 
+    "displayName_it": "Drone damage penalty", 
+    "displayName_ja": "ドローンダメージペナルティ", 
+    "displayName_ko": "드론 피해량 페널티", 
+    "displayName_ru": "Штраф на урон дронов", 
+    "displayName_zh": "无人机伤害惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2580
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "59": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "PANIC: Disallow weapons", 
+    "displayNameID": 522815, 
+    "displayName_de": "Waffen untersagen", 
+    "displayName_en-us": "Disallow weapons", 
+    "displayName_es": "Disallow weapons", 
+    "displayName_fr": "Désactiver les armements", 
+    "displayName_it": "Disallow weapons", 
+    "displayName_ja": "兵器を禁止", 
+    "displayName_ko": "무기 사용 차단", 
+    "displayName_ru": "Вооружение запрещено", 
+    "displayName_zh": "禁用武器", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 3421
+      }
+    ], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "6": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disallow jump/dock", 
+    "displayNameID": 517825, 
+    "displayName_de": "Sprung/Docken verweigern", 
+    "displayName_en-us": "Disallow jump/dock", 
+    "displayName_es": "Disallow jump/dock", 
+    "displayName_fr": "Lever l'autorisation de saut / amarrage", 
+    "displayName_it": "Disallow jump/dock", 
+    "displayName_ja": "ジャンプ/入港不可", 
+    "displayName_ko": "점프/도킹 차단", 
+    "displayName_ru": "Запрет гиперпереходов и/или входа в док", 
+    "displayName_zh": "不允许跳跃/停靠", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2354
+      }, 
+      {
+        "dogmaAttributeID": 2453
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "60": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Skirmish Burst: Evasive Maneuvers: Agility", 
+    "displayNameID": 522819, 
+    "displayName_de": "Wendigkeitsbonus", 
+    "displayName_en-us": "Agility bonus", 
+    "displayName_es": "Agility bonus", 
+    "displayName_fr": "Bonus d'agilité", 
+    "displayName_it": "Agility bonus", 
+    "displayName_ja": "機動性ボーナス", 
+    "displayName_ko": "기동성 보너스", 
+    "displayName_ru": "Влияние на маневренность", 
+    "displayName_zh": "灵活性加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "61": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "PANIC: Disallow entosis", 
+    "displayNameID": 522901, 
+    "displayName_de": "Entosis untersagen", 
+    "displayName_en-us": "Disallow entosis", 
+    "displayName_es": "Disallow entosis", 
+    "displayName_fr": "Désactiver l'interface Entosis", 
+    "displayName_it": "Disallow entosis", 
+    "displayName_ja": "エントーシスを禁止", 
+    "displayName_ko": "엔토시스 사용 차단", 
+    "displayName_ru": "Энтоз-воздействие запрещено", 
+    "displayName_zh": "禁用侵噬链接", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 24242
+      }
+    ], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "7": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "QA Anti-targeting debuff", 
+    "displayNameID": 517856, 
+    "displayName_de": "QA Anti-Zielerfassungs-Debuff", 
+    "displayName_en-us": "QA Anti-targeting debuff", 
+    "displayName_es": "QA Anti-targeting debuff", 
+    "displayName_fr": "QA Anti-targeting debuff", 
+    "displayName_it": "QA Anti-targeting debuff", 
+    "displayName_ja": "QA アンチターゲティングデバフ", 
+    "displayName_ko": "QA 안티-타겟팅 디버프", 
+    "displayName_ru": "Ограничение сопровождения целей (QA)", 
+    "displayName_zh": "QA Anti-targeting debuff", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 192
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "79": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "AOE_Beacon_bioluminescence_cloud", 
+    "displayNameID": 532898, 
+    "displayName_de": "Abzug auf Signaturradius", 
+    "displayName_en-us": "Signature Radius penalty", 
+    "displayName_es": "Signature Radius penalty", 
+    "displayName_fr": "Pénalité du rayon de signature", 
+    "displayName_it": "Signature Radius penalty", 
+    "displayName_ja": "Signature Radius penalty", 
+    "displayName_ko": "시그니처 반경 페널티", 
+    "displayName_ru": "Штраф к радиусу сигнатуры", 
+    "displayName_zh": "信号半径惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "8": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "PANIC: Shield Resistance", 
+    "displayNameID": 518605, 
+    "displayName_de": "Schildresistenz", 
+    "displayName_en-us": "Shield Resistance", 
+    "displayName_es": "Shield Resistance", 
+    "displayName_fr": "Résistance des boucliers", 
+    "displayName_it": "Shield Resistance", 
+    "displayName_ja": "シールドレジスタンス", 
+    "displayName_ko": "실드 저항력", 
+    "displayName_ru": "Сопротивление щитов", 
+    "displayName_zh": "护盾抗性", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 271
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "80": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "AOE_Beacon_caustic_cloud_local_repair", 
+    "displayNameID": 532902, 
+    "displayName_de": "Abzug auf Panzerungsreparatursystem", 
+    "displayName_en-us": "Local Armor Repairer penalty", 
+    "displayName_es": "Local Armor Repairer penalty", 
+    "displayName_fr": "Pénalité de réparateur de blindage local", 
+    "displayName_it": "Local Armor Repairer penalty", 
+    "displayName_ja": "Local Armor Repairer penalty", 
+    "displayName_ko": "장갑수리 장치 페널티", 
+    "displayName_ru": "Штраф к эффективности локального ремонта брони", 
+    "displayName_zh": "自身装甲维修器惩罚", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 3393
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "81": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "AOE_Beacon_caustic_cloud_remote_repair", 
+    "displayNameID": 532901, 
+    "displayName_de": "Abzug auf Panzerungsfernreparatursystem", 
+    "displayName_en-us": "Remote Armor Repairer penalty", 
+    "displayName_es": "Remote Armor Repairer penalty", 
+    "displayName_fr": "Pénalité de réparateur de blindage à distance", 
+    "displayName_it": "Remote Armor Repairer penalty", 
+    "displayName_ja": "Remote Armor Repairer penalty", 
+    "displayName_ko": "원격 장갑 수리 페널티", 
+    "displayName_ru": "Штраф к эффективности дистанционного ремонта брони", 
+    "displayName_zh": "远程装甲维修器惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 84
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 16069
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "84": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "AOE_Beacon_trig_platform_tracking_speed", 
+    "displayNameID": 532937, 
+    "displayName_de": "Geschützturm-Zielverfolgungsgeschwindigkeit-Bonus", 
+    "displayName_en-us": "Turret Tracking Speed bonus", 
+    "displayName_es": "Turret Tracking Speed bonus", 
+    "displayName_fr": "Bonus de vitesse de poursuite des tourelles", 
+    "displayName_it": "Turret Tracking Speed bonus", 
+    "displayName_ja": "Turret Tracking Speed bonus", 
+    "displayName_ko": "터렛 트래킹 속도 보너스", 
+    "displayName_ru": "Повышение скорости слежения турелей", 
+    "displayName_zh": "炮台跟踪速度加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 160
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "88": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "AOE_Beacon_filament_cloud_shield_booster_shield_bonus", 
+    "displayNameID": 533827, 
+    "displayName_de": "Abzug auf Schildbonus von Schildboostern", 
+    "displayName_en-us": "Penalty to Shield Booster shield bonus", 
+    "displayName_es": "Penalty to Shield Booster shield bonus", 
+    "displayName_fr": "Pénalité du bonus de bouclier de booster de bouclier", 
+    "displayName_it": "Penalty to Shield Booster shield bonus", 
+    "displayName_ja": "Penalty to Shield Booster shield bonus", 
+    "displayName_ko": "실드 부스터의 실드 보너스에 페널티", 
+    "displayName_ru": "Штраф к бонусу прочности модуля накачки щитов", 
+    "displayName_zh": "护盾回充增量器护盾值惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2498
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3416
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "89": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "AOE_Beacon_filament_cloud_shield_booster_duration", 
+    "displayNameID": 533828, 
+    "displayName_de": "Bonus auf die Dauer von Schildboostern", 
+    "displayName_en-us": "Bonus to Shield Booster duration", 
+    "displayName_es": "Bonus to Shield Booster duration", 
+    "displayName_fr": "Bonus à la durée de booster de bouclier", 
+    "displayName_it": "Bonus to Shield Booster duration", 
+    "displayName_ja": "Bonus to Shield Booster duration", 
+    "displayName_ko": "실드 부스터 사이클 시간 보너스", 
+    "displayName_ru": "Ускорение цикла модулей накачки щитов", 
+    "displayName_zh": "护盾回充增量器持续时间加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2495
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 3416
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "9": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "PANIC: Shield Recharge time", 
+    "displayNameID": 518606, 
+    "displayName_de": "Schild-Laderzeitbonus", 
+    "displayName_en-us": "Shield recharge time bonus", 
+    "displayName_es": "Shield recharge time bonus", 
+    "displayName_fr": "Bonus à la vitesse de recharge des boucliers", 
+    "displayName_it": "Shield recharge time bonus", 
+    "displayName_ja": "シールドリチャージ時間ボーナス", 
+    "displayName_ko": "실드 회복 시간 보너스", 
+    "displayName_ru": "Влияние на срок полной регенерации щита", 
+    "displayName_zh": "护盾回充时间加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 479
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "90": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_electric_storm_EM_resistance_penalty", 
+    "displayNameID": 534977, 
+    "displayName_de": "Abzug auf EM-Resistenz", 
+    "displayName_en-us": "EM Resistance penalty", 
+    "displayName_es": "EM Resistance penalty", 
+    "displayName_fr": "Pénalité à la résistance EM", 
+    "displayName_it": "EM Resistance penalty", 
+    "displayName_ja": "EM Resistance penalty", 
+    "displayName_ko": "EM 저항력 페널티", 
+    "displayName_ru": "Штраф к сопротивляемости ЭМ урону", 
+    "displayName_zh": "电磁抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 113
+      }, 
+      {
+        "dogmaAttributeID": 267
+      }, 
+      {
+        "dogmaAttributeID": 271
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "92": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weather_electric_storm_capacitor_recharge_bonus", 
+    "displayNameID": 534976, 
+    "displayName_de": "Energiespeicher-Wiederaufladebonus", 
+    "displayName_en-us": "Capacitor Recharge bonus", 
+    "displayName_es": "Capacitor Recharge bonus", 
+    "displayName_fr": "Bonus de recharge du capaciteur", 
+    "displayName_it": "Capacitor Recharge bonus", 
+    "displayName_ja": "Capacitor Recharge bonus", 
+    "displayName_ko": "캐패시터 충전 보너스", 
+    "displayName_ru": "Влияние на перезарядку накопителя", 
+    "displayName_zh": "电容回充量加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "93": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_xenon_gas_explosive_resistance_penalty", 
+    "displayNameID": 534979, 
+    "displayName_de": "Abzug auf Explosionsresistenz", 
+    "displayName_en-us": "Explosive Resistance penalty", 
+    "displayName_es": "Explosive Resistance penalty", 
+    "displayName_fr": "Pénalité de résistance aux explosifs", 
+    "displayName_it": "Explosive Resistance penalty", 
+    "displayName_ja": "Explosive Resistance penalty", 
+    "displayName_ko": "폭발 저항력 페널티", 
+    "displayName_ru": "Штраф к сопротивляемости взрывному урону", 
+    "displayName_zh": "爆炸抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 111
+      }, 
+      {
+        "dogmaAttributeID": 268
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "94": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_xenon_gas_shield_hp_bonus", 
+    "displayNameID": 534980, 
+    "displayName_de": "Schild-HP-Bonus", 
+    "displayName_en-us": "Shield HP bonus", 
+    "displayName_es": "Shield HP bonus", 
+    "displayName_fr": "Bonus de PV du bouclier", 
+    "displayName_it": "Shield HP bonus", 
+    "displayName_ja": "Shield HP bonus", 
+    "displayName_ko": "실드량 보너스", 
+    "displayName_ru": "Повышение прочности щитов", 
+    "displayName_zh": "护盾值加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "95": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_infernal_thermal_resistance_penalty", 
+    "displayNameID": 534983, 
+    "displayName_de": "Abzug auf Thermalresistenz", 
+    "displayName_en-us": "Thermal Resistance penalty", 
+    "displayName_es": "Thermal Resistance penalty", 
+    "displayName_fr": "Pénalité de résistance thermique", 
+    "displayName_it": "Thermal Resistance penalty", 
+    "displayName_ja": "Thermal Resistance penalty", 
+    "displayName_ko": "열 저항력 페널티", 
+    "displayName_ru": "Штраф к сопротивляемости тепловому урону", 
+    "displayName_zh": "热能抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 110
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "96": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_infernal_armor_hp_bonus", 
+    "displayNameID": 534982, 
+    "displayName_de": "Panzerung-HP-Bonus", 
+    "displayName_en-us": "Armor HP bonus", 
+    "displayName_es": "Armor HP bonus", 
+    "displayName_fr": "Bonus de PV du blindage", 
+    "displayName_it": "Armor HP bonus", 
+    "displayName_ja": "Armor HP bonus", 
+    "displayName_ko": "장갑 내구도 보너스", 
+    "displayName_ru": "Повышение прочности брони", 
+    "displayName_zh": "装甲值加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "97": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Weather_darkness_turret_range_penalty", 
+    "displayNameID": 534987, 
+    "displayName_de": "Abzug auf optimale Reichweite und Präzisionsabfall-Reichweite von Geschütztürmen", 
+    "displayName_en-us": "Turret Optimal and Falloff Range penalty", 
+    "displayName_es": "Turret Optimal and Falloff Range penalty", 
+    "displayName_fr": "Pénalité de portée optimale et de déperdition des tourelles", 
+    "displayName_it": "Turret Optimal and Falloff Range penalty", 
+    "displayName_ja": "Turret Optimal and Falloff Range penalty", 
+    "displayName_ko": "터렛 최적사거리 및 유효사거리 페널티", 
+    "displayName_ru": "Штраф к оптимальной и добавочной дальности стрельбы турелей", 
+    "displayName_zh": "炮台最佳射程和失准范围惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 54
+      }, 
+      {
+        "dogmaAttributeID": 158
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 158, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "98": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_darkness_velocity_bonus", 
+    "displayNameID": 534988, 
+    "displayName_de": "Geschwindigkeitsbonus", 
+    "displayName_en-us": "Velocity bonus", 
+    "displayName_es": "Velocity bonus", 
+    "displayName_fr": "Bonus de vitesse", 
+    "displayName_it": "Velocity bonus", 
+    "displayName_ja": "Velocity bonus", 
+    "displayName_ko": "속도 보너스", 
+    "displayName_ru": "Повышение скорости", 
+    "displayName_zh": "速度加成", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "99": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_caustic_toxin_kinetic_resistance_penalty", 
+    "displayNameID": 535078, 
+    "displayName_de": "Abzug auf Kinetikresistenz", 
+    "displayName_en-us": "Kinetic Resistance penalty", 
+    "displayName_es": "Kinetic Resistance penalty", 
+    "displayName_fr": "Pénalité de résistance cinétique", 
+    "displayName_it": "Kinetic Resistance penalty", 
+    "displayName_ja": "Kinetic Resistance penalty", 
+    "displayName_ko": "키네틱 저항력 페널티", 
+    "displayName_ru": "Штраф к сопротивляемости кинетическому урону", 
+    "displayName_zh": "动能抗性惩罚", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 109
+      }, 
+      {
+        "dogmaAttributeID": 269
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }
+}

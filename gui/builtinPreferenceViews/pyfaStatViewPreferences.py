@@ -5,9 +5,10 @@ from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
 from service.settings import StatViewSettings
 
+_t = wx.GetTranslation
+
 
 class PFStatViewPref(PreferenceView):
-    title = "Statistics Panel"
 
     def __init__(self):
         self.dirtySettings = False
@@ -18,6 +19,7 @@ class PFStatViewPref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
+        self.title = _t("Statistics Panel")
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -26,7 +28,7 @@ class PFStatViewPref(PreferenceView):
         mainSizer.Add(self.stTitle, 0, wx.EXPAND | wx.ALL, 5)
 
         self.stSubTitle = wx.StaticText(panel, wx.ID_ANY,
-                                        "Changes require restart of pyfa to take effect.",
+                                        _t("Changes require restart of pyfa to take effect."),
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitle.Wrap(-1)
         mainSizer.Add(self.stSubTitle, 0, wx.ALL, 3)
@@ -37,21 +39,24 @@ class PFStatViewPref(PreferenceView):
 
         rbSizerRow1 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbResources = wx.RadioBox(panel, -1, "Resources", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbResources = wx.RadioBox(panel, -1, _t("Resources"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1,
+                                       wx.RA_SPECIFY_COLS)
         # Disable minimal as we don't have a view for this yet
         self.rbResources.EnableItem(1, False)
         self.rbResources.SetSelection(self.settings.get('resources'))
         rbSizerRow1.Add(self.rbResources, 1, wx.TOP | wx.RIGHT, 5)
         self.rbResources.Bind(wx.EVT_RADIOBOX, self.OnResourcesChange)
 
-        self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbResistances = wx.RadioBox(panel, -1, _t("Resistances"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1,
+                                         wx.RA_SPECIFY_COLS)
         # Disable minimal as we don't have a view for this yet
         self.rbResistances.EnableItem(1, False)
         self.rbResistances.SetSelection(self.settings.get('resistances'))
         rbSizerRow1.Add(self.rbResistances, 1, wx.ALL, 5)
         self.rbResistances.Bind(wx.EVT_RADIOBOX, self.OnResistancesChange)
 
-        self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Tank", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbRecharge = wx.RadioBox(panel, -1, _t("Shield/Armor Tank"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1,
+                                      wx.RA_SPECIFY_COLS)
         # Disable minimal as we don't have a view for this yet
         self.rbRecharge.EnableItem(1, False)
         self.rbRecharge.SetSelection(self.settings.get('recharge'))
@@ -63,21 +68,23 @@ class PFStatViewPref(PreferenceView):
         # Row 2
         rbSizerRow2 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbFirepower = wx.RadioBox(panel, -1, "Firepower", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbFirepower = wx.RadioBox(panel, -1, _t("Firepower"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1,
+                                       wx.RA_SPECIFY_COLS)
         # Disable minimal as we don't have a view for this yet
         self.rbFirepower.EnableItem(1, False)
         self.rbFirepower.SetSelection(self.settings.get('firepower'))
         rbSizerRow2.Add(self.rbFirepower, 1, wx.TOP | wx.RIGHT, 5)
         self.rbFirepower.Bind(wx.EVT_RADIOBOX, self.OnFirepowerChange)
 
-        self.rbCapacitor = wx.RadioBox(panel, -1, "Capacitor", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbCapacitor = wx.RadioBox(panel, -1, _t("Capacitor"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1,
+                                       wx.RA_SPECIFY_COLS)
         # Disable minimal as we don't have a view for this yet
         self.rbCapacitor.EnableItem(1, False)
         self.rbCapacitor.SetSelection(self.settings.get('capacitor'))
         rbSizerRow2.Add(self.rbCapacitor, 1, wx.ALL, 5)
         self.rbCapacitor.Bind(wx.EVT_RADIOBOX, self.OnCapacitorChange)
 
-        self.rbMisc = wx.RadioBox(panel, -1, "Misc", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbMisc = wx.RadioBox(panel, -1, _t("Misc"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1, wx.RA_SPECIFY_COLS)
         # Disable full as we don't have a view for this yet
         self.rbMisc.EnableItem(2, False)
         self.rbMisc.SetSelection(self.settings.get('targetingMisc'))
@@ -89,12 +96,12 @@ class PFStatViewPref(PreferenceView):
         # Row 3
         rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbPrice = wx.RadioBox(panel, -1, "Price", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbPrice = wx.RadioBox(panel, -1, _t("Price"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1, wx.RA_SPECIFY_COLS)
         self.rbPrice.SetSelection(self.settings.get('price'))
         rbSizerRow3.Add(self.rbPrice, 1, wx.TOP | wx.RIGHT, 5)
         self.rbPrice.Bind(wx.EVT_RADIOBOX, self.OnPriceChange)
 
-        self.rbOutgoing = wx.RadioBox(panel, -1, "Remote Reps", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbOutgoing = wx.RadioBox(panel, -1, _t("Remote Reps"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1, wx.RA_SPECIFY_COLS)
         self.rbOutgoing.SetSelection(self.settings.get('outgoing'))
         rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
         self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)

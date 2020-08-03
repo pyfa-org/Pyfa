@@ -1,4 +1,5 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.fitCommands as cmd
@@ -9,6 +10,8 @@ from gui.fitCommands.helpers import getSimilarModPositions
 from service.ammo import Ammo
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class ChangeModuleAmmo(ContextMenuCombined):
 
@@ -16,6 +19,14 @@ class ChangeModuleAmmo(ContextMenuCombined):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         # Format: {type ID: set(loadable, charges)}
         self.loadableChargesCache = {}
+        # Translations for the missile categories, as the text here is auto-generated via damage attributes
+        self.ddMissileChargeCatTrans = {
+            'em': _t('EM'),
+            'thermal': _t('Thermal'),
+            'explosive': _t('Explosive'),
+            'kinetic': _t('Kinetic'),
+            'mixed': _t('Mixed')
+        }
 
     def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext not in ('fittingModule', 'projectedModule'):
@@ -34,7 +45,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return 'Charge'
+        return _t('Charge')
 
     def _getAmmo(self, mod):
         if mod.itemID is None:
@@ -45,7 +56,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
 
     def _addCharge(self, menu, charge):
         id_ = ContextMenuCombined.nextID()
-        name = charge.name if charge is not None else 'Empty'
+        name = charge.name if charge is not None else _t('Empty')
         self.chargeEventMap[id_] = charge
         item = wx.MenuItem(menu, id_, name)
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
@@ -68,7 +79,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
         self.chargeEventMap = {}
         modType, chargeDict = Ammo.getInstance().getModuleStructuredAmmo(self.module, ammo=self.mainCharges)
         if modType == 'ddTurret':
-            self._addSeparator(menu, 'Long Range')
+            self._addSeparator(menu, _t('Long Range'))
             menuItems = []
             for charges in chargeDict.values():
                 if len(charges) == 1:
@@ -80,25 +91,28 @@ class ChangeModuleAmmo(ContextMenuCombined):
                     subMenu = wx.Menu()
                     subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                     menuItem.SetSubMenu(subMenu)
-                    self._addSeparator(subMenu, 'Less Damage')
+                    self._addSeparator(subMenu, _t('Less Damage'))
                     for charge in charges:
                         subMenu.Append(self._addCharge(rootMenu if msw else subMenu, charge))
-                    self._addSeparator(subMenu, 'More Damage')
+                    self._addSeparator(subMenu, _t('More Damage'))
             for menuItem in menuItems:
                 menu.Append(menuItem)
-            self._addSeparator(menu, 'Short Range')
+            self._addSeparator(menu, _t('Short Range'))
         elif modType == 'ddMissile':
             menuItems = []
             for chargeCatName, charges in chargeDict.items():
-                menuItem = wx.MenuItem(menu, wx.ID_ANY, chargeCatName.capitalize())
+                menuItem = wx.MenuItem(menu, wx.ID_ANY, self.ddMissileChargeCatTrans.get(chargeCatName, chargeCatName))
+                bitmap = BitmapLoader.getBitmap("%s_small" % chargeCatName, "gui")
+                if bitmap is not None:
+                    menuItem.SetBitmap(bitmap)
                 menuItems.append(menuItem)
                 subMenu = wx.Menu()
                 subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                 menuItem.SetSubMenu(subMenu)
-                self._addSeparator(subMenu, 'Less Damage')
+                self._addSeparator(subMenu, _t('Less Damage'))
                 for charge in charges:
                     subMenu.Append(self._addCharge(rootMenu if msw else subMenu, charge))
-                self._addSeparator(subMenu, 'More Damage')
+                self._addSeparator(subMenu, _t('More Damage'))
             for menuItem in menuItems:
                 menu.Append(menuItem)
         elif modType == 'general':
@@ -129,9 +143,9 @@ class ChangeModuleAmmo(ContextMenuCombined):
                 return
             positions = getSimilarModPositions(modContainer, self.module)
             self.mainFrame.command.Submit(command(
-                fitID=fitID,
-                positions=positions,
-                chargeItemID=charge.ID if charge is not None else None))
+                    fitID=fitID,
+                    positions=positions,
+                    chargeItemID=charge.ID if charge is not None else None))
         else:
             if self.srcContext == 'fittingModule':
                 command = cmd.GuiChangeLocalModuleChargesCommand
@@ -148,9 +162,9 @@ class ChangeModuleAmmo(ContextMenuCombined):
                     if modCharges.issubset(self.mainCharges):
                         positions.append(position)
             self.mainFrame.command.Submit(command(
-                fitID=fitID,
-                positions=positions,
-                chargeItemID=charge.ID if charge is not None else None))
+                    fitID=fitID,
+                    positions=positions,
+                    chargeItemID=charge.ID if charge is not None else None))
 
 
 ChangeModuleAmmo.register()

@@ -214,7 +214,7 @@ class ItemView(Display):
         item = self.active[clickedPos]
         sMkt = self.sMkt
         sourceContext = "marketItemMisc" if self.marketBrowser.mode in ("search", "recent") else "marketItemGroup"
-        itemContext = sMkt.getCategoryByItem(item).name
+        itemContext = sMkt.getCategoryByItem(item).displayName
 
         menu = ContextMenu.getMenu(self, item, (item,), (sourceContext, itemContext))
         self.PopupMenu(menu)
