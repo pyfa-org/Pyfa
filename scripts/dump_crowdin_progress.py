@@ -11,6 +11,8 @@ if key is None:
     print("CROWDIN_API_KEY env variable not found, cannot fetch translation status.")
     sys.exit()
 
+print(key[0:2])
+
 params = {
     'json': '',
     'key': key
