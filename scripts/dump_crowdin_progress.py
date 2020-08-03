@@ -2,8 +2,14 @@ import requests
 import os
 import json
 import wx
+import sys
 
-key = os.environ.get("CROWDIN_API_KEY", "")
+key = os.environ.get("CROWDIN_API_KEY", None)
+
+if key is None:
+    # if building from a forked PR, this is normal. Secret veariables are generally unavailable in those circumstances
+    print("CROWDIN_API_KEY env variable not found, cannot fetch translation status.")
+    sys.exit()
 
 params = {
     'json': '',
