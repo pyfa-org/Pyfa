@@ -6540,23 +6540,6 @@ class Effect2160(BaseEffect):
                                       skill='Command Ships', **kwargs)
 
 
-class Effect2161(BaseEffect):
-    """
-    eliteBonusCommandShipHybridOptimalCS1
-
-    Used by:
-    Ship: Vulture
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
-                                      'maxRange', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
-                                      skill='Command Ships', **kwargs)
-
-
 class Effect2179(BaseEffect):
     """
     shipBonusDroneHitpointsGC2
@@ -11793,23 +11776,6 @@ class Effect3766(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('eliteBonusInterceptor'),
                                       skill='Interceptors', **kwargs)
-
-
-class Effect3767(BaseEffect):
-    """
-    eliteBonusCommandShipsHeavyMissileExplosionVelocityCS2
-
-    Used by:
-    Ship: Claymore
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
-                                        'aoeVelocity', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
-                                        skill='Command Ships', **kwargs)
 
 
 class Effect3771(BaseEffect):
@@ -19585,9 +19551,9 @@ class Effect5342(BaseEffect):
     shipArmorRepairing1GBC2
 
     Used by:
-    Variations of ship: Myrmidon (2 of 2)
     Ship: Astarte
     Ship: Brutix
+    Ship: Myrmidon
     """
 
     type = 'passive'
@@ -19670,7 +19636,7 @@ class Effect5351(BaseEffect):
     shipShieldBoost1MBC1
 
     Used by:
-    Variations of ship: Cyclone (2 of 2)
+    Ship: Cyclone
     Ship: Sleipnir
     """
 
@@ -20823,23 +20789,6 @@ class Effect5497(BaseEffect):
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships', **kwargs)
 
 
-class Effect5498(BaseEffect):
-    """
-    eliteBonusCommandShipsHeavyAssaultMissileExplosionVelocityCS2
-
-    Used by:
-    Ship: Claymore
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
-                                        'aoeVelocity', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
-                                        skill='Command Ships', **kwargs)
-
-
 class Effect5499(BaseEffect):
     """
     eliteBonusCommandShipsHeavyAssaultMissileExplosionRadiusCS2
@@ -20891,26 +20840,9 @@ class Effect5501(BaseEffect):
                                       skill='Command Ships', **kwargs)
 
 
-class Effect5502(BaseEffect):
-    """
-    eliteBonusCommandShipMediumHybridTrackingCS1
-
-    Used by:
-    Ship: Eos
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
-                                      'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
-                                      skill='Command Ships', **kwargs)
-
-
 class Effect5503(BaseEffect):
     """
-    eliteBonusCommandShipHeavyDroneTrackingCS2
+    eliteBonusCommandShipDroneTrackingCS2
 
     Used by:
     Ship: Eos
@@ -20920,25 +20852,8 @@ class Effect5503(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
-                                     skill='Command Ships', **kwargs)
-
-
-class Effect5504(BaseEffect):
-    """
-    eliteBonusCommandShipHeavyDroneVelocityCS2
-
-    Used by:
-    Ship: Eos
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Heavy Drone Operation'),
-                                     'maxVelocity', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                      skill='Command Ships', **kwargs)
 
 
@@ -32068,7 +31983,7 @@ class Effect6783(BaseEffect):
     Used by:
     Ships from group: Carrier (4 of 4)
     Ships from group: Combat Battlecruiser (14 of 14)
-    Ships from group: Command Ship (8 of 8)
+    Ships from group: Command Ship (4 of 8)
     Ships from group: Force Auxiliary (6 of 6)
     Ships from group: Supercarrier (6 of 6)
     Ships from group: Titan (7 of 7)
@@ -36848,3 +36763,90 @@ class Effect8066(BaseEffect):
     def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
                                       'damageMultiplier', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
+
+
+class Effect8068(BaseEffect):
+    """
+    shipShieldResistanceBonusMBC1
+
+    Used by:
+    Ship: Claymore
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
+        for damageType in damageTypes:
+            fit.ship.boostItemAttr(f'shield{damageType}DamageResonance', ship.getModifiedItemAttr('shipBonusMBC1'),
+                                   skill='Minmatar Battlecruiser', **kwargs)
+
+
+class Effect8070(BaseEffect):
+    """
+    eliteBonusCommandShipsHeavyHAMvelocityCS2
+
+    Used by:
+    Ship: Claymore
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles') or
+                                                    mod.charge.requiresSkill('Heavy Assault Missiles'),
+                                        'maxVelocity', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
+                                        skill='Command Ships', **kwargs)
+
+
+class Effect8071(BaseEffect):
+    """
+    eliteBonusCommandShipDroneRangeCS1
+
+    Used by:
+    Ship: Eos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'maxRange', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
+                                     skill='Command Ships', **kwargs)
+
+
+class Effect8072(BaseEffect):
+    """
+    shipArmorResistanceBonusGBC2
+
+    Used by:
+    Ship: Eos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
+        for damageType in damageTypes:
+            fit.ship.boostItemAttr(f'armor{damageType}DamageResonance', ship.getModifiedItemAttr('shipBonusGBC2'),
+                                   skill='Gallente Battlecruiser', **kwargs)
+
+
+class Effect8073(BaseEffect):
+    """
+    eliteBonusCommandShipShieldHPCS1
+
+    Used by:
+    Ship: Vulture
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
+                               skill='Command Ships', **kwargs)

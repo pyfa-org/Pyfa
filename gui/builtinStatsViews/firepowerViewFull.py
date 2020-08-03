@@ -166,20 +166,20 @@ class FirepowerViewFull(StatsView):
             hasSpool = hasSpoolUp(preSpool, fullSpool)
             lines = []
             if hasSpool:
-                lines.append("Spool up: {}-{}".format(
-                    formatAmount(preSpool.total, prec, lowest, highest),
-                    formatAmount(fullSpool.total, prec, lowest, highest)))
+                lines.append(_t("Spool up") + ": {}-{}".format(
+                        formatAmount(preSpool.total, prec, lowest, highest),
+                        formatAmount(fullSpool.total, prec, lowest, highest)))
             if getattr(normal, 'total', None):
                 if hasSpool:
                     lines.append("")
-                    lines.append("Current: {}".format(formatAmount(normal.total, prec, lowest, highest)))
+                    lines.append(_t("Current") + ": {}".format(formatAmount(normal.total, prec, lowest, highest)))
                 for dmgType in normal.names():
                     val = getattr(normal, dmgType, None)
                     if val:
                         lines.append("{}{}: {}%".format(
-                            "  " if hasSpool else "",
-                            dmgType.capitalize(),
-                            formatAmount(val / normal.total * 100, 3, 0, 0)))
+                                "  " if hasSpool else "",
+                                _t(dmgType).capitalize(),
+                                formatAmount(val / normal.total * 100, 3, 0, 0)))
             return "\n".join(lines)
 
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
@@ -218,8 +218,8 @@ class FirepowerViewFull(StatsView):
             if self._cachedValues[counter] != val:
                 tooltipText = dpsToolTip(val, preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetLabel(valueFormat.format(
-                    formatAmount(0 if val is None else val.total, prec, lowest, highest),
-                    "\u02e2" if hasSpoolUp(preSpoolVal, fullSpoolVal) else ""))
+                        formatAmount(0 if val is None else val.total, prec, lowest, highest),
+                        "\u02e2" if hasSpoolUp(preSpoolVal, fullSpoolVal) else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1

@@ -809,11 +809,11 @@ damp:
   - 'sd-\d00'
 sd:
   - '(^| )sd'  # Checking only beginning of a word to remove unwanted spam
-  - 'remote sensor dampener'
+  - 'sensor dampener'
   - '(targeting range|scan resolution) dampening script'
 rsd:
   - 'rsd'
-  - 'remote sensor dampener'
+  - 'sensor dampener'
   - 'sd-\d00'
   - '(targeting range|scan resolution) dampening script'
 

@@ -403,6 +403,10 @@ class _TabRenderer:
         width = max(width, self.min_width)
         height = max(height, self.min_height)
 
+        cur_width, cur_height = self.tab_size
+        if (width == cur_width) and (height == cur_height):
+            return
+
         self.tab_size = (width, height)
         self.InitTab()
 
@@ -975,9 +979,6 @@ class _TabsContainer(wx.Panel):
             self.Refresh()
             sel_tab = self.tabs.index(tab)
             self.Parent.SetSelection(sel_tab)
-
-            wx.PostEvent(self.Parent, PageChanged(self.tabs.index(old_sel_tab),
-                                                  self.tabs.index(tab)))
 
             return True
 

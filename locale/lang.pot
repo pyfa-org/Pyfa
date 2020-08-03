@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-17 11:42+0800\n"
+"POT-Creation-Date: 2020-07-27 15:29+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
@@ -32,7 +33,9 @@ msgstr ""
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
 msgid "%d attribute."
-msgstr ""
+msgid_plural "%d attributes."
+msgstr[0] ""
+msgstr[1] ""
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
@@ -276,6 +279,10 @@ msgstr ""
 msgid "Add Fits"
 msgstr ""
 
+#: gui/builtinContextMenus/targetProfile/adder.py:29
+msgid "Add Target Profile"
+msgstr ""
+
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
 msgid "Add {0} to Cargo (x1000)"
@@ -370,7 +377,7 @@ msgstr ""
 msgid "Angel Cartel"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
 msgid "Animate gauges"
 msgstr ""
 
@@ -420,6 +427,11 @@ msgstr ""
 msgid "Armor resistance"
 msgstr ""
 
+#: gui/builtinStatsViews/outgoingViewFull.py:44
+#: gui/builtinStatsViews/outgoingViewMinimal.py:43
+msgid "Armor restored"
+msgstr ""
+
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
 msgstr ""
@@ -460,6 +472,11 @@ msgstr ""
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:43
 msgid "Auto"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:145
+msgid ""
+"Auto will use the same language pyfa uses if available, otherwise English"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
@@ -622,6 +639,15 @@ msgstr ""
 msgid "Capacitor"
 msgstr ""
 
+#: gui/builtinStatsViews/capacitorViewFull.py:139
+msgid "Capacitor delta:"
+msgstr ""
+
+#: gui/builtinStatsViews/outgoingViewFull.py:32
+#: gui/builtinStatsViews/outgoingViewMinimal.py:31
+msgid "Capacitor restored"
+msgstr ""
+
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
 msgstr ""
@@ -678,7 +704,7 @@ msgstr ""
 msgid "Change Skills"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:81
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:84
 msgid "Change charge in all modules of the same type"
 msgstr ""
 
@@ -761,7 +787,7 @@ msgstr ""
 msgid "Client Secret:"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:51
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:54
 msgid "Color fitting view by slot"
 msgstr ""
 
@@ -785,7 +811,7 @@ msgstr ""
 msgid "Command center hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:50
 msgid "Compact skills needed tooltip"
 msgstr ""
 
@@ -900,6 +926,10 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/targetProfile.py:81
 msgid "Cruor (Blood Raiders)"
+msgstr ""
+
+#: gui/builtinStatsViews/firepowerViewFull.py:175
+msgid "Current"
 msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:45
@@ -1131,7 +1161,7 @@ msgstr ""
 msgid "Drag a fit to this area"
 msgstr ""
 
-#: gui/builtinAdditionPanes/projectedView.py:226
+#: gui/builtinAdditionPanes/projectedView.py:224
 msgid "Drag an item or fit, or use right-click menu for wormhole effects"
 msgstr ""
 
@@ -1240,6 +1270,10 @@ msgstr ""
 msgid "EVE API XML character files"
 msgstr ""
 
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:127
+msgid "EVE Data:"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:49
 msgid "EVE IGB HTML fitting file"
 msgstr ""
@@ -1276,6 +1310,10 @@ msgstr ""
 #: gui/builtinStatsViews/resistancesViewFull.py:61
 #: gui/builtinStatsViews/resistancesViewFull.py:219
 msgid "Effective HP: "
+msgstr ""
+
+#: gui/builtinStatsViews/capacitorViewFull.py:151
+msgid "Effective capacity"
 msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:85
@@ -1558,7 +1596,7 @@ msgstr ""
 msgid "Exporting skills needed..."
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:89
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:92
 msgid "Extra info in Additions panel tab names"
 msgstr ""
 
@@ -1758,7 +1796,7 @@ msgstr ""
 msgid "Gas hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:17
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:20
 msgid "General"
 msgstr ""
 
@@ -1793,6 +1831,10 @@ msgstr ""
 
 #: graphs/gui/frame.py:51
 msgid "Graphs"
+msgstr ""
+
+#: eos/saveddata/fit.py:402
+msgid "Gravimetric"
 msgstr ""
 
 #: graphs/style.py:53
@@ -1859,6 +1901,11 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:114
 msgid "Hull resistance"
+msgstr ""
+
+#: gui/builtinStatsViews/outgoingViewFull.py:50
+#: gui/builtinStatsViews/outgoingViewMinimal.py:49
+msgid "Hull restored"
 msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
@@ -2025,6 +2072,10 @@ msgstr ""
 msgid "Interceptor"
 msgstr ""
 
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:122
+msgid "Interested in helping with translations?"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
 #: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
 #: eos/saveddata/damagePattern.py:138 eos/saveddata/targetProfile.py:94
@@ -2092,8 +2143,12 @@ msgstr ""
 msgid "Kinetic resistance"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:96
-msgid "Language (restart required):"
+#: eos/saveddata/fit.py:402
+msgid "Ladar"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:97
+msgid "Language (requires restart)"
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
@@ -2101,7 +2156,7 @@ msgid "Large ship hold"
 msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:77
-#: gui/builtinStatsViews/capacitorViewFull.py:171
+#: gui/builtinStatsViews/capacitorViewFull.py:170
 msgid "Lasts "
 msgstr ""
 
@@ -2206,6 +2261,10 @@ msgstr ""
 
 #: graphs/style.py:56
 msgid "Magenta"
+msgstr ""
+
+#: eos/saveddata/fit.py:402
+msgid "Magnetometric"
 msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
@@ -2378,6 +2437,10 @@ msgstr ""
 msgid "Multifrequency"
 msgstr ""
 
+#: eos/saveddata/fit.py:408
+msgid "Multispectral"
+msgstr ""
+
 #: gui/copySelectDialog.py:54
 msgid "Mutated Attributes"
 msgstr ""
@@ -2497,6 +2560,10 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
+#: gui/builtinStatsViews/capacitorViewFull.py:149
+msgid "Neutralizer resistance"
+msgstr ""
+
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
 msgstr ""
@@ -2540,7 +2607,7 @@ msgstr ""
 msgid "No proxy"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
@@ -2613,7 +2680,7 @@ msgstr ""
 msgid "Open Widgets Inspect tool"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:76
 msgid "Open fittings in a new page by default"
 msgstr ""
 
@@ -2769,10 +2836,10 @@ msgstr ""
 msgid "Projected"
 msgstr ""
 
-#: gui/builtinAdditionPanes/projectedView.py:306
-#: gui/builtinAdditionPanes/projectedView.py:316
-#: gui/builtinAdditionPanes/projectedView.py:321
-#: gui/builtinAdditionPanes/projectedView.py:326
+#: gui/builtinAdditionPanes/projectedView.py:304
+#: gui/builtinAdditionPanes/projectedView.py:314
+#: gui/builtinAdditionPanes/projectedView.py:319
+#: gui/builtinAdditionPanes/projectedView.py:324
 msgid "Projected Item"
 msgstr ""
 
@@ -2832,12 +2899,16 @@ msgstr ""
 msgid "Quafe hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
 msgid "Quantity of active items"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:90
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
 msgid "Quantity of all items"
+msgstr ""
+
+#: eos/saveddata/fit.py:402
+msgid "Radar"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:45
@@ -2929,14 +3000,15 @@ msgid "Remove Overides for Item"
 msgstr ""
 
 #: gui/builtinContextMenus/itemRemove.py:42
-msgid "Remove {}{}"
+#, python-brace-format
+msgid "Remove {item}{stack}"
 msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:108
 msgid "Rename"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:55
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:58
 msgid "Reopen previous fits on startup"
 msgstr ""
 
@@ -3040,6 +3112,10 @@ msgstr ""
 msgid "Salvage hold"
 msgstr ""
 
+#: locale_test/getTextLocale.py:4
+msgid "Sample Title Text English"
+msgstr ""
+
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "Sansha Incursion"
@@ -3130,7 +3206,7 @@ msgstr ""
 msgid "Sentinel"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:59
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:62
 msgid "Separate Racks"
 msgstr ""
 
@@ -3200,6 +3276,11 @@ msgstr ""
 msgid "Shield resistance"
 msgstr ""
 
+#: gui/builtinStatsViews/outgoingViewFull.py:38
+#: gui/builtinStatsViews/outgoingViewMinimal.py:37
+msgid "Shield restored"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
 msgstr ""
@@ -3230,7 +3311,7 @@ msgstr ""
 msgid "Short Range"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:63
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:66
 msgid "Show Rack Labels"
 msgstr ""
 
@@ -3238,7 +3319,7 @@ msgstr ""
 msgid "Show empty ship groups"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:67
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
 msgid "Show fitting tab tooltips"
 msgstr ""
 
@@ -3250,7 +3331,7 @@ msgstr ""
 msgid "Show market shortcuts"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:77
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:80
 msgid "Show ship browser tooltip"
 msgstr ""
 
@@ -3329,6 +3410,10 @@ msgstr ""
 msgid "Split {} Stack"
 msgstr ""
 
+#: gui/builtinStatsViews/firepowerViewFull.py:169
+msgid "Spool up"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 msgid "Spoolup"
 msgstr ""
@@ -3337,7 +3422,7 @@ msgstr ""
 msgid "Spoolup Cycles"
 msgstr ""
 
-#: gui/builtinStatsViews/capacitorViewFull.py:171
+#: gui/builtinStatsViews/capacitorViewFull.py:170
 msgid "Stable: "
 msgstr ""
 
@@ -3768,15 +3853,15 @@ msgstr ""
 msgid "Use capacitor simulator"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:39
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:42
 msgid "Use character implants by default for new fits"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:35
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:38
 msgid "Use global character"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:43
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:46
 msgid "Use global damage pattern"
 msgstr ""
 
@@ -3847,7 +3932,7 @@ msgid ""
 "behavior)."
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:86
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:89
 msgid ""
 "When disabled, reloads charges just in selected modules. Action can be "
 "reversed by holding Ctrl or Alt key while changing charge."
@@ -3971,6 +4056,26 @@ msgstr ""
 msgid "[T2] Void"
 msgstr ""
 
+#: eos/utils/stats.py:123
+msgid "em"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "exp"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "explosive"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "kin"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "kinetic"
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
 msgstr ""
@@ -4002,6 +4107,18 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:102
+msgid "pyfa:"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "th"
+msgstr ""
+
+#: eos/utils/stats.py:123
+msgid "thermal"
 msgstr ""
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
@@ -4038,7 +4155,9 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
-msgstr ""
+msgid_plural "{} {} Slots"
+msgstr[0] ""
+msgstr[1] ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
 #, no-python-format, python-brace-format

@@ -27,6 +27,9 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - cmd: "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - cmd: "appveyor DownloadFile https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip"
+  - cmd: "7z x gettext0.20.2-iconv1.16-shared-64.zip -ogettext"
+  - cmd: "SET PATH=gettext;%PATH%"
 
   - cmd: "python --version"
   - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
@@ -53,8 +56,11 @@ before_build:
 
 build_script:
   - ps: echo("Build pyfa:")
+  - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
     # Build language files
   - cmd: "python scripts/compile_lang.py"
+    # Dump language progress
+  - cmd: "python scripts/dump_crowdin_progress.py"
     # Build gamedata DB
   - cmd: "python db_update.py"
   # Build command for PyInstaller

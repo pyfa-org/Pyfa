@@ -16366,7 +16366,7 @@
     "groupName_ja": "Abyssal Proving Filaments", 
     "groupName_ko": "어비설 격전 필라멘트", 
     "groupName_ru": "Полигонные нити Бездны", 
-    "groupName_zh": "Abyssal Proving Filaments", 
+    "groupName_zh": "深渊试炼纤维", 
     "published": true, 
     "useBasePrice": false
   }, 
@@ -16710,7 +16710,7 @@
     "groupName_ja": "Temporary Collidable Structure", 
     "groupName_ko": "임시 충돌체 (구조물)", 
     "groupName_ru": "Временное разрушаемое сооружение", 
-    "groupName_zh": "Temporary Collidable Structure", 
+    "groupName_zh": "临时性可碰撞建筑", 
     "iconID": 0, 
     "published": false, 
     "useBasePrice": false

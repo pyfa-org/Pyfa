@@ -8,6 +8,7 @@ from gui.preferenceView import PreferenceView
 from service.fit import Fit
 from service.settings import SettingsProvider, LocaleSettings
 import eos.config
+import wx.lib.agw.hyperlink as hl
 
 
 _t = wx.GetTranslation
@@ -93,7 +94,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.rbAddLabels, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
         self.rbAddLabels.Bind(wx.EVT_RADIOBOX, self.OnAddLabelsChange)
 
-        langBox = wx.StaticBoxSizer(wx.VERTICAL, panel, "Language (requires restart)")
+        langBox = wx.StaticBoxSizer(wx.VERTICAL, panel, _t("Language (requires restart)"))
         mainSizer.Add(langBox, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
 
         langSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -102,9 +103,14 @@ class PFGeneralPref(PreferenceView):
         self.stLangLabel.Wrap(-1)
         langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.langChoices = sorted([v for x, v in LocaleSettings.supported_langauges().items()], key=lambda x: x.Description)
+        self.langChoices = sorted([langInfo for lang, langInfo in LocaleSettings.supported_langauges().items()], key=lambda x: x.Description)
 
-        self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x.Description for x in self.langChoices], 0)
+        def langDisplay(langInfo):
+            progress = self.localeSettings.get_progress(langInfo.CanonicalName)
+            progress_display = (" ({}%)".format(progress['translated_progress']) if progress is not None else "")
+            return langInfo.Description + progress_display
+
+        self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [langDisplay(x) for x in self.langChoices], 0)
         self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
 
         selectedIndex = self.langChoices.index(next((x for x in self.langChoices if x.CanonicalName == self.localeSettings.get('locale')), None))
@@ -112,7 +118,10 @@ class PFGeneralPref(PreferenceView):
 
         langSizer.Add(self.chLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         langBox.Add(langSizer)
-
+        langBox.Add(hl.HyperLinkCtrl(panel, -1,
+                                     _t("Interested in helping with translations?"),
+                                     URL="https://github.com/pyfa-org/Pyfa/blob/master/locale/README.md"
+                                     ), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 15)
         eosLangSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.stEosLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("EVE Data:"), wx.DefaultPosition, wx.DefaultSize, 0)
@@ -133,9 +142,9 @@ class PFGeneralPref(PreferenceView):
 
         langBox.Add(eosLangSizer)
         langBox.Add(wx.StaticText(panel, wx.ID_ANY,
-                                  _t("(Auto will use the same language pyfa uses if available, otherwise English)"),
+                                  _t("Auto will use the same language pyfa uses if available, otherwise English"),
                                   wx.DefaultPosition,
-                                  wx.DefaultSize, 0), 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
+                                  wx.DefaultSize, 0), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 15)
         self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
