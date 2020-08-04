@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2020-08-02 17:09\n"
+"PO-Revision-Date: 2020-08-04 15:03\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -33,7 +33,7 @@ msgstr "齐射"
 #, python-format
 msgid "%d attribute."
 msgid_plural "%d attributes."
-msgstr[0] ""
+msgstr[0] "共%d个属性。"
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
@@ -278,7 +278,7 @@ msgstr "添加装配"
 
 #: gui/builtinContextMenus/targetProfile/adder.py:29
 msgid "Add Target Profile"
-msgstr ""
+msgstr "添加目标属性"
 
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
@@ -425,7 +425,7 @@ msgstr "装甲抗性"
 #: gui/builtinStatsViews/outgoingViewFull.py:44
 #: gui/builtinStatsViews/outgoingViewMinimal.py:43
 msgid "Armor restored"
-msgstr ""
+msgstr "护甲修复量"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
@@ -471,7 +471,7 @@ msgstr "自动"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:145
 msgid "Auto will use the same language pyfa uses if available, otherwise English"
-msgstr ""
+msgstr "当 pyfa 界面语言可用时，“自动”将尝试使用相同的语言；否则使用英语。"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Auto-detected proxy settings"
@@ -635,12 +635,12 @@ msgstr "电容"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:139
 msgid "Capacitor delta:"
-msgstr ""
+msgstr "电容变化量："
 
 #: gui/builtinStatsViews/outgoingViewFull.py:32
 #: gui/builtinStatsViews/outgoingViewMinimal.py:31
 msgid "Capacitor restored"
-msgstr ""
+msgstr "电容恢复量"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:57
 msgid "Capacitor stability"
@@ -924,7 +924,7 @@ msgstr "凝血级（血袭者）"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:175
 msgid "Current"
-msgstr ""
+msgstr "当前"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:45
 #: gui/builtinItemStatsViews/itemProperties.py:57
@@ -1261,7 +1261,7 @@ msgstr "EvE API XML角色文件"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:127
 msgid "EVE Data:"
-msgstr ""
+msgstr "EVE 数据："
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:49
 msgid "EVE IGB HTML fitting file"
@@ -1303,7 +1303,7 @@ msgstr "有效HP："
 
 #: gui/builtinStatsViews/capacitorViewFull.py:151
 msgid "Effective capacity"
-msgstr ""
+msgstr "等效容量"
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Effective damage inflicted"
@@ -1889,7 +1889,7 @@ msgstr "结构抗性"
 #: gui/builtinStatsViews/outgoingViewFull.py:50
 #: gui/builtinStatsViews/outgoingViewMinimal.py:49
 msgid "Hull restored"
-msgstr ""
+msgstr "船体修复量"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Hull: "
@@ -2053,7 +2053,7 @@ msgstr "截击"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:122
 msgid "Interested in helping with translations?"
-msgstr ""
+msgstr "有兴趣参与翻译 pyfa？"
 
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
 #: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
@@ -2128,7 +2128,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:97
 msgid "Language (requires restart)"
-msgstr ""
+msgstr "语言 (重启生效)"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
 msgid "Large ship hold"
@@ -2541,7 +2541,7 @@ msgstr "网络"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:149
 msgid "Neutralizer resistance"
-msgstr ""
+msgstr "电容中和器抗性"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
@@ -2970,7 +2970,7 @@ msgstr "删除物品的自定义属性"
 #: gui/builtinContextMenus/itemRemove.py:42
 #, python-brace-format
 msgid "Remove {item}{stack}"
-msgstr ""
+msgstr "移除 {item}{stack}"
 
 #: gui/builtinShipBrowser/fitItem.py:108
 msgid "Rename"
@@ -3245,7 +3245,7 @@ msgstr "护盾抗性"
 #: gui/builtinStatsViews/outgoingViewFull.py:38
 #: gui/builtinStatsViews/outgoingViewMinimal.py:37
 msgid "Shield restored"
-msgstr ""
+msgstr "护盾修复量"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
@@ -4039,7 +4039,7 @@ msgstr "pyfa.io"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:102
 msgid "pyfa:"
-msgstr ""
+msgstr "pyfa:"
 
 #: eos/utils/stats.py:123
 msgid "th"
@@ -4084,7 +4084,7 @@ msgstr "{}属性"
 #: gui/builtinViewColumns/baseName.py:104
 msgid "{} {} Slot"
 msgid_plural "{} {} Slots"
-msgstr[0] ""
+msgstr[0] "{} {} 槽"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
 #, no-python-format, python-brace-format
