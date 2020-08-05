@@ -102,18 +102,21 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def getData(self):
         data = Group()
+        data.groups['Metaliminal Storm'] = self.getEffectBeacons(
+            'Electrical', 'Exotic', 'Gamma', 'Plasma',
+            extra_garbage=('Metaliminal', 'Storm', 'Matter', 'Ray', 'Firestorm'))
         data.groups['Wormhole'] = self.getEffectBeacons(
             'Black Hole', 'Cataclysmic Variable', 'Magnetar',
             'Pulsar', 'Red Giant', 'Wolf Rayet')
+        data.groups['Abyssal Weather'] = self.getAbyssalWeather()
         data.groups['Sansha Incursion'] = self.getEffectBeacons('Sansha Incursion')
         data.groups['Triglavian Invasion'] = self.getEffectBeacons('Triglavian Invasion')
         data.groups['Triglavian Invasion'].groups['Destructible Beacons'] = self.getDestructibleBeacons()
-        data.groups['Abyssal Weather'] = self.getAbyssalWeather()
         return data
 
-    def getEffectBeacons(self, *groups):
+    def getEffectBeacons(self, *groups, extra_garbage=()):
         """
-        Get dictionary with wormhole system-wide effects
+        Get dictionary with system-wide effects
         """
         compacted = len(groups) <= 1
         sMkt = Market.getInstance()
@@ -122,7 +125,8 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data = Group()
 
         # Stuff we don't want to see in names
-        garbages = ("System Effects", "Effects")
+        garbages = ["System Effects", "Effects"]
+        garbages.extend(extra_garbage)
 
         # Get group with all the system-wide beacons
         grp = sMkt.getGroup("Effect Beacon")
