@@ -32546,5 +32546,18 @@
     "name": "showSystemInfoBubble", 
     "published": 0, 
     "stackable": 0
+  }, 
+  "3095": {
+    "attributeID": 3095, 
+    "categoryID": 7, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayName": "Probe Strength Bonus", 
+    "displayNameID": 568981, 
+    "highIsGood": 1, 
+    "name": "scanProbeStrengthBonus", 
+    "published": 1, 
+    "stackable": 0, 
+    "unitID": 105
   }
 }

@@ -2528,11 +2528,11 @@
     "parentGroupID": 14
   }, 
   "541": {
-    "description": "An advanced form of mechanically enhanced armor plating upgrades.", 
+    "description": "Energized Armor Resistance Membranes", 
     "descriptionID": 64723, 
     "hasTypes": 0, 
     "iconID": 2066, 
-    "name": "Energized Plating", 
+    "name": "Energized Armor Resistance Membranes", 
     "nameID": 65797, 
     "parentGroupID": 14
   }, 
@@ -9051,11 +9051,11 @@
     "parentGroupID": 214
   }, 
   "1543": {
-    "description": "Blueprints for Energized Plating", 
+    "description": "Blueprints for Energized Armor Membranes", 
     "descriptionID": 281321, 
     "hasTypes": 1, 
     "iconID": 2703, 
-    "name": "Energized Plating", 
+    "name": "Energized Armor Membranes", 
     "nameID": 281320, 
     "parentGroupID": 214
   }, 
@@ -9989,56 +9989,56 @@
     "parentGroupID": 535
   }, 
   "1682": {
-    "description": "Energized Explosive Plating", 
+    "description": "Explosive Energized Membranes", 
     "descriptionID": 285386, 
     "hasTypes": 1, 
     "iconID": 1395, 
-    "name": "Energized Explosive Plating", 
+    "name": "Explosive Energized Membranes", 
     "nameID": 285385, 
     "parentGroupID": 541
   }, 
   "1683": {
-    "description": "Energized Thermal Plating", 
+    "description": "Thermal Energized Membranes", 
     "descriptionID": 285388, 
     "hasTypes": 1, 
     "iconID": 1394, 
-    "name": "Energized Thermal Plating", 
+    "name": "Thermal Energized Membranes", 
     "nameID": 285387, 
     "parentGroupID": 541
   }, 
   "1684": {
-    "description": "Energized EM Plating", 
+    "description": "EM Energized Membranes", 
     "descriptionID": 285390, 
     "hasTypes": 1, 
     "iconID": 1396, 
-    "name": "Energized EM Plating", 
+    "name": "EM Energized Membranes", 
     "nameID": 285389, 
     "parentGroupID": 541
   }, 
   "1685": {
-    "description": "Energized Kinetic Plating", 
+    "description": "Kinetic Energized Membranes", 
     "descriptionID": 285392, 
     "hasTypes": 1, 
     "iconID": 1393, 
-    "name": "Energized Kinetic Plating", 
+    "name": "Kinetic Energized Membranes", 
     "nameID": 285391, 
     "parentGroupID": 541
   }, 
   "1686": {
-    "description": "Energized Adaptive Plating", 
+    "description": "Multispectrum Energized Membranes", 
     "descriptionID": 285394, 
     "hasTypes": 1, 
     "iconID": 2066, 
-    "name": "Energized Adaptive Plating", 
+    "name": "Multispectrum Energized Membranes", 
     "nameID": 285393, 
     "parentGroupID": 541
   }, 
   "1687": {
-    "description": "Energized Armor Layering", 
+    "description": "Layered Energized Armor Membranes", 
     "descriptionID": 285396, 
     "hasTypes": 1, 
     "iconID": 2066, 
-    "name": "Energized Armor Layering", 
+    "name": "Layered Energized Armor Membranes", 
     "nameID": 285395, 
     "parentGroupID": 14
   }, 
