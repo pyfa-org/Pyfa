@@ -16,226 +16,174 @@ rename_phrase = " renamed to "
 conversion_phrase = " converted to "
 
 text = """
-    Limited Layered Plating I converted to Upgraded Layered Coating I
-    'Scarab' Layered Plating I converted to Upgraded Layered Coating I
-    'Grail' Layered Plating I converted to Upgraded Layered Coating I
-    Limited Adaptive Nano Plating I converted to Upgraded Multispectrum Coating I
-    'Collateral' Adaptive Nano Plating I converted to Upgraded Multispectrum Coating I
-    'Refuge' Adaptive Nano Plating I converted to Upgraded Multispectrum Coating I
-    Limited EM Plating I converted to Upgraded EM Coating I
-    'Contour' EM Plating I converted to Upgraded EM Coating I
-    'Spiegel' EM Plating I converted to Upgraded EM Coating I
-    Limited Explosive Plating I converted to Upgraded Explosive Coating I
-    Experimental Explosive Plating I converted to Upgraded Explosive Coating I
-    'Aegis' Explosive Plating I converted to Upgraded Explosive Coating I
-    Limited Kinetic Plating I converted to Upgraded Kinetic Coating I
-    Experimental Kinetic Plating I converted to Upgraded Kinetic Coating I
-    'Element' Kinetic Plating I converted to Upgraded Kinetic Coating I
-    Limited Thermal Plating I converted to Upgraded Thermal Coating I
-    Experimental Thermal Plating I converted to Upgraded Thermal Coating I
-    Prototype Thermal Plating I converted to Upgraded Thermal Coating I
-    Basic EM Plating renamed to 'Basic' EM Coating
-    EM Plating I renamed to EM Coating I
-    EM Plating II renamed to EM Coating II
-    Basic Explosive Plating renamed to 'Basic' Explosive Coating
-    Explosive Plating I renamed to Explosive Coating I
-    Explosive Plating II renamed to Explosive Coating II
-    Basic Layered Plating renamed to 'Basic' Layered Coating
-    Layered Plating I renamed to Layered Coating I
-    Layered Plating II renamed to Layered Coating II
-    Basic Kinetic Plating renamed to 'Basic' Kinetic Coating
-    Kinetic Plating I renamed to Kinetic Coating I
-    Kinetic Plating II renamed to Kinetic Coating II
-    Basic Thermal Plating renamed to 'Basic' Thermal Coating
-    Thermal Plating I renamed to Thermal Coating I
-    Thermal Plating II renamed to Thermal Coating II
-    Basic Adaptive Nano Plating renamed to 'Basic' Multispectrum Coating
-    Adaptive Nano Plating I renamed to Multispectrum Coating I
-    Adaptive Nano Plating II renamed to Multispectrum Coating II
-    Domination Adaptive Nano Plating renamed to Domination Multispectrum Coating
-    True Sansha Adaptive Nano Plating renamed to True Sansha Multispectrum Coating
-    Dark Blood Adaptive Nano Plating renamed to Dark Blood Multispectrum Coating
-    Domination Kinetic Plating renamed to Domination Kinetic Coating
-    True Sansha Kinetic Plating renamed to True Sansha Kinetic Coating
-    Dark Blood Kinetic Plating renamed to Dark Blood Kinetic Coating
-    Domination Explosive Plating renamed to Domination Explosive Coating
-    True Sansha Explosive Plating renamed to True Sansha Explosive Coating
-    Dark Blood Explosive Plating renamed to Dark Blood Explosive Coating
-    Domination EM Plating renamed to Domination EM Coating
-    True Sansha EM Plating renamed to True Sansha EM Coating
-    Dark Blood EM Plating renamed to Dark Blood EM Coating
-    Domination Thermal Plating renamed to Domination Thermal Coating
-    True Sansha Thermal Plating renamed to True Sansha Thermal Coating
-    Dark Blood Thermal Plating renamed to Dark Blood Thermal Coating
-    Shadow Serpentis Adaptive Nano Plating renamed to Shadow Serpentis Multispectrum Coating
-    Shadow Serpentis Kinetic Plating renamed to Shadow Serpentis Kinetic Coating
-    Shadow Serpentis Explosive Plating renamed to Shadow Serpentis Explosive Coating
-    Shadow Serpentis EM Plating renamed to Shadow Serpentis EM Coating
-    Shadow Serpentis Thermal Plating renamed to Shadow Serpentis Thermal Coating
-    Mizuro's Modified Adaptive Nano Plating renamed to Mizuro's Modified Multispectrum Coating
-    Gotan's Modified Adaptive Nano Plating renamed to Gotan's Modified Multispectrum Coating
-    Mizuro's Modified Kinetic Plating renamed to Mizuro's Modified Kinetic Coating
-    Gotan's Modified Kinetic Plating renamed to Gotan's Modified Kinetic Coating
-    Mizuro's Modified Explosive Plating renamed to Mizuro's Modified Explosive Coating
-    Gotan's Modified Explosive Plating renamed to Gotan's Modified Explosive Coating
-    Mizuro's Modified EM Plating renamed to Mizuro's Modified EM Coating
-    Gotan's Modified EM Plating renamed to Gotan's Modified EM Coating
-    Mizuro's Modified Thermal Plating renamed to Mizuro's Modified Thermal Coating
-    Gotan's Modified Thermal Plating renamed to Gotan's Modified Thermal Coating
-    Brokara's Modified Adaptive Nano Plating renamed to Brokara's Modified Multispectrum Coating
-    Tairei's Modified Adaptive Nano Plating renamed to Tairei's Modified Multispectrum Coating
-    Selynne's Modified Adaptive Nano Plating renamed to Selynne's Modified Multispectrum Coating
-    Raysere's Modified Adaptive Nano Plating renamed to Raysere's Modified Multispectrum Coating
-    Vizan's Modified Adaptive Nano Plating renamed to Vizan's Modified Multispectrum Coating
-    Ahremen's Modified Adaptive Nano Plating renamed to Ahremen's Modified Multispectrum Coating
-    Chelm's Modified Adaptive Nano Plating renamed to Chelm's Modified Multispectrum Coating
-    Draclira's Modified Adaptive Nano Plating renamed to Draclira's Modified Multispectrum Coating
-    Brokara's Modified Kinetic Plating renamed to Brokara's Modified Kinetic Coating
-    Tairei's Modified Kinetic Plating renamed to Tairei's Modified Kinetic Coating
-    Selynne's Modified Kinetic Plating renamed to Selynne's Modified Kinetic Coating
-    Raysere's Modified Kinetic Plating renamed to Raysere's Modified Kinetic Coating
-    Vizan's Modified Kinetic Plating renamed to Vizan's Modified Kinetic Coating
-    Ahremen's Modified Kinetic Plating renamed to Ahremen's Modified Kinetic Coating
-    Chelm's Modified Kinetic Plating renamed to Chelm's Modified Kinetic Coating
-    Draclira's Modified Kinetic Plating renamed to Draclira's Modified Kinetic Coating
-    Brokara's Modified Explosive Plating renamed to Brokara's Modified Explosive Coating
-    Tairei's Modified Explosive Plating renamed to Tairei's Modified Explosive Coating
-    Selynne's Modified Explosive Plating renamed to Selynne's Modified Explosive Coating
-    Raysere's Modified Explosive Plating renamed to Raysere's Modified Explosive Coating
-    Vizan's Modified Explosive Plating renamed to Vizan's Modified Explosive Coating
-    Ahremen's Modified Explosive Plating renamed to Ahremen's Modified Explosive Coating
-    Chelm's Modified Explosive Plating renamed to Chelm's Modified Explosive Coating
-    Draclira's Modified Explosive Plating renamed to Draclira's Modified Explosive Coating
-    Brokara's Modified EM Plating renamed to Brokara's Modified EM Coating
-    Tairei's Modified EM Plating renamed to Tairei's Modified EM Coating
-    Selynne's Modified EM Plating renamed to Selynne's Modified EM Coating
-    Raysere's Modified EM Plating renamed to Raysere's Modified EM Coating
-    Vizan's Modified EM Plating renamed to Vizan's Modified EM Coating
-    Ahremen's Modified EM Plating renamed to Ahremen's Modified EM Coating
-    Chelm's Modified EM Plating renamed to Chelm's Modified EM Coating
-    Draclira's Modified EM Plating renamed to Draclira's Modified EM Coating
-    Brokara's Modified Thermal Plating renamed to Brokara's Modified Thermal Coating
-    Tairei's Modified Thermal Plating renamed to Tairei's Modified Thermal Coating
-    Selynne's Modified Thermal Plating renamed to Selynne's Modified Thermal Coating
-    Raysere's Modified Thermal Plating renamed to Raysere's Modified Thermal Coating
-    Vizan's Modified Thermal Plating renamed to Vizan's Modified Thermal Coating
-    Ahremen's Modified Thermal Plating renamed to Ahremen's Modified Thermal Coating
-    Chelm's Modified Thermal Plating renamed to Chelm's Modified Thermal Coating
-    Draclira's Modified Thermal Plating renamed to Draclira's Modified Thermal Coating
-    Brynn's Modified Adaptive Nano Plating renamed to Brynn's Modified Multispectrum Coating
-    Tuvan's Modified Adaptive Nano Plating renamed to Tuvan's Modified Multispectrum Coating
-    Setele's Modified Adaptive Nano Plating renamed to Setele's Modified Multispectrum Coating
-    Cormack's Modified Adaptive Nano Plating renamed to Cormack's Modified Multispectrum Coating
-    Brynn's Modified Thermal Plating renamed to Brynn's Modified Thermal Coating
-    Tuvan's Modified Thermal Plating renamed to Tuvan's Modified Thermal Coating
-    Setele's Modified Thermal Plating renamed to Setele's Modified Thermal Coating
-    Cormack's Modified Thermal Plating renamed to Cormack's Modified Thermal Coating
-    Brynn's Modified EM Plating renamed to Brynn's Modified EM Coating
-    Tuvan's Modified EM Plating renamed to Tuvan's Modified EM Coating
-    Setele's Modified EM Plating renamed to Setele's Modified EM Coating
-    Cormack's Modified EM Plating renamed to Cormack's Modified EM Coating
-    Brynn's Modified Explosive Plating renamed to Brynn's Modified Explosive Coating
-    Tuvan's Modified Explosive Plating renamed to Tuvan's Modified Explosive Coating
-    Setele's Modified Explosive Plating renamed to Setele's Modified Explosive Coating
-    Cormack's Modified Explosive Plating renamed to Cormack's Modified Explosive Coating
-    Brynn's Modified Kinetic Plating renamed to Brynn's Modified Kinetic Coating
-    Tuvan's Modified Kinetic Plating renamed to Tuvan's Modified Kinetic Coating
-    Setele's Modified Kinetic Plating renamed to Setele's Modified Kinetic Coating
-    Cormack's Modified Kinetic Plating renamed to Cormack's Modified Kinetic Coating
-    Imperial Navy Thermal Plating renamed to Imperial Navy Thermal Coating
-    Imperial Navy EM Plating renamed to Imperial Navy EM Coating
-    Imperial Navy Explosive Plating renamed to Imperial Navy Explosive Coating
-    Imperial Navy Kinetic Plating renamed to Imperial Navy Kinetic Coating
-    Imperial Navy Adaptive Nano Plating renamed to Imperial Navy Multispectrum Coating
-    Republic Fleet Thermal Plating renamed to Republic Fleet Thermal Coating
-    Republic Fleet EM Plating renamed to Republic Fleet EM Coating
-    Republic Fleet Explosive Plating renamed to Republic Fleet Explosive Coating
-    Republic Fleet Kinetic Plating renamed to Republic Fleet Kinetic Coating
-    Republic Fleet Adaptive Nano Plating renamed to Republic Fleet Multispectrum Coating
-    Upgraded Adaptive Nano Plating I renamed to Upgraded Multispectrum Coating I
-    Upgraded Kinetic Plating I renamed to Upgraded Kinetic Coating I
-    Upgraded Explosive Plating I renamed to Upgraded Explosive Coating I
-    Upgraded EM Plating I renamed to Upgraded EM Coating I
-    Upgraded Thermal Plating I renamed to Upgraded Thermal Coating I
-    Upgraded Layered Plating I renamed to Upgraded Layered Coating I
-    Ammatar Navy Kinetic Plating renamed to Ammatar Navy Kinetic Coating
-    Ammatar Navy Adaptive Nano Plating renamed to Ammatar Navy Multispectrum Coating
-    Ammatar Navy Explosive Plating renamed to Ammatar Navy Explosive Coating
-    Ammatar Navy EM Plating renamed to Ammatar Navy EM Coating
-    Federation Navy Adaptive Nano Plating renamed to Federation Navy Multispectrum Coating
-    Federation Navy Kinetic Plating renamed to Federation Navy Kinetic Coating
-    Federation Navy Explosive Plating renamed to Federation Navy Explosive Coating
-    Federation Navy EM Plating renamed to Federation Navy EM Coating
-    Federation Navy Thermal Plating renamed to Federation Navy Thermal Coating
-    Corpii C-Type Adaptive Nano Plating renamed to Corpii C-Type Multispectrum Coating
-    Centii C-Type Adaptive Nano Plating renamed to Centii C-Type Multispectrum Coating
-    Corpii B-Type Adaptive Nano Plating renamed to Corpii B-Type Multispectrum Coating
-    Centii B-Type Adaptive Nano Plating renamed to Centii B-Type Multispectrum Coating
-    Corpii A-Type Adaptive Nano Plating renamed to Corpii A-Type Multispectrum Coating
-    Centii A-Type Adaptive Nano Plating renamed to Centii A-Type Multispectrum Coating
-    Corpii C-Type Kinetic Plating renamed to Corpii C-Type Kinetic Coating
-    Centii C-Type Kinetic Plating renamed to Centii C-Type Kinetic Coating
-    Corpii C-Type Explosive Plating renamed to Corpii C-Type Explosive Coating
-    Centii C-Type Explosive Plating renamed to Centii C-Type Explosive Coating
-    Corpii C-Type EM Plating renamed to Corpii C-Type EM Coating
-    Centii C-Type EM Plating renamed to Centii C-Type EM Coating
-    Corpii C-Type Thermal Plating renamed to Corpii C-Type Thermal Coating
-    Centii C-Type Thermal Plating renamed to Centii C-Type Thermal Coating
-    Corpii B-Type Thermal Plating renamed to Corpii B-Type Thermal Coating
-    Centii B-Type Thermal Plating renamed to Centii B-Type Thermal Coating
-    Corpii B-Type Kinetic Plating renamed to Corpii B-Type Kinetic Coating
-    Centii B-Type Kinetic Plating renamed to Centii B-Type Kinetic Coating
-    Corpii B-Type Explosive Plating renamed to Corpii B-Type Explosive Coating
-    Centii B-Type Explosive Plating renamed to Centii B-Type Explosive Coating
-    Corpii B-Type EM Plating renamed to Corpii B-Type EM Coating
-    Centii B-Type EM Plating renamed to Centii B-Type EM Coating
-    Corpii A-Type Kinetic Plating renamed to Corpii A-Type Kinetic Coating
-    Centii A-Type Kinetic Plating renamed to Centii A-Type Kinetic Coating
-    Corpii A-Type Explosive Plating renamed to Corpii A-Type Explosive Coating
-    Centii A-Type Explosive Plating renamed to Centii A-Type Explosive Coating
-    Corpii A-Type EM Plating renamed to Corpii A-Type EM Coating
-    Centii A-Type EM Plating renamed to Centii A-Type EM Coating
-    Corpii A-Type Thermal Plating renamed to Corpii A-Type Thermal Coating
-    Centii A-Type Thermal Plating renamed to Centii A-Type Thermal Coating
-    Coreli C-Type Adaptive Nano Plating renamed to Coreli C-Type Multispectrum Coating
-    Coreli C-Type Kinetic Plating renamed to Coreli C-Type Kinetic Coating
-    Coreli C-Type Explosive Plating renamed to Coreli C-Type Explosive Coating
-    Coreli C-Type EM Plating renamed to Coreli C-Type EM Coating
-    Coreli C-Type Thermal Plating renamed to Coreli C-Type Thermal Coating
-    Coreli B-Type Adaptive Nano Plating renamed to Coreli B-Type Multispectrum Coating
-    Coreli B-Type Kinetic Plating renamed to Coreli B-Type Kinetic Coating
-    Coreli B-Type Explosive Plating renamed to Coreli B-Type Explosive Coating
-    Coreli B-Type EM Plating renamed to Coreli B-Type EM Coating
-    Coreli B-Type Thermal Plating renamed to Coreli B-Type Thermal Coating
-    Coreli A-Type Adaptive Nano Plating renamed to Coreli A-Type Multispectrum Coating
-    Coreli A-Type Kinetic Plating renamed to Coreli A-Type Kinetic Coating
-    Coreli A-Type Explosive Plating renamed to Coreli A-Type Explosive Coating
-    Coreli A-Type EM Plating renamed to Coreli A-Type EM Coating
-    Coreli A-Type Thermal Plating renamed to Coreli A-Type Thermal Coating
-    Khanid Navy Adaptive Nano Plating renamed to Khanid Navy Multispectrum Coating
-    Khanid Navy Kinetic Plating renamed to Khanid Navy Kinetic Coating
-    Khanid Navy Explosive Plating renamed to Khanid Navy Explosive Coating
-    Khanid Navy EM Plating renamed to Khanid Navy EM Coating
-    Khanid Navy Thermal Plating renamed to Khanid Navy Thermal Coating
-    Ammatar Navy Thermal Plating renamed to Ammatar Navy Thermal Coating
-    Low-Grade Mimesis Alpha renamed to Low-grade Mimesis Alpha
-    Low-Grade Mimesis Beta renamed to Low-grade Mimesis Beta
-    Low-Grade Mimesis Gamma renamed to Low-grade Mimesis Gamma
-    Low-Grade Mimesis Delta renamed to Low-grade Mimesis Delta
-    Low-Grade Mimesis Epsilon renamed to Low-grade Mimesis Epsilon
-    Low-Grade Mimesis Omega renamed to Low-grade Mimesis Omega
-    Mid-Grade Mimesis Alpha renamed to Mid-grade Mimesis Alpha
-    Mid-Grade Mimesis Beta renamed to Mid-grade Mimesis Beta
-    Mid-Grade Mimesis Gamma renamed to Mid-grade Mimesis Gamma
-    Mid-Grade Mimesis Delta renamed to Mid-grade Mimesis Delta
-    Mid-Grade Mimesis Epsilon renamed to Mid-grade Mimesis Epsilon
-    Mid-Grade Mimesis Omega renamed to Mid-grade Mimesis Omega
-    High-Grade Mimesis Alpha renamed to High-grade Mimesis Alpha
-    High-Grade Mimesis Beta renamed to High-grade Mimesis Beta
-    High-Grade Mimesis Delta renamed to High-grade Mimesis Delta
-    High-Grade Mimesis Epsilon renamed to High-grade Mimesis Epsilon
-    High-Grade Mimesis Gamma renamed to High-grade Mimesis Gamma
-    High-Grade Mimesis Omega renamed to High-grade Mimesis Omega
+    Basic Energized EM Membrane renamed to 'Basic' EM Energized Membrane
+    Energized EM Membrane I renamed to EM Energized Membrane I
+    Energized EM Membrane II renamed to EM Energized Membrane II
+    Basic Energized Explosive Membrane renamed to 'Basic' Explosive Energized Membrane
+    Energized Explosive Membrane I renamed to Explosive Energized Membrane I
+    Energized Explosive Membrane II renamed to Explosive Energized Membrane II
+    Basic Energized Armor Layering Membrane renamed to 'Basic' Layered Energized Membrane
+    Energized Armor Layering Membrane I renamed to Layered Energized Membrane I
+    Energized Armor Layering Membrane II renamed to Layered Energized Membrane II
+    Basic Energized Kinetic Membrane renamed to 'Basic' Kinetic Energized Membrane
+    Energized Kinetic Membrane I renamed to Kinetic Energized Membrane I
+    Energized Kinetic Membrane II renamed to Kinetic Energized Membrane II
+    Basic Energized Thermal Membrane renamed to 'Basic' Thermal Energized Membrane
+    Energized Thermal Membrane I renamed to Thermal Energized Membrane I
+    Energized Thermal Membrane II renamed to Thermal Energized Membrane II
+    Basic Energized Adaptive Nano Membrane renamed to 'Basic' Multispectrum Energized Membrane
+    Energized Adaptive Nano Membrane I renamed to Multispectrum Energized Membrane I
+    Energized Adaptive Nano Membrane II renamed to Multispectrum Energized Membrane II
+    Dark Blood Energized Adaptive Nano Membrane renamed to Dark Blood Multispectrum Energized Membrane
+    True Sansha Energized Adaptive Nano Membrane renamed to True Sansha Multispectrum Energized Membrane
+    Shadow Serpentis Energized Adaptive Nano Membrane renamed to Shadow Serpentis Multispectrum Energized Membrane
+    Dark Blood Energized Kinetic Membrane renamed to Dark Blood Kinetic Energized Membrane
+    True Sansha Energized Kinetic Membrane renamed to True Sansha Kinetic Energized Membrane
+    Shadow Serpentis Energized Kinetic Membrane renamed to Shadow Serpentis Kinetic Energized Membrane
+    Dark Blood Energized Explosive Membrane renamed to Dark Blood Explosive Energized Membrane
+    True Sansha Energized Explosive Membrane renamed to True Sansha Explosive Energized Membrane
+    Shadow Serpentis Energized Explosive Membrane renamed to Shadow Serpentis Explosive Energized Membrane
+    Dark Blood Energized EM Membrane renamed to Dark Blood EM Energized Membrane
+    True Sansha Energized EM Membrane renamed to True Sansha EM Energized Membrane
+    Shadow Serpentis Energized EM Membrane renamed to Shadow Serpentis EM Energized Membrane
+    Dark Blood Energized Thermal Membrane renamed to Dark Blood Thermal Energized Membrane
+    True Sansha Energized Thermal Membrane renamed to True Sansha Thermal Energized Membrane
+    Shadow Serpentis Energized Thermal Membrane renamed to Shadow Serpentis Thermal Energized Membrane
+    Brokara's Modified Energized Adaptive Nano Membrane renamed to Brokara's Modified Multispectrum Energized Membrane
+    Tairei's Modified Energized Adaptive Nano Membrane renamed to Tairei's Modified Multispectrum Energized Membrane
+    Selynne's Modified Energized Adaptive Nano Membrane renamed to Selynne's Modified Multispectrum Energized Membrane
+    Raysere's Modified Energized Adaptive Nano Membrane renamed to Raysere's Modified Multispectrum Energized Membrane
+    Vizan's Modified Energized Adaptive Nano Membrane renamed to Vizan's Modified Multispectrum Energized Membrane
+    Ahremen's Modified Energized Adaptive Nano Membrane renamed to Ahremen's Modified Multispectrum Energized Membrane
+    Chelm's Modified Energized Adaptive Nano Membrane renamed to Chelm's Modified Multispectrum Energized Membrane
+    Draclira's Modified Energized Adaptive Nano Membrane renamed to Draclira's Modified Multispectrum Energized Membrane
+    Brokara's Modified Energized Thermal Membrane renamed to Brokara's Modified Thermal Energized Membrane
+    Tairei's Modified Energized Thermal Membrane renamed to Tairei's Modified Thermal Energized Membrane
+    Selynne's Modified Energized Thermal Membrane renamed to Selynne's Modified Thermal Energized Membrane
+    Raysere's Modified Energized Thermal Membrane renamed to Raysere's Modified Thermal Energized Membrane
+    Vizan's Modified Energized Thermal Membrane renamed to Vizan's Modified Thermal Energized Membrane
+    Ahremen's Modified Energized Thermal Membrane renamed to Ahremen's Modified Thermal Energized Membrane
+    Chelm's Modified Energized Thermal Membrane renamed to Chelm's Modified Thermal Energized Membrane
+    Draclira's Modified Energized Thermal Membrane renamed to Draclira's Modified Thermal Energized Membrane
+    Brokara's Modified Energized EM Membrane renamed to Brokara's Modified EM Energized Membrane
+    Tairei's Modified Energized EM Membrane renamed to Tairei's Modified EM Energized Membrane
+    Selynne's Modified Energized EM Membrane renamed to Selynne's Modified EM Energized Membrane
+    Raysere's Modified Energized EM Membrane renamed to Raysere's Modified EM Energized Membrane
+    Vizan's Modified Energized EM Membrane renamed to Vizan's Modified EM Energized Membrane
+    Ahremen's Modified Energized EM Membrane renamed to Ahremen's Modified EM Energized Membrane
+    Chelm's Modified Energized EM Membrane renamed to Chelm's Modified EM Energized Membrane
+    Draclira's Modified Energized EM Membrane renamed to Draclira's Modified EM Energized Membrane
+    Brokara's Modified Energized Explosive Membrane renamed to Brokara's Modified Explosive Energized Membrane
+    Tairei's Modified Energized Explosive Membrane renamed to Tairei's Modified Explosive Energized Membrane
+    Selynne's Modified Energized Explosive Membrane renamed to Selynne's Modified Explosive Energized Membrane
+    Raysere's Modified Energized Explosive Membrane renamed to Raysere's Modified Explosive Energized Membrane
+    Vizan's Modified Energized Explosive Membrane renamed to Vizan's Modified Explosive Energized Membrane
+    Ahremen's Modified Energized Explosive Membrane renamed to Ahremen's Modified Explosive Energized Membrane
+    Chelm's Modified Energized Explosive Membrane renamed to Chelm's Modified Explosive Energized Membrane
+    Draclira's Modified Energized Explosive Membrane renamed to Draclira's Modified Explosive Energized Membrane
+    Brokara's Modified Energized Kinetic Membrane renamed to Brokara's Modified Kinetic Energized Membrane
+    Tairei's Modified Energized Kinetic Membrane renamed to Tairei's Modified Kinetic Energized Membrane
+    Selynne's Modified Energized Kinetic Membrane renamed to Selynne's Modified Kinetic Energized Membrane
+    Raysere's Modified Energized Kinetic Membrane renamed to Raysere's Modified Kinetic Energized Membrane
+    Vizan's Modified Energized Kinetic Membrane renamed to Vizan's Modified Kinetic Energized Membrane
+    Ahremen's Modified Energized Kinetic Membrane renamed to Ahremen's Modified Kinetic Energized Membrane
+    Chelm's Modified Energized Kinetic Membrane renamed to Chelm's Modified Kinetic Energized Membrane
+    Draclira's Modified Energized Kinetic Membrane renamed to Draclira's Modified Kinetic Energized Membrane
+    Brynn's Modified Energized Adaptive Nano Membrane renamed to Brynn's Modified Multispectrum Energized Membrane
+    Tuvan's Modified Energized Adaptive Nano Membrane renamed to Tuvan's Modified Multispectrum Energized Membrane
+    Setele's Modified Energized Adaptive Nano Membrane renamed to Setele's Modified Multispectrum Energized Membrane
+    Cormack's Modified Energized Adaptive Nano Membrane renamed to Cormack's Modified Multispectrum Energized Membrane
+    Brynn's Modified Energized Thermal Membrane renamed to Brynn's Modified Thermal Energized Membrane
+    Tuvan's Modified Energized Thermal Membrane renamed to Tuvan's Modified Thermal Energized Membrane
+    Setele's Modified Energized Thermal Membrane renamed to Setele's Modified Thermal Energized Membrane
+    Cormack's Modified Energized Thermal Membrane renamed to Cormack's Modified Thermal Energized Membrane
+    Brynn's Modified Energized EM Membrane renamed to Brynn's Modified EM Energized Membrane
+    Tuvan's Modified Energized EM Membrane renamed to Tuvan's Modified EM Energized Membrane
+    Setele's Modified Energized EM Membrane renamed to Setele's Modified EM Energized Membrane
+    Cormack's Modified Energized EM Membrane renamed to Cormack's Modified EM Energized Membrane
+    Brynn's Modified Energized Explosive Membrane renamed to Brynn's Modified Explosive Energized Membrane
+    Tuvan's Modified Energized Explosive Membrane renamed to Tuvan's Modified Explosive Energized Membrane
+    Setele's Modified Energized Explosive Membrane renamed to Setele's Modified Explosive Energized Membrane
+    Cormack's Modified Energized Explosive Membrane renamed to Cormack's Modified Explosive Energized Membrane
+    Brynn's Modified Energized Kinetic Membrane renamed to Brynn's Modified Kinetic Energized Membrane
+    Tuvan's Modified Energized Kinetic Membrane renamed to Tuvan's Modified Kinetic Energized Membrane
+    Setele's Modified Energized Kinetic Membrane renamed to Setele's Modified Kinetic Energized Membrane
+    Cormack's Modified Energized Kinetic Membrane renamed to Cormack's Modified Kinetic Energized Membrane
+    Imperial Navy Energized Thermal Membrane renamed to Imperial Navy Thermal Energized Membrane
+    Imperial Navy Energized EM Membrane renamed to Imperial Navy EM Energized Membrane
+    Imperial Navy Energized Explosive Membrane renamed to Imperial Navy Explosive Energized Membrane
+    Imperial Navy Energized Kinetic Membrane renamed to Imperial Navy Kinetic Energized Membrane
+    Imperial Navy Energized Adaptive Nano Membrane renamed to Imperial Navy Multispectrum Energized Membrane
+    Federation Navy Energized Thermal Membrane renamed to Federation Navy Thermal Energized Membrane
+    Federation Navy Energized EM Membrane renamed to Federation Navy EM Energized Membrane
+    Federation Navy Energized Explosive Membrane renamed to Federation Navy Explosive Energized Membrane
+    Federation Navy Energized Kinetic Membrane renamed to Federation Navy Kinetic Energized Membrane
+    Federation Navy Energized Adaptive Nano Membrane renamed to Federation Navy Multispectrum Energized Membrane
+    Prototype Energized Adaptive Nano Membrane I renamed to Compact Multispectrum Energized Membrane
+    Prototype Energized Kinetic Membrane I renamed to Compact Kinetic Energized Membrane
+    Prototype Energized Explosive Membrane I renamed to Compact Explosive Energized Membrane
+    Prototype Energized EM Membrane I renamed to Compact EM Energized Membrane
+    Prototype Energized Armor Layering Membrane I renamed to Compact Layered Energized Membrane
+    Prototype Energized Thermal Membrane I renamed to Compact Thermal Energized Membrane
+    Ammatar Navy Energized Adaptive Nano Membrane renamed to Ammatar Navy Multispectrum Energized Membrane
+    Ammatar Navy Energized Kinetic Membrane renamed to Ammatar Navy Kinetic Energized Membrane
+    Ammatar Navy Energized Explosive Membrane renamed to Ammatar Navy Explosive Energized Membrane
+    Ammatar Navy Energized EM Membrane renamed to Ammatar Navy EM Energized Membrane
+    Ammatar Navy Energized Thermal Membrane renamed to Ammatar Navy Thermal Energized Membrane
+    Corelum C-Type Energized Adaptive Nano Membrane renamed to Corelum C-Type Multispectrum Energized Membrane
+    Corelum C-Type Energized Kinetic Membrane renamed to Corelum C-Type Kinetic Energized Membrane
+    Corelum C-Type Energized Explosive Membrane renamed to Corelum C-Type Explosive Energized Membrane
+    Corelum C-Type Energized EM Membrane renamed to Corelum C-Type EM Energized Membrane
+    Corelum C-Type Energized Thermal Membrane renamed to Corelum C-Type Thermal Energized Membrane
+    Corelum B-Type Energized Adaptive Nano Membrane renamed to Corelum B-Type Multispectrum Energized Membrane
+    Corelum B-Type Energized Kinetic Membrane renamed to Corelum B-Type Kinetic Energized Membrane
+    Corelum B-Type Energized Explosive Membrane renamed to Corelum B-Type Explosive Energized Membrane
+    Corelum B-Type Energized EM Membrane renamed to Corelum B-Type EM Energized Membrane
+    Corelum B-Type Energized Thermal Membrane renamed to Corelum B-Type Thermal Energized Membrane
+    Corelum A-Type Energized Adaptive Nano Membrane renamed to Corelum A-Type Multispectrum Energized Membrane
+    Corelum A-Type Energized Kinetic Membrane renamed to Corelum A-Type Kinetic Energized Membrane
+    Corelum A-Type Energized Explosive Membrane renamed to Corelum A-Type Explosive Energized Membrane
+    Corelum A-Type Energized EM Membrane renamed to Corelum A-Type EM Energized Membrane
+    Corelum A-Type Energized Thermal Membrane renamed to Corelum A-Type Thermal Energized Membrane
+    Corpum C-Type Energized Adaptive Nano Membrane renamed to Corpum C-Type Multispectrum Energized Membrane
+    Centum C-Type Energized Adaptive Nano Membrane renamed to Centum C-Type Multispectrum Energized Membrane
+    Corpum C-Type Energized Kinetic Membrane renamed to Corpum C-Type Kinetic Energized Membrane
+    Centum C-Type Energized Kinetic Membrane renamed to Centum C-Type Kinetic Energized Membrane
+    Corpum C-Type Energized Explosive Membrane renamed to Corpum C-Type Explosive Energized Membrane
+    Centum C-Type Energized Explosive Membrane renamed to Centum C-Type Explosive Energized Membrane
+    Corpum C-Type Energized EM Membrane renamed to Corpum C-Type EM Energized Membrane
+    Centum C-Type Energized EM Membrane renamed to Centum C-Type EM Energized Membrane
+    Corpum C-Type Energized Thermal Membrane renamed to Corpum C-Type Thermal Energized Membrane
+    Centum C-Type Energized Thermal Membrane renamed to Centum C-Type Thermal Energized Membrane
+    Corpum B-Type Energized Adaptive Nano Membrane renamed to Corpum B-Type Multispectrum Energized Membrane
+    Centum B-Type Energized Adaptive Nano Membrane renamed to Centum B-Type Multispectrum Energized Membrane
+    Corpum B-Type Energized Kinetic Membrane renamed to Corpum B-Type Kinetic Energized Membrane
+    Centum B-Type Energized Kinetic Membrane renamed to Centum B-Type Kinetic Energized Membrane
+    Corpum B-Type Energized Explosive Membrane renamed to Corpum B-Type Explosive Energized Membrane
+    Centum B-Type Energized Explosive Membrane renamed to Centum B-Type Explosive Energized Membrane
+    Corpum B-Type Energized Thermal Membrane renamed to Corpum B-Type Thermal Energized Membrane
+    Centum B-Type Energized Thermal Membrane renamed to Centum B-Type Thermal Energized Membrane
+    Corpum A-Type Energized Thermal Membrane renamed to Corpum A-Type Thermal Energized Membrane
+    Centum A-Type Energized Thermal Membrane renamed to Centum A-Type Thermal Energized Membrane
+    Corpum A-Type Energized EM Membrane renamed to Corpum A-Type EM Energized Membrane
+    Centum A-Type Energized EM Membrane renamed to Centum A-Type EM Energized Membrane
+    Corpum A-Type Energized Explosive Membrane renamed to Corpum A-Type Explosive Energized Membrane
+    Centum A-Type Energized Explosive Membrane renamed to Centum A-Type Explosive Energized Membrane
+    Corpum A-Type Energized Kinetic Membrane renamed to Corpum A-Type Kinetic Energized Membrane
+    Centum A-Type Energized Kinetic Membrane renamed to Centum A-Type Kinetic Energized Membrane
+    Corpum A-Type Energized Adaptive Nano Membrane renamed to Corpum A-Type Multispectrum Energized Membrane
+    Centum A-Type Energized Adaptive Nano Membrane renamed to Centum A-Type Multispectrum Energized Membrane
+    Corpum B-Type Energized EM Membrane renamed to Corpum B-Type EM Energized Membrane
+    Centum B-Type Energized EM Membrane renamed to Centum B-Type EM Energized Membrane
+    'Pilfer' Energized Adaptive Nano Membrane I renamed to 'Pilfer' Multispectrum Energized Membrane
+    'Moonshine' Energized Thermal Membrane I renamed to 'Moonshine' Thermal Energized Membrane
+    'Mafia' Energized Kinetic Membrane I renamed to 'Mafia' Kinetic Energized Membrane
+    Khanid Navy Energized Adaptive Nano Membrane renamed to Khanid Navy Multispectrum Energized Membrane
+    Khanid Navy Energized Kinetic Membrane renamed to Khanid Navy Kinetic Energized Membrane
+    Khanid Navy Energized Explosive Membrane renamed to Khanid Navy Explosive Energized Membrane
+    Khanid Navy Energized EM Membrane renamed to Khanid Navy EM Energized Membrane
+    Khanid Navy Energized Thermal Membrane renamed to Khanid Navy Thermal Energized Membrane
+    Large Compact Vorton projector renamed to Large Compact Vorton Projector
     """
 
 def main(old, new):

@@ -441,7 +441,7 @@ class Effect63(BaseEffect):
 
     Used by:
     Modules from group: Armor Coating (184 of 184)
-    Modules from group: Armor Plating Energized (187 of 187)
+    Modules from group: Energized Armor Membrane (187 of 187)
     """
 
     type = 'passive'
@@ -6079,7 +6079,7 @@ class Effect2041(BaseEffect):
 
     Used by:
     Modules from group: Armor Coating (184 of 184)
-    Modules from group: Armor Plating Energized (187 of 187)
+    Modules from group: Energized Armor Membrane (187 of 187)
     """
 
     type = 'passive'
@@ -6256,7 +6256,7 @@ class Effect2109(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energized Armor Membrane',
                                       'emDamageResistanceBonus', skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
 
 
@@ -6272,7 +6272,7 @@ class Effect2110(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energized Armor Membrane',
                                       'explosiveDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
 
@@ -6289,7 +6289,7 @@ class Effect2111(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energized Armor Membrane',
                                       'kineticDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
 
@@ -6306,7 +6306,7 @@ class Effect2112(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plating Energized',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energized Armor Membrane',
                                       'thermalDamageResistanceBonus',
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level, **kwargs)
 

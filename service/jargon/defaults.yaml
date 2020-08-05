@@ -580,12 +580,18 @@ anti\-:
 # Armor modules
 eanm:
   - 'eanm'
-  - 'energized adaptive nano membrane'
+  - 'multispectrum energized membrane'
 enam:  # mistype of "eanm"
   - 'enam'
-  - 'energized adaptive nano membrane'
+  - 'multispectrum energized membrane'
+mem:
+  - 'mem'
+  - 'multispectrum energized membrane'
 anp:
   - 'anp'
+  - 'multispectrum coating'
+mc:
+  - 'mc'
   - 'multispectrum coating'
 plating:
   - 'plating'

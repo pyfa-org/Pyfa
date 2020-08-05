@@ -1,5 +1,5 @@
 """
-Conversion pack for May 2020 release
+Conversion pack for June 2020 release
 """
 
 CONVERSIONS = {
