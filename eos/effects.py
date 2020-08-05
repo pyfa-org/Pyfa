@@ -441,7 +441,7 @@ class Effect63(BaseEffect):
 
     Used by:
     Modules from group: Armor Coating (184 of 184)
-    Modules from group: Energized Armor Membrane (187 of 187)
+    Modules from group: Energized Armor Membrane (169 of 169)
     """
 
     type = 'passive'
@@ -6079,7 +6079,7 @@ class Effect2041(BaseEffect):
 
     Used by:
     Modules from group: Armor Coating (184 of 184)
-    Modules from group: Energized Armor Membrane (187 of 187)
+    Modules from group: Energized Armor Membrane (169 of 169)
     """
 
     type = 'passive'
@@ -12442,6 +12442,8 @@ class Effect3996(BaseEffect):
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
     """
 
     runTime = 'early'
@@ -13237,6 +13239,8 @@ class Effect4091(BaseEffect):
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     Celestials named like: Class Pulsar Effects (6 of 6)
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
     """
 
     runTime = 'early'
@@ -13355,6 +13359,8 @@ class Effect4135(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
     """
 
     runTime = 'early'
@@ -36261,6 +36267,28 @@ class Effect8018(BaseEffect):
                                       'duration', implant.getModifiedItemAttr('remoteRepDurationBonus'), **kwargs)
 
 
+class Effect8020(BaseEffect):
+    """
+    systemWarpSpeedAddition
+
+    Used by:
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: System-Wide Warp Speed Bonus
+    Celestial: Weak Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Plasma Firestorm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.increaseItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('warpSpeedAdd'), **kwargs)
+
+
 class Effect8021(BaseEffect):
     """
     hydraSetBonus
@@ -36850,3 +36878,21 @@ class Effect8073(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
                                skill='Command Ships', **kwargs)
+
+
+class Effect8075(BaseEffect):
+    """
+    systemHullEmResistance
+
+    Used by:
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('emDamageResonance', beacon.getModifiedItemAttr('emDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
