@@ -184,6 +184,24 @@ text = """
     Khanid Navy Energized EM Membrane renamed to Khanid Navy EM Energized Membrane
     Khanid Navy Energized Thermal Membrane renamed to Khanid Navy Thermal Energized Membrane
     Large Compact Vorton projector renamed to Large Compact Vorton Projector
+    Experimental Energized Adaptive Nano Membrane I converted to Compact Multispectrum Energized Membrane
+    Experimental Energized Armor Layering Membrane I converted to Compact Layered Energized Membrane
+    Experimental Energized EM Membrane I converted to Compact EM Energized Membrane
+    Experimental Energized Explosive Membrane I converted to Compact Explosive Energized Membrane
+    Experimental Energized Kinetic Membrane I converted to Compact Kinetic Energized Membrane
+    Experimental Energized Thermal Membrane I converted to Compact Thermal Energized Membrane
+    Limited Energized Adaptive Nano Membrane I converted to Compact Multispectrum Energized Membrane
+    Limited Energized Armor Layering Membrane I converted to Compact Layered Energized Membrane
+    Limited Energized EM Membrane I converted to Compact EM Energized Membrane
+    Limited Energized Explosive Membrane I converted to Compact Explosive Energized Membrane
+    Limited Energized Kinetic Membrane I converted to Compact Kinetic Energized Membrane
+    Limited Energized Thermal Membrane I converted to Compact Thermal Energized Membrane
+    Upgraded Energized Adaptive Nano Membrane I converted to Compact Multispectrum Energized Membrane
+    Upgraded Energized Armor Layering Membrane I converted to Compact Layered Energized Membrane
+    Upgraded Energized EM Membrane I converted to Compact EM Energized Membrane
+    Upgraded Energized Explosive Membrane I converted to Compact Explosive Energized Membrane
+    Upgraded Energized Kinetic Membrane I converted to Compact Kinetic Energized Membrane
+    Upgraded Energized Thermal Membrane I converted to Compact Thermal Energized Membrane
     """
 
 def main(old, new):
