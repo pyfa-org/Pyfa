@@ -447,7 +447,7 @@ class Fit:
         dp = sDP.getDamagePattern("Selected Ammo")
         if dp is None:
             dp = es_DamagePattern()
-            dp.name = "Selected Ammo"
+            dp.rawName = "Selected Ammo"
 
         fit = eos.db.getFit(fitID)
         for attr in ("em", "thermal", "kinetic", "explosive"):
