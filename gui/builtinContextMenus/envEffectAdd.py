@@ -102,9 +102,9 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def getData(self):
         data = Group()
-        data.groups['Metaliminal Storm'] = self.getEffectBeacons(
-            'Electrical', 'Exotic', 'Gamma', 'Plasma',
-            extra_garbage=('Metaliminal', 'Storm', 'Matter', 'Ray', 'Firestorm'))
+        # data.groups['Metaliminal Storm'] = self.getEffectBeacons(
+        #     'Electrical', 'Exotic', 'Gamma', 'Plasma',
+        #     extra_garbage=('Metaliminal', 'Storm', 'Matter', 'Ray', 'Firestorm'))
         data.groups['Wormhole'] = self.getEffectBeacons(
             'Black Hole', 'Cataclysmic Variable', 'Magnetar',
             'Pulsar', 'Red Giant', 'Wolf Rayet')
