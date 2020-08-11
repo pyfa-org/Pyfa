@@ -8691,8 +8691,8 @@ class Effect2872(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Defender Missiles'),
-                                           'maxVelocity', container.getModifiedItemAttr('missileVelocityBonus'), **kwargs)
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Defender Missiles'),
+                                        'maxVelocity', container.getModifiedItemAttr('missileVelocityBonus'), **kwargs)
 
 
 class Effect2881(BaseEffect):
