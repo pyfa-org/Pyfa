@@ -26973,15 +26973,12 @@ class Effect6406(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure ECM Battery', 'Structure Disruption Battery')
-
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'falloff', src.getModifiedItemAttr('structureRigEwarFalloffBonus'),
                                       stackingPenalties=True, **kwargs)
-
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'maxRange', src.getModifiedItemAttr('structureRigEwarOptimalBonus'),
                                       stackingPenalties=True, **kwargs)
-
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'falloffEffectiveness', src.getModifiedItemAttr('structureRigEwarFalloffBonus'),
                                       stackingPenalties=True, **kwargs)
@@ -27002,8 +26999,7 @@ class Effect6407(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         groups = ('Structure ECM Battery', 'Structure Disruption Battery')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
-                                      'capacitorNeed', src.getModifiedItemAttr('structureRigEwarCapUseBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      'capacitorNeed', src.getModifiedItemAttr('structureRigEwarCapUseBonus'), **kwargs)
 
 
 class Effect6408(BaseEffect):
@@ -27108,8 +27104,7 @@ class Effect6413(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Area Denial Module',
-                                      'capacitorNeed', src.getModifiedItemAttr('structureRigPDCapUseBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      'capacitorNeed', src.getModifiedItemAttr('structureRigPDCapUseBonus'), **kwargs)
 
 
 class Effect6417(BaseEffect):
@@ -35211,6 +35206,39 @@ class Effect7097(BaseEffect):
     def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Precursor Weapon',
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
+
+
+class Effect7098(BaseEffect):
+    """
+    structureConversionRigBasicBonuses
+
+    Used by:
+    Structure Modules from group: Outpost Conversion Rigs (104 of 104)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attr in ('hp', 'armorHP', 'shieldCapacity', 'capacitorCapacity'):
+            fit.ship.boostItemAttr(attr, src.getModifiedItemAttr('conversionRigHPCapBonus'), **kwargs)
+        fit.ship.boostItemAttr('maxTargetRange', src.getModifiedItemAttr('structureRigMaxTargetRangeBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('scanResolution', src.getModifiedItemAttr('structureRigScanResBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('maxLockedTargets', src.getModifiedItemAttr('structureRigMaxTargetBonus'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Area Denial Module',
+                                      'capacitorNeed', src.getModifiedItemAttr('structureRigPDCapUseBonus'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Structure Area Denial Module',
+                                      'empFieldRange', src.getModifiedItemAttr('structureRigPDRangeBonus'), **kwargs)
+        for attr in ('structureRigMaxTargetBonus', 'structureRigMaxTargetRangeBonus', 'structureRigScanResBonus'):
+            fit.modules.filteredItemForce(
+                lambda mod: mod.item.group.name == 'Structure Combat Rig L - Max Targets and Sensor Boosting',
+                attr, src.getModifiedItemAttr('constantZero'), **kwargs)
+        for attr in ('structureRigPDCapUseBonus', 'structureRigPDRangeBonus'):
+            fit.modules.filteredItemForce(
+                lambda mod: mod.item.group.name == 'Structure Combat Rig L - Point Defense Battery Application and Projection',
+                attr, src.getModifiedItemAttr('constantZero'), **kwargs)
 
 
 class Effect7111(BaseEffect):
