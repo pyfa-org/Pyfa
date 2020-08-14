@@ -7353,8 +7353,7 @@
     "displayName": "Meta Level", 
     "displayNameID": 233633, 
     "highIsGood": 1, 
-    "iconID": 0, 
-    "name": "metaLevel", 
+    "name": "metaLevelOld", 
     "published": 1, 
     "stackable": 1, 
     "unitID": 140
@@ -32559,5 +32558,23 @@
     "published": 1, 
     "stackable": 0, 
     "unitID": 105
+  }, 
+  "3098": {
+    "attributeID": 3098, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "highIsGood": 0, 
+    "name": "armorRepairDurationBonus", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "3099": {
+    "attributeID": 3099, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "highIsGood": 0, 
+    "name": "shieldBoosterDurationBonus", 
+    "published": 0, 
+    "stackable": 0
   }
 }

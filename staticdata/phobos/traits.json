@@ -161,6 +161,36 @@
   }, 
   {
     "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "25%", 
+            "text": "reduction in ship kinetic resistances"
+          }, 
+          {
+            "number": "50%", 
+            "text": "bonus to ship scan resolution"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to mining laser cycle speed"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to local Armor Repairer and Shield Booster cycle speed"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to ship warp speed"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 56059
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -1101,34 +1131,30 @@
       "misc": {
         "bonuses": [
           {
-            "number": "44%", 
-            "text": "bonus to ship velocity"
+            "number": "10%", 
+            "text": "reduction in ship kinetic resistances"
           }, 
           {
-            "number": "44%", 
-            "text": "bonus to maximum targeting range"
+            "number": "25%", 
+            "text": "bonus to ship scan resolution"
           }, 
           {
-            "number": "22%", 
-            "text": "bonus to missile velocity"
+            "number": "10%", 
+            "text": "bonus to mining laser cycle speed"
           }, 
           {
-            "number": "44%", 
-            "text": "bonus to missile explosion velocity"
+            "number": "10%", 
+            "text": "bonus to local Armor Repairer and Shield Booster cycle speed"
           }, 
           {
-            "number": "22%", 
-            "text": "penalty to ship agility"
-          }, 
-          {
-            "number": "22%", 
-            "text": "penalty to stasis webifier strength"
+            "number": "40%", 
+            "text": "bonus to ship warp speed"
           }
         ], 
         "header": "Misc bonus:"
       }
     }, 
-    "typeID": 30850
+    "typeID": 56058
   }, 
   {
     "traits": {
@@ -1311,6 +1337,35 @@
       ]
     }, 
     "typeID": 598
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "25%", 
+            "text": "reduction in ship EM resistances"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to ship capacitor recharge rate"
+          }, 
+          {
+            "number": "25+", 
+            "text": "bonus to Relic and Data Analyzer virus coherence"
+          }, 
+          {
+            "number": "50%", 
+            "text": "bonus to Core and Combat Scanner Probe strength"
+          }, 
+          {
+            "text": "·Cloaking devices cannot operate within systems affected by this storm"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 56057
   }, 
   {
     "traits": {
@@ -2488,6 +2543,40 @@
       ]
     }, 
     "typeID": 28710
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "44%", 
+            "text": "bonus to ship velocity"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to maximum targeting range"
+          }, 
+          {
+            "number": "22%", 
+            "text": "bonus to missile velocity"
+          }, 
+          {
+            "number": "44%", 
+            "text": "bonus to missile explosion velocity"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to ship agility"
+          }, 
+          {
+            "number": "22%", 
+            "text": "penalty to stasis webifier strength"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 30850
   }, 
   {
     "traits": {
@@ -16228,6 +16317,26 @@
   }, 
   {
     "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "7.5%", 
+              "text": "bonus to Small Hybrid Turret tracking speed"
+            }, 
+            {
+              "number": "10%", 
+              "text": "bonus to Drone hitpoints and tracking speed"
+            }
+          ], 
+          "header": "Gallente Frigate bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 34443
+  }, 
+  {
+    "traits": {
       "role": {
         "bonuses": [
           {
@@ -16479,6 +16588,26 @@
       ]
     }, 
     "typeID": 23913
+  }, 
+  {
+    "traits": {
+      "skills": [
+        {
+          "bonuses": [
+            {
+              "number": "10%", 
+              "text": "bonus to Drone hitpoints and damage"
+            }, 
+            {
+              "number": "7.5%", 
+              "text": "bonus to Drone optimal range and tracking speed"
+            }
+          ], 
+          "header": "Gallente Battleship bonuses (per skill level):"
+        }
+      ]
+    }, 
+    "typeID": 34441
   }, 
   {
     "traits": {
@@ -20144,43 +20273,152 @@
   }, 
   {
     "traits": {
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "7.5%", 
-              "text": "bonus to Small Hybrid Turret tracking speed"
-            }, 
-            {
-              "number": "10%", 
-              "text": "bonus to Drone hitpoints and tracking speed"
-            }
-          ], 
-          "header": "Gallente Frigate bonuses (per skill level):"
-        }
-      ]
+      "misc": {
+        "bonuses": [
+          {
+            "number": "10%", 
+            "text": "reduction in ship explosive resistances"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to ship shield hitpoints"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to ship capacitor capacity"
+          }, 
+          {
+            "number": "10%", 
+            "text": "reduction in ship signature radius"
+          }, 
+          {
+            "number": "50%", 
+            "text": "reduction in Remote Armor Repairer and Remote Shield Booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 34443
+    "typeID": 56060
   }, 
   {
     "traits": {
-      "skills": [
-        {
-          "bonuses": [
-            {
-              "number": "10%", 
-              "text": "bonus to Drone hitpoints and damage"
-            }, 
-            {
-              "number": "7.5%", 
-              "text": "bonus to Drone optimal range and tracking speed"
-            }
-          ], 
-          "header": "Gallente Battleship bonuses (per skill level):"
-        }
-      ]
+      "misc": {
+        "bonuses": [
+          {
+            "number": "25%", 
+            "text": "reduction in ship explosive resistances"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to ship shield hitpoints"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to ship capacitor capacity"
+          }, 
+          {
+            "number": "25%", 
+            "text": "reduction in ship signature radius"
+          }, 
+          {
+            "number": "90%", 
+            "text": "reduction in Remote Armor Repairer and Remote Shield Booster effectiveness"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
     }, 
-    "typeID": 34441
+    "typeID": 56061
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "10%", 
+            "text": "reduction in ship thermal resistances"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to ship armor hitpoints"
+          }, 
+          {
+            "number": "20%", 
+            "text": "bonus to turret, missile, drone, and fighter damage"
+          }, 
+          {
+            "number": "20%", 
+            "text": "reduction in turret and drone tracking speed"
+          }, 
+          {
+            "number": "20%", 
+            "text": "increase to missile and fighter explosion radius"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 56062
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "25%", 
+            "text": "reduction in ship thermal resistances"
+          }, 
+          {
+            "number": "25%", 
+            "text": "bonus to ship armor hitpoints"
+          }, 
+          {
+            "number": "50%", 
+            "text": "bonus to turret, missile, drone, and fighter damage"
+          }, 
+          {
+            "number": "50%", 
+            "text": "reduction in turret and drone tracking speed"
+          }, 
+          {
+            "number": "50%", 
+            "text": "increase to missile and fighter explosion radius"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 56063
+  }, 
+  {
+    "traits": {
+      "misc": {
+        "bonuses": [
+          {
+            "number": "10%", 
+            "text": "reduction in ship EM resistances"
+          }, 
+          {
+            "number": "10%", 
+            "text": "bonus to ship capacitor recharge rate"
+          }, 
+          {
+            "number": "10+", 
+            "text": "bonus to Relic and Data Analyzer virus coherence"
+          }, 
+          {
+            "number": "20%", 
+            "text": "bonus to Core and Combat Scanner Probe strength"
+          }, 
+          {
+            "text": "·Cloaking devices cannot operate within systems affected by this storm"
+          }
+        ], 
+        "header": "Misc bonus:"
+      }
+    }, 
+    "typeID": 56064
   }, 
   {
     "traits": {
