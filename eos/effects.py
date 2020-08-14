@@ -12389,6 +12389,8 @@ class Effect3992(BaseEffect):
     Celestials named like: Class Pulsar Effects (6 of 6)
     Celestial: Republic Stellar Observatory
     Celestial: State Stellar Observatory
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
     """
 
     runTime = 'early'
@@ -12424,6 +12426,8 @@ class Effect3995(BaseEffect):
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
     """
 
     runTime = 'early'
@@ -12462,6 +12466,8 @@ class Effect3997(BaseEffect):
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
     """
 
     runTime = 'early'
@@ -12481,6 +12487,8 @@ class Effect3998(BaseEffect):
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
     """
 
     runTime = 'early'
@@ -12500,6 +12508,8 @@ class Effect3999(BaseEffect):
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -12553,6 +12563,8 @@ class Effect4016(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -12571,6 +12583,8 @@ class Effect4017(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -12589,6 +12603,8 @@ class Effect4018(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -12607,6 +12623,8 @@ class Effect4019(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -12625,6 +12643,8 @@ class Effect4020(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -12643,6 +12663,8 @@ class Effect4021(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -12661,6 +12683,8 @@ class Effect4022(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -13185,6 +13209,8 @@ class Effect4088(BaseEffect):
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     Celestial: Dazh Liminality Locus
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
     """
 
     runTime = 'early'
@@ -13204,6 +13230,8 @@ class Effect4089(BaseEffect):
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
     Celestial: Dazh Liminality Locus
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
     """
 
     runTime = 'early'
@@ -13222,6 +13250,8 @@ class Effect4090(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
     """
 
     runTime = 'early'
@@ -13378,6 +13408,8 @@ class Effect4136(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
     """
 
     runTime = 'early'
@@ -13396,6 +13428,8 @@ class Effect4137(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
     """
 
     runTime = 'early'
@@ -13414,6 +13448,8 @@ class Effect4138(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -16438,6 +16474,8 @@ class Effect4906(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -23073,6 +23111,8 @@ class Effect5913(BaseEffect):
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
     Celestial: Federal Stellar Observatory
     Celestial: Imperial Stellar Observatory
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -23201,6 +23241,8 @@ class Effect5920(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -23351,6 +23393,8 @@ class Effect5929(BaseEffect):
 
     Used by:
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
@@ -35772,6 +35816,8 @@ class Effect7193(BaseEffect):
     Used by:
     Celestials named like: Stellar Observatory (4 of 4)
     Celestials named like: Triglavian Invasion System Effects (3 of 3)
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
     """
 
     runTime = 'early'
@@ -36086,10 +36132,12 @@ class Effect7234(BaseEffect):
 
 class Effect7237(BaseEffect):
     """
-    systemWarpSpeed
+    systemWarpSpeedBonus
 
     Used by:
     Celestial: Dazh Liminality Locus
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
     """
 
     runTime = 'early'
@@ -36272,13 +36320,7 @@ class Effect8020(BaseEffect):
     systemWarpSpeedAddition
 
     Used by:
-    Celestial: Strong Metaliminal Exotic Matter Storm
-    Celestial: Strong Metaliminal Gamma Ray Storm
-    Celestial: Strong Metaliminal Plasma Firestorm
     Celestial: System-Wide Warp Speed Bonus
-    Celestial: Weak Metaliminal Exotic Matter Storm
-    Celestial: Weak Metaliminal Gamma Ray Storm
-    Celestial: Weak Metaliminal Plasma Firestorm
     """
 
     runTime = 'early'
