@@ -598,7 +598,7 @@ def _importCreateFit(lines):
     """Create fit and set top-level entity (ship or citadel)."""
     fit = Fit()
     header = lines.pop(0)
-    m = re.match('\[(?P<shipType>[\w\s]+),\s*(?P<fitName>.+)\]', header)
+    m = re.match('\[(?P<shipType>[^,]+),\s*(?P<fitName>.+)\]', header)
     if not m:
         pyfalog.warning('service.port.eft.importEft: corrupted fit header')
         raise EftImportError

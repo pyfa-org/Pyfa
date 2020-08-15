@@ -86,7 +86,7 @@ BUILTINS = OrderedDict([
     # Source: ticket #2067
     (-52, ('[NPC][Invasion]Invading Precursor Entities', 0.422, 0.367, 0.453, 0.411)),
     (-53, ('[NPC][Invasion]Retaliating Amarr Entities', 0.360, 0.310, 0.441, 0.602)),
-    (-54, ('[NPC][Invasion]Retaliating Caldari Entities', 0.287, 0.610, 0.487, 0.401)),
+    (-54, ('[NPC][Invasion]Retaliating Caldari Entities', 0.303, 0.610, 0.487, 0.401)),
     (-55, ('[NPC][Invasion]Retaliating Gallente Entities', 0.383, 0.414, 0.578, 0.513)),
     (-56, ('[NPC][Invasion]Retaliating Minmatar Entities', 0.620, 0.422, 0.355, 0.399)),
     (-57, ('[NPC][Abyssal][Dark Matter All Tiers]Drones', 0.439, 0.522, 0.529, 0.435)),
