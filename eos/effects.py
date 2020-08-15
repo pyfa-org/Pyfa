@@ -2447,7 +2447,7 @@ class Effect856(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         penalized = False if 'skill' in context or 'implant' in context else True
-        fit.ship.boostItemAttr('baseWarpSpeed', container.getModifiedItemAttr('WarpSBonus'),
+        fit.ship.boostItemAttr('warpSpeedMultiplier', container.getModifiedItemAttr('WarpSBonus'),
                                stackingPenalties=penalized, **kwargs)
 
 
@@ -13219,8 +13219,10 @@ class Effect4088(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
-            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
-            'armorDamageAmount', module.getModifiedItemAttr('armorDamageAmountMultiplierRemote'), stackingPenalties=True, **kwargs)
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or
+                        mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+            'armorDamageAmount', module.getModifiedItemAttr('armorDamageAmountMultiplierRemote'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect4089(BaseEffect):
@@ -13240,8 +13242,10 @@ class Effect4089(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(
-            lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Capital Shield Emission Systems'),
-            'shieldBonus', module.getModifiedItemAttr('shieldBonusMultiplierRemote'), stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems') or
+                        mod.item.requiresSkill('Capital Shield Emission Systems'),
+            'shieldBonus', module.getModifiedItemAttr('shieldBonusMultiplierRemote'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect4090(BaseEffect):
@@ -16483,9 +16487,9 @@ class Effect4906(BaseEffect):
 
     @staticmethod
     def handler(fit, beacon, context, projectionRange, **kwargs):
-        fit.drones.filteredItemMultiply(lambda drone: drone.item.requiresSkill('Fighters'),
-                                        'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
-                                        stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.fighters.filteredItemMultiply(lambda drone: drone.item.requiresSkill('Fighters'),
+                                          'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
+                                          stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect4911(BaseEffect):
@@ -23251,7 +23255,8 @@ class Effect5920(BaseEffect):
     @staticmethod
     def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                           'aoeCloudSize', beacon.getModifiedItemAttr('aoeCloudSizeMultiplier'), **kwargs)
+                                           'aoeCloudSize', beacon.getModifiedItemAttr('aoeCloudSizeMultiplier'),
+                                           stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect5921(BaseEffect):
@@ -36938,3 +36943,193 @@ class Effect8075(BaseEffect):
     def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('emDamageResonance', beacon.getModifiedItemAttr('emDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
+
+
+class Effect8076(BaseEffect):
+    """
+    systemHullThermalResistance
+
+    Used by:
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('thermalDamageResonance', beacon.getModifiedItemAttr('thermalDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
+class Effect8077(BaseEffect):
+    """
+    systemHullKineticResistance
+
+    Used by:
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('kineticDamageResonance', container.getModifiedItemAttr('kineticDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
+class Effect8078(BaseEffect):
+    """
+    systemHullExplosiveResistance
+
+    Used by:
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('explosiveDamageResonance', container.getModifiedItemAttr('explosiveDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
+class Effect8079(BaseEffect):
+    """
+    systemVirusCoherenceBonus
+
+    Used by:
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Archaeology'),
+                                         'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus'), **kwargs)
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Hacking'),
+                                         'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus'), **kwargs)
+
+
+class Effect8080(BaseEffect):
+    """
+    systemProbeStrengthBonus
+
+    Used by:
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
+                                        'baseSensorStrength', container.getModifiedItemAttr('scanProbeStrengthBonus'),
+                                        stackingPenalties=True, **kwargs)
+
+
+class Effect8081(BaseEffect):
+    """
+    systemDisallowCloaking
+
+    Used by:
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.increaseItemAttr('disallowCloaking', src.getModifiedItemAttr('disallowCloaking'), **kwargs)
+
+
+class Effect8082(BaseEffect):
+    """
+    systemScanResolutionBonus
+
+    Used by:
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('scanResolution', container.getModifiedItemAttr('scanResolutionBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
+class Effect8083(BaseEffect):
+    """
+    systemArmorRepairerDurationBonus
+
+    Used by:
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems') or
+                                                  mod.item.requiresSkill('Capital Repair Systems'),
+                                      'duration', container.getModifiedItemAttr('armorRepairDurationBonus'), **kwargs)
+
+
+class Effect8084(BaseEffect):
+    """
+    systemShieldBoosterDurationBonus
+
+    Used by:
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation') or
+                                                  mod.item.requiresSkill('Capital Shield Operation'),
+                                      'duration', container.getModifiedItemAttr('shieldBoosterDurationBonus'), **kwargs)
+
+
+class Effect8085(BaseEffect):
+    """
+    systemFighterExplosionRadius
+
+    Used by:
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Fighters'),
+            'fighterAbilityAttackMissileExplosionRadius', container.getModifiedItemAttr('aoeCloudSizeMultiplier'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.fighters.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Fighters'),
+            'fighterAbilityMissilesExplosionRadius', container.getModifiedItemAttr('aoeCloudSizeMultiplier'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
