@@ -943,7 +943,6 @@ class _TabsContainer(wx.Panel):
         tb_renderer = self.tabs[tab]
         tb_renderer.disabled = disabled
 
-        self.AdjustTabsSize()
         self.Refresh()
 
     def GetSelectedTab(self):
