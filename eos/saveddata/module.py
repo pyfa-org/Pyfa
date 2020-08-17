@@ -267,7 +267,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isExclusiveSystemEffect(self):
-        return self.item.group.name in ("Effect Beacon", "Non-Interactable Object", "MassiveEnvironments")
+        # See issue #2258
+        # return self.item.group.name in ("Effect Beacon", "Non-Interactable Object", "MassiveEnvironments")
+        return False
 
     @property
     def isCapitalSize(self):
