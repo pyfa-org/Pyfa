@@ -79224,6 +79224,29 @@
     "published": 0, 
     "rangeChance": 0
   }, 
+  "8074": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8074, 
+    "effectName": "shipBonusPC2maxRange", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 2765, 
+        "operation": 6, 
+        "skillTypeID": 47871
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
   "8075": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 7, 
