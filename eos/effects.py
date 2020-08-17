@@ -1126,6 +1126,7 @@ class Effect394(BaseEffect):
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: Quafe Zero
+    Implant: Serenity Seasonal Booster 1
     Skill: Navigation
     """
 
@@ -35109,7 +35110,7 @@ class Effect7086(BaseEffect):
     shipbonusPCTTrackingPC2
 
     Used by:
-    Variations of ship: Vedmak (2 of 2)
+    Ship: Ikitursa
     Ship: Tiamat
     """
 
@@ -36953,6 +36954,22 @@ class Effect8073(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('eliteBonusCommandShips1'),
                                skill='Command Ships', **kwargs)
+
+
+class Effect8074(BaseEffect):
+    """
+    shipBonusPC2maxRange
+
+    Used by:
+    Ship: Vedmak
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
+                                      'maxRange', ship.getModifiedItemAttr('shipBonusPC2'), skill='Precursor Cruiser', **kwargs)
 
 
 class Effect8075(BaseEffect):
