@@ -367,7 +367,7 @@ class _TabRenderer:
         width = max(width, self.min_width)
         height = max(height, self.min_height)
 
-        self.disabled = False
+        self._disabled = False
         self.baseText = text
         self.extraText = ''
         self.tab_size = (width, height)
@@ -382,6 +382,18 @@ class _TabRenderer:
         self.tab_img = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
         self.InitTab()
+
+    @property
+    def disabled(self):
+        return self._disabled
+
+    @disabled.setter
+    def disabled(self, value):
+        if value == self._disabled:  # Avoid unnecessary re-rendering
+            return
+
+        self._disabled = value
+        self._Render()
 
     @property
     def text(self):
@@ -931,7 +943,6 @@ class _TabsContainer(wx.Panel):
         tb_renderer = self.tabs[tab]
         tb_renderer.disabled = disabled
 
-        self.AdjustTabsSize()
         self.Refresh()
 
     def GetSelectedTab(self):
