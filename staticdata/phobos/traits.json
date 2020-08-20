@@ -6744,7 +6744,7 @@
         {
           "bonuses": [
             {
-              "number": "30%", 
+              "number": "15%", 
               "text": "bonus to Light Entropic Disintegrator optimal range"
             }, 
             {
@@ -20512,8 +20512,8 @@
               "text": "bonus to Heavy Entropic Disintegrator damage"
             }, 
             {
-              "number": "7.5%", 
-              "text": "bonus to Heavy Entropic Disintegrator optimal range"
+              "number": "5%", 
+              "text": "bonus to Heavy Entropic Disintegrator tracking speed"
             }
           ], 
           "header": "Precursor Cruiser bonuses (per skill level):"
