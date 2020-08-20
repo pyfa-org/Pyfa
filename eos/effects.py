@@ -1126,7 +1126,6 @@ class Effect394(BaseEffect):
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: Quafe Zero
-    Implant: Serenity Seasonal Booster 1
     Skill: Navigation
     """
 
@@ -35110,7 +35109,7 @@ class Effect7086(BaseEffect):
     shipbonusPCTTrackingPC2
 
     Used by:
-    Ship: Ikitursa
+    Variations of ship: Vedmak (2 of 2)
     Ship: Tiamat
     """
 
