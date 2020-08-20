@@ -31536,7 +31536,9 @@ class Effect6730(BaseEffect):
         speedBoost = module.getModifiedItemAttr('speedFactor')
         mass = fit.ship.getModifiedItemAttr('mass')
         thrust = module.getModifiedItemAttr('speedBoostFactor')
-        fit.ship.boostItemAttr('maxVelocity', speedBoost * thrust / mass, **kwargs)
+        # It is actually a postMul, see black hole speed interactions
+        fit.ship.boostItemAttr('maxVelocity', speedBoost * thrust / mass,
+                               stackingPenalties=True, penaltyGroup='postMul', **kwargs)
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonus'),
                                stackingPenalties=True, **kwargs)
 
@@ -31558,7 +31560,9 @@ class Effect6731(BaseEffect):
         speedBoost = module.getModifiedItemAttr('speedFactor')
         mass = fit.ship.getModifiedItemAttr('mass')
         thrust = module.getModifiedItemAttr('speedBoostFactor')
-        fit.ship.boostItemAttr('maxVelocity', speedBoost * thrust / mass, **kwargs)
+        # It is actually a postMul, see black hole speed interactions
+        fit.ship.boostItemAttr('maxVelocity', speedBoost * thrust / mass,
+                               stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect6732(BaseEffect):
