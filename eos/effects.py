@@ -35113,7 +35113,7 @@ class Effect7086(BaseEffect):
     shipbonusPCTTrackingPC2
 
     Used by:
-    Variations of ship: Vedmak (2 of 2)
+    Ship: Ikitursa
     Ship: Tiamat
     """
 
