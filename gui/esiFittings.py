@@ -62,8 +62,10 @@ class EveFittings(AuxiliaryFrame):
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.importBtn = wx.Button(self, wx.ID_ANY, "Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
         self.deleteBtn = wx.Button(self, wx.ID_ANY, "Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.deleteAllBtn = wx.Button(self, wx.ID_ANY, "Delete all from Eve", wx.DefaultPosition, wx.DefaultSize, 5)
         btnSizer.Add(self.importBtn, 1, wx.ALL, 5)
         btnSizer.Add(self.deleteBtn, 1, wx.ALL, 5)
+        btnSizer.Add(self.deleteAllBtn, 1, wx.ALL, 5)
         fitSizer.Add(btnSizer, 0, wx.EXPAND)
 
         contentSizer.Add(fitSizer, 1, wx.EXPAND, 0)
@@ -72,6 +74,7 @@ class EveFittings(AuxiliaryFrame):
         self.fetchBtn.Bind(wx.EVT_BUTTON, self.fetchFittings)
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
+        self.deleteAllBtn.Bind(wx.EVT_BUTTON, self.deleteAllFittings)
 
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
@@ -162,6 +165,27 @@ class EveFittings(AuxiliaryFrame):
                 try:
                     sEsi.delFitting(activeChar, data['fitting_id'])
                     # repopulate the fitting list
+                    self.fitTree.populateSkillTree(self.fittings)
+                    self.fitView.update([])
+                except requests.exceptions.ConnectionError:
+                    msg = "Connection error, please check your internet connection"
+                    pyfalog.error(msg)
+                    self.statusbar.SetStatusText(msg)
+
+    def deleteAllFittings(self, event):
+        sEsi = Esi.getInstance()
+        activeChar = self.getActiveCharacter()
+        if activeChar is None:
+            return
+        charName = sEsi.getSsoCharacter(activeChar).characterName
+        with wx.MessageDialog(
+                self, "Do you really want to delete all fits from %s in EVE?"%(charName),
+                "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION
+                ) as dlg:
+            if dlg.ShowModal() == wx.ID_YES:
+                try:
+                    for fit in self.fittings:
+                        sEsi.delFitting(activeChar, fit['fitting_id'])
                     self.fitTree.populateSkillTree(self.fittings)
                     self.fitView.update([])
                 except requests.exceptions.ConnectionError:
