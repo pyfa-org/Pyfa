@@ -125,9 +125,11 @@ class VectorPicker(wx.Window):
         a = math.radians(self._angle + self._offset)
         x = math.cos(a) * radius
         y = math.sin(a) * radius
+        # See PR #2260 on why this is needed
+        pointRadius = 2 / self.GetContentScaleFactor() if 'wxGTK' in wx.PlatformInfo else 2
         dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * self._length, radius + 2 - y * self._length)
         dc.SetBrush(wx.BLACK_BRUSH)
-        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, 2)
+        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, pointRadius)
 
         if self._label:
             labelText = self._label
