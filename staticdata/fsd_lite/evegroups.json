@@ -9791,6 +9791,17 @@
     "published": true, 
     "useBasePrice": true
   }, 
+  "4086": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 66, 
+    "fittableNonSingleton": false, 
+    "groupID": 4086, 
+    "groupName": "Quantum Cores", 
+    "groupNameID": 569641, 
+    "published": true, 
+    "useBasePrice": true
+  }, 
   "409": {
     "anchorable": false, 
     "anchored": false, 
