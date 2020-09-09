@@ -26907,7 +26907,7 @@ class Effect6400(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        groups = ('Structure Warp Scrambler', 'Structure Disruption Battery', 'Structure Stasis Webifier')
+        groups = ('Structure Warp Scrambler', 'Structure ECM Battery', 'Structure Stasis Webifier')
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                       'capacitorNeed', src.getModifiedItemAttr('capNeedBonus'),
                                       skill='Structure Electronic Systems', **kwargs)

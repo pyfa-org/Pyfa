@@ -16182,5 +16182,14 @@
     "name": "Proving Ground Filaments", 
     "nameID": 567624, 
     "parentGroupID": 2456
+  }, 
+  "2749": {
+    "description": "Quantum Cores are FTL communications facillities vital to the efficient operation of Upwell structures.", 
+    "descriptionID": 569752, 
+    "hasTypes": 1, 
+    "iconID": 21729, 
+    "name": "Quantum Cores", 
+    "nameID": 569644, 
+    "parentGroupID": 2202
   }
 }
