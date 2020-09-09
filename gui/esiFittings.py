@@ -178,6 +178,7 @@ class EveFittings(AuxiliaryFrame):
         if activeChar is None:
             return
         charName = sEsi.getSsoCharacter(activeChar).characterName
+        anyDeleted = False
         with wx.MessageDialog(
                 self, "Do you really want to delete all fits from %s in EVE?"%(charName),
                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION
@@ -186,12 +187,21 @@ class EveFittings(AuxiliaryFrame):
                 try:
                     for fit in self.fittings:
                         sEsi.delFitting(activeChar, fit['fitting_id'])
-                    self.fitTree.populateSkillTree(self.fittings)
-                    self.fitView.update([])
+                        anyDeleted = True
                 except requests.exceptions.ConnectionError:
                     msg = "Connection error, please check your internet connection"
                     pyfalog.error(msg)
                     self.statusbar.SetStatusText(msg)
+                except APIException as ex:
+                    if anyDeleted:
+                        msg = "Some fits were not deleted: ESI error {} received".format(ex.status_code)
+                    else:
+                        msg = "Failed to delete fits: ESI error {} received".format(ex.status_code)
+                    pyfalog.error(msg)
+                    self.statusbar.SetStatusText(msg)
+        # repopulate the fitting list
+        self.fitTree.populateSkillTree(self.fittings)
+        self.fitView.update([])
 
 
 class ESIServerExceptionHandler:
