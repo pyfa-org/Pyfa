@@ -627,6 +627,15 @@ laar:
 caar:
   - 'caar'
   - 'capital ancillary (.+ )?(?<!remote )armor repairer'
+25k:
+  - '25k'
+  - '25000'
+25kmm:
+  - '25kmm'
+  - '25000mm'
+25m:
+  - '25m'
+  - '25000mm'
 
 # Hull modules
 dc:
@@ -649,6 +658,18 @@ cehe:
   - 'capital (.+ )?emergency hull energizer'
 
 # Propulsion modules and upgrades
+10k:
+  - '10k'
+  - '10000'
+10kmn:
+  - '10kmn'
+  - '10000mn'
+50k:
+  - '50k'
+  - '50000'
+50kmn:
+  - '50kmn'
+  - '50000mn'
 ab:
   - '(^| )ab'  # Checking only beginning of a word to remove unwanted spam
   - 'afterburner'

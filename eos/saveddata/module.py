@@ -198,11 +198,18 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # todo: validate baseItem as well if it's set.
         if self.isEmpty:
             return False
-        return (
-            self.__item is None or (
-                self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
-                self.__item.group.name not in self.SYSTEM_GROUPS) or
-            (self.item.isAbyssal and not self.isMutated))
+        if self.__item is None:
+            return True
+        if (
+            self.__item.category.name not in ("Module", "Subsystem", "Structure Module")
+            and self.__item.group.name not in self.SYSTEM_GROUPS
+        ):
+            return True
+        if self.item.isAbyssal and not self.isMutated:
+            return True
+        if self.isMutated and not self.__mutaplasmid:
+            return True
+        return False
 
     @property
     def isMutated(self):
