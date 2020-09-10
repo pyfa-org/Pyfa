@@ -120,15 +120,24 @@ class Mutator(EqBase):
 
     @property
     def baseValue(self):
-        return self.baseAttribute.value
+        try:
+            return self.baseAttribute.value
+        except AttributeError:
+            return 0
 
     @property
     def minValue(self):
-        return self.minMod * self.baseAttribute.value
+        try:
+            return self.minMod * self.baseAttribute.value
+        except AttributeError:
+            return 0
 
     @property
     def maxValue(self):
-        return self.maxMod * self.baseAttribute.value
+        try:
+            return self.maxMod * self.baseAttribute.value
+        except AttributeError:
+            return 0
 
     @property
     def attribute(self):
