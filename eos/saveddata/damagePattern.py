@@ -84,7 +84,7 @@ BUILTINS = OrderedDict([
     (-53, ('[Bombs]Concussion Bomb', 0, 0, 6400, 0)),
     (-54, ('[Bombs]Shrapnel Bomb', 0, 0, 0, 6400)),
     # Source: ticket #2067
-    (-55, ('[NPC][Abyssal]All', 124, 429, 219, 229)),
+    (-55, ('[NPC][Abyssal]All', 126, 427, 218, 230)),
     (-56, ('[NPC][Abyssal]Drifter', 250, 250, 250, 250)),
     (-57, ('[NPC][Abyssal]Drones', 250, 250, 250, 250)),
     (-58, ('[NPC][Abyssal]Overmind', 0, 410, 590, 0)),
@@ -140,7 +140,7 @@ BUILTINS = OrderedDict([
     # Source: ticket #2265
     (-107, ('[NPC][Abyssal]Concord', 53, 559, 94, 295)),
     (-108, ('[NPC][Abyssal]Sansha', 569, 431, 0, 0)),
-    (-109, ('[NPC][Abyssal]Angel', 418, 84, 103, 394))])
+    (-109, ('[NPC][Abyssal]Angel', 450, 72, 80, 398))])
 
 
 class DamagePattern:
