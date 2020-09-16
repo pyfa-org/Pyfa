@@ -16191,5 +16191,45 @@
     "name": "Quantum Cores", 
     "nameID": 569644, 
     "parentGroupID": 2202
+  }, 
+  "2750": {
+    "description": "Capital Astronautic Mutaplasmids", 
+    "descriptionID": 569939, 
+    "hasTypes": 1, 
+    "name": "Capital Astronautic Mutaplasmids", 
+    "nameID": 569938, 
+    "parentGroupID": 2439
+  }, 
+  "2751": {
+    "description": "Capital Armor Mutaplasmids", 
+    "descriptionID": 569941, 
+    "hasTypes": 1, 
+    "name": "Capital Armor Mutaplasmids", 
+    "nameID": 569940, 
+    "parentGroupID": 2437
+  }, 
+  "2752": {
+    "description": "Capital Shield Mutaplasmids", 
+    "descriptionID": 569944, 
+    "hasTypes": 1, 
+    "name": "Capital Shield Mutaplasmids", 
+    "nameID": 569943, 
+    "parentGroupID": 2438
+  }, 
+  "2753": {
+    "description": "Capital Engineering Mutaplasmids", 
+    "descriptionID": 569946, 
+    "hasTypes": 1, 
+    "name": "Capital Engineering Mutaplasmids", 
+    "nameID": 569945, 
+    "parentGroupID": 2440
+  }, 
+  "2754": {
+    "description": "Siege Module Mutaplasmids", 
+    "descriptionID": 569952, 
+    "hasTypes": 1, 
+    "name": "Siege Module Mutaplasmids", 
+    "nameID": 569951, 
+    "parentGroupID": 2512
   }
 }

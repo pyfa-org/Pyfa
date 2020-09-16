@@ -79525,5 +79525,23 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "8088": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "distribution": 2, 
+    "durationAttributeID": 51, 
+    "effectCategory": 2, 
+    "effectID": 8088, 
+    "effectName": "EntityChainLightning", 
+    "electronicChance": 0, 
+    "guid": "effects.AttackMode", 
+    "isAssistance": 0, 
+    "isOffensive": 1, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
   }
 }

@@ -1373,39 +1373,33 @@
   }, 
   "80": {
     "aggregateMode": "Minimum", 
-    "developerDescription": "AOE_Beacon_caustic_cloud_local_repair", 
-    "displayName": "Local Armor Repairer penalty", 
+    "developerDescription": "AOE_Beacon_caustic_cloud_inertia", 
+    "displayName": "Inertia Bonus", 
     "displayNameID": 532902, 
-    "itemModifiers": [], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [
+    "itemModifiers": [
       {
-        "dogmaAttributeID": 84, 
-        "skillID": 3393
+        "dogmaAttributeID": 70
       }
     ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 
   "81": {
     "aggregateMode": "Minimum", 
-    "developerDescription": "AOE_Beacon_caustic_cloud_remote_repair", 
-    "displayName": "Remote Armor Repairer penalty", 
+    "developerDescription": "AOE_Beacon_caustic_cloud_velocity", 
+    "displayName": "Max Velocity Bonus", 
     "displayNameID": 532901, 
     "itemModifiers": [
       {
-        "dogmaAttributeID": 84
+        "dogmaAttributeID": 37
       }
     ], 
     "locationGroupModifiers": [], 
     "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [
-      {
-        "dogmaAttributeID": 84, 
-        "skillID": 16069
-      }
-    ], 
+    "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 

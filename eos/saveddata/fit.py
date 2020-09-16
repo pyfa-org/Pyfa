@@ -755,13 +755,11 @@ class Fit:
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "signatureRadius", value, stackingPenalties=True)
 
-                if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_local_repair
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
-                                                   "armorDamageAmount", value, stackingPenalties=True)
+                if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_inertia
+                    self.ship.boostItemAttr("agility", value, stackingPenalties=True)
 
-                if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_remote_repair
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
-                                                   "armorDamageAmount", value, stackingPenalties=True)
+                if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_velocity
+                    self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
 
                 if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster_shield_bonus
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
