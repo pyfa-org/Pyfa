@@ -89,6 +89,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         higOverrides = {
             ('Stasis Web', 'speedFactor'): False,
             ('Damage Control', 'duration'): True,
+            ('Siege Module', 'siegeLocalLogisticsDurationBonus'): False
         }
 
         first = True
