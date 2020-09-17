@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2020-08-04 15:03\n"
+"PO-Revision-Date: 2020-09-17 15:09\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -1821,7 +1821,7 @@ msgstr "图表"
 
 #: eos/saveddata/fit.py:402
 msgid "Gravimetric"
-msgstr ""
+msgstr "重力计强度"
 
 #: graphs/style.py:53
 msgid "Green"
@@ -2244,7 +2244,7 @@ msgstr "粉色"
 
 #: eos/saveddata/fit.py:402
 msgid "Magnetometric"
-msgstr ""
+msgstr "磁力计"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
@@ -2879,7 +2879,7 @@ msgstr "所有物品数量"
 
 #: eos/saveddata/fit.py:402
 msgid "Radar"
-msgstr ""
+msgstr "雷达"
 
 #: eos/saveddata/damagePattern.py:45
 msgid "Radio"
@@ -3988,23 +3988,23 @@ msgstr "[T2] 涅槃"
 
 #: eos/utils/stats.py:123
 msgid "em"
-msgstr ""
+msgstr "电磁"
 
 #: eos/utils/stats.py:123
 msgid "exp"
-msgstr ""
+msgstr "爆炸"
 
 #: eos/utils/stats.py:123
 msgid "explosive"
-msgstr ""
+msgstr "爆炸"
 
 #: eos/utils/stats.py:123
 msgid "kin"
-msgstr ""
+msgstr "动能"
 
 #: eos/utils/stats.py:123
 msgid "kinetic"
-msgstr ""
+msgstr "动能"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
@@ -4043,11 +4043,11 @@ msgstr "pyfa:"
 
 #: eos/utils/stats.py:123
 msgid "th"
-msgstr ""
+msgstr "热能"
 
 #: eos/utils/stats.py:123
 msgid "thermal"
-msgstr ""
+msgstr "热能"
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #, python-brace-format
