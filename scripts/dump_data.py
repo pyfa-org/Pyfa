@@ -11,6 +11,9 @@ import sys
 import os
 import json
 import re
+import natsort
+from collections import OrderedDict
+
 from itertools import izip_longest
 
 try:
@@ -79,13 +82,16 @@ class PyfaJsonWriter(BaseWriter):
         if not os.path.exists(folder):
             os.makedirs(folder, mode=0o755)
 
+        if type(container_data) == dict:
+            container_data = OrderedDict(natsort.natsorted(container_data.items()))
+
         if self.group is None:
             filepath = os.path.join(folder, u'{}.json'.format(self.__secure_name(container_name)))
             self.__write_file(container_data, filepath)
         else:
             for i, group in enumerate(PyfaJsonWriter.__grouper(container_data, self.group)):
                 filepath = os.path.join(folder, u'{}.{}.json'.format(self.__secure_name(container_name), i))
-                if type(container_data) == dict:
+                if type(container_data) in (dict, OrderedDict):
                     data = dict((k, container_data[k]) for k in group if k is not None)
                 else:
                     data = [k for k in group if k is not None]

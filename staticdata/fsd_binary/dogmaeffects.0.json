@@ -42747,16 +42747,6 @@
     "rangeChance": 0
   }, 
   "5229": {
-    "descriptionID": 286583, 
-    "description_de": "Automatisch generierter Effekt", 
-    "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Effet généré automatiquement", 
-    "description_it": "Automatically generated effect", 
-    "description_ja": "自動生成効果", 
-    "description_ko": "자동 생성 효과", 
-    "description_ru": "Автоматический эффект", 
-    "description_zh": "自动生成效果", 
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 5229, 
@@ -83900,9 +83890,8 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 7, 
     "effectID": 7237, 
-    "effectName": "\tsystemWarpSpeed", 
+    "effectName": "systemWarpSpeedBonus", 
     "electronicChance": 0, 
-    "guid": "", 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -85357,6 +85346,308 @@
         "modifiedAttributeID": 263, 
         "modifyingAttributeID": 1000, 
         "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8074": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8074, 
+    "effectName": "shipBonusPC2maxRange", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 2765, 
+        "operation": 6, 
+        "skillTypeID": 47871
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8075": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8075, 
+    "effectName": "systemHullEmResistance", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 113, 
+        "modifyingAttributeID": 984, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8076": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8076, 
+    "effectName": "systemHullThermalResistance", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 110, 
+        "modifyingAttributeID": 987, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8077": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8077, 
+    "effectName": "systemHullKineticResistance", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 109, 
+        "modifyingAttributeID": 986, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8078": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8078, 
+    "effectName": "systemHullExplosiveResistance", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 111, 
+        "modifyingAttributeID": 985, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8079": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8079, 
+    "effectName": "systemVirusCoherenceBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1909, 
+        "modifyingAttributeID": 1915, 
+        "operation": 2, 
+        "skillTypeID": 13278
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1909, 
+        "modifyingAttributeID": 1915, 
+        "operation": 2, 
+        "skillTypeID": 21718
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8080": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8080, 
+    "effectName": "systemProbeStrengthBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1371, 
+        "modifyingAttributeID": 3095, 
+        "operation": 6, 
+        "skillTypeID": 3412
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8081": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8081, 
+    "effectName": "systemDisallowCloaking", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2454, 
+        "modifyingAttributeID": 2454, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8082": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8082, 
+    "effectName": "systemScanResolutionBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 564, 
+        "modifyingAttributeID": 566, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8083": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8083, 
+    "effectName": "systemArmorRepairerDurationBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3098, 
+        "operation": 6, 
+        "skillTypeID": 3393
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3098, 
+        "operation": 6, 
+        "skillTypeID": 21803
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8084": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8084, 
+    "effectName": "systemShieldBoosterDurationBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3099, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3099, 
+        "operation": 6, 
+        "skillTypeID": 21802
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8085": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8085, 
+    "effectName": "systemFighterExplosionRadius", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2234, 
+        "modifyingAttributeID": 1967, 
+        "operation": 4, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2125, 
+        "modifyingAttributeID": 1967, 
+        "operation": 4, 
+        "skillTypeID": 23069
       }
     ], 
     "propulsionChance": 0, 
