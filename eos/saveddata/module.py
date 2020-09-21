@@ -919,6 +919,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         projectionRange = self.projectionRange if forcedProjRange is DEFAULT else forcedProjRange
 
+        # fix for #2270. If a tech 2 charge is fitted to a tech 1 module, remove the charge.
+        if self.item is not None and self.charge is not None:
+            if self.item.metaGroupID == 1 and self.charge.metaGroupID == 2:
+                self.charge = None
+
         if self.charge is not None:
             # fix for #82 and it's regression #106
             if not projected or (self.projected and not forceProjected) or gang:
