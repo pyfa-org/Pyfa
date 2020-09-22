@@ -119,7 +119,7 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   if(IsAppRunning( 'pyfa.exe' )) then
     begin
-      Result := 'Please close pyfa before continuing. When closed, please go back to the previous step and continue. If you\'ve named this installer pyfa.exe, please rename it and restart installation';
+      Result := 'Please close pyfa before continuing. When closed, please go back to the previous step and continue. If you have named this installer pyfa.exe, please rename it and restart installation';
     end
   else
     begin
