@@ -18,9 +18,12 @@
 # =============================================================================
 
 
+import re
+
 from eos.db.gamedata.queries import getAttributeInfo, getDynamicItem
 from eos.utils.float import floatUnerr
 from service.port.shared import fetchItem
+from service.esiAccess import EsiAccess
 
 
 def renderMutant(mutant, firstPrefix='', prefix=''):
@@ -77,3 +80,23 @@ def parseMutant(lines):
             continue
         mutations[attrInfo.ID] = value
     return baseItem, mutaplasmidItem, mutations
+
+
+def parseDynamicItemString(text):
+    m = re.search(r'<url=showinfo:(?P<typeid>\d+)//(?P<itemid>\d+)>.+</url>', text)
+    if m:
+        typeID = int(m.group('typeid'))
+        itemID = int(m.group('itemid'))
+        return typeID, itemID
+    return None
+
+
+def fetchDynamicItem(dynamicItemData):
+    typeID, itemID = dynamicItemData
+    esiData = EsiAccess().getDynamicItem(typeID, itemID).json()
+    baseItemID = esiData['source_type_id']
+    mutaplasmidID = esiData['mutator_type_id']
+    attrs = {i['attribute_id']: i['value'] for i in esiData['dogma_attributes']}
+    baseItem = fetchItem(baseItemID)
+    mutaplasmid = getDynamicItem(mutaplasmidID)
+    return baseItem, mutaplasmid, attrs
