@@ -84,13 +84,13 @@ BUILTINS = OrderedDict([
     (-53, ('[Bombs]Concussion Bomb', 0, 0, 6400, 0)),
     (-54, ('[Bombs]Shrapnel Bomb', 0, 0, 0, 6400)),
     # Source: ticket #2067
-    (-55, ('[NPC][Abyssal]All', 130, 396, 258, 216)),
+    (-55, ('[NPC][Abyssal]All', 126, 427, 218, 230)),
     (-56, ('[NPC][Abyssal]Drifter', 250, 250, 250, 250)),
     (-57, ('[NPC][Abyssal]Drones', 250, 250, 250, 250)),
-    (-58, ('[NPC][Abyssal]Overmind', 0, 408, 592, 0)),
-    (-59, ('[NPC][Abyssal]Seeker', 406, 406, 94, 94)),
+    (-58, ('[NPC][Abyssal]Overmind', 0, 410, 590, 0)),
+    (-59, ('[NPC][Abyssal]Seeker', 402, 402, 98, 98)),
     (-60, ('[NPC][Abyssal]Sleeper', 313, 313, 187, 187)),
-    (-61, ('[NPC][Abyssal]Triglavian', 0, 610, 0, 390)),
+    (-61, ('[NPC][Abyssal]Triglavian', 0, 615, 0, 385)),
     (-62, ('[NPC][Asteroid]Angel Cartel', 1838, 562, 2215, 3838)),
     (-63, ('[NPC][Asteroid]Blood Raiders', 5067, 4214, 0, 0)),
     (-64, ('[NPC][Asteroid]Guristas', 0, 1828, 7413, 0)),
@@ -136,7 +136,11 @@ BUILTINS = OrderedDict([
     (-103, ('[NPC][Mission]Mordus Legion', 25, 262, 625, 0)),
     (-104, ('[NPC][Mission]Thukker', 0, 52, 10, 79)),
     (-105, ('[NPC]Sansha Incursion', 1682, 1347, 3678, 3678)),
-    (-106, ('[NPC]Sleepers', 1472, 1472, 1384, 1384))])
+    (-106, ('[NPC]Sleepers', 1472, 1472, 1384, 1384)),
+    # Source: ticket #2265
+    (-107, ('[NPC][Abyssal]Concord', 53, 559, 94, 295)),
+    (-108, ('[NPC][Abyssal]Sansha', 569, 431, 0, 0)),
+    (-109, ('[NPC][Abyssal]Angel', 450, 72, 80, 398))])
 
 
 class DamagePattern:
