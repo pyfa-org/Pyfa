@@ -9688,7 +9688,7 @@
             }, 
             {
               "number": "7.5%", 
-              "text": "bonus to Armor Repairer amount"
+              "text": "bonus to Armor Repairer and Capacitor Booster amount"
             }, 
             {
               "number": "1%", 
@@ -9742,7 +9742,7 @@
             }, 
             {
               "number": "7.5%", 
-              "text": "bonus to Shield Booster amount"
+              "text": "bonus to Shield Booster and Capacitor Booster amount"
             }, 
             {
               "number": "1%", 

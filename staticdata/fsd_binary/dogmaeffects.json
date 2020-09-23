@@ -79543,5 +79543,51 @@
     "published": 0, 
     "rangeAttributeID": 54, 
     "rangeChance": 0
+  }, 
+  "8091": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8091, 
+    "effectName": "shipBonusForceAuxiliaryG2CapBoosterStrength", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 87, 
+        "modifiedAttributeID": 67, 
+        "modifyingAttributeID": 2315, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8092": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8092, 
+    "effectName": "shipBonusForceAuxiliaryM2CapBoosterStrength", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 87, 
+        "modifiedAttributeID": 67, 
+        "modifyingAttributeID": 2318, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }

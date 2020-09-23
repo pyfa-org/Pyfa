@@ -42,7 +42,7 @@ class Effect4(BaseEffect):
     shieldBoosting
 
     Used by:
-    Modules from group: Shield Booster (89 of 89)
+    Modules from group: Shield Booster (90 of 90)
     """
 
     runTime = 'late'
@@ -148,7 +148,7 @@ class Effect27(BaseEffect):
     armorRepair
 
     Used by:
-    Modules from group: Armor Repair Unit (100 of 100)
+    Modules from group: Armor Repair Unit (101 of 101)
     """
 
     runTime = 'late'
@@ -203,7 +203,7 @@ class Effect39(BaseEffect):
     warpDisrupt
 
     Used by:
-    Modules named like: Warp Disruptor (28 of 28)
+    Modules named like: Warp Disruptor (29 of 29)
     """
 
     type = 'projected', 'active'
@@ -374,7 +374,7 @@ class Effect58(BaseEffect):
     Modules from group: Capacitor Flux Coil (6 of 6)
     Modules from group: Capacitor Power Relay (20 of 20)
     Modules from group: Power Diagnostic System (23 of 23)
-    Modules from group: Propulsion Module (68 of 133)
+    Modules from group: Propulsion Module (69 of 135)
     Modules from group: Reactor Control Unit (22 of 22)
     """
 
@@ -1126,6 +1126,7 @@ class Effect394(BaseEffect):
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: Quafe Zero
+    Implant: Serenity YC122.9 Season Booster - Max Velocity
     Skill: Navigation
     """
 
@@ -1150,6 +1151,7 @@ class Effect395(BaseEffect):
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
     Implant: Genolution Core Augmentation CA-4
+    Implant: Serenity YC122.9 Season Booster - Agility
     Skill: Evasive Maneuvering
     Skill: Spaceship Command
     """
@@ -2440,6 +2442,7 @@ class Effect856(BaseEffect):
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
+    Implant: Serenity YC122.9 Season Booster - Warp Speed
     """
 
     type = 'passive'
@@ -3737,6 +3740,7 @@ class Effect1185(BaseEffect):
     Used by:
     Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
+    Implant: Serenity YC122.9 Season Booster - Signature Radius
     """
 
     type = 'passive'
@@ -4491,6 +4495,7 @@ class Effect1452(BaseEffect):
     Used by:
     Implants named like: grade Centurion (10 of 12)
     Modules named like: Particle Dispersion Projector (8 of 8)
+    Implant: Serenity YC122.9 Season Booster - EW Range
     Skill: Long Distance Jamming
     """
 
@@ -5208,7 +5213,7 @@ class Effect1720(BaseEffect):
 
     Used by:
     Modules from group: Capacitor Power Relay (20 of 20)
-    Modules from group: Shield Boost Amplifier (25 of 25)
+    Modules from group: Shield Boost Amplifier (23 of 23)
     """
 
     type = 'passive'
@@ -9223,8 +9228,8 @@ class Effect3002(BaseEffect):
     Used by:
     Modules from group: Ancillary Remote Shield Booster (4 of 4)
     Modules from group: Capacitor Booster (41 of 41)
-    Modules from group: Energy Neutralizer (54 of 54)
-    Modules from group: Energy Nosferatu (54 of 54)
+    Modules from group: Energy Neutralizer (55 of 55)
+    Modules from group: Energy Nosferatu (55 of 55)
     Modules from group: Hull Repair Unit (25 of 25)
     Modules from group: Remote Armor Repairer (39 of 39)
     Modules from group: Remote Capacitor Transmitter (35 of 35)
@@ -9468,7 +9473,7 @@ class Effect3061(BaseEffect):
     heatDamageBonus
 
     Used by:
-    Modules from group: Shield Boost Amplifier (25 of 25)
+    Modules from group: Shield Boost Amplifier (23 of 23)
     """
 
     type = 'passive'
@@ -9542,7 +9547,7 @@ class Effect3174(BaseEffect):
     Used by:
     Modules from group: Stasis Grappler (7 of 7)
     Modules from group: Stasis Web (19 of 19)
-    Modules from group: Warp Scrambler (54 of 55)
+    Modules from group: Warp Scrambler (56 of 57)
     """
 
     type = 'overheat'
@@ -9558,7 +9563,7 @@ class Effect3175(BaseEffect):
     overloadSelfSpeedBonus
 
     Used by:
-    Modules from group: Propulsion Module (133 of 133)
+    Modules from group: Propulsion Module (135 of 135)
     """
 
     type = 'overheat'
@@ -9610,8 +9615,8 @@ class Effect3200(BaseEffect):
     overloadSelfArmorDamageAmountDurationBonus
 
     Used by:
-    Modules from group: Ancillary Armor Repairer (7 of 7)
-    Modules from group: Armor Repair Unit (100 of 100)
+    Modules from group: Ancillary Armor Repairer (8 of 8)
+    Modules from group: Armor Repair Unit (101 of 101)
     """
 
     type = 'overheat'
@@ -9628,8 +9633,8 @@ class Effect3201(BaseEffect):
     overloadSelfShieldBonusDurationBonus
 
     Used by:
-    Modules from group: Ancillary Shield Booster (8 of 8)
-    Modules from group: Shield Booster (89 of 89)
+    Modules from group: Ancillary Shield Booster (9 of 9)
+    Modules from group: Shield Booster (90 of 90)
     """
 
     type = 'overheat'
@@ -11206,6 +11211,7 @@ class Effect3650(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11222,6 +11228,7 @@ class Effect3651(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11238,6 +11245,7 @@ class Effect3652(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11254,6 +11262,7 @@ class Effect3653(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11354,6 +11363,7 @@ class Effect3668(BaseEffect):
 
     Used by:
     Implants named like: grade Harvest (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11370,6 +11380,7 @@ class Effect3669(BaseEffect):
 
     Used by:
     Implants named like: grade Harvest (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11386,6 +11397,7 @@ class Effect3670(BaseEffect):
 
     Used by:
     Implants named like: grade Harvest (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11402,6 +11414,7 @@ class Effect3671(BaseEffect):
 
     Used by:
     Implants named like: grade Harvest (10 of 12)
+    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11418,6 +11431,7 @@ class Effect3672(BaseEffect):
 
     Used by:
     Implants named like: grade Harvest (12 of 12)
+    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     runTime = 'early'
@@ -13594,6 +13608,7 @@ class Effect4162(BaseEffect):
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
+    Implant: Serenity YC122.9 Season Booster - Probe Scanning Strength
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
     """
@@ -16691,7 +16706,7 @@ class Effect4936(BaseEffect):
     fueledShieldBoosting
 
     Used by:
-    Modules from group: Ancillary Shield Booster (8 of 8)
+    Modules from group: Ancillary Shield Booster (9 of 9)
     """
 
     runTime = 'late'
@@ -18977,7 +18992,7 @@ class Effect5275(BaseEffect):
     fueledArmorRepair
 
     Used by:
-    Modules from group: Ancillary Armor Repairer (7 of 7)
+    Modules from group: Ancillary Armor Repairer (8 of 8)
     """
 
     runTime = 'late'
@@ -23417,7 +23432,7 @@ class Effect5934(BaseEffect):
     warpScrambleBlockMWDWithNPCEffect
 
     Used by:
-    Modules named like: Warp Scrambler (27 of 27)
+    Modules named like: Warp Scrambler (28 of 28)
     """
 
     runTime = 'early'
@@ -25147,7 +25162,7 @@ class Effect6187(BaseEffect):
     energyNeutralizerFalloff
 
     Used by:
-    Modules from group: Energy Neutralizer (54 of 54)
+    Modules from group: Energy Neutralizer (55 of 55)
     """
 
     type = 'active', 'projected'
@@ -25238,7 +25253,7 @@ class Effect6197(BaseEffect):
     energyNosferatuFalloff
 
     Used by:
-    Modules from group: Energy Nosferatu (54 of 54)
+    Modules from group: Energy Nosferatu (55 of 55)
     """
 
     runTime = 'late'
@@ -29081,7 +29096,7 @@ class Effect6582(BaseEffect):
     moduleBonusSiegeModule
 
     Used by:
-    Variations of module: Siege Module I (2 of 2)
+    Modules named like: Siege Module (3 of 3)
     """
 
     runTime = 'early'
@@ -31524,7 +31539,7 @@ class Effect6730(BaseEffect):
     moduleBonusMicrowarpdrive
 
     Used by:
-    Modules from group: Propulsion Module (68 of 133)
+    Modules from group: Propulsion Module (69 of 135)
     """
 
     runTime = 'late'
@@ -31548,7 +31563,7 @@ class Effect6731(BaseEffect):
     moduleBonusAfterburner
 
     Used by:
-    Modules from group: Propulsion Module (65 of 133)
+    Modules from group: Propulsion Module (66 of 135)
     """
 
     runTime = 'late'
@@ -37181,3 +37196,39 @@ class Effect8085(BaseEffect):
             lambda mod: mod.item.requiresSkill('Fighters'),
             'fighterAbilityMissilesExplosionRadius', container.getModifiedItemAttr('aoeCloudSizeMultiplier'),
             stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+
+
+class Effect8091(BaseEffect):
+    """
+    shipBonusForceAuxiliaryG2CapBoosterStrength
+
+    Used by:
+    Ship: Ninazu
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
+            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryG2'),
+            skill='Gallente Carrier', **kwargs)
+
+
+class Effect8092(BaseEffect):
+    """
+    shipBonusForceAuxiliaryM2CapBoosterStrength
+
+    Used by:
+    Ship: Lif
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
+            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryM2'),
+            skill='Minmatar Carrier', **kwargs)
