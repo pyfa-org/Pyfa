@@ -91,6 +91,8 @@ class CalcReplaceLocalModuleCommand(wx.Command):
 
     @property
     def needsGuiRecalc(self):
+        if self.unloadedCharge:
+            return True
         if self.savedStateCheckChanges is None:
             return True
         for container in self.savedStateCheckChanges:
