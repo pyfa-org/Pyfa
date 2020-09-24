@@ -205,6 +205,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             and self.__item.group.name not in self.SYSTEM_GROUPS
         ):
             return True
+        if (
+            self.__item.category.name == "Structure Module"
+            and self.__item.group.name == "Quantum Cores"
+        ):
+            return True
         if self.item.isAbyssal and not self.isMutated:
             return True
         if self.isMutated and not self.__mutaplasmid:
