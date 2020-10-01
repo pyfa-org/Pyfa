@@ -24,6 +24,7 @@ from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module
+from eos.gamedata import Item
 from eos.saveddata.price import PriceStatus
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -53,7 +54,7 @@ class Price(ViewColumn):
         self.imageId = fittingView.imageList.GetImageIndex("totalPrice_small", "gui")
 
     def getText(self, stuff):
-        if stuff.item is None or stuff.item.group.name == "Ship Modifiers":
+        if not isinstance(stuff, Item) and (stuff.item is None or stuff.item.group.name == "Ship Modifiers"):
             return ""
 
         if hasattr(stuff, "isEmpty"):
@@ -63,7 +64,7 @@ class Price(ViewColumn):
         if isinstance(stuff, Module) and stuff.isMutated:
             return ""
 
-        priceObj = stuff.item.price
+        priceObj = stuff.price if isinstance(stuff, Item) else stuff.item.price
 
         if not priceObj.isValid():
             return False
@@ -79,7 +80,9 @@ class Price(ViewColumn):
 
             display.SetItem(colItem)
 
-        sPrice.getPrices([mod.item], callback, waitforthread=True)
+        item = mod if isinstance(mod, Item) else mod.item
+        wait = not isinstance(mod, Item)
+        sPrice.getPrices([item], callback, waitforthread=wait)
 
     def getImageId(self, mod):
         return -1
