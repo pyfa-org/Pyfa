@@ -84,7 +84,7 @@ BUILTINS = OrderedDict([
     (-50, ('[NPC][Burner]Talos', 0.68, 0.59, 0.59, 0.43)),
     (-51, ('[NPC][Burner]Sentinel', 0.58, 0.45, 0.52, 0.66)),
     # Source: ticket #2067
-    (-52, ('[NPC][Invasion]Invading Precursor Entities', 0.422, 0.367, 0.453, 0.411)),
+    (-52, ('[NPC][Invasion]Triglavian Entities', 0.422, 0.367, 0.453, 0.411)),
     (-53, ('[NPC][Invasion]Retaliating Amarr Entities', 0.360, 0.310, 0.441, 0.602)),
     (-54, ('[NPC][Invasion]Retaliating Caldari Entities', 0.303, 0.610, 0.487, 0.401)),
     (-55, ('[NPC][Invasion]Retaliating Gallente Entities', 0.383, 0.414, 0.578, 0.513)),
