@@ -16,10 +16,10 @@ rename_phrase = " renamed to "
 conversion_phrase = " converted to "
 
 text = """
-    'Stalwart' Particle Field Magnifier renamed to Stalwart Restrained Shield Boost Amplifier
-    'Copasetic' Particle Field Acceleration renamed to Copasetic Compact Shield Boost Amplifier
-    5a Prototype Shield Support I converted to Stalwart Restrained Shield Boost Amplifier
-    Ionic Field Accelerator I converted to Copasetic Compact Shield Boost Amplifier
+    'Hypnos' Signal Distortion Amplifier I renamed to Hypnos Compact Signal Distortion Amplifier I
+    Initiated Signal Distortion Amplifier I converted to Hypnos Compact Signal Distortion Amplifier I
+    Induced Signal Distortion Amplifier I converted to Hypnos Compact Signal Distortion Amplifier I
+    Compulsive Signal Distortion Amplifier I converted to Hypnos Compact Signal Distortion Amplifier I
     """
 
 def main(old, new):
