@@ -11,6 +11,58 @@
     "categoryNameID": 63540, 
     "published": false
   }, 
+  "2": {
+    "categoryID": 2, 
+    "categoryName": "Celestial", 
+    "categoryNameID": 63541, 
+    "published": true
+  }, 
+  "3": {
+    "categoryID": 3, 
+    "categoryName": "Station", 
+    "categoryNameID": 63542, 
+    "published": false
+  }, 
+  "4": {
+    "categoryID": 4, 
+    "categoryName": "Material", 
+    "categoryNameID": 63543, 
+    "iconID": 22, 
+    "published": true
+  }, 
+  "5": {
+    "categoryID": 5, 
+    "categoryName": "Accessories", 
+    "categoryNameID": 63560, 
+    "iconID": 33, 
+    "published": true
+  }, 
+  "6": {
+    "categoryID": 6, 
+    "categoryName": "Ship", 
+    "categoryNameID": 63544, 
+    "published": true
+  }, 
+  "7": {
+    "categoryID": 7, 
+    "categoryName": "Module", 
+    "categoryNameID": 63545, 
+    "iconID": 67, 
+    "published": true
+  }, 
+  "8": {
+    "categoryID": 8, 
+    "categoryName": "Charge", 
+    "categoryNameID": 63546, 
+    "published": true
+  }, 
+  "9": {
+    "categoryID": 9, 
+    "categoryName": "Blueprint", 
+    "categoryNameID": 63547, 
+    "iconID": 21, 
+    "published": true
+  }, 
   "10": {
     "categoryID": 10, 
     "categoryName": "Trading", 
@@ -51,12 +103,6 @@
     "iconID": 0, 
     "published": true, 
     "sofBuildClass": "ship"
-  }, 
-  "2": {
-    "categoryID": 2, 
-    "categoryName": "Celestial", 
-    "categoryNameID": 63541, 
-    "published": true
   }, 
   "20": {
     "categoryID": 20, 
@@ -104,12 +150,6 @@
     "categoryNameID": 63559, 
     "published": false
   }, 
-  "3": {
-    "categoryID": 3, 
-    "categoryName": "Station", 
-    "categoryNameID": 63542, 
-    "published": false
-  }, 
   "30": {
     "categoryID": 30, 
     "categoryName": "Apparel", 
@@ -134,23 +174,10 @@
     "categoryNameID": 63563, 
     "published": true
   }, 
-  "350001": {
-    "categoryID": 350001, 
-    "categoryName": "Infantry", 
-    "categoryNameID": 267649, 
-    "published": false
-  }, 
   "39": {
     "categoryID": 39, 
     "categoryName": "Infrastructure Upgrades", 
     "categoryNameID": 63565, 
-    "published": true
-  }, 
-  "4": {
-    "categoryID": 4, 
-    "categoryName": "Material", 
-    "categoryNameID": 63543, 
-    "iconID": 22, 
     "published": true
   }, 
   "40": {
@@ -189,13 +216,6 @@
     "categoryNameID": 63571, 
     "published": false
   }, 
-  "5": {
-    "categoryID": 5, 
-    "categoryName": "Accessories", 
-    "categoryNameID": 63560, 
-    "iconID": 33, 
-    "published": true
-  }, 
   "53": {
     "categoryID": 53, 
     "categoryName": "Effects", 
@@ -213,12 +233,6 @@
     "categoryName": "Cells", 
     "categoryNameID": 235965, 
     "published": false
-  }, 
-  "6": {
-    "categoryID": 6, 
-    "categoryName": "Ship", 
-    "categoryNameID": 63544, 
-    "published": true
   }, 
   "63": {
     "categoryID": 63, 
@@ -238,30 +252,10 @@
     "categoryNameID": 308340, 
     "published": true
   }, 
-  "7": {
-    "categoryID": 7, 
-    "categoryName": "Module", 
-    "categoryNameID": 63545, 
-    "iconID": 67, 
-    "published": true
-  }, 
-  "8": {
-    "categoryID": 8, 
-    "categoryName": "Charge", 
-    "categoryNameID": 63546, 
-    "published": true
-  }, 
   "87": {
     "categoryID": 87, 
     "categoryName": "Fighter", 
     "categoryNameID": 510368, 
-    "published": true
-  }, 
-  "9": {
-    "categoryID": 9, 
-    "categoryName": "Blueprint", 
-    "categoryNameID": 63547, 
-    "iconID": 21, 
     "published": true
   }, 
   "91": {
@@ -269,5 +263,11 @@
     "categoryName": "SKINs", 
     "categoryNameID": 531338, 
     "published": true
+  }, 
+  "350001": {
+    "categoryID": 350001, 
+    "categoryName": "Infantry", 
+    "categoryNameID": 267649, 
+    "published": false
   }
 }

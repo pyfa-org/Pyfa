@@ -32559,6 +32559,24 @@
     "stackable": 0, 
     "unitID": 105
   }, 
+  "3096": {
+    "attributeID": 3096, 
+    "dataType": 4, 
+    "defaultValue": 0.0, 
+    "highIsGood": 0, 
+    "name": "locationListID", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "3097": {
+    "attributeID": 3097, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "highIsGood": 0, 
+    "name": "lightYearDistanceMax", 
+    "published": 0, 
+    "stackable": 0
+  }, 
   "3098": {
     "attributeID": 3098, 
     "dataType": 5, 
@@ -32590,5 +32608,15 @@
     "published": 1, 
     "stackable": 0, 
     "unitID": 116
+  }, 
+  "3102": {
+    "attributeID": 3102, 
+    "dataType": 0, 
+    "defaultValue": 0.0, 
+    "description": "when authored alongside the effectTractorBeamCan it will determine if it only tractors corpses instead of wrecks and cans", 
+    "highIsGood": 0, 
+    "name": "onlyTractorCorpses", 
+    "published": 0, 
+    "stackable": 0
   }
 }

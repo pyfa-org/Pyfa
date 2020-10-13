@@ -41,6 +41,144 @@
     "operationName": "PostMul", 
     "showOutputValueInUI": "ShowNormal"
   }, 
+  "2": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "[PROTOTYPE]Test Boost Speed", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "3": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Velocity penalty", 
+    "displayName": "Velocity penalty", 
+    "displayNameID": 517442, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "4": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Warp penalty", 
+    "displayName": "Warp penalty", 
+    "displayNameID": 517444, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 104
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "5": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disallow Cloak", 
+    "displayName": "Disallow Cloak", 
+    "displayNameID": 517760, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2454
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "6": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disallow jump/dock", 
+    "displayName": "Disallow jump/dock", 
+    "displayNameID": 517825, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2354
+      }, 
+      {
+        "dogmaAttributeID": 2453
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "7": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "QA Anti-targeting debuff", 
+    "displayName": "QA Anti-targeting debuff", 
+    "displayNameID": 517856, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 192
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "8": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "PANIC: Shield Resistance", 
+    "displayName": "Shield Resistance", 
+    "displayNameID": 518605, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 271
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "9": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "PANIC: Shield Recharge time", 
+    "displayName": "Shield recharge time bonus", 
+    "displayNameID": 518606, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 479
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
   "10": {
     "aggregateMode": "Minimum", 
     "developerDescription": "Shield Burst: Shield Harmonizing: Shield Resistance", 
@@ -65,43 +203,6 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowInverted"
-  }, 
-  "100": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "Weather_caustic_toxin_scan_resolution_bonus", 
-    "displayName": "Scan Resolution bonus", 
-    "displayNameID": 535079, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 564
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "PostPercent", 
-    "showOutputValueInUI": "ShowNormal"
-  }, 
-  "101": {
-    "aggregateMode": "Minimum", 
-    "developerDescription": "Industrial Core Mining Drone Signal Interference", 
-    "displayName": "Reduced Industrial Core Mining Drone Bonus", 
-    "displayNameID": 546343, 
-    "itemModifiers": [], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [
-      {
-        "dogmaAttributeID": 2585, 
-        "skillID": 28585
-      }, 
-      {
-        "dogmaAttributeID": 2586, 
-        "skillID": 28585
-      }
-    ], 
-    "operationName": "PostMul", 
-    "showOutputValueInUI": "ShowNormal"
   }, 
   "11": {
     "aggregateMode": "Minimum", 
@@ -395,20 +496,6 @@
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 
-  "2": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "[PROTOTYPE]Test Boost Speed", 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 37
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "PostPercent", 
-    "showOutputValueInUI": "ShowNormal"
-  }, 
   "20": {
     "aggregateMode": "Minimum", 
     "developerDescription": "Skirmish Burst: Evasive Maneuvers: Signature Radius", 
@@ -441,59 +528,6 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
-  }, 
-  "2103": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "Damage Bonus", 
-    "displayName": "Damage bonus", 
-    "displayNameID": 551552, 
-    "itemModifiers": [], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [
-      {
-        "dogmaAttributeID": 64, 
-        "skillID": 3300
-      }, 
-      {
-        "dogmaAttributeID": 64, 
-        "skillID": 3436
-      }, 
-      {
-        "dogmaAttributeID": 114, 
-        "skillID": 3319
-      }, 
-      {
-        "dogmaAttributeID": 116, 
-        "skillID": 3319
-      }, 
-      {
-        "dogmaAttributeID": 117, 
-        "skillID": 3319
-      }, 
-      {
-        "dogmaAttributeID": 118, 
-        "skillID": 3319
-      }
-    ], 
-    "operationName": "PostPercent", 
-    "showOutputValueInUI": "ShowNormal"
-  }, 
-  "2104": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "Wreck Warp Scramble", 
-    "displayName": "Wreck Proximity Disrupting Warp Drives", 
-    "displayNameID": 553815, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 104
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "ModAdd", 
-    "showOutputValueInUI": "Hide"
   }, 
   "22": {
     "aggregateMode": "Maximum", 
@@ -665,22 +699,6 @@
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 
-  "3": {
-    "aggregateMode": "Minimum", 
-    "developerDescription": "Velocity penalty", 
-    "displayName": "Velocity penalty", 
-    "displayNameID": 517442, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 37
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "PostPercent", 
-    "showOutputValueInUI": "ShowNormal"
-  }, 
   "30": {
     "aggregateMode": "Minimum", 
     "developerDescription": "Weapon Disruption Burst: Turret Tracking", 
@@ -845,22 +863,6 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
-  }, 
-  "4": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "Warp penalty", 
-    "displayName": "Warp penalty", 
-    "displayNameID": 517444, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 104
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "ModAdd", 
-    "showOutputValueInUI": "Hide"
   }, 
   "40": {
     "aggregateMode": "Minimum", 
@@ -1064,22 +1066,6 @@
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowInverted"
   }, 
-  "5": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "Disallow Cloak", 
-    "displayName": "Disallow Cloak", 
-    "displayNameID": 517760, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 2454
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "ModAdd", 
-    "showOutputValueInUI": "Hide"
-  }, 
   "50": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Leviathan Effect Generator : Kinetic resistance penalty", 
@@ -1262,25 +1248,6 @@
     "operationName": "PostAssignment", 
     "showOutputValueInUI": "Hide"
   }, 
-  "6": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "Disallow jump/dock", 
-    "displayName": "Disallow jump/dock", 
-    "displayNameID": 517825, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 2354
-      }, 
-      {
-        "dogmaAttributeID": 2453
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "ModAdd", 
-    "showOutputValueInUI": "Hide"
-  }, 
   "60": {
     "aggregateMode": "Minimum", 
     "developerDescription": "Skirmish Burst: Evasive Maneuvers: Agility", 
@@ -1314,22 +1281,6 @@
     "operationName": "PostAssignment", 
     "showOutputValueInUI": "Hide"
   }, 
-  "7": {
-    "aggregateMode": "Minimum", 
-    "developerDescription": "QA Anti-targeting debuff", 
-    "displayName": "QA Anti-targeting debuff", 
-    "displayNameID": 517856, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 192
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "PostAssignment", 
-    "showOutputValueInUI": "ShowNormal"
-  }, 
   "79": {
     "aggregateMode": "Maximum", 
     "developerDescription": "AOE_Beacon_bioluminescence_cloud", 
@@ -1345,31 +1296,6 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
-  }, 
-  "8": {
-    "aggregateMode": "Minimum", 
-    "developerDescription": "PANIC: Shield Resistance", 
-    "displayName": "Shield Resistance", 
-    "displayNameID": 518605, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 271
-      }, 
-      {
-        "dogmaAttributeID": 272
-      }, 
-      {
-        "dogmaAttributeID": 273
-      }, 
-      {
-        "dogmaAttributeID": 274
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "PostPercent", 
-    "showOutputValueInUI": "ShowInverted"
   }, 
   "80": {
     "aggregateMode": "Minimum", 
@@ -1465,22 +1391,6 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowInverted"
-  }, 
-  "9": {
-    "aggregateMode": "Minimum", 
-    "developerDescription": "PANIC: Shield Recharge time", 
-    "displayName": "Shield recharge time bonus", 
-    "displayNameID": 518606, 
-    "itemModifiers": [
-      {
-        "dogmaAttributeID": 479
-      }
-    ], 
-    "locationGroupModifiers": [], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
-    "operationName": "PostPercent", 
-    "showOutputValueInUI": "ShowNormal"
   }, 
   "90": {
     "aggregateMode": "Maximum", 
@@ -1661,5 +1571,95 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowInverted"
+  }, 
+  "100": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Weather_caustic_toxin_scan_resolution_bonus", 
+    "displayName": "Scan Resolution bonus", 
+    "displayNameID": 535079, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "101": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Industrial Core Mining Drone Signal Interference", 
+    "displayName": "Reduced Industrial Core Mining Drone Bonus", 
+    "displayNameID": 546343, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 2585, 
+        "skillID": 28585
+      }, 
+      {
+        "dogmaAttributeID": 2586, 
+        "skillID": 28585
+      }
+    ], 
+    "operationName": "PostMul", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2103": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Damage Bonus", 
+    "displayName": "Damage bonus", 
+    "displayNameID": 551552, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3436
+      }, 
+      {
+        "dogmaAttributeID": 114, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 116, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 117, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 118, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2104": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Wreck Warp Scramble", 
+    "displayName": "Wreck Proximity Disrupting Warp Drives", 
+    "displayNameID": 553815, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 104
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
   }
 }

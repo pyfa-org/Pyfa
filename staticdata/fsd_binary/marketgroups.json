@@ -16231,5 +16231,32 @@
     "name": "Siege Module Mutaplasmids", 
     "nameID": 569951, 
     "parentGroupID": 2512
+  }, 
+  "2756": {
+    "description": "Filaments that jump users out of the Triglavian Region Pochven", 
+    "descriptionID": 571036, 
+    "hasTypes": 1, 
+    "iconID": 24530, 
+    "name": "Triglavian Space Outbound", 
+    "nameID": 571035, 
+    "parentGroupID": 2456
+  }, 
+  "2757": {
+    "description": "Filaments that jump users into the Triglavian Region Pochven", 
+    "descriptionID": 571038, 
+    "hasTypes": 1, 
+    "iconID": 24530, 
+    "name": "Triglavian Space Inbound", 
+    "nameID": 571037, 
+    "parentGroupID": 2456
+  }, 
+  "2760": {
+    "description": "Special Edition Deployable Structures", 
+    "descriptionID": 571154, 
+    "hasTypes": 1, 
+    "iconID": 16, 
+    "name": "Special Edition Deployable Structures", 
+    "nameID": 571153, 
+    "parentGroupID": 1659
   }
 }
