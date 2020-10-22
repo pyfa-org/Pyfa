@@ -1784,7 +1784,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 973)
+    Items from category: Charge (608 of 974)
     """
 
     type = 'passive'
@@ -1800,7 +1800,7 @@ class Effect598(BaseEffect):
 
     Used by:
     Charges from group: Festival Charges (29 of 29)
-    Charges from group: Interdiction Probe (2 of 2)
+    Charges from group: Interdiction Probe (3 of 3)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
     """
@@ -2371,7 +2371,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (514 of 973)
+    Items from category: Charge (514 of 974)
     """
 
     type = 'passive'
@@ -6656,23 +6656,6 @@ class Effect2189(BaseEffect):
                                      skill='Amarr Cruiser', **kwargs)
 
 
-class Effect2200(BaseEffect):
-    """
-    eliteBonusInterdictorsMissileKineticDamage1
-
-    Used by:
-    Ship: Flycatcher
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(
-            lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'),
-            'kineticDamage', ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors', **kwargs)
-
-
 class Effect2201(BaseEffect):
     """
     eliteBonusInterdictorsProjectileFalloff1
@@ -6835,7 +6818,7 @@ class Effect2255(BaseEffect):
     tractorBeamCan
 
     Used by:
-    Deployables from group: Mobile Tractor Unit (3 of 3)
+    Deployables from group: Mobile Tractor Unit (4 of 4)
     Modules from group: Tractor Beam (4 of 4)
     """
 
@@ -14336,7 +14319,7 @@ class Effect4358(BaseEffect):
     ecmRangeBonusModuleEffect
 
     Used by:
-    Modules from group: ECM Stabilizer (6 of 6)
+    Modules from group: ECM Stabilizer (3 of 3)
     """
 
     type = 'passive'
@@ -16108,7 +16091,7 @@ class Effect4809(BaseEffect):
     ecmGravimetricStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (6 of 6)
+    Modules from group: ECM Stabilizer (3 of 3)
     """
 
     type = 'passive'
@@ -16125,7 +16108,7 @@ class Effect4810(BaseEffect):
     ecmLadarStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (6 of 6)
+    Modules from group: ECM Stabilizer (3 of 3)
     """
 
     type = 'passive'
@@ -16142,7 +16125,7 @@ class Effect4811(BaseEffect):
     ecmMagnetometricStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (6 of 6)
+    Modules from group: ECM Stabilizer (3 of 3)
     """
 
     type = 'passive'
@@ -16160,7 +16143,7 @@ class Effect4812(BaseEffect):
     ecmRadarStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (6 of 6)
+    Modules from group: ECM Stabilizer (3 of 3)
     """
 
     type = 'passive'
@@ -21745,39 +21728,6 @@ class Effect5673(BaseEffect):
                                       skill='Interceptors', **kwargs)
 
 
-class Effect5676(BaseEffect):
-    """
-    shipBonusSmallMissileExplosionRadiusCD2
-
-    Used by:
-    Ship: Flycatcher
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(
-            lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
-            'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer', **kwargs)
-
-
-class Effect5688(BaseEffect):
-    """
-    shipBonusMissileVelocityAD2
-
-    Used by:
-    Ship: Heretic
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                        'maxVelocity', ship.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer', **kwargs)
-
-
 class Effect5695(BaseEffect):
     """
     eliteBonusInterdictorsArmorResist1
@@ -21826,22 +21776,6 @@ class Effect5721(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
-
-
-class Effect5722(BaseEffect):
-    """
-    shipHybridOptimalGD1
-
-    Used by:
-    Ship: Eris
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
-                                      'maxRange', ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
 
 
 class Effect5723(BaseEffect):
@@ -22945,6 +22879,7 @@ class Effect5889(BaseEffect):
 
     Used by:
     Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Interceptor (4 of 10)
     """
 
     type = 'passive'
@@ -22961,6 +22896,7 @@ class Effect5890(BaseEffect):
 
     Used by:
     Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Interceptor (4 of 10)
     """
 
     type = 'passive'
@@ -23483,22 +23419,6 @@ class Effect5939(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rocket',
                                       'speed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
-
-
-class Effect5940(BaseEffect):
-    """
-    eliteBonusInterdictorsSHTRoF1
-
-    Used by:
-    Ship: Eris
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
-                                      'speed', ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors', **kwargs)
 
 
 class Effect5944(BaseEffect):
@@ -37232,3 +37152,86 @@ class Effect8092(BaseEffect):
             lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
             'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryM2'),
             skill='Minmatar Carrier', **kwargs)
+
+
+class Effect8094(BaseEffect):
+    """
+    shipBonusHybridROFGD1
+
+    Used by:
+    Ship: Eris
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
+                                      'speed', ship.getModifiedItemAttr('shipBonusGD1'),
+                                      skill='Gallente Destroyer', **kwargs)
+
+
+class Effect8095(BaseEffect):
+    """
+    eliteBonusInterdictors1massAddition
+
+    Used by:
+    Ship: Eris
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plate',
+                                      'massAddition', ship.getModifiedItemAttr('eliteBonusInterdictors1'),
+                                      skill='Interdictors', **kwargs)
+
+
+class Effect8096(BaseEffect):
+    """
+    shipBonusKinMissileDamageCD2
+
+    Used by:
+    Ship: Flycatcher
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                        'kineticDamage', ship.getModifiedItemAttr('shipBonusCD2'),
+                                        skill='Caldari Destroyer', **kwargs)
+
+
+class Effect8097(BaseEffect):
+    """
+    eliteBonusInterdictors1ShieldCapacity
+
+    Used by:
+    Ship: Flycatcher
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('eliteBonusInterdictors1'),
+                               skill='Interdictors', **kwargs)
+
+
+class Effect8098(BaseEffect):
+    """
+    shipBonusArmorHPAD2
+
+    Used by:
+    Ship: Heretic
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('shipBonusAD2'),
+                               skill='Amarr Destroyer', **kwargs)
