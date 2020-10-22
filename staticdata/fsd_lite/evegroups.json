@@ -16184,6 +16184,18 @@
     "published": true, 
     "useBasePrice": true
   }, 
+  "4088": {
+    "anchorable": false, 
+    "anchored": false, 
+    "categoryID": 8, 
+    "fittableNonSingleton": true, 
+    "groupID": 4088, 
+    "groupName": "Interdiction Burst Probes", 
+    "groupNameID": 571813, 
+    "iconID": 1721, 
+    "published": false, 
+    "useBasePrice": false
+  }, 
   "350858": {
     "anchorable": false, 
     "anchored": false, 

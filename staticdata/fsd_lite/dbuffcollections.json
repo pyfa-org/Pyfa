@@ -1661,5 +1661,22 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
+  }, 
+  "2108": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Webifier Range Bonus", 
+    "displayName": "Stasis Webifier Range Bonus", 
+    "displayNameID": 571849, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 65
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

@@ -204,7 +204,7 @@
           "bonuses": [
             {
               "number": "10%", 
-              "text": "bonus to kinetic Light Missile and Rocket damage"
+              "text": "bonus to shield hitpoints"
             }, 
             {
               "number": "10%", 
@@ -217,7 +217,7 @@
           "bonuses": [
             {
               "number": "5%", 
-              "text": "bonus to Light Missile and Rocket explosion radius"
+              "text": "bonus to Light Missile and Rocket kinetic damage"
             }, 
             {
               "number": "10%", 
@@ -258,8 +258,8 @@
         {
           "bonuses": [
             {
-              "number": "5%", 
-              "text": "bonus to Small Hybrid Turret rate of fire"
+              "number": "15%", 
+              "text": "reduction in Armor Plate mass penalty"
             }, 
             {
               "number": "10%", 
@@ -271,8 +271,8 @@
         {
           "bonuses": [
             {
-              "number": "10%", 
-              "text": "bonus to Small Hybrid Turret optimal range"
+              "number": "5%", 
+              "text": "bonus to Small Hybrid Turret rate of fire"
             }, 
             {
               "number": "10%", 
@@ -781,6 +781,10 @@
           {
             "number": "80%", 
             "text": "reduction in Propulsion Jamming systems activation cost"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to the benefits of overheating Afterburners and Microwarpdrives"
           }
         ], 
         "header": "Role Bonus:"
@@ -11275,6 +11279,10 @@
           {
             "number": "80%", 
             "text": "reduction in Propulsion Jamming systems activation cost"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to the benefits of overheating Afterburners and Microwarpdrives"
           }
         ], 
         "header": "Role Bonus:"
@@ -14943,7 +14951,7 @@
           "bonuses": [
             {
               "number": "10%", 
-              "text": "bonus to Light Missile and Rocket max velocity"
+              "text": "bonus to armor hitpoints"
             }, 
             {
               "number": "5%", 
@@ -15879,6 +15887,10 @@
           {
             "number": "80%", 
             "text": "reduction in Propulsion Jamming systems activation cost"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to the benefits of overheating Afterburners and Microwarpdrives"
           }
         ], 
         "header": "Role Bonus:"
@@ -20269,6 +20281,10 @@
           {
             "number": "80%", 
             "text": "reduction in Propulsion Jamming systems activation cost"
+          }, 
+          {
+            "number": "100%", 
+            "text": "bonus to the benefits of overheating Afterburners and Microwarpdrives"
           }
         ], 
         "header": "Role Bonus:"
