@@ -22,6 +22,7 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
+import gui.globalEvents as GE
 
 
 class Display(wx.ListCtrl):
@@ -31,12 +32,15 @@ class Display(wx.ListCtrl):
     def __init__(self, parent, size=wx.DefaultSize, style=0):
 
         wx.ListCtrl.__init__(self, parent, size=size, style=wx.LC_REPORT | style)
+
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
         self.columnsMinWidth = []
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
+        # TODO: Check dark mode binding here.  Necessary?  Doubtful.
+        self.Bind(GE.DARK_MODE_TOGGLED, self.Refresh)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -44,7 +48,6 @@ class Display(wx.ListCtrl):
             self.insertColumnBySpec(i, colName)
 
         self.imageListBase = self.imageList.ImageCount
-
 
     # Override native HitTestSubItem (doesn't work as it should on GTK)
     # Source: ObjectListView
@@ -258,6 +261,7 @@ class Display(wx.ListCtrl):
                 else:
                     self.SetColumnWidth(i, col.size)
 
+
     def update(self, stuff):
         self.populate(stuff)
         self.refresh(stuff)
@@ -317,3 +321,4 @@ class Display(wx.ListCtrl):
                     focusedPos = self.GetFocusedItem()
                     if clickedPos != focusedPos:
                         self.Focus(clickedPos)
+

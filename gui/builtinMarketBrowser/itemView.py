@@ -1,17 +1,17 @@
 import wx
 from logbook import Logger
 
-import gui.builtinMarketBrowser.pfSearchBox as SBox
-from config import slotColourMap
 from eos.saveddata.module import Module
+import gui.builtinMarketBrowser.pfSearchBox as SBox
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
+from service.attribute import Attribute
 from service.fit import Fit
-from service.market import Market
-
-
+from config import slotColourMap
+import gui.globalEvents as GE
+import gui.mainFrame
 pyfalog = Logger(__name__)
 
 
@@ -49,8 +49,10 @@ class ItemView(Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
+        self.Bind(GE.DARK_MODE_TOGGLED, self.treeSelectionChanged) #Force redraw on dark mode
 
         self.active = []
+
 
     def delaySearch(self, evt):
         sFit = Fit.getInstance()
@@ -171,8 +173,8 @@ class ItemView(Display):
     def scheduleSearch(self, event=None):
         self.searchTimer.Stop()  # Cancel any pending timers
         search = self.marketBrowser.search.GetLineText(0)
-        # Make sure we do not count wildcards as search symbol
-        realsearch = search.replace('*', '').replace('?', '')
+        # Make sure we do not count wildcard as search symbol
+        realsearch = search.replace("*", "")
         # Re-select market group if search query has zero length
         if len(realsearch) == 0:
             self.selectionMade('search')
@@ -194,11 +196,10 @@ class ItemView(Display):
             self.setToggles()
             self.filterItemStore()
 
-    def populateSearch(self, itemIDs):
+    def populateSearch(self, items):
         # If we're no longer searching, dump the results
         if self.marketBrowser.mode != 'search':
             return
-        items = Market.getItems(itemIDs)
         self.updateItemStore(items)
         self.setToggles()
         self.filterItemStore()
@@ -242,7 +243,14 @@ class ItemView(Display):
         Display.refresh(self, items)
 
     def columnBackground(self, colItem, item):
+        """
+        Controls the color of the rows for each item in the market view
+        after focusing on an item category.
+
+        TODO: Else clause is likely introducing a bug where color-coded
+              fit slots will draw different background on dark mode.
+        """
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
             return slotColourMap.get(Module.calculateSlot(item)) or self.GetBackgroundColour()
         else:
-            return self.GetBackgroundColour()
+            return self.mainFrame.GetBackgroundColour()

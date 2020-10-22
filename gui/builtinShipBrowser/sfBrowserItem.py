@@ -281,6 +281,7 @@ class SFBrowserItem(wx.Window):
         self.RenderBackground()
         wx.Window.Refresh(self)
 
+
     def OnPaint(self, event):
         mdc = wx.AutoBufferedPaintDC(self)
 
@@ -403,9 +404,14 @@ class SFBrowserItem(wx.Window):
         return state
 
     def RenderBackground(self):
+        """
+        Controls the background color of the left-hand nav pane when NOT
+        exploring fits.  This is the ship browser background color.
+        """
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = self.mainFrame.GetBackgroundColour()
+
 
         state = self.GetState()
 

@@ -84,10 +84,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_SIZE, self.OnResize)
 
+
     def OnScheduleSearch(self, event):
         search = self.BrowserSearchBox.GetValue()
-        # Make sure we do not count wildcards as search symbol
-        realsearch = search.replace('*', '').replace('?', '')
+        # Make sure we do not count wildcard as search symbol
+        realsearch = search.replace("*", "")
         minChars = 1 if isStringCjk(realsearch) else 3
         if len(realsearch) >= minChars:
             self.lastSearch = search
@@ -219,9 +220,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitable(windowColor, 1)
-        sepColor = colorUtils.GetSuitable(windowColor, 0.2)
+        textColor = self.mainFrame.GetForegroundColour()
+        sepColor = self.mainFrame.GetBackgroundColour()
+        #TODO: Investigate why below breaks; sepColor seems fine for now
+        #sepColor = tuple(list(map(lambda x: int(x*0.4), w[:-1])).append(w[-1]))    #~(80,80,80,255)
 
         mdc.SetTextForeground(textColor)
 
@@ -238,7 +240,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = self.mainFrame.GetBackgroundColour()
 
         sFactor = 0.1
 

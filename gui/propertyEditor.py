@@ -13,7 +13,6 @@ from eos.db.gamedata.queries import getAttributeInfo, getItem
 from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
-from service.fit import Fit
 from service.market import Market
 
 
@@ -171,15 +170,12 @@ class ItemView(d.Display):
         d.Display.__init__(self, parent)
         self.activeItems = []
 
-        self.searchTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.scheduleSearch, self.searchTimer)
-
         self.searchBox = parent.Parent.Parent.searchBox
         # Bind search actions
         self.searchBox.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
         self.searchBox.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
         self.searchBox.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
-        self.searchBox.Bind(SBox.EVT_TEXT, self.delaySearch)
+        self.searchBox.Bind(SBox.EVT_TEXT, self.scheduleSearch)
 
         self.update(Market.getInstance().getItemsWithOverrides())
 
@@ -192,17 +188,12 @@ class ItemView(d.Display):
         if updateDisplay:
             self.update(Market.getInstance().getItemsWithOverrides())
 
-    def delaySearch(self, evt):
-        sFit = Fit.getInstance()
-        self.searchTimer.Stop()
-        self.searchTimer.Start(sFit.serviceFittingOptions["marketSearchDelay"], True)
-
     def scheduleSearch(self, event=None):
         sMkt = Market.getInstance()
 
         search = self.searchBox.GetLineText(0)
-        # Make sure we do not count wildcards as search symbol
-        realsearch = search.replace('*', '').replace('?', '')
+        # Make sure we do not count wildcard as search symbol
+        realsearch = search.replace("*", "")
         # Show nothing if query is too short
         if len(realsearch) < 3:
             self.clearSearch()
@@ -215,8 +206,7 @@ class ItemView(d.Display):
         isFittable = item.group.name in sMkt.FIT_GROUPS or item.category.name in sMkt.FIT_CATEGORIES
         return (not isFittable, *sMkt.itemSort(item))
 
-    def populateSearch(self, itemIDs):
-        items = Market.getItems(itemIDs)
+    def populateSearch(self, items):
         self.update(items)
 
     def populate(self, items):

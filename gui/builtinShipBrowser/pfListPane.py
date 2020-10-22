@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+import gui.mainFrame
 
 
 class PFListPane(wx.ScrolledWindow):
@@ -30,7 +31,8 @@ class PFListPane(wx.ScrolledWindow):
         self._wCount = 0
         self.itemsHeight = 1
 
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.SetBackgroundColour(self.mainFrame.GetBackgroundColour())
 
         self.SetVirtualSize((1, 1))
         self.SetScrollRate(0, 1)
@@ -42,6 +44,7 @@ class PFListPane(wx.ScrolledWindow):
         self.SetFocus()
         # self.Bind(wx.EVT_MOUSE_CAPTURE_CHANGED, self.ForceFocus)
         self.Bind(wx.EVT_SCROLLWIN_THUMBRELEASE, self.ForceFocus)
+
 
     def ForceFocus(self, event):
         if self.FindFocus() and self.FindFocus().Parent != self:
@@ -124,6 +127,9 @@ class PFListPane(wx.ScrolledWindow):
         return False
 
     def RefreshList(self, doRefresh=False, doFocus=False):
+        """
+        QUESTION: Is this where the ship list is updated from?
+        """
         maxy = 0
 
         selected = None
@@ -156,6 +162,7 @@ class PFListPane(wx.ScrolledWindow):
         if 'wxGTK' in wx.PlatformInfo:
             self.SetScrollRate(0, self.itemsHeight)
 
+
     def RemoveWidget(self, child):
         child.Destroy()
         self._wList.remove(child)
@@ -166,3 +173,4 @@ class PFListPane(wx.ScrolledWindow):
 
         self.Scroll(0, 0)
         self._wList = []
+

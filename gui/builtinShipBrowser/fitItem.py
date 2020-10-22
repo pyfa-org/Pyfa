@@ -23,6 +23,11 @@ pyfalog = Logger(__name__)
 
 
 class FitItem(SFItem.SFBrowserItem):
+    """
+    FitItem is the current and previous fits in the left-hand navigational
+    pane.  NOTE: These gui elements are not linked to the main frame via a
+    widget crawl.
+    """
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0, None), shipID=None,
                  itemData=None, graphicID=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
@@ -476,12 +481,22 @@ class FitItem(SFItem.SFBrowserItem):
         self.thoverw = wlabel
 
     def DrawItem(self, mdc):
+        """
+        Draws items to the mdc object.
+
+        NOTE: mdc variable is a wx.DC object and colors are set via
+              SetBackground(wx.Brush(wx.Color)
+              SetTextForeground(wx.Color)
+        """
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitable(windowColor, 1)
+        #NOTE: Controls colors for fit in navigation panel
+        windowColor = self.mainFrame.GetBackgroundColour()
+        textColor = self.mainFrame.GetForegroundColour()
 
         mdc.SetTextForeground(textColor)
+        mdc.SetBackground(wx.Brush(windowColor))
+        mdc.Clear() #NOTE: Otherwise is not drawn until mouseover event
 
         self.UpdateElementsPos(mdc)
 
@@ -563,11 +578,12 @@ class FitItem(SFItem.SFBrowserItem):
                 self.__setToolTip()
 
         SFItem.SFBrowserItem.Refresh(self)
+        self.RenderBackground()
 
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = self.mainFrame.GetBackgroundColour()
 
         # activeFitID = self.mainFrame.getActiveFit()
         state = self.GetState()

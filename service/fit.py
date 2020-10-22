@@ -79,6 +79,7 @@ class Fit:
             "useGlobalDamagePattern": False,
             "defaultCharacter": self.character.ID,
             "useGlobalForceReload": False,
+            "useDarkMode": False,
             "colorFitBySlot": False,
             "rackSlots": True,
             "rackLabels": True,

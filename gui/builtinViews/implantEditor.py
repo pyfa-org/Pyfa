@@ -302,8 +302,8 @@ class ItemView(d.Display):
         sMkt = Market.getInstance()
 
         search = self.searchBox.GetLineText(0)
-        # Make sure we do not count wildcards as search symbol
-        realsearch = search.replace('*', '').replace('?', '')
+        # Make sure we do not count wildcard as search symbol
+        realsearch = search.replace("*", "")
         # Show nothing if query is too short
         if len(realsearch) < 3:
             self.clearSearch()
@@ -311,12 +311,12 @@ class ItemView(d.Display):
 
         sMkt.searchItems(search, self.populateSearch, 'implants')
 
-    def populateSearch(self, itemIDs):
+    def populateSearch(self, items):
         if not self.IsShown():
             self.parent.availableImplantsTree.Hide()
             self.Show()
             self.parent.Layout()
-        items = Market.getItems(itemIDs)
+
         items = [i for i in items if i.group.name != 'Booster']
         self.items = sorted(list(items), key=lambda i: i.name)
 

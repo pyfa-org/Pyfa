@@ -31,6 +31,10 @@ class PFGeneralPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
+        self.cbToggleDarkMode = wx.CheckBox(panel, wx.ID_ANY, "Toggle Dark Mode On/Off (Experimental)",
+                                                 wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbToggleDarkMode, 0, wx.ALL | wx.EXPAND, 5)
+
         self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, "Use global character", wx.DefaultPosition, wx.DefaultSize,
                                         0)
         mainSizer.Add(self.cbGlobalChar, 0, wx.ALL | wx.EXPAND, 5)
@@ -92,6 +96,7 @@ class PFGeneralPref(PreferenceView):
 
         self.sFit = Fit.getInstance()
 
+        self.cbToggleDarkMode.SetValue(self.sFit.serviceFittingOptions["useDarkMode"])
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbDefaultCharImplants.SetValue(self.sFit.serviceFittingOptions["useCharacterImplantsByDefault"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
@@ -107,6 +112,7 @@ class PFGeneralPref(PreferenceView):
         self.cbReloadAll.SetValue(self.sFit.serviceFittingOptions["ammoChangeAll"])
         self.rbAddLabels.SetSelection(self.sFit.serviceFittingOptions["additionsLabels"])
 
+        self.cbToggleDarkMode.Bind(wx.EVT_CHECKBOX, self.OnDarkModeToggle)
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbDefaultCharImplants.Bind(wx.EVT_CHECKBOX, self.OnCBDefaultCharImplantsStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -125,6 +131,21 @@ class PFGeneralPref(PreferenceView):
 
         panel.SetSizer(mainSizer)
         panel.Layout()
+
+    def OnDarkModeToggle(self, event):
+        """
+        Event Handler for GE.DARK_MODE_TOGGLED
+        Calls/Posts Events for every UI-Element, updating their colorscheme.
+
+        TODO: Would prefer single call to darkModeToggled in mainFrame
+        TODO: If PostEvent sent to mainFrame, there is no color redraw.
+              Investigate
+        """
+        self.mainFrame.darkModeToggled(None)
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
+        wx.PostEvent(self.mainFrame.marketBrowser.itemView, GE.DarkModeToggled())
+        event.Skip()
 
     def onCBGlobalColorBySlot(self, event):
         # todo: maybe create a SettingChanged event that we can fire, and have other things hook into, instead of having the preference panel itself handle the
