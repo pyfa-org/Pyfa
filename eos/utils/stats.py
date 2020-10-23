@@ -22,6 +22,10 @@ from eos.utils.float import floatUnerr
 from utils.repr import makeReprStr
 
 
+def _t(x):
+    return x
+
+
 class DmgTypes:
     """Container for damage data stats."""
 
@@ -116,7 +120,7 @@ class DmgTypes:
 
     @staticmethod
     def names(short=None, postProcessor=None):
-        value = ['em', 'th', 'kin', 'exp'] if short else ['em', 'thermal', 'kinetic', 'explosive']
+        value = [_t('em'), _t('th'), _t('kin'), _t('exp')] if short else [_t('em'), _t('thermal'), _t('kinetic'), _t('explosive')]
 
         if postProcessor:
             value = [postProcessor(x) for x in value]

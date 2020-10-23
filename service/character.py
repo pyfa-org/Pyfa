@@ -42,7 +42,7 @@ from eos.const import FittingSlot as es_Slot
 from eos.saveddata.fighter import Fighter as es_Fighter
 
 pyfalog = Logger(__name__)
-
+_t = wx.GetTranslation
 
 class CharacterImportThread(threading.Thread):
 
@@ -319,7 +319,7 @@ class Character:
     @staticmethod
     def getSkillLevel(charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
-        return float(skill.level) if skill.learned else "Not learned", skill.isDirty
+        return float(skill.level) if skill.learned else _t("Not learned"), skill.isDirty
 
     @staticmethod
     def getDirtySkills(charID):

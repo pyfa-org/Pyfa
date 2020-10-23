@@ -34,8 +34,8 @@ from service.settings import GraphSettings
 from . import canvasPanel
 from .ctrlPanel import GraphControlPanel
 
-
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 REDRAW_DELAY = 500
@@ -48,7 +48,7 @@ class GraphFrame(AuxiliaryFrame):
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
-        super().__init__(parent, title='Graphs', size=(520, 390), resizeable=True)
+        super().__init__(parent, title=_t('Graphs'), size=(520, 390), resizeable=True)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.includeHidden = includeHidden
 

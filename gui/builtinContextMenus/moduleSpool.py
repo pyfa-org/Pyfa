@@ -1,18 +1,20 @@
 import math
 
-# noinspection PyPackageRequirements
 import wx
 
 import eos.config
 import gui.fitCommands as cmd
 import gui.mainFrame
-from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from eos.utils.spoolSupport import SpoolOptions, SpoolType
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
+
 
 class ChangeModuleSpool(ContextMenuSingle):
-
     visibilitySetting = 'spoolup'
 
     def __init__(self):
@@ -32,7 +34,7 @@ class ChangeModuleSpool(ContextMenuSingle):
         return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Spoolup Cycles"
+        return _t("Spoolup Cycles")
 
     def getSubMenu(self, callingWindow, context, mainItem, rootMenu, i, pitem):
         m = wx.Menu()
@@ -78,7 +80,7 @@ class ChangeModuleSpool(ContextMenuSingle):
 
             # Show default only for current value and when not overriden
             if not isNotDefault and cycle == cycleDefault:
-                text = "{} (default)".format(cycle)
+                text = _t("{} (default)").format(cycle)
             # Always show current selection and stuff which we decided to show via the cycles function
             elif cycle == cycleCurrent or cycle in cyclesToShow:
                 text = "{}".format(cycle)
@@ -93,7 +95,7 @@ class ChangeModuleSpool(ContextMenuSingle):
             self.cycleMap[menuId] = cycle
 
         self.resetId = ContextMenuSingle.nextID()
-        item = wx.MenuItem(m, self.resetId, "Reset")
+        item = wx.MenuItem(m, self.resetId, _t("Reset"))
         bindmenu.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
         m.Append(item)
 
@@ -114,12 +116,12 @@ class ChangeModuleSpool(ContextMenuSingle):
             if self.mod in fit.modules:
                 position = fit.modules.index(self.mod)
                 self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleSpoolCommand(
-                    fitID=fitID, position=position, spoolType=spoolType, spoolAmount=spoolAmount))
+                        fitID=fitID, position=position, spoolType=spoolType, spoolAmount=spoolAmount))
         elif self.context == 'projectedModule':
             if self.mod in fit.projectedModules:
                 position = fit.projectedModules.index(self.mod)
                 self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleSpoolCommand(
-                    fitID=fitID, position=position, spoolType=spoolType, spoolAmount=spoolAmount))
+                        fitID=fitID, position=position, spoolType=spoolType, spoolAmount=spoolAmount))
 
 
 ChangeModuleSpool.register()

@@ -12,10 +12,10 @@ from wx.lib.intctrl import IntCtrl
 
 logger = logging.getLogger(__name__)
 
+_t = wx.GetTranslation
+
 
 class PFFittingEnginePref(PreferenceView):
-    title = "Fitting Engine"
-
     def __init__(self):
         self.dirtySettings = False
 
@@ -24,6 +24,7 @@ class PFFittingEnginePref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
+        self.title = _t("Fitting Engine")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -40,41 +41,40 @@ class PFFittingEnginePref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, "Factor in reload time when calculating capacitor usage, damage, and tank.",
+        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, _t("Factor in reload time when calculating capacitor usage, damage, and tank."),
                                                wx.DefaultPosition, wx.DefaultSize, 0)
 
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbStrictSkillLevels = wx.CheckBox(panel, wx.ID_ANY,
-                                               "Enforce strict skill level requirements",
+                                               _t("Enforce strict skill level requirements"),
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         self.cbStrictSkillLevels.SetCursor(helpCursor)
         self.cbStrictSkillLevels.SetToolTip(wx.ToolTip(
-            'When enabled, skills will check their dependencies\' requirements when their levels change and reset ' +
-            'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy ' +
-            'Drone Operation skill, as that requires Drones V'))
+                _t('When enabled, skills will check their dependencies\' requirements when their levels change and reset '
+                   'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy '
+                   'Drone Operation skill, as that requires Drones V')))
 
         mainSizer.Add(self.cbStrictSkillLevels, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
-                                                            "When damage profile is Uniform, set Reactive Armor " +
-                                                            "Hardener to match (old behavior).",
+                                                            _t("When damage profile is Uniform, set Reactive Armor "
+                                                               "Hardener to match (old behavior)."),
                                                             wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
-
         spoolup_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.spool_up_label = wx.StaticText(panel, wx.ID_ANY, "Global Default Spoolup Percentage:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.spool_up_label = wx.StaticText(panel, wx.ID_ANY, _t("Global Default Spoolup Percentage:"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.spool_up_label.Wrap(-1)
         self.spool_up_label.SetCursor(helpCursor)
         self.spool_up_label.SetToolTip(
-            wx.ToolTip('The amount of spoolup to use by default on module which support it. Can be changed on a per-module basis'))
+                wx.ToolTip(_t('The amount of spoolup to use by default on module which support it. Can be changed on a per-module basis')))
 
         spoolup_sizer.Add(self.spool_up_label, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.spoolup_value = IntCtrl(panel, min=0, max=100, limited=True)
-        spoolup_sizer.Add(self.spoolup_value , 0, wx.ALL, 5)
+        spoolup_sizer.Add(self.spoolup_value, 0, wx.ALL, 5)
 
         mainSizer.Add(spoolup_sizer, 0, wx.ALL | wx.EXPAND, 0)
 

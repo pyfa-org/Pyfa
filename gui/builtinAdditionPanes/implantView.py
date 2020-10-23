@@ -32,6 +32,8 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 
+_t = wx.GetTranslation
+
 
 class ImplantViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
@@ -62,8 +64,8 @@ class ImplantView(wx.Panel):
 
         radioSizer = wx.BoxSizer(wx.HORIZONTAL)
         radioSizer.AddStretchSpacer()
-        self.rbFit = wx.RadioButton(self, id=wx.ID_ANY, label="Use Fit-specific Implants", style=wx.RB_GROUP)
-        self.rbChar = wx.RadioButton(self, id=wx.ID_ANY, label="Use Character Implants")
+        self.rbFit = wx.RadioButton(self, id=wx.ID_ANY, label=_t("Use Fit-specific Implants"), style=wx.RB_GROUP)
+        self.rbChar = wx.RadioButton(self, id=wx.ID_ANY, label=_t("Use Character Implants"))
         radioSizer.Add(self.rbFit, 0, wx.ALL, 5)
         radioSizer.Add(self.rbChar, 0, wx.ALL, 5)
         radioSizer.AddStretchSpacer()
@@ -298,7 +300,7 @@ class ImplantDisplay(d.Display):
         fit = Fit.getInstance().getFit(fitID)
         sourceContext1 = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
         sourceContext2 = "implantItemMisc" if fit.implantSource == ImplantLocation.FIT else "implantItemMiscChar"
-        itemContext = None if mainImplant is None else Market.getInstance().getCategoryByItem(mainImplant.item).name
+        itemContext = None if mainImplant is None else Market.getInstance().getCategoryByItem(mainImplant.item).displayName
         menu = ContextMenu.getMenu(self, mainImplant, selection,
                                    (sourceContext1, itemContext),
                                    (sourceContext2, itemContext)

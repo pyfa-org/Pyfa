@@ -1,11 +1,14 @@
+import wx
+
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class ProjectItem(ContextMenuSingle):
-
     visibilitySetting = 'project'
 
     def __init__(self):
@@ -28,7 +31,7 @@ class ProjectItem(ContextMenuSingle):
         return mainItem.isType("projected")
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Project {0} onto Fit".format(itmContext)
+        return _t("Project {0} onto Fit").format(itmContext)
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()

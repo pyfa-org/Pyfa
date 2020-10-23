@@ -344,7 +344,7 @@ class Item(EqBase):
 
             try:
                 if (
-                    self.category.categoryName == 'Structure' or
+                    self.category.name == 'Structure' or
                     # Here until CCP puts their shit together
                     self.name in ("Thunderchild", "Stormbringer", "Skybreaker")
                 ):
@@ -423,7 +423,7 @@ class Item(EqBase):
     def requiresSkill(self, skill, level=None):
         for s, l in self.requiredSkills.items():
             if isinstance(skill, str):
-                if s.name == skill and (level is None or l == level):
+                if s.typeName == skill and (level is None or l == level):
                     return True
 
             elif isinstance(skill, int) and (level is None or l == level):
@@ -506,8 +506,8 @@ class Item(EqBase):
         return False
 
     def __repr__(self):
-        return "Item(ID={}, name={}) at {}".format(
-                self.ID, self.name, hex(id(self))
+        return "Item(ID={}, name={}, display={}) at {}".format(
+                self.ID, self.typeName, self.name, hex(id(self))
         )
 
 

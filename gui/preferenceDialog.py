@@ -22,12 +22,13 @@ import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
 
+_t = wx.GetTranslation
 
 class PreferenceDialog(wx.Dialog):
 
     def __init__(self, parent):
         super().__init__(parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
-        self.SetTitle("pyfa - Preferences")
+        self.SetTitle("pyfa - " + _t("Preferences"))
         i = wx.Icon(BitmapLoader.getBitmap("preferences_small", "gui"))
         self.SetIcon(i)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -48,6 +49,7 @@ class PreferenceDialog(wx.Dialog):
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
         btnSizer.AddStretchSpacer()
+        # localization todo: "OK" button shoudl be a built in thing that is already localized...
         self.btnOK = wx.Button(self, wx.ID_ANY, "OK", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnOK, 0, wx.ALL, 5)
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)

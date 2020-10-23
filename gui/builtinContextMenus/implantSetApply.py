@@ -1,10 +1,12 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 from gui.contextMenu import ContextMenuUnconditional
-from service.market import Market
 from service.implantSet import ImplantSets as UserImplantSets
 from service.precalcImplantSet import PrecalcedImplantSets
+
+_t = wx.GetTranslation
 
 
 class ImplantSetApply(ContextMenuUnconditional):
@@ -20,7 +22,7 @@ class ImplantSetApply(ContextMenuUnconditional):
         return srcContext in ("implantItemMisc", "implantEditor")
 
     def getText(self, callingWindow, context):
-        return "Apply Implant Set"
+        return _t("Apply Implant Set")
 
     def _addSeparator(self, m, text):
         id_ = ContextMenuUnconditional.nextID()

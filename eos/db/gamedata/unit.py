@@ -22,11 +22,13 @@ from sqlalchemy.orm import mapper, synonym
 
 from eos.db import gamedata_meta
 from eos.gamedata import Unit
+import eos.config
 
 groups_table = Table("dgmunits", gamedata_meta,
                      Column("unitID", Integer, primary_key=True),
                      Column("unitName", String),
-                     Column("displayName", String))
+                     *[Column("displayName{}".format(lang), String) for lang in eos.config.translation_mapping.values()],
+                     )
 
 mapper(Unit, groups_table,
        properties={

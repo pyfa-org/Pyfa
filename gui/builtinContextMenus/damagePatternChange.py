@@ -11,6 +11,8 @@ from gui.utils.sorter import smartSort
 from service.damagePattern import DamagePattern as DmgPatternSvc
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class ChangeDamagePattern(ContextMenuUnconditional):
 
@@ -35,16 +37,18 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         # Order here is important: patterns with duplicate names from the latter will overwrite
         # patterns from the former
         self.patterns = sorted(
-            chain(builtinPatterns, userPatterns),
-            key=lambda p: p.fullName not in ["Uniform", "Selected Ammo"])
+                chain(builtinPatterns, userPatterns),
+                key=lambda p: p.fullName not in ["Uniform", "Selected Ammo"])
 
         self.patternEventMap = {}
         self.items = (OrderedDict(), OrderedDict())
         for pattern in self.patterns:
             container = self.items
             for categoryName in pattern.hierarchy:
+                categoryName = _t(categoryName) if pattern.builtin else categoryName
                 container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
-            container[0][pattern.shortName] = pattern
+            shortName = _t(pattern.shortName) if pattern.builtin else pattern.shortName
+            container[0][shortName] = pattern
 
         return list(self.items[0].keys()) + list(self.items[1].keys())
 

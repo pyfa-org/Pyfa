@@ -40,6 +40,7 @@ from service.market import Market
 
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class BaseName(ViewColumn):
@@ -51,9 +52,18 @@ class BaseName(ViewColumn):
         ViewColumn.__init__(self, fittingView)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.columnText = "Name"
+        self.columnText = _t("Name")
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.builtinAdditionPanes.projectedView.ProjectedView)
+        self.rackTranslations = {
+            FittingSlot.HIGH: _t('High'),
+            FittingSlot.MED: _t('Med'),
+            FittingSlot.LOW: _t('Low'),
+            FittingSlot.SUBSYSTEM: _t('Subsystem'),
+            FittingSlot.RIG: _t('Rig'),
+            FittingSlot.SERVICE: _t('Service')
+        }
+
 
     def getText(self, stuff):
         if isinstance(stuff, BaseWrapper):
@@ -89,9 +99,9 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Rack):
             if FitSvc.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == FittingSlot.MODE:
-                    return '─ Tactical Mode ─'
+                    return '─ {} ─'.format(_t('Tactical Mode'))
                 else:
-                    return '─ {} {} Slot{}─'.format(stuff.num, FittingSlot(stuff.slot).name.capitalize(), '' if stuff.num == 1 else 's')
+                    return '─ {} ─'.format(_t('{} {} Slot', '{} {} Slots', stuff.num).format(stuff.num, self.rackTranslations.get(stuff.slot, FittingSlot(stuff.slot).name.capitalize())))
             else:
                 return ""
         elif isinstance(stuff, Module):

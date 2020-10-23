@@ -27,6 +27,8 @@ import webbrowser
 import re
 import markdown2
 
+_t = wx.GetTranslation
+
 # HTML template. We link to a bootstrap cdn for quick and easy css, and include some additional teaks.
 html_tmpl = """
 <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />
@@ -49,7 +51,7 @@ class UpdateDialog(wx.Dialog):
 
     def __init__(self, parent, release, version):
         super().__init__(
-            parent, id=wx.ID_ANY, title="pyfa Update Available", pos=wx.DefaultPosition,
+            parent, id=wx.ID_ANY, title="pyfa {}" + _t("Update Available"), pos=wx.DefaultPosition,
             size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.UpdateSettings = svc_UpdateSettings.getInstance()
@@ -97,7 +99,7 @@ class UpdateDialog(wx.Dialog):
         notesSizer.Add(self.browser, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 5)
         mainSizer.Add(notesSizer, 1, wx.EXPAND, 5)
 
-        self.supressCheckbox = wx.CheckBox(self, wx.ID_ANY, "Don't remind me again for this release",
+        self.supressCheckbox = wx.CheckBox(self, wx.ID_ANY, _t("Don't remind me again for this release"),
                                            wx.DefaultPosition, wx.DefaultSize, 0)
         self.supressCheckbox.Bind(wx.EVT_CHECKBOX, self.SuppressChange)
 
@@ -108,7 +110,7 @@ class UpdateDialog(wx.Dialog):
         actionSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         goSizer = wx.BoxSizer(wx.VERTICAL)
-        self.downloadButton = wx.Button(self, wx.ID_ANY, "Download", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.downloadButton = wx.Button(self, wx.ID_ANY, _t("Download"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.downloadButton.Bind(wx.EVT_BUTTON, self.OnDownload)
         goSizer.Add(self.downloadButton, 0, wx.ALL, 5)
         actionSizer.Add(goSizer, 1, wx.EXPAND, 5)

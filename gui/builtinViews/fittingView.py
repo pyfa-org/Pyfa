@@ -45,6 +45,7 @@ from config import slotColourMap
 from gui.fitCommands.helpers import getSimilarModPositions
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 # Tab spawning handler
@@ -644,23 +645,23 @@ class FittingView(d.Display):
         contexts = []
         if isinstance(mainMod, Module) and not mainMod.isEmpty:
             srcContext = "fittingModule"
-            itemContext = sMkt.getCategoryByItem(mainMod.item).name
+            itemContext = sMkt.getCategoryByItem(mainMod.item).displayName
             fullContext = (srcContext, itemContext)
             if srcContext not in tuple(fCtx[0] for fCtx in contexts):
                 contexts.append(fullContext)
             if mainMod.charge is not None:
                 srcContext = "fittingCharge"
-                itemContext = sMkt.getCategoryByItem(mainMod.charge).name
+                itemContext = sMkt.getCategoryByItem(mainMod.charge).displayName
                 fullContext = (srcContext, itemContext)
                 if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
         elif isinstance(mainMod, Mode):
             srcContext = "fittingMode"
-            itemContext = "Tactical Mode"
+            itemContext = _t("Tactical Mode")
             fullContext = (srcContext, itemContext)
             if srcContext not in tuple(fCtx[0] for fCtx in contexts):
                 contexts.append(fullContext)
-        contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
+        contexts.append(("fittingShip", _t("Ship") if not fit.isStructure else _t("Citadel")))
 
         menu = ContextMenu.getMenu(self, mainMod, selection, *contexts)
         self.PopupMenu(menu)

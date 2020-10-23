@@ -10,11 +10,14 @@ matrix:
     osx_image: xcode11.3
     language: generic
 before_install:
-  - bash scripts/setup-osx.sh
+  - bash scripts/osx-translations.sh
+  - bash scripts/osx-setup.sh
 install:
+  - python3 scripts/compile_lang.py
+  - python3 scripts/dump_crowdin_progress.py
   - python3 db_update.py
   - export PYFA_VERSION="$(python3 scripts/dump_version.py)"
-  - bash scripts/package-osx.sh
+  - bash scripts/osx-package.sh
 before_deploy:
   - export RELEASE_PKG_FILE=$(ls *.deb)
   - echo "deploying $RELEASE_PKG_FILE to GitHub releases"

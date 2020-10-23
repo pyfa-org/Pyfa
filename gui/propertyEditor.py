@@ -16,16 +16,17 @@ from gui.marketBrowser import SearchBox
 from service.fit import Fit
 from service.market import Market
 
-
 pyfalog = Logger(__name__)
+
+_t = wx.GetTranslation
 
 
 class AttributeEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
-            size=wx.Size(650, 600), resizeable=True)
+                parent, wx.ID_ANY, title=_t("Attribute Editor"), pos=wx.DefaultPosition,
+                size=wx.Size(650, 600), resizeable=True)
 
         i = wx.Icon(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         self.SetIcon(i)
@@ -34,11 +35,11 @@ class AttributeEditor(AuxiliaryFrame):
 
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
-        fileImport = fileMenu.Append(wx.ID_ANY, 'Import', 'Import overrides')
-        fileExport = fileMenu.Append(wx.ID_ANY, 'Export', 'Import overrides')
-        fileClear = fileMenu.Append(wx.ID_ANY, 'Clear All', 'Clear all overrides')
+        fileImport = fileMenu.Append(wx.ID_ANY, _t('Import'), _t('Import overrides'))
+        fileExport = fileMenu.Append(wx.ID_ANY, _t('Export'), _t('Import overrides'))
+        fileClear = fileMenu.Append(wx.ID_ANY, _t('Clear All'), _t('Clear all overrides'))
 
-        menubar.Append(fileMenu, '&File')
+        menubar.Append(fileMenu, _t('&File'))
         self.SetMenuBar(menubar)
 
         self.Bind(wx.EVT_MENU, self.OnImport, fileImport)
@@ -67,7 +68,7 @@ class AttributeEditor(AuxiliaryFrame):
         mainSizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
 
         rightSizer = wx.BoxSizer(wx.VERTICAL)
-        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, "Remove Overides for Item", wx.DefaultPosition,
+        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, _t("Remove Overides for Item"), wx.DefaultPosition,
                                             wx.DefaultSize, 0)
         self.pg = AttributeGrid(panel)
         rightSizer.Add(self.pg, 1, wx.ALL | wx.EXPAND, 5)
@@ -103,9 +104,9 @@ class AttributeEditor(AuxiliaryFrame):
 
     def OnImport(self, event):
         with wx.FileDialog(
-            self, "Import pyfa override file",
-            wildcard="pyfa override file (*.csv)|*.csv",
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+                self, _t("Import pyfa override file"),
+                wildcard=_t("pyfa override file") + " (*.csv)|*.csv",
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
@@ -126,10 +127,10 @@ class AttributeEditor(AuxiliaryFrame):
         defaultFile = "pyfa_overrides.csv"
 
         with wx.FileDialog(
-            self, "Save Overrides As...",
-            wildcard="pyfa overrides (*.csv)|*.csv",
-            style=wx.FD_SAVE,
-            defaultFile=defaultFile
+                self, _t("Save Overrides As..."),
+                wildcard=_t("pyfa overrides") + " (*.csv)|*.csv",
+                style=wx.FD_SAVE,
+                defaultFile=defaultFile
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
@@ -141,10 +142,10 @@ class AttributeEditor(AuxiliaryFrame):
 
     def OnClear(self, event):
         with wx.MessageDialog(
-            self,
-            "Are you sure you want to delete all overrides?",
-            "Confirm Delete",
-            wx.YES | wx.NO | wx.ICON_EXCLAMATION
+                self,
+                _t("Are you sure you want to delete all overrides?"),
+                _t("Confirm Delete"),
+                wx.YES | wx.NO | wx.ICON_EXCLAMATION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
                 sMkt = Market.getInstance()
@@ -267,7 +268,7 @@ class AttributeGrid(wxpg.PropertyGrid):
                 prop = wxpg.FloatProperty(key, value=default)
 
             prop.SetClientData(item.attributes[key])  # set this so that we may access it later
-            prop.SetHelpString("%s\n%s" % (item.attributes[key].displayName or key, "Default Value: %0.3f" % default))
+            prop.SetHelpString("%s\n%s" % (item.attributes[key].displayName or key, _t("Default Value: %0.3f") % default))
             self.Append(prop)
 
     def removeOverrides(self, event):

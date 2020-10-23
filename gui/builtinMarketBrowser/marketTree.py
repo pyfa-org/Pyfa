@@ -6,6 +6,7 @@ from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES
 from logbook import Logger
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class MarketTree(wx.TreeCtrl):
@@ -33,7 +34,7 @@ class MarketTree(wx.TreeCtrl):
 
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
-        self.AppendItem(self.root, "Recently Used Items", rumIconId, data=RECENTLY_USED_MODULES)
+        self.AppendItem(self.root, _t("Recently Used Items"), rumIconId, data=RECENTLY_USED_MODULES)
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)

@@ -12,6 +12,8 @@ from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class RemoveItem(ContextMenuCombined):
 
@@ -20,13 +22,13 @@ class RemoveItem(ContextMenuCombined):
 
     def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext not in (
-            "fittingModule", "droneItem",
-            "implantItem", "boosterItem",
-            "projectedModule", "cargoItem",
-            "projectedFit", "projectedDrone",
-            "fighterItem", "projectedFighter",
-            "commandFit", "graphFitList",
-            "graphTgtList"
+                "fittingModule", "droneItem",
+                "implantItem", "boosterItem",
+                "projectedModule", "cargoItem",
+                "projectedFit", "projectedDrone",
+                "fighterItem", "projectedFighter",
+                "commandFit", "graphFitList",
+                "graphTgtList"
         ):
             return False
 
@@ -37,9 +39,9 @@ class RemoveItem(ContextMenuCombined):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem, selection):
-        return 'Remove {}{}'.format(
-            itmContext if itmContext is not None else 'Item',
-            ' Stack' if self.srcContext in ('droneItem', 'projectedDrone', 'cargoItem', 'projectedFit') else '')
+        return _t('Remove {item}{stack}').format(
+                item=itmContext if itmContext is not None else _t('Item'),
+                stack=_t(' Stack') if self.srcContext in ('droneItem', 'projectedDrone', 'cargoItem', 'projectedFit') else '')
 
     def activate(self, callingWindow, fullContext, mainItem, selection, i):
         handlerMap = {
@@ -55,7 +57,8 @@ class RemoveItem(ContextMenuCombined):
             'projectedFighter': self.__handleProjectedItem,
             'commandFit': self.__handleCommandFit,
             'graphFitList': self.__handleGraphItem,
-            'graphTgtList': self.__handleGraphItem}
+            'graphTgtList': self.__handleGraphItem
+        }
         srcContext = fullContext[0]
         handler = handlerMap.get(srcContext)
         if handler is None:
@@ -73,7 +76,7 @@ class RemoveItem(ContextMenuCombined):
                 if mod in fit.modules:
                     positions.append(fit.modules.index(mod))
         self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
-            fitID=fitID, positions=positions))
+                fitID=fitID, positions=positions))
 
     def __handleDrone(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
@@ -83,7 +86,7 @@ class RemoveItem(ContextMenuCombined):
             if drone in fit.drones:
                 positions.append(fit.drones.index(drone))
         self.mainFrame.command.Submit(cmd.GuiRemoveLocalDronesCommand(
-            fitID=fitID, positions=positions, amount=math.inf))
+                fitID=fitID, positions=positions, amount=math.inf))
 
     def __handleFighter(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
@@ -97,7 +100,7 @@ class RemoveItem(ContextMenuCombined):
             if fighter in fit.fighters:
                 positions.append(fit.fighters.index(fighter))
         self.mainFrame.command.Submit(cmd.GuiRemoveLocalFightersCommand(
-            fitID=fitID, positions=positions))
+                fitID=fitID, positions=positions))
 
     def __handleImplant(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
@@ -107,7 +110,7 @@ class RemoveItem(ContextMenuCombined):
             if implant in fit.implants:
                 positions.append(fit.implants.index(implant))
         self.mainFrame.command.Submit(cmd.GuiRemoveImplantsCommand(
-            fitID=fitID, positions=positions))
+                fitID=fitID, positions=positions))
 
     def __handleBooster(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
@@ -117,19 +120,19 @@ class RemoveItem(ContextMenuCombined):
             if booster in fit.boosters:
                 positions.append(fit.boosters.index(booster))
         self.mainFrame.command.Submit(cmd.GuiRemoveBoostersCommand(
-            fitID=fitID, positions=positions))
+                fitID=fitID, positions=positions))
 
     def __handleCargo(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         itemIDs = [c.itemID for c in selection]
         self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(
-            fitID=fitID, itemIDs=itemIDs))
+                fitID=fitID, itemIDs=itemIDs))
 
     def __handleProjectedItem(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         if isinstance(mainItem, EosFit):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                fitID=fitID, items=selection, amount=math.inf))
+                    fitID=fitID, items=selection, amount=math.inf))
         elif isinstance(mainItem, EosModule):
             if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
                 fit = Fit.getInstance().getFit(fitID)
@@ -138,10 +141,10 @@ class RemoveItem(ContextMenuCombined):
             else:
                 items = selection
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                fitID=fitID, items=items, amount=math.inf))
+                    fitID=fitID, items=items, amount=math.inf))
         elif isinstance(mainItem, EosDrone):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                fitID=fitID, items=selection, amount=math.inf))
+                    fitID=fitID, items=selection, amount=math.inf))
         elif isinstance(mainItem, EosFighter):
             if wx.GetMouseState().GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL):
                 fit = Fit.getInstance().getFit(fitID)
@@ -149,16 +152,16 @@ class RemoveItem(ContextMenuCombined):
             else:
                 items = selection
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                fitID=fitID, items=items, amount=math.inf))
+                    fitID=fitID, items=items, amount=math.inf))
         else:
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                fitID=fitID, items=selection, amount=math.inf))
+                    fitID=fitID, items=selection, amount=math.inf))
 
     def __handleCommandFit(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         commandFitIDs = [cf.ID for cf in selection]
         self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(
-            fitID=fitID, commandFitIDs=commandFitIDs))
+                fitID=fitID, commandFitIDs=commandFitIDs))
 
     def __handleGraphItem(self, callingWindow, mainItem, selection):
         callingWindow.removeWrappers(selection)

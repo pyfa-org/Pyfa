@@ -25,9 +25,9 @@ import wx
 
 from service.const import GraphColor, GraphLightness, GraphLineStyle
 
-
 ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))
 LightnessData = namedtuple('LightnessData', ('name', 'iconName', 'func'))
+_t = wx.GetTranslation
 
 
 class LineStyleData:
@@ -49,14 +49,14 @@ class LineStyleData:
 
 # In HSL format
 BASE_COLORS = OrderedDict([
-    (GraphColor.red, ColorData((0 / 360.0, 1.0, 0.5), 'Red', 'color_red')),
-    (GraphColor.green, ColorData((120 / 360.0, 1.0, 0.5), 'Green', 'color_green')),
-    (GraphColor.blue, ColorData((240 / 360.0, 1.0, 0.5), 'Blue', 'color_blue')),
-    (GraphColor.orange, ColorData((40 / 360.0, 1.0, 0.5), 'Orange', 'color_orange')),
-    (GraphColor.magenta, ColorData((300 / 360.0, 1.0, 0.5), 'Magenta', 'color_magenta')),
-    (GraphColor.cyan, ColorData((180 / 360.0, 1.0, 0.5), 'Cyan', 'color_cyan')),
-    (GraphColor.purple, ColorData((275 / 360.0, 1.0, 0.5), 'Purple', 'color_purple')),
-    (GraphColor.yellow, ColorData((56 / 360.0, 1.0, 0.5), 'Yellow', 'color_yellow'))])
+    (GraphColor.red, ColorData((0 / 360.0, 1.0, 0.5), _t('Red'), 'color_red')),
+    (GraphColor.green, ColorData((120 / 360.0, 1.0, 0.5), _t('Green'), 'color_green')),
+    (GraphColor.blue, ColorData((240 / 360.0, 1.0, 0.5), _t('Blue'), 'color_blue')),
+    (GraphColor.orange, ColorData((40 / 360.0, 1.0, 0.5), _t('Orange'), 'color_orange')),
+    (GraphColor.magenta, ColorData((300 / 360.0, 1.0, 0.5), _t('Magenta'), 'color_magenta')),
+    (GraphColor.cyan, ColorData((180 / 360.0, 1.0, 0.5), _t('Cyan'), 'color_cyan')),
+    (GraphColor.purple, ColorData((275 / 360.0, 1.0, 0.5), _t('Purple'), 'color_purple')),
+    (GraphColor.yellow, ColorData((56 / 360.0, 1.0, 0.5), _t('Yellow'), 'color_yellow'))])
 
 
 def hsl_to_hsv(hsl):
@@ -77,13 +77,13 @@ def brighten(hsl):
 
 
 LIGHTNESSES = OrderedDict([
-    (GraphLightness.normal, LightnessData('Normal', 'lightness_normal', lambda hsl: hsl)),
-    (GraphLightness.dark, LightnessData('Dark', 'lightness_dark', darken)),
-    (GraphLightness.bright, LightnessData('Bright', 'lightness_bright', brighten))])
+    (GraphLightness.normal, LightnessData(_t('Normal'), 'lightness_normal', lambda hsl: hsl)),
+    (GraphLightness.dark, LightnessData(_t('Dark'), 'lightness_dark', darken)),
+    (GraphLightness.bright, LightnessData(_t('Bright'), 'lightness_bright', brighten))])
 
 
 STYLES = OrderedDict([
-    (GraphLineStyle.solid, LineStyleData('Solid', 'style_solid', 'solid')),
-    (GraphLineStyle.dashed, LineStyleData('Dashed', 'style_dashed', (0, (5, 1)))),
-    (GraphLineStyle.dotted, LineStyleData('Dotted', 'style_dotted', (0, (1, 1)))),
-    (GraphLineStyle.dashdotted, LineStyleData('Dash-dotted', 'style_dashdot', (0, (3, 1, 1, 1))))])
+    (GraphLineStyle.solid, LineStyleData(_t('Solid'), 'style_solid', 'solid')),
+    (GraphLineStyle.dashed, LineStyleData(_t('Dashed'), 'style_dashed', (0, (5, 1)))),
+    (GraphLineStyle.dotted, LineStyleData(_t('Dotted'), 'style_dotted', (0, (1, 1)))),
+    (GraphLineStyle.dashdotted, LineStyleData(_t('Dash-dotted'), 'style_dashdot', (0, (3, 1, 1, 1))))])

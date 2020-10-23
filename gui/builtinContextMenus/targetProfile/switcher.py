@@ -1,7 +1,6 @@
 from collections import OrderedDict
 from itertools import chain
 
-# noinspection PyPackageRequirements
 import wx
 
 import gui.globalEvents as GE
@@ -10,6 +9,10 @@ from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.sorter import smartSort
 from service.fit import Fit
 from service.targetProfile import TargetProfile as svc_TargetProfile
+
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
 
 
 class TargetProfileSwitcher(ContextMenuUnconditional):
@@ -27,7 +30,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
 
     def getText(self, callingWindow, itmContext):
         # We take into consideration just target resists, so call menu item accordingly
-        return 'Target Resists'
+        return _t('Target Resists')
 
     def handleResistSwitch(self, event):
         profile = self.profileEventMap.get(event.Id, False)
@@ -68,8 +71,10 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         for profile in profiles:
             container = items
             for categoryName in profile.hierarchy:
+                categoryName = _t(categoryName) if profile.builtin else categoryName
                 container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
-            container[0][profile.shortName] = profile
+            shortName = _t(profile.shortName) if profile.builtin else profile.shortName
+            container[0][shortName] = profile
 
         # Category as menu item - expands further
         msw = "wxMSW" in wx.PlatformInfo
@@ -77,7 +82,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         def makeMenu(container, parentMenu, first=False):
             menu = wx.Menu()
             if first:
-                mitem, checked = self._addProfile(rootMenu if msw else parentMenu, None, 'No Profile')
+                mitem, checked = self._addProfile(rootMenu if msw else parentMenu, None, _t('No Profile'))
                 menu.Append(mitem)
                 mitem.Check(checked)
                 if len(container[0]) > 0 or len(container[1]) > 0:
