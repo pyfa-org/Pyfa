@@ -2286,6 +2286,25 @@
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
   }, 
+  "2106": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ESS: Disables MJDs + MWDs", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 3454
+      }, 
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 4385
+      }
+    ], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
   "2108": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Webifier Range Bonus", 
