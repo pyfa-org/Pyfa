@@ -46,7 +46,7 @@ class Distance2NeutingStrGetter(SmoothPointGetter):
             if 'doomsdayAOENeut' in mod.item.effects:
                 neuts.append((
                     mod.getModifiedItemAttr('energyNeutralizerAmount') / self.__getDuration(mod) * resonance,
-                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, False, False))
         for drone in src.item.activeDronesIter():
             if 'entityEnergyNeutralizerFalloff' in drone.item.effects:
@@ -93,7 +93,7 @@ class Distance2WebbingStrGetter(SmoothPointGetter):
             if 'doomsdayAOEWeb' in mod.item.effects:
                 webs.append((
                     mod.getModifiedItemAttr('speedFactor') * resonance,
-                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, 'default', False, False))
         for drone in src.item.activeDronesIter():
             if 'remoteWebifierEntity' in drone.item.effects:
@@ -142,7 +142,7 @@ class Distance2EcmStrMaxGetter(SmoothPointGetter):
             if 'doomsdayAOEECM' in mod.item.effects:
                 ecms.append((
                     max(mod.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
-                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, False, False))
         for drone in src.item.activeDronesIter():
             if 'entityECMFalloff' in drone.item.effects:
@@ -185,7 +185,7 @@ class Distance2DampStrLockRangeGetter(SmoothPointGetter):
             if 'doomsdayAOEDamp' in mod.item.effects:
                 damps.append((
                     mod.getModifiedItemAttr('maxTargetRangeBonus') * resonance,
-                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, 'default', False, False))
         for drone in src.item.activeDronesIter():
             if 'remoteSensorDampEntity' in drone.item.effects:
@@ -226,7 +226,7 @@ class Distance2TdStrOptimalGetter(SmoothPointGetter):
             if 'doomsdayAOETrack' in mod.item.effects:
                 tds.append((
                     mod.getModifiedItemAttr('maxRangeBonus') * resonance,
-                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, 'default', False, False))
         for drone in src.item.activeDronesIter():
             if 'npcEntityWeaponDisruptor' in drone.item.effects:
@@ -269,7 +269,7 @@ class Distance2GdStrRangeGetter(SmoothPointGetter):
                 gds.append((
                     mod.getModifiedItemAttr('missileVelocityBonus') * resonance,
                     mod.getModifiedItemAttr('explosionDelayBonus') * resonance,
-                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, 'default', False, False))
         return {'gds': gds}
 
@@ -310,7 +310,7 @@ class Distance2TpStrGetter(SmoothPointGetter):
             if 'doomsdayAOEPaint' in mod.item.effects:
                 tps.append((
                     mod.getModifiedItemAttr('signatureRadiusBonus') * resonance,
-                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, 'default', False, False))
         for drone in src.item.activeDronesIter():
             if 'remoteTargetPaintEntity' in drone.item.effects:
