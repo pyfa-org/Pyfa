@@ -162,9 +162,9 @@ QUERY_MARKETGROUPID_PARENTGROUPID = 'SELECT parentGroupID FROM \
 invmarketgroups WHERE marketGroupID = ? LIMIT 1'
 QUERY_EFFECTID_TYPEID = 'SELECT typeID FROM dgmtypeeffects WHERE effectID = ?'
 # Queries for printing
-QUERY_GROUPID_GROUPNAME = 'SELECT groupName FROM invgroups WHERE groupID = ? \
+QUERY_GROUPID_GROUPNAME = 'SELECT name FROM invgroups WHERE groupID = ? \
 LIMIT 1'
-QUERY_CATEGORYID_CATEGORYNAME = 'SELECT categoryName FROM invcategories \
+QUERY_CATEGORYID_CATEGORYNAME = 'SELECT name FROM invcategories \
 WHERE categoryID = ? LIMIT 1'
 QUERY_MARKETGROUPID_MARKETGROUPNAME = 'SELECT marketGroupName FROM \
 invmarketgroups WHERE marketGroupID = ? LIMIT 1'
