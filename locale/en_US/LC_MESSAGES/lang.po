@@ -17,42 +17,78 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: gui/builtinContextMenus/envEffectAdd.py:106
+#: gui/builtinContextMenus/envEffectAdd.py:117
 msgid "ContextMenu|ProjectedEffectManipulation|Black Hole"
 msgstr "Black Hole"
 
-#: gui/builtinContextMenus/envEffectAdd.py:107
+#: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable"
 msgstr "Cataclysmic Variable"
 
+#: gui/builtinContextMenus/envEffectAdd.py:144
+msgid "ContextMenu|ProjectedEffectManipulation|Effects"
+msgstr "Effects"
+
+#: gui/builtinContextMenus/envEffectAdd.py:106
+msgid "ContextMenu|ProjectedEffectManipulation|Electrical"
+msgstr "Electrical"
+
+#: gui/builtinContextMenus/envEffectAdd.py:107
+msgid "ContextMenu|ProjectedEffectManipulation|Exotic"
+msgstr "Exotic"
+
+#: gui/builtinContextMenus/envEffectAdd.py:115
+msgid "ContextMenu|ProjectedEffectManipulation|Firestorm"
+msgstr "Firestorm"
+
 #: gui/builtinContextMenus/envEffectAdd.py:108
+msgid "ContextMenu|ProjectedEffectManipulation|Gamma"
+msgstr "Gamma"
+
+#: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "ContextMenu|ProjectedEffectManipulation|Magnetar"
 msgstr "Magnetar"
 
+#: gui/builtinContextMenus/envEffectAdd.py:113
+msgid "ContextMenu|ProjectedEffectManipulation|Matter"
+msgstr "Matter"
+
+#: gui/builtinContextMenus/envEffectAdd.py:111
+msgid "ContextMenu|ProjectedEffectManipulation|Metaliminal"
+msgstr "Metaliminal"
+
 #: gui/builtinContextMenus/envEffectAdd.py:109
+msgid "ContextMenu|ProjectedEffectManipulation|Plasma"
+msgstr "Plasma"
+
+#: gui/builtinContextMenus/envEffectAdd.py:120
 msgid "ContextMenu|ProjectedEffectManipulation|Pulsar"
 msgstr "Pulsar"
 
-#: gui/builtinContextMenus/envEffectAdd.py:110
+#: gui/builtinContextMenus/envEffectAdd.py:114
+msgid "ContextMenu|ProjectedEffectManipulation|Ray"
+msgstr "Ray"
+
+#: gui/builtinContextMenus/envEffectAdd.py:121
 msgid "ContextMenu|ProjectedEffectManipulation|Red Giant"
 msgstr "Red Giant"
 
-#: gui/builtinContextMenus/envEffectAdd.py:111
-msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
-msgstr "Wolf Rayet"
-
-#: gui/builtinContextMenus/envEffectAdd.py:113
+#: gui/builtinContextMenus/envEffectAdd.py:125
 msgid "ContextMenu|ProjectedEffectManipulation|Sansha Incursion"
 msgstr "Sansha Incursion"
 
-#: gui/builtinContextMenus/envEffectAdd.py:116
-msgid "ContextMenu|ProjectedEffectManipulation|Triglavian Invasion"
-msgstr "Triglavian Invasion"
+#: gui/builtinContextMenus/envEffectAdd.py:112
+msgid "ContextMenu|ProjectedEffectManipulation|Storm"
+msgstr "Storm"
 
-#: gui/builtinContextMenus/envEffectAdd.py:133
+#: gui/builtinContextMenus/envEffectAdd.py:143
 msgid "ContextMenu|ProjectedEffectManipulation|System Effects"
 msgstr "System Effects"
 
-#: gui/builtinContextMenus/envEffectAdd.py:133
-msgid "ContextMenu|ProjectedEffectManipulation|Effects"
-msgstr "Effects"
+#: gui/builtinContextMenus/envEffectAdd.py:127
+msgid "ContextMenu|ProjectedEffectManipulation|Triglavian Invasion"
+msgstr "Triglavian Invasion"
+
+#: gui/builtinContextMenus/envEffectAdd.py:122
+msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
+msgstr "Wolf Rayet"
