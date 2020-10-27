@@ -1784,7 +1784,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 975)
+    Items from category: Charge (608 of 974)
     """
 
     type = 'passive'
@@ -1799,7 +1799,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (30 of 30)
+    Charges from group: Festival Charges (29 of 29)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -2372,7 +2372,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (514 of 975)
+    Items from category: Charge (514 of 974)
     """
 
     type = 'passive'
