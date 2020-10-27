@@ -40,29 +40,36 @@ class PFGeneralPref(PreferenceView):
 
         langSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("pyfa:"), wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stLangLabel.Wrap(-1)
-        langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-
         self.langChoices = sorted([langInfo for lang, langInfo in LocaleSettings.supported_langauges().items()], key=lambda x: x.Description)
+        pyfaLangsEnabled = bool(self.langChoices)
 
-        def langDisplay(langInfo):
-            progress = self.localeSettings.get_progress(langInfo.CanonicalName)
-            progress_display = (" ({}%)".format(progress['translated_progress']) if progress is not None else "")
-            return langInfo.Description + progress_display
+        if pyfaLangsEnabled:
+            self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("pyfa:"), wx.DefaultPosition, wx.DefaultSize, 0)
+            self.stLangLabel.Wrap(-1)
+            langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [langDisplay(x) for x in self.langChoices], 0)
-        self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
+            def langDisplay(langInfo):
+                progress = self.localeSettings.get_progress(langInfo.CanonicalName)
+                progress_display = (" ({}%)".format(progress['translated_progress']) if progress is not None else "")
+                return langInfo.Description + progress_display
 
-        selectedIndex = self.langChoices.index(next((x for x in self.langChoices if x.CanonicalName == self.localeSettings.get('locale')), None))
-        self.chLang.SetSelection(selectedIndex)
+            self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [langDisplay(x) for x in self.langChoices], 0)
+            self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
 
-        langSizer.Add(self.chLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-        langBox.Add(langSizer)
-        langBox.Add(hl.HyperLinkCtrl(panel, -1,
-                                     _t("Interested in helping with translations?"),
-                                     URL="https://github.com/pyfa-org/Pyfa/blob/master/locale/README.md"
-                                     ), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 15)
+            selectedIndex = self.langChoices.index(next((x for x in self.langChoices if x.CanonicalName == self.localeSettings.get('locale')), None))
+            self.chLang.SetSelection(selectedIndex)
+
+            langSizer.Add(self.chLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+            langBox.Add(langSizer)
+            langBox.Add(hl.HyperLinkCtrl(panel, -1,
+                                         _t("Interested in helping with translations?"),
+                                         URL="https://github.com/pyfa-org/Pyfa/blob/master/locale/README.md"
+                                         ), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 15)
+        else:
+            self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Pyfa language selection disabled. Please check if .mo files have been generated. Refer to locale/README.md for info."), wx.DefaultPosition, wx.DefaultSize, 0)
+            self.stLangLabel.Wrap(-1)
+            langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
         eosLangSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.stEosLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("EVE Data:"), wx.DefaultPosition, wx.DefaultSize, 0)
