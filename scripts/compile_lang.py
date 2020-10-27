@@ -10,4 +10,5 @@ for name in glob.iglob(locale_path + '/**'):
     if not os.path.isfile(name):
         path = os.path.join(locale_path, name, 'LC_MESSAGES', 'lang')
         sys.argv[1:] = [path + '.po']
+        msgfmt.reset()
         msgfmt.main()

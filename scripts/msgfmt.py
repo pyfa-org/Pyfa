@@ -92,6 +92,12 @@ def generate():
     return output
 
 
+def reset():
+    "Reset module state."
+    global MESSAGES
+    MESSAGES.clear()
+
+
 def make(filename, outfile):
     ID = 1
     STR = 2
