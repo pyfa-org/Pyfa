@@ -66,9 +66,10 @@ class PFGeneralPref(PreferenceView):
                                          URL="https://github.com/pyfa-org/Pyfa/blob/master/locale/README.md"
                                          ), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 15)
         else:
-            self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Pyfa language selection disabled. Please check if .mo files have been generated. Refer to locale/README.md for info."), wx.DefaultPosition, wx.DefaultSize, 0)
+            self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Pyfa language selection disabled. Please check if .mo files have been generated.\nRefer to locale/README.md for info."), wx.DefaultPosition, wx.DefaultSize, 0)
             self.stLangLabel.Wrap(-1)
             langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+            langBox.Add(langSizer)
 
         eosLangSizer = wx.BoxSizer(wx.HORIZONTAL)
 
