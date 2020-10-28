@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-28 15:27+0300\n"
+"POT-Creation-Date: 2020-10-28 15:28+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1280,6 +1280,10 @@ msgstr ""
 msgid "Drifter"
 msgstr ""
 
+#: eos/saveddata/damagePattern.py:159 eos/saveddata/targetProfile.py:230
+msgid "Drifter Entities"
+msgstr ""
+
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Drone"
 msgstr ""
@@ -2034,7 +2038,7 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
-#: eos/saveddata/targetProfile.py:290
+#: eos/saveddata/targetProfile.py:293
 msgid "Ideal Target"
 msgstr ""
 
@@ -2199,9 +2203,12 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:140 eos/saveddata/damagePattern.py:143
 #: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:145
 #: eos/saveddata/damagePattern.py:146 eos/saveddata/damagePattern.py:147
-#: eos/saveddata/damagePattern.py:148 eos/saveddata/targetProfile.py:94
-#: eos/saveddata/targetProfile.py:95 eos/saveddata/targetProfile.py:96
-#: eos/saveddata/targetProfile.py:97 eos/saveddata/targetProfile.py:98
+#: eos/saveddata/damagePattern.py:148 eos/saveddata/damagePattern.py:159
+#: eos/saveddata/damagePattern.py:160 eos/saveddata/damagePattern.py:161
+#: eos/saveddata/targetProfile.py:94 eos/saveddata/targetProfile.py:95
+#: eos/saveddata/targetProfile.py:96 eos/saveddata/targetProfile.py:97
+#: eos/saveddata/targetProfile.py:98 eos/saveddata/targetProfile.py:230
+#: eos/saveddata/targetProfile.py:231 eos/saveddata/targetProfile.py:232
 msgid "Invasion"
 msgstr ""
 
@@ -2589,91 +2596,94 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:152 eos/saveddata/damagePattern.py:153
 #: eos/saveddata/damagePattern.py:154 eos/saveddata/damagePattern.py:155
 #: eos/saveddata/damagePattern.py:156 eos/saveddata/damagePattern.py:157
-#: eos/saveddata/damagePattern.py:158 eos/saveddata/targetProfile.py:60
-#: eos/saveddata/targetProfile.py:61 eos/saveddata/targetProfile.py:62
-#: eos/saveddata/targetProfile.py:63 eos/saveddata/targetProfile.py:64
-#: eos/saveddata/targetProfile.py:65 eos/saveddata/targetProfile.py:66
-#: eos/saveddata/targetProfile.py:67 eos/saveddata/targetProfile.py:68
-#: eos/saveddata/targetProfile.py:69 eos/saveddata/targetProfile.py:70
-#: eos/saveddata/targetProfile.py:71 eos/saveddata/targetProfile.py:72
-#: eos/saveddata/targetProfile.py:73 eos/saveddata/targetProfile.py:74
-#: eos/saveddata/targetProfile.py:75 eos/saveddata/targetProfile.py:76
-#: eos/saveddata/targetProfile.py:77 eos/saveddata/targetProfile.py:78
-#: eos/saveddata/targetProfile.py:79 eos/saveddata/targetProfile.py:80
-#: eos/saveddata/targetProfile.py:81 eos/saveddata/targetProfile.py:82
-#: eos/saveddata/targetProfile.py:83 eos/saveddata/targetProfile.py:84
-#: eos/saveddata/targetProfile.py:85 eos/saveddata/targetProfile.py:86
-#: eos/saveddata/targetProfile.py:87 eos/saveddata/targetProfile.py:88
-#: eos/saveddata/targetProfile.py:89 eos/saveddata/targetProfile.py:90
-#: eos/saveddata/targetProfile.py:91 eos/saveddata/targetProfile.py:92
-#: eos/saveddata/targetProfile.py:94 eos/saveddata/targetProfile.py:95
-#: eos/saveddata/targetProfile.py:96 eos/saveddata/targetProfile.py:97
-#: eos/saveddata/targetProfile.py:98 eos/saveddata/targetProfile.py:99
-#: eos/saveddata/targetProfile.py:100 eos/saveddata/targetProfile.py:101
-#: eos/saveddata/targetProfile.py:102 eos/saveddata/targetProfile.py:103
-#: eos/saveddata/targetProfile.py:104 eos/saveddata/targetProfile.py:105
-#: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:107
-#: eos/saveddata/targetProfile.py:108 eos/saveddata/targetProfile.py:109
-#: eos/saveddata/targetProfile.py:110 eos/saveddata/targetProfile.py:111
-#: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:113
-#: eos/saveddata/targetProfile.py:114 eos/saveddata/targetProfile.py:115
-#: eos/saveddata/targetProfile.py:116 eos/saveddata/targetProfile.py:117
-#: eos/saveddata/targetProfile.py:118 eos/saveddata/targetProfile.py:119
-#: eos/saveddata/targetProfile.py:120 eos/saveddata/targetProfile.py:121
-#: eos/saveddata/targetProfile.py:122 eos/saveddata/targetProfile.py:123
-#: eos/saveddata/targetProfile.py:124 eos/saveddata/targetProfile.py:125
-#: eos/saveddata/targetProfile.py:126 eos/saveddata/targetProfile.py:127
-#: eos/saveddata/targetProfile.py:128 eos/saveddata/targetProfile.py:129
-#: eos/saveddata/targetProfile.py:130 eos/saveddata/targetProfile.py:131
-#: eos/saveddata/targetProfile.py:132 eos/saveddata/targetProfile.py:133
-#: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:135
-#: eos/saveddata/targetProfile.py:136 eos/saveddata/targetProfile.py:137
-#: eos/saveddata/targetProfile.py:138 eos/saveddata/targetProfile.py:139
-#: eos/saveddata/targetProfile.py:140 eos/saveddata/targetProfile.py:141
-#: eos/saveddata/targetProfile.py:142 eos/saveddata/targetProfile.py:143
-#: eos/saveddata/targetProfile.py:144 eos/saveddata/targetProfile.py:145
-#: eos/saveddata/targetProfile.py:146 eos/saveddata/targetProfile.py:147
-#: eos/saveddata/targetProfile.py:148 eos/saveddata/targetProfile.py:149
-#: eos/saveddata/targetProfile.py:150 eos/saveddata/targetProfile.py:151
-#: eos/saveddata/targetProfile.py:152 eos/saveddata/targetProfile.py:153
-#: eos/saveddata/targetProfile.py:154 eos/saveddata/targetProfile.py:155
-#: eos/saveddata/targetProfile.py:156 eos/saveddata/targetProfile.py:157
-#: eos/saveddata/targetProfile.py:158 eos/saveddata/targetProfile.py:159
-#: eos/saveddata/targetProfile.py:160 eos/saveddata/targetProfile.py:161
-#: eos/saveddata/targetProfile.py:162 eos/saveddata/targetProfile.py:163
-#: eos/saveddata/targetProfile.py:164 eos/saveddata/targetProfile.py:165
-#: eos/saveddata/targetProfile.py:166 eos/saveddata/targetProfile.py:167
-#: eos/saveddata/targetProfile.py:168 eos/saveddata/targetProfile.py:169
-#: eos/saveddata/targetProfile.py:170 eos/saveddata/targetProfile.py:171
-#: eos/saveddata/targetProfile.py:172 eos/saveddata/targetProfile.py:173
-#: eos/saveddata/targetProfile.py:174 eos/saveddata/targetProfile.py:175
-#: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:177
-#: eos/saveddata/targetProfile.py:178 eos/saveddata/targetProfile.py:179
-#: eos/saveddata/targetProfile.py:180 eos/saveddata/targetProfile.py:181
-#: eos/saveddata/targetProfile.py:182 eos/saveddata/targetProfile.py:183
-#: eos/saveddata/targetProfile.py:184 eos/saveddata/targetProfile.py:185
-#: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
-#: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
-#: eos/saveddata/targetProfile.py:191 eos/saveddata/targetProfile.py:192
-#: eos/saveddata/targetProfile.py:193 eos/saveddata/targetProfile.py:194
-#: eos/saveddata/targetProfile.py:195 eos/saveddata/targetProfile.py:196
-#: eos/saveddata/targetProfile.py:197 eos/saveddata/targetProfile.py:198
-#: eos/saveddata/targetProfile.py:199 eos/saveddata/targetProfile.py:200
-#: eos/saveddata/targetProfile.py:201 eos/saveddata/targetProfile.py:202
-#: eos/saveddata/targetProfile.py:203 eos/saveddata/targetProfile.py:204
-#: eos/saveddata/targetProfile.py:205 eos/saveddata/targetProfile.py:206
-#: eos/saveddata/targetProfile.py:207 eos/saveddata/targetProfile.py:208
-#: eos/saveddata/targetProfile.py:209 eos/saveddata/targetProfile.py:210
-#: eos/saveddata/targetProfile.py:211 eos/saveddata/targetProfile.py:212
-#: eos/saveddata/targetProfile.py:213 eos/saveddata/targetProfile.py:214
-#: eos/saveddata/targetProfile.py:215 eos/saveddata/targetProfile.py:216
-#: eos/saveddata/targetProfile.py:217 eos/saveddata/targetProfile.py:218
-#: eos/saveddata/targetProfile.py:219 eos/saveddata/targetProfile.py:220
-#: eos/saveddata/targetProfile.py:221 eos/saveddata/targetProfile.py:222
-#: eos/saveddata/targetProfile.py:223 eos/saveddata/targetProfile.py:224
-#: eos/saveddata/targetProfile.py:225 eos/saveddata/targetProfile.py:226
-#: eos/saveddata/targetProfile.py:227 eos/saveddata/targetProfile.py:228
-#: eos/saveddata/targetProfile.py:229
+#: eos/saveddata/damagePattern.py:158 eos/saveddata/damagePattern.py:159
+#: eos/saveddata/damagePattern.py:160 eos/saveddata/damagePattern.py:161
+#: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:61
+#: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:63
+#: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:65
+#: eos/saveddata/targetProfile.py:66 eos/saveddata/targetProfile.py:67
+#: eos/saveddata/targetProfile.py:68 eos/saveddata/targetProfile.py:69
+#: eos/saveddata/targetProfile.py:70 eos/saveddata/targetProfile.py:71
+#: eos/saveddata/targetProfile.py:72 eos/saveddata/targetProfile.py:73
+#: eos/saveddata/targetProfile.py:74 eos/saveddata/targetProfile.py:75
+#: eos/saveddata/targetProfile.py:76 eos/saveddata/targetProfile.py:77
+#: eos/saveddata/targetProfile.py:78 eos/saveddata/targetProfile.py:79
+#: eos/saveddata/targetProfile.py:80 eos/saveddata/targetProfile.py:81
+#: eos/saveddata/targetProfile.py:82 eos/saveddata/targetProfile.py:83
+#: eos/saveddata/targetProfile.py:84 eos/saveddata/targetProfile.py:85
+#: eos/saveddata/targetProfile.py:86 eos/saveddata/targetProfile.py:87
+#: eos/saveddata/targetProfile.py:88 eos/saveddata/targetProfile.py:89
+#: eos/saveddata/targetProfile.py:90 eos/saveddata/targetProfile.py:91
+#: eos/saveddata/targetProfile.py:92 eos/saveddata/targetProfile.py:94
+#: eos/saveddata/targetProfile.py:95 eos/saveddata/targetProfile.py:96
+#: eos/saveddata/targetProfile.py:97 eos/saveddata/targetProfile.py:98
+#: eos/saveddata/targetProfile.py:99 eos/saveddata/targetProfile.py:100
+#: eos/saveddata/targetProfile.py:101 eos/saveddata/targetProfile.py:102
+#: eos/saveddata/targetProfile.py:103 eos/saveddata/targetProfile.py:104
+#: eos/saveddata/targetProfile.py:105 eos/saveddata/targetProfile.py:106
+#: eos/saveddata/targetProfile.py:107 eos/saveddata/targetProfile.py:108
+#: eos/saveddata/targetProfile.py:109 eos/saveddata/targetProfile.py:110
+#: eos/saveddata/targetProfile.py:111 eos/saveddata/targetProfile.py:112
+#: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:114
+#: eos/saveddata/targetProfile.py:115 eos/saveddata/targetProfile.py:116
+#: eos/saveddata/targetProfile.py:117 eos/saveddata/targetProfile.py:118
+#: eos/saveddata/targetProfile.py:119 eos/saveddata/targetProfile.py:120
+#: eos/saveddata/targetProfile.py:121 eos/saveddata/targetProfile.py:122
+#: eos/saveddata/targetProfile.py:123 eos/saveddata/targetProfile.py:124
+#: eos/saveddata/targetProfile.py:125 eos/saveddata/targetProfile.py:126
+#: eos/saveddata/targetProfile.py:127 eos/saveddata/targetProfile.py:128
+#: eos/saveddata/targetProfile.py:129 eos/saveddata/targetProfile.py:130
+#: eos/saveddata/targetProfile.py:131 eos/saveddata/targetProfile.py:132
+#: eos/saveddata/targetProfile.py:133 eos/saveddata/targetProfile.py:134
+#: eos/saveddata/targetProfile.py:135 eos/saveddata/targetProfile.py:136
+#: eos/saveddata/targetProfile.py:137 eos/saveddata/targetProfile.py:138
+#: eos/saveddata/targetProfile.py:139 eos/saveddata/targetProfile.py:140
+#: eos/saveddata/targetProfile.py:141 eos/saveddata/targetProfile.py:142
+#: eos/saveddata/targetProfile.py:143 eos/saveddata/targetProfile.py:144
+#: eos/saveddata/targetProfile.py:145 eos/saveddata/targetProfile.py:146
+#: eos/saveddata/targetProfile.py:147 eos/saveddata/targetProfile.py:148
+#: eos/saveddata/targetProfile.py:149 eos/saveddata/targetProfile.py:150
+#: eos/saveddata/targetProfile.py:151 eos/saveddata/targetProfile.py:152
+#: eos/saveddata/targetProfile.py:153 eos/saveddata/targetProfile.py:154
+#: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:156
+#: eos/saveddata/targetProfile.py:157 eos/saveddata/targetProfile.py:158
+#: eos/saveddata/targetProfile.py:159 eos/saveddata/targetProfile.py:160
+#: eos/saveddata/targetProfile.py:161 eos/saveddata/targetProfile.py:162
+#: eos/saveddata/targetProfile.py:163 eos/saveddata/targetProfile.py:164
+#: eos/saveddata/targetProfile.py:165 eos/saveddata/targetProfile.py:166
+#: eos/saveddata/targetProfile.py:167 eos/saveddata/targetProfile.py:168
+#: eos/saveddata/targetProfile.py:169 eos/saveddata/targetProfile.py:170
+#: eos/saveddata/targetProfile.py:171 eos/saveddata/targetProfile.py:172
+#: eos/saveddata/targetProfile.py:173 eos/saveddata/targetProfile.py:174
+#: eos/saveddata/targetProfile.py:175 eos/saveddata/targetProfile.py:176
+#: eos/saveddata/targetProfile.py:177 eos/saveddata/targetProfile.py:178
+#: eos/saveddata/targetProfile.py:179 eos/saveddata/targetProfile.py:180
+#: eos/saveddata/targetProfile.py:181 eos/saveddata/targetProfile.py:182
+#: eos/saveddata/targetProfile.py:183 eos/saveddata/targetProfile.py:184
+#: eos/saveddata/targetProfile.py:185 eos/saveddata/targetProfile.py:186
+#: eos/saveddata/targetProfile.py:187 eos/saveddata/targetProfile.py:188
+#: eos/saveddata/targetProfile.py:189 eos/saveddata/targetProfile.py:191
+#: eos/saveddata/targetProfile.py:192 eos/saveddata/targetProfile.py:193
+#: eos/saveddata/targetProfile.py:194 eos/saveddata/targetProfile.py:195
+#: eos/saveddata/targetProfile.py:196 eos/saveddata/targetProfile.py:197
+#: eos/saveddata/targetProfile.py:198 eos/saveddata/targetProfile.py:199
+#: eos/saveddata/targetProfile.py:200 eos/saveddata/targetProfile.py:201
+#: eos/saveddata/targetProfile.py:202 eos/saveddata/targetProfile.py:203
+#: eos/saveddata/targetProfile.py:204 eos/saveddata/targetProfile.py:205
+#: eos/saveddata/targetProfile.py:206 eos/saveddata/targetProfile.py:207
+#: eos/saveddata/targetProfile.py:208 eos/saveddata/targetProfile.py:209
+#: eos/saveddata/targetProfile.py:210 eos/saveddata/targetProfile.py:211
+#: eos/saveddata/targetProfile.py:212 eos/saveddata/targetProfile.py:213
+#: eos/saveddata/targetProfile.py:214 eos/saveddata/targetProfile.py:215
+#: eos/saveddata/targetProfile.py:216 eos/saveddata/targetProfile.py:217
+#: eos/saveddata/targetProfile.py:218 eos/saveddata/targetProfile.py:219
+#: eos/saveddata/targetProfile.py:220 eos/saveddata/targetProfile.py:221
+#: eos/saveddata/targetProfile.py:222 eos/saveddata/targetProfile.py:223
+#: eos/saveddata/targetProfile.py:224 eos/saveddata/targetProfile.py:225
+#: eos/saveddata/targetProfile.py:226 eos/saveddata/targetProfile.py:227
+#: eos/saveddata/targetProfile.py:228 eos/saveddata/targetProfile.py:229
+#: eos/saveddata/targetProfile.py:230 eos/saveddata/targetProfile.py:231
+#: eos/saveddata/targetProfile.py:232
 msgid "NPC"
 msgstr ""
 
@@ -3211,6 +3221,10 @@ msgstr ""
 msgid "Rogue Drone"
 msgstr ""
 
+#: eos/saveddata/damagePattern.py:160 eos/saveddata/targetProfile.py:231
+msgid "Rogue Drone Entities"
+msgstr ""
+
 #: eos/saveddata/targetProfile.py:63 eos/saveddata/targetProfile.py:69
 msgid "Rogue Drones"
 msgstr ""
@@ -3516,6 +3530,10 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:174 eos/saveddata/targetProfile.py:181
 #: eos/saveddata/targetProfile.py:188
 msgid "Sleeper"
+msgstr ""
+
+#: eos/saveddata/damagePattern.py:161 eos/saveddata/targetProfile.py:232
+msgid "Sleeper Entities"
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:158
