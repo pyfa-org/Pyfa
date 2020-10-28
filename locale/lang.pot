@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-27 21:25+0300\n"
+"POT-Creation-Date: 2020-10-28 15:27+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -412,7 +412,7 @@ msgstr ""
 msgid "Angel Cartel"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:73
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:133
 msgid "Animate gauges"
 msgstr ""
 
@@ -509,7 +509,7 @@ msgstr ""
 msgid "Auto"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:145
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:94
 msgid ""
 "Auto will use the same language pyfa uses if available, otherwise English"
 msgstr ""
@@ -745,7 +745,7 @@ msgstr ""
 msgid "Change Skills"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:84
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:144
 msgid "Change charge in all modules of the same type"
 msgstr ""
 
@@ -828,7 +828,7 @@ msgstr ""
 msgid "Client Secret:"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:54
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:114
 msgid "Color fitting view by slot"
 msgstr ""
 
@@ -852,7 +852,7 @@ msgstr ""
 msgid "Command center hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:50
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:110
 msgid "Compact skills needed tooltip"
 msgstr ""
 
@@ -1363,7 +1363,7 @@ msgstr ""
 msgid "EVE API XML character files"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:127
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:76
 msgid "EVE Data:"
 msgstr ""
 
@@ -1695,7 +1695,7 @@ msgstr ""
 msgid "Exporting skills needed..."
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:92
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:152
 msgid "Extra info in Additions panel tab names"
 msgstr ""
 
@@ -2182,7 +2182,7 @@ msgstr ""
 msgid "Interceptor"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:122
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:65
 msgid "Interested in helping with translations?"
 msgstr ""
 
@@ -2251,7 +2251,7 @@ msgstr ""
 msgid "Ladar"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:97
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:38
 msgid "Language (requires restart)"
 msgstr ""
 
@@ -2749,7 +2749,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:153
 #: gui/characterEditor.py:855
 msgid "None"
 msgstr ""
@@ -2814,7 +2814,7 @@ msgstr ""
 msgid "Open Widgets Inspect tool"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:76
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:136
 msgid "Open fittings in a new page by default"
 msgstr ""
 
@@ -3029,15 +3029,22 @@ msgid ""
 "notifications and view suppressed release notifications, if any."
 msgstr ""
 
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:69
+msgid ""
+"Pyfa language selection disabled. Please check if .mo files have been "
+"generated.\n"
+"Refer to locale/README.md for info."
+msgstr ""
+
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:129
 msgid "Quafe hold"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:153
 msgid "Quantity of active items"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:93
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:153
 msgid "Quantity of all items"
 msgstr ""
 
@@ -3142,7 +3149,7 @@ msgstr ""
 msgid "Rename"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:58
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:118
 msgid "Reopen previous fits on startup"
 msgstr ""
 
@@ -3332,7 +3339,7 @@ msgstr ""
 msgid "Sentinel"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:62
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:122
 msgid "Separate Racks"
 msgstr ""
 
@@ -3437,7 +3444,7 @@ msgstr ""
 msgid "Short Range"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:66
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:126
 msgid "Show Rack Labels"
 msgstr ""
 
@@ -3445,7 +3452,7 @@ msgstr ""
 msgid "Show empty ship groups"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:70
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:130
 msgid "Show fitting tab tooltips"
 msgstr ""
 
@@ -3457,7 +3464,7 @@ msgstr ""
 msgid "Show market shortcuts"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:80
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:140
 msgid "Show ship browser tooltip"
 msgstr ""
 
@@ -3986,15 +3993,15 @@ msgstr ""
 msgid "Use capacitor simulator"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:42
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:102
 msgid "Use character implants by default for new fits"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:38
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:98
 msgid "Use global character"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:46
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:106
 msgid "Use global damage pattern"
 msgstr ""
 
@@ -4065,7 +4072,7 @@ msgid ""
 "behavior)."
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:89
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:149
 msgid ""
 "When disabled, reloads charges just in selected modules. Action can be "
 "reversed by holding Ctrl or Alt key while changing charge."
@@ -4242,7 +4249,7 @@ msgstr ""
 msgid "pyfa.io"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:102
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
 msgid "pyfa:"
 msgstr ""
 
