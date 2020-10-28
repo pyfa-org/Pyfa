@@ -226,7 +226,10 @@ BUILTINS = OrderedDict([
     (-183, (_c(_t('NPC')) + _c(_t('Abyssal')) + _c(_t('Gamma T3 (Some T5 Rooms)')) + _t('Angel'), 0.59, 0.528, 0.477, 0.197)),
     (-184, (_c(_t('NPC')) + _c(_t('Abyssal')) + _c(_t('Gamma T4/T5/T6')) + _t('Concord'), 0.324, 0.318, 0.369, 0.086)),
     (-185, (_c(_t('NPC')) + _c(_t('Abyssal')) + _c(_t('Gamma T4/T5/T6')) + _t('Sansha'), 0.137, 0.355, 0.352, 0)),
-    (-186, (_c(_t('NPC')) + _c(_t('Abyssal')) + _c(_t('Gamma T4/T5/T6')) + _t('Angel'), 0.59, 0.528, 0.477, 0.126))])
+    (-186, (_c(_t('NPC')) + _c(_t('Abyssal')) + _c(_t('Gamma T4/T5/T6')) + _t('Angel'), 0.59, 0.528, 0.477, 0.126)),
+    (-187, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Drifter Entities'), 0.128, 0.375, 0.383, 0.383)),
+    (-188, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Rogue Drone Entities'), 0.104, 0.147, 0.147, 0.102)),
+    (-189, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Sleeper Entities'), 0.563, 0.563, 0.563, 0.563))])
 
 
 class TargetProfile:
