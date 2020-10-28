@@ -155,7 +155,10 @@ BUILTINS = OrderedDict([
     (-103, (_c(_t('NPC')) + _c(_t('Mission')) + _t('Mordus Legion'), 25, 262, 625, 0)),
     (-104, (_c(_t('NPC')) + _c(_t('Mission')) + _t('Thukker'), 0, 52, 10, 79)),
     (-105, (_c(_t('NPC')) + _t('Sansha Incursion'), 1682, 1347, 3678, 3678)),
-    (-106, (_c(_t('NPC')) + _t('Sleepers'), 1472, 1472, 1384, 1384))])
+    (-106, (_c(_t('NPC')) + _t('Sleepers'), 1472, 1472, 1384, 1384)),
+    (-107, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Drifter Entities'), 250, 250, 250, 250)),
+    (-108, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Rogue Drone Entities'), 250, 250, 250, 250)),
+    (-109, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Sleeper Entities'), 265, 265, 235, 235))])
 
 
 class DamagePattern:
