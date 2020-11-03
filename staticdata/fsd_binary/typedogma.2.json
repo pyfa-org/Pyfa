@@ -235445,7 +235445,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 3.6
+        "value": 1.2
       }, 
       {
         "attributeID": 76, 
@@ -235624,6 +235624,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 25.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -235699,7 +235703,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 4.5
+        "value": 1.5
       }, 
       {
         "attributeID": 76, 
@@ -235874,6 +235878,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 25.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -235953,7 +235961,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 3.6
+        "value": 1.2
       }, 
       {
         "attributeID": 76, 
@@ -236132,6 +236140,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 25.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -236227,7 +236239,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.525
+        "value": 0.17
       }, 
       {
         "attributeID": 76, 
@@ -236402,6 +236414,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 15.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -236457,7 +236473,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 1.05
+        "value": 0.3
       }, 
       {
         "attributeID": 76, 
@@ -236624,6 +236640,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 25.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -236715,7 +236735,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 1.05
+        "value": 0.3
       }, 
       {
         "attributeID": 76, 
@@ -236886,6 +236906,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 20.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -236977,7 +237001,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 1.05
+        "value": 0.3
       }, 
       {
         "attributeID": 76, 
@@ -237156,6 +237180,10 @@
         "value": -10.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 25.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -237307,7 +237335,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 1.16
+        "value": 0.4
       }, 
       {
         "attributeID": 76, 
@@ -237478,6 +237506,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 12.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -237569,7 +237601,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 1.16
+        "value": 0.4
       }, 
       {
         "attributeID": 76, 
@@ -237744,6 +237776,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 15.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -237851,7 +237887,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 1.16
+        "value": 0.4
       }, 
       {
         "attributeID": 76, 
@@ -238050,6 +238086,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 15.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -238229,7 +238269,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.495
+        "value": 0.17
       }, 
       {
         "attributeID": 76, 
@@ -238402,6 +238442,10 @@
       {
         "attributeID": 583, 
         "value": 1.0
+      }, 
+      {
+        "attributeID": 600, 
+        "value": 10.0
       }, 
       {
         "attributeID": 620, 
@@ -238717,7 +238761,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.02
+        "value": 0.01
       }, 
       {
         "attributeID": 76, 
@@ -238892,6 +238936,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 6.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -239003,7 +239051,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.6
+        "value": 0.2
       }, 
       {
         "attributeID": 76, 
@@ -239182,6 +239230,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 15.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -239277,7 +239329,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.57
+        "value": 0.2
       }, 
       {
         "attributeID": 76, 
@@ -239452,6 +239504,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 10.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -239511,7 +239567,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.02
+        "value": 0.01
       }, 
       {
         "attributeID": 76, 
@@ -239686,6 +239742,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 6.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -239797,7 +239857,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.02
+        "value": 0.01
       }, 
       {
         "attributeID": 76, 
@@ -239976,6 +240036,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 6.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -240107,7 +240171,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.02
+        "value": 0.01
       }, 
       {
         "attributeID": 76, 
@@ -240278,6 +240342,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 6.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -240389,7 +240457,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.02
+        "value": 0.01
       }, 
       {
         "attributeID": 76, 
@@ -240560,6 +240628,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 600, 
+        "value": 6.0
+      }, 
+      {
         "attributeID": 620, 
         "value": 40000.0
       }, 
@@ -240671,7 +240743,7 @@
       }, 
       {
         "attributeID": 70, 
-        "value": 0.02
+        "value": 0.01
       }, 
       {
         "attributeID": 76, 
@@ -240844,6 +240916,10 @@
       {
         "attributeID": 583, 
         "value": 1.0
+      }, 
+      {
+        "attributeID": 600, 
+        "value": 6.0
       }, 
       {
         "attributeID": 620, 
@@ -241344,6 +241420,10 @@
         "value": 20000.0
       }, 
       {
+        "attributeID": 562, 
+        "value": 0.0
+      }, 
+      {
         "attributeID": 665, 
         "value": 0.0
       }
@@ -241419,6 +241499,10 @@
       {
         "attributeID": 552, 
         "value": 20000.0
+      }, 
+      {
+        "attributeID": 562, 
+        "value": 0.0
       }, 
       {
         "attributeID": 665, 
@@ -241568,6 +241652,444 @@
       {
         "attributeID": 2422, 
         "value": 18597.66597222222
+      }
+    ], 
+    "dogmaEffects": [
+      {
+        "effectID": 302, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 304, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 306, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 308, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 310, 
+        "isDefault": 0
+      }
+    ]
+  }, 
+  "56833": {
+    "dogmaAttributes": [
+      {
+        "attributeID": 175, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 176, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 177, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 178, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 179, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 182, 
+        "value": 3402.0
+      }, 
+      {
+        "attributeID": 277, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 330, 
+        "value": 43200000.0
+      }, 
+      {
+        "attributeID": 1087, 
+        "value": 63.0
+      }, 
+      {
+        "attributeID": 1890, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 1916, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 2422, 
+        "value": 18606.125
+      }
+    ], 
+    "dogmaEffects": [
+      {
+        "effectID": 302, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 304, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 306, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 308, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 310, 
+        "isDefault": 0
+      }
+    ]
+  }, 
+  "56834": {
+    "dogmaAttributes": [
+      {
+        "attributeID": 175, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 176, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 177, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 178, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 179, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 182, 
+        "value": 3402.0
+      }, 
+      {
+        "attributeID": 277, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 330, 
+        "value": 86400000.0
+      }, 
+      {
+        "attributeID": 1087, 
+        "value": 64.0
+      }, 
+      {
+        "attributeID": 1890, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 1916, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 2422, 
+        "value": 18606.125
+      }
+    ], 
+    "dogmaEffects": [
+      {
+        "effectID": 302, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 304, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 306, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 308, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 310, 
+        "isDefault": 0
+      }
+    ]
+  }, 
+  "56835": {
+    "dogmaAttributes": [
+      {
+        "attributeID": 175, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 176, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 177, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 178, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 179, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 182, 
+        "value": 3402.0
+      }, 
+      {
+        "attributeID": 277, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 330, 
+        "value": 2419200000.0
+      }, 
+      {
+        "attributeID": 1087, 
+        "value": 65.0
+      }, 
+      {
+        "attributeID": 1890, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 1916, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 2422, 
+        "value": 18594.125
+      }
+    ], 
+    "dogmaEffects": [
+      {
+        "effectID": 302, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 304, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 306, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 308, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 310, 
+        "isDefault": 0
+      }
+    ]
+  }, 
+  "56875": {
+    "dogmaAttributes": [
+      {
+        "attributeID": 66, 
+        "value": 10.0
+      }, 
+      {
+        "attributeID": 318, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 330, 
+        "value": 604800000.0
+      }, 
+      {
+        "attributeID": 624, 
+        "value": 10.0
+      }, 
+      {
+        "attributeID": 1087, 
+        "value": 31.0
+      }, 
+      {
+        "attributeID": 1890, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 1916, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 2422, 
+        "value": 18627.125
+      }
+    ], 
+    "dogmaEffects": [
+      {
+        "effectID": 230, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 242, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 856, 
+        "isDefault": 0
+      }
+    ]
+  }, 
+  "56876": {
+    "dogmaAttributes": [
+      {
+        "attributeID": 66, 
+        "value": -10.0
+      }, 
+      {
+        "attributeID": 330, 
+        "value": 604800000.0
+      }, 
+      {
+        "attributeID": 846, 
+        "value": 10.0
+      }, 
+      {
+        "attributeID": 1087, 
+        "value": 32.0
+      }, 
+      {
+        "attributeID": 1156, 
+        "value": -10.0
+      }, 
+      {
+        "attributeID": 1890, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 1916, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 2422, 
+        "value": 18627.125
+      }
+    ], 
+    "dogmaEffects": [
+      {
+        "effectID": 1409, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 4161, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 4162, 
+        "isDefault": 0
+      }
+    ]
+  }, 
+  "56877": {
+    "dogmaAttributes": [
+      {
+        "attributeID": 66, 
+        "value": -5.0
+      }, 
+      {
+        "attributeID": 330, 
+        "value": 604800000.0
+      }, 
+      {
+        "attributeID": 434, 
+        "value": 5.0
+      }, 
+      {
+        "attributeID": 780, 
+        "value": -5.0
+      }, 
+      {
+        "attributeID": 1087, 
+        "value": 33.0
+      }, 
+      {
+        "attributeID": 1890, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 1916, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 2422, 
+        "value": 18627.125
+      }
+    ], 
+    "dogmaEffects": [
+      {
+        "effectID": 391, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 1190, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 2885, 
+        "isDefault": 0
+      }
+    ]
+  }, 
+  "56893": {
+    "dogmaAttributes": [
+      {
+        "attributeID": 175, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 176, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 177, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 178, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 179, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 330, 
+        "value": 60000.0
+      }, 
+      {
+        "attributeID": 1087, 
+        "value": 34.0
+      }, 
+      {
+        "attributeID": 1890, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 1916, 
+        "value": 1.0
+      }, 
+      {
+        "attributeID": 2422, 
+        "value": 18627.66597222222
       }
     ], 
     "dogmaEffects": [
