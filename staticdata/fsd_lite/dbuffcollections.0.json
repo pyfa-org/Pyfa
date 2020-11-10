@@ -2286,6 +2286,25 @@
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
   }, 
+  "2106": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ESS: Disables MJDs + MWDs", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 3454
+      }, 
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 4385
+      }
+    ], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
   "2108": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Webifier Range Bonus", 
@@ -2297,7 +2316,7 @@
     "displayName_ja": "Stasis Webifier Range Bonus", 
     "displayName_ko": "스테이시스 웹 생성기 사거리 보너스", 
     "displayName_ru": "Увеличение дальности действия стазис-индукторов", 
-    "displayName_zh": "Stasis Webifier Range Bonus", 
+    "displayName_zh": "停滞缠绕光束范围加成", 
     "displayNameID": 571849, 
     "itemModifiers": [], 
     "locationGroupModifiers": [
