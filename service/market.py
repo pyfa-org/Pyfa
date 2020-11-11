@@ -768,7 +768,7 @@ class Market:
                     "updated for {1} to display correctly.").format(mg, self.ITEMS_FORCEDMARKETGROUP_R[mg.ID]))
                 return False
             return True
-        elif len(mg.items) > 0:
+        elif len(mg.items) > 0 and len(mg.children) == 0:
             return True
         else:
             return False
