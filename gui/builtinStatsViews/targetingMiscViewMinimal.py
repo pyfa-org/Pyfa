@@ -215,7 +215,7 @@ class TargetingMiscViewMinimal(StatsView):
                         ecmChance = otherValues["jamChance"]
                         ecmChance = round(ecmChance, 1)
                         if ecmChance > 0:
-                            label.SetToolTip(wx.ToolTip(_t("Type: {0}\n").foramt(_t(fit.scanType)) +
+                            label.SetToolTip(wx.ToolTip(_t("Type: {0}\n").format(_t(fit.scanType)) +
                                                         # xgettext:no-python-format,python-brace-format
                                                         _t("{}% chance to be jammed").format(formatAmount(ecmChance, 3, 0, 0))))
                         else:
