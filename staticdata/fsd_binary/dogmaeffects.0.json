@@ -58,7 +58,7 @@
     "description_ja": "ローパワースロットが必要。", 
     "description_ko": "로우 슬롯 전용 모듈", 
     "description_ru": "Требуется разъём малой мощности", 
-    "description_zh": "需要一个低能量槽", 
+    "description_zh": "需要低能量槽", 
     "descriptionID": 107004, 
     "disallowAutoRepeat": 0, 
     "displayName_de": "Low power", 
@@ -93,7 +93,7 @@
     "description_ja": "ハイパワースロットが必要。", 
     "description_ko": "하이 슬롯 전용 모듈", 
     "description_ru": "Требуется разъём высокой мощности", 
-    "description_zh": "需要一个高能量槽", 
+    "description_zh": "需要高能量槽", 
     "descriptionID": 107005, 
     "disallowAutoRepeat": 0, 
     "displayName_de": "High power", 
@@ -128,7 +128,7 @@
     "description_ja": "ミディアムパワースロットが必要。", 
     "description_ko": "미드 슬롯 전용 모듈", 
     "description_ru": "Требуется разъём средней мощности", 
-    "description_zh": "需要一个中能量槽", 
+    "description_zh": "需要中能量槽", 
     "descriptionID": 107006, 
     "disallowAutoRepeat": 0, 
     "displayName_de": "Medium power", 
@@ -355,7 +355,7 @@
     "description_ja": "Requries a launcher hardpoint", 
     "description_ko": "런처 하드포인트 요구", 
     "description_ru": "Требуется точка монтажа пусковых установок", 
-    "description_zh": "Requries a launcher hardpoint", 
+    "description_zh": "需要发射器挂点", 
     "descriptionID": 571924, 
     "disallowAutoRepeat": 0, 
     "displayName_de": "Werfer", 
@@ -366,7 +366,7 @@
     "displayName_ja": "Launcher", 
     "displayName_ko": "런처", 
     "displayName_ru": "Пусковая установка", 
-    "displayName_zh": "Launcher", 
+    "displayName_zh": "发射器", 
     "displayNameID": 571925, 
     "effectCategory": 0, 
     "effectID": 40, 
@@ -390,7 +390,7 @@
     "description_ja": "Requries a turret hardpoint", 
     "description_ko": "터렛 하드포인트 요구", 
     "description_ru": "Требуется точка монтажа турелей", 
-    "description_zh": "Requries a turret hardpoint", 
+    "description_zh": "需要炮台挂点", 
     "descriptionID": 571926, 
     "disallowAutoRepeat": 0, 
     "displayName_de": "Geschützturm", 
@@ -401,7 +401,7 @@
     "displayName_ja": "Turret", 
     "displayName_ko": "터렛", 
     "displayName_ru": "Турель", 
-    "displayName_zh": "Turret", 
+    "displayName_zh": "炮台", 
     "displayNameID": 571927, 
     "effectCategory": 0, 
     "effectID": 42, 
@@ -85880,6 +85880,122 @@
         "func": "ItemModifier", 
         "modifiedAttributeID": 265, 
         "modifyingAttributeID": 1888, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8100": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8100, 
+    "effectName": "shipBonusECMJamDroneDurationCF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2822, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8101": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8101, 
+    "effectName": "roleBonusDroneDamage", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 2091, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 2091, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 2091, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 2091, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8102": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8102, 
+    "effectName": "shipBonusRole1DroneHitpointsDroneControlRange", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 458, 
+        "modifyingAttributeID": 2298, 
         "operation": 6
       }
     ], 
