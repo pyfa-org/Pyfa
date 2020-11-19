@@ -851,6 +851,7 @@ class Effect230(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Afterburner AB (6 of 6)
+    Implant: Eifyr and Co. 'Rogue' Agility 11-11
     Implant: Zor's Custom Navigation Link
     Skill: Afterburner
     """
@@ -885,6 +886,7 @@ class Effect242(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Acceleration Control AC (6 of 6)
+    Implant: Eifyr and Co. 'Rogue' Agility 11-11
     """
 
     type = 'passive'
@@ -1085,6 +1087,7 @@ class Effect391(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
     Implant: Michi's Excavation Augmentor
+    Implant: ORE 'Harvester' Efficiency 11-11
     Skill: Astrogeology
     Skill: Mining
     """
@@ -1784,7 +1787,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 974)
+    Items from category: Charge (608 of 975)
     """
 
     type = 'passive'
@@ -1799,7 +1802,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (29 of 29)
+    Charges from group: Festival Charges (30 of 30)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -2372,7 +2375,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (514 of 974)
+    Items from category: Charge (514 of 975)
     """
 
     type = 'passive'
@@ -2443,6 +2446,7 @@ class Effect856(BaseEffect):
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
+    Implant: Eifyr and Co. 'Rogue' Agility 11-11
     Implant: Serenity YC122.9 Season Booster - Warp Speed
     """
 
@@ -3757,6 +3761,7 @@ class Effect1190(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
+    Implant: ORE 'Harvester' Efficiency 11-11
     Module: Medium Ice Harvester Accelerator I
     Skill: Ice Harvesting
     """
@@ -4266,6 +4271,7 @@ class Effect1409(BaseEffect):
 
     Used by:
     Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
+    Implant: Poteque 'Prospector' Sharpeye 11-11
     Skill: Astrometric Acquisition
     Skill: Astrometrics
     """
@@ -7818,7 +7824,8 @@ class Effect2734(BaseEffect):
     shipECMScanStrengthBonusCF
 
     Used by:
-    Variations of ship: Griffin (3 of 3)
+    Ship: Griffin
+    Ship: Kitsune
     """
 
     type = 'passive'
@@ -8754,6 +8761,7 @@ class Effect2885(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
+    Implant: ORE 'Harvester' Efficiency 11-11
     """
 
     type = 'passive'
@@ -13569,6 +13577,7 @@ class Effect4161(BaseEffect):
 
     Used by:
     Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
+    Implant: Poteque 'Prospector' Sharpeye 11-11
     Skill: Astrometric Pinpointing
     Skill: Astrometrics
     """
@@ -13592,6 +13601,7 @@ class Effect4162(BaseEffect):
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
+    Implant: Poteque 'Prospector' Sharpeye 11-11
     Implant: Serenity YC122.9 Season Booster - Probe Scanning Strength
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
@@ -14624,28 +14634,11 @@ class Effect4396(BaseEffect):
                                         skill='Covert Ops', **kwargs)
 
 
-class Effect4397(BaseEffect):
-    """
-    shipBonusGFTorpedoExplosionVelocity
-
-    Used by:
-    Ship: Nemesis
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
-                                        'aoeVelocity', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate', **kwargs)
-
-
 class Effect4398(BaseEffect):
     """
     shipBonusMF1TorpedoExplosionVelocity
 
     Used by:
-    Ship: Hound
     Ship: Virtuoso
     """
 
@@ -14655,38 +14648,6 @@ class Effect4398(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
-
-
-class Effect4399(BaseEffect):
-    """
-    shipBonusCF1TorpedoExplosionVelocity
-
-    Used by:
-    Ship: Manticore
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
-                                        'aoeVelocity', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
-
-
-class Effect4400(BaseEffect):
-    """
-    shipBonusAF1TorpedoExplosionVelocity
-
-    Used by:
-    Ship: Purifier
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
-                                        'aoeVelocity', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
 
 class Effect4413(BaseEffect):
@@ -26382,41 +26343,6 @@ class Effect6354(BaseEffect):
                                           src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
 
 
-class Effect6355(BaseEffect):
-    """
-    roleBonusECMCapCPU
-
-    Used by:
-    Ship: Griffin Navy Issue
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'capacitorNeed',
-                                      src.getModifiedItemAttr('roleBonus'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'cpu', src.getModifiedItemAttr('roleBonus'), **kwargs)
-
-
-class Effect6356(BaseEffect):
-    """
-    roleBonusECMRange
-
-    Used by:
-    Ship: Griffin Navy Issue
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'falloffEffectiveness',
-                                      src.getModifiedItemAttr('roleBonus'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'maxRange',
-                                      src.getModifiedItemAttr('roleBonus'), **kwargs)
-
-
 class Effect6357(BaseEffect):
     """
     shipBonusJustScramblerRangeGF2
@@ -37236,3 +37162,59 @@ class Effect8098(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('shipBonusAD2'),
                                skill='Amarr Destroyer', **kwargs)
+
+
+class Effect8100(BaseEffect):
+    """
+    shipBonusECMJamDroneDurationCF
+
+    Used by:
+    Ship: Griffin Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'),
+            'ecmJamDuration', ship.getModifiedItemAttr('shipBonusCF'),
+            skill='Caldari Frigate', **kwargs)
+
+
+class Effect8101(BaseEffect):
+    """
+    roleBonusDroneDamage
+
+    Used by:
+    Ship: Griffin Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'),
+                f'{dmgType}Damage', ship.getModifiedItemAttr('roleBonus'), **kwargs)
+
+
+class Effect8102(BaseEffect):
+    """
+    shipBonusRole1DroneHitpointsDroneControlRange
+
+    Used by:
+    Ship: Griffin Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.extraAttributes.boost(
+            'droneControlRange', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+        for attr in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'),
+                attr, ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
