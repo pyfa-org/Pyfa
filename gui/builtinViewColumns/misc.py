@@ -466,11 +466,11 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup == "Electronic Warfare Drone":
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
-            lockRangeMult = stuff.getModifiedItemAttr("maxTargetRangeMultiplier")
-            scanResMult = stuff.getModifiedItemAttr("scanResolutionMultiplier")
-            falloffRangeMult = stuff.getModifiedItemAttr("fallofMultiplier")
-            optimalRangeMult = stuff.getModifiedItemAttr("maxRangeMultiplier")
-            trackingSpeedMult = stuff.getModifiedItemAttr("trackingSpeedMultiplier")
+            lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
+            scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
+            falloffRangeBonus = stuff.getModifiedItemAttr("falloffBonus")
+            optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
+            trackingSpeedBonus = stuff.getModifiedItemAttr("trackingSpeedBonus")
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
@@ -479,9 +479,7 @@ class Miscellanea(ViewColumn):
                 text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
                 tooltip = "Signature radius increase"
                 return text, tooltip
-            if lockRangeMult is not None and scanResMult is not None:
-                lockRangeBonus = (lockRangeMult - 1) * 100
-                scanResBonus = (scanResMult - 1) * 100
+            if lockRangeBonus or scanResBonus:
                 display = 0
                 for bonus in (lockRangeBonus, scanResBonus):
                     if abs(bonus) > abs(display):
@@ -496,10 +494,7 @@ class Miscellanea(ViewColumn):
                     ttEntries.append("scan resolution")
                 tooltip = "{0} dampening".format(formatList(ttEntries)).capitalize()
                 return text, tooltip
-            if falloffRangeMult is not None and optimalRangeMult is not None and trackingSpeedMult is not None:
-                falloffRangeBonus = (falloffRangeMult - 1) * 100
-                optimalRangeBonus = (optimalRangeMult - 1) * 100
-                trackingSpeedBonus = (trackingSpeedMult - 1) * 100
+            if falloffRangeBonus or optimalRangeBonus or trackingSpeedBonus:
                 display = 0
                 for bonus in (falloffRangeBonus, optimalRangeBonus, trackingSpeedBonus):
                     if abs(bonus) > abs(display):
