@@ -1,5 +1,6 @@
 wxPython == 4.0.6
 logbook >= 1.0.0
+numpy == 1.19.2
 matplotlib == 3.2.2
 python-dateutil
 requests >= 2.0.0
