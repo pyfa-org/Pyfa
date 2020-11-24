@@ -682,8 +682,8 @@ class Fit:
                                                    "duration", value, stackingPenalties=True)
 
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                                   "crystalVolatilityChance", value, stackingPenalties=True)
+                    self.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Mining"),
+                                                     "crystalVolatilityChance", value, stackingPenalties=True)
 
                 if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
                     self.ship.boostItemAttr("maxTargetRange", value, stackingPenalties=True)
