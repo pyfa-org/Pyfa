@@ -572,6 +572,7 @@ class LocaleSettings:
     @classmethod
     def supported_langauges(cls):
         """Requires the application to be initialized, otherwise wx.Translation isn't set."""
+        pyfalog.info(f'using "{config.CATALOG}" to fetch languages, relatively base path "{os.getcwd()}"')
         return {x: wx.Locale.FindLanguageInfo(x) for x in wx.Translations.Get().GetAvailableTranslations(config.CATALOG)}
 
     def get(self, key):
