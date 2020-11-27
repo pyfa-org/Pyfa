@@ -146,6 +146,9 @@ BUILTINS = OrderedDict([
     (-94, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Gallente EDENCOM Entities')) + _t('Dread/Subcaps'), 0, 417, 583, 0)),
     (-95, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Minmatar EDENCOM Entities')) + _t('Dread'), 0, 0, 583, 417)),
     (-96, (_c(_t('NPC')) + _c(_t('Invasion')) + _c(_t('Minmatar EDENCOM Entities')) + _t('Subcaps'), 302, 136, 328, 234)),
+    (-110, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Drifter Entities'), 250, 250, 250, 250)),
+    (-112, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Sleeper Entities'), 265, 265, 235, 235)),
+    (-111, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Rogue Drone Entities'), 250, 250, 250, 250)),
     (-97, (_c(_t('NPC')) + _c(_t('Mission')) + _t('Amarr Empire'), 4464, 3546, 97, 0)),
     (-98, (_c(_t('NPC')) + _c(_t('Mission')) + _t('Caldari State'), 0, 2139, 4867, 0)),
     (-99, (_c(_t('NPC')) + _c(_t('Mission')) + _t('CONCORD'), 336, 134, 212, 412)),
@@ -155,10 +158,7 @@ BUILTINS = OrderedDict([
     (-103, (_c(_t('NPC')) + _c(_t('Mission')) + _t('Mordus Legion'), 25, 262, 625, 0)),
     (-104, (_c(_t('NPC')) + _c(_t('Mission')) + _t('Thukker'), 0, 52, 10, 79)),
     (-105, (_c(_t('NPC')) + _t('Sansha Incursion'), 1682, 1347, 3678, 3678)),
-    (-106, (_c(_t('NPC')) + _t('Sleepers'), 1472, 1472, 1384, 1384)),
-    (-107, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Drifter Entities'), 250, 250, 250, 250)),
-    (-108, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Rogue Drone Entities'), 250, 250, 250, 250)),
-    (-109, (_c(_t('NPC')) + _c(_t('Invasion')) + _t('Sleeper Entities'), 265, 265, 235, 235))])
+    (-106, (_c(_t('NPC')) + _t('Sleepers'), 1472, 1472, 1384, 1384))])
 
 
 class DamagePattern:
