@@ -1267,10 +1267,11 @@ class Effect446(BaseEffect):
 
 class Effect485(BaseEffect):
     """
-    energysystemsoperationCapRechargeBonusPostPercentRechargeRateLocationShipGroupCapacitor
+    capacitorRechargeTimeBonusPostPercentPassive
 
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
+    Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: Genolution Core Augmentation CA-2
     Skill: Capacitor Systems Operation
@@ -1787,7 +1788,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 975)
+    Items from category: Charge (608 of 978)
     """
 
     type = 'passive'
@@ -1802,7 +1803,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (30 of 30)
+    Charges from group: Festival Charges (33 of 33)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -2375,7 +2376,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (514 of 975)
+    Items from category: Charge (514 of 978)
     """
 
     type = 'passive'
@@ -5254,7 +5255,7 @@ class Effect1730(BaseEffect):
     droneDmgBonus
 
     Used by:
-    Skills from group: Drones (8 of 26)
+    Skills from group: Drones (8 of 27)
     """
 
     type = 'passive'
@@ -12514,6 +12515,7 @@ class Effect3999(BaseEffect):
     Used by:
     Celestials named like: Class Pulsar Effects (6 of 6)
     Celestials named like: Incursion Effect (2 of 2)
+    Celestials named like: Volatile Ice Storm (2 of 2)
     Celestial: Strong Metaliminal Plasma Firestorm
     Celestial: Weak Metaliminal Plasma Firestorm
     """
@@ -13458,6 +13460,7 @@ class Effect4138(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestials named like: Volatile Ice Storm (2 of 2)
     Celestial: Strong Metaliminal Plasma Firestorm
     Celestial: Weak Metaliminal Plasma Firestorm
     """
@@ -18115,9 +18118,9 @@ class Effect5168(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        fit.drones.filteredItemIncrease(lambda drone: drone.item.requiresSkill('Salvage Drone Operation'),
-                                        'accessDifficultyBonus',
-                                        container.getModifiedItemAttr('accessDifficultyBonus') * container.level, **kwargs)
+        fit.drones.filteredItemIncrease(
+            lambda drone: drone.item.requiresSkill('Salvage Drone Operation'), 'accessDifficultyBonus',
+            container.getModifiedItemAttr('accessDifficultyBonus') * container.level, **kwargs)
 
 
 class Effect5180(BaseEffect):
@@ -36860,6 +36863,7 @@ class Effect8076(BaseEffect):
     systemHullThermalResistance
 
     Used by:
+    Celestials named like: Volatile Ice Storm (2 of 2)
     Celestial: Strong Metaliminal Plasma Firestorm
     Celestial: Weak Metaliminal Plasma Firestorm
     """
@@ -37218,3 +37222,61 @@ class Effect8102(BaseEffect):
             fit.drones.filteredItemBoost(
                 lambda drone: drone.item.requiresSkill('Drones'),
                 attr, ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+
+
+class Effect8099(BaseEffect):
+    """
+    systemHeatDamageBonus
+
+    Used by:
+    Celestials named like: Metaliminal Yoiul Festival YC 122 Storm (4 of 4)
+    Celestials named like: Volatile Ice Storm (2 of 2)
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, source, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: 'heatDamage' in mod.itemModifiedAttributes,
+            'heatDamage', source.getModifiedItemAttr('thermodynamicsHeatDamage'), **kwargs)
+
+
+class Effect8103(BaseEffect):
+    """
+    setBonusRapture
+
+    Used by:
+    Implants named like: grade Rapture (18 of 18)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.appliedImplants.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Cybernetics'),
+            'capRechargeBonus', src.getModifiedItemAttr('ImplantSetRapture'), **kwargs)
+
+
+class Effect8104(BaseEffect):
+    """
+    salvageDroneSpecBonus
+
+    Used by:
+    Skill: Salvage Drone Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        lvl = src.level
+        fit.drones.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('Salvage Drone Specialization'),
+            'accessDifficultyBonus', src.getModifiedItemAttr('accessDifficultyBonus') * lvl, **kwargs)
+        fit.drones.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Salvage Drone Specialization'),
+            'maxVelocity', src.getModifiedItemAttr('maxVelocityBonus') * lvl, **kwargs)
