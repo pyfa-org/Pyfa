@@ -983,19 +983,19 @@ slave:
 # Ammo
 lm:
   - '(^| )lm'  # Checking only beginning of a word to remove unwanted spam
-  - 'light missile(?! (launcher|bay))'
+  - 'light missile'
 hm:
   - '(^| )hm'  # Checking only beginning of a word to remove a few unwanted results
-  - 'heavy missile(?! (launcher|bay))'
+  - 'heavy missile'
 ham:
   - '(^| )ham'  # Checking only beginning of a word to remove a few unwanted results
-  - 'heavy assault missile(?! (launcher|bay))'
+  - 'heavy assault missile'
 cm:
   - '(^| )cm'  # Checking only beginning of a word to remove unwanted spam such as "ECM"
-  - 'cruise missile(?! (launcher|bay))'
+  - 'cruise missile'
 xlcm:
   - 'xlcm'
-  - 'xl cruise missile(?! (launcher|bay))'
+  - 'xl cruise missile'
 fof:
   - 'fof'
   - 'auto-targeting (.+ )?missile'
