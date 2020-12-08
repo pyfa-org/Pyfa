@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2020-08-02 17:09\n"
+"PO-Revision-Date: 2020-12-08 14:13\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -19,155 +19,156 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
-msgstr ""
+msgstr " DPS : "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
-msgstr ""
+msgstr " Empiler"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
-msgstr ""
+msgstr " Frappe \n"
+"Alpha: "
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
 msgid "%d attribute."
 msgid_plural "%d attributes."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d attribut."
+msgstr[1] "%d attributs."
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
-msgstr ""
+msgstr "&Sauvegarder toutes les configurations"
 
 #: gui/mainMenuBar.py:104
 msgid "&Browse ESI Fittings"
-msgstr ""
+msgstr "&Parcourir les configurations ESI"
 
 #: gui/mainMenuBar.py:111
 msgid "&Character"
-msgstr ""
+msgstr "&Personnage"
 
 #: gui/mainMenuBar.py:144
 msgid "&Character Editor"
-msgstr ""
+msgstr "&Editeur de Personnage"
 
 #: gui/mainMenuBar.py:70
 msgid "&Close All Tabs"
-msgstr ""
+msgstr "Fermer tout les onglets"
 
 #: gui/mainMenuBar.py:69
 msgid "&Close Tab"
-msgstr ""
+msgstr "Fermer l'onglet"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr ""
+msgstr "&Éditeur de modèles de dégâts"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
-msgstr ""
+msgstr "Éditeurs"
 
 #: gui/mainMenuBar.py:92
 msgid "&Export Fitting"
-msgstr ""
+msgstr "&Exporter la configuration"
 
 #: gui/mainMenuBar.py:119
 msgid "&Export Skills Needed"
-msgstr ""
+msgstr "&Exporter les compétences requises"
 
 #: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
-msgstr ""
+msgstr "&Fichier"
 
 #: gui/mainMenuBar.py:161
 msgid "&Forums"
-msgstr ""
+msgstr "&Forums"
 
 #: gui/mainMenuBar.py:88
 msgid "&From Clipboard"
-msgstr ""
+msgstr "Depuis le presse-papiers"
 
 #: gui/mainMenuBar.py:135
 msgid "&Global"
-msgstr ""
+msgstr "Général"
 
 #: gui/mainMenuBar.py:96
 msgid "&Graphs"
-msgstr ""
+msgstr "&Graphiques"
 
 #: gui/mainMenuBar.py:159
 msgid "&Help"
-msgstr ""
+msgstr "&Aide"
 
 #: gui/mainMenuBar.py:147
 msgid "&Implant Set Editor"
-msgstr ""
+msgstr "&Éditeur de groupe d'implants"
 
 #: gui/mainMenuBar.py:118
 msgid "&Import Character File"
-msgstr ""
+msgstr "&Importer un fichier de personnage"
 
 #: gui/mainMenuBar.py:91
 msgid "&Import Fittings"
-msgstr ""
+msgstr "&Importer des configurations"
 
 #: gui/mainMenuBar.py:122
 msgid "&Manage ESI Characters"
-msgstr ""
+msgstr "&Gérer les personnages ESI"
 
 #: gui/mainMenuBar.py:68
 msgid "&New Tab"
-msgstr ""
+msgstr "&Nouvel onglet"
 
 #: gui/mainMenuBar.py:95
 msgid "&Optimize Fit Price"
-msgstr ""
+msgstr "&Optimiser le prix de la configuration"
 
 #: gui/mainMenuBar.py:137
 msgid "&Preferences"
-msgstr ""
+msgstr "&Préférences"
 
 #: gui/mainMenuBar.py:84
 msgid "&Redo"
-msgstr ""
+msgstr "&Répéter"
 
 #: gui/mainMenuBar.py:115
 msgid "&Revert Character"
-msgstr ""
+msgstr "&Rétablir le personnage"
 
 #: gui/mainMenuBar.py:113
 msgid "&Save Character"
-msgstr ""
+msgstr "&Enregistrer le personnage"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
-msgstr ""
+msgstr "Éditeur de profil de cible"
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
-msgstr ""
+msgstr "Ajouter au presse-papier"
 
 #: gui/mainFrame.py:690
 msgid "&Turn Overrides Off"
-msgstr ""
+msgstr "&Désactiver les surchauffes"
 
 #: gui/mainFrame.py:690 gui/mainMenuBar.py:131
 msgid "&Turn Overrides On"
-msgstr ""
+msgstr "&Activer les surchauffes"
 
 #: gui/mainMenuBar.py:83
 msgid "&Undo"
-msgstr ""
+msgstr "&Annuler"
 
 #: gui/mainMenuBar.py:160
 msgid "&Wiki"
-msgstr ""
+msgstr "&Wiki"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:25
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:29
 msgid "(Cannot be changed while pyfa is running. Set via command line switches.)"
-msgstr ""
+msgstr "(Ne peut pas être modifié pendant que pyfa est en cours d'exécution. Peut se modifier via les arguments de lancement)"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:81
 msgid "0s"
@@ -175,7 +176,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/fighterAbilities.py:33
 msgid "Abilities"
-msgstr ""
+msgstr "Capacités"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
@@ -227,15 +228,15 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:186 eos/saveddata/targetProfile.py:187
 #: eos/saveddata/targetProfile.py:188 eos/saveddata/targetProfile.py:189
 msgid "Abyssal"
-msgstr ""
+msgstr "Abysses"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "Abyssal Weather"
-msgstr ""
+msgstr "Météo abyssale"
 
 #: gui/builtinItemStatsViews/itemEffects.py:31
 msgid "Active"
-msgstr ""
+msgstr "Activé(e)"
 
 #: gui/builtinViewColumns/abilities.py:37
 msgid "Active Abilities"
@@ -251,7 +252,7 @@ msgstr ""
 
 #: gui/esiFittings.py:350
 msgid "Add Character"
-msgstr ""
+msgstr "Ajouter un personnage"
 
 #: gui/esiFittings.py:183
 msgid "Add Character Error"
