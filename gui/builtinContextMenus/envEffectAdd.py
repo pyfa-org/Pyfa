@@ -206,17 +206,16 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
             for beacon in sMkt.getGroup("Abyssal Hazards").items:
                 if not beacon.isType('projected'):
                     continue
-                name = beacon.name.replace(_t('Caustic'), _t('Tachyon'))
                 groups = (_t('Bioluminescence'), _t('Tachyon'), _t('Filament'))
                 for group in groups:
-                    if re.search(group, name):
+                    if re.search(group, beacon.customName):
                         key = group
                         break
                 else:
                     continue
 
                 subsubdata = subdata.groups.setdefault(key, Group())
-                subsubdata.items.append(Entry(beacon.ID, name, name))
+                subsubdata.items.append(Entry(beacon.ID, beacon.customName, beacon.customName))
             subdata.sort()
 
         # PVP weather

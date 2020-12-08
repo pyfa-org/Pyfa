@@ -107,17 +107,17 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Module):
             if self.projectedView:
                 # check for projected abyssal name
-                name_check = stuff.item.name[0:-2]
+                name_check = stuff.item.customName[0:-2]
                 type = AddEnvironmentEffect.abyssal_mapping.get(name_check, None)
                 if type:
                     sMkt = Market.getInstance()
                     type = sMkt.getItem(type)
-                    return "{} {}".format(type.name, stuff.item.name[-1:])
+                    return "{} {}".format(type.name, stuff.item.customName[-1:])
 
             if stuff.isEmpty:
                 return "%s Slot" % FittingSlot(stuff.slot).name.capitalize()
             else:
-                return stuff.item.name
+                return stuff.item.customName
         elif isinstance(stuff, Implant):
             return stuff.item.name
         elif isinstance(stuff, TargetProfile):

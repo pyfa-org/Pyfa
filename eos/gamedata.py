@@ -19,7 +19,7 @@
 
 
 import json
-from collections import OrderedDict
+import re
 
 from logbook import Logger
 from sqlalchemy.orm import reconstructor
@@ -31,6 +31,10 @@ from .eqBase import EqBase
 
 
 pyfalog = Logger(__name__)
+
+
+def _t(x):
+    return x
 
 
 class Effect(EqBase):
@@ -244,6 +248,10 @@ class Item(EqBase):
             except IndexError:
                 pass
         return shortName
+
+    @property
+    def customName(self):
+        return re.sub(_t('Caustic'), _t('Tachyon'), self.name)
 
     @property
     def attributes(self):
