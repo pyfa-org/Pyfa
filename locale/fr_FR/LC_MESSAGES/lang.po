@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2020-08-02 17:09\n"
+"PO-Revision-Date: 2020-12-08 13:13\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -19,74 +19,75 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
-msgstr ""
+msgstr " DPS : "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
-msgstr ""
+msgstr " Empiler"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:100
 msgid " Volley: "
-msgstr ""
+msgstr " Frappe \n"
+"Alpha: "
 
 #: gui/builtinItemStatsViews/itemProperties.py:98
 #, python-format
 msgid "%d attribute."
 msgid_plural "%d attributes."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d attribut."
+msgstr[1] "%d attributs."
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
-msgstr ""
+msgstr "&Sauvegarder toutes les configurations"
 
 #: gui/mainMenuBar.py:104
 msgid "&Browse ESI Fittings"
-msgstr ""
+msgstr "&Parcourir les configurations ESI"
 
 #: gui/mainMenuBar.py:111
 msgid "&Character"
-msgstr ""
+msgstr "&Personnage"
 
 #: gui/mainMenuBar.py:144
 msgid "&Character Editor"
-msgstr ""
+msgstr "&Editeur de Personnage"
 
 #: gui/mainMenuBar.py:70
 msgid "&Close All Tabs"
-msgstr ""
+msgstr "Fermer tout les onglets"
 
 #: gui/mainMenuBar.py:69
 msgid "&Close Tab"
-msgstr ""
+msgstr "Fermer l'onglet"
 
 #: gui/mainMenuBar.py:150
 msgid "&Damage Pattern Editor"
-msgstr ""
+msgstr "&Éditeur de modèles de dégâts"
 
 #: gui/mainMenuBar.py:143
 msgid "&Editors"
-msgstr ""
+msgstr "Éditeurs"
 
 #: gui/mainMenuBar.py:92
 msgid "&Export Fitting"
-msgstr ""
+msgstr "&Exporter la configuration"
 
 #: gui/mainMenuBar.py:119
 msgid "&Export Skills Needed"
-msgstr ""
+msgstr "&Exporter les compétences requises"
 
 #: gui/mainMenuBar.py:66 gui/propertyEditor.py:42
 msgid "&File"
-msgstr ""
+msgstr "&Fichier"
 
 #: gui/mainMenuBar.py:161
 msgid "&Forums"
-msgstr ""
+msgstr "&Forums"
 
 #: gui/mainMenuBar.py:88
 msgid "&From Clipboard"
-msgstr ""
+msgstr "Depuis le presse-papiers"
 
 #: gui/mainMenuBar.py:135
 msgid "&Global"
