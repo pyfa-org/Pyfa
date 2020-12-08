@@ -37274,7 +37274,7 @@ class Effect8104(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
-        fit.drones.filteredItemIncrease(
+        fit.drones.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Salvage Drone Specialization'),
             'accessDifficultyBonus', src.getModifiedItemAttr('accessDifficultyBonus') * lvl, **kwargs)
         fit.drones.filteredItemBoost(
