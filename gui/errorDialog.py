@@ -70,7 +70,13 @@ class ErrorFrame(AuxiliaryFrame):
 
         from eos.config import gamedata_version, gamedata_date
 
-        time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
+        if gamedata_date:
+            try:
+                time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
+            except TypeError:
+                time = None
+        else:
+            time = None
         version = "pyfa " + config.getVersion() + '\nEVE Data Version: {} ({})\n\n'.format(gamedata_version, time)  # gui.aboutData.versionString
 
         desc = _t("pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
