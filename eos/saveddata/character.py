@@ -96,7 +96,7 @@ class Character:
         if cls.__itemNameMap is None:
             map = {}
             for skill in cls.getSkillList():
-                map[skill.name] = skill
+                map[skill.typeName] = skill
 
             cls.__itemNameMap = map
 

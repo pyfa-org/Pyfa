@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import queue
+import re
 import threading
 from collections import OrderedDict
 from itertools import chain
@@ -36,9 +37,14 @@ from service.jargon import JargonLoader
 from service.settings import SettingsProvider
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
+
+
+class RegexTokenizationError(Exception):
+    pass
 
 
 class ShipBrowserWorkerThread(threading.Thread):
@@ -46,6 +52,7 @@ class ShipBrowserWorkerThread(threading.Thread):
         threading.Thread.__init__(self)
         pyfalog.debug("Initialize ShipBrowserWorkerThread.")
         self.name = "ShipBrowser"
+        self.running = True
 
     def run(self):
         self.queue = queue.Queue()
@@ -60,6 +67,8 @@ class ShipBrowserWorkerThread(threading.Thread):
         cache = self.cache
         sMkt = Market.getInstance()
         while True:
+            if not self.running:
+                break
             try:
                 id_, callback = queue.get()
                 set_ = cache.get(id_)
@@ -68,25 +77,34 @@ class ShipBrowserWorkerThread(threading.Thread):
                     cache[id_] = set_
 
                 wx.CallAfter(callback, (id_, set_))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Callback failed.")
                 pyfalog.critical(e)
             finally:
                 try:
                     queue.task_done()
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception as e:
                     pyfalog.critical("Queue task done failed.")
                     pyfalog.critical(e)
 
+    def stop(self):
+        self.running = False
+
 
 class SearchWorkerThread(threading.Thread):
+
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
         self.jargonLoader = JargonLoader.instance()
         # load the jargon while in an out-of-thread context, to spot any problems while in the main thread
         self.jargonLoader.get_jargon()
-        self.jargonLoader.get_jargon().apply('test string')
+        self.jargonLoader.get_jargon().apply('test string'.split())
+        self.running = True
 
     def run(self):
         self.cv = threading.Condition()
@@ -97,48 +115,125 @@ class SearchWorkerThread(threading.Thread):
         cv = self.cv
 
         while True:
+            if not self.running:
+                break
             cv.acquire()
             while self.searchRequest is None:
                 cv.wait()
 
-            request, callback, filterOn = self.searchRequest
+            request, callback, filterName = self.searchRequest
             self.searchRequest = None
             cv.release()
             sMkt = Market.getInstance()
-            if filterOn is True:
+            if filterName == 'market':
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter_ = or_(types_Category.name.in_(sMkt.SEARCH_CATEGORIES), types_Group.name.in_(sMkt.SEARCH_GROUPS))
-            elif filterOn:  # filter by selected categories
-                filter_ = types_Category.name.in_(filterOn)
+                filters = [or_(
+                    types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
+                    types_Group.name.in_(sMkt.SEARCH_GROUPS))]
+            # Used in implant editor
+            elif filterName == 'implants':
+                filters = [types_Category.name == 'Implant']
+            # Actually not everything, just market search + ships
+            elif filterName == 'everything':
+                filters = [
+                    or_(
+                        types_Category.name.in_(sMkt.FIT_CATEGORIES),
+                        types_Group.name.in_(sMkt.FIT_GROUPS)),
+                    or_(
+                        types_Category.name.in_(sMkt.SEARCH_CATEGORIES),
+                        types_Group.name.in_(sMkt.SEARCH_GROUPS))]
             else:
-                filter_ = None
+                filters = [None]
 
-            jargon_request = self.jargonLoader.get_jargon().apply(request)
+            if request.strip().lower().startswith('re:'):
+                requestTokens = self._prepareRequestRegex(request[3:])
+            else:
+                requestTokens = self._prepareRequestNormal(request)
+            requestTokens = self.jargonLoader.get_jargon().apply(requestTokens)
 
-            results = []
-            if len(request) >= config.minItemSearchLength:
-                results = eos.db.searchItems(request, where=filter_,
-                                             join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup"))
+            all_results = set()
+            if len(' '.join(requestTokens)) >= config.minItemSearchLength:
+                for filter_ in filters:
+                    filtered_results = eos.db.searchItemsRegex(
+                        requestTokens, where=filter_,
+                        join=(types_Item.group, types_Group.category),
+                        eager=("group.category", "metaGroup"))
+                    all_results.update(filtered_results)
 
-            jargon_results = []
-            if len(jargon_request) >= config.minItemSearchLength:
-                jargon_results = eos.db.searchItems(jargon_request, where=filter_,
-                                             join=(types_Item.group, types_Group.category),
-                                             eager=("group.category", "metaGroup"))
-
-            items = set()
+            item_IDs = set()
             # Return only published items, consult with Market service this time
-            for item in [*results, *jargon_results]:
+            for item in all_results:
                 if sMkt.getPublicityByItem(item):
-                    items.add(item)
-            wx.CallAfter(callback, items)
+                    item_IDs.add(item.ID)
+            wx.CallAfter(callback, sorted(item_IDs))
 
-    def scheduleSearch(self, text, callback, filterOn=True):
+    def scheduleSearch(self, text, callback, filterName=None):
         self.cv.acquire()
-        self.searchRequest = (text, callback, filterOn)
+        self.searchRequest = (text, callback, filterName)
         self.cv.notify()
         self.cv.release()
+
+    def stop(self):
+        self.running = False
+
+    def _prepareRequestNormal(self, request):
+        # Escape regexp-specific symbols, and un-escape whitespaces
+        request = re.escape(request)
+        request = re.sub(r'\\(?P<ws>\s+)', '\g<ws>', request)
+        # Imitate wildcard search
+        request = re.sub(r'\\\*', r'\\w*', request)
+        request = re.sub(r'\\\?', r'\\w?', request)
+        tokens = request.split()
+        return tokens
+
+    def _prepareRequestRegex(self, request):
+        roundLvl = 0
+        squareLvl = 0
+        nextEscaped = False
+        tokens = []
+        currentToken = ''
+
+        def verifyErrors():
+            if squareLvl not in (0, 1):
+                raise RegexTokenizationError('Square braces level is {}'.format(squareLvl))
+            if roundLvl < 0:
+                raise RegexTokenizationError('Round braces level is {}'.format(roundLvl))
+
+        try:
+            for char in request:
+                thisEscaped = nextEscaped
+                nextEscaped = False
+                if thisEscaped:
+                    currentToken += char
+                elif char == '\\':
+                    currentToken += char
+                    nextEscaped = True
+                elif char == '[':
+                    currentToken += char
+                    squareLvl += 1
+                elif char == ']':
+                    currentToken += char
+                    squareLvl -= 1
+                elif char == '(' and squareLvl == 0:
+                    currentToken += char
+                    roundLvl += 1
+                elif char == ')' and squareLvl == 0:
+                    currentToken += char
+                    roundLvl -= 1
+                elif char.isspace() and roundLvl == squareLvl == 0:
+                    if currentToken:
+                        tokens.append(currentToken)
+                        currentToken = ''
+                else:
+                    currentToken += char
+                verifyErrors()
+            else:
+                if currentToken:
+                    tokens.append(currentToken)
+        # Treat request as normal string if regex tokenization fails
+        except RegexTokenizationError:
+            tokens = self._prepareRequestNormal(request)
+        return tokens
 
 
 class Market:
@@ -168,6 +263,7 @@ class Market:
         self.les_grp = types_Group()
         self.les_grp.ID = -1
         self.les_grp.name = "Limited Issue Ships"
+        self.les_grp.displayName = _t("Limited Issue Ships")
         self.les_grp.published = True
         ships = self.getCategory("Ship")
         self.les_grp.category = ships
@@ -265,7 +361,6 @@ class Market:
             "'Habitat' Miner I": ("Storyline", "Miner I"),
             "'Wild' Miner I": ("Storyline", "Miner I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
-            "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "Dread Guristas Standup Variable Spectrum ECM": ("Structure Faction", "Standup Variable Spectrum ECM I"),
             "Dark Blood Standup Heavy Energy Neutralizer": ("Structure Faction", "Standup Heavy Energy Neutralizer I")}
         # Parent type name: set(item names)
@@ -313,6 +408,13 @@ class Market:
         self.META_MAP["normal"] = frozenset((0, *(mg.ID for mg in eos.db.getMetaGroups() if mg.ID not in nonNormalMetas)))
         self.META_MAP.move_to_end("normal", last=False)
         self.META_MAP_REVERSE = {sv: k for k, v in self.META_MAP.items() for sv in v}
+        self.META_MAP_REVERSE_GROUPED = {}
+        i = 0
+        for mgids in self.META_MAP.values():
+            for mgid in mgids:
+                self.META_MAP_REVERSE_GROUPED[mgid] = i
+            i += 1
+        self.META_MAP_REVERSE_INDICES = self.__makeReverseMetaMapIndices()
         self.SEARCH_CATEGORIES = (
             "Drone",
             "Module",
@@ -336,6 +438,8 @@ class Market:
                                    2203  # Structure Modifications
                                    )
         self.SHOWN_MARKET_GROUPS = eos.db.getMarketTreeNodeIds(self.ROOT_MARKET_GROUPS)
+        self.FIT_CATEGORIES = ['Ship']
+        self.FIT_GROUPS = ['Citadel', 'Engineering Complex', 'Refinery']
         # Tell other threads that Market is at their service
         mktRdy.set()
 
@@ -354,6 +458,15 @@ class Market:
                 rev[value] = set()
             rev[value].add(item)
         return rev
+
+    def __makeReverseMetaMapIndices(self):
+        revmap = {}
+        i = 0
+        for mgids in self.META_MAP.values():
+            for mgid in mgids:
+                revmap[mgid] = i
+            i += 1
+        return revmap
 
     @staticmethod
     def getItem(identity, *args, **kwargs):
@@ -374,11 +487,18 @@ class Market:
                 item = eos.db.getItem(id_, *args, **kwargs)
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.error("Could not get item: {0}", identity)
             raise
 
         return item
+
+    @staticmethod
+    def getItems(itemIDs, eager=None):
+        items = eos.db.getItems(itemIDs, eager=eager)
+        return items
 
     def getGroup(self, identity, *args, **kwargs):
         """Get group by its ID or name"""
@@ -440,8 +560,8 @@ class Market:
 
     def getGroupByItem(self, item):
         """Get group by item"""
-        if item.name in self.ITEMS_FORCEGROUP:
-            group = self.ITEMS_FORCEGROUP[item.name]
+        if item.typeName in self.ITEMS_FORCEGROUP:
+            group = self.ITEMS_FORCEGROUP[item.typeName]
         else:
             group = item.group
         return group
@@ -603,8 +723,9 @@ class Market:
         groupItems = set(group.items)
         if hasattr(group, 'addItems'):
             groupItems.update(group.addItems)
-        items = set(
-                [item for item in groupItems if self.getPublicityByItem(item) and self.getGroupByItem(item) == group])
+        items = set([
+            item for item in groupItems
+            if self.getPublicityByItem(item) and self.getGroupByItem(item) == group])
         return items
 
     def getItemsByMarketGroup(self, mg, vars_=True):
@@ -647,7 +768,7 @@ class Market:
                     "updated for {1} to display correctly.").format(mg, self.ITEMS_FORCEDMARKETGROUP_R[mg.ID]))
                 return False
             return True
-        elif len(mg.items) > 0:
+        elif len(mg.items) > 0 and len(mg.children) == 0:
             return True
         else:
             return False
@@ -681,7 +802,7 @@ class Market:
                 except KeyError:
                     return ""
 
-                return item.iconID if item.icon else ""
+                return item.iconID if getattr(item, "icon", None) else ""
             elif self.getMarketGroupChildren(mg) > 0:
                 kids = self.getMarketGroupChildren(mg)
                 mktGroups = self.getIconByMarketGroup(kids)
@@ -692,8 +813,8 @@ class Market:
 
     def getPublicityByItem(self, item):
         """Return if an item is published"""
-        if item.name in self.ITEMS_FORCEPUBLISHED:
-            pub = self.ITEMS_FORCEPUBLISHED[item.name]
+        if item.typeName in self.ITEMS_FORCEPUBLISHED:
+            pub = self.ITEMS_FORCEPUBLISHED[item.typeName]
         else:
             pub = item.published
         return pub
@@ -748,9 +869,9 @@ class Market:
                 ships.add(item)
         return ships
 
-    def searchItems(self, name, callback, filterOn=True):
+    def searchItems(self, name, callback, filterName=None):
         """Find items according to given text pattern"""
-        self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
+        self.searchWorkerThread.scheduleSearch(name, callback, filterName)
 
     @staticmethod
     def getItemsWithOverrides():
@@ -826,3 +947,19 @@ class Market:
         while len(recentlyUsedModules) >= 20:
             recentlyUsedModules.pop(-1)
         recentlyUsedModules.insert(0, itemID)
+
+    def itemSort(self, item, reverseMktGrp=False):
+        catname = self.getCategoryByItem(item).name
+        try:
+            mktgrpid = self.getMarketGroupByItem(item).ID
+        except AttributeError:
+            mktgrpid = -1
+            pyfalog.warning("unable to find market group for {}".format(item.typeName))
+        if reverseMktGrp:
+            mktgrpid = -mktgrpid
+        parentname = self.getParentItemByItem(item).name
+        # Get position of market group
+        metagrpid = self.getMetaGroupIdByItem(item)
+        metatab = self.META_MAP_REVERSE_GROUPED.get(metagrpid)
+        metalvl = item.metaLevel or 0
+        return catname, mktgrpid, parentname, metatab, metalvl, item.name

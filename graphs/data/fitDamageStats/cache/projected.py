@@ -50,7 +50,7 @@ class ProjectedDataCache(FitDataCache):
                 if 'doomsdayAOEWeb' in mod.item.effects:
                     webMods.append(ModProjData(
                         mod.getModifiedItemAttr('speedFactor'),
-                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                         mod.falloff or 0,
                         'default',
                         getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEWeb'])))
@@ -65,7 +65,7 @@ class ProjectedDataCache(FitDataCache):
                 if 'doomsdayAOEPaint' in mod.item.effects:
                     tpMods.append(ModProjData(
                         mod.getModifiedItemAttr('signatureRadiusBonus'),
-                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                         mod.falloff or 0,
                         'default',
                         getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEPaint'])))

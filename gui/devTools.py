@@ -26,9 +26,8 @@ import wx
 from logbook import Logger
 
 import eos.db
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.builtinShipBrowser.events import FitSelected
-
 
 pyfalog = Logger(__name__)
 

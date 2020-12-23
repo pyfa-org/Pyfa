@@ -8,6 +8,10 @@ import yaml
 import subprocess
 import os
 
+def rreplace(s, old, new, occurrence):
+    li = s.rsplit(old, occurrence)
+    return new.join(li)
+
 
 with open("version.yml", 'r+') as file:
     data = yaml.load(file, Loader=yaml.SafeLoader)
@@ -17,6 +21,7 @@ with open("version.yml", 'r+') as file:
     # python's versioning spec doesn't handle the same format git describe outputs, so convert it.
     label = os.environ["PYFA_VERSION"].split('-') if "PYFA_VERSION" in os.environ else subprocess.check_output(["git", "describe", "--tags"]).strip().decode().split('-')
     label = '-'.join(label[:-2])+'+'+'-'.join(label[-2:]) if len(label) > 1 else label[0]
+    label = rreplace(label, '+', '-', label.count('+') - 1)
     print(label)
     data['version'] = label
     yaml.dump(data, file, default_flow_style=False)

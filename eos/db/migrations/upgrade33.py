@@ -6,16 +6,16 @@ Allow use of floats in damage pattern values
 
 tmpTable = """
 CREATE TABLE "damagePatternsTemp" (
-	"ID" INTEGER NOT NULL, 
-	"name" VARCHAR, 
-	"emAmount" FLOAT, 
-	"thermalAmount" FLOAT, 
-	"kineticAmount" FLOAT, 
-	"explosiveAmount" FLOAT, 
-	"ownerID" INTEGER, 
-	"created" DATETIME, 
-	"modified" DATETIME, 
-	PRIMARY KEY ("ID"), 
+	"ID" INTEGER NOT NULL,
+	"name" VARCHAR,
+	"emAmount" FLOAT,
+	"thermalAmount" FLOAT,
+	"kineticAmount" FLOAT,
+	"explosiveAmount" FLOAT,
+	"ownerID" INTEGER,
+	"created" DATETIME,
+	"modified" DATETIME,
+	PRIMARY KEY ("ID"),
 	FOREIGN KEY("ownerID") REFERENCES users ("ID")
 )
 """

@@ -39,32 +39,48 @@ from service.market import Market
 
 pyfalog = Logger(__name__)
 
-DNA_OPTIONS = (
-    (PortDnaOptions.FORMATTING, 'Formatting Tags', 'Include formatting tags to paste fit directly into corp bulletins, MOTD, etc.', True),
-)
-
 
 def importDna(string, fitName=None):
     sMkt = Market.getInstance()
-
     ids = list(map(int, re.findall(r'\d+', string)))
     for id_ in ids:
         try:
             try:
-                try:
-                    Ship(sMkt.getItem(sMkt.getItem(id_)))
-                except ValueError:
-                    Citadel(sMkt.getItem(sMkt.getItem(id_)))
+                Ship(sMkt.getItem(id_))
             except ValueError:
                 Citadel(sMkt.getItem(id_))
             string = string[string.index(str(id_)):]
             break
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.warning("Exception caught in importDna")
             pass
     string = string[:string.index("::") + 2]
     info = string.split(":")
+    return processImportInfo(info, fitName, ";")
 
+def importDnaAlt(string, fitName=None):
+    sMkt = Market.getInstance()
+    ids = list(map(int, re.findall(r'\d+', string)))
+    for id_ in ids:
+        try:
+            try:
+                Ship(sMkt.getItem(id_))
+            except ValueError:
+                Citadel(sMkt.getItem(id_))
+            string = string[string.index(str(id_)):]
+            break
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            pyfalog.warning("Exception caught in importDna")
+            pass
+    info = string.split(":")
+    return processImportInfo(info, fitName, "*")
+
+def processImportInfo(info, fitName, amountSeparator):
+    sMkt = Market.getInstance()
     f = Fit()
     try:
         try:
@@ -87,7 +103,11 @@ def importDna(string, fitName=None):
     moduleList = []
     for itemInfo in info[1:]:
         if itemInfo:
-            itemID, amount = itemInfo.split(";")
+            if amountSeparator in itemInfo:
+                itemID, amount = itemInfo.split(amountSeparator)
+            else:
+                itemID = itemInfo
+                amount = 1
             item = sMkt.getItem(int(itemID), eager="group.category")
 
             if item.category.name == "Drone":
@@ -107,6 +127,8 @@ def importDna(string, fitName=None):
                 for i in range(int(amount)):
                     try:
                         m = Module(item)
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pyfalog.warning("Exception caught in importDna")
                         continue

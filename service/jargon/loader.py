@@ -24,13 +24,13 @@ import yaml
 from .jargon import Jargon
 from .resources import DEFAULT_DATA, DEFAULT_HEADER
 
-JARGON_PATH = os.path.join(config.savePath, 'jargon.yaml') if config.savePath is not None else None
+USER_JARGON_PATH = os.path.join(config.savePath, 'user_jargon.yaml') if config.savePath is not None else None
 
 
 class JargonLoader:
-    def __init__(self, jargon_path: str):
-        self.jargon_path = jargon_path
-        self._jargon_mtime = 0  # type: int
+
+    def __init__(self):
+        self._user_jargon_mtime = 0  # type: int
         self._jargon = None  # type: Jargon
 
     def get_jargon(self) -> Jargon:
@@ -39,49 +39,39 @@ class JargonLoader:
         return self._jargon
 
     def _is_stale(self):
-        return (not self._jargon or not self._jargon_mtime or
-                self.jargon_mtime != self._get_jargon_file_mtime())
+        return (not self._jargon or not self._user_jargon_mtime or
+                self.jargon_mtime != self._get_user_jargon_mtime())
 
     def _load_jargon(self):
         jargondata = yaml.load(DEFAULT_DATA, Loader=yaml.SafeLoader)
-        if JARGON_PATH is not None:
-            with open(JARGON_PATH) as f:
+        if USER_JARGON_PATH is not None and os.path.isfile(USER_JARGON_PATH):
+            with open(USER_JARGON_PATH) as f:
                 userdata = yaml.load(f, Loader=yaml.SafeLoader)
-            jargondata.update(userdata)
-        self.jargon_mtime = self._get_jargon_file_mtime()
+            if userdata:
+                jargondata.update(userdata)
+        self.jargon_mtime = self._get_user_jargon_mtime()
         self._jargon = Jargon(jargondata)
 
-    def _get_jargon_file_mtime(self) -> int:
-        if self.jargon_path is None or not os.path.exists(self.jargon_path):
+    def _get_user_jargon_mtime(self) -> int:
+        if USER_JARGON_PATH is None or not os.path.isfile(USER_JARGON_PATH):
             return 0
-        return os.stat(self.jargon_path).st_mtime
+        return os.stat(USER_JARGON_PATH).st_mtime
 
     @staticmethod
     def init_user_jargon(jargon_path):
-        values = yaml.load(DEFAULT_DATA, Loader=yaml.SafeLoader)
-
-        # Disabled for issue/1533; do not overwrite existing user config
-        # if os.path.exists(jargon_path):
-        #     with open(jargon_path) as f:
-        #         custom_values = yaml.load(f)
-        #     if custom_values:
-        #         values.update(custom_values)
-
         if not os.path.exists(jargon_path):
             with open(jargon_path, 'w') as f:
                 f.write(DEFAULT_HEADER)
                 f.write('\n\n')
-                yaml.dump(values, stream=f, default_flow_style=False)
 
     _instance = None
 
     @staticmethod
-    def instance(jargon_path=None):
+    def instance():
         if not JargonLoader._instance:
-            jargon_path = jargon_path or JARGON_PATH
-            JargonLoader._instance = JargonLoader(jargon_path)
+            JargonLoader._instance = JargonLoader()
         return JargonLoader._instance
 
 
-if JARGON_PATH is not None:
-    JargonLoader.init_user_jargon(JARGON_PATH)
+if USER_JARGON_PATH is not None:
+    JargonLoader.init_user_jargon(USER_JARGON_PATH)

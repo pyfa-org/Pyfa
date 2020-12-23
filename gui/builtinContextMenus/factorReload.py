@@ -1,10 +1,13 @@
 # noinspection PyPackageRequirements
+
 import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
+
+_t = wx.GetTranslation
 
 
 class FactorReload(ContextMenuUnconditional):
@@ -20,7 +23,7 @@ class FactorReload(ContextMenuUnconditional):
         return self.mainFrame.getActiveFit() is not None
 
     def getText(self, callingWindow, itmContext):
-        return "Factor in Reload Time"
+        return _t("Factor in Reload Time")
 
     def activate(self, callingWindow, fullContext, i):
         fitIDs = Fit.getInstance().toggleFactorReload()

@@ -18,21 +18,23 @@
 # =============================================================================
 
 
-from graphs.data.base import FitGraph, XDef, YDef, Input, VectorDef
+import wx
+
+from graphs.data.base import FitGraph, Input, VectorDef, XDef, YDef
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from .cache import ProjectedDataCache, TimeCache
-from .getter import (
-    Distance2DpsGetter, Distance2VolleyGetter, Distance2InflictedDamageGetter,
-    Time2DpsGetter, Time2VolleyGetter, Time2InflictedDamageGetter,
-    TgtSpeed2DpsGetter, TgtSpeed2VolleyGetter, TgtSpeed2InflictedDamageGetter,
-    TgtSigRadius2DpsGetter, TgtSigRadius2VolleyGetter, TgtSigRadius2InflictedDamageGetter)
+from .getter import (Distance2DpsGetter, Distance2InflictedDamageGetter, Distance2VolleyGetter, TgtSigRadius2DpsGetter, TgtSigRadius2InflictedDamageGetter,
+                     TgtSigRadius2VolleyGetter, TgtSpeed2DpsGetter, TgtSpeed2InflictedDamageGetter, TgtSpeed2VolleyGetter, Time2DpsGetter,
+                     Time2InflictedDamageGetter, Time2VolleyGetter)
+
+_t = wx.GetTranslation
 
 
 class FitDamageStatsGraph(FitGraph):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._timeCache = TimeCache()
         self._projectedCache = ProjectedDataCache()
 
@@ -51,23 +53,26 @@ class FitDamageStatsGraph(FitGraph):
 
     # UI stuff
     internalName = 'dmgStatsGraph'
-    name = 'Damage Stats'
+    name = _t('Damage Stats')
     xDefs = [
-        XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km')),
-        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
-        XDef(handle='tgtSpeed', unit='m/s', label='Target speed', mainInput=('tgtSpeed', '%')),
-        XDef(handle='tgtSpeed', unit='%', label='Target speed', mainInput=('tgtSpeed', '%')),
-        XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', '%')),
-        XDef(handle='tgtSigRad', unit='%', label='Target signature radius', mainInput=('tgtSigRad', '%'))]
+        XDef(handle='distance', unit='km', label=_t('Distance'), mainInput=('distance', 'km')),
+        XDef(handle='time', unit='s', label=_t('Time'), mainInput=('time', 's')),
+        XDef(handle='tgtSpeed', unit='m/s', label=_t('Target speed'), mainInput=('tgtSpeed', '%')),
+        XDef(handle='tgtSpeed', unit='%', label=_t('Target speed'), mainInput=('tgtSpeed', '%')),
+        XDef(handle='tgtSigRad', unit='m', label=_t('Target signature radius'), mainInput=('tgtSigRad', '%')),
+        XDef(handle='tgtSigRad', unit='%', label=_t('Target signature radius'), mainInput=('tgtSigRad', '%'))]
     inputs = [
-        Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100), mainTooltip='Distance between the attacker and the target, as seen in overview (surface-to-surface)', secondaryTooltip='Distance between the attacker and the target, as seen in overview (surface-to-surface)\nWhen set, places the target that far away from the attacker\nWhen not set, attacker\'s weapons always hit the target'),
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses attacker\'s exact damage stats at a given time\nWhen not set, uses attacker\'s damage stats as shown in stats panel of main window'),
-        Input(handle='tgtSpeed', unit='%', label='Target speed', iconID=1389, defaultValue=100, defaultRange=(0, 100)),
-        Input(handle='tgtSigRad', unit='%', label='Target signature', iconID=1390, defaultValue=100, defaultRange=(100, 200), conditions=[
+        Input(handle='distance', unit='km', label=_t('Distance'), iconID=1391, defaultValue=None, defaultRange=(0, 100),
+              mainTooltip=_t('Distance between the attacker and the target, as seen in overview (surface-to-surface)'),
+              secondaryTooltip=_t('Distance between the attacker and the target, as seen in overview (surface-to-surface)\nWhen set, places the target that far away from the attacker\nWhen not set, attacker\'s weapons always hit the target')),
+        Input(handle='time', unit='s', label=_t('Time'), iconID=1392, defaultValue=None, defaultRange=(0, 80),
+              secondaryTooltip=_t('When set, uses attacker\'s exact damage stats at a given time\nWhen not set, uses attacker\'s damage stats as shown in stats panel of main window')),
+        Input(handle='tgtSpeed', unit='%', label=_t('Target speed'), iconID=1389, defaultValue=100, defaultRange=(0, 100)),
+        Input(handle='tgtSigRad', unit='%', label=_t('Target signature'), iconID=1390, defaultValue=100, defaultRange=(100, 200), conditions=[
             (('tgtSigRad', 'm'), None),
             (('tgtSigRad', '%'), None)])]
-    srcVectorDef = VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees', label='Attacker')
-    tgtVectorDef = VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees', label='Target')
+    srcVectorDef = VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees', label=_t('Attacker'))
+    tgtVectorDef = VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees', label=_t('Target'))
     hasTargets = True
     srcExtraCols = ('Dps', 'Volley', 'Speed', 'Radius')
 
@@ -75,9 +80,9 @@ class FitDamageStatsGraph(FitGraph):
     def yDefs(self):
         ignoreResists = GraphSettings.getInstance().get('ignoreResists')
         return [
-            YDef(handle='dps', unit=None, label='DPS' if ignoreResists else 'Effective DPS'),
-            YDef(handle='volley', unit=None, label='Volley' if ignoreResists else 'Effective volley'),
-            YDef(handle='damage', unit=None, label='Damage inflicted' if ignoreResists else 'Effective damage inflicted')]
+            YDef(handle='dps', unit=None, label=_t('DPS') if ignoreResists else _t('Effective DPS')),
+            YDef(handle='volley', unit=None, label=_t('Volley') if ignoreResists else _t('Effective volley')),
+            YDef(handle='damage', unit=None, label=_t('Damage inflicted') if ignoreResists else _t('Effective damage inflicted'))]
 
     @property
     def tgtExtraCols(self):

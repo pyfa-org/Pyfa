@@ -8,6 +8,8 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class DroneSplitStack(ContextMenuSingle):
 
@@ -24,7 +26,7 @@ class DroneSplitStack(ContextMenuSingle):
         return mainItem.amount > 1
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Split {} Stack".format(itmContext)
+        return _t("Split {} Stack").format(itmContext)
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         with DroneStackSplit(self.mainFrame, mainItem.amount) as dlg:
@@ -41,7 +43,7 @@ class DroneSplitStack(ContextMenuSingle):
                 if mainItem in fit.drones:
                     position = fit.drones.index(mainItem)
                     self.mainFrame.command.Submit(cmd.GuiSplitLocalDroneStackCommand(
-                        fitID=fitID, position=position, amount=int(cleanInput)))
+                            fitID=fitID, position=position, amount=int(cleanInput)))
 
 
 DroneSplitStack.register()

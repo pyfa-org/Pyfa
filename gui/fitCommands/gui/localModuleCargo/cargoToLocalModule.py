@@ -63,8 +63,8 @@ class GuiCargoToLocalModuleCommand(wx.Command):
             dstModSlot = dstMod.slot
             if self.srcCargoItemID == dstModItemID:
                 return False
-            # To keep all old item properties, copy them over from old module
-            newModInfo = ModuleInfo.fromModule(dstMod)
+            # To keep all old item properties, copy them over from old module, except for mutations
+            newModInfo = ModuleInfo.fromModule(dstMod, unmutate=True)
             newModInfo.itemID = self.srcCargoItemID
             if dstMod.isEmpty:
                 newCargoModItemID = None

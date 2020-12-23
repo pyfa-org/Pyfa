@@ -40,9 +40,6 @@ class CalcAddLocalModuleCommand(wx.Command):
                         position=fit.modules.index(oldMod),
                         newModInfo=self.newModInfo)
                     return self.subsystemCmd.Do()
-        if not newMod.fits(fit):
-            pyfalog.warning('Module does not fit')
-            return False
         fit.modules.append(newMod)
         if newMod not in fit.modules:
             pyfalog.warning('Failed to append to list')
@@ -52,6 +49,13 @@ class CalcAddLocalModuleCommand(wx.Command):
         # relationship via .owner attribute, which is handled by SQLAlchemy
         eos.db.flush()
         sFit.recalc(fit)
+        # fits() sometimes relies on recalculated on-item attributes, such as fax cap
+        # booster limitation, so we have to check it after recalculating and remove the
+        # module if the check has failed
+        if not newMod.fits(fit):
+            pyfalog.warning('Module does not fit')
+            self.Undo()
+            return False
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         return True
 
@@ -63,7 +67,7 @@ class CalcAddLocalModuleCommand(wx.Command):
         if self.savedPosition is None:
             return False
         from .localRemove import CalcRemoveLocalModulesCommand
-        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], recalc=False)
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], recalc=False, clearTail=True)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)

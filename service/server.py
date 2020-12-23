@@ -88,6 +88,8 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
                 # For implicit mode, we have to serve up the page which will take the hash and redirect using a querystring
                 pyfalog.info("Processing response from EVE Online.")
                 msg = "Processing response from EVE Online"
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as ex:
             pyfalog.error("Error logging into EVE")
             pyfalog.error(ex)

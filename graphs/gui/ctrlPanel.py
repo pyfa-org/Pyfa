@@ -31,10 +31,10 @@ from service.fit import Fit
 from .lists import SourceWrapperList, TargetWrapperList
 from .vector import VectorPicker
 
-
 InputData = namedtuple('InputData', ('handle', 'unit', 'value'))
 InputBox = namedtuple('InputBox', ('handle', 'unit', 'textBox', 'icon', 'label'))
 CheckBox = namedtuple('CheckBox', ('handle', 'checkBox'))
+_t = wx.GetTranslation
 
 
 class GraphControlPanel(wx.Panel):
@@ -53,7 +53,7 @@ class GraphControlPanel(wx.Panel):
 
         commonOptsSizer = wx.BoxSizer(wx.VERTICAL)
         ySubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
-        yText = wx.StaticText(self, wx.ID_ANY, 'Axis Y:')
+        yText = wx.StaticText(self, wx.ID_ANY, _t('Axis Y:'))
         ySubSelectionSizer.Add(yText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.ySubSelection = wx.Choice(self, wx.ID_ANY)
         self.ySubSelection.Bind(wx.EVT_CHOICE, self.OnYTypeUpdate)
@@ -61,18 +61,18 @@ class GraphControlPanel(wx.Panel):
         commonOptsSizer.Add(ySubSelectionSizer, 0, wx.EXPAND | wx.ALL, 0)
 
         xSubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
-        xText = wx.StaticText(self, wx.ID_ANY, 'Axis X:')
+        xText = wx.StaticText(self, wx.ID_ANY, _t('Axis X:'))
         xSubSelectionSizer.Add(xText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.xSubSelection = wx.Choice(self, wx.ID_ANY)
         self.xSubSelection.Bind(wx.EVT_CHOICE, self.OnXTypeUpdate)
         xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND | wx.ALL, 0)
         commonOptsSizer.Add(xSubSelectionSizer, 0, wx.EXPAND | wx.TOP, 5)
 
-        self.showLegendCb = wx.CheckBox(self, wx.ID_ANY, 'Show legend', wx.DefaultPosition, wx.DefaultSize, 0)
+        self.showLegendCb = wx.CheckBox(self, wx.ID_ANY, _t('Show legend'), wx.DefaultPosition, wx.DefaultSize, 0)
         self.showLegendCb.SetValue(True)
         self.showLegendCb.Bind(wx.EVT_CHECKBOX, self.OnShowLegendChange)
         commonOptsSizer.Add(self.showLegendCb, 0, wx.EXPAND | wx.TOP, 5)
-        self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, 'Always show Y = 0', wx.DefaultPosition, wx.DefaultSize, 0)
+        self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, _t('Always show Y = 0'), wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(True)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
         commonOptsSizer.Add(self.showY0Cb, 0, wx.EXPAND | wx.TOP, 5)
@@ -235,7 +235,7 @@ class GraphControlPanel(wx.Panel):
             fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnNonMainInputChanged)
         fieldTextBox.SetToolTip(wx.ToolTip(tooltipText))
-        fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.RIGHT, 5)
         fieldIcon = None
         if inputDef.iconID is not None:
             icon = BitmapLoader.getBitmap(inputDef.iconID, 'icons')
@@ -295,12 +295,16 @@ class GraphControlPanel(wx.Panel):
 
         self.ySubSelection.Clear()
         for yDef in view.yDefs:
+            if yDef.hidden and not self.graphFrame.includeHidden:
+                continue
             self.ySubSelection.Append(self.formatLabel(yDef, selector=True), yDef)
         self.ySubSelection.Enable(len(view.yDefs) > 1)
         self.ySubSelection.SetSelection(selectedY)
 
         self.xSubSelection.Clear()
         for xDef in view.xDefs:
+            if xDef.hidden and not self.graphFrame.includeHidden:
+                continue
             self.xSubSelection.Append(self.formatLabel(xDef, selector=True), xDef)
         self.xSubSelection.Enable(len(view.xDefs) > 1)
         self.xSubSelection.SetSelection(selectedX)

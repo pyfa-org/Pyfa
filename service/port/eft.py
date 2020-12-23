@@ -43,14 +43,6 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 
 pyfalog = Logger(__name__)
 
-
-EFT_OPTIONS = (
-    (PortEftOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortEftOptions.MUTATIONS, 'Mutated Attributes', 'Export mutated modules\' stats', True),
-    (PortEftOptions.IMPLANTS, 'Implants && Boosters', 'Export implants and boosters', True),
-    (PortEftOptions.CARGO, 'Cargo', 'Export cargo hold contents', True))
-
-
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'
@@ -63,7 +55,7 @@ def exportEft(fit, options, callback):
     # sub-sections, which are separated by 1 blank line
     sections = []
 
-    header = '[{}, {}]'.format(fit.ship.item.name, fit.name)
+    header = '[{}, {}]'.format(fit.ship.item.typeName, fit.name)
 
     # Section 1: modules, rigs, subsystems, services
     modsBySlotType = {}
@@ -80,9 +72,9 @@ def exportEft(fit, options, callback):
             if module.item:
                 # if module was mutated, use base item name for export
                 if module.isMutated:
-                    modName = module.baseItem.name
+                    modName = module.baseItem.typeName
                 else:
-                    modName = module.item.name
+                    modName = module.item.typeName
                 if module.isMutated and options[PortEftOptions.MUTATIONS]:
                     mutants[mutantReference] = module
                     mutationSuffix = ' [{}]'.format(mutantReference)
@@ -92,7 +84,7 @@ def exportEft(fit, options, callback):
                 modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == FittingModuleState.OFFLINE else ''
                 if module.charge and options[PortEftOptions.LOADED_CHARGES]:
                     rackLines.append('{}, {}{}{}'.format(
-                        modName, module.charge.name, modOfflineSuffix, mutationSuffix))
+                        modName, module.charge.typeName, modOfflineSuffix, mutationSuffix))
                 else:
                     rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
             else:
@@ -115,16 +107,17 @@ def exportEft(fit, options, callback):
         sections.append('\n\n'.join(minionSection))
 
     # Section 3: implants, boosters
+    charSection = []
     if options[PortEftOptions.IMPLANTS]:
-        charSection = []
         implantExport = exportImplants(fit.implants)
         if implantExport:
             charSection.append(implantExport)
+    if options[PortEftOptions.BOOSTERS]:
         boosterExport = exportBoosters(fit.boosters)
         if boosterExport:
             charSection.append(boosterExport)
-        if charSection:
-            sections.append('\n\n'.join(charSection))
+    if charSection:
+        sections.append('\n\n'.join(charSection))
 
     # Section 4: cargo
     if options[PortEftOptions.CARGO]:
@@ -151,36 +144,36 @@ def exportEft(fit, options, callback):
 
 def exportDrones(drones):
     droneLines = []
-    for drone in sorted(drones, key=lambda d: d.item.name):
-        droneLines.append('{} x{}'.format(drone.item.name, drone.amount))
+    for drone in sorted(drones, key=lambda d: d.item.typeName):
+        droneLines.append('{} x{}'.format(drone.item.typeName, drone.amount))
     return '\n'.join(droneLines)
 
 
 def exportFighters(fighters):
     fighterLines = []
-    for fighter in sorted(fighters, key=lambda f: f.item.name):
-        fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amount))
+    for fighter in sorted(fighters, key=lambda f: f.item.typeName):
+        fighterLines.append('{} x{}'.format(fighter.item.typeName, fighter.amount))
     return '\n'.join(fighterLines)
 
 
 def exportImplants(implants):
     implantLines = []
     for implant in sorted(implants, key=lambda i: i.slot or 0):
-        implantLines.append(implant.item.name)
+        implantLines.append(implant.item.typeName)
     return '\n'.join(implantLines)
 
 
 def exportBoosters(boosters):
     boosterLines = []
     for booster in sorted(boosters, key=lambda b: b.slot or 0):
-        boosterLines.append(booster.item.name)
+        boosterLines.append(booster.item.typeName)
     return '\n'.join(boosterLines)
 
 
 def exportCargo(cargos):
     cargoLines = []
-    for cargo in sorted(cargos, key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)):
-        cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
+    for cargo in sorted(cargos, key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.typeName)):
+        cargoLines.append('{} x{}'.format(cargo.item.typeName, cargo.amount))
     return '\n'.join(cargoLines)
 
 
@@ -321,6 +314,8 @@ def importEftCfg(shipname, lines, iportuser):
     sMkt = Market.getInstance()
     try:
         sMkt.getItem(shipname)
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         return []  # empty list is expected
 
@@ -377,6 +372,8 @@ def importEftCfg(shipname, lines, iportuser):
                         # Bail if we can't get item or it's not from drone category
                         try:
                             droneItem = sMkt.getItem(droneName, eager="group.category")
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except:
                             pyfalog.warning("Cannot get item.")
                             continue
@@ -399,6 +396,8 @@ def importEftCfg(shipname, lines, iportuser):
                         # Bail if we can't get item or it's not from implant category
                         try:
                             implantItem = sMkt.getItem(entityData, eager="group.category")
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except:
                             pyfalog.warning("Cannot get item.")
                             continue
@@ -415,6 +414,8 @@ def importEftCfg(shipname, lines, iportuser):
                         # Bail if we can't get item or it's not from implant category
                         try:
                             boosterItem = sMkt.getItem(entityData, eager="group.category")
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
                         except:
                             pyfalog.warning("Cannot get item.")
                             continue
@@ -436,6 +437,8 @@ def importEftCfg(shipname, lines, iportuser):
                     # Bail if we can't get item
                     try:
                         item = sMkt.getItem(cargoName)
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pyfalog.warning("Cannot get item.")
                         continue
@@ -453,6 +456,8 @@ def importEftCfg(shipname, lines, iportuser):
                     # If we can't get module item, skip it
                     try:
                         modItem = sMkt.getItem(modName)
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         pyfalog.warning("Cannot get item.")
                         continue
@@ -475,6 +480,8 @@ def importEftCfg(shipname, lines, iportuser):
                                 chargeItem = sMkt.getItem(chargeName, eager="group.category")
                                 if chargeItem.category.name == "Charge":
                                     m.charge = chargeItem
+                            except (KeyboardInterrupt, SystemExit):
+                                raise
                             except:
                                 pyfalog.warning("Cannot get item.")
                                 pass
@@ -499,6 +506,8 @@ def importEftCfg(shipname, lines, iportuser):
                     "%s:\n%s" % (fitobj.ship.name, fitobj.name)
                 )
 
+        except (KeyboardInterrupt, SystemExit):
+            raise
         # Skip fit silently if we get an exception
         except Exception as e:
             pyfalog.error("Caught exception on fit.")
@@ -580,7 +589,7 @@ def _importCreateFit(lines):
     """Create fit and set top-level entity (ship or citadel)."""
     fit = Fit()
     header = lines.pop(0)
-    m = re.match('\[(?P<shipType>[\w\s]+),\s*(?P<fitName>.+)\]', header)
+    m = re.match('\[(?P<shipType>[^,]+),\s*(?P<fitName>.+)\]', header)
     if not m:
         pyfalog.warning('service.port.eft.importEft: corrupted fit header')
         raise EftImportError
@@ -593,6 +602,8 @@ def _importCreateFit(lines):
         except ValueError:
             fit.ship = Citadel(ship)
         fit.name = fitName
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         pyfalog.warning('service.port.eft.importEft: exception caught when parsing header')
         raise EftImportError

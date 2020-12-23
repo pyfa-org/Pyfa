@@ -21,7 +21,7 @@
 import wx
 from logbook import Logger
 
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
 from gui.utils.clipboard import fromClipboard, toClipboard
@@ -32,6 +32,7 @@ from service.fit import Fit
 
 pyfalog = Logger(__name__)
 
+_t = wx.GetTranslation
 
 class DmgPatternNameValidator(BaseValidator):
     def __init__(self):
@@ -47,27 +48,28 @@ class DmgPatternNameValidator(BaseValidator):
 
         try:
             if len(text) == 0:
-                raise ValueError("You must supply a name for your Damage Profile!")
+                raise ValueError(_t("You must supply a name for your Damage Profile!"))
             elif text in [x.rawName for x in entityEditor.choices]:
-                raise ValueError("Damage Profile name already in use, please choose another.")
+                raise ValueError(_t("Damage Profile name already in use, please choose another."))
 
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox("{}".format(e), "Error")
+            wx.MessageBox("{}".format(e), _t("Error"))
             textCtrl.SetFocus()
             return False
 
 
 class DmgPatternEntityEditor(EntityEditor):
     def __init__(self, parent):
-        EntityEditor.__init__(self, parent, "Damage Profile")
+        EntityEditor.__init__(self, parent, _t("Damage Profile"))
         self.SetEditorValidator(DmgPatternNameValidator)
 
     def getEntitiesFromContext(self):
         sDP = DamagePattern.getInstance()
         choices = sorted(sDP.getUserDamagePatternList(), key=lambda p: p.rawName)
-        return [c for c in choices if c.rawName != "Selected Ammo"]
+        choices = [c for c in choices if c.rawName != "Selected Ammo"]
+        return choices
 
     def DoNew(self, name):
         sDP = DamagePattern.getInstance()
@@ -94,7 +96,7 @@ class DmgPatternEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Damage Pattern Editor", resizeable=True,
+            parent, id=wx.ID_ANY, title=_t("Damage Pattern Editor"), resizeable=True,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
 
@@ -166,10 +168,10 @@ class DmgPatternEditor(AuxiliaryFrame):
 
         self.SetSizer(mainSizer)
 
-        importExport = (("Import", wx.ART_FILE_OPEN, "from"),
-                        ("Export", wx.ART_FILE_SAVE_AS, "to"))
+        importExport = ((_t("Import patterns from clipboard"), wx.ART_FILE_OPEN, "import"),
+                        (_t("Export patterns to clipboard"), wx.ART_FILE_SAVE_AS, "export"))
 
-        for name, art, direction in importExport:
+        for tooltip, art, attr in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
@@ -177,11 +179,15 @@ class DmgPatternEditor(AuxiliaryFrame):
             btn.SetMaxSize(btn.GetSize())
 
             btn.Layout()
-            setattr(self, name, btn)
+            setattr(self, "{}Btn".format(attr), btn)
             btn.Enable(True)
-            btn.SetToolTip("%s patterns %s clipboard" % (name, direction))
-            footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
-            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
+            btn.SetToolTip(tooltip)
+            footerSizer.Add(btn, 0)
+            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(attr)))
+
+        if not self.entityEditor.checkEntitiesExist():
+            self.Close()
+            return
 
         self.Layout()
         bsize = self.GetBestSize()
@@ -232,11 +238,17 @@ class DmgPatternEditor(AuxiliaryFrame):
         self.entityEditor.btnDelete.Enable()
 
     def patternChanged(self, event=None):
+
+        if not self.entityEditor.checkEntitiesExist():
+            self.Close()
+            return
+
         p = self.entityEditor.getActiveEntity()
 
         if p is None:
             return
 
+        # localization todo: unsure if these names are internal only or also displayed somewhere...
         if p.rawName == "Uniform" or p.rawName == "Selected Ammo":
             self.restrict()
         else:
@@ -261,24 +273,26 @@ class DmgPatternEditor(AuxiliaryFrame):
             sDP = DamagePattern.getInstance()
             try:
                 sDP.importPatterns(text)
-                self.stNotice.SetLabel("Patterns successfully imported from clipboard")
+                self.stNotice.SetLabel(_t("Patterns successfully imported from clipboard"))
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
-                msg = "Could not import from clipboard: unknown errors"
+                msg = _t("Could not import from clipboard: unknown errors")
                 pyfalog.warning(msg)
                 pyfalog.error(e)
                 self.stNotice.SetLabel(msg)
             finally:
                 self.entityEditor.refreshEntityList()
         else:
-            self.stNotice.SetLabel("Could not import from clipboard")
+            self.stNotice.SetLabel(_t("Could not import from clipboard"))
 
     def exportPatterns(self, event):
         sDP = DamagePattern.getInstance()
         toClipboard(sDP.exportPatterns())
-        self.stNotice.SetLabel("Patterns exported to clipboard")
+        self.stNotice.SetLabel(_t("Patterns exported to clipboard"))
 
     def kbEvent(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE and event.GetModifiers() == wx.MOD_NONE:

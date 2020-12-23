@@ -14,7 +14,7 @@ from .itemAttributes import ItemParams
 
 
 pyfalog = Logger(__name__)
-
+_t = wx.GetTranslation
 
 class ItemMutatorPanel(wx.Panel):
 
@@ -48,13 +48,13 @@ class ItemMutatorPanel(wx.Panel):
 
         mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 0)
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.refreshBtn = wx.Button(self, wx.ID_ANY, "Reset defaults", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, _t("Reset defaults"), wx.DefaultPosition, wx.DefaultSize, 0)
         footerSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 5)
         self.refreshBtn.Bind(wx.EVT_BUTTON, self.mutaList.resetMutatedValues)
-        self.randomBtn = wx.Button(self, wx.ID_ANY, "Random stats", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.randomBtn = wx.Button(self, wx.ID_ANY, _t("Random stats"), wx.DefaultPosition, wx.DefaultSize, 0)
         footerSizer.Add(self.randomBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 5)
         self.randomBtn.Bind(wx.EVT_BUTTON, self.mutaList.randomMutatedValues)
-        self.revertBtn = wx.Button(self, wx.ID_ANY, "Revert changes", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.revertBtn = wx.Button(self, wx.ID_ANY, _t("Revert changes"), wx.DefaultPosition, wx.DefaultSize, 0)
         footerSizer.Add(self.revertBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 5)
         self.revertBtn.Bind(wx.EVT_BUTTON, self.mutaList.revertChanges)
         mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)
@@ -89,10 +89,13 @@ class ItemMutatorList(wx.ScrolledWindow):
         higOverrides = {
             ('Stasis Web', 'speedFactor'): False,
             ('Damage Control', 'duration'): True,
+            ('Siege Module', 'siegeLocalLogisticsDurationBonus'): False
         }
 
         first = True
         for m in sorted(mod.mutators.values(), key=lambda x: x.attribute.displayName):
+            if m.baseValue == 0:
+                continue
             if not first:
                 sizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
             first = False

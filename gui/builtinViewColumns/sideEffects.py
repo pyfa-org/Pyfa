@@ -24,6 +24,8 @@ from eos.saveddata.booster import Booster
 from gui.viewColumn import ViewColumn
 import gui.mainFrame
 
+_t = wx.GetTranslation
+
 
 class SideEffects(ViewColumn):
     name = "Side Effects"
@@ -32,7 +34,7 @@ class SideEffects(ViewColumn):
         ViewColumn.__init__(self, fittingView)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.columnText = "Active Side Effects"
+        self.columnText = _t("Active Side Effects")
         self.mask = wx.LIST_MASK_TEXT
 
     def getText(self, stuff):

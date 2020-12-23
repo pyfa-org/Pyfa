@@ -32,6 +32,7 @@ pyfalog = Logger(__name__)
 class EveMarketer:
 
     name = 'evemarketer'
+    group = 'tranquility'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first

@@ -20,7 +20,6 @@ added_files = [
              ('../../service/jargon/*.yaml', 'service/jargon'),
              ('../../dist_assets/win/pyfa.ico', '.'),
              ('../../dist_assets/win/pyfa.exe.manifest', '.'),
-             ('../../dist_assets/win/Microsoft.VC90.CRT.manifest', '.'),
              (requests.certs.where(), '.'),  # is this needed anymore?
              ('../../eve.db', '.'),
              ('../../README.md', '.'),
@@ -30,7 +29,8 @@ added_files = [
 
 import_these = [
     'numpy.core._dtype_ctypes',  # https://github.com/pyinstaller/pyinstaller/issues/3982
-    'sqlalchemy.ext.baked'  # windows build doesn't launch without if when using sqlalchemy 1.3.x
+    'sqlalchemy.ext.baked',  # windows build doesn't launch without if when using sqlalchemy 1.3.x
+    'pkg_resources.py2_warn'  # issue 2156
 ]
 
 # Walk directories that do dynamic importing

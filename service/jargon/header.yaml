@@ -1,4 +1,4 @@
-# This is the default Pyfa jargon file.
+# This is a Pyfa jargon file for user definitions.
 #
 # It is essentially a giant set of find/replace statements in order to translate
 # abbreviated Eve community terms into more useful full terms. It is intended
@@ -11,11 +11,25 @@
 #
 # Syntax:
 #
-#   abbreviation: full name
+#  abbreviation:
+#    - abbreviation
+#    - replacement 1
+#    - replacement 2
 #
-# The default jargon definitions are stored in Pyfa itself as well, and are
-# listed here for convenience overriding them. To disable a jargon definition,
-# set it as an empty string. For example, if you do not want "web" to return
-# anything containing "stasis":
+# If you do not want abbreviation to expand into itself, just do not add corresponding
+# entry. It might make sense for abbreviations like:
 #
-#   web: ""
+#  lse:
+#    - large shield extender
+#
+# If you add "lse" as first entry, it will return too many entries you do not want to see,
+# like all items which have word "pulse".
+#
+# The default jargon definitions are stored in pyfa/service/jargon/defaults.yaml. Definitions
+# stored in this file have priority. Should you wish to disable any of default definitions,
+# simply add entry like:
+#
+#  abbreviation:
+#    - abbreviation
+#
+

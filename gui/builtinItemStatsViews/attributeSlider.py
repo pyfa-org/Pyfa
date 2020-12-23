@@ -126,10 +126,13 @@ class AttributeSlider(wx.Panel):
     def SetValue(self, value, post_event=True, affect_modified_flag=True):
         self.ctrl.SetValue(value)
         invert_factor = -1 if self.inverse else 1
-        if value >= self.base_value:
-            slider_percentage = (value - self.base_value) / (self.UserMaxValue - self.base_value) * 100 * invert_factor
-        else:
-            slider_percentage = (value - self.base_value) / (self.base_value - self.UserMinValue) * 100 * invert_factor
+        try:
+            if value >= self.base_value:
+                slider_percentage = (value - self.base_value) / (self.UserMaxValue - self.base_value) * 100 * invert_factor
+            else:
+                slider_percentage = (value - self.base_value) / (self.base_value - self.UserMinValue) * 100 * invert_factor
+        except ZeroDivisionError:
+            slider_percentage = 0
         self.slider.SetValue(slider_percentage)
         if post_event:
             wx.PostEvent(self, ValueChanged(self, None, value, None, slider_percentage, affect_modified_flag=affect_modified_flag))

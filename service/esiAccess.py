@@ -67,12 +67,13 @@ class EsiAccess:
 
         # session request stuff
         self._session = Session()
-        self._session.headers.update({
+        self._basicHeaders = {
             'Accept': 'application/json',
             'User-Agent': (
                 'pyfa v{}'.format(config.version)
             )
-        })
+        }
+        self._session.headers.update(self._basicHeaders)
         self._session.proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
 
     @property
@@ -96,6 +97,9 @@ class EsiAccess:
     @property
     def oauth_token(self):
         return '%s/oauth/token' % self.sso_url
+
+    def getDynamicItem(self, typeID, itemID):
+        return self.get(None, EsiEndpoints.DYNAMIC_ITEM.value, type_id=typeID, item_id=itemID)
 
     def getSkills(self, char):
         return self.get(char, EsiEndpoints.CHAR_SKILLS.value, character_id=char.characterID)
@@ -236,6 +240,11 @@ class EsiAccess:
         return json_res
 
     def _before_request(self, ssoChar):
+        self._session.headers.clear()
+        self._session.headers.update(self._basicHeaders)
+        if ssoChar is None:
+            return
+
         if ssoChar.is_token_expired():
             pyfalog.info("Refreshing token for {}".format(ssoChar.characterName))
             self.refresh(ssoChar)
@@ -256,17 +265,17 @@ class EsiAccess:
 
         return resp
 
-    def get(self, ssoChar, endpoint, *args, **kwargs):
+    def get(self, ssoChar, endpoint, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
         return self._after_request(self._session.get("{}{}".format(self.esi_url, endpoint)))
 
-    def post(self, ssoChar, endpoint, json, *args, **kwargs):
+    def post(self, ssoChar, endpoint, json, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
         return self._after_request(self._session.post("{}{}".format(self.esi_url, endpoint), data=json))
 
-    def delete(self, ssoChar, endpoint, *args, **kwargs):
+    def delete(self, ssoChar, endpoint, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
         return self._after_request(self._session.delete("{}{}".format(self.esi_url, endpoint)))

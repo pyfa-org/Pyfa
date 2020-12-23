@@ -23,24 +23,27 @@ import functools
 import itertools
 import json
 import os
+import re
 import sqlite3
 import sys
 
 
+# todo: need to set the EOS language to en, becasuse this assumes it's being run within an English context
+# Need to know what that would do if called from pyfa
 ROOT_DIR = os.path.realpath(os.path.dirname(__file__))
 DB_PATH = os.path.join(ROOT_DIR, 'eve.db')
 JSON_DIR = os.path.join(ROOT_DIR, 'staticdata')
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
-GAMEDATA_SCHEMA_VERSION = 3
+GAMEDATA_SCHEMA_VERSION = 4
 
 
 def db_needs_update():
     """True if needs, false if it does not, none if we cannot check it."""
     try:
-        with open(os.path.join(JSON_DIR, 'phobos', 'metadata.json')) as f:
+        with open(os.path.join(JSON_DIR, 'phobos', 'metadata.0.json')) as f:
             data_version = next((r['field_value'] for r in json.load(f) if r['field_name'] == 'client_build'))
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         raise
     # If we have no source data - return None; should not update in this case
     except:
@@ -61,7 +64,7 @@ def db_needs_update():
             db_schema_version = int(row[0])
         cursor.close()
         db.close()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         raise
     except:
         print('Error when fetching gamedata DB metadata')
@@ -84,18 +87,31 @@ def update_db():
 
     import eos.db
     import eos.gamedata
+    import eos.config
 
     # Create the database tables
     eos.db.gamedata_meta.create_all()
 
     def _readData(minerName, jsonName, keyIdName=None):
-        with open(os.path.join(JSON_DIR, minerName, '{}.json'.format(jsonName)), encoding='utf-8') as f:
-            rawData = json.load(f)
+        compiled_data = None
+        for i in itertools.count(0):
+            try:
+                with open(os.path.join(JSON_DIR, minerName, '{}.{}.json'.format(jsonName, i)), encoding='utf-8') as f:
+                    rawData = json.load(f)
+                    if i == 0:
+                        compiled_data = {} if type(rawData) == dict else []
+                    if type(rawData) == dict:
+                        compiled_data.update(rawData)
+                    else:
+                        compiled_data.extend(rawData)
+            except FileNotFoundError:
+                break
+
         if not keyIdName:
-            return rawData
+            return compiled_data
         # IDs in keys, rows in values
         data = []
-        for k, v in rawData.items():
+        for k, v in compiled_data.items():
             row = {}
             row.update(v)
             if keyIdName not in row:
@@ -120,10 +136,14 @@ def update_db():
         for row in data:
             if (
                 # Apparently people really want Civilian modules available
-                (row['typeName'].startswith('Civilian') and "Shuttle" not in row['typeName']) or
-                row['typeName'] in ('Capsule', 'Dark Blood Tracking Disruptor')
+                (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us']) or
+                row['typeName_en-us'] == 'Capsule' or
+                row['groupID'] == 4033  # destructible effect beacons
             ):
                 row['published'] = True
+            # Nearly useless and clutter search results too much
+            elif row['typeName_en-us'].startswith('Limited Synth '):
+                row['published'] = False
 
         newData = []
         for row in data:
@@ -135,48 +155,66 @@ def update_db():
                 row['typeID'] in (41549, 41548, 41551, 41550) or
                 # Abyssal weather (environment)
                 row['groupID'] in (
-                1882,
-                1975,
-                1971,
-                # the "container" for the abyssal environments
-                1983)
+                    1882,
+                    1975,
+                    1971,
+                    1983)  # the "container" for the abyssal environments
             ):
                 newData.append(row)
-
-        _addRows(newData, eos.gamedata.Item)
+        map = {'typeName_en-us': 'typeName', 'description_en-us': '_description'}
+        map.update({'description'+v: '_description'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
+        _addRows(newData, eos.gamedata.Item, fieldMap=map)
         return newData
 
     def processEveGroups():
         print('processing evegroups')
         data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
-        _addRows(data, eos.gamedata.Group)
+        map = {'groupName_en-us': 'name'}
+        map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
+        _addRows(data, eos.gamedata.Group, fieldMap=map)
         return data
 
     def processEveCategories():
         print('processing evecategories')
         data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
-        _addRows(data, eos.gamedata.Category)
+        map = { 'categoryName_en-us': 'name' }
+        map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
+        _addRows(data, eos.gamedata.Category, fieldMap=map)
 
     def processDogmaAttributes():
         print('processing dogmaattributes')
         data = _readData('fsd_binary', 'dogmaattributes', keyIdName='attributeID')
-        _addRows(data, eos.gamedata.AttributeInfo)
+        map = {
+            'displayName_en-us': 'displayName',
+            # 'tooltipDescription_en-us': 'tooltipDescription'
+        }
+        _addRows(data, eos.gamedata.AttributeInfo, fieldMap=map)
 
     def processDogmaTypeAttributes(eveTypesData):
         print('processing dogmatypeattributes')
         data = _readData('fsd_binary', 'typedogma', keyIdName='typeID')
         eveTypeIds = set(r['typeID'] for r in eveTypesData)
         newData = []
-        for row in eveTypesData:
-            for attrId, attrName in {4: 'mass', 38: 'capacity', 161: 'volume', 162: 'radius'}.items():
-                if attrName in row:
-                    newData.append({'typeID': row['typeID'], 'attributeID': attrId, 'value': row[attrName]})
+        seenKeys = set()
+
+        def checkKey(key):
+            if key in seenKeys:
+                return False
+            seenKeys.add(key)
+            return True
+
         for typeData in data:
             if typeData['typeID'] not in eveTypeIds:
                 continue
             for row in typeData.get('dogmaAttributes', ()):
                 row['typeID'] = typeData['typeID']
-                newData.append(row)
+                if checkKey((row['typeID'], row['attributeID'])):
+                    newData.append(row)
+        for row in eveTypesData:
+            for attrId, attrName in {4: 'mass', 38: 'capacity', 161: 'volume', 162: 'radius'}.items():
+                if attrName in row and checkKey((row['typeID'], attrId)):
+                    newData.append({'typeID': row['typeID'], 'attributeID': attrId, 'value': row[attrName]})
+
         _addRows(newData, eos.gamedata.Attribute)
         return newData
 
@@ -225,17 +263,28 @@ def update_db():
     def processDogmaUnits():
         print('processing dogmaunits')
         data = _readData('fsd_binary', 'dogmaunits', keyIdName='unitID')
-        _addRows(data, eos.gamedata.Unit, fieldMap={'name': 'unitName'})
+        _addRows(data, eos.gamedata.Unit, fieldMap={
+            'name': 'unitName',
+            'displayName_en-us': 'displayName'
+        })
 
     def processMarketGroups():
         print('processing marketgroups')
         data = _readData('fsd_binary', 'marketgroups', keyIdName='marketGroupID')
-        _addRows(data, eos.gamedata.MarketGroup, fieldMap={'name': 'marketGroupName'})
+        map = {
+            'name_en-us': 'marketGroupName',
+            'description_en-us': '_description',
+        }
+        map.update({'name'+v: 'marketGroupName'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
+        map.update({'description' + v: '_description' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
+        _addRows(data, eos.gamedata.MarketGroup, fieldMap=map)
 
     def processMetaGroups():
         print('processing metagroups')
         data = _readData('fsd_binary', 'metagroups', keyIdName='metaGroupID')
-        _addRows(data, eos.gamedata.MetaGroup)
+        map = {'name_en-us': 'metaGroupName'}
+        map.update({'name' + v: 'metaGroupName' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
+        _addRows(data, eos.gamedata.MetaGroup, fieldMap=map)
 
     def processCloneGrades():
         print('processing clonegrades')
@@ -289,20 +338,28 @@ def update_db():
 
         newData = []
         for row in data:
-            typeLines = []
-            typeId = row['typeID']
-            traitData = row['traits']
-            for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
-                typeLines.append(convertSection(skillData))
-            if 'role' in traitData:
-                typeLines.append(convertSection(traitData['role']))
-            if 'misc' in traitData:
-                typeLines.append(convertSection(traitData['misc']))
-            traitLine = '<br />\n<br />\n'.join(typeLines)
-            newRow = {'typeID': typeId, 'traitText': traitLine}
-            newData.append(newRow)
+            try:
+                newRow = {
+                    'typeID': row['typeID'],
+                }
+                for (k, v) in eos.config.translation_mapping.items():
+                    if v == '':
+                        v = '_en-us'
+                    typeLines = []
+                    traitData = row['traits{}'.format(v)]
+                    for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
+                        typeLines.append(convertSection(skillData))
+                    if 'role' in traitData:
+                        typeLines.append(convertSection(traitData['role']))
+                    if 'misc' in traitData:
+                        typeLines.append(convertSection(traitData['misc']))
+                    traitLine = '<br />\n<br />\n'.join(typeLines)
+                    newRow['traitText{}'.format(v)] = traitLine
 
-        _addRows(newData, eos.gamedata.Traits)
+                newData.append(newRow)
+            except:
+                pass
+        _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'traitText'})
 
     def processMetadata():
         print('processing metadata')
@@ -314,8 +371,8 @@ def update_db():
 
         def composeReqSkills(raw):
             reqSkills = {}
-            for skillTypeID, skillLevels in raw.items():
-                reqSkills[int(skillTypeID)] = skillLevels[0]
+            for skillTypeID, skillLevel in raw.items():
+                reqSkills[int(skillTypeID)] = skillLevel
             return reqSkills
 
         eveTypeIds = set(r['typeID'] for r in eveTypesData)
@@ -458,6 +515,38 @@ def update_db():
             if itemReplacements is not None:
                 item.replacements = ','.join('{}'.format(tid) for tid in sorted(itemReplacements))
 
+    def processImplantSets(eveTypesData):
+        print('composing implant sets')
+        # Includes only implants which can be considered part of sets, not all implants
+        implant_groups = (300, 1730)
+        specials = {'Genolution': ('Genolution Core Augmentation', r'CA-\d+')}
+        implantSets = {}
+        for row in eveTypesData:
+            if not row.get('published'):
+                continue
+            if row.get('groupID') not in implant_groups:
+                continue
+            typeName = row.get('typeName_en-us', '')
+            # Regular sets matching
+            m = re.match('(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName, re.IGNORECASE)
+            if m:
+                implantSets.setdefault((m.group('grade'), m.group('set')), set()).add(row['typeID'])
+            # Special set matching
+            for setHandle, (setName, implantPattern) in specials.items():
+                pattern = '(?P<set>{}) (?P<implant>{})'.format(setName, implantPattern)
+                m = re.match(pattern, typeName)
+                if m:
+                    implantSets.setdefault((None, setHandle), set()).add(row['typeID'])
+                    break
+        data = []
+        for (gradeName, setName), implants in implantSets.items():
+            if len(implants) < 2:
+                continue
+            implants = ','.join('{}'.format(tid) for tid in sorted(implants))
+            row = {'setName': setName, 'gradeName': gradeName, 'implants': implants}
+            data.append(row)
+        _addRows(data, eos.gamedata.ImplantSet)
+
     eveTypesData = processEveTypes()
     eveGroupsData = processEveGroups()
     processEveCategories()
@@ -476,6 +565,7 @@ def update_db():
     eos.db.gamedata_session.flush()
     processReqSkills(eveTypesData)
     processReplacements(eveTypesData, eveGroupsData, dogmaTypeAttributesData, dogmaTypeEffectsData)
+    processImplantSets(eveTypesData)
 
     # Add schema version to prevent further updates
     metadata_schema_version = eos.gamedata.MetaData()

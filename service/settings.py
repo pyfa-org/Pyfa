@@ -22,6 +22,9 @@ import os.path
 import urllib.request
 import urllib.error
 import urllib.parse
+import json
+from collections import namedtuple
+import wx
 
 from logbook import Logger
 
@@ -69,6 +72,8 @@ class SettingsProvider:
                     for item in defaults:
                         if item not in info:
                             info[item] = defaults[item]
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     info = {}
                     info.update(defaults)
@@ -368,7 +373,8 @@ class EsiSettings:
             "loginMode": 0,
             "clientID": "",
             "clientSecret": "",
-            "timeout": 60}
+            "timeout": 60,
+            "exportCharges": True}
 
         self.settings = SettingsProvider.getInstance().getSettings(
                 "pyfaServiceEsiSettings",
@@ -530,3 +536,55 @@ class GraphSettings:
 
     def set(self, type, value):
         self.settings[type] = value
+
+
+class LocaleSettings:
+    _instance = None
+    DEFAULT = "en_US"
+
+    defaults = {
+        'locale': DEFAULT,
+        'eos_locale': 'Auto'  # flag for "Default" which is the same as the locale or, if not available, English
+    }
+
+    def __init__(self):
+        self.settings = SettingsProvider.getInstance().getSettings('localeSettings', self.defaults)
+
+        try:
+            with open(os.path.join(config.pyfaPath, 'locale', 'progress.json'), "r") as f:
+                self.progress_data = json.load(f)
+        except FileNotFoundError:
+            self.progress_data = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = LocaleSettings()
+        return cls._instance
+
+    def get_progress(self, lang):
+        if self.progress_data is None:
+            return None
+        if lang == self.defaults['locale']:
+            return None
+        return self.progress_data[lang]
+
+    @classmethod
+    def supported_langauges(cls):
+        """Requires the application to be initialized, otherwise wx.Translation isn't set."""
+        pyfalog.info(f'using "{config.CATALOG}" to fetch languages, relatively base path "{os.getcwd()}"')
+        return {x: wx.Locale.FindLanguageInfo(x) for x in wx.Translations.Get().GetAvailableTranslations(config.CATALOG)}
+
+    def get(self, key):
+        """gets the raw value fo the setting"""
+        return self.settings[key]
+
+    def get_eos_locale(self):
+        """gets the effective value of the setting"""
+        val = self.settings['eos_locale']
+        return val if val != self.defaults['eos_locale'] else self.settings['locale'].split("_")[0]
+
+    def set(self, key, value):
+        if key == 'locale' and value not in self.supported_langauges():
+            self.settings[key] = self.DEFAULT
+        self.settings[key] = value

@@ -1,7 +1,6 @@
 from collections import OrderedDict
 from itertools import chain
 
-# noinspection PyPackageRequirements
 import wx
 
 import gui.mainFrame
@@ -9,6 +8,10 @@ from eos.saveddata.targetProfile import TargetProfile
 from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.sorter import smartSort
 from service.targetProfile import TargetProfile as svc_TargetProfile
+
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
 
 
 class TargetProfileAdder(ContextMenuUnconditional):
@@ -23,10 +26,10 @@ class TargetProfileAdder(ContextMenuUnconditional):
         return True
 
     def getText(self, callingWindow, itmContext):
-        return 'Add Target Profile'
+        return _t('Add Target Profile')
 
     def handleProfileAdd(self, event):
-        profile = self.profileEventMap.get(event.Id, False)
+        profile = self.eventProfileMap.get(event.Id, False)
         if profile is False:
             event.Skip()
             return
@@ -34,7 +37,7 @@ class TargetProfileAdder(ContextMenuUnconditional):
 
     def _addProfile(self, parentMenu, profile, name):
         id = ContextMenuUnconditional.nextID()
-        self.profileEventMap[id] = profile
+        self.eventProfileMap[id] = profile
         menuItem = wx.MenuItem(parentMenu, id, name)
         parentMenu.Bind(wx.EVT_MENU, self.handleProfileAdd, menuItem)
         return menuItem
@@ -51,13 +54,15 @@ class TargetProfileAdder(ContextMenuUnconditional):
         profiles = list(chain(sTR.getBuiltinTargetProfileList(), sTR.getUserTargetProfileList()))
         profiles.sort(key=lambda p: smartSort(p.fullName))
 
-        self.profileEventMap = {}
+        self.eventProfileMap = {}
         items = (OrderedDict(), OrderedDict())
         for profile in profiles:
             container = items
             for categoryName in profile.hierarchy:
+                categoryName = _t(categoryName) if profile.builtin else categoryName
                 container = container[1].setdefault(categoryName, (OrderedDict(), OrderedDict()))
-            container[0][profile.shortName] = profile
+            shortName = _t(profile.shortName) if profile.builtin else profile.shortName
+            container[0][shortName] = profile
 
         # Category as menu item - expands further
         msw = "wxMSW" in wx.PlatformInfo

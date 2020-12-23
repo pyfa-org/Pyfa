@@ -45,6 +45,7 @@ from config import slotColourMap
 from gui.fitCommands.helpers import getSimilarModPositions
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 # Tab spawning handler
@@ -66,6 +67,8 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                         self.multiSwitch.SetSelection(index)
                         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(event.fitID,)))
                         break
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception as e:
                     pyfalog.critical("Caught exception in fitSelected")
                     pyfalog.critical(e)
@@ -164,7 +167,7 @@ class FittingView(d.Display):
         self.hoveredRow = None
         self.hoveredColumn = None
 
-        self.Bind(wx.EVT_KEY_DOWN, self.kbEvent)
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_MIDDLE_DOWN, self.click)
@@ -375,23 +378,7 @@ class FittingView(d.Display):
                     event.Skip()
                     return
                 batchOp = wx.GetMouseState().GetModifiers() == wx.MOD_ALT and getattr(event, 'allowBatch', None) is not False
-                # If we've selected ammo, then apply to the selected module(s)
-                if item.isCharge:
-                    positions = []
-                    fit = Fit.getInstance().getFit(fitID)
-                    if batchOp:
-                        for position, mod in enumerate(fit.modules):
-                            if isinstance(mod, Module) and not mod.isEmpty:
-                                positions.append(position)
-                    else:
-                        for mod in self.getSelectedMods():
-                            if mod.isEmpty or mod not in fit.modules:
-                                continue
-                            positions.append(fit.modules.index(mod))
-                    if len(positions) > 0:
-                        self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                            fitID=fitID, positions=positions, chargeItemID=itemID))
-                elif (item.isModule and not batchOp) or item.isSubsystem:
+                if (item.isModule and not batchOp) or item.isSubsystem:
                     self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
                 elif item.isModule and batchOp:
                     self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
@@ -576,7 +563,10 @@ class FittingView(d.Display):
 
             if sFit.serviceFittingOptions["rackSlots"]:
                 # flag to know when to add blanks, based on previous slot
-                slotDivider = None if sFit.serviceFittingOptions["rackLabels"] else self.mods[0].slot
+                if sFit.serviceFittingOptions["rackLabels"] or len(self.mods) == 0:
+                    slotDivider = None
+                else:
+                    slotDivider = self.mods[0].slot
 
                 # first loop finds where slot dividers must go before modifying self.mods
                 for i, mod in enumerate(self.mods):
@@ -655,23 +645,23 @@ class FittingView(d.Display):
         contexts = []
         if isinstance(mainMod, Module) and not mainMod.isEmpty:
             srcContext = "fittingModule"
-            itemContext = sMkt.getCategoryByItem(mainMod.item).name
+            itemContext = sMkt.getCategoryByItem(mainMod.item).displayName
             fullContext = (srcContext, itemContext)
             if srcContext not in tuple(fCtx[0] for fCtx in contexts):
                 contexts.append(fullContext)
             if mainMod.charge is not None:
                 srcContext = "fittingCharge"
-                itemContext = sMkt.getCategoryByItem(mainMod.charge).name
+                itemContext = sMkt.getCategoryByItem(mainMod.charge).displayName
                 fullContext = (srcContext, itemContext)
                 if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
         elif isinstance(mainMod, Mode):
             srcContext = "fittingMode"
-            itemContext = "Tactical Mode"
+            itemContext = _t("Tactical Mode")
             fullContext = (srcContext, itemContext)
             if srcContext not in tuple(fCtx[0] for fCtx in contexts):
                 contexts.append(fullContext)
-        contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
+        contexts.append(("fittingShip", _t("Ship") if not fit.isStructure else _t("Citadel")))
 
         menu = ContextMenu.getMenu(self, mainMod, selection, *contexts)
         self.PopupMenu(menu)
@@ -812,6 +802,8 @@ class FittingView(d.Display):
         if self and not self.IsShown():
             try:
                 self.MakeSnapshot()
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.critical("Failed to make snapshot")
                 pyfalog.critical(e)
@@ -837,6 +829,8 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         try:
             fit = sFit.getFit(self.activeFitID)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.critical("Failed to get fit")
             pyfalog.critical(e)

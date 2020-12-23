@@ -28,6 +28,8 @@ from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount, roundToPrec
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"
@@ -38,7 +40,7 @@ class FirepowerViewFull(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return "Firepower"
+        return _t("Firepower")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -51,8 +53,7 @@ class FirepowerViewFull(StatsView):
         self.headerPanel = headerPanel
         hsizer = self.headerPanel.Parent.GetHeaderContentSizer()
         self.stEff = wx.StaticText(self.headerPanel, wx.ID_ANY, "( Effective )")
-        hsizer.Add(self.stEff)
-        # self.headerPanel.GetParent().AddToggleItem(self.stEff)
+        hsizer.Insert(0, self.stEff)
 
         panel = "full"
 
@@ -63,7 +64,7 @@ class FirepowerViewFull(StatsView):
 
         counter = 0
 
-        for damageType, image in (("weapon", "turret"), ("drone", "droneDPS")):
+        for label, image, attr in ((_t("Weapon"), "turret", "Weapon"), (_t("Drone"), "droneDPS", "Drone")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
@@ -72,13 +73,13 @@ class FirepowerViewFull(StatsView):
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, damageType.capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, label), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 DPS")
-            setattr(self, "label%sDps%s" % (panel.capitalize(), damageType.capitalize()), lbl)
+            setattr(self, "label%sDps%s" % (panel.capitalize(), attr), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
@@ -96,14 +97,14 @@ class FirepowerViewFull(StatsView):
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
-        gridS.Add(wx.StaticText(parent, wx.ID_ANY, " Volley: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+        gridS.Add(wx.StaticText(parent, wx.ID_ANY, _t(" Volley: ")), 0, wx.ALL | wx.ALIGN_RIGHT)
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self._cachedValues.append(0)
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
-        gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+        gridS.Add(wx.StaticText(parent, wx.ID_ANY, _t(" DPS: ")), 0, wx.ALL | wx.ALIGN_RIGHT)
 
         self._cachedValues.append(0)
 
@@ -111,7 +112,7 @@ class FirepowerViewFull(StatsView):
 
         image = BitmapLoader.getBitmap("mining_small", "gui")
         self.miningyield = wx.BitmapButton(contentPanel, -1, image)
-        self.miningyield.SetToolTip(wx.ToolTip("Click to toggle to Mining Yield "))
+        self.miningyield.SetToolTip(wx.ToolTip(_t("Click to toggle to Mining Yield")))
         self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
         sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
 
@@ -130,9 +131,12 @@ class FirepowerViewFull(StatsView):
         self.panel.GetSizer().Layout()
 
         # Remove effective label
-        hsizer = self.headerPanel.GetSizer()
-        hsizer.Hide(self.stEff)
-        # self.stEff.Destroy()
+        hsizer = self.headerPanel.Parent.GetHeaderContentSizer()
+        for i, c in enumerate(hsizer.Children):
+            if c.GetWindow() is self.stEff:
+                hsizer.Remove(i)
+                self.stEff.Destroy()
+                break
 
         # Get the new view
         view = StatsView.getView("miningyieldViewFull")(self.parent)
@@ -162,20 +166,20 @@ class FirepowerViewFull(StatsView):
             hasSpool = hasSpoolUp(preSpool, fullSpool)
             lines = []
             if hasSpool:
-                lines.append("Spool up: {}-{}".format(
-                    formatAmount(preSpool.total, prec, lowest, highest),
-                    formatAmount(fullSpool.total, prec, lowest, highest)))
+                lines.append(_t("Spool up") + ": {}-{}".format(
+                        formatAmount(preSpool.total, prec, lowest, highest),
+                        formatAmount(fullSpool.total, prec, lowest, highest)))
             if getattr(normal, 'total', None):
                 if hasSpool:
                     lines.append("")
-                    lines.append("Current: {}".format(formatAmount(normal.total, prec, lowest, highest)))
+                    lines.append(_t("Current") + ": {}".format(formatAmount(normal.total, prec, lowest, highest)))
                 for dmgType in normal.names():
                     val = getattr(normal, dmgType, None)
                     if val:
                         lines.append("{}{}: {}%".format(
-                            "  " if hasSpool else "",
-                            dmgType.capitalize(),
-                            formatAmount(val / normal.total * 100, 3, 0, 0)))
+                                "  " if hasSpool else "",
+                                _t(dmgType).capitalize(),
+                                formatAmount(val / normal.total * 100, 3, 0, 0)))
             return "\n".join(lines)
 
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
@@ -214,8 +218,8 @@ class FirepowerViewFull(StatsView):
             if self._cachedValues[counter] != val:
                 tooltipText = dpsToolTip(val, preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetLabel(valueFormat.format(
-                    formatAmount(0 if val is None else val.total, prec, lowest, highest),
-                    "\u02e2" if hasSpoolUp(preSpoolVal, fullSpoolVal) else ""))
+                        formatAmount(0 if val is None else val.total, prec, lowest, highest),
+                        "\u02e2" if hasSpoolUp(preSpoolVal, fullSpoolVal) else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1

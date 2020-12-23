@@ -47,7 +47,7 @@ class Miscellanea(ViewColumn):
             self.imageId = -1
 
         if params["displayName"] or self.imageId == -1:
-            self.columnText = "Misc data"
+            self.columnText = _("Misc data")
             self.mask |= wx.LIST_MASK_TEXT
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.fittingView = fittingView
@@ -123,6 +123,15 @@ class Miscellanea(ViewColumn):
             text = ' | '.join(i[0] for i in info)
             tooltip = ' and '.join(i[1] for i in info).capitalize()
             return text, tooltip
+        elif itemGroup == "Vorton Projector":
+            cloudSize = stuff.getModifiedItemAttr("aoeCloudSize")
+            aoeVelocity = stuff.getModifiedItemAttr("aoeVelocity")
+            if not cloudSize or not aoeVelocity:
+                return "", None
+            text = "{0}{1} | {2}{3}".format(formatAmount(cloudSize, 3, 0, 3), "m",
+                                            formatAmount(aoeVelocity, 3, 0, 3), "m/s")
+            tooltip = "Explosion radius and explosion velocity"
+            return text, tooltip
         elif itemCategory == "Subsystem":
             slots = ("hi", "med", "low")
             info = []
@@ -133,7 +142,7 @@ class Miscellanea(ViewColumn):
             return "+ " + ", ".join(info), "Slot Modifiers"
         elif (
             itemGroup in ("Energy Neutralizer", "Structure Energy Neutralizer") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOENeut" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOENeut" in item.effects)
         ):
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
             cycleParams = stuff.getCycleParameters()
@@ -182,7 +191,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif (
             itemGroup in ("Stasis Web", "Stasis Webifying Drone", "Structure Stasis Webifier") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEWeb" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEWeb" in item.effects)
         ):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
@@ -193,7 +202,7 @@ class Miscellanea(ViewColumn):
         elif (
             itemGroup == "Target Painter" or
             (itemGroup == "Structure Disruption Battery" and "structureModuleEffectTargetPainter" in item.effects) or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEPaint" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEPaint" in item.effects)
         ):
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             if not sigRadBonus:
@@ -204,7 +213,7 @@ class Miscellanea(ViewColumn):
         elif (
             itemGroup == "Sensor Dampener" or
             (itemGroup == "Structure Disruption Battery" and "structureModuleEffectRemoteSensorDampener" in item.effects) or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEDamp" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEDamp" in item.effects)
         ):
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
@@ -226,7 +235,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif (
             itemGroup in ("Weapon Disruptor", "Structure Disruption Battery") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOETrack" in item.effects)
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOETrack" in item.effects)
         ):
             # Weapon disruption now covers both tracking and guidance (missile) disruptors
             # First get the attributes for tracking disruptors
@@ -279,7 +288,8 @@ class Miscellanea(ViewColumn):
             "Heat Sink",
             "Ballistic Control system",
             "Structure Weapon Upgrade",
-            "Entropic Radiation Sink"
+            "Entropic Radiation Sink",
+            "Vorton Projector Upgrade"
         ):
             attrMap = {
                 "Gyrostabilizer": ("damageMultiplier", "speedMultiplier", "Projectile weapon"),
@@ -287,7 +297,8 @@ class Miscellanea(ViewColumn):
                 "Heat Sink": ("damageMultiplier", "speedMultiplier", "Energy weapon"),
                 "Ballistic Control system": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
                 "Structure Weapon Upgrade": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
-                "Entropic Radiation Sink": ("damageMultiplier", "speedMultiplier", "Precursor weapon")}
+                "Entropic Radiation Sink": ("damageMultiplier", "speedMultiplier", "Precursor weapon"),
+                "Vorton Projector Upgrade": ("damageMultiplier", "speedMultiplier", "Vorton projector")}
             dmgAttr, rofAttr, weaponName = attrMap[itemGroup]
             dmg = stuff.getModifiedItemAttr(dmgAttr)
             rof = stuff.getModifiedItemAttr(rofAttr)
@@ -311,8 +322,8 @@ class Miscellanea(ViewColumn):
             tooltip = "Drone DPS boost"
             return text, tooltip
         elif (
-            itemGroup in ("ECM", "Burst Jammer", "Burst Projectors", "Structure ECM Battery") or
-            (itemGroup == "Structure Burst Projector" and "doomsdayAOEECM" in item.effects)
+            itemGroup in ("ECM", "Burst Jammer", "Structure ECM Battery") or
+            (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEECM" in item.effects)
         ):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
@@ -455,11 +466,11 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup == "Electronic Warfare Drone":
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
-            lockRangeMult = stuff.getModifiedItemAttr("maxTargetRangeMultiplier")
-            scanResMult = stuff.getModifiedItemAttr("scanResolutionMultiplier")
-            falloffRangeMult = stuff.getModifiedItemAttr("fallofMultiplier")
-            optimalRangeMult = stuff.getModifiedItemAttr("maxRangeMultiplier")
-            trackingSpeedMult = stuff.getModifiedItemAttr("trackingSpeedMultiplier")
+            lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
+            scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
+            falloffRangeBonus = stuff.getModifiedItemAttr("falloffBonus")
+            optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
+            trackingSpeedBonus = stuff.getModifiedItemAttr("trackingSpeedBonus")
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
@@ -468,9 +479,7 @@ class Miscellanea(ViewColumn):
                 text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
                 tooltip = "Signature radius increase"
                 return text, tooltip
-            if lockRangeMult is not None and scanResMult is not None:
-                lockRangeBonus = (lockRangeMult - 1) * 100
-                scanResBonus = (scanResMult - 1) * 100
+            if lockRangeBonus or scanResBonus:
                 display = 0
                 for bonus in (lockRangeBonus, scanResBonus):
                     if abs(bonus) > abs(display):
@@ -485,10 +494,7 @@ class Miscellanea(ViewColumn):
                     ttEntries.append("scan resolution")
                 tooltip = "{0} dampening".format(formatList(ttEntries)).capitalize()
                 return text, tooltip
-            if falloffRangeMult is not None and optimalRangeMult is not None and trackingSpeedMult is not None:
-                falloffRangeBonus = (falloffRangeMult - 1) * 100
-                optimalRangeBonus = (optimalRangeMult - 1) * 100
-                trackingSpeedBonus = (trackingSpeedMult - 1) * 100
+            if falloffRangeBonus or optimalRangeBonus or trackingSpeedBonus:
                 display = 0
                 for bonus in (falloffRangeBonus, optimalRangeBonus, trackingSpeedBonus):
                     if abs(bonus) > abs(display):
@@ -608,6 +614,18 @@ class Miscellanea(ViewColumn):
             shield_hp = stuff.getModifiedItemAttr("shieldBonus", 0)
             hp = max(stuff_hp, armor_hp * cycles, capacitor_hp * cycles, shield_hp * cycles, 0)
 
+            nonChargedMap = {
+                "Ancillary Remote Armor Repairer": ("armor", "Armor repaired per second"),
+                "Ancillary Remote Shield Booster": ("shield", "Shield transferred per second")}
+            if not cycles and itemGroup in nonChargedMap:
+                rps = stuff.getRemoteReps(ignoreState=True)
+                rps = getattr(rps, nonChargedMap[itemGroup][0])
+                if not rps:
+                    return "", None
+                text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
+                tooltip = nonChargedMap[itemGroup][1]
+                return text, tooltip
+
             if not hp or not cycleTime or not cycles:
                 return "", None
 
@@ -667,6 +685,13 @@ class Miscellanea(ViewColumn):
                 formatAmount(itemArmorResistanceShiftHardenerKin, 3, 0, 3),
                 formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
             )
+            return text, tooltip
+        elif itemGroup in ("Cargo Scanner", "Ship Scanner", "Survey Scanner"):
+            duration = stuff.getModifiedItemAttr("duration")
+            if not duration:
+                return "", None
+            text = "{}s".format(formatAmount(duration / 1000, 3, 0, 0))
+            tooltip = "Scan duration"
             return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name

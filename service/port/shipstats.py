@@ -200,7 +200,7 @@ def exportFitStats(fit, callback):
                              repsSection(fit),
                              miscSection(fit)))
 
-    text = "{} ({})\n".format(fit.name, fit.ship.name) + "\n"
+    text = "{} ({})\n".format(fit.name, fit.ship.item.typeName) + "\n"
     text += "\n".join(sections)
 
     if callback:

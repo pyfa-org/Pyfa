@@ -324,7 +324,8 @@ def activeStateLimit(itemIdentity):
         'microJumpDrive', 'microJumpPortalDrive', 'emergencyHullEnergizer',
         'cynosuralGeneration', 'jumpPortalGeneration', 'jumpPortalGenerationBO',
         'cloneJumpAccepting', 'cloakingWarpSafe', 'cloakingPrototype', 'cloaking',
-        'massEntanglerEffect5', 'electronicAttributeModifyOnline', 'targetPassively'
+        'massEntanglerEffect5', 'electronicAttributeModifyOnline', 'targetPassively',
+        'cargoScan', 'shipScan', 'surveyScan'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
@@ -353,6 +354,8 @@ def restoreCheckedStates(fit, stateInfo, ignoreModPoss=()):
 
 
 def restoreRemovedDummies(fit, dummyInfo):
+    if dummyInfo is None:
+        return
     # Need this to properly undo the case when removal of subsystems removes dummy slots
     for position in sorted(dummyInfo):
         slot = dummyInfo[position]

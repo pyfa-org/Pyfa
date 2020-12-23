@@ -25,6 +25,8 @@ from gui.utils.numberFormatter import formatAmount
 from service.price import Fit, Price
 from service.settings import MarketPriceSettings
 
+_t = wx.GetTranslation
+
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
@@ -35,7 +37,7 @@ class PriceViewFull(StatsView):
         self.settings = MarketPriceSettings.getInstance()
 
     def getHeaderText(self, fit):
-        return "Price"
+        return _t("Price")
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
@@ -51,7 +53,10 @@ class PriceViewFull(StatsView):
 
         gridPrice = wx.GridSizer(2, 3, 0, 0)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for _type in ("ship", "fittings", "character", "drones", "cargoBay", "total"):
+        for _type, label in (
+                ("ship", _t("Ship")), ("fittings", _t("Fittings")), ("character", _t("Character")),
+                ("drones", _t("Drones")), ("cargoBay", _t("Cargo bay")), ("total", _t("Total"))
+        ):
             if _type in "ship":
                 image = "ship_big"
             elif _type in ("fittings", "total"):
@@ -67,7 +72,7 @@ class PriceViewFull(StatsView):
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)
 
-            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, _type.capitalize()), 0, wx.ALIGN_LEFT)
+            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, label.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)

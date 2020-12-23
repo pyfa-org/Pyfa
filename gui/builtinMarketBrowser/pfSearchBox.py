@@ -86,7 +86,7 @@ class PFSearchBox(wx.Window):
 
     def OnKeyPress(self, event):
         if event.RawControlDown() and event.GetKeyCode() == wx.WXK_BACK:
-           HandleCtrlBackspace(self.EditBox)
+            HandleCtrlBackspace(self.EditBox)
         else:
             event.Skip()
 

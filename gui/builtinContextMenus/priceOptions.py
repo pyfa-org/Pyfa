@@ -7,6 +7,8 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.settings import MarketPriceSettings
 
+_t = wx.GetTranslation
+
 
 class ItemGroupPrice(ContextMenuUnconditional, metaclass=ABCMeta):
 
@@ -16,19 +18,11 @@ class ItemGroupPrice(ContextMenuUnconditional, metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def label(self):
-        raise NotImplementedError()
-
-    @property
-    @abstractmethod
     def optionName(self):
         raise NotImplementedError()
 
     def display(self, callingWindow, srcContext):
         return srcContext in ("priceViewFull", "priceViewMinimal")
-
-    def getText(self, callingWindow, itmContext):
-        return self.label
 
     def activate(self, callingWindow, fullContext, i):
         self.settings.set(self.optionName, not self.settings.get(self.optionName))
@@ -40,21 +34,24 @@ class ItemGroupPrice(ContextMenuUnconditional, metaclass=ABCMeta):
 
 
 class DronesPrice(ItemGroupPrice):
-
-    label = 'Drones'
     optionName = 'drones'
+
+    def getText(self, callingWindow, itmContext):
+        return _t('Drones')
 
 
 class CargoPrice(ItemGroupPrice):
-
-    label = 'Cargo'
     optionName = 'cargo'
+
+    def getText(self, callingWindow, itmContext):
+        return _t('Cargo')
 
 
 class ImplantBoosterPrice(ItemGroupPrice):
-
-    label = 'Implants && Boosters'
     optionName = 'character'
+
+    def getText(self, callingWindow, itmContext):
+        return _t('Implants && Boosters')
 
 
 DronesPrice.register()

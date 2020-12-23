@@ -46,6 +46,7 @@ class EsiEndpoints(Enum):
     CHAR_SKILLS = "/v4/characters/{character_id}/skills/"
     CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
     CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
+    DYNAMIC_ITEM = "/v1/dogma/dynamic/items/{type_id}/{item_id}/"
 
 
 @unique
@@ -57,6 +58,7 @@ class PortMultiBuyOptions(IntEnum):
     CARGO = 2
     LOADED_CHARGES = 3
     OPTIMIZE_PRICES = 4
+    BOOSTERS = 5
 
 
 @unique
@@ -68,6 +70,7 @@ class PortEftOptions(IntEnum):
     MUTATIONS = 2
     LOADED_CHARGES = 3
     CARGO = 4
+    BOOSTERS = 5
 
 
 @unique

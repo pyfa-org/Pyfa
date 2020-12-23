@@ -33,9 +33,13 @@ def upgrade(saveddata_engine):
                 try:
                     saveddata_session.execute(commandFits_table.insert(),
                                               {"boosterID": value, "boostedID": boosted, "active": 1})
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception:
                     pass
         saveddata_session.commit()
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         # Shouldn't fail unless you have updated database without the old fleet schema and manually modify the database version
         # If it does, simply fail. Fleet data migration isn't critically important here

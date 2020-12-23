@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.6
+- Python 3.7
 - Git CLI installed
 - Python, pip and git are all available as command-line commands (add to the path if needed)
 
@@ -41,11 +41,16 @@ Check that the libs from *requirements.txt* are installed
 pip list
 ```
 
+Build translations and database:
+```
+python scripts\compile_lang.py
+python db_update.py
+```
+
 Test that the project is starting properly
 ```
 python PyfaDEV\pyfa.py
 ```
-
 
 
 ## Setting up the project with PyCharm/IntelliJ

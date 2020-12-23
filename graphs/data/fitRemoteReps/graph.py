@@ -18,16 +18,20 @@
 # =============================================================================
 
 
-from graphs.data.base import FitGraph, XDef, YDef, Input, InputCheckbox
+import wx
+
+from graphs.data.base import FitGraph, Input, InputCheckbox, XDef, YDef
 from service.const import GraphCacheCleanupReason
 from .cache import TimeCache
-from .getter import Distance2RpsGetter, Distance2RepAmountGetter, Time2RpsGetter, Time2RepAmountGetter
+from .getter import Distance2RepAmountGetter, Distance2RpsGetter, Time2RepAmountGetter, Time2RpsGetter
+
+_t = wx.GetTranslation
 
 
 class FitRemoteRepsGraph(FitGraph):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._timeCache = TimeCache()
 
     def _clearInternalCache(self, reason, extraData):
@@ -41,18 +45,21 @@ class FitRemoteRepsGraph(FitGraph):
 
     # UI stuff
     internalName = 'remoteRepsGraph'
-    name = 'Remote Repairs'
+    name = _t('Remote Repairs')
     xDefs = [
-        XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km')),
-        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's'))]
+        XDef(handle='distance', unit='km', label=_t('Distance'), mainInput=('distance', 'km')),
+        XDef(handle='time', unit='s', label=_t('Time'), mainInput=('time', 's'))]
     yDefs = [
-        YDef(handle='rps', unit='HP/s', label='Repair speed'),
-        YDef(handle='total', unit='HP', label='Total repaired')]
+        YDef(handle='rps', unit='HP/s', label=_t('Repair speed')),
+        YDef(handle='total', unit='HP', label=_t('Total repaired'))]
     inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses repairing ship\'s exact RR stats at a given time\nWhen not set, uses repairing ship\'s RR stats as shown in stats panel of main window'),
-        Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100), mainTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)', secondaryTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)')]
+        Input(handle='time', unit='s', label=_t('Time'), iconID=1392, defaultValue=None, defaultRange=(0, 80),
+              secondaryTooltip=_t('When set, uses repairing ship\'s exact RR stats at a given time\nWhen not set, uses repairing ship\'s RR stats as shown in stats panel of main window')),
+        Input(handle='distance', unit='km', label=_t('Distance'), iconID=1391, defaultValue=None, defaultRange=(0, 100),
+              mainTooltip=_t('Distance between the repairing ship and the target, as seen in overview (surface-to-surface)'),
+              secondaryTooltip=_t('Distance between the repairing ship and the target, as seen in overview (surface-to-surface)'))]
     srcExtraCols = ('ShieldRR', 'ArmorRR', 'HullRR')
-    checkboxes = [InputCheckbox(handle='ancReload', label='Reload ancillary RRs', defaultValue=True)]
+    checkboxes = [InputCheckbox(handle='ancReload', label=_t('Reload ancillary RRs'), defaultValue=True)]
 
     # Calculation stuff
     _normalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v * 1000}

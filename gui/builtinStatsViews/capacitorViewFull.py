@@ -23,6 +23,8 @@ from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundToPrec
 
+_t = wx.GetTranslation
+
 
 class CapacitorViewFull(StatsView):
     name = "capacitorViewFull"
@@ -32,7 +34,7 @@ class CapacitorViewFull(StatsView):
         self.parent = parent
 
     def getHeaderText(self, fit):
-        return "Capacitor"
+        return _t("Capacitor")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -52,7 +54,7 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
         bitmap = BitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
-        tooltip = wx.ToolTip("Capacitor stability")
+        tooltip = wx.ToolTip(_t("Capacitor stability"))
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
@@ -62,7 +64,7 @@ class CapacitorViewFull(StatsView):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-        hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
+        hbox.Add(wx.StaticText(parent, wx.ID_ANY, _t("Total: ")), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sCapacitorCapacity" % panel.capitalize(), lbl)
         hbox.Add(lbl, 0, wx.ALIGN_LEFT)
@@ -72,11 +74,11 @@ class CapacitorViewFull(StatsView):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts ")
+        lbl = wx.StaticText(parent, wx.ID_ANY, _t("Lasts "))
         hbox.Add(lbl, 0, wx.ALIGN_LEFT | wx.LEFT, 3)
         setattr(self, "label%sCapacitorState" % panel.capitalize(), lbl)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0s")
+        lbl = wx.StaticText(parent, wx.ID_ANY, _t("0s"))
         setattr(self, "label%sCapacitorTime" % panel.capitalize(), lbl)
         hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
@@ -85,7 +87,7 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
-        tooltip = wx.ToolTip("Extra stats")
+        tooltip = wx.ToolTip(_t("Extra stats"))
         bitmap = BitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "gui")
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
@@ -134,10 +136,9 @@ class CapacitorViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
             if labelName == 'label%sCapacitorDelta' and (cap_recharge or cap_use):
-                lines = []
-                lines.append('Capacitor delta:')
-                lines.append('  +{} GJ/s'.format(formatAmount(cap_recharge, 3, 0, 3)))
-                lines.append('  -{} GJ/s'.format(formatAmount(cap_use, 3, 0, 3)))
+                lines = [_t('Capacitor delta:'),
+                         '  +{} GJ/s'.format(formatAmount(cap_recharge, 3, 0, 3)),
+                         '  -{} GJ/s'.format(formatAmount(cap_use, 3, 0, 3))]
                 delta = round(cap_recharge - cap_use, 3)
                 if delta > 0 and 0 < round(neut_res, 4) < 1:
                     lines.append('')
@@ -145,9 +146,9 @@ class CapacitorViewFull(StatsView):
                     lines.append('  +{} GJ/s'.format(formatAmount(delta / neut_res, 3, 0, 3)))
                 label.SetToolTip(wx.ToolTip('\n'.join(lines)))
             if labelName == 'label%sCapacitorResist':
-                texts = ['Neutralizer resistance']
+                texts = [_t('Neutralizer resistance')]
                 if cap_amount > 0 and 0 < round(neut_res, 4) < 1:
-                    texts.append('Effective capacity: {} GJ'.format(formatAmount(cap_amount / neut_res, 3, 0, 9)))
+                    texts.append(_t('Effective capacity') + ': {} GJ'.format(formatAmount(cap_amount / neut_res, 3, 0, 9)))
                 label.SetToolTip(wx.ToolTip('\n'.join(texts)))
 
         capState = fit.capState if fit is not None else 0
@@ -166,7 +167,7 @@ class CapacitorViewFull(StatsView):
                 else:
                     t = "%ds" % capState
 
-            s = "Stable: " if capStable else "Lasts "
+            s = _t("Stable: ") if capStable else _t("Lasts ")
 
         getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)

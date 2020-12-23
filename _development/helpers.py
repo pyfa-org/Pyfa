@@ -49,6 +49,8 @@ def DBInMemory_test():
         gamedata_version = gamedata_session.execute(
             "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
         ).fetchone()[0]
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except Exception as e:
         print("Missing gamedata version.")
         gamedata_version = None

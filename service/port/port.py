@@ -31,7 +31,7 @@ from logbook import Logger
 from eos import db
 from eos.const import ImplantLocation
 from service.fit import Fit as svcFit
-from service.port.dna import exportDna, importDna
+from service.port.dna import exportDna, importDna, importDnaAlt
 from service.port.eft import (
     exportEft, importEft, importEftCfg,
     isValidDroneImport, isValidFighterImport, isValidCargoImport,
@@ -41,7 +41,7 @@ from service.port.multibuy import exportMultiBuy
 from service.port.shared import IPortUser, UserCancelException, processing_notify
 from service.port.shipstats import exportFitStats
 from service.port.xml import importXml, exportXml
-from service.port.muta import parseMutant
+from service.port.muta import parseMutant, parseDynamicItemString, fetchDynamicItem
 
 
 pyfalog = Logger(__name__)
@@ -177,6 +177,8 @@ class Port:
 
         except UserCancelException:
             return False, "Processing has been canceled.\n"
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.critical("Unknown exception processing: {0}", path)
             pyfalog.critical(e)
@@ -248,16 +250,30 @@ class Port:
         m = re.search(dnaChatPattern, firstLine)
         if m:
             return "DNA", True, (cls.importDna(m.group("dna"), fitName=m.group("fitName")),)
+        m = re.search(r"DNA:(?P<dna>\d+(:\d+(\*\d+)?)*)", firstLine)
+        if m:
+            return "DNA", True, (cls.importDnaAlt(m.group("dna")),)
 
         if activeFit is not None:
+
+            # Try to import mutated item from network
+            dynData = parseDynamicItemString(string)
+            if dynData is not None:
+                itemData = fetchDynamicItem(dynData)
+                if itemData is not None:
+                    baseItem, mutaplasmidItem, mutations = itemData
+                    return "FittingItem", False, ((baseItem, mutaplasmidItem, mutations),)
+
             # Try to import mutated module
             try:
                 baseItem, mutaplasmidItem, mutations = parseMutant(lines)
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 pass
             else:
-                if baseItem is not None and mutaplasmidItem is not None:
-                    return "MutatedItem", False, ((baseItem, mutaplasmidItem, mutations),)
+                if baseItem is not None:
+                    return "FittingItem", False, ((baseItem, mutaplasmidItem, mutations),)
             # Try to import into one of additions panels
             isDrone, droneData = isValidDroneImport(string)
             if isDrone:
@@ -294,6 +310,10 @@ class Port:
         return importDna(string, fitName=fitName)
 
     @staticmethod
+    def importDnaAlt(string, fitName=None):
+        return importDnaAlt(string, fitName=fitName)
+
+    @staticmethod
     def exportDna(fit, options, callback=None):
         return exportDna(fit, options, callback=callback)
 
@@ -303,8 +323,8 @@ class Port:
         return importESI(string)
 
     @staticmethod
-    def exportESI(fit, callback=None):
-        return exportESI(fit, callback=callback)
+    def exportESI(fit, exportCharges, callback=None):
+        return exportESI(fit, exportCharges, callback=callback)
 
     # XML-related methods
     @staticmethod

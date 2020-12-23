@@ -41,7 +41,7 @@ from service.market import Market
 
 
 pyfalog = Logger(__name__)
-
+_t = wx.GetTranslation
 
 class DummyItem:
     def __init__(self, txt):
@@ -90,8 +90,6 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
-        self.droneView = gui.builtinAdditionPanes.droneView.DroneView
-
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.SetDropTarget(ProjectedViewDrop(self.handleListDrag))
@@ -119,12 +117,12 @@ class ProjectedView(d.Display):
                 fitID=fitID, itemID=fit.modules[int(data[1])].itemID))
         elif data[0] == 'market':
             itemID = int(data[1])
-            category = Market.getInstance().getItem(itemID, eager=('group.category')).category.name
-            if category == 'Module':
+            item = Market.getInstance().getItem(itemID)
+            if item.isModule:
                 self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID=fitID, itemID=itemID))
-            elif category == 'Drone':
+            elif item.isDrone:
                 self.mainFrame.command.Submit(cmd.GuiAddProjectedDroneCommand(fitID=fitID, itemID=itemID))
-            elif category == 'Fighter':
+            elif item.isFighter:
                 self.mainFrame.command.Submit(cmd.GuiAddProjectedFighterCommand(fitID=fitID, itemID=itemID))
 
     def kbEvent(self, event):
@@ -162,7 +160,7 @@ class ProjectedView(d.Display):
         if item.marketGroup is None:
             item = item.metaGroup.parent
 
-        return (self.droneView.DRONE_ORDER.index(item.marketGroup.name),
+        return (gui.builtinAdditionPanes.droneView.DRONE_ORDER.index(item.marketGroup.name),
                 drone.item.name)
 
     @staticmethod
@@ -223,7 +221,7 @@ class ProjectedView(d.Display):
             stuff.extend(self.drones)
             stuff.extend(self.fighters)
         if not stuff:
-            stuff = [DummyEntry('Drag an item or fit, or use right-click menu for wormhole effects')]
+            stuff = [DummyEntry(_t('Drag an item or fit, or use right-click menu for wormhole effects'))]
         self.update(stuff)
 
     def get(self, row):
@@ -303,27 +301,27 @@ class ProjectedView(d.Display):
 
             if isinstance(mainItem, EosModule):
                 modSrcContext = 'projectedModule'
-                modItemContext = 'Projected Item'
+                modItemContext = _t('Projected Item')
                 modFullContext = (modSrcContext, modItemContext)
                 contexts.append(modFullContext)
                 if mainItem.charge is not None:
                     chargeSrcContext = 'projectedCharge'
-                    chargeItemContext = sMkt.getCategoryByItem(mainItem.charge).name
+                    chargeItemContext = sMkt.getCategoryByItem(mainItem.charge).displayName
                     chargeFullContext = (chargeSrcContext, chargeItemContext)
                     contexts.append(chargeFullContext)
             elif isinstance(mainItem, EosDrone):
                 srcContext = 'projectedDrone'
-                itemContext = 'Projected Item'
+                itemContext = _t('Projected Item')
                 droneFullContext = (srcContext, itemContext)
                 contexts.append(droneFullContext)
             elif isinstance(mainItem, EosFighter):
                 srcContext = 'projectedFighter'
-                itemContext = 'Projected Item'
+                itemContext = _t('Projected Item')
                 fighterFullContext = (srcContext, itemContext)
                 contexts.append(fighterFullContext)
             else:
                 fitSrcContext = 'projectedFit'
-                fitItemContext = 'Projected Item'
+                fitItemContext = _t('Projected Item')
                 fitFullContext = (fitSrcContext, fitItemContext)
                 contexts.append(fitFullContext)
         contexts.append(('projected',))

@@ -3,6 +3,8 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 
+_t = wx.GetTranslation
+
 
 class ItemDependents(wx.Panel):
     def __init__(self, parent, stuff, item):
@@ -41,7 +43,7 @@ class ItemDependents(wx.Panel):
             items = levelToItems[x]
             items.sort(key=lambda x: x.name)
 
-            child = self.reqTree.AppendItem(parent, "Level {}".format(self.romanNb[int(x)]), sbIconId)
+            child = self.reqTree.AppendItem(parent, _t("Level {}").format(self.romanNb[int(x)]), sbIconId)
             for item in items:
 
                 if item.iconID:

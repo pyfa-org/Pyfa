@@ -26,10 +26,11 @@ import wx
 from logbook import Logger
 
 import config
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from service.prereqsCheck import version_block
 
 
+_t = wx.GetTranslation
 pyfalog = Logger(__name__)
 
 
@@ -64,17 +65,23 @@ class ErrorHandler:
 
 class ErrorFrame(AuxiliaryFrame):
 
-    def __init__(self, parent=None, error_title='Error!'):
-        super().__init__(parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600))
+    def __init__(self, parent=None, error_title=_t('Error!')):
+        super().__init__(parent, id=wx.ID_ANY, title=_t("pyfa error"), pos=wx.DefaultPosition, size=wx.Size(500, 600))
 
         from eos.config import gamedata_version, gamedata_date
 
-        time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
+        if gamedata_date:
+            try:
+                time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
+            except TypeError:
+                time = None
+        else:
+            time = None
         version = "pyfa " + config.getVersion() + '\nEVE Data Version: {} ({})\n\n'.format(gamedata_version, time)  # gui.aboutData.versionString
 
-        desc = "pyfa has experienced an unexpected issue. Below is a message that contains crucial\n" \
-               "information about how this was triggered. Please contact the developers with the\n" \
-               "information provided through the EVE Online forums or file a GitHub issue."
+        desc = _t("pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
+               "information about how this was triggered. Please contact the developers with the \n"
+               "information provided through the EVE Online forums or file a GitHub issue.")
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -106,7 +113,7 @@ class ErrorFrame(AuxiliaryFrame):
         self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, version + version_block.strip(), wx.DefaultPosition,
                                          (-1, 400), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
         self.errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
-        mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
+        mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL, 5)
         self.errorTextCtrl.AppendText("\n")
         self.errorTextCtrl.Layout()
 

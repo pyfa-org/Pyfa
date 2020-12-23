@@ -21,7 +21,7 @@ import datetime
 import time
 from copy import deepcopy
 from itertools import chain
-from math import log, sqrt
+from math import floor, log, sqrt
 
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
@@ -39,10 +39,14 @@ from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
 from eos.saveddata.targetProfile import TargetProfile
+from eos.utils.float import floatUnerr
 from eos.utils.stats import DmgTypes, RRTypes
 
-
 pyfalog = Logger(__name__)
+
+
+def _t(x):
+    return x
 
 
 class FitLite:
@@ -378,8 +382,9 @@ class Fit:
 
     @property
     def maxTargets(self):
-        return min(self.extraAttributes["maxTargetsLockedFromSkills"],
-                   self.ship.getModifiedItemAttr("maxLockedTargets"))
+        maxTargets = min(self.extraAttributes["maxTargetsLockedFromSkills"],
+                         self.ship.getModifiedItemAttr("maxLockedTargets"))
+        return floor(floatUnerr(maxTargets))
 
     @property
     def maxTargetRange(self):
@@ -393,16 +398,16 @@ class Fit:
     @property
     def scanType(self):
         maxStr = -1
-        type = None
-        for scanType in ("Magnetometric", "Ladar", "Radar", "Gravimetric"):
+        type_ = None
+        for scanType in (_t("Magnetometric"), _t("Ladar"), _t("Radar"), _t("Gravimetric")):
             currStr = self.ship.getModifiedItemAttr("scan%sStrength" % scanType)
             if currStr > maxStr:
                 maxStr = currStr
-                type = scanType
+                type_ = scanType
             elif currStr == maxStr:
-                type = "Multispectral"
+                type_ = _t("Multispectral")
 
-        return type
+        return type_
 
     @property
     def jamChance(self):
@@ -441,9 +446,9 @@ class Fit:
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
         map = {
-            "ID"     : lambda _val: isinstance(_val, int),
+            "ID": lambda _val: isinstance(_val, int),
             "ownerID": lambda _val: isinstance(_val, int) or _val is None,
-            "shipID" : lambda _val: isinstance(_val, int) or _val is None
+            "shipID": lambda _val: isinstance(_val, int) or _val is None
         }
 
         if not map[key](val):
@@ -576,11 +581,15 @@ class Fit:
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
-                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                                    "Shield Emission Systems"), "capacitorNeed", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                        mod.item.requiresSkill("Shield Emission Systems") or
+                                        mod.item.requiresSkill("Capital Shield Emission Systems"),
+                            "capacitorNeed", value)
                     self.modules.filteredItemBoost(
-                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                                    "Shield Emission Systems"), "duration", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                        mod.item.requiresSkill("Shield Emission Systems") or
+                                        mod.item.requiresSkill("Capital Shield Emission Systems"),
+                            "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
                     self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
@@ -590,12 +599,16 @@ class Fit:
                         self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                                               mod.item.requiresSkill("Repair Systems"),
-                                                   "capacitorNeed", value)
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
-                                                               mod.item.requiresSkill("Repair Systems"),
-                                                   "duration", value)
+                    self.modules.filteredItemBoost(
+                            lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                        mod.item.requiresSkill("Repair Systems") or
+                                        mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                            "capacitorNeed", value)
+                    self.modules.filteredItemBoost(
+                            lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                        mod.item.requiresSkill("Repair Systems") or
+                                        mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
+                            "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
@@ -669,8 +682,8 @@ class Fit:
                                                    "duration", value, stackingPenalties=True)
 
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                                   "crystalVolatilityChance", value, stackingPenalties=True)
+                    self.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Mining"),
+                                                     "crystalVolatilityChance", value, stackingPenalties=True)
 
                 if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
                     self.ship.boostItemAttr("maxTargetRange", value, stackingPenalties=True)
@@ -742,14 +755,14 @@ class Fit:
 
                 if warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "signatureRadius", value, stackingPenalties=True)
 
-                if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_local_repair
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
-                                                   "armorDamageAmount", value, stackingPenalties=True)
+                if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_inertia
+                    self.ship.boostItemAttr("agility", value, stackingPenalties=True)
 
-                if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_remote_repair
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
-                                                   "armorDamageAmount", value, stackingPenalties=True)
+                if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_velocity
+                    self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
 
                 if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster_shield_bonus
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
@@ -764,7 +777,11 @@ class Fit:
                 if warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}EmDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}EmDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("emDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "emDamageResonance", value)  #for hull
 
                 if warfareBuffID == 92:  # Weather_electric_storm_capacitor_recharge_bonus
                     self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
@@ -772,32 +789,54 @@ class Fit:
                 if warfareBuffID == 93:  # Weather_xenon_gas_explosive_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}ExplosiveDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}ExplosiveDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("explosiveDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "explosiveDamageResonance", value)  # for hull
 
                 if warfareBuffID == 94:  # Weather_xenon_gas_shield_hp_bonus
-                    self.ship.boostItemAttr("shieldCapacity", value)  # for hull
+                    self.ship.boostItemAttr("shieldCapacity", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "shieldCapacity", value)
 
                 if warfareBuffID == 95:  # Weather_infernal_thermal_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}ThermalDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}ThermalDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("thermalDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "thermalDamageResonance", value)  # for hull
 
                 if warfareBuffID == 96:  # Weather_infernal_armor_hp_bonus
-                    self.ship.boostItemAttr("armorHP", value)  # for hull
+                    self.ship.boostItemAttr("armorHP", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "armorHP", value)
 
                 if warfareBuffID == 97:  # Weather_darkness_turret_range_penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                                    "maxRange", value, stackingPenalties=True)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "maxRange", value, stackingPenalties=True)
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                                    "falloff", value, stackingPenalties=True)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "falloff", value, stackingPenalties=True)
 
                 if warfareBuffID == 98:  # Weather_darkness_velocity_bonus
                     self.ship.boostItemAttr("maxVelocity", value)
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "maxVelocity", value)
 
                 if warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}KineticDamageResonance".format(tankType), value)
+                        self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                            "{}KineticDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("kineticDamageResonance", value)  # for hull
+                    self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
+                        "kineticDamageResonance", value)  # for hull
 
                 if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
                     self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
@@ -970,14 +1009,14 @@ class Fit:
                 for _ in range(projectionInfo.amount):
                     targetFit.register(item, origin=self)
                     item.calculateModifiedAttributes(
-                        targetFit, runTime, forceProjected=True,
-                        forcedProjRange=0)
+                            targetFit, runTime, forceProjected=True,
+                            forcedProjRange=0)
         for mod in self.modules:
             for _ in range(projectionInfo.amount):
                 targetFit.register(mod, origin=self)
                 mod.calculateModifiedAttributes(
-                    targetFit, runTime, forceProjected=True,
-                    forcedProjRange=projectionInfo.projectionRange)
+                        targetFit, runTime, forceProjected=True,
+                        forcedProjRange=projectionInfo.projectionRange)
 
     def fill(self):
         """
@@ -993,7 +1032,8 @@ class Fit:
 
         # Look for any dummies of that type to remove
         posToRemove = {}
-        for slotType in (FittingSlot.LOW.value, FittingSlot.MED.value, FittingSlot.HIGH.value, FittingSlot.RIG.value, FittingSlot.SUBSYSTEM.value, FittingSlot.SERVICE.value):
+        for slotType in (
+        FittingSlot.LOW.value, FittingSlot.MED.value, FittingSlot.HIGH.value, FittingSlot.RIG.value, FittingSlot.SUBSYSTEM.value, FittingSlot.SERVICE.value):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
                 for _ in range(int(amount)):
@@ -1017,6 +1057,16 @@ class Fit:
             mod = self.modules[i]
             if mod.isEmpty:
                 del self.modules[i]
+
+    def clearTail(self):
+        tailPositions = {}
+        for mod in reversed(self.modules):
+            if not mod.isEmpty:
+                break
+            tailPositions[self.modules.index(mod)] = mod.slot
+        for pos in sorted(tailPositions, reverse=True):
+            self.modules.remove(self.modules[pos])
+        return tailPositions
 
     @property
     def modCount(self):
@@ -1060,22 +1110,23 @@ class Fit:
 
         for mod in chain(self.modules, self.fighters):
             if mod.slot is type and (not getattr(mod, "isEmpty", False) or countDummies):
-                if type in (FittingSlot.F_HEAVY, FittingSlot.F_SUPPORT, FittingSlot.F_LIGHT, FittingSlot.FS_HEAVY, FittingSlot.FS_LIGHT, FittingSlot.FS_SUPPORT) and not mod.active:
+                if type in (FittingSlot.F_HEAVY, FittingSlot.F_SUPPORT, FittingSlot.F_LIGHT, FittingSlot.FS_HEAVY, FittingSlot.FS_LIGHT,
+                            FittingSlot.FS_SUPPORT) and not mod.active:
                     continue
                 amount += 1
 
         return amount
 
     slots = {
-        FittingSlot.LOW      : "lowSlots",
-        FittingSlot.MED      : "medSlots",
-        FittingSlot.HIGH     : "hiSlots",
-        FittingSlot.RIG      : "rigSlots",
+        FittingSlot.LOW: "lowSlots",
+        FittingSlot.MED: "medSlots",
+        FittingSlot.HIGH: "hiSlots",
+        FittingSlot.RIG: "rigSlots",
         FittingSlot.SUBSYSTEM: "maxSubSystems",
-        FittingSlot.SERVICE  : "serviceSlots",
-        FittingSlot.F_LIGHT  : "fighterLightSlots",
+        FittingSlot.SERVICE: "serviceSlots",
+        FittingSlot.F_LIGHT: "fighterLightSlots",
         FittingSlot.F_SUPPORT: "fighterSupportSlots",
-        FittingSlot.F_HEAVY  : "fighterHeavySlots",
+        FittingSlot.F_HEAVY: "fighterHeavySlots",
         FittingSlot.FS_LIGHT: "fighterStandupLightSlots",
         FittingSlot.FS_SUPPORT: "fighterStandupSupportSlots",
         FittingSlot.FS_HEAVY: "fighterStandupHeavySlots",
@@ -1127,7 +1178,7 @@ class Fit:
     def droneBayUsed(self):
         amount = 0
         for d in self.drones:
-            amount += d.item.volume * d.amount
+            amount += d.item.attributes['volume'].value * d.amount
 
         return amount
 
@@ -1135,7 +1186,7 @@ class Fit:
     def fighterBayUsed(self):
         amount = 0
         for f in self.fighters:
-            amount += f.item.volume * f.amount
+            amount += f.item.attributes['volume'].value * f.amount
 
         return amount
 
@@ -1357,8 +1408,8 @@ class Fit:
         """Return how much cap regen do we gain from having this module"""
         currentRegen = self.calculateCapRecharge()
         nomodRegen = self.calculateCapRecharge(
-            capacity=self.ship.getModifiedItemAttrExtended("capacitorCapacity", ignoreAfflictors=[mod]),
-            rechargeRate=self.ship.getModifiedItemAttrExtended("rechargeRate", ignoreAfflictors=[mod]) / 1000.0)
+                capacity=self.ship.getModifiedItemAttrExtended("capacitorCapacity", ignoreAfflictors=[mod]),
+                rechargeRate=self.ship.getModifiedItemAttrExtended("rechargeRate", ignoreAfflictors=[mod]) / 1000.0)
         return currentRegen - nomodRegen
 
     def getRemoteReps(self, spoolOptions=None):
@@ -1402,7 +1453,8 @@ class Fit:
             "armorRepair": self.extraAttributes["armorRepair"],
             "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
             "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
-            "hullRepair": self.extraAttributes["hullRepair"]}
+            "hullRepair": self.extraAttributes["hullRepair"]
+        }
         return reps
 
     @property
@@ -1442,7 +1494,8 @@ class Fit:
                 "armorRepair": self.extraAttributes["armorRepair"],
                 "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
                 "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
-                "hullRepair": self.extraAttributes["hullRepair"]}
+                "hullRepair": self.extraAttributes["hullRepair"]
+            }
             if not self.capStable or self.factorReload:
                 # Map a local repairer type to the attribute it uses
                 groupAttrMap = {
@@ -1450,14 +1503,16 @@ class Fit:
                     "Ancillary Shield Booster": "shieldBonus",
                     "Armor Repair Unit": "armorDamageAmount",
                     "Ancillary Armor Repairer": "armorDamageAmount",
-                    "Hull Repair Unit": "structureDamageAmount"}
+                    "Hull Repair Unit": "structureDamageAmount"
+                }
                 # Map local repairer type to tank type
                 groupStoreMap = {
                     "Shield Booster": "shieldRepair",
                     "Ancillary Shield Booster": "shieldRepair",
                     "Armor Repair Unit": "armorRepair",
                     "Ancillary Armor Repairer": "armorRepair",
-                    "Hull Repair Unit": "hullRepair"}
+                    "Hull Repair Unit": "hullRepair"
+                }
                 repairers = []
                 localAdjustment = {"shieldRepair": 0, "armorRepair": 0, "hullRepair": 0}
                 capUsed = self.capUsed
@@ -1509,7 +1564,7 @@ class Fit:
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
                 repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
+                        groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
                         "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
@@ -1633,7 +1688,6 @@ class Fit:
         if secstatus is None:
             secstatus = FitSystemSecurity.NULLSEC
         return secstatus
-
 
     def activeModulesIter(self):
         for mod in self.modules:

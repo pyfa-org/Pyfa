@@ -134,7 +134,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         if grp in groupnames:
             name = groupnames[grp]
         else:
-            query = 'SELECT groupName FROM invgroups WHERE groupID = ?'
+            query = 'SELECT name FROM invgroups WHERE groupID = ?'
             new_cursor.execute(query, (grp,))
             name = ""
             for row in new_cursor:
@@ -197,7 +197,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
         for cursor, dictionary in ((old_cursor, old_itmdata), (new_cursor, new_itmdata)):
             # Compose list of items we're interested in, filtered by category
-            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID INNER JOIN invcategories AS ic ON ig.categoryID = ic.categoryID WHERE it.published = 1 AND ic.categoryName IN ("Ship", "Module", "Charge", "Skill", "Drone", "Implant", "Subsystem", "Structure", "Structure Module", "Fighter")'
+            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID INNER JOIN invcategories AS ic ON ig.categoryID = ic.categoryID WHERE it.published = 1 AND ic.name IN ("Ship", "Module", "Charge", "Skill", "Drone", "Implant", "Subsystem", "Structure", "Structure Module", "Fighter")'
             cursor.execute(query)
             for row in cursor:
                 itemid = row[0]
@@ -205,7 +205,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 # Initialize container for the data for each item with empty stuff besides groupID
                 dictionary[itemid] = [groupID, set(), {}]
             # Add items filtered by group
-            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers", "Mutaplasmids", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")'
+            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.name IN ("Effect Beacon", "Ship Modifiers", "Mutaplasmids", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")'
             cursor.execute(query)
             for row in cursor:
                 itemid = row[0]
@@ -226,18 +226,6 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                         effectSet.add(effectID)
 
             if attributes:
-                # Add base attributes to our data
-                query = 'SELECT it.typeID, it.mass, it.capacity, it.volume FROM invtypes AS it'
-                cursor.execute(query)
-                for row in cursor:
-                    itemid = row[0]
-                    if itemid in dictionary:
-                        attrdict = dictionary[itemid][2]
-                        # Add base attributes: mass (4), capacity (38) and volume (161)
-                        attrdict[4] = row[1]
-                        attrdict[38] = row[2]
-                        attrdict[161] = row[3]
-
                 # Add attribute data for other attributes
                 query = 'SELECT dta.typeID, dta.attributeID, dta.value FROM dgmtypeattribs AS dta'
                 cursor.execute(query)
@@ -368,11 +356,11 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         findrenames(ren_attributes, query)
 
         ren_categories = {}
-        query = 'SELECT categoryID, categoryName FROM invcategories'
+        query = 'SELECT categoryID, name FROM invcategories'
         findrenames(ren_categories, query)
 
         ren_groups = {}
-        query = 'SELECT groupID, groupName FROM invgroups'
+        query = 'SELECT groupID, name FROM invgroups'
         findrenames(ren_groups, query)
 
         ren_marketgroups = {}
@@ -394,6 +382,8 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         new_cursor.execute(query)
         for row in new_cursor:
             new_meta[row[0]] = row[1]
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         pass
     # Print jobs

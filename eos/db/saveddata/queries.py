@@ -470,7 +470,7 @@ def searchFits(nameLike, where=None, eager=None):
     filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
     eager = processEager(eager)
     with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).limit(100).all())
 
     return fits
 
@@ -560,6 +560,8 @@ def commit():
     with sd_lock:
         try:
             saveddata_session.commit()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception:
             saveddata_session.rollback()
             exc_info = sys.exc_info()
@@ -570,6 +572,8 @@ def flush():
     with sd_lock:
         try:
             saveddata_session.flush()
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception:
             saveddata_session.rollback()
             exc_info = sys.exc_info()

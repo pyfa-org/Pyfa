@@ -56,7 +56,7 @@ INV_FLAG_DRONEBAY = 87
 INV_FLAG_FIGHTER = 158
 
 
-def exportESI(ofit, callback):
+def exportESI(ofit, exportCharges, callback):
     # A few notes:
     # max fit name length is 50 characters
     # Most keys are created simply because they are required, but bogus data is okay
@@ -72,7 +72,7 @@ def exportESI(ofit, callback):
 
     # 2017/03/29 NOTE: "<" or "&lt;" is Ignored
     # fit['description'] = "<pyfa:%d />" % ofit.ID
-    fit['description'] = ofit.notes[:397] + '...' if len(ofit.notes) > 400 else ofit.notes if ofit.notes is not None else ""
+    fit['description'] = "" if ofit.notes is None else ofit.notes[:397] + '...' if len(ofit.notes) > 400 else ofit.notes
     fit['items'] = []
 
     slotNum = {}
@@ -99,7 +99,7 @@ def exportESI(ofit, callback):
         item['type_id'] = module.item.ID
         fit['items'].append(item)
 
-        if module.charge:
+        if module.charge and exportCharges:
             if module.chargeID not in charges:
                 charges[module.chargeID] = 0
             # `or 1` because some charges (ie scripts) are without qty
@@ -161,6 +161,8 @@ def importESI(string):
             fitobj.ship = Ship(sMkt.getItem(ship))
         except ValueError:
             fitobj.ship = Citadel(sMkt.getItem(ship))
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         pyfalog.warning("Caught exception in importESI")
         return None
@@ -201,6 +203,8 @@ def importESI(string):
 
                     moduleList.append(m)
 
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pyfalog.warning("Could not process module.")
             continue

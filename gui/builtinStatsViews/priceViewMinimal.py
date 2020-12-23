@@ -25,6 +25,8 @@ from gui.utils.numberFormatter import formatAmount
 from service.price import Fit, Price
 from service.settings import MarketPriceSettings
 
+_t = wx.GetTranslation
+
 
 class PriceViewMinimal(StatsView):
     name = "priceViewMinimal"
@@ -51,7 +53,9 @@ class PriceViewMinimal(StatsView):
 
         gridPrice = wx.GridSizer(1, 3, 0, 0)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for _type in ("ship", "fittings", "total"):
+        for _type, label in (
+                ("ship", _t("Ship")), ("fittings", _t("Fittings")), ("total", _t("Total"))
+        ):
             image = "%sPrice_big" % _type if _type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box, 0, wx.ALIGN_TOP)
@@ -61,7 +65,7 @@ class PriceViewMinimal(StatsView):
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)
 
-            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, _type.capitalize()), 0, wx.ALIGN_LEFT)
+            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, label), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)

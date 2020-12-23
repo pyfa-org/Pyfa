@@ -29,7 +29,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-
+_t = wx.GetTranslation
 
 class BoosterViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
@@ -212,7 +212,7 @@ class BoosterView(d.Display):
             else:
                 if booster in self.original:
                     mainBooster = booster
-        itemContext = None if mainBooster is None else "Booster"
+        itemContext = None if mainBooster is None else _t("Booster")
         menu = ContextMenu.getMenu(self, mainBooster, selection, ("boosterItem", itemContext), ("boosterItemMisc", itemContext))
         if menu:
             self.PopupMenu(menu)

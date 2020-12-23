@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 from itertools import chain
 
 # noinspection PyPackageRequirements
@@ -9,9 +10,31 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.market import Market
 
+_t = wx.GetTranslation
+
+
+class Group:
+
+    def __init__(self):
+        self.groups = OrderedDict()
+        self.items = []
+
+    def sort(self):
+        self.groups = OrderedDict((k, self.groups[k]) for k in sorted(self.groups))
+        for group in self.groups.values():
+            group.sort()
+        self.items.sort(key=lambda e: e.shortName)
+
+
+class Entry:
+
+    def __init__(self, itemID, name, shortName):
+        self.itemID = itemID
+        self.name = name
+        self.shortName = shortName
+
 
 class AddEnvironmentEffect(ContextMenuUnconditional):
-
     # CCP doesn't currently provide a mapping between the general Environment, and the specific environment effect
     # (which can be random when going into Abyssal space). This is how we currently define it:
     # environment type: specific type name prefix
@@ -30,109 +53,96 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         return srcContext == "projected"
 
     def getText(self, callingWindow, itmContext):
-        return "Add Environmental Effect"
+        return _t("Add Environmental Effect")
+
+    def _addGroup(self, parentMenu, name):
+        id = ContextMenuUnconditional.nextID()
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
+        return menuItem
+
+    def _addEffect(self, parentMenu, typeID, name):
+        id = ContextMenuUnconditional.nextID()
+        self.idmap[id] = typeID
+        menuItem = wx.MenuItem(parentMenu, id, name)
+        parentMenu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
+        return menuItem
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
-        msw = True if "wxMSW" in wx.PlatformInfo else False
-
-        # Wormholes
-
         self.idmap = {}
-        sub = wx.Menu()
+        data = self.getData()
+        msw = "wxMSW" in wx.PlatformInfo
 
-        wormhole_item = wx.MenuItem(sub, wx.ID_ANY, "Wormhole")
-        wormhole_menu = wx.Menu()
-        wormhole_item.SetSubMenu(wormhole_menu)
-        sub.Append(wormhole_item)
+        def makeMenu(data, parentMenu):
+            menu = wx.Menu()
+            for group_name in data.groups:
+                menuItem = self._addGroup(rootMenu if msw else parentMenu, group_name)
+                subMenu = makeMenu(data.groups[group_name], menu)
+                menuItem.SetSubMenu(subMenu)
+                menu.Append(menuItem)
+            for entry in data.items:
+                menuItem = self._addEffect(rootMenu if msw else parentMenu, entry.itemID, entry.shortName)
+                menu.Append(menuItem)
+            menu.Bind(wx.EVT_MENU, self.handleSelection)
+            return menu
 
-        grouped_data, flat_data = self.getEffectBeacons()
-        self.buildMenu(grouped_data, flat_data, wormhole_menu, rootMenu, msw)
-
-        # Incursions
-
-        grouped_data, flat_data = self.getEffectBeacons(incursions=True)
-        self.buildMenu(grouped_data, flat_data, sub, rootMenu, msw)
-
-        # Abyssal Weather
-
-        abyssal_item = wx.MenuItem(sub, wx.ID_ANY, "Abyssal Weather")
-        abyssal_menu = wx.Menu()
-        abyssal_item.SetSubMenu(abyssal_menu)
-        sub.Append(abyssal_item)
-
-        grouped_data, flat_data = self.getAbyssalWeather()
-        self.buildMenu(grouped_data, flat_data, abyssal_menu, rootMenu, msw)
-
-        # Localized Weather
-
-        local_item = wx.MenuItem(sub, wx.ID_ANY, "Localized")
-        local_menu = wx.Menu()
-        local_item.SetSubMenu(local_menu)
-        sub.Append(local_item)
-
-        grouped_data, flat_data = self.getLocalizedEnvironments()
-        self.buildMenu(grouped_data, flat_data, local_menu, rootMenu, msw)
-
+        sub = makeMenu(data, rootMenu)
         return sub
 
     def handleSelection(self, event):
         # Skip events ids that aren't mapped
 
-        swObj, swName = self.idmap.get(event.Id, (False, False))
-        if not swObj and not swName:
+        swObj = self.idmap.get(event.Id, False)
+        if not swObj:
             event.Skip()
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID, swObj.ID))
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID, swObj))
 
-    def buildMenu(self, grouped_data, flat_data, local_menu, rootMenu, msw):
+    def getData(self):
+        data = Group()
+        data.groups[_t('Metaliminal Storm')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Electrical'),
+            _t('ContextMenu|ProjectedEffectManipulation|Exotic'),
+            _t('ContextMenu|ProjectedEffectManipulation|Gamma'),
+            _t('ContextMenu|ProjectedEffectManipulation|Plasma'),
+            extra_garbage=(
+                _t('ContextMenu|ProjectedEffectManipulation|Metaliminal'),
+                _t('ContextMenu|ProjectedEffectManipulation|Storm'),
+                _t('ContextMenu|ProjectedEffectManipulation|Matter'),
+                _t('ContextMenu|ProjectedEffectManipulation|Ray'),
+                _t('ContextMenu|ProjectedEffectManipulation|Firestorm')))
+        data.groups[_t('Wormhole')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Black Hole'),
+            _t('ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable'),
+            _t('ContextMenu|ProjectedEffectManipulation|Magnetar'),
+            _t('ContextMenu|ProjectedEffectManipulation|Pulsar'),
+            _t('ContextMenu|ProjectedEffectManipulation|Red Giant'),
+            _t('ContextMenu|ProjectedEffectManipulation|Wolf Rayet'))
+        data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
+        data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion'))
+        data.groups[_t('Triglavian Invasion')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Triglavian Invasion'))
+        data.groups[_t('Triglavian Invasion')].groups[_t('Destructible Beacons')] = self.getDestructibleBeacons()
+        return data
 
-        def processFlat(data, root, sub):
-            for swData in sorted(data, key=lambda tpl: tpl[2]):
-                wxid = ContextMenuUnconditional.nextID()
-                swObj, swName, swClass = swData
-                self.idmap[wxid] = (swObj, swName)
-                subItem = wx.MenuItem(sub, wxid, swClass)
-                if msw:
-                    root.Bind(wx.EVT_MENU, self.handleSelection, subItem)
-                else:
-                    sub.Bind(wx.EVT_MENU, self.handleSelection, subItem)
-                sub.Append(subItem)
-
-        for swType in sorted(grouped_data):
-            subItem = wx.MenuItem(local_menu, wx.ID_ANY, swType)
-            grandSub = wx.Menu()
-            subItem.SetSubMenu(grandSub)
-            local_menu.Append(subItem)
-            processFlat(grouped_data[swType], rootMenu, grandSub)
-
-        processFlat(flat_data, rootMenu, local_menu)
-
-    def getEffectBeacons(self, incursions=False):
+    def getEffectBeacons(self, *groups, extra_garbage=()):
         """
-        Get dictionary with wormhole system-wide effects
+        Get dictionary with system-wide effects
         """
+        compacted = len(groups) <= 1
         sMkt = Market.getInstance()
 
-        # todo: rework this
         # Container for system-wide effects
-        grouped = {}
-
-        # Expressions for matching when detecting effects we're looking for
-        if incursions:
-            validgroups = ("Incursion ship attributes effects",
-                           "Invasion Effects")
-        else:
-            validgroups = ("Black Hole Effect Beacon",
-                           "Cataclysmic Variable Effect Beacon",
-                           "Magnetar Effect Beacon",
-                           "Pulsar Effect Beacon",
-                           "Red Giant Beacon",
-                           "Wolf Rayet Effect Beacon")
+        data = Group()
 
         # Stuff we don't want to see in names
-        garbages = ("Effects?", "Beacon", "ship attributes effects")
+        garbages = [
+            _t('ContextMenu|ProjectedEffectManipulation|System Effects'),
+            _t('ContextMenu|ProjectedEffectManipulation|Effects')]
+        garbages.extend(extra_garbage)
 
         # Get group with all the system-wide beacons
         grp = sMkt.getGroup("Effect Beacon")
@@ -140,9 +150,9 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         # Cycle through them
         for beacon in sMkt.getItemsByGroup(grp):
             # Check if it belongs to any valid group
-            for group in validgroups:
+            for group in groups:
                 # Check beginning of the name only
-                if re.match(group, beacon.name):
+                if re.search(group, beacon.name):
                     # Get full beacon name
                     beaconname = beacon.name
                     for garbage in garbages:
@@ -159,64 +169,69 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                         groupname = re.sub(garbage, "", groupname)
                     groupname = re.sub(" {2,}", " ", groupname).strip()
                     # Add stuff to dictionary
-                    if groupname not in grouped:
-                        grouped[groupname] = set()
-                    grouped[groupname].add((beacon, beaconname, shortname))
+                    if compacted:
+                        container = data.items
+                    else:
+                        container = data.groups.setdefault(groupname, Group()).items
+                    container.append(Entry(beacon.ID, beaconname, shortname))
                     # Break loop on 1st result
                     break
-
-        return grouped, ()
+        data.sort()
+        return data
 
     def getAbyssalWeather(self):
         sMkt = Market.getInstance()
+        data = Group()
 
         environments = {x.ID: x for x in sMkt.getGroup("Abyssal Environment").items}
-        items = chain(sMkt.getGroup("MassiveEnvironments").items, sMkt.getGroup("Non-Interactable Object").items)
-
-        grouped = {}
-        flat = set()
-
+        items = chain(
+                sMkt.getGroup("MassiveEnvironments").items,
+                sMkt.getGroup("Non-Interactable Object").items)
         for beacon in items:
             if not beacon.isType('projected'):
                 continue
-
             type = self.__class__.abyssal_mapping.get(beacon.name[0:-2], None)
             type = environments.get(type, None)
             if type is None:
                 continue
-
-            if type.name not in grouped:
-                grouped[type.name] = set()
-
+            subdata = data.groups.setdefault(type.name, Group())
             display_name = "{} {}".format(type.name, beacon.name[-1:])
-            grouped[type.name].add((beacon, display_name, display_name))
+            subdata.items.append(Entry(beacon.ID, display_name, display_name))
+        data.sort()
+
+        # Localized abyssal hazards
+        items = sMkt.getGroup("Abyssal Hazards").items
+        if items:
+            subdata = data.groups.setdefault(_t('Localized'), Group())
+            for beacon in sMkt.getGroup("Abyssal Hazards").items:
+                if not beacon.isType('projected'):
+                    continue
+                groups = (_t('Bioluminescence'), _t('Tachyon'), _t('Filament'))
+                for group in groups:
+                    if re.search(group, beacon.customName):
+                        key = group
+                        break
+                else:
+                    continue
+
+                subsubdata = subdata.groups.setdefault(key, Group())
+                subsubdata.items.append(Entry(beacon.ID, beacon.customName, beacon.customName))
+            subdata.sort()
 
         # PVP weather
-        flat.add((sMkt.getItem(49766), 'PvP Weather', 'PvP Weather'))
+        data.items.append(Entry(49766, _t('PvP Weather'), _t('PvP Weather')))
 
-        return grouped, flat
+        return data
 
-    def getLocalizedEnvironments(self):
+    def getDestructibleBeacons(self):
+        data = Group()
         sMkt = Market.getInstance()
-
-        grp = sMkt.getGroup("Abyssal Hazards")
-
-        grouped = dict()
-
-        for beacon in grp.items:
-            if not beacon.isType('projected'):
+        for item in sMkt.getItemsByGroup(sMkt.getGroup('Destructible Effect Beacon')):
+            if not item.isType('projected'):
                 continue
-            # Localized effects, currently, have a name like "(size) (type) Cloud"
-            # Until this inevitably changes, do a simple split
-            name_parts = beacon.name.split(" ")
-
-            key = name_parts[1].strip()
-            if key not in grouped:
-                grouped[key] = set()
-
-            grouped[key].add((beacon, beacon.name, beacon.name))
-
-        return grouped, ()
+            data.items.append(Entry(item.ID, item.name, item.name))
+        data.sort()
+        return data
 
 
 AddEnvironmentEffect.register()

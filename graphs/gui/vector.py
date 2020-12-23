@@ -36,9 +36,9 @@ class VectorPicker(wx.Window):
         self._labelpos = int(kwargs.pop('labelpos', 0))
         self._offset = float(kwargs.pop('offset', 0))
         self._size = max(0, float(kwargs.pop('size', 50)))
-        self._fontsize = max(1, float(kwargs.pop('fontsize', 8)))
         self._directionOnly = kwargs.pop('directionOnly', False)
         super().__init__(*args, **kwargs)
+        self._fontsize = max(1, float(kwargs.pop('fontsize', 8 / self.GetContentScaleFactor())))
         self._font = wx.Font(self._fontsize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self._angle = 0
         self.__length = 1
@@ -107,8 +107,11 @@ class VectorPicker(wx.Window):
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
 
+    def GetScaledClientSize(self):
+        return tuple([dim / self.GetContentScaleFactor() for dim in self.GetClientSize()])
+
     def Draw(self, dc):
-        width, height = self.GetClientSize()
+        width, height = self.GetScaledClientSize()
         if not width or not height:
             return
         dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.BRUSHSTYLE_SOLID))
@@ -122,9 +125,11 @@ class VectorPicker(wx.Window):
         a = math.radians(self._angle + self._offset)
         x = math.cos(a) * radius
         y = math.sin(a) * radius
+        # See PR #2260 on why this is needed
+        pointRadius = 2 / self.GetContentScaleFactor() if 'wxGTK' in wx.PlatformInfo else 2
         dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * self._length, radius + 2 - y * self._length)
         dc.SetBrush(wx.BLACK_BRUSH)
-        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, 2)
+        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, pointRadius)
 
         if self._label:
             labelText = self._label

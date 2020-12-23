@@ -20,6 +20,8 @@ import wx
 from gui.utils import anim_effects, color as color_utils, draw
 
 
+_t = wx.GetTranslation
+
 class PyGauge(wx.Window):
     def __init__(self, parent, font, max_range=100, size=(-1, 30), *args,
                  **kargs):
@@ -254,7 +256,6 @@ class PyGauge(wx.Window):
                 w = rect.width
             else:
                 w = rect.width * (float(value) / 100)
-
             r = copy.copy(rect)
             r.width = w
             dc.DrawRectangle(r)
@@ -315,7 +316,8 @@ class PyGauge(wx.Window):
                 color,
                 gradient_color
             )
-            dc.DrawBitmap(gradient_bitmap, r.left, r.top)
+            if gradient_bitmap is not None:
+                dc.DrawBitmap(gradient_bitmap, r.left, r.top)
 
         # font stuff begins here
         dc.SetFont(self.font)
@@ -326,33 +328,33 @@ class PyGauge(wx.Window):
         r.top += 1
 
         if self._max_range == 0.01 and self._value > 0:
-            format = u'\u221e'  # infinity symbol
+            format_ = u'\u221e'  # infinity symbol
             # drop shadow
             dc.SetTextForeground(wx.Colour(80, 80, 80))  # dark grey
-            dc.DrawLabel(format, r, wx.ALIGN_CENTER)
+            dc.DrawLabel(format_, r, wx.ALIGN_CENTER)
             # text
             dc.SetTextForeground(wx.WHITE)
-            dc.DrawLabel(format, rect, wx.ALIGN_CENTER)
+            dc.DrawLabel(format_, rect, wx.ALIGN_CENTER)
         else:
             if not self.GetBarColour() and self._show_remaining:
                 # we only do these for gradients with mouse over
-                range = self._max_range if self._max_range > 0.01 else 0
-                value = range - self._value
+                range_ = self._max_range if self._max_range > 0.01 else 0
+                value = range_ - self._value
                 if value < 0:
-                    label = "over"
+                    format_ = _t("{{0:.{0}f}} over").format(self._fraction_digits)
                     value = -value
                 else:
-                    label = "left"
-                format = "{0:." + str(self._fraction_digits) + "f} " + label
+                    format_ = _t("{{0:.{0}f}} left").format(self._fraction_digits)
+
             else:
-                format = "{0:." + str(self._fraction_digits) + "f}%"
+                format_ = "{{0:.{0}f}}%".format(str(self._fraction_digits))
 
             # drop shadow
             dc.SetTextForeground(wx.Colour(80, 80, 80))
-            dc.DrawLabel(format.format(value), r, wx.ALIGN_CENTER)
+            dc.DrawLabel(format_.format(value), r, wx.ALIGN_CENTER)
             # text
             dc.SetTextForeground(wx.WHITE)
-            dc.DrawLabel(format.format(value), rect, wx.ALIGN_CENTER)
+            dc.DrawLabel(format_.format(value), rect, wx.ALIGN_CENTER)
 
     def OnTimer(self, event):
         old_value = self._old_percentage

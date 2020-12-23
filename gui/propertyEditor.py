@@ -10,21 +10,23 @@ import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
 import gui.globalEvents as GE
 from eos.db.gamedata.queries import getAttributeInfo, getItem
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
+from service.fit import Fit
 from service.market import Market
 
-
 pyfalog = Logger(__name__)
+
+_t = wx.GetTranslation
 
 
 class AttributeEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
-            size=wx.Size(650, 600), resizeable=True)
+                parent, wx.ID_ANY, title=_t("Attribute Editor"), pos=wx.DefaultPosition,
+                size=wx.Size(650, 600), resizeable=True)
 
         i = wx.Icon(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         self.SetIcon(i)
@@ -33,11 +35,11 @@ class AttributeEditor(AuxiliaryFrame):
 
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
-        fileImport = fileMenu.Append(wx.ID_ANY, 'Import', 'Import overrides')
-        fileExport = fileMenu.Append(wx.ID_ANY, 'Export', 'Import overrides')
-        fileClear = fileMenu.Append(wx.ID_ANY, 'Clear All', 'Clear all overrides')
+        fileImport = fileMenu.Append(wx.ID_ANY, _t('Import'), _t('Import overrides'))
+        fileExport = fileMenu.Append(wx.ID_ANY, _t('Export'), _t('Import overrides'))
+        fileClear = fileMenu.Append(wx.ID_ANY, _t('Clear All'), _t('Clear all overrides'))
 
-        menubar.Append(fileMenu, '&File')
+        menubar.Append(fileMenu, _t('&File'))
         self.SetMenuBar(menubar)
 
         self.Bind(wx.EVT_MENU, self.OnImport, fileImport)
@@ -66,7 +68,7 @@ class AttributeEditor(AuxiliaryFrame):
         mainSizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
 
         rightSizer = wx.BoxSizer(wx.VERTICAL)
-        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, "Remove Overides for Item", wx.DefaultPosition,
+        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, _t("Remove Overides for Item"), wx.DefaultPosition,
                                             wx.DefaultSize, 0)
         self.pg = AttributeGrid(panel)
         rightSizer.Add(self.pg, 1, wx.ALL | wx.EXPAND, 5)
@@ -102,9 +104,9 @@ class AttributeEditor(AuxiliaryFrame):
 
     def OnImport(self, event):
         with wx.FileDialog(
-            self, "Import pyfa override file",
-            wildcard="pyfa override file (*.csv)|*.csv",
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+                self, _t("Import pyfa override file"),
+                wildcard=_t("pyfa override file") + " (*.csv)|*.csv",
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
@@ -125,10 +127,10 @@ class AttributeEditor(AuxiliaryFrame):
         defaultFile = "pyfa_overrides.csv"
 
         with wx.FileDialog(
-            self, "Save Overrides As...",
-            wildcard="pyfa overrides (*.csv)|*.csv",
-            style=wx.FD_SAVE,
-            defaultFile=defaultFile
+                self, _t("Save Overrides As..."),
+                wildcard=_t("pyfa overrides") + " (*.csv)|*.csv",
+                style=wx.FD_SAVE,
+                defaultFile=defaultFile
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
@@ -140,10 +142,10 @@ class AttributeEditor(AuxiliaryFrame):
 
     def OnClear(self, event):
         with wx.MessageDialog(
-            self,
-            "Are you sure you want to delete all overrides?",
-            "Confirm Delete",
-            wx.YES | wx.NO | wx.ICON_EXCLAMATION
+                self,
+                _t("Are you sure you want to delete all overrides?"),
+                _t("Confirm Delete"),
+                wx.YES | wx.NO | wx.ICON_EXCLAMATION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
                 sMkt = Market.getInstance()
@@ -168,49 +170,67 @@ class ItemView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
-        sMkt = Market.getInstance()
+        self.activeItems = []
 
-        self.things = sMkt.getItemsWithOverrides()
-        self.items = self.things
+        self.searchTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.scheduleSearch, self.searchTimer)
 
         self.searchBox = parent.Parent.Parent.searchBox
         # Bind search actions
         self.searchBox.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
         self.searchBox.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
         self.searchBox.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
-        self.searchBox.Bind(SBox.EVT_TEXT, self.scheduleSearch)
+        self.searchBox.Bind(SBox.EVT_TEXT, self.delaySearch)
 
-        self.update(self.items)
+        self.update(Market.getInstance().getItemsWithOverrides())
 
     def clearSearch(self, event=None):
         if event:
             self.searchBox.Clear()
-        self.items = self.things
-        self.update(self.items)
+        self.update(Market.getInstance().getItemsWithOverrides())
 
     def updateItems(self, updateDisplay=False):
-        sMkt = Market.getInstance()
-        self.things = sMkt.getItemsWithOverrides()
-        self.items = self.things
         if updateDisplay:
-            self.update(self.things)
+            self.update(Market.getInstance().getItemsWithOverrides())
+
+    def delaySearch(self, evt):
+        sFit = Fit.getInstance()
+        self.searchTimer.Stop()
+        self.searchTimer.Start(sFit.serviceFittingOptions["marketSearchDelay"], True)
 
     def scheduleSearch(self, event=None):
         sMkt = Market.getInstance()
 
         search = self.searchBox.GetLineText(0)
-        # Make sure we do not count wildcard as search symbol
-        realsearch = search.replace("*", "")
+        # Make sure we do not count wildcards as search symbol
+        realsearch = search.replace('*', '').replace('?', '')
         # Show nothing if query is too short
         if len(realsearch) < 3:
             self.clearSearch()
             return
 
-        sMkt.searchItems(search, self.populateSearch, False)
+        sMkt.searchItems(search, self.populateSearch, 'everything')
 
-    def populateSearch(self, items):
-        self.items = list(items)
+    def itemSort(self, item):
+        sMkt = Market.getInstance()
+        isFittable = item.group.name in sMkt.FIT_GROUPS or item.category.name in sMkt.FIT_CATEGORIES
+        return (not isFittable, *sMkt.itemSort(item))
+
+    def populateSearch(self, itemIDs):
+        items = Market.getItems(itemIDs)
         self.update(items)
+
+    def populate(self, items):
+        if len(items) > 0:
+            self.unselectAll()
+            items.sort(key=self.itemSort)
+        self.activeItems = items
+        d.Display.populate(self, items)
+
+    def refresh(self, items):
+        if len(items) > 1:
+            items.sort(key=self.itemSort)
+        d.Display.refresh(self, items)
 
 
 class AttributeGrid(wxpg.PropertyGrid):
@@ -236,7 +256,7 @@ class AttributeGrid(wxpg.PropertyGrid):
         self.Clear()
         self.btn.Enable(True)
         sel = event.EventObject.GetFirstSelected()
-        self.item = item = self.itemView.items[sel]
+        self.item = item = self.itemView.activeItems[sel]
 
         for key in sorted(item.attributes.keys()):
             override = item.overrides.get(key, None)
@@ -248,7 +268,7 @@ class AttributeGrid(wxpg.PropertyGrid):
                 prop = wxpg.FloatProperty(key, value=default)
 
             prop.SetClientData(item.attributes[key])  # set this so that we may access it later
-            prop.SetHelpString("%s\n%s" % (item.attributes[key].displayName or key, "Default Value: %0.3f" % default))
+            prop.SetHelpString("%s\n%s" % (item.attributes[key].displayName or key, _t("Default Value: %0.3f") % default))
             self.Append(prop)
 
     def removeOverrides(self, event):

@@ -6,6 +6,7 @@ from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES
 from logbook import Logger
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class MarketTree(wx.TreeCtrl):
@@ -33,7 +34,7 @@ class MarketTree(wx.TreeCtrl):
 
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
-        self.AppendItem(self.root, "Recently Used Items", rumIconId, data=RECENTLY_USED_MODULES)
+        self.AppendItem(self.root, _t("Recently Used Items"), rumIconId, data=RECENTLY_USED_MODULES)
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
@@ -60,9 +61,12 @@ class MarketTree(wx.TreeCtrl):
                 # If market should have items but it doesn't, do not show it
                 if sMkt.marketGroupValidityCheck(childMktGrp) is False:
                     continue
-                iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
+                icon = sMkt.getIconByMarketGroup(childMktGrp)
+                iconId = -1 if icon is None else self.addImage(icon)
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=childMktGrp.ID)
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except Exception as e:
                     pyfalog.debug("Error appending item.")
                     pyfalog.debug(e)

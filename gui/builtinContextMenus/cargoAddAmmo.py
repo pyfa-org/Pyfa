@@ -1,6 +1,10 @@
+import wx
+
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
+
+_t = wx.GetTranslation
 
 
 class AddToCargoAmmo(ContextMenuSingle):
@@ -21,7 +25,7 @@ class AddToCargoAmmo(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Add {0} to Cargo (x1000)".format(itmContext)
+        return _t("Add {0} to Cargo (x1000)").format(itmContext)
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()

@@ -17,6 +17,8 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.bitmap_loader import BitmapLoader
 
+_t = wx.GetTranslation
+
 
 def formatOperator(operator, stackingGroup, preResAmount, postResAmount):
     opMap = {
@@ -24,7 +26,8 @@ def formatOperator(operator, stackingGroup, preResAmount, postResAmount):
         Operator.PREINCREASE: '+',
         Operator.MULTIPLY: '*',
         Operator.POSTINCREASE: '+',
-        Operator.FORCE: '\u2263'}
+        Operator.FORCE: '\u2263'
+    }
     prefix = ''
     if stackingGroup is not None:
         prefix += 's'
@@ -61,17 +64,17 @@ class ItemAffectedBy(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.toggleExpandBtn = wx.ToggleButton(self, wx.ID_ANY, "Expand All", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleExpandBtn = wx.ToggleButton(self, wx.ID_ANY, _t("Expand All"), wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleNameBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleNameBtn = wx.ToggleButton(self, wx.ID_ANY, _t("Toggle Names"), wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleNameBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle View", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, _t("Toggle View"), wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, _t("Refresh"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
             bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshTree)
 
@@ -112,6 +115,8 @@ class ItemAffectedBy(wx.Panel):
         else:
             try:
                 self.affectedBy.CollapseAll()
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except:
                 pass
 

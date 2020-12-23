@@ -15,7 +15,7 @@ from service.market import Market
 from .events import FitSelected, Stage3Selected
 
 pyfalog = Logger(__name__)
-
+_t = wx.GetTranslation
 
 class ShipItem(SFItem.SFBrowserItem):
 
@@ -108,7 +108,7 @@ class ShipItem(SFItem.SFBrowserItem):
     def OnShowPopup(self, event):
         pos = event.GetPosition()
         pos = self.ScreenToClient(pos)
-        contexts = [("baseShip", "Ship Basic")]
+        contexts = [("baseShip", _t("Ship Basic"))]
         menu = ContextMenu.getMenu(self, self.baseItem, (self.baseItem,), *contexts)
         self.PopupMenu(menu, pos)
 

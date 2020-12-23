@@ -84,11 +84,13 @@ def _resolve_ship(fitting, sMkt, b_localized):
                 ship = Ship(sMkt.getItem(shipType))
             except ValueError:
                 ship = Citadel(sMkt.getItem(shipType))
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.warning("Caught exception on _resolve_ship")
             pyfalog.error(e)
             limit -= 1
-            if limit is 0:
+            if limit == 0:
                 break
             shipType = anything
             must_retry = True
@@ -128,11 +130,13 @@ def _resolve_module(hardware, sMkt, b_localized):
         must_retry = False
         try:
             item = sMkt.getItem(moduleName, eager="group.category")
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.warning("Caught exception on _resolve_module")
             pyfalog.error(e)
             limit -= 1
-            if limit is 0:
+            if limit == 0:
                 break
             moduleName = emergency
             must_retry = True
@@ -158,6 +162,8 @@ def importXml(text, iportuser):
     for fitting in fittings:
         try:
             fitobj = _resolve_ship(fitting, sMkt, b_localized)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             failed += 1
             continue
@@ -264,6 +270,8 @@ def exportXml(fits, iportuser, callback):
                 description.setAttribute(
                     "value", re.sub("(\r|\n|\r\n)+", "<br>", notes) if notes is not None else ""
                 )
+            except (KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 pyfalog.warning("read description is failed, msg=%s\n" % e.args)
 
@@ -328,6 +336,8 @@ def exportXml(fits, iportuser, callback):
                 hardware.setAttribute("slot", "cargo")
                 hardware.setAttribute("type", name)
                 fitting.appendChild(hardware)
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except Exception as e:
             pyfalog.error("Failed on fitID: %d, message: %s" % e.message)
             continue

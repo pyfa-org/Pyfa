@@ -148,7 +148,7 @@ class StatsPane(wx.Panel):
             sizer.AddStretchSpacer()
             # Add menu
             header_menu = wx.StaticText(tp.GetHeaderPanel(), wx.ID_ANY, "\u2630", size=wx.Size((10, -1)))
-            sizer.Add(header_menu , 0, wx.EXPAND | wx.RIGHT | wx.ALIGN_RIGHT, 5)
+            sizer.Add(header_menu , 0, wx.EXPAND | wx.RIGHT, 5)
 
             header_menu.Bind(wx.EVT_CONTEXT_MENU, handler)
             header_menu.Bind(wx.EVT_LEFT_UP, handler)

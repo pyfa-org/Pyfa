@@ -6,9 +6,10 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 
+_t = wx.GetTranslation
+
 
 class AmmoToDmgPattern(ContextMenuSingle):
-
     visibilitySetting = 'ammoPattern'
 
     def __init__(self):
@@ -28,7 +29,7 @@ class AmmoToDmgPattern(ContextMenuSingle):
         return False
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Set {} as Damage Pattern".format(itmContext if itmContext is not None else "Item")
+        return _t("Set {} as Damage Pattern").format(itmContext if itmContext is not None else _t("Item"))
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()

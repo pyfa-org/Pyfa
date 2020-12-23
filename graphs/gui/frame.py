@@ -27,15 +27,15 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
-from gui.auxFrame import AuxiliaryFrame
+from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from . import canvasPanel
 from .ctrlPanel import GraphControlPanel
 
-
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 REDRAW_DELAY = 500
@@ -48,8 +48,9 @@ class GraphFrame(AuxiliaryFrame):
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
-        super().__init__(parent, title='Graphs', size=(520, 390), resizeable=True)
+        super().__init__(parent, title=_t('Graphs'), size=(520, 390), resizeable=True)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.includeHidden = includeHidden
 
         self.SetIcon(wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui')))
 
@@ -74,7 +75,7 @@ class GraphFrame(AuxiliaryFrame):
 
         # Setup - graph selector
         for view in FitGraph.views:
-            if view.hidden and not includeHidden:
+            if view.hidden and not self.includeHidden:
                 continue
             self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)

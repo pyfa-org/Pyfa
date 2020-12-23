@@ -1,6 +1,5 @@
 import re
 
-# noinspection PyPackageRequirements
 import wx
 
 import gui.fitCommands as cmd
@@ -11,6 +10,10 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.fit import Fit as es_Fit
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
+
+# noinspection PyPackageRequirements
+
+_t = wx.GetTranslation
 
 
 class ChangeItemAmount(ContextMenuSingle):
@@ -28,7 +31,7 @@ class ChangeItemAmount(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
-        return "Change {0} Quantity".format(itmContext)
+        return _t("Change {0} Quantity").format(itmContext)
 
     def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
@@ -54,30 +57,30 @@ class ChangeItemAmount(ContextMenuSingle):
 
                 if isinstance(mainItem, es_Cargo):
                     self.mainFrame.command.Submit(cmd.GuiChangeCargoAmountCommand(
-                        fitID=fitID, itemID=mainItem.itemID, amount=cleanInput))
+                            fitID=fitID, itemID=mainItem.itemID, amount=cleanInput))
                 elif isinstance(mainItem, Drone):
                     if srcContext == "projectedDrone":
                         self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneAmountCommand(
-                            fitID=fitID, itemID=mainItem.itemID, amount=cleanInput))
+                                fitID=fitID, itemID=mainItem.itemID, amount=cleanInput))
                     else:
                         if mainItem in fit.drones:
                             position = fit.drones.index(mainItem)
                             self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneAmountCommand(
-                                fitID=fitID, position=position, amount=cleanInput))
+                                    fitID=fitID, position=position, amount=cleanInput))
                 elif isinstance(mainItem, es_Fit):
                     self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitAmountCommand(
-                        fitID=fitID, projectedFitID=mainItem.ID, amount=cleanInput))
+                            fitID=fitID, projectedFitID=mainItem.ID, amount=cleanInput))
                 elif isinstance(mainItem, es_Fighter):
                     if srcContext == "projectedFighter":
                         if mainItem in fit.projectedFighters:
                             position = fit.projectedFighters.index(mainItem)
                             self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterAmountCommand(
-                                fitID=fitID, position=position, amount=cleanInput))
+                                    fitID=fitID, position=position, amount=cleanInput))
                     else:
                         if mainItem in fit.fighters:
                             position = fit.fighters.index(mainItem)
                             self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterAmountCommand(
-                                fitID=fitID, position=position, amount=cleanInput))
+                                    fitID=fitID, position=position, amount=cleanInput))
 
 
 ChangeItemAmount.register()
@@ -86,13 +89,13 @@ ChangeItemAmount.register()
 class AmountChanger(wx.Dialog):
 
     def __init__(self, parent, value, limits=None):
-        super().__init__(parent, title="Change Amount", style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(parent, title=_t("Change Amount"), style=wx.DEFAULT_DIALOG_STYLE)
         self.SetMinSize((346, 156))
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
         bSizer2 = wx.BoxSizer(wx.VERTICAL)
-        text = wx.StaticText(self, wx.ID_ANY, "New Amount:" if limits is None else "New Amount ({}-{})".format(*limits))
+        text = wx.StaticText(self, wx.ID_ANY, _t("New Amount:") if limits is None else _t("New Amount ({}-{})").format(*limits))
         bSizer2.Add(text, 0)
 
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)

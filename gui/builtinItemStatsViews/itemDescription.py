@@ -4,6 +4,8 @@ import wx
 import wx.html
 import re
 
+_t = wx.GetTranslation
+
 
 class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
@@ -24,9 +26,9 @@ class ItemDescription(wx.Panel):
         # Strip URLs
         desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", desc)
         desc = "<body style='background-color: {}; color: {}'>{}</body>".format(
-            bgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
-            fgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
-            desc
+                bgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
+                fgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
+                desc
         )
 
         self.description.SetPage(desc)
@@ -35,10 +37,10 @@ class ItemDescription(wx.Panel):
         self.Layout()
 
         self.description.Bind(wx.EVT_CONTEXT_MENU, self.onPopupMenu)
-        self.description.Bind(wx.EVT_KEY_DOWN, self.onKeyDown)
+        self.description.Bind(wx.EVT_KEY_UP, self.onKeyUp)
 
         self.popupMenu = wx.Menu()
-        copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
+        copyItem = wx.MenuItem(self.popupMenu, 1, _t('Copy'))
         self.popupMenu.Append(copyItem)
         self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, copyItem)
 
@@ -50,7 +52,7 @@ class ItemDescription(wx.Panel):
         if selectedMenuItem == 1:  # Copy was chosen
             self.copySelectionToClipboard()
 
-    def onKeyDown(self, event):
+    def onKeyUp(self, event):
         keyCode = event.GetKeyCode()
         # Ctrl + C
         if keyCode == 67 and event.ControlDown():
