@@ -539,7 +539,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return DmgTypes(0, 0, 0, 0)
         return volleyParams[min(volleyParams)]
 
-    def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False):
+    def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False, getSpreadDPS=False):
         dmgDuringCycle = DmgTypes(0, 0, 0, 0)
         cycleParams = self.getCycleParameters()
         if cycleParams is None:
@@ -556,7 +556,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             thermal=dmgDuringCycle.thermal * dpsFactor,
             kinetic=dmgDuringCycle.kinetic * dpsFactor,
             explosive=dmgDuringCycle.explosive * dpsFactor)
-        return dps
+        if not getSpreadDPS:
+            return dps
+        return {'em':dmgDuringCycle.em * dpsFactor,
+                'therm': dmgDuringCycle.thermal * dpsFactor,
+                'kin': dmgDuringCycle.kinetic * dpsFactor,
+                'exp': dmgDuringCycle.explosive * dpsFactor}
 
     def isRemoteRepping(self, ignoreState=False):
         repParams = self.getRepAmountParameters(ignoreState=ignoreState)
