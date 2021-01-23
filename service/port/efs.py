@@ -28,7 +28,7 @@ pyfaVersion = getVersion()
 
 class EfsPort:
     wepTestSet = {}
-    version = 0.04
+    version = 0.05
 
     @staticmethod
     def attrDirectMap(values, target, source):
@@ -379,6 +379,7 @@ class EfsPort:
             stats = wepGroup[0]
             n = wepGroup[1]
             tracking = 0
+            optimalSigRadius = 0
             maxVelocity = 0
             explosionDelay = 0
             damageReductionFactor = 0
@@ -392,6 +393,7 @@ class EfsPort:
                 name = stats.item.typeName
             if stats.hardpoint == FittingHardpoint.TURRET:
                 tracking = stats.getModifiedItemAttr("trackingSpeed")
+                optimalSigRadius = stats.getModifiedItemAttr('optimalSigRadius')
                 typeing = "Turret"
             # Bombs share most attributes with missiles despite not needing the hardpoint
             elif stats.hardpoint == FittingHardpoint.MISSILE or "Bomb Launcher" in stats.item.typeName:
@@ -427,7 +429,7 @@ class EfsPort:
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
                 "damageMultiplierBonusPerCycle": stats.getModifiedItemAttr("damageMultiplierBonusPerCycle"),
-                "dps_spread": dps_spread_dict
+                "dps_spread": dps_spread_dict, "optimalSigRadius": optimalSigRadius
             }
             weaponSystems.append(statDict)
         for drone in fit.drones:
