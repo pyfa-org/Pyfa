@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2020-09-17 15:09\n"
+"PO-Revision-Date: 2021-01-24 02:52\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -1821,7 +1821,7 @@ msgstr "图表"
 
 #: eos/saveddata/fit.py:402
 msgid "Gravimetric"
-msgstr "重力计强度"
+msgstr "引力"
 
 #: graphs/style.py:53
 msgid "Green"
@@ -2124,7 +2124,7 @@ msgstr "动能抗性"
 
 #: eos/saveddata/fit.py:402
 msgid "Ladar"
-msgstr ""
+msgstr "光雷达"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:97
 msgid "Language (requires restart)"
@@ -2418,7 +2418,7 @@ msgstr "多频"
 
 #: eos/saveddata/fit.py:408
 msgid "Multispectral"
-msgstr ""
+msgstr "多谱式"
 
 #: gui/copySelectDialog.py:54
 msgid "Mutated Attributes"
