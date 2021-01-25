@@ -55,7 +55,7 @@ def calculate_time_in_warp(max_warp_speed, max_subwarp_speed, warp_dist):
     k_accel = max_warp_speed
     k_decel = min(max_warp_speed / 3, 2)
 
-    warp_dropout_speed = max_subwarp_speed / 2
+    warp_dropout_speed = min(max_subwarp_speed / 2, 100)
     max_ms_warp_speed = max_warp_speed * AU_METERS
 
     accel_dist = AU_METERS
