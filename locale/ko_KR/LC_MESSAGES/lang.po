@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2021-01-27 04:57\n"
+"PO-Revision-Date: 2021-01-27 14:54\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -307,7 +307,7 @@ msgstr ""
 
 #: gui/itemStats.py:196
 msgid "Affected by"
-msgstr ""
+msgstr "다음에서 영향 받음"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 #, python-format
@@ -484,11 +484,11 @@ msgstr ""
 
 #: graphs/gui/ctrlPanel.py:64
 msgid "Axis X:"
-msgstr ""
+msgstr "X축:"
 
 #: graphs/gui/ctrlPanel.py:56
 msgid "Axis Y:"
-msgstr ""
+msgstr "Y축:"
 
 #: gui/builtinShipBrowser/navigationPanel.py:50
 msgid "Back"
@@ -500,7 +500,7 @@ msgstr ""
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
-msgstr ""
+msgstr "전체 피팅을 XML로 백업"
 
 #: gui/mainFrame.py:874 gui/mainFrame.py:905
 msgid "Backup fits"
