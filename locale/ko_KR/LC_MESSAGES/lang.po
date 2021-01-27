@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2020-08-02 17:09\n"
+"PO-Revision-Date: 2021-01-27 03:46\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -141,7 +141,7 @@ msgstr "&캐릭터 저장"
 
 #: gui/mainMenuBar.py:153
 msgid "&Target Profile Editor"
-msgstr ""
+msgstr "타겟 프로필 에디터"
 
 #: gui/mainMenuBar.py:87
 msgid "&To Clipboard"
@@ -278,7 +278,7 @@ msgstr "여러 핏 추가"
 
 #: gui/builtinContextMenus/targetProfile/adder.py:29
 msgid "Add Target Profile"
-msgstr ""
+msgstr "타겟 프로필 추가"
 
 #: gui/builtinContextMenus/cargoAddAmmo.py:28
 #, python-brace-format
