@@ -30317,12 +30317,12 @@ class Effect6658(BaseEffect):
                                                   mod.item.requiresSkill('Large Hybrid Turret') or
                                                   mod.item.requiresSkill('Large Projectile Turret'),
                                       'falloff', src.getModifiedItemAttr('falloffBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=True, penaltyGroup='postPerc', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
                                                   mod.item.requiresSkill('Large Hybrid Turret') or
                                                   mod.item.requiresSkill('Large Projectile Turret'),
                                       'speed', src.getModifiedItemAttr('siegeTurretDamageBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=True, penaltyGroup='postPerc', **kwargs)
 
         # Missiles
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes') or
