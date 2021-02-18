@@ -1529,7 +1529,7 @@
     "displayName_es": "Remote Armor Repairer Strength Penalty", 
     "displayName_fr": "Pénalité de puissance sur les réparateurs de blindage à distance", 
     "displayName_it": "Remote Armor Repairer Strength Penalty", 
-    "displayName_ja": "リモート装甲修復装置強度ペナルティ", 
+    "displayName_ja": "リモートアーマーリペアラ強度ペナルティ", 
     "displayName_ko": "원격 장갑 수리 강도 페널티", 
     "displayName_ru": "Штраф на силу модулей дистанционного ремонта брони", 
     "displayName_zh": "远程装甲维修器强度惩罚", 
@@ -2322,6 +2322,55 @@
     "locationGroupModifiers": [
       {
         "dogmaAttributeID": 54, 
+        "groupID": 65
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2109": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Module Heat Damage Reduction", 
+    "displayName_de": "Modul-Hitzeschadenreduktion", 
+    "displayName_en-us": "Module Heat Damage Reduction", 
+    "displayName_es": "Module Heat Damage Reduction", 
+    "displayName_fr": "Réduction des dégâts thermiques des modules", 
+    "displayName_it": "Module Heat Damage Reduction", 
+    "displayName_ja": "モジュール熱ダメージ減少", 
+    "displayName_ko": "모듈 과부하 피해 감소", 
+    "displayName_ru": "Снижение теплового урона для модулей", 
+    "displayName_zh": "装备超载伤害降低", 
+    "displayNameID": 573512, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1211
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2110": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Webifier Strength Bonus", 
+    "displayName_de": "Bonus auf die Stärke von Stasisnetzen", 
+    "displayName_en-us": "Stasis Webifier Strength Bonus", 
+    "displayName_es": "Stasis Webifier Strength Bonus", 
+    "displayName_fr": "Bonus à la puissance des générateurs de stase", 
+    "displayName_it": "Stasis Webifier Strength Bonus", 
+    "displayName_ja": "ステイシスウェビファイヤーの強度にボーナス", 
+    "displayName_ko": "스테이시스 웹 강도 증가", 
+    "displayName_ru": "Бонус к эффективности стазис-индуктора", 
+    "displayName_zh": "停滞缠绕光束强度加成", 
+    "displayNameID": 574787, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 20, 
         "groupID": 65
       }
     ], 
