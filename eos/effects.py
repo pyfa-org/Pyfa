@@ -37326,3 +37326,20 @@ class Effect8104(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Salvage Drone Specialization'),
             'maxVelocity', src.getModifiedItemAttr('maxVelocityBonus') * lvl, **kwargs)
+
+
+class Effect8106(BaseEffect):
+    """
+    shipPTdamageBonusMB2
+
+    Used by:
+    Ship: Vargur
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
+                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusMB2'),
+                                      skill='Minmatar Battleship', **kwargs)
