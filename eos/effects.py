@@ -30297,14 +30297,15 @@ class Effect6658(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         # Resistances
-        for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
-            for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
-                bonus = '%s%sDamageResonance' % (attrPrefix, damageType)
-                bonus = '%s%s' % (bonus[0].lower(), bonus[1:])
-                booster = '%s%sDamageResonance' % (layer, damageType)
-                penalize = False if layer == 'hull' else True
-                fit.ship.multiplyItemAttr(bonus, src.getModifiedItemAttr(booster),
-                                          stackingPenalties=penalize, penaltyGroup='preMul', **kwargs)
+        # Expressions for resistances were removed, possibly due to mistake on CCP part
+        # for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
+        #     for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
+        #         bonus = '%s%sDamageResonance' % (attrPrefix, damageType)
+        #         bonus = '%s%s' % (bonus[0].lower(), bonus[1:])
+        #         booster = '%s%sDamageResonance' % (layer, damageType)
+        #         penalize = False if layer == 'hull' else True
+        #         fit.ship.multiplyItemAttr(bonus, src.getModifiedItemAttr(booster),
+        #                                   stackingPenalties=penalize, penaltyGroup='preMul', **kwargs)
 
         # Turrets
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
@@ -30317,12 +30318,21 @@ class Effect6658(BaseEffect):
                                                   mod.item.requiresSkill('Large Projectile Turret'),
                                       'falloff', src.getModifiedItemAttr('falloffBonus'),
                                       stackingPenalties=True, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
+                                                  mod.item.requiresSkill('Large Hybrid Turret') or
+                                                  mod.item.requiresSkill('Large Projectile Turret'),
+                                      'speed', src.getModifiedItemAttr('siegeTurretDamageBonus'),
+                                      stackingPenalties=True, **kwargs)
 
         # Missiles
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes') or
                                                     mod.charge.requiresSkill('Cruise Missiles') or
                                                     mod.charge.requiresSkill('Heavy Missiles'),
                                         'maxVelocity', src.getModifiedItemAttr('missileVelocityBonus'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cruise Missiles') or
+                                                  mod.item.requiresSkill('Torpedoes'),
+                                      'speed', src.getModifiedItemAttr('siegeTurretDamageBonus'),
+                                      stackingPenalties=True, **kwargs)
 
         # Tanking
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
@@ -30335,7 +30345,6 @@ class Effect6658(BaseEffect):
         # Speed penalty
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), **kwargs)
 
-        # @todo: test these for April 2016 release
         # Max locked targets
         fit.ship.forceItemAttr('maxLockedTargets', src.getModifiedItemAttr('maxLockedTargets'), **kwargs)
 
@@ -30348,6 +30357,7 @@ class Effect6658(BaseEffect):
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
         fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
         fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
+        # This one was removed from expressions, but somehow MJD is still blocked, so leaving it here
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Micro Jump Drive Operation'),
                                          'activationBlocked', src.getModifiedItemAttr('activationBlockedStrenght'), **kwargs)
         fit.ship.boostItemAttr('targetPainterResistance', src.getModifiedItemAttr('targetPainterResistanceBonus'), **kwargs)
