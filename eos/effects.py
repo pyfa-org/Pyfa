@@ -639,6 +639,8 @@ class Effect157(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Deadeye' Large Hybrid Turret LH (6 of 6)
+    Implant: Festival-only 'Longbow' HD4 Dose
+    Implant: Festival-only 'Longbow' HD6 Dose
     Skill: Large Hybrid Turret
     """
 
@@ -657,6 +659,8 @@ class Effect159(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Lancer' Medium Energy Turret ME (6 of 6)
+    Implant: Festival-only 'Longbow' ED3 Dose
+    Implant: Festival-only 'Longbow' ED6 Dose
     Skill: Medium Energy Turret
     """
 
@@ -675,6 +679,8 @@ class Effect160(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Deadeye' Medium Hybrid Turret MH (6 of 6)
+    Implant: Festival-only 'Longbow' HD3 Dose
+    Implant: Festival-only 'Longbow' HD6 Dose
     Skill: Medium Hybrid Turret
     """
 
@@ -693,6 +699,8 @@ class Effect161(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Gunslinger' Medium Projectile Turret MP (6 of 6)
+    Implant: Festival-only 'Longbow' PD3 Dose
+    Implant: Festival-only 'Longbow' PD6 Dose
     Skill: Medium Projectile Turret
     """
 
@@ -711,6 +719,8 @@ class Effect162(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Lancer' Large Energy Turret LE (6 of 6)
+    Implant: Festival-only 'Longbow' ED4 Dose
+    Implant: Festival-only 'Longbow' ED6 Dose
     Implant: Pashan's Turret Handling Mindlink
     Skill: Large Energy Turret
     """
@@ -730,6 +740,8 @@ class Effect172(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Lancer' Small Energy Turret SE (6 of 6)
+    Implant: Festival-only 'Longbow' ED2 Dose
+    Implant: Festival-only 'Longbow' ED6 Dose
     Skill: Small Energy Turret
     """
 
@@ -748,6 +760,8 @@ class Effect173(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Deadeye' Small Hybrid Turret SH (6 of 6)
+    Implant: Festival-only 'Longbow' HD2 Dose
+    Implant: Festival-only 'Longbow' HD6 Dose
     Skill: Small Hybrid Turret
     """
 
@@ -766,6 +780,8 @@ class Effect174(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Gunslinger' Small Projectile Turret SP (6 of 6)
+    Implant: Festival-only 'Longbow' PD2 Dose
+    Implant: Festival-only 'Longbow' PD6 Dose
     Skill: Small Projectile Turret
     """
 
@@ -851,7 +867,7 @@ class Effect230(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Afterburner AB (6 of 6)
-    Implant: Eifyr and Co. 'Rogue' Agility 11-11
+    Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implant: Zor's Custom Navigation Link
     Skill: Afterburner
     """
@@ -886,7 +902,7 @@ class Effect242(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Acceleration Control AC (6 of 6)
-    Implant: Eifyr and Co. 'Rogue' Agility 11-11
+    Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     """
 
     type = 'passive'
@@ -1086,8 +1102,8 @@ class Effect391(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
+    Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implant: Michi's Excavation Augmentor
-    Implant: ORE 'Harvester' Efficiency 11-11
     Skill: Astrogeology
     Skill: Mining
     """
@@ -1106,6 +1122,8 @@ class Effect392(BaseEffect):
     mechanicHullHpBonusPostPercentHpShip
 
     Used by:
+    Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
+    Implants named like: Festival only 'Rock' HH Dose (4 of 4)
     Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
     Modules named like: Transverse Bulkhead (8 of 8)
     Skill: Mechanics
@@ -1196,6 +1214,7 @@ class Effect397(BaseEffect):
     Implants named like: Zainou 'Gypsy' CPU Management EE (6 of 6)
     Modules named like: Processor Overclocking Unit (8 of 8)
     Subsystems named like: Core Electronic Efficiency Gate (2 of 2)
+    Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Skill: CPU Management
     """
@@ -1214,6 +1233,8 @@ class Effect408(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Gunslinger' Large Projectile Turret LP (6 of 6)
+    Implant: Festival-only 'Longbow' PD4 Dose
+    Implant: Festival-only 'Longbow' PD6 Dose
     Skill: Large Projectile Turret
     """
 
@@ -1250,6 +1271,8 @@ class Effect446(BaseEffect):
     shieldManagementShieldCapacityBonusPostPercentCapacityLocationShipGroupShield
 
     Used by:
+    Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
+    Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: Genolution Core Augmentation CA-3
@@ -1273,6 +1296,7 @@ class Effect485(BaseEffect):
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
+    Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Skill: Capacitor Systems Operation
     """
@@ -1312,6 +1336,7 @@ class Effect490(BaseEffect):
     Implants named like: Inherent Implants 'Squire' Power Grid Management EG (6 of 6)
     Modules named like: Ancillary Current Router (8 of 8)
     Subsystems named like: Core Augmented Reactor (4 of 4)
+    Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-1
     Skill: Power Grid Management
     """
@@ -1884,7 +1909,7 @@ class Effect604(BaseEffect):
     shipPTspeedBonusMB2
 
     Used by:
-    Variations of ship: Tempest (4 of 4)
+    Variations of ship: Tempest (3 of 4)
     Ship: Maelstrom
     Ship: Marshal
     Ship: Panther
@@ -2444,10 +2469,10 @@ class Effect856(BaseEffect):
     warpSkillSpeed
 
     Used by:
+    Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
-    Implant: Eifyr and Co. 'Rogue' Agility 11-11
     Implant: Serenity YC122.9 Season Booster - Warp Speed
     """
 
@@ -3762,7 +3787,7 @@ class Effect1190(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
-    Implant: ORE 'Harvester' Efficiency 11-11
+    Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Module: Medium Ice Harvester Accelerator I
     Skill: Ice Harvesting
     """
@@ -4272,7 +4297,7 @@ class Effect1409(BaseEffect):
 
     Used by:
     Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
-    Implant: Poteque 'Prospector' Sharpeye 11-11
+    Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Skill: Astrometric Acquisition
     Skill: Astrometrics
     """
@@ -6991,6 +7016,7 @@ class Effect2432(BaseEffect):
     Implants named like: Mindflood Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
+    Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-1
     Skill: Capacitor Management
     """
@@ -7095,6 +7121,8 @@ class Effect2485(BaseEffect):
     implantArmorHpBonus2
 
     Used by:
+    Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
+    Implants named like: Festival only 'Rock' AH Dose (4 of 4)
     Implants named like: Inherent Implants 'Noble' Hull Upgrades HG (7 of 7)
     Implant: Genolution Core Augmentation CA-4
     Implant: Imperial Navy Modified 'Noble' Implant
@@ -7845,10 +7873,7 @@ class Effect2735(BaseEffect):
     boosterArmorHpPenalty
 
     Used by:
-    Implants named like: Crash Booster (3 of 4)
-    Implants named like: Exile Booster (3 of 4)
-    Implants named like: Frentix Booster (3 of 4)
-    Implants named like: X Instinct Booster (3 of 4)
+    Implants named like: Booster (12 of 40)
     """
 
     attr = 'boosterArmorHPPenalty'
@@ -8698,6 +8723,8 @@ class Effect2881(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    Implant: Festival-only 'Longbow' CM3 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8714,6 +8741,8 @@ class Effect2882(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    Implant: Festival-only 'Longbow' CM3 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8730,6 +8759,8 @@ class Effect2883(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    Implant: Festival-only 'Longbow' CM3 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8746,6 +8777,8 @@ class Effect2884(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    Implant: Festival-only 'Longbow' CM3 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8762,7 +8795,7 @@ class Effect2885(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
-    Implant: ORE 'Harvester' Efficiency 11-11
+    Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     """
 
     type = 'passive'
@@ -8779,6 +8812,8 @@ class Effect2887(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' RD2 Dose
     """
 
     type = 'passive'
@@ -8795,6 +8830,8 @@ class Effect2888(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' RD2 Dose
     """
 
     type = 'passive'
@@ -8811,6 +8848,8 @@ class Effect2889(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' RD2 Dose
     """
 
     type = 'passive'
@@ -8827,6 +8866,8 @@ class Effect2890(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' RD2 Dose
     """
 
     type = 'passive'
@@ -8842,6 +8883,7 @@ class Effect2891(BaseEffect):
     missileEMDmgBonusStandard
 
     Used by:
+    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
     """
 
@@ -8858,6 +8900,7 @@ class Effect2892(BaseEffect):
     missileExplosiveDmgBonusStandard
 
     Used by:
+    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
     """
 
@@ -8874,6 +8917,7 @@ class Effect2893(BaseEffect):
     missileKineticDmgBonusStandard
 
     Used by:
+    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
     """
 
@@ -8890,6 +8934,7 @@ class Effect2894(BaseEffect):
     missileThermalDmgBonusStandard
 
     Used by:
+    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
     """
 
@@ -8907,6 +8952,8 @@ class Effect2899(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    Implant: Festival-only 'Longbow' HM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8923,6 +8970,8 @@ class Effect2900(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    Implant: Festival-only 'Longbow' HM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8939,6 +8988,8 @@ class Effect2901(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    Implant: Festival-only 'Longbow' HM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8955,6 +9006,8 @@ class Effect2902(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    Implant: Festival-only 'Longbow' HM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8971,6 +9024,8 @@ class Effect2903(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    Implant: Festival-only 'Longbow' HAM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8987,6 +9042,8 @@ class Effect2904(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    Implant: Festival-only 'Longbow' HAM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9003,6 +9060,8 @@ class Effect2905(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    Implant: Festival-only 'Longbow' HAM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9019,6 +9078,8 @@ class Effect2906(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    Implant: Festival-only 'Longbow' HAM4 Dose
+    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9035,6 +9096,8 @@ class Effect2907(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' TP3 Dose
     """
 
     type = 'passive'
@@ -9051,6 +9114,8 @@ class Effect2908(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' TP3 Dose
     """
 
     type = 'passive'
@@ -9067,6 +9132,8 @@ class Effect2909(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' TP3 Dose
     """
 
     type = 'passive'
@@ -9083,6 +9150,8 @@ class Effect2910(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    Implant: Festival-only 'Longbow' MD6 Dose
+    Implant: Festival-only 'Longbow' TP3 Dose
     """
 
     type = 'passive'
@@ -13580,7 +13649,7 @@ class Effect4161(BaseEffect):
 
     Used by:
     Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
-    Implant: Poteque 'Prospector' Sharpeye 11-11
+    Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Skill: Astrometric Pinpointing
     Skill: Astrometrics
     """
@@ -13602,9 +13671,9 @@ class Effect4162(BaseEffect):
     Used by:
     Modules from group: Scan Probe Launcher (4 of 7)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
+    Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
-    Implant: Poteque 'Prospector' Sharpeye 11-11
     Implant: Serenity YC122.9 Season Booster - Probe Scanning Strength
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
@@ -36455,7 +36524,6 @@ class Effect8039(BaseEffect):
     upwellSkillaoeVelocityaoeCloudSizeBonus
 
     Used by:
-    Implants named like: EDENCOM Vorton Booster GU (3 of 3)
     Skill: Vorton Arc Guidance
     """
 
@@ -36689,22 +36757,6 @@ class Effect8062(BaseEffect):
         module.multiplyItemAttr('aoeVelocity', module.getModifiedChargeAttr('aoeVelocityBonus') or 0, **kwargs)
 
 
-class Effect8064(BaseEffect):
-    """
-    vortonProjectorOptimalRangeBonus
-
-    Used by:
-    Implants named like: EDENCOM Vorton Booster RA (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, implant, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
-                                      'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
-
-
 class Effect8065(BaseEffect):
     """
     vortonProjectorSkillRangeBonus
@@ -36719,22 +36771,6 @@ class Effect8065(BaseEffect):
     def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
                                       'maxRange', skill.getModifiedItemAttr('rangeSkillBonus') * skill.level, **kwargs)
-
-
-class Effect8066(BaseEffect):
-    """
-    vortonProjectorDamageBonus
-
-    Used by:
-    Implants named like: EDENCOM Vorton Booster DA (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, implant, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
-                                      'damageMultiplier', implant.getModifiedItemAttr('damageMultiplierBonus'), **kwargs)
 
 
 class Effect8068(BaseEffect):
