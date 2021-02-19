@@ -490,6 +490,10 @@ class Item(EqBase):
         return self.category.name == 'Charge'
 
     @property
+    def isCommodity(self):
+        return self.category.name == 'Commodity'
+
+    @property
     def isDrone(self):
         return self.category.name == 'Drone'
 

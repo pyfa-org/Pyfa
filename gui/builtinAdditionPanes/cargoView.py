@@ -70,7 +70,7 @@ class CargoView(d.Display):
 
     def addItem(self, event):
         item = Market.getInstance().getItem(event.itemID, eager='group')
-        if item is None or not item.isCharge:
+        if item is None or not (item.isCharge or item.isCommodity):
             event.Skip()
             return
 
