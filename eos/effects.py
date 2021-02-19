@@ -30331,7 +30331,7 @@ class Effect6658(BaseEffect):
                                         'maxVelocity', src.getModifiedItemAttr('missileVelocityBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cruise Missiles') or
                                                   mod.item.requiresSkill('Torpedoes'),
-                                      'speed', src.getModifiedItemAttr('siegeTurretDamageBonus'),
+                                      'speed', src.getModifiedItemAttr('siegeMissileDamageBonus'),
                                       stackingPenalties=True, **kwargs)
 
         # Tanking
