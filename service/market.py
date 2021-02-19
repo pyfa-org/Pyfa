@@ -443,7 +443,8 @@ class Market:
                                    24,  # Implants & Boosters
                                    404,  # Deployable Structures
                                    2202,  # Structure Equipment
-                                   2203  # Structure Modifications
+                                   2203,  # Structure Modifications
+                                   2456  # Filaments
                                    )
         self.SHOWN_MARKET_GROUPS = eos.db.getMarketTreeNodeIds(self.ROOT_MARKET_GROUPS)
         self.FIT_CATEGORIES = ['Ship']
