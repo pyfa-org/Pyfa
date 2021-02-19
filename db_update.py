@@ -142,7 +142,17 @@ def update_db():
             ):
                 row['published'] = True
             # Nearly useless and clutter search results too much
-            elif row['typeName_en-us'].startswith('Limited Synth '):
+            elif (
+                row['typeName_en-us'].startswith('Limited Synth ') or
+                row['typeName_en-us'].endswith(' Filament') and (
+                    "'Needlejack'" not in row['typeName_en-us'] and
+                    "'Devana'" not in row['typeName_en-us'] and
+                    "'Pochven'" not in row['typeName_en-us'] and
+                    "'Krai Veles'" not in row['typeName_en-us'] and
+                    "'Krai Perun'" not in row['typeName_en-us'] and
+                    "'Krai Svarog'" not in row['typeName_en-us']
+                )
+            ):
                 row['published'] = False
 
         newData = []

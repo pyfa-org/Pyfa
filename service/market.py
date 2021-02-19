@@ -426,7 +426,15 @@ class Market:
             "Structure",
             "Structure Module",
         )
-        self.SEARCH_GROUPS = ("Ice Product", "Cargo Container", "Secure Cargo Container", "Audit Log Secure Container", "Freight Container")
+        self.SEARCH_GROUPS = (
+            "Ice Product",
+            "Cargo Container",
+            "Secure Cargo Container",
+            "Audit Log Secure Container",
+            "Freight Container",
+            "Jump Filaments",
+            "Triglavian Space Filaments"
+        )
         self.ROOT_MARKET_GROUPS = (9,  # Ship Equipment
                                    1111,  # Rigs
                                    157,  # Drones
