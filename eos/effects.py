@@ -2273,7 +2273,6 @@ class Effect736(BaseEffect):
 
     Used by:
     Ship: Apocalypse Imperial Issue
-    Ship: Paladin
     """
 
     type = 'passive'
@@ -16493,7 +16492,6 @@ class Effect4902(BaseEffect):
     Used by:
     Ships from group: Assault Frigate (9 of 13)
     Ships from group: Command Destroyer (5 of 5)
-    Ships from group: Heavy Assault Cruiser (9 of 12)
     """
 
     type = 'passive'
@@ -30297,15 +30295,14 @@ class Effect6658(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         # Resistances
-        # Expressions for resistances were removed, possibly due to mistake on CCP part
-        # for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
-        #     for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
-        #         bonus = '%s%sDamageResonance' % (attrPrefix, damageType)
-        #         bonus = '%s%s' % (bonus[0].lower(), bonus[1:])
-        #         booster = '%s%sDamageResonance' % (layer, damageType)
-        #         penalize = False if layer == 'hull' else True
-        #         fit.ship.multiplyItemAttr(bonus, src.getModifiedItemAttr(booster),
-        #                                   stackingPenalties=penalize, penaltyGroup='preMul', **kwargs)
+        for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
+            for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
+                bonus = '%s%sDamageResonance' % (attrPrefix, damageType)
+                bonus = '%s%s' % (bonus[0].lower(), bonus[1:])
+                booster = '%s%sDamageResonance' % (layer, damageType)
+                penalize = False if layer == 'hull' else True
+                fit.ship.multiplyItemAttr(bonus, src.getModifiedItemAttr(booster),
+                                          stackingPenalties=penalize, penaltyGroup='preMul', **kwargs)
 
         # Turrets
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
@@ -30330,7 +30327,9 @@ class Effect6658(BaseEffect):
                                                     mod.charge.requiresSkill('Heavy Missiles'),
                                         'maxVelocity', src.getModifiedItemAttr('missileVelocityBonus'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cruise Missiles') or
-                                                  mod.item.requiresSkill('Torpedoes'),
+                                                  mod.item.requiresSkill('Torpedoes') or
+                                                  mod.item.requiresSkill('Torpedo Specialization') or
+                                                  mod.item.requiresSkill('Cruise Missile Specialization'),
                                       'speed', src.getModifiedItemAttr('siegeMissileDamageBonus'),
                                       stackingPenalties=True, **kwargs)
 
@@ -37343,3 +37342,20 @@ class Effect8106(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMB2'),
                                       skill='Minmatar Battleship', **kwargs)
+
+
+class Effect8107(BaseEffect):
+    """
+    shipBonusLETcapNeedAB2
+
+    Used by:
+    Ship: Paladin
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
+                                      'capacitorNeed', ship.getModifiedItemAttr('shipBonusAB2'),
+                                      skill='Amarr Battleship', **kwargs)
