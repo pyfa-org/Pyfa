@@ -148,6 +148,7 @@ def update_db():
                     "'Needlejack'" not in row['typeName_en-us'] and
                     "'Devana'" not in row['typeName_en-us'] and
                     "'Pochven'" not in row['typeName_en-us'] and
+                    "'Extraction'" not in row['typeName_en-us'] and
                     "'Krai Veles'" not in row['typeName_en-us'] and
                     "'Krai Perun'" not in row['typeName_en-us'] and
                     "'Krai Svarog'" not in row['typeName_en-us']
