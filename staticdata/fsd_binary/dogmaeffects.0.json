@@ -69419,6 +69419,106 @@
         "modifyingAttributeID": 2306, 
         "operation": 6, 
         "skillTypeID": 3325
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 51, 
+        "modifyingAttributeID": 2306, 
+        "operation": 6, 
+        "skillTypeID": 20213
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 51, 
+        "modifyingAttributeID": 2306, 
+        "operation": 6, 
+        "skillTypeID": 20212
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 267, 
+        "modifyingAttributeID": 267, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 269, 
+        "modifyingAttributeID": 269, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 268, 
+        "modifyingAttributeID": 268, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 270, 
+        "modifyingAttributeID": 270, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 113, 
+        "modifyingAttributeID": 974, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 111, 
+        "modifyingAttributeID": 975, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 109, 
+        "modifyingAttributeID": 976, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 110, 
+        "modifyingAttributeID": 977, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 271, 
+        "modifyingAttributeID": 271, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 273, 
+        "modifyingAttributeID": 273, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 272, 
+        "modifyingAttributeID": 272, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 274, 
+        "modifyingAttributeID": 274, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
@@ -86065,6 +86165,29 @@
         "modifyingAttributeID": 518, 
         "operation": 6, 
         "skillTypeID": 3308
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8107": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8107, 
+    "effectName": "shipBonusLETcapNeedAB2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 585, 
+        "operation": 6, 
+        "skillTypeID": 3309
       }
     ], 
     "propulsionChance": 0, 
