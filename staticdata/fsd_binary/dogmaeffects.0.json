@@ -69384,7 +69384,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2307, 
+        "modifyingAttributeID": 3109, 
         "operation": 6, 
         "skillTypeID": 3307
       }, 
@@ -69392,7 +69392,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2307, 
+        "modifyingAttributeID": 3109, 
         "operation": 6, 
         "skillTypeID": 3309
       }, 
@@ -69400,7 +69400,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2307, 
+        "modifyingAttributeID": 3109, 
         "operation": 6, 
         "skillTypeID": 3308
       }, 
@@ -69408,7 +69408,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2306, 
+        "modifyingAttributeID": 3108, 
         "operation": 6, 
         "skillTypeID": 3326
       }, 
@@ -69416,7 +69416,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2306, 
+        "modifyingAttributeID": 3108, 
         "operation": 6, 
         "skillTypeID": 3325
       }, 
@@ -69424,7 +69424,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2306, 
+        "modifyingAttributeID": 3108, 
         "operation": 6, 
         "skillTypeID": 20213
       }, 
@@ -69432,7 +69432,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 51, 
-        "modifyingAttributeID": 2306, 
+        "modifyingAttributeID": 3108, 
         "operation": 6, 
         "skillTypeID": 20212
       }, 
@@ -86116,9 +86116,9 @@
       {
         "domain": "charID", 
         "func": "OwnerRequiredSkillModifier", 
-        "modifiedAttributeID": 901, 
-        "modifyingAttributeID": 902, 
-        "operation": 6, 
+        "modifiedAttributeID": 902, 
+        "modifyingAttributeID": 3110, 
+        "operation": 2, 
         "skillTypeID": 57164
       }
     ], 
@@ -86139,7 +86139,7 @@
       {
         "domain": "itemID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 902, 
+        "modifiedAttributeID": 3110, 
         "modifyingAttributeID": 280, 
         "operation": 0
       }
@@ -86188,6 +86188,53 @@
         "modifyingAttributeID": 585, 
         "operation": 6, 
         "skillTypeID": 3309
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8108": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8108, 
+    "effectName": "signatureRadiusBonusOnline", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 552, 
+        "modifyingAttributeID": 3113, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8109": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 8109, 
+    "effectName": "targetSpectrumBreakerBonus", 
+    "electronicChance": 0, 
+    "guid": "effects.Invulnerability", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 552, 
+        "modifyingAttributeID": 3114, 
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 

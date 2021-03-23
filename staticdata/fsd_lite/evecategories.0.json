@@ -600,6 +600,20 @@
     "categoryNameID": 531338, 
     "published": true
   }, 
+  "2100": {
+    "categoryID": 2100, 
+    "categoryName_de": "Expertensysteme", 
+    "categoryName_en-us": "Expert Systems", 
+    "categoryName_es": "Expert Systems", 
+    "categoryName_fr": "Systèmes experts", 
+    "categoryName_it": "Expert Systems", 
+    "categoryName_ja": "エキスパートシステム", 
+    "categoryName_ko": "전문가 시스템", 
+    "categoryName_ru": "Экспертные системы", 
+    "categoryName_zh": "专家系统", 
+    "categoryNameID": 573416, 
+    "published": true
+  }, 
   "350001": {
     "categoryID": 350001, 
     "categoryName_de": "Infanterie", 

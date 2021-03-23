@@ -2378,5 +2378,58 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2111": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Thermal and Kinetic Missile Damage Bonuus", 
+    "displayName_de": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_en-us": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_es": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_fr": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_it": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_ja": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_ko": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_ru": "Thermal/Kinetic Missile Damage Bonuus", 
+    "displayName_zh": "热能/动能导弹伤害加成", 
+    "displayNameID": 576030, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 117, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 118, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2112": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Drone Damage Bonuus", 
+    "displayName_de": "Drone Damage Bonus", 
+    "displayName_en-us": "Drone Damage Bonus", 
+    "displayName_es": "Drone Damage Bonus", 
+    "displayName_fr": "Drone Damage Bonus", 
+    "displayName_it": "Drone Damage Bonus", 
+    "displayName_ja": "Drone Damage Bonus", 
+    "displayName_ko": "Drone Damage Bonus", 
+    "displayName_ru": "Drone Damage Bonus", 
+    "displayName_zh": "无人机伤害加成", 
+    "displayNameID": 576031, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 64
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
