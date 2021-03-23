@@ -868,6 +868,7 @@ class Effect230(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Afterburner AB (6 of 6)
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
+    Implant: Serenity Anniversary Limited 'Overclocker' Dose
     Implant: Zor's Custom Navigation Link
     Skill: Afterburner
     """
@@ -903,6 +904,7 @@ class Effect242(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Acceleration Control AC (6 of 6)
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
+    Implant: Serenity Anniversary Limited 'Overclocker' Dose
     """
 
     type = 'passive'
@@ -1104,6 +1106,7 @@ class Effect391(BaseEffect):
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implant: Michi's Excavation Augmentor
+    Implant: Serenity Anniversary Limited 'Efficiency' Dose
     Skill: Astrogeology
     Skill: Mining
     """
@@ -1126,6 +1129,7 @@ class Effect392(BaseEffect):
     Implants named like: Festival only 'Rock' HH Dose (4 of 4)
     Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
     Modules named like: Transverse Bulkhead (8 of 8)
+    Implant: Serenity Anniversary Limited 'Hardshell' Dose
     Skill: Mechanics
     """
 
@@ -1146,6 +1150,7 @@ class Effect394(BaseEffect):
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
+    Implant: Grand Prix Velocity Booster
     Implant: Quafe Zero
     Implant: Serenity YC122.9 Season Booster - Max Velocity
     Skill: Navigation
@@ -1277,6 +1282,7 @@ class Effect446(BaseEffect):
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: Genolution Core Augmentation CA-3
     Implant: Sansha Modified 'Gnome' Implant
+    Implant: Serenity Anniversary Limited 'Hardshell' Dose
     Skill: Shield Management
     """
 
@@ -1731,6 +1737,7 @@ class Effect584(BaseEffect):
     Used by:
     Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
+    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
     Implant: Standard Cerebral Accelerator
     """
 
@@ -2472,6 +2479,8 @@ class Effect856(BaseEffect):
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
+    Implant: Grand Prix Warp Booster
+    Implant: Serenity Anniversary Limited 'Overclocker' Dose
     Implant: Serenity YC122.9 Season Booster - Warp Speed
     """
 
@@ -3787,6 +3796,7 @@ class Effect1190(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implant: Serenity Anniversary Limited 'Efficiency' Dose
     Module: Medium Ice Harvester Accelerator I
     Skill: Ice Harvesting
     """
@@ -4297,6 +4307,7 @@ class Effect1409(BaseEffect):
     Used by:
     Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
+    Implant: Serenity Anniversary Limited 'Sharpeye' Dose
     Skill: Astrometric Acquisition
     Skill: Astrometrics
     """
@@ -4829,6 +4840,7 @@ class Effect1595(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
     Skill: Warhead Upgrades
     """
 
@@ -4847,6 +4859,7 @@ class Effect1596(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
     Skill: Warhead Upgrades
     """
 
@@ -4865,6 +4878,7 @@ class Effect1597(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
     Skill: Warhead Upgrades
     """
 
@@ -5107,6 +5121,7 @@ class Effect1657(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
     Skill: Warhead Upgrades
     """
 
@@ -7126,6 +7141,7 @@ class Effect2485(BaseEffect):
     Implant: Genolution Core Augmentation CA-4
     Implant: Imperial Navy Modified 'Noble' Implant
     Implant: Imperial Special Ops Field Enhancer - Standard
+    Implant: Serenity Anniversary Limited 'Hardshell' Dose
     """
 
     type = 'passive'
@@ -7407,7 +7423,6 @@ class Effect2645(BaseEffect):
 
     Used by:
     Modules from group: Warp Core Stabilizer (8 of 8)
-    Module: Target Spectrum Breaker
     """
 
     type = 'passive'
@@ -7872,7 +7887,10 @@ class Effect2735(BaseEffect):
     boosterArmorHpPenalty
 
     Used by:
-    Implants named like: Booster (12 of 40)
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
     """
 
     attr = 'boosterArmorHPPenalty'
@@ -8795,6 +8813,7 @@ class Effect2885(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implant: Serenity Anniversary Limited 'Efficiency' Dose
     """
 
     type = 'passive'
@@ -9299,7 +9318,6 @@ class Effect3002(BaseEffect):
     Modules from group: Warp Disrupt Field Generator (7 of 7)
     Modules named like: Remote Repairer (56 of 56)
     Module: Reactive Armor Hardener
-    Module: Target Spectrum Breaker
     """
 
     type = 'overheat'
@@ -13649,6 +13667,7 @@ class Effect4161(BaseEffect):
     Used by:
     Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
+    Implant: Serenity Anniversary Limited 'Sharpeye' Dose
     Skill: Astrometric Pinpointing
     Skill: Astrometrics
     """
@@ -13673,6 +13692,7 @@ class Effect4162(BaseEffect):
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
+    Implant: Serenity Anniversary Limited 'Sharpeye' Dose
     Implant: Serenity YC122.9 Season Booster - Probe Scanning Strength
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
@@ -16751,23 +16771,12 @@ class Effect4941(BaseEffect):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
 
-class Effect4942(BaseEffect):
-    """
-    targetBreaker
-
-    Used by:
-    Module: Target Spectrum Breaker
-    """
-
-    type = 'active'
-
-
 class Effect4945(BaseEffect):
     """
     skillTargetBreakerDurationBonus2
 
     Used by:
-    Skill: Target Breaker Amplification
+    Skill: Signature Masking
     """
 
     type = 'passive'
@@ -16783,7 +16792,7 @@ class Effect4946(BaseEffect):
     skillTargetBreakerCapNeedBonus2
 
     Used by:
-    Skill: Target Breaker Amplification
+    Skill: Signature Masking
     """
 
     type = 'passive'
