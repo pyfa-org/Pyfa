@@ -167,9 +167,9 @@ class EfsPort:
             "Energy Nosferatu", "Energy Neutralizer", "Burst Jammer", "ECM", "Sensor Dampener",
             "Weapon Disruptor", "Remote Armor Repairer", "Target Painter", "Remote Hull Repairer",
             "Burst Projectors", "Warp Disrupt Field Generator", "Armor Resistance Shift Hardener",
-            "Target Breaker", "Micro Jump Drive", "Ship Modifiers", "Stasis Grappler",
-            "Ancillary Remote Shield Booster", "Ancillary Remote Armor Repairer",
-            "Titan Phenomena Generator", "Non-Repeating Hardeners", "Mutadaptive Remote Armor Repairer"
+            "Micro Jump Drive", "Ship Modifiers", "Stasis Grappler", "Ancillary Remote Shield Booster",
+            "Ancillary Remote Armor Repairer", "Titan Phenomena Generator", "Non-Repeating Hardeners",
+            "Mutadaptive Remote Armor Repairer"
         ]
         projectedMods = EfsPort.getModsInGroups(fit, modGroupNames)
         projections = []
