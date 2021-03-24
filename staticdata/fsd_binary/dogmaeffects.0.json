@@ -38791,7 +38791,7 @@
         "domain": "shipID", 
         "func": "LocationGroupModifier", 
         "groupID": 1154, 
-        "modifiedAttributeID": 73, 
+        "modifiedAttributeID": 3115, 
         "modifyingAttributeID": 66, 
         "operation": 6
       }
@@ -86219,7 +86219,7 @@
   "8109": {
     "disallowAutoRepeat": 0, 
     "dischargeAttributeID": 6, 
-    "durationAttributeID": 73, 
+    "durationAttributeID": 3115, 
     "effectCategory": 1, 
     "effectID": 8109, 
     "effectName": "targetSpectrumBreakerBonus", 

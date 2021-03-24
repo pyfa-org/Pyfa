@@ -42383,5 +42383,28 @@
     "published": 1, 
     "stackable": 0, 
     "unitID": 108
+  }, 
+  "3115": {
+    "attributeID": 3115, 
+    "categoryID": 7, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "description": "Length of activation time.", 
+    "displayName_de": "Activation time / duration", 
+    "displayName_en-us": "Activation time / duration", 
+    "displayName_es": "Activation time / duration", 
+    "displayName_fr": "Activation time / duration", 
+    "displayName_it": "Activation time / duration", 
+    "displayName_ja": "Activation time / duration", 
+    "displayName_ko": "Activation time / duration", 
+    "displayName_ru": "Activation time / duration", 
+    "displayName_zh": "Activation time / duration", 
+    "displayNameID": 576795, 
+    "highIsGood": 1, 
+    "iconID": 1392, 
+    "name": "durationHighisGood", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 101
   }
 }
