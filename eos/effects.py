@@ -37378,7 +37378,7 @@ class Effect8108(BaseEffect):
     Module: Signature Radius Suppressor I
     """
 
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):

@@ -111,7 +111,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.hasAmmo:
             cycleTime = self.getModifiedItemAttr("missileLaunchDuration", 0)
         else:
-            for attr in ("speed", "duration"):
+            for attr in ("speed", "duration", "durationHighisGood"):
                 cycleTime = self.getModifiedItemAttr(attr, None)
                 if cycleTime is not None:
                     break

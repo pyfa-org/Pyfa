@@ -1021,6 +1021,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         speed = max(
                 self.getModifiedItemAttr("speed", 0),  # Most weapons
                 self.getModifiedItemAttr("duration", 0),  # Most average modules
+                self.getModifiedItemAttr("durationHighisGood", 0),  # Most average modules
                 self.getModifiedItemAttr("durationSensorDampeningBurstProjector", 0),
                 self.getModifiedItemAttr("durationTargetIlluminationBurstProjector", 0),
                 self.getModifiedItemAttr("durationECMJammerBurstProjector", 0),
