@@ -19,6 +19,7 @@
 
 
 from logbook import Logger
+from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.orm.collections import collection
 
 
@@ -108,10 +109,7 @@ class HandledList(list):
 
     def remove(self, thing):
         # We must flag it as modified, otherwise it not be removed from the database
-        # @todo: flag_modified isn't in os x skel. need to rebuild to include
-        # flag_modified(thing, "itemID")
-        if thing.isInvalid:  # see GH issue #324
-            thing.itemID = 0
+        flag_dirty(thing)
         list.remove(self, thing)
 
     def sort(self, *args, **kwargs):
