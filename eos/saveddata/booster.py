@@ -159,6 +159,6 @@ class Booster(HandledItem, ItemAttrShortcut):
                 sideEffect.active = sideEffectStates[sideEffect.effectID]
 
     def __repr__(self):
-        return "Booster(ID={}, name={}) at {}".format(
-            self.item.ID, self.item.name, hex(id(self))
-        )
+        if self.item is not None:
+            return f"Booster(ID={self.item.ID}, name={self.item.name}) at {hex(id(self))}"
+        return f"Booster(ID={self.itemID}) at {hex(id(self))}"
