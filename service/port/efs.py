@@ -28,7 +28,7 @@ pyfaVersion = getVersion()
 
 class EfsPort:
     wepTestSet = {}
-    version = 0.04
+    version = 0.05
 
     @staticmethod
     def attrDirectMap(values, target, source):
@@ -379,6 +379,7 @@ class EfsPort:
             stats = wepGroup[0]
             n = wepGroup[1]
             tracking = 0
+            optimalSigRadius = 0
             maxVelocity = 0
             explosionDelay = 0
             damageReductionFactor = 0
@@ -392,6 +393,7 @@ class EfsPort:
                 name = stats.item.typeName
             if stats.hardpoint == FittingHardpoint.TURRET:
                 tracking = stats.getModifiedItemAttr("trackingSpeed")
+                optimalSigRadius = stats.getModifiedItemAttr('optimalSigRadius')
                 typeing = "Turret"
             # Bombs share most attributes with missiles despite not needing the hardpoint
             elif stats.hardpoint == FittingHardpoint.MISSILE or "Bomb Launcher" in stats.item.typeName:
@@ -414,6 +416,10 @@ class EfsPort:
                 maxRange = 300000
             else:
                 maxRange = stats.maxRange
+
+            dps_spread_dict = stats.getDps(spoolOptions=spoolOptions, getSpreadDPS=True)
+            dps_spread_dict.update((x, y*n) for x, y in dps_spread_dict.items())
+
             statDict = {
                 "dps": stats.getDps(spoolOptions=spoolOptions).total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
                 "type": typeing, "name": name, "optimal": maxRange,
@@ -422,7 +428,8 @@ class EfsPort:
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
-                "damageMultiplierBonusPerCycle": stats.getModifiedItemAttr("damageMultiplierBonusPerCycle")
+                "damageMultiplierBonusPerCycle": stats.getModifiedItemAttr("damageMultiplierBonusPerCycle"),
+                "dps_spread": dps_spread_dict, "optimalSigRadius": optimalSigRadius
             }
             weaponSystems.append(statDict)
         for drone in fit.drones:
@@ -663,6 +670,7 @@ class EfsPort:
         modTypeIDs = modInfo["modTypeIDs"]
         weaponSystems = EfsPort.getWeaponSystemData(fit)
 
+
         turretSlots = fitModAttr("turretSlotsLeft") if fitModAttr("turretSlotsLeft") is not None else 0
         launcherSlots = fitModAttr("launcherSlotsLeft") if fitModAttr("launcherSlotsLeft") is not None else 0
         droneBandwidth = fitModAttr("droneBandwidth") if fitModAttr("droneBandwidth") is not None else 0
@@ -686,6 +694,7 @@ class EfsPort:
             "exp": fitModAttr("shieldExplosiveDamageResonance"), "kin": fitModAttr("shieldKineticDamageResonance"),
             "therm": fitModAttr("shieldThermalDamageResonance"), "em": fitModAttr("shieldEmDamageResonance")
         }
+
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
         # Export at maximum spool for consistency, spoolup data is exported anyway.
@@ -735,6 +744,8 @@ class EfsPort:
                 "effectiveLaunchers": effectiveLauncherSlots, "effectiveDroneBandwidth": effectiveDroneBandwidth,
                 "resonance": resonance, "typeID": fit.shipID, "groupID": fit.ship.item.groupID, "shipSize": shipSize,
                 "droneControlRange": fitModAttr("droneControlRange"), "mass": fitModAttr("mass"),
+                "shieldrechargetime": fitModAttr("shieldRechargeRate"), 'shipinertia': fitModAttr("agility"),
+                "energyWarfareResistance": fitModAttr("energyWarfareResistance"),
                 "unpropedSpeed": propData["unpropedSpeed"], "unpropedSig": propData["unpropedSig"],
                 "usingMWD": propData["usingMWD"], "mwdPropSpeed": mwdPropSpeed, "projections": projections,
                 "repairs": repairs, "modTypeIDs": modTypeIDs, "moduleNames": moduleNames, "cargoItemIDs": cargoIDs,
