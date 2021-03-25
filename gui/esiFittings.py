@@ -156,7 +156,7 @@ class EveFittings(AuxiliaryFrame):
         data = json.loads(self.fitTree.fittingsTreeCtrl.GetItemData(selection))
 
         with wx.MessageDialog(
-            self, _t("Do you really want to delete {} ({}) from EVE?").format((data['name'], getItem(data['ship_type_id']).name)),
+            self, _t("Do you really want to delete {} ({}) from EVE?").format(data['name'], getItem(data['ship_type_id']).name),
             _t("Confirm Delete"), wx.YES | wx.NO | wx.ICON_QUESTION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
