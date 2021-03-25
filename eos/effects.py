@@ -9298,7 +9298,8 @@ class Effect3001(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        module.boostItemAttr('speed', module.getModifiedItemAttr('overloadRofBonus'), **kwargs)
+        module.boostItemAttr('speed', module.getModifiedItemAttr('overloadRofBonus'),
+                             stackingPenalties=True, penaltyGroup='postPerc', **kwargs)
 
 
 class Effect3002(BaseEffect):
