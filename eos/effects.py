@@ -2488,7 +2488,7 @@ class Effect856(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        penalized = False if 'skill' in context or 'implant' in context else True
+        penalized = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.ship.boostItemAttr('warpSpeedMultiplier', container.getModifiedItemAttr('WarpSBonus'),
                                stackingPenalties=penalized, **kwargs)
 
@@ -16783,24 +16783,8 @@ class Effect4945(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Breaker',
-                                      'duration', skill.getModifiedItemAttr('durationBonus') * skill.level, **kwargs)
-
-
-class Effect4946(BaseEffect):
-    """
-    skillTargetBreakerCapNeedBonus2
-
-    Used by:
-    Skill: Signature Masking
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Breaker',
-                                      'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Signature Suppressor',
+                                      'durationHighisGood', skill.getModifiedItemAttr('durationBonus') * skill.level, **kwargs)
 
 
 class Effect4950(BaseEffect):
@@ -30327,7 +30311,7 @@ class Effect6658(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
                                                   mod.item.requiresSkill('Large Hybrid Turret') or
                                                   mod.item.requiresSkill('Large Projectile Turret'),
-                                      'speed', src.getModifiedItemAttr('siegeTurretDamageBonus'),
+                                      'speed', src.getModifiedItemAttr('bastionTurretROFBonus'),
                                       stackingPenalties=True, penaltyGroup='postPerc', **kwargs)
 
         # Missiles
@@ -30339,7 +30323,7 @@ class Effect6658(BaseEffect):
                                                   mod.item.requiresSkill('Torpedoes') or
                                                   mod.item.requiresSkill('Torpedo Specialization') or
                                                   mod.item.requiresSkill('Cruise Missile Specialization'),
-                                      'speed', src.getModifiedItemAttr('siegeMissileDamageBonus'),
+                                      'speed', src.getModifiedItemAttr('bastionMissileROFBonus'),
                                       stackingPenalties=True, **kwargs)
 
         # Tanking
@@ -30434,6 +30418,22 @@ class Effect6663(BaseEffect):
                                        src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningDroneAmountPercent',
                                      src.getModifiedItemAttr('miningAmountBonus') * lvl, **kwargs)
+
+
+class Effect6660(BaseEffect):
+    """
+    higgsWarpBubbleImmuneRemoval
+
+    Used by:
+    Modules from group: Burst Jammer (11 of 11)
+    Modules from group: Rig Anchor (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.forceItemAttr('warpBubbleImmune', ship.getModifiedItemAttr('warpBubbleImmuneModifier'), **kwargs)
 
 
 class Effect6664(BaseEffect):
@@ -37328,9 +37328,9 @@ class Effect8104(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level
-        fit.drones.filteredItemBoost(
+        fit.drones.filteredItemIncrease(
             lambda mod: mod.item.requiresSkill('Salvage Drone Specialization'),
-            'accessDifficultyBonus', src.getModifiedItemAttr('accessDifficultyBonus') * lvl, **kwargs)
+            'accessDifficultyBonus', src.getModifiedItemAttr('specAccessDifficultyBonus') * lvl, **kwargs)
         fit.drones.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Salvage Drone Specialization'),
             'maxVelocity', src.getModifiedItemAttr('maxVelocityBonus') * lvl, **kwargs)
@@ -37368,3 +37368,35 @@ class Effect8107(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusAB2'),
                                       skill='Amarr Battleship', **kwargs)
+
+
+class Effect8108(BaseEffect):
+    """
+    signatureRadiusBonusOnline
+
+    Used by:
+    Module: Signature Radius Suppressor I
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.multiplyItemAttr('signatureRadius', src.getModifiedItemAttr('signatureSuppressorSignatureRadiusBonusPassive'),
+                                  stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+
+
+class Effect8109(BaseEffect):
+    """
+    targetSpectrumBreakerBonus
+
+    Used by:
+    Module: Signature Radius Suppressor I
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.multiplyItemAttr('signatureRadius', src.getModifiedItemAttr('signatureSuppressorSignatureRadiusBonusActive'),
+                                  stackingPenalties=True, penaltyGroup='postMul', **kwargs)
