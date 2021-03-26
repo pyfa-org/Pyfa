@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2020-08-02 17:09\n"
+"PO-Revision-Date: 2021-03-02 15:09\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -383,7 +383,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:71
 msgid "Antimatter"
-msgstr ""
+msgstr "Антиматерия"
 
 #: gui/builtinContextMenus/implantSetApply.py:25
 msgid "Apply Implant Set"
@@ -428,7 +428,7 @@ msgstr "Сопротивление брони"
 #: gui/builtinStatsViews/outgoingViewFull.py:44
 #: gui/builtinStatsViews/outgoingViewMinimal.py:43
 msgid "Armor restored"
-msgstr ""
+msgstr "Броня восстановлена"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
@@ -568,7 +568,7 @@ msgstr "Просмотр фитов EVE"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Bump distance"
-msgstr ""
+msgstr "Расстояние до столкновения"
 
 #: graphs/data/fitMobility/graph.py:38
 msgid "Bump speed"
