@@ -191,7 +191,6 @@ mapper(es_Fit, fits_table,
                    Booster,
                    collection_class=HandledBoosterList,
                    cascade='all, delete, delete-orphan',
-                   backref='owner',
                    single_parent=True),
            "_Fit__drones": relation(
                    Drone,

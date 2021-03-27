@@ -24,11 +24,12 @@ import datetime
 from eos.db import saveddata_meta
 from eos.saveddata.booster import Booster
 from eos.saveddata.boosterSideEffect import BoosterSideEffect
+from eos.saveddata.fit import Fit
 
 boosters_table = Table("boosters", saveddata_meta,
                        Column("ID", Integer, primary_key=True),
                        Column("itemID", Integer),
-                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
+                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
                        Column("active", Boolean),
                        Column("created", DateTime, nullable=True, default=datetime.datetime.now),
                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
@@ -44,6 +45,7 @@ booster_side_effect_table = Table("boosterSideEffects", saveddata_meta,
 
 mapper(Booster, boosters_table,
        properties={
+        "owner": relation(Fit),
         "_Booster__sideEffects": relation(
             BoosterSideEffect,
             backref="booster",

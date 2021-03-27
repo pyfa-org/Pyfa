@@ -23,7 +23,6 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 
 class Mode(ItemAttrShortcut, HandledItem):
 
-
     def __init__(self, item, owner=None):
         if item.group.name != "Ship Modifiers":
             raise ValueError(
@@ -33,7 +32,6 @@ class Mode(ItemAttrShortcut, HandledItem):
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.item.attributes
         self.__itemModifiedAttributes.overrides = self.item.overrides
-
 
     @property
     def item(self):
