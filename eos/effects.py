@@ -30319,7 +30319,8 @@ class Effect6658(BaseEffect):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes') or
                                                     mod.charge.requiresSkill('Cruise Missiles') or
                                                     mod.charge.requiresSkill('Heavy Missiles'),
-                                        'maxVelocity', src.getModifiedItemAttr('missileVelocityBonus'), **kwargs)
+                                        'maxVelocity', src.getModifiedItemAttr('missileVelocityBonus'),
+                                        stackingPenalties=True, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cruise Missiles') or
                                                   mod.item.requiresSkill('Torpedoes') or
                                                   mod.item.requiresSkill('Torpedo Specialization') or
