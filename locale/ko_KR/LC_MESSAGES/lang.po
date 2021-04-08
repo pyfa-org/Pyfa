@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-27 15:29+0800\n"
-"PO-Revision-Date: 2021-01-27 16:06\n"
+"PO-Revision-Date: 2021-04-08 00:23\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -33,7 +33,7 @@ msgstr " 알파 샷: "
 #, python-format
 msgid "%d attribute."
 msgid_plural "%d attributes."
-msgstr[0] ""
+msgstr[0] "%d 속성"
 
 #: gui/mainMenuBar.py:73
 msgid "&Backup All Fittings"
@@ -295,7 +295,7 @@ msgstr "{} 를 드론 베이에 추가{}"
 
 #: gui/additionsPane.py:45
 msgid "Additions"
-msgstr ""
+msgstr "추가"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Additions Panel Copy/Paste"
