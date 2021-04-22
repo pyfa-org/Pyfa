@@ -100,7 +100,7 @@ msgstr "&Графики"
 
 #: gui/mainMenuBar.py:159
 msgid "&Help"
-msgstr "$Помощь"
+msgstr "&Помощь"
 
 #: gui/mainMenuBar.py:147
 msgid "&Implant Set Editor"
@@ -2056,7 +2056,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:122
 msgid "Interested in helping with translations?"
-msgstr ""
+msgstr "Заинтересованы в помощи с переводами?"
 
 #: eos/saveddata/damagePattern.py:127 eos/saveddata/damagePattern.py:128
 #: eos/saveddata/damagePattern.py:132 eos/saveddata/damagePattern.py:135
