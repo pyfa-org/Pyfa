@@ -86,7 +86,10 @@ def generate():
                          7*4,               # start of key index
                          7*4+len(keys)*8,   # start of value index
                          0, 0)              # size and offset of hash table
-    output += array.array("i", offsets).tostring()
+    try:
+        output += array.array("i", offsets).tostring()
+    except AttributeError:
+        output += array.array("i", offsets).tobytes()
     output += ids
     output += strs
     return output
