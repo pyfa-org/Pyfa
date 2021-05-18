@@ -325,7 +325,8 @@ def activeStateLimit(itemIdentity):
         'cynosuralGeneration', 'jumpPortalGeneration', 'jumpPortalGenerationBO',
         'cloneJumpAccepting', 'cloakingWarpSafe', 'cloakingPrototype', 'cloaking',
         'massEntanglerEffect5', 'electronicAttributeModifyOnline', 'targetPassively',
-        'cargoScan', 'shipScan', 'surveyScan', 'targetSpectrumBreakerBonus'
+        'cargoScan', 'shipScan', 'surveyScan', 'targetSpectrumBreakerBonus',
+        'interdictionNullifierBonus', 'warpCoreStabilizerActive'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
