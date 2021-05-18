@@ -2077,18 +2077,6 @@ class Effect668(BaseEffect):
                                         'kineticDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
 
-class Effect670(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
-
-
 class Effect675(BaseEffect):
     """
     weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringEnergyPulseWeapons
@@ -14444,18 +14432,6 @@ class Effect4366(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
-
-
-class Effect4369(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.ship.forceItemAttr('warpBubbleImmune', module.getModifiedItemAttr('warpBubbleImmuneModifier'), **kwargs)
 
 
 class Effect4370(BaseEffect):
@@ -37309,3 +37285,71 @@ class Effect8114(BaseEffect):
                                stackingPenalties=True, **kwargs)
         fit.ship.boostItemAttr('thermalDamageResonance', beacon.getModifiedItemAttr('thermalDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
+
+
+class Effect8117(BaseEffect):
+    """
+    interdictionNullifierBonus
+
+    Used by:
+    Modules from group: Interdiction Nullifier (4 of 4)
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.preAssignItemAttr('warpBubbleImmune', module.getModifiedItemAttr('warpBubbleImmuneBonus'), **kwargs)
+
+
+class Effect8120(BaseEffect):
+    """
+    interceptorNullificationRoleBonus
+
+    Used by:
+    Ships from group: Interceptor (6 of 10)
+    Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
+    Ship: Victorieux Luxury Yacht
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Interdiction Nullifier',
+                                      'maxTargetRangeBonus', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Interdiction Nullifier',
+                                      'moduleReactivationDelay', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Interdiction Nullifier',
+                                      'duration', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
+
+
+class Effect8121(BaseEffect):
+    """
+    warpCoreStabilizerActive
+
+    Used by:
+    Modules from group: Warp Core Stabilizer (8 of 8)
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'), **kwargs)
+
+
+class Effect8123(BaseEffect):
+    """
+    droneBandWidthPenaltyOnline
+
+    Used by:
+    Modules from group: Interdiction Nullifier (4 of 4)
+    Modules from group: Warp Core Stabilizer (8 of 8)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('droneBandwidth', module.getModifiedItemAttr('droneBandwidthPercentage'), **kwargs)
