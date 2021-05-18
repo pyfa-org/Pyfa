@@ -714,6 +714,9 @@ jde:
 zpme:
   - 'zpme'
   - 'zero-point mass entangler'
+srs:
+  - 'srs'
+  - 'signature radius suppressor'
 
 # Tackling modules
 point:
@@ -755,6 +758,12 @@ webifier:
   - 'webifier'
   - 'grappler'
   - 'sw-\d00'
+wub:
+  - 'wub'
+  - 'stasis webification probe'
+wubble:
+  - 'wubble'
+  - 'stasis webification probe'
 web:
   - 'web'
   - 'grappler'
