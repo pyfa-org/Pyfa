@@ -36838,20 +36838,6 @@ class Effect8074(BaseEffect):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusPC2'), skill='Precursor Cruiser', **kwargs)
 
 
-class Effect8075(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, beacon, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('emDamageResonance', beacon.getModifiedItemAttr('emDamageResistanceBonus'),
-                               stackingPenalties=True, **kwargs)
-
-
 class Effect8076(BaseEffect):
     """
     systemHullThermalResistance
@@ -36867,142 +36853,6 @@ class Effect8076(BaseEffect):
     def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('thermalDamageResonance', beacon.getModifiedItemAttr('thermalDamageResistanceBonus'),
                                stackingPenalties=True, **kwargs)
-
-
-class Effect8077(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('kineticDamageResonance', container.getModifiedItemAttr('kineticDamageResistanceBonus'),
-                               stackingPenalties=True, **kwargs)
-
-
-class Effect8078(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('explosiveDamageResonance', container.getModifiedItemAttr('explosiveDamageResistanceBonus'),
-                               stackingPenalties=True, **kwargs)
-
-
-class Effect8079(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Archaeology'),
-                                         'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus'), **kwargs)
-        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Hacking'),
-                                         'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus'), **kwargs)
-
-
-class Effect8080(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
-                                        'baseSensorStrength', container.getModifiedItemAttr('scanProbeStrengthBonus'),
-                                        stackingPenalties=True, **kwargs)
-
-
-class Effect8081(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.ship.increaseItemAttr('disallowCloaking', src.getModifiedItemAttr('disallowCloaking'), **kwargs)
-
-
-class Effect8082(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('scanResolution', container.getModifiedItemAttr('scanResolutionBonus'),
-                               stackingPenalties=True, **kwargs)
-
-
-class Effect8083(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems') or
-                                                  mod.item.requiresSkill('Capital Repair Systems'),
-                                      'duration', container.getModifiedItemAttr('armorRepairDurationBonus'), **kwargs)
-
-
-class Effect8084(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation') or
-                                                  mod.item.requiresSkill('Capital Shield Operation'),
-                                      'duration', container.getModifiedItemAttr('shieldBoosterDurationBonus'), **kwargs)
-
-
-class Effect8085(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.fighters.filteredItemMultiply(
-            lambda mod: mod.item.requiresSkill('Fighters'),
-            'fighterAbilityAttackMissileExplosionRadius', container.getModifiedItemAttr('aoeCloudSizeMultiplier'),
-            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
-        fit.fighters.filteredItemMultiply(
-            lambda mod: mod.item.requiresSkill('Fighters'),
-            'fighterAbilityMissilesExplosionRadius', container.getModifiedItemAttr('aoeCloudSizeMultiplier'),
-            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect8091(BaseEffect):
@@ -37302,3 +37152,160 @@ class Effect8109(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('signatureRadius', src.getModifiedItemAttr('signatureSuppressorSignatureRadiusBonusActive'),
                                   stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+
+
+class Effect8111(BaseEffect):
+    """
+    systemElectricalStorm
+
+    Used by:
+    Celestial: Strong Metaliminal Electrical Storm
+    Celestial: Weak Metaliminal Electrical Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.increaseItemAttr('disallowCloaking', beacon.getModifiedItemAttr('disallowCloaking'), **kwargs)
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
+                                        'baseSensorStrength', beacon.getModifiedItemAttr('scanProbeStrengthBonus'),
+                                        stackingPenalties=True, **kwargs)
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Archaeology'),
+                                         'virusCoherence', beacon.getModifiedItemAttr('virusCoherenceBonus'), **kwargs)
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Hacking'),
+                                         'virusCoherence', beacon.getModifiedItemAttr('virusCoherenceBonus'), **kwargs)
+        fit.ship.boostItemAttr('shieldEmDamageResonance', beacon.getModifiedItemAttr('shieldEmDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('armorEmDamageResonance', beacon.getModifiedItemAttr('armorEmDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('emDamageResonance', beacon.getModifiedItemAttr('emDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.multiplyItemAttr('rechargeRate', beacon.getModifiedItemAttr('rechargeRateMultiplier'), **kwargs)
+
+
+class Effect8112(BaseEffect):
+    """
+    systemExoticStorm
+
+    Used by:
+    Celestial: Strong Metaliminal Exotic Matter Storm
+    Celestial: Weak Metaliminal Exotic Matter Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems') or
+                                                  mod.item.requiresSkill('Capital Repair Systems'),
+                                      'duration', beacon.getModifiedItemAttr('armorRepairDurationBonus'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation') or
+                                                  mod.item.requiresSkill('Capital Shield Operation'),
+                                      'duration', beacon.getModifiedItemAttr('shieldBoosterDurationBonus'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+                                      beacon.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
+        fit.ship.boostItemAttr('warpSpeedMultiplier', beacon.getModifiedItemAttr('warpSpeedBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('scanResolution', beacon.getModifiedItemAttr('scanResolutionBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('shieldKineticDamageResonance',
+                               beacon.getModifiedItemAttr('shieldKineticDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('armorKineticDamageResonance',
+                               beacon.getModifiedItemAttr('armorKineticDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('kineticDamageResonance', beacon.getModifiedItemAttr('kineticDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
+class Effect8113(BaseEffect):
+    """
+    systemGammaStorm
+
+    Used by:
+    Celestial: Strong Metaliminal Gamma Ray Storm
+    Celestial: Weak Metaliminal Gamma Ray Storm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems') or
+                        mod.item.requiresSkill('Capital Shield Emission Systems'),
+            'shieldBonus', beacon.getModifiedItemAttr('shieldBonusMultiplierRemote'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') or
+                        mod.item.requiresSkill('Capital Remote Armor Repair Systems'),
+            'armorDamageAmount', beacon.getModifiedItemAttr('armorDamageAmountMultiplierRemote'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.ship.multiplyItemAttr('shieldCapacity', beacon.getModifiedItemAttr('shieldCapacityMultiplier'), **kwargs)
+        fit.ship.multiplyItemAttr('capacitorCapacity', beacon.getModifiedItemAttr('capacitorCapacityMultiplierSystem'), **kwargs)
+        fit.ship.multiplyItemAttr('signatureRadius', beacon.getModifiedItemAttr('signatureRadiusMultiplier'),
+                                  stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.ship.boostItemAttr('shieldExplosiveDamageResonance',
+                               beacon.getModifiedItemAttr('shieldExplosiveDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('armorExplosiveDamageResonance',
+                               beacon.getModifiedItemAttr('armorExplosiveDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('explosiveDamageResonance', beacon.getModifiedItemAttr('explosiveDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
+class Effect8114(BaseEffect):
+    """
+    systemPlasmaStorm
+
+    Used by:
+    Celestial: Strong Metaliminal Plasma Firestorm
+    Celestial: Weak Metaliminal Plasma Firestorm
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Gunnery'),
+                                         'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
+                                         stackingPenalties=True, **kwargs)
+        for attr in ('emDamage', 'explosiveDamage', 'kineticDamage', 'thermalDamage'):
+            fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                               attr, beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
+                                               stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.drones.filteredItemMultiply(lambda drone: drone.item.requiresSkill('Drones'),
+                                        'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
+                                        stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.fighters.filteredItemMultiply(lambda drone: drone.item.requiresSkill('Fighters'),
+                                          'damageMultiplier', beacon.getModifiedItemAttr('damageMultiplierMultiplier'),
+                                          stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Gunnery'),
+                                         'trackingSpeed', beacon.getModifiedItemAttr('trackingSpeedMultiplier'),
+                                         stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.drones.filteredItemMultiply(lambda drone: True,
+                                        'trackingSpeed', beacon.getModifiedItemAttr('trackingSpeedMultiplier'),
+                                        stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        for attr in ('fighterAbilityAttackMissileExplosionRadius', 'fighterAbilityMissilesExplosionRadius'):
+            fit.fighters.filteredItemMultiply(
+                lambda mod: mod.item.requiresSkill('Fighters'),
+                attr, beacon.getModifiedItemAttr('aoeCloudSizeMultiplier'),
+                stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.ship.multiplyItemAttr('armorHP', beacon.getModifiedItemAttr('armorHPMultiplier'), **kwargs)
+        fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                           'aoeCloudSize', beacon.getModifiedItemAttr('aoeCloudSizeMultiplier'),
+                                           stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+        fit.ship.boostItemAttr('shieldThermalDamageResonance',
+                               beacon.getModifiedItemAttr('shieldThermalDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('armorThermalDamageResonance',
+                               beacon.getModifiedItemAttr('armorThermalDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('thermalDamageResonance', beacon.getModifiedItemAttr('thermalDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
