@@ -86196,7 +86196,7 @@
   }, 
   "8108": {
     "disallowAutoRepeat": 0, 
-    "effectCategory": 0, 
+    "effectCategory": 4, 
     "effectID": 8108, 
     "effectName": "signatureRadiusBonusOnline", 
     "electronicChance": 0, 
@@ -86235,6 +86235,509 @@
         "modifiedAttributeID": 552, 
         "modifyingAttributeID": 3114, 
         "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8111": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8111, 
+    "effectName": "systemElectricalStorm", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 271, 
+        "modifyingAttributeID": 1489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 113, 
+        "modifyingAttributeID": 984, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1909, 
+        "modifyingAttributeID": 1915, 
+        "operation": 2, 
+        "skillTypeID": 21718
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1909, 
+        "modifyingAttributeID": 1915, 
+        "operation": 2, 
+        "skillTypeID": 13278
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1371, 
+        "modifyingAttributeID": 3095, 
+        "operation": 6, 
+        "skillTypeID": 3412
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2454, 
+        "modifyingAttributeID": 2454, 
+        "operation": 2
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 55, 
+        "modifyingAttributeID": 1500, 
+        "operation": 4
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 267, 
+        "modifyingAttributeID": 1465, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8112": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8112, 
+    "effectName": "systemExoticStorm", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 600, 
+        "modifyingAttributeID": 601, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 273, 
+        "modifyingAttributeID": 1491, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 109, 
+        "modifyingAttributeID": 986, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 564, 
+        "modifyingAttributeID": 566, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3098, 
+        "operation": 6, 
+        "skillTypeID": 3393
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3098, 
+        "operation": 6, 
+        "skillTypeID": 21803
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3099, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3099, 
+        "operation": 6, 
+        "skillTypeID": 21802
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 203, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 269, 
+        "modifyingAttributeID": 1466, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8113": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8113, 
+    "effectName": "systemGammaStorm", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 272, 
+        "modifyingAttributeID": 1490, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 111, 
+        "modifyingAttributeID": 985, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 84, 
+        "modifyingAttributeID": 1498, 
+        "operation": 4, 
+        "skillTypeID": 16069
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 84, 
+        "modifyingAttributeID": 1498, 
+        "operation": 4, 
+        "skillTypeID": 24568
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 146, 
+        "operation": 4
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 1497, 
+        "operation": 4, 
+        "skillTypeID": 3422
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 1497, 
+        "operation": 4, 
+        "skillTypeID": 24571
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 482, 
+        "modifyingAttributeID": 1499, 
+        "operation": 4
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 552, 
+        "modifyingAttributeID": 652, 
+        "operation": 4
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 268, 
+        "modifyingAttributeID": 1468, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8114": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 8114, 
+    "effectName": "systemPlasmaStorm", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 270, 
+        "modifyingAttributeID": 1467, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 1482, 
+        "operation": 4, 
+        "skillTypeID": 3300
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 1482, 
+        "operation": 4, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 1482, 
+        "operation": 4, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 1482, 
+        "operation": 4, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 1482, 
+        "operation": 4, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 1482, 
+        "operation": 4, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 244, 
+        "operation": 4, 
+        "skillTypeID": 3300
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 274, 
+        "modifyingAttributeID": 1492, 
+        "operation": 6
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 1482, 
+        "operation": 4, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 148, 
+        "operation": 4
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 654, 
+        "modifyingAttributeID": 1967, 
+        "operation": 4, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 244, 
+        "operation": 4, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 110, 
+        "modifyingAttributeID": 987, 
+        "operation": 6
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2234, 
+        "modifyingAttributeID": 1967, 
+        "operation": 4, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2125, 
+        "modifyingAttributeID": 1967, 
+        "operation": 4, 
+        "skillTypeID": 23069
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8117": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 8117, 
+    "effectName": "interdictionNullifierBonus", 
+    "electronicChance": 0, 
+    "guid": "effects.Invulnerability", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 1, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 1538, 
+        "modifyingAttributeID": 3120, 
+        "operation": -1
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8120": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8120, 
+    "effectName": "interceptorNullificationRoleBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 1, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 4117, 
+        "modifiedAttributeID": 309, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 4117, 
+        "modifiedAttributeID": 669, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 4117, 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 2299, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8121": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 8121, 
+    "effectName": "warpCoreStabilizerActive", 
+    "electronicChance": 0, 
+    "guid": "effects.Invulnerability", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 104, 
+        "modifyingAttributeID": 105, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8123": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 4, 
+    "effectID": 8123, 
+    "effectName": "droneBandWidthPenaltyOnline", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 1271, 
+        "modifyingAttributeID": 3124, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 

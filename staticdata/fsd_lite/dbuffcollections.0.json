@@ -2409,21 +2409,14 @@
     "showOutputValueInUI": "ShowNormal"
   }, 
   "2112": {
-    "aggregateMode": "Maximum", 
-    "developerDescription": "Proving Drone Damage Bonuus", 
-    "displayName_de": "Drohnenschadensbonus", 
-    "displayName_en-us": "Drone Damage Bonus", 
-    "displayName_es": "Drone Damage Bonus", 
-    "displayName_fr": "Bonus aux dégâts causés par les drones", 
-    "displayName_it": "Drone Damage Bonus", 
-    "displayName_ja": "ドローンダメージボーナス", 
-    "displayName_ko": "드론 피해량 보너스", 
-    "displayName_ru": "Увеличение урона от дронов", 
-    "displayName_zh": "无人机伤害加成", 
-    "displayNameID": 576031, 
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Proving Remote Assistance/Repair Impedance", 
     "itemModifiers": [
       {
-        "dogmaAttributeID": 64
+        "dogmaAttributeID": 2116
+      }, 
+      {
+        "dogmaAttributeID": 2135
       }
     ], 
     "locationGroupModifiers": [], 
