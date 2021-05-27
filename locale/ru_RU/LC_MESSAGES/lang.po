@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-05-26 11:22\n"
+"PO-Revision-Date: 2021-05-27 11:31\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -1100,7 +1100,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:56
 msgid "Debug Logging Enabled"
-msgstr ""
+msgstr "Сохранять отладочную информацию"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:58
 msgid "Default Market Prices:"
@@ -1137,7 +1137,7 @@ msgstr "Удалить Все Профили Целей"
 
 #: gui/esiFittings.py:66
 msgid "Delete all from Eve"
-msgstr ""
+msgstr "Удалить всё из EVE"
 
 #: gui/esiFittings.py:65
 msgid "Delete from EVE"
@@ -1323,7 +1323,7 @@ msgstr "Дамп Всех Логов"
 
 #: gui/mainMenuBar.py:105
 msgid "E&xport to ESI"
-msgstr "Э%кспорт в ESI"
+msgstr "Э&кспорт в ESI"
 
 #: graphs/data/fitEwarStats/graph.py:38
 msgid "ECM: combined strength"
@@ -1715,7 +1715,7 @@ msgstr ""
 
 #: gui/esiFittings.py:44
 msgid "Fetch Fits"
-msgstr ""
+msgstr "Выгрузить фиты"
 
 #: gui/esiFittings.py:114
 msgid "Fetching fits, please wait..."
@@ -2242,7 +2242,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:38
 msgid "Language (requires restart)"
-msgstr ""
+msgstr "Язык (требуется перезапуск)"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
 msgid "Large ship hold"
