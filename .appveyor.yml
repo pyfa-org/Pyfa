@@ -10,96 +10,87 @@ for:
         - image: Visual Studio 2019
     environment:
       PYTHON: "C:\\Python37-x64"
+    # Should be enabled only for build process debugging
+    # init:
+    #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    install:
+      - ps: echo("OS version:")
+      - ps: "[System.Environment]::OSVersion.Version"
+
+      - ps: echo("Filesystem - root:")
+      - ps: "ls \"C:\\\""
+
+      - ps: echo("Filesystem - projects root:")
+      - ps: "ls \"C:\\projects\\\""
+
+      - ps: echo("Filesystem - pyfa root:")
+      - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
+
+      - ps: echo("Filesystem - installed SDKs:")
+      - ps: "ls \"C:\\Program Files (x86)\\Windows Kits\\\""
+
+      # Prepend newly installed Python to the PATH of this build (this cannot be
+      # done from inside the powershell script as it would require to restart
+      # the parent CMD process).
+      - cmd: "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+      - cmd: "appveyor DownloadFile https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip"
+      - cmd: "7z x gettext0.20.2-iconv1.16-shared-64.zip -ogettext"
+      - cmd: "SET PATH=gettext;%PATH%"
+
+      - cmd: "python --version"
+      - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+
+      # Upgrade to the latest version of pip to avoid it displaying warnings
+      # about it being out of date.
+      - cmd: "python -m pip install --upgrade pip"
+
+      # Install the build dependencies of the project. If some dependencies contain
+      # compiled extensions and are not provided as pre-built wheel packages,
+      # pip will build them from source using the MSVC compiler matching the
+      # target Python version and architecture
+      - ps: echo("Install pip requirements:")
+      # This one is needed to build wxpython 4.0.6 on windows
+      - cmd: "python -m pip install pathlib2"
+      - cmd: "python -m pip install -r requirements.txt"
+      - cmd: "python -m pip install PyInstaller==3.6"
+    before_build:
+        # directory that will contain the built files
+      - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
+      - ps: $env:PYFA_VERSION = (python ./scripts/dump_version.py)
+      - ps: echo("pyfa version $env:PYFA_VERSION")
+    build_script:
+      - ps: echo("Build pyfa:")
+      - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
+        # Build language files
+      - cmd: "python scripts/compile_lang.py"
+        # Dump language progress
+      - cmd: "python scripts/dump_crowdin_progress.py"
+        # Build gamedata DB
+      - cmd: "python db_update.py"
+      # Build command for PyInstaller
+      - cmd: "python -m PyInstaller --noupx --clean --windowed --noconsole -y pyfa.spec"
+      # Copy over manifest (See pyfa-org/pyfa#1622)
+      - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
+      # InnoScript EXE building. This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
+      - cmd: "python dist_assets/win/dist.py"
+      - ps: dir $env:PYFA_DIST_DIR/
+    after_build:
+      - ps: "ls \"./\""
+      - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*"
     test_script:
-      - ps: write-host "for-matrix override test script 1"
-
-# Should be enabled only for build process debugging
-# init:
-#   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-install:
-  - ps: echo("OS version:")
-  - ps: "[System.Environment]::OSVersion.Version"
-
-  - ps: echo("Filesystem - root:")
-  - ps: "ls \"C:\\\""
-
-  - ps: echo("Filesystem - projects root:")
-  - ps: "ls \"C:\\projects\\\""
-
-  - ps: echo("Filesystem - pyfa root:")
-  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
-
-  - ps: echo("Filesystem - installed SDKs:")
-  - ps: "ls \"C:\\Program Files (x86)\\Windows Kits\\\""
-
-  # Prepend newly installed Python to the PATH of this build (this cannot be
-  # done from inside the powershell script as it would require to restart
-  # the parent CMD process).
-  - cmd: "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - cmd: "appveyor DownloadFile https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip"
-  - cmd: "7z x gettext0.20.2-iconv1.16-shared-64.zip -ogettext"
-  - cmd: "SET PATH=gettext;%PATH%"
-
-  - cmd: "python --version"
-  - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-
-  # Upgrade to the latest version of pip to avoid it displaying warnings
-  # about it being out of date.
-  - cmd: "python -m pip install --upgrade pip"
-
-  # Install the build dependencies of the project. If some dependencies contain
-  # compiled extensions and are not provided as pre-built wheel packages,
-  # pip will build them from source using the MSVC compiler matching the
-  # target Python version and architecture
-  - ps: echo("Install pip requirements:")
-  # This one is needed to build wxpython 4.0.6 on windows
-  - cmd: "python -m pip install pathlib2"
-  - cmd: "python -m pip install -r requirements.txt"
-  - cmd: "python -m pip install PyInstaller==3.6"
-
-before_build:
-    # directory that will contain the built files
-  - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
-  - ps: $env:PYFA_VERSION = (python ./scripts/dump_version.py)
-  - ps: echo("pyfa version $env:PYFA_VERSION")
-
-build_script:
-  - ps: echo("Build pyfa:")
-  - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
-    # Build language files
-  - cmd: "python scripts/compile_lang.py"
-    # Dump language progress
-  - cmd: "python scripts/dump_crowdin_progress.py"
-    # Build gamedata DB
-  - cmd: "python db_update.py"
-  # Build command for PyInstaller
-  - cmd: "python -m PyInstaller --noupx --clean --windowed --noconsole -y pyfa.spec"
-  # Copy over manifest (See pyfa-org/pyfa#1622)
-  - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
-  # InnoScript EXE building. This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
-  - cmd: "python dist_assets/win/dist.py"
-  - ps: dir $env:PYFA_DIST_DIR/
-
-after_build:
-  - ps: "ls \"./\""
-  - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*"
-
-test_script:
-  # Ha... we're just building
-
-artifacts:
-  - path: pyfa*-win.zip
-  - path: pyfa*-win.exe
-
-deploy:
-  tag: $(pyfa_version)
-  release: pyfa $(pyfa_version)
-  description: 'Release description'
-  provider: GitHub
-  auth_token:
-    secure: X+U3hOAMTt7HGXCR/LXaGNF6qyhUXetrjz5+xlWiNJQ3XEdzhZZmHK75m0Hm6qre
-  draft: true
-  force_update: false
-  # deploy on tag push only
-  on:
-    APPVEYOR_REPO_TAG: true
+      # Ha... we're just building
+    artifacts:
+      - path: pyfa*-win.zip
+      - path: pyfa*-win.exe
+    deploy:
+      tag: $(pyfa_version)
+      release: pyfa $(pyfa_version)
+      description: 'Release description'
+      provider: GitHub
+      auth_token:
+        secure: X+U3hOAMTt7HGXCR/LXaGNF6qyhUXetrjz5+xlWiNJQ3XEdzhZZmHK75m0Hm6qre
+      draft: true
+      force_update: false
+      # deploy on tag push only
+      on:
+        APPVEYOR_REPO_TAG: true
