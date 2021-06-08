@@ -9,15 +9,17 @@ for:
       only:
         - image: macos
     # Should be enabled only for build process debugging
-    # init:
+    init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-    install:
       - sh: source ~/venv3.7/bin/activate
-      - sh: bash scripts/osx-translations.sh
+    install:
       - sh: bash scripts/osx-setup.sh
+    build_script:
+      - sh: bash scripts/osx-translations.sh
       - sh: python3 scripts/compile_lang.py
       - sh: python3 scripts/dump_crowdin_progress.py
       - sh: python3 db_update.py
+    after_build:
       - sh: export PYFA_VERSION="$(python3 scripts/dump_version.py)"
       - sh: bash scripts/osx-package.sh
     artifacts:
