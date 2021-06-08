@@ -1,32 +1,9 @@
 image:
-  - macos
   - Visual Studio 2019
+  - macos
 clone_depth: 400
 
 for:
-  -
-    matrix:
-      only:
-        - image: macos
-    # Should be enabled only for build process debugging
-    init:
-    #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-      - sh: source ~/venv3.7/bin/activate
-    install:
-      - sh: bash scripts/osx-setup.sh
-    build_script:
-      - sh: bash scripts/osx-translations.sh
-      - sh: python3 scripts/compile_lang.py
-      - sh: python3 scripts/dump_crowdin_progress.py
-      - sh: python3 db_update.py
-    after_build:
-      - sh: export PYFA_VERSION="$(python3 scripts/dump_version.py)"
-      - sh: bash scripts/osx-package.sh
-    artifacts:
-      - path: dist/pyfa*-mac.zip
-    before_deploy:
-      - sh: export RELEASE_PKG_FILE=$(ls *.deb)
-      - sh: echo "deploying $RELEASE_PKG_FILE to GitHub releases"
   -
     matrix:
       only:
@@ -106,6 +83,41 @@ for:
     deploy:
       tag: $(pyfa_version)
       release: pyfa $(pyfa_version)
+      description: 'Release description'
+      provider: GitHub
+      auth_token:
+        secure: X+U3hOAMTt7HGXCR/LXaGNF6qyhUXetrjz5+xlWiNJQ3XEdzhZZmHK75m0Hm6qre
+      draft: true
+      force_update: false
+      # deploy on tag push only
+      on:
+        APPVEYOR_REPO_TAG: true
+  -
+    matrix:
+      only:
+        - image: macos
+    # Should be enabled only for build process debugging
+    init:
+    #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+      - sh: source ~/venv3.7/bin/activate
+    install:
+      - sh: bash scripts/osx-setup.sh
+    build_script:
+      - sh: bash scripts/osx-translations.sh
+      - sh: python3 scripts/compile_lang.py
+      - sh: python3 scripts/dump_crowdin_progress.py
+      - sh: python3 db_update.py
+    after_build:
+      - sh: export PYFA_VERSION="$(python3 scripts/dump_version.py)"
+      - sh: bash scripts/osx-package.sh
+    artifacts:
+      - path: dist/pyfa*-mac.zip
+    before_deploy:
+      - sh: export RELEASE_PKG_FILE=$(ls *.deb)
+      - sh: echo "deploying $RELEASE_PKG_FILE to GitHub releases"
+    deploy:
+      tag: $PYFA_VERSION
+      release: pyfa $PYFA_VERSION
       description: 'Release description'
       provider: GitHub
       auth_token:
