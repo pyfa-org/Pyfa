@@ -1,9 +1,18 @@
-image: Visual Studio 2019
+image:
+  - Visual Studio 2019
+  - macos
 clone_depth: 400
 
-environment:
-  matrix:
-    - PYTHON: "C:\\Python37-x64"
+for:
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2019
+    environment:
+      PYTHON: "C:\\Python37-x64"
+    test_script:
+      - ps: write-host "for-matrix override test script 1"
+
 # Should be enabled only for build process debugging
 # init:
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
