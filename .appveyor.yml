@@ -8,6 +8,9 @@ for:
     matrix:
       only:
         - image: macos
+    # Should be enabled only for build process debugging
+    init:
+      - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
       - pyenv global 3.8
       - bash scripts/osx-translations.sh
