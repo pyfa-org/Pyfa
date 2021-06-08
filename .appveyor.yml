@@ -9,11 +9,10 @@ for:
       only:
         - image: macos
     # Should be enabled only for build process debugging
-    init:
-      - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-      - sh: sleep 10m
+    # init:
+    #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
-      - sh: pyenv global 3.8
+      - sh: source venv3.8/bin/activate
       - sh: bash scripts/osx-translations.sh
       - sh: bash scripts/osx-setup.sh
       - sh: python3 scripts/compile_lang.py
