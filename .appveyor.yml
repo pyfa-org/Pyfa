@@ -20,6 +20,8 @@ for:
       - sh: python3 db_update.py
       - sh: export PYFA_VERSION="$(python3 scripts/dump_version.py)"
       - sh: bash scripts/osx-package.sh
+    artifacts:
+      - path: pyfa*-mac.zip
     before_deploy:
       - sh: export RELEASE_PKG_FILE=$(ls *.deb)
       - sh: echo "deploying $RELEASE_PKG_FILE to GitHub releases"
