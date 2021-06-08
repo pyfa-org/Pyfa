@@ -1,9 +1,24 @@
 image:
-  - Visual Studio 2019
   - macos
+  - Visual Studio 2019
 clone_depth: 400
 
 for:
+  -
+    matrix:
+      only:
+        - image: macos
+    install:
+      - bash scripts/osx-translations.sh
+      - bash scripts/osx-setup.sh
+      - python3 scripts/compile_lang.py
+      - python3 scripts/dump_crowdin_progress.py
+      - python3 db_update.py
+      - export PYFA_VERSION="$(python3 scripts/dump_version.py)"
+      - bash scripts/osx-package.sh
+    before_deploy:
+      - export RELEASE_PKG_FILE=$(ls *.deb)
+      - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
   -
     matrix:
       only:
@@ -77,8 +92,6 @@ for:
     after_build:
       - ps: "ls \"./\""
       - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*"
-    test_script:
-      # Ha... we're just building
     artifacts:
       - path: pyfa*-win.zip
       - path: pyfa*-win.exe
