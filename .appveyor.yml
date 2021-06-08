@@ -11,8 +11,8 @@ for:
     # Should be enabled only for build process debugging
     init:
       - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-    install:
       - sh: sleep 10m
+    install:
       - sh: pyenv global 3.8
       - sh: bash scripts/osx-translations.sh
       - sh: bash scripts/osx-setup.sh
