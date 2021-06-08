@@ -12,17 +12,18 @@ for:
     init:
       - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
-      - pyenv global 3.8
-      - bash scripts/osx-translations.sh
-      - bash scripts/osx-setup.sh
-      - python3 scripts/compile_lang.py
-      - python3 scripts/dump_crowdin_progress.py
-      - python3 db_update.py
-      - export PYFA_VERSION="$(python3 scripts/dump_version.py)"
-      - bash scripts/osx-package.sh
+      - sh: sleep 10m
+      - sh: pyenv global 3.8
+      - sh: bash scripts/osx-translations.sh
+      - sh: bash scripts/osx-setup.sh
+      - sh: python3 scripts/compile_lang.py
+      - sh: python3 scripts/dump_crowdin_progress.py
+      - sh: python3 db_update.py
+      - sh: export PYFA_VERSION="$(python3 scripts/dump_version.py)"
+      - sh: bash scripts/osx-package.sh
     before_deploy:
-      - export RELEASE_PKG_FILE=$(ls *.deb)
-      - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
+      - sh: export RELEASE_PKG_FILE=$(ls *.deb)
+      - sh: echo "deploying $RELEASE_PKG_FILE to GitHub releases"
   -
     matrix:
       only:
