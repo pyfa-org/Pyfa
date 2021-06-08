@@ -9,6 +9,7 @@ for:
       only:
         - image: macos
     install:
+      - pyenv global 3.8
       - bash scripts/osx-translations.sh
       - bash scripts/osx-setup.sh
       - python3 scripts/compile_lang.py
