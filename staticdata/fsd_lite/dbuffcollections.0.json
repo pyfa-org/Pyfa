@@ -2424,5 +2424,29 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2113": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Stabilized cloak to prevent decloak bursts", 
+    "displayName_de": "Tarnmodul-Stabilisierung", 
+    "displayName_en-us": "Cloak stabilization", 
+    "displayName_es": "Cloak stabilization", 
+    "displayName_fr": "Stabilisation de camouflage", 
+    "displayName_it": "Cloak stabilization", 
+    "displayName_ja": "クローク安定化", 
+    "displayName_ko": "클로킹 안정화", 
+    "displayName_ru": "Стабилизация маскировки", 
+    "displayName_zh": "隐形稳定", 
+    "displayNameID": 580046, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 3117
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
   }
 }
