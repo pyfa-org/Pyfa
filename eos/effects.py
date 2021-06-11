@@ -30248,7 +30248,7 @@ class Effect6658(BaseEffect):
                                                   mod.item.requiresSkill('Torpedo Specialization') or
                                                   mod.item.requiresSkill('Cruise Missile Specialization'),
                                       'speed', src.getModifiedItemAttr('bastionMissileROFBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=True, penaltyGroup='postPerc', **kwargs)
 
         # Tanking
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
