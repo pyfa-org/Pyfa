@@ -1104,6 +1104,7 @@ class Effect391(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
+    Implants named like: Mining Blitz Yield Booster Dose (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implant: Michi's Excavation Augmentor
     Implant: Serenity Anniversary Limited 'Efficiency' Dose
@@ -1430,7 +1431,6 @@ class Effect508(BaseEffect):
     shipPDmgBonusMF
 
     Used by:
-    Ship: Cheetah
     Ship: Freki
     Ship: Republic Fleet Firetail
     Ship: Slasher
@@ -1477,7 +1477,6 @@ class Effect512(BaseEffect):
     Variations of ship: Incursus (3 of 3)
     Ship: Atron
     Ship: Federation Navy Comet
-    Ship: Helios
     Ship: Pacifier
     Ship: Taranis
     """
@@ -1946,7 +1945,6 @@ class Effect607(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         # Set flag which is used to determine if ship is cloaked or not
         # This is used to apply cloak-only bonuses, like Black Ops' speed bonus
-        # Doesn't apply to covops cloaks
         fit.extraAttributes['cloaked'] = True
         # Apply speed penalty
         fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'), **kwargs)
@@ -2332,7 +2330,6 @@ class Effect760(BaseEffect):
     shipBonusSmallMissileRoFCF2
 
     Used by:
-    Ship: Buzzard
     Ship: Hawk
     Ship: Pacifier
     """
@@ -2478,22 +2475,6 @@ class Effect856(BaseEffect):
                                stackingPenalties=penalized, **kwargs)
 
 
-class Effect874(BaseEffect):
-    """
-    shipProjectileOptimalBonuseMF2
-
-    Used by:
-    Ship: Cheetah
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Projectile Turret'),
-                                      'maxRange', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate', **kwargs)
-
-
 class Effect882(BaseEffect):
     """
     shipHybridRangeBonusCF2
@@ -2600,7 +2581,6 @@ class Effect898(BaseEffect):
     shipMissileKineticDamageCF
 
     Used by:
-    Ship: Buzzard
     Ship: Condor
     Ship: Hawk
     """
@@ -2631,23 +2611,6 @@ class Effect899(BaseEffect):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCC'),
                                         skill='Caldari Cruiser', **kwargs)
-
-
-class Effect900(BaseEffect):
-    """
-    shipDroneScoutThermalDamageGF2
-
-    Used by:
-    Ship: Helios
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Light Drone Operation'),
-                                     'thermalDamage', ship.getModifiedItemAttr('shipBonusGF2'),
-                                     skill='Gallente Frigate', **kwargs)
 
 
 class Effect907(BaseEffect):
@@ -2830,8 +2793,9 @@ class Effect980(BaseEffect):
     type = 'active'
 
     @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
+    def handler(fit, module, context, projectionRange, **kwargs):
         fit.extraAttributes['cloaked'] = True
+        fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'), **kwargs)
 
 
 class Effect989(BaseEffect):
@@ -9734,7 +9698,6 @@ class Effect3234(BaseEffect):
     shipRocketExplosiveDmgAF
 
     Used by:
-    Ship: Anathema
     Ship: Vengeance
     """
 
@@ -9752,7 +9715,6 @@ class Effect3235(BaseEffect):
     shipRocketKineticDmgAF
 
     Used by:
-    Ship: Anathema
     Ship: Vengeance
     """
 
@@ -9770,7 +9732,6 @@ class Effect3236(BaseEffect):
     shipRocketThermalDmgAF
 
     Used by:
-    Ship: Anathema
     Ship: Vengeance
     """
 
@@ -9788,7 +9749,6 @@ class Effect3237(BaseEffect):
     shipRocketEmDmgAF
 
     Used by:
-    Ship: Anathema
     Ship: Vengeance
     """
 
@@ -9863,22 +9823,6 @@ class Effect3244(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('eliteBonusGunship1'),
                                skill='Assault Frigates', **kwargs)
-
-
-class Effect3249(BaseEffect):
-    """
-    shipCapRecharge2AF
-
-    Used by:
-    Ship: Anathema
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('rechargeRate', ship.getModifiedItemAttr('shipBonus2AF'),
-                               skill='Amarr Frigate', **kwargs)
 
 
 class Effect3264(BaseEffect):
@@ -10297,37 +10241,6 @@ class Effect3392(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
-
-
-class Effect3403(BaseEffect):
-    """
-    eliteBonusBlackOpsCloakVelocity2
-
-    Used by:
-    Ships from group: Black Ops (5 of 5)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        if fit.extraAttributes['cloaked']:
-            fit.ship.multiplyItemAttr('maxVelocity', ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
-
-
-class Effect3406(BaseEffect):
-    """
-    eliteBonusBlackOpsMaxVelocity1
-
-    Used by:
-    Ship: Panther
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
 
 
 class Effect3415(BaseEffect):
@@ -10820,21 +10733,6 @@ class Effect3526(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Cynosural Field Generator',
                                       'consumptionQuantity',
                                       container.getModifiedItemAttr('consumptionQuantityBonusPercentage') * level, **kwargs)
-
-
-class Effect3530(BaseEffect):
-    """
-    eliteBonusBlackOpsAgiliy1
-
-    Used by:
-    Ship: Sin
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
 
 
 class Effect3532(BaseEffect):
@@ -37353,3 +37251,264 @@ class Effect8123(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('droneBandwidth', module.getModifiedItemAttr('droneBandwidthPercentage'), **kwargs)
+
+
+class Effect8129(BaseEffect):
+    """
+    shipBonusCloakVelocityBonusGF
+
+    Used by:
+    Ship: Helios
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        if fit.extraAttributes['cloaked']:
+            fit.ship.boostItemAttr(
+                'maxVelocity', container.getModifiedItemAttr('shipBonusGF') * 100,
+                skill='Gallente Frigate', **kwargs)
+
+
+class Effect8130(BaseEffect):
+    """
+    shipBonusWarpCapacityNeedGF2
+
+    Used by:
+    Ship: Helios
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('warpCapacitorNeed', container.getModifiedItemAttr('shipBonusGF2'),
+                               skill='Gallente Frigate', **kwargs)
+
+
+class Effect8131(BaseEffect):
+    """
+    shipBonusWarpCapacitorNeedAF
+
+    Used by:
+    Ship: Anathema
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('warpCapacitorNeed', container.getModifiedItemAttr('shipBonusAF'),
+                               skill='Amarr Frigate', **kwargs)
+
+
+class Effect8132(BaseEffect):
+    """
+    shipBonusScanProbeDeviationA2F
+
+    Used by:
+    Ship: Anathema
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseMaxScanDeviation',
+            container.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate', **kwargs)
+
+
+class Effect8133(BaseEffect):
+    """
+    shipBonusCloakVelocityCF
+
+    Used by:
+    Ship: Buzzard
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        if fit.extraAttributes['cloaked']:
+            # Have to hardcode, ship itself has wrong value
+            fit.ship.boostItemAttr('maxVelocity', 5, skill='Gallente Frigate', **kwargs)
+
+
+class Effect8134(BaseEffect):
+    """
+    shipBonusWarpCapacitorNeedCF2
+
+    Used by:
+    Ship: Buzzard
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('warpCapacitorNeed', container.getModifiedItemAttr('shipBonusCF2'),
+                               skill='Caldari Frigate', **kwargs)
+
+
+class Effect8135(BaseEffect):
+    """
+    shipBonusScanProbeDeviationMF
+
+    Used by:
+    Ship: Cheetah
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseMaxScanDeviation',
+            # Have to hardcode, ship itself has wrong value
+            -5.0, skill='Minmatar Frigate', **kwargs)
+
+
+class Effect8136(BaseEffect):
+    """
+    shipBonusWarpCapacitorNeedMF2
+
+    Used by:
+    Ship: Cheetah
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('warpCapacitorNeed', container.getModifiedItemAttr('shipBonusMF2'),
+                               skill='Minmatar Frigate', **kwargs)
+
+
+class Effect8151(BaseEffect):
+    """
+    shipBonusCloakedVelocityRole1
+
+    Used by:
+    Ships from group: Black Ops (5 of 5)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        if fit.extraAttributes['cloaked']:
+            fit.ship.multiplyItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+
+
+class Effect8152(BaseEffect):
+    """
+    eliteBonusEnergyDrainAmountBlackOps2
+
+    Used by:
+    Ship: Redeemer
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Neutralizer', 'energyNeutralizerAmount',
+            ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'powerTransferAmount',
+            ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
+
+
+class Effect8153(BaseEffect):
+    """
+    eliteBonusDroneArmorShieldTransferBonusBlops1
+
+    Used by:
+    Ship: Sin
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'armorDamageAmount',
+                                     src.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
+        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'shieldBonus',
+                                     src.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
+
+
+class Effect8154(BaseEffect):
+    """
+    eliteBonusDroneTrackingOptimalBlackOps2
+
+    Used by:
+    Ship: Sin
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'maxRange',
+            ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'trackingSpeed',
+            ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
+
+
+class Effect8155(BaseEffect):
+    """
+    eliteBonusLPTtrackingBlackOps1
+
+    Used by:
+    Ship: Panther
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
+            'trackingSpeed', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
+
+
+class Effect8156(BaseEffect):
+    """
+    eliteBonusLPTfalloffBlackOps2
+
+    Used by:
+    Ship: Panther
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
+            'falloff', ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
+
+
+class Effect8157(BaseEffect):
+    """
+    eliteBonusShieldResistancesBlackOps2
+
+    Used by:
+    Ship: Widow
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
+        for damageType in damageTypes:
+            fit.ship.boostItemAttr(
+                'shield{0}DamageResonance'.format(damageType), ship.getModifiedItemAttr('eliteBonusBlackOps2'),
+                skill='Black Ops', **kwargs)
