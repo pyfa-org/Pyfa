@@ -26,7 +26,12 @@ class NotesView(wx.Panel):
 
     def OnKeyDown(self, event):
         if event.RawControlDown() and event.GetKeyCode() == wx.WXK_BACK:
-            HandleCtrlBackspace(self.editNotes)
+            try:
+                HandleCtrlBackspace(self.editNotes)
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except:
+                pass
         else:
             event.Skip()
 
