@@ -37219,7 +37219,7 @@ class Effect8120(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Interdiction Nullifier',
                                       'moduleReactivationDelay', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Interdiction Nullifier',
-                                      'duration', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
+                                      'durationHighisGood', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
 
 
 class Effect8121(BaseEffect):
