@@ -37512,3 +37512,17 @@ class Effect8157(BaseEffect):
             fit.ship.boostItemAttr(
                 'shield{0}DamageResonance'.format(damageType), ship.getModifiedItemAttr('eliteBonusBlackOps2'),
                 skill='Black Ops', **kwargs)
+
+
+class Effect1000000(BaseEffect):
+
+    type = 'passive', 'projected'
+
+    @staticmethod
+    def handler(fit, charge, context, projectionRange, **kwargs):
+        if 'projected' not in context:
+            return
+        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+            return
+        fit.ship.boostItemAttr('maxVelocity', charge.getModifiedItemAttr('speedFactor'),
+                               stackingPenalties=True, **kwargs)
