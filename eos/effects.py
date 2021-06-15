@@ -616,7 +616,10 @@ class Effect101(BaseEffect):
             if ecmStrengthBonus:
                 strModifier = 1 - min(1, ecmStrengthBonus / fit.scanStrength)
                 fit.ecmProjectedStr *= strModifier
-
+        elif src.item.group.name == 'Interdiction Sphere Launcher':
+            speedFactor = src.getModifiedChargeAttr('speedFactor')
+            if speedFactor:
+                fit.ship.boostItemAttr('maxVelocity', speedFactor, **kwargs)
 
 class Effect118(BaseEffect):
     """
@@ -37511,23 +37514,3 @@ class Effect8157(BaseEffect):
             fit.ship.boostItemAttr(
                 'shield{0}DamageResonance'.format(damageType), ship.getModifiedItemAttr('eliteBonusBlackOps2'),
                 skill='Black Ops', **kwargs)
-
-
-class Effect1000000(BaseEffect):
-    """
-    pyfaCustomEffectWubble
-
-    Used by:
-    Charge: Stasis Webification Probe
-    """
-
-    type = 'passive', 'projected'
-
-    @staticmethod
-    def handler(fit, charge, context, projectionRange, **kwargs):
-        if 'projected' not in context:
-            return
-        if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
-            return
-        fit.ship.boostItemAttr('maxVelocity', charge.getModifiedItemAttr('speedFactor'),
-                               stackingPenalties=True, **kwargs)

@@ -37,8 +37,6 @@ if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 GAMEDATA_SCHEMA_VERSION = 4
 
-WUBBLE_EFFECT_ID = 1000000
-
 
 def db_needs_update():
     """True if needs, false if it does not, none if we cannot check it."""
@@ -257,13 +255,6 @@ def update_db():
     def processDogmaEffects():
         print('processing dogmaeffects')
         data = _readData('fsd_binary', 'dogmaeffects', keyIdName='effectID')
-        # Custom effect for wubble
-        data.append({
-            'effectID': WUBBLE_EFFECT_ID,
-            'effectName': 'pyfaCustomEffectWubble',
-            'published': False,
-            'isAssistance': False,
-            'isOffensive': False})
         _addRows(data, eos.gamedata.Effect, fieldMap={'resistanceAttributeID': 'resistanceID'})
 
     def processDogmaTypeEffects(eveTypesData):
@@ -277,7 +268,6 @@ def update_db():
             for row in typeData.get('dogmaEffects', ()):
                 row['typeID'] = typeData['typeID']
                 newData.append(row)
-        newData.append({'typeID': 56748, 'effectID': WUBBLE_EFFECT_ID})
         _addRows(newData, eos.gamedata.ItemEffect)
         return newData
 
