@@ -37267,7 +37267,7 @@ class Effect8129(BaseEffect):
     def handler(fit, container, context, projectionRange, **kwargs):
         if fit.extraAttributes['cloaked']:
             fit.ship.boostItemAttr(
-                'maxVelocity', container.getModifiedItemAttr('shipBonusGF') * 100,
+                'maxVelocity', container.getModifiedItemAttr('shipBonusGF'),
                 skill='Gallente Frigate', **kwargs)
 
 
@@ -37322,10 +37322,10 @@ class Effect8132(BaseEffect):
 
 class Effect8133(BaseEffect):
     """
-    shipBonusCloakVelocityCF
+    shipBonusCloakVelocityMF
 
     Used by:
-    Ship: Buzzard
+    Ship: Cheetah
     """
 
     type = 'passive'
@@ -37333,8 +37333,8 @@ class Effect8133(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         if fit.extraAttributes['cloaked']:
-            # Have to hardcode, ship itself has wrong value
-            fit.ship.boostItemAttr('maxVelocity', 5, skill='Gallente Frigate', **kwargs)
+            fit.ship.boostItemAttr('maxVelocity', container.getModifiedItemAttr('shipBonusMF'),
+                                   skill='Minmatar Frigate', **kwargs)
 
 
 class Effect8134(BaseEffect):
@@ -37355,10 +37355,10 @@ class Effect8134(BaseEffect):
 
 class Effect8135(BaseEffect):
     """
-    shipBonusScanProbeDeviationMF
+    shipBonusScanProbeDeviationCF
 
     Used by:
-    Ship: Cheetah
+    Ship: Buzzard
     """
 
     type = 'passive'
@@ -37367,8 +37367,7 @@ class Effect8135(BaseEffect):
     def handler(fit, container, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseMaxScanDeviation',
-            # Have to hardcode, ship itself has wrong value
-            -5.0, skill='Minmatar Frigate', **kwargs)
+            container.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
 
 
 class Effect8136(BaseEffect):
@@ -37515,6 +37514,12 @@ class Effect8157(BaseEffect):
 
 
 class Effect1000000(BaseEffect):
+    """
+    pyfaCustomEffectWubble
+
+    Used by:
+    Charge: Stasis Webification Probe
+    """
 
     type = 'passive', 'projected'
 
