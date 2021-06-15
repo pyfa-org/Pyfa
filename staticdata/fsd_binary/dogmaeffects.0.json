@@ -86779,9 +86779,9 @@
       {
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 37, 
+        "modifiedAttributeID": 306, 
         "modifyingAttributeID": 462, 
-        "operation": 0, 
+        "operation": 6, 
         "skillTypeID": 11579
       }
     ], 
@@ -86860,7 +86860,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8133, 
-    "effectName": "shipBonusCloakVelocityCF", 
+    "effectName": "shipBonusCloakVelocityMF", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -86869,9 +86869,9 @@
       {
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 37, 
-        "modifyingAttributeID": 463, 
-        "operation": 0, 
+        "modifiedAttributeID": 306, 
+        "modifyingAttributeID": 460, 
+        "operation": 6, 
         "skillTypeID": 11579
       }
     ], 
@@ -86905,7 +86905,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8135, 
-    "effectName": "shipBonusScanProbeDeviationMF", 
+    "effectName": "shipBonusScanProbeDeviationCF", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -86915,7 +86915,7 @@
         "domain": "charID", 
         "func": "OwnerRequiredSkillModifier", 
         "modifiedAttributeID": 1372, 
-        "modifyingAttributeID": 460, 
+        "modifyingAttributeID": 463, 
         "operation": 6, 
         "skillTypeID": 3412
       }
