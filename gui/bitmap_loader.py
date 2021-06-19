@@ -102,11 +102,13 @@ class BitmapLoader:
         if img is None:
             pyfalog.warning("Missing icon file: {0}/{1}".format(location, filename))
             return None
+        return BitmapLoader.getScaledBitmap(image=img, scale=scale)
 
-        bmp: wx.Bitmap = img.ConvertToBitmap()
+    @staticmethod
+    def getScaledBitmap(image: wx.Image, scale: int) -> wx.Bitmap:
         if scale > 1:
-            bmp.SetSize((bmp.GetWidth() // scale, bmp.GetHeight() // scale))
-        return bmp
+            image.Rescale(image.GetWidth() // scale, image.GetHeight() // scale)
+        return image.ConvertToBitmap()
 
     @classmethod
     def loadScaledBitmap(cls, name, location, scale=0):
