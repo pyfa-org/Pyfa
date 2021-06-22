@@ -6,7 +6,7 @@ import re
 
 _t = wx.GetTranslation
 
-# test
+
 class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
