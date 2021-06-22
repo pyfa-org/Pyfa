@@ -25,9 +25,9 @@ class ItemDescription(wx.Panel):
         desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", "\g<inside>", desc)
         # Strip URLs
         desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", desc)
-        desc = "<body style='background-color: {}; color: {}'>{}</body>".format(
-                bgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
-                fgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
+        desc = "<body bgcolor='{}' text='{}'>{}</body>".format(
+                bgcolor.GetAsString(wx.C2S_HTML_SYNTAX),
+                fgcolor.GetAsString(wx.C2S_HTML_SYNTAX),
                 desc
         )
 
