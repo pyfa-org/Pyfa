@@ -194,6 +194,7 @@ class ItemParams(wx.Panel):
 
             attrIcon, attrName, currentVal, baseVal = data
             attr_item = self.paramList.AppendItem(parent, attrName)
+            self.paramList.SetItemTextColour(attr_item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
             self.paramList.SetItemText(attr_item, currentVal, 1)
             if self.stuff is not None:
@@ -222,6 +223,7 @@ class ItemParams(wx.Panel):
             heading = data.get("label")
 
             header_item = self.paramList.AppendItem(root, heading)
+            self.paramList.SetItemTextColour(header_item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             for attr in data.get("attributes", []):
                 # Attribute is a "grouped" attr (eg: damage, sensor strengths, etc). Automatically group these into a child item
                 if attr in GroupedAttributes:
@@ -232,6 +234,7 @@ class ItemParams(wx.Panel):
 
                     # create a child item with the groups label
                     item = self.paramList.AppendItem(header_item, grouping[1])
+                    self.paramList.SetItemTextColour(item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
                     for attr2 in grouping[0]:
                         # add each attribute in the group
                         self.AddAttribute(item, attr2)
@@ -256,6 +259,7 @@ class ItemParams(wx.Panel):
 
                 # get all attributes in group
                 item = self.paramList.AppendItem(root, grouping[1])
+                self.paramList.SetItemTextColour(item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
                 for attr2 in grouping[0]:
                     self.AddAttribute(item, attr2)
 
