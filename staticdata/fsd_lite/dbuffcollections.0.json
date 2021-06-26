@@ -2448,5 +2448,53 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
+  }, 
+  "2140": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Overheat Bonus - No EWAR", 
+    "displayName_de": "Module Overload Bonus", 
+    "displayName_en-us": "Module Overload Bonus", 
+    "displayName_es": "Module Overload Bonus", 
+    "displayName_fr": "Module Overload Bonus", 
+    "displayName_it": "Module Overload Bonus", 
+    "displayName_ja": "Module Overload Bonus", 
+    "displayName_ko": "Module Overload Bonus", 
+    "displayName_ru": "Module Overload Bonus", 
+    "displayName_zh": "装备超载加成", 
+    "displayNameID": 583780, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1181
+      }, 
+      {
+        "dogmaAttributeID": 1205
+      }, 
+      {
+        "dogmaAttributeID": 1206
+      }, 
+      {
+        "dogmaAttributeID": 1208
+      }, 
+      {
+        "dogmaAttributeID": 1210
+      }, 
+      {
+        "dogmaAttributeID": 1222
+      }, 
+      {
+        "dogmaAttributeID": 1223
+      }, 
+      {
+        "dogmaAttributeID": 1230
+      }, 
+      {
+        "dogmaAttributeID": 1231
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

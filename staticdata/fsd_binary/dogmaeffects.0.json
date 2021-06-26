@@ -86690,6 +86690,14 @@
         "modifiedAttributeID": 3115, 
         "modifyingAttributeID": 2299, 
         "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 4117, 
+        "modifiedAttributeID": 565, 
+        "modifyingAttributeID": 2300, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 
@@ -87148,6 +87156,29 @@
         "modifiedAttributeID": 272, 
         "modifyingAttributeID": 1258, 
         "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8158": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8158, 
+    "effectName": "stabilizeCloakDurationBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3118, 
+        "modifyingAttributeID": 3134, 
+        "operation": 6, 
+        "skillTypeID": 11579
       }
     ], 
     "propulsionChance": 0, 
