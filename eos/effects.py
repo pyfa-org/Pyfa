@@ -37223,6 +37223,8 @@ class Effect8120(BaseEffect):
                                       'moduleReactivationDelay', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Interdiction Nullifier',
                                       'durationHighisGood', ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Interdiction Nullifier',
+                                      'scanResolutionMultiplier', ship.getModifiedItemAttr('shipBonusRole3'), **kwargs)
 
 
 class Effect8121(BaseEffect):
@@ -37514,3 +37516,20 @@ class Effect8157(BaseEffect):
             fit.ship.boostItemAttr(
                 'shield{0}DamageResonance'.format(damageType), ship.getModifiedItemAttr('eliteBonusBlackOps2'),
                 skill='Black Ops', **kwargs)
+
+
+class Effect8158(BaseEffect):
+    """
+    stabilizeCloakDurationBonus
+
+    Used by:
+    Implant: Cloak Stabilization Booster
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Cloaking'), 'stabilizeCloakDuration',
+            booster.getModifiedItemAttr('stabilizeCloakDurationBonus'), **kwargs)
