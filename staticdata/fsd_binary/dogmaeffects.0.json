@@ -69189,13 +69189,6 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 2253, 
-        "modifyingAttributeID": 2253, 
-        "operation": 7
-      }, 
-      {
-        "domain": "shipID", 
-        "func": "ItemModifier", 
         "modifiedAttributeID": 2116, 
         "modifyingAttributeID": 2342, 
         "operation": 6
