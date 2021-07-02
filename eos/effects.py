@@ -1152,6 +1152,7 @@ class Effect394(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
+    Implants named like: Liberation Games Booster (12 of 12)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: Grand Prix Velocity Booster
@@ -37523,7 +37524,7 @@ class Effect8158(BaseEffect):
     stabilizeCloakDurationBonus
 
     Used by:
-    Implant: Cloak Stabilization Booster
+    Implant: Strong Veilguard Booster
     """
 
     type = 'passive'
