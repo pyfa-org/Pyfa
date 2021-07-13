@@ -4576,9 +4576,10 @@ class Effect1550(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
+        level = skill.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'signatureRadiusBonus',
-                                      skill.getModifiedItemAttr('scanSkillTargetPaintStrengthBonus') * skill.level, **kwargs)
+                                      skill.getModifiedItemAttr('scanSkillTargetPaintStrengthBonus') * level, **kwargs)
 
 
 class Effect1551(BaseEffect):
