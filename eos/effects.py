@@ -1109,6 +1109,7 @@ class Effect391(BaseEffect):
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
     Implants named like: Mining Blitz Yield Booster Dose (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
     Implant: Michi's Excavation Augmentor
     Implant: Serenity Anniversary Limited 'Efficiency' Dose
     Skill: Astrogeology
@@ -1152,7 +1153,6 @@ class Effect394(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
-    Implants named like: Liberation Games Booster (12 of 12)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: Grand Prix Velocity Booster
@@ -3749,6 +3749,7 @@ class Effect1190(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
     Implant: Serenity Anniversary Limited 'Efficiency' Dose
     Module: Medium Ice Harvester Accelerator I
     Skill: Ice Harvesting
@@ -4403,6 +4404,7 @@ class Effect1446(BaseEffect):
     ewSkillTpMaxRangeBonus
 
     Used by:
+    Implants named like: Liberation Games EWar Booster (3 of 3)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4412,9 +4414,10 @@ class Effect1446(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
+        penalize = False if 'skill' in context or 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
-                                      stackingPenalties='skill' not in context, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect1448(BaseEffect):
@@ -4565,6 +4568,7 @@ class Effect1550(BaseEffect):
     ewSkillTargetPaintingStrengthBonus
 
     Used by:
+    Implants named like: Liberation Games EWar Booster (3 of 3)
     Skill: Signature Focusing
     """
 
@@ -4717,6 +4721,7 @@ class Effect1590(BaseEffect):
     missileSkillAoeVelocityBonus
 
     Used by:
+    Implants named like: Liberation Games Accuracy Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
     Skill: Target Navigation Prediction
@@ -4727,7 +4732,7 @@ class Effect1590(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalize = False if 'skill' in context or 'implant' in context else True
+        penalize = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'aoeVelocity', container.getModifiedItemAttr('aoeVelocityBonus') * level,
                                         stackingPenalties=penalize, **kwargs)
@@ -5295,6 +5300,7 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
+    Implants named like: Liberation Games Range Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -5305,7 +5311,7 @@ class Effect1764(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalized = False if 'skill' in context or 'implant' in context else True
+        penalized = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'maxVelocity', container.getModifiedItemAttr('speedFactor') * level,
                                         stackingPenalties=penalized, **kwargs)
@@ -7582,6 +7588,7 @@ class Effect2695(BaseEffect):
     falloffBonusEffectProjectiles
 
     Used by:
+    Implants named like: Liberation Games Range Booster (3 of 3)
     Modules named like: Projectile Ambit Extension (8 of 8)
     """
 
@@ -7589,9 +7596,10 @@ class Effect2695(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = False if 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect2696(BaseEffect):
@@ -7633,6 +7641,7 @@ class Effect2698(BaseEffect):
     maxRangeBonusEffectProjectiles
 
     Used by:
+    Implants named like: Liberation Games Range Booster (3 of 3)
     Modules named like: Projectile Locus Coordinator (8 of 8)
     """
 
@@ -7640,9 +7649,10 @@ class Effect2698(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = False if 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect2706(BaseEffect):
@@ -8276,6 +8286,7 @@ class Effect2798(BaseEffect):
     projectileWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Liberation Games Damage Booster (3 of 3)
     Modules named like: Projectile Collision Accelerator (8 of 8)
     """
 
@@ -8283,9 +8294,10 @@ class Effect2798(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = False if 'booster' in context else True
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
-                                         stackingPenalties=True, **kwargs)
+                                         stackingPenalties=penalize, **kwargs)
 
 
 class Effect2799(BaseEffect):
@@ -8541,6 +8553,7 @@ class Effect2851(BaseEffect):
     missileDMGBonusPassive
 
     Used by:
+    Implants named like: Liberation Games Damage Booster (3 of 3)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     """
 
@@ -8548,11 +8561,12 @@ class Effect2851(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
+        penalize = False if 'booster' in context else True
         for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
             fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                                '%sDamage' % dmgType,
                                                container.getModifiedItemAttr('missileDamageMultiplierBonus'),
-                                               stackingPenalties=True, **kwargs)
+                                               stackingPenalties=penalize, **kwargs)
 
 
 class Effect2853(BaseEffect):
@@ -8768,6 +8782,7 @@ class Effect2885(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
     Implant: Serenity Anniversary Limited 'Efficiency' Dose
     """
 
@@ -18149,6 +18164,7 @@ class Effect5190(BaseEffect):
     trackingSpeedBonusEffectProjectiles
 
     Used by:
+    Implants named like: Liberation Games Accuracy Booster (3 of 3)
     Modules named like: Projectile Metastasis Adjuster (8 of 8)
     """
 
@@ -18156,9 +18172,10 @@ class Effect5190(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = False if 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect5201(BaseEffect):
@@ -34047,6 +34064,7 @@ class Effect7020(BaseEffect):
     Used by:
     Implants named like: Inquest 'Eros' Stasis Webifier MR (3 of 3)
     Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
+    Implants named like: Liberation Games EWar Booster (3 of 3)
     """
 
     type = 'passive'
