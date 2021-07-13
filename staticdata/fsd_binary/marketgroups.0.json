@@ -43670,7 +43670,7 @@
     "parentGroupID": 132
   }, 
   "2790": {
-    "hasTypes": 0, 
+    "hasTypes": 1, 
     "iconID": 3215, 
     "name_de": "Booster Slot 15", 
     "name_en-us": "Booster Slot 15", 
@@ -43685,7 +43685,7 @@
     "parentGroupID": 977
   }, 
   "2791": {
-    "hasTypes": 0, 
+    "hasTypes": 1, 
     "iconID": 3215, 
     "name_de": "Booster Slot 16", 
     "name_en-us": "Booster Slot 16", 
@@ -43700,7 +43700,7 @@
     "parentGroupID": 977
   }, 
   "2792": {
-    "hasTypes": 0, 
+    "hasTypes": 1, 
     "iconID": 3215, 
     "name_de": "Booster Slot 17", 
     "name_en-us": "Booster Slot 17", 
