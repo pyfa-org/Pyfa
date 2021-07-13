@@ -13,7 +13,12 @@ class ItemTraits(wx.Panel):
         self.SetSizer(mainSizer)
 
         self.traits = wx.html.HtmlWindow(self)
-        self.traits.SetPage(item.traits.display)
+
+        bgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        fgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        self.traits.SetPage("<body bgcolor='{}' text='{}'>{}</body>".format(
+            bgcolor.GetAsString(wx.C2S_HTML_SYNTAX),
+            fgcolor.GetAsString(wx.C2S_HTML_SYNTAX), item.traits.display))
 
         self.traits.Bind(wx.EVT_CONTEXT_MENU, self.onPopupMenu)
         self.traits.Bind(wx.EVT_KEY_UP, self.onKeyUp)
