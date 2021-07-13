@@ -3767,7 +3767,6 @@
     "effectName": "astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining", 
     "electronicChance": 0, 
     "guid": "", 
-    "iconID": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -69190,13 +69189,6 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 2253, 
-        "modifyingAttributeID": 2253, 
-        "operation": 7
-      }, 
-      {
-        "domain": "shipID", 
-        "func": "ItemModifier", 
         "modifiedAttributeID": 2116, 
         "modifyingAttributeID": 2342, 
         "operation": 6
@@ -86636,7 +86628,7 @@
   "8117": {
     "disallowAutoRepeat": 0, 
     "dischargeAttributeID": 6, 
-    "durationAttributeID": 73, 
+    "durationAttributeID": 3115, 
     "effectCategory": 1, 
     "effectID": 8117, 
     "effectName": "interdictionNullifierBonus", 
@@ -86688,8 +86680,16 @@
         "domain": "shipID", 
         "func": "LocationGroupModifier", 
         "groupID": 4117, 
-        "modifiedAttributeID": 73, 
+        "modifiedAttributeID": 3115, 
         "modifyingAttributeID": 2299, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 4117, 
+        "modifiedAttributeID": 565, 
+        "modifyingAttributeID": 2300, 
         "operation": 6
       }
     ], 
@@ -86738,6 +86738,440 @@
         "modifiedAttributeID": 1271, 
         "modifyingAttributeID": 3124, 
         "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8128": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8128, 
+    "effectName": "miningLaserRangeBonusLRSM", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 351, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8129": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8129, 
+    "effectName": "shipBonusCloakVelocityBonusGF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 306, 
+        "modifyingAttributeID": 462, 
+        "operation": 6, 
+        "skillTypeID": 11579
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8130": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8130, 
+    "effectName": "shipBonusWarpCapacityNeedGF2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 153, 
+        "modifyingAttributeID": 586, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8131": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8131, 
+    "effectName": "shipBonusWarpCapacitorNeedAF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 153, 
+        "modifyingAttributeID": 464, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8132": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8132, 
+    "effectName": "shipBonusScanProbeDeviationA2F", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1372, 
+        "modifyingAttributeID": 485, 
+        "operation": 6, 
+        "skillTypeID": 3412
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8133": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8133, 
+    "effectName": "shipBonusCloakVelocityMF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 306, 
+        "modifyingAttributeID": 460, 
+        "operation": 6, 
+        "skillTypeID": 11579
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8134": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8134, 
+    "effectName": "shipBonusWarpCapacitorNeedCF2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 153, 
+        "modifyingAttributeID": 588, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8135": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8135, 
+    "effectName": "shipBonusScanProbeDeviationCF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1372, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3412
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8136": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8136, 
+    "effectName": "shipBonusWarpCapacitorNeedMF2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 153, 
+        "modifyingAttributeID": 587, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8151": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8151, 
+    "effectName": "shipBonusCloakedVelocityRole1", 
+    "electronicChance": 0, 
+    "guid": "None", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 306, 
+        "modifyingAttributeID": 2298, 
+        "operation": 0, 
+        "skillTypeID": 11579
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0, 
+    "sfxName": "None"
+  }, 
+  "8152": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8152, 
+    "effectName": "eliteBonusEnergyDrainAmountBlackOps2", 
+    "electronicChance": 0, 
+    "guid": "None", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 97, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 90, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8153": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8153, 
+    "effectName": "eliteBonusDroneArmorShieldTransferBonusBlops1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 1257, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 84, 
+        "modifyingAttributeID": 1257, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8154": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8154, 
+    "effectName": "eliteBonusDroneTrackingOptimalBlackOps2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8155": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8155, 
+    "effectName": "eliteBonusLPTtrackingBlackOps1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 1257, 
+        "operation": 6, 
+        "skillTypeID": 3308
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8156": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8156, 
+    "effectName": "eliteBonusLPTfalloffBlackOps2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 158, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6, 
+        "skillTypeID": 3308
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8157": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8157, 
+    "effectName": "eliteBonusShieldResistancesBlackOps2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 271, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 274, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 273, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 272, 
+        "modifyingAttributeID": 1258, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8158": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8158, 
+    "effectName": "stabilizeCloakDurationBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3118, 
+        "modifyingAttributeID": 3134, 
+        "operation": 6, 
+        "skillTypeID": 11579
       }
     ], 
     "propulsionChance": 0, 

@@ -761,9 +761,11 @@ webifier:
 wub:
   - 'wub'
   - 'stasis webification probe'
+  - 'interdiction sphere launcher'
 wubble:
   - 'wubble'
   - 'stasis webification probe'
+  - 'interdiction sphere launcher'
 web:
   - 'web'
   - 'grappler'

@@ -2424,5 +2424,77 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2113": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Stabilized cloak to prevent decloak bursts", 
+    "displayName_de": "Tarnmodul-Stabilisierung", 
+    "displayName_en-us": "Cloak stabilization", 
+    "displayName_es": "Cloak stabilization", 
+    "displayName_fr": "Stabilisation de camouflage", 
+    "displayName_it": "Cloak stabilization", 
+    "displayName_ja": "クローク安定化", 
+    "displayName_ko": "클로킹 안정화", 
+    "displayName_ru": "Стабилизация маскировки", 
+    "displayName_zh": "隐形稳定", 
+    "displayNameID": 580046, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 3117
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2140": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Overheat Bonus - No EWAR", 
+    "displayName_de": "Modul-Überladungsbonus", 
+    "displayName_en-us": "Module Overload Bonus", 
+    "displayName_es": "Module Overload Bonus", 
+    "displayName_fr": "Bonus de surcharge du module", 
+    "displayName_it": "Module Overload Bonus", 
+    "displayName_ja": "モジュールオーバーロードボーナス", 
+    "displayName_ko": "모듈 과부하 보너스", 
+    "displayName_ru": "Бонус к перегрузке модулей", 
+    "displayName_zh": "装备超载加成", 
+    "displayNameID": 583780, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1181
+      }, 
+      {
+        "dogmaAttributeID": 1205
+      }, 
+      {
+        "dogmaAttributeID": 1206
+      }, 
+      {
+        "dogmaAttributeID": 1208
+      }, 
+      {
+        "dogmaAttributeID": 1210
+      }, 
+      {
+        "dogmaAttributeID": 1222
+      }, 
+      {
+        "dogmaAttributeID": 1223
+      }, 
+      {
+        "dogmaAttributeID": 1230
+      }, 
+      {
+        "dogmaAttributeID": 1231
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
