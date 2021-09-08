@@ -23,6 +23,7 @@ import re
 
 from logbook import Logger
 from sqlalchemy.orm import reconstructor
+from gui.utils.numberFormatter import formatAmount
 
 import eos.effects
 import eos.db
@@ -700,6 +701,22 @@ class Unit(EqBase):
             return override[1](value), override[2](self.displayName)
 
         return value, self.displayName
+
+    def FormatValue(self, value, rounding='prec', digits=3):
+        """Formats a value / unit combination into a string"""
+        preformatedValue = self.PreformatValue(value)[0]
+        unit = self.PreformatValue(value)[1]
+
+        if isinstance(preformatedValue, (int, float)) and rounding == 'prec':
+            fvalue = formatAmount(value, digits, 0, 0)
+        elif isinstance(preformatedValue, (int, float)) and rounding == 'dec':
+            fvalue = roundDec(value, digits)
+        else:
+            fvalue = preformatedValue
+
+        if unit is not None:
+            return "%s %s" % (fvalue, unit)
+        return fvalue
 
     def SimplifyValue(self, value):
         """Takes the internal representation value and convert it into the display value"""

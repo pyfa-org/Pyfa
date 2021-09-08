@@ -148,11 +148,11 @@ class ItemMutatorList(wx.ScrolledWindow):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            worseVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worseRange[0]), rounding='dec')
+            worseVal = m.attribute.unit.FormatValue(worseRange[0], rounding='dec')
             worseText = wx.StaticText(self, wx.ID_ANY, worseVal)
             worseText.SetForegroundColour(badColor)
 
-            betterVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(betterRange[0]), rounding='dec')
+            betterVal = m.attribute.unit.FormatValue(betterRange[0], rounding='dec')
             betterText = wx.StaticText(self, wx.ID_ANY, betterVal)
             betterText.SetForegroundColour(goodColor)
 
