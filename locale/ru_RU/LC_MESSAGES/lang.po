@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-05-27 11:31\n"
+"PO-Revision-Date: 2021-09-10 14:52\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -1631,7 +1631,7 @@ msgstr "Экспортировать фит в буфер"
 
 #: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
 msgid "Export boosters"
-msgstr ""
+msgstr "Экспорт бустеров"
 
 #: gui/copySelectDialog.py:49
 msgid "Export cargo contents"
@@ -2066,7 +2066,7 @@ msgstr "Имплантаты"
 #: gui/builtinContextMenus/priceOptions.py:54
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 msgid "Implants && Boosters"
-msgstr ""
+msgstr "Импланты и Бустеры"
 
 #: gui/propertyEditor.py:38
 msgid "Import"
@@ -3968,7 +3968,7 @@ msgstr "Имя пользователя:"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:34
 msgid "Using Executable Path for Saved Fit Database and Settings"
-msgstr ""
+msgstr "Использовать каталог запуска для сохраненной Базы Данных Фитов и Настроек"
 
 #: gui/builtinContextMenus/itemVariationChange.py:49
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:51
