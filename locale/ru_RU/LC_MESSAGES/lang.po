@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-09-10 14:52\n"
+"PO-Revision-Date: 2021-09-11 14:48\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -3167,7 +3167,7 @@ msgstr "Множитель сопротивления: "
 #: gui/builtinStatsViews/resistancesViewFull.py:47
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:50
 msgid "Resistances"
-msgstr "Сопротивляемости"
+msgstr "Сопротивление урону (резисты)"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:84
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
@@ -3397,7 +3397,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
-msgstr ""
+msgstr "Щит/Броня Танк"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Shield: "
