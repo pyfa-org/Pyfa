@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-05-18 17:34\n"
+"PO-Revision-Date: 2021-09-26 01:38\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -539,7 +539,7 @@ msgstr "전체 피팅을 XML로 백업"
 
 #: gui/mainFrame.py:872 gui/mainFrame.py:903
 msgid "Backup fits"
-msgstr ""
+msgstr "피팅 백업"
 
 #: eos/saveddata/damagePattern.py:59
 msgid "Baryon"
