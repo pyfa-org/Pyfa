@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-09-27 01:33\n"
+"PO-Revision-Date: 2021-09-28 01:36\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -804,7 +804,7 @@ msgstr ""
 #: gui/builtinStatsViews/resistancesViewFull.py:97
 #: gui/builtinStatsViews/resistancesViewFull.py:169
 msgid "Click to toggle between effective HP and raw HP"
-msgstr ""
+msgstr "이곳을 클릭하여 EHP나 HP를 볼 수 있습니다."
 
 #: gui/builtinStatsViews/miningyieldViewFull.py:102
 msgid "Click to toggle to Firepower View"
@@ -885,7 +885,7 @@ msgstr "연결 오류: 인터넷 연결을 확인해주세요."
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:14
 msgid "Context Menus"
-msgstr ""
+msgstr "컨텍스트 메뉴"
 
 #: gui/builtinContextMenus/envEffectAdd.py:117
 msgid "ContextMenu|ProjectedEffectManipulation|Black Hole"
@@ -1134,11 +1134,11 @@ msgstr "모든 타겟 프로필 삭제"
 
 #: gui/esiFittings.py:66
 msgid "Delete all from Eve"
-msgstr ""
+msgstr "Eve에서 모두 삭제"
 
 #: gui/esiFittings.py:65
 msgid "Delete from EVE"
-msgstr ""
+msgstr "EVE에서 삭제"
 
 #: gui/itemStats.py:189
 msgid "Dependents"
@@ -1181,7 +1181,8 @@ msgstr "비활성화됨"
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:28
 msgid "Disabling context menus can improve responsiveness.\n"
 "You can hold {} key + right-click to show all menu items regardless of these settings."
-msgstr ""
+msgstr "메뉴를 비활성화하면 반응성을 높일수 있습니다.\n"
+"{} 키를 누른 상태에서 우클릭을 하면 이 설정에 관계없이 모든 메뉴를 볼수 있습니다."
 
 #: graphs/data/fitMobility/graph.py:36 graphs/data/fitRemoteReps/graph.py:50
 #: graphs/data/fitRemoteReps/graph.py:58 graphs/data/fitWarpTime/graph.py:47
@@ -1194,21 +1195,23 @@ msgstr "거리"
 
 #: graphs/data/fitDamageStats/graph.py:66
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "공격자와 목표물의 거리가 오버뷰에서 표시됩니다. (표면 대 표면)"
 
 #: graphs/data/fitDamageStats/graph.py:67
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)\n"
 "When set, places the target that far away from the attacker\n"
 "When not set, attacker's weapons always hit the target"
-msgstr ""
+msgstr "공격자와 목표물의 거리가 오버뷰에서 표시됩니다. (표면 대 표면)\n"
+"활성화시, 목표물을 공격자로부터 멀리 떨어진곳에 배치합니다.\n"
+"비활성화시, 공격자의 무기는 무조건 타겟을 타격합니다."
 
 #: graphs/data/fitRemoteReps/graph.py:59 graphs/data/fitRemoteReps/graph.py:60
 msgid "Distance between the repairing ship and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "로지쉽과 목표물의 거리가 오버뷰에 표시됩니다. (표면 대 표면)"
 
 #: gui/esiFittings.py:159
 msgid "Do you really want to delete {} ({}) from EVE?"
-msgstr ""
+msgstr "정말로 EVE에서 {} ({}) 을(를) 지우시겠습니까?"
 
 #: gui/updateDialog.py:102
 msgid "Don't remind me again for this release"
@@ -1229,7 +1232,7 @@ msgstr "다운로드"
 
 #: graphs/gui/lists.py:313
 msgid "Drag a fit into this list to graph it"
-msgstr ""
+msgstr "그래프화 하려면 피팅을 이곳에 드래그하세요"
 
 #: graphs/gui/lists.py:370
 msgid "Drag a fit into this list to have your fits graphed against it"
@@ -1380,11 +1383,11 @@ msgstr "이브 XML 피팅 파일들"
 
 #: gui/mainFrame.py:808
 msgid "EVEMon skills training XML file"
-msgstr ""
+msgstr "EVEMon 스킬 훈련 XML 파일"
 
 #: gui/mainFrame.py:807
 msgid "EVEMon skills training file"
-msgstr ""
+msgstr "EVEMon 스킬 훈련 파일"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "Effective DPS"
@@ -1470,11 +1473,11 @@ msgstr "피팅 제한 활성화"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:33
 msgid "Enable Network"
-msgstr ""
+msgstr "네트워크 사용 가능"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:106
 msgid "Enable all available meta buttons"
-msgstr ""
+msgstr "모든 이용 가능한 버튼 활성화"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:93
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:100
@@ -3004,7 +3007,7 @@ msgstr "Pyfa 업데이트 확인"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:15
 msgid "Pyfa can automatically check and notify you of new releases. This feature is toggled in the Network settings. Here, you may allow pre-release notifications and view suppressed release notifications, if any."
-msgstr ""
+msgstr "Pyfa는 자동적으로 최신 릴리즈를 체크하여 사용자에게 안내할수있습니다. 이것은 네트워크 설정에서 켜고 끌수 있습니다."
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:69
 msgid "Pyfa language selection disabled. Please check if .mo files have been generated.\n"
@@ -3041,7 +3044,7 @@ msgstr "무작위 스탯"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:63
 msgid "Range"
-msgstr ""
+msgstr "거리"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:222
 msgid "Raw HP: "
@@ -3093,7 +3096,7 @@ msgstr "강화"
 
 #: graphs/data/fitRemoteReps/graph.py:62
 msgid "Reload ancillary RRs"
-msgstr ""
+msgstr "보조 원격 수리기 재탑재"
 
 #: graphs/data/fitRemoteReps/graph.py:48
 msgid "Remote Repairs"
@@ -3136,7 +3139,7 @@ msgstr ""
 
 #: gui/itemStats.py:185
 msgid "Requirements"
-msgstr ""
+msgstr "요구사항"
 
 #: gui/builtinContextMenus/moduleSpool.py:98
 msgid "Reset"
@@ -3148,7 +3151,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemMutator.py:51
 msgid "Reset defaults"
-msgstr ""
+msgstr "기본값으로 되돌리기"
 
 #: gui/builtinContextMenus/resistMode.py:41
 msgid "Resist Mode"
@@ -3170,7 +3173,7 @@ msgstr "자원"
 
 #: gui/builtinItemStatsViews/itemMutator.py:57
 msgid "Revert changes"
-msgstr ""
+msgstr "변경사항 취소"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Revert to {}"
@@ -3186,7 +3189,7 @@ msgstr "로그 드론"
 
 #: eos/saveddata/damagePattern.py:160 eos/saveddata/targetProfile.py:231
 msgid "Rogue Drone Entities"
-msgstr ""
+msgstr "로그 드론 엔티티"
 
 #: eos/saveddata/targetProfile.py:63 eos/saveddata/targetProfile.py:69
 msgid "Rogue Drones"
@@ -3194,7 +3197,7 @@ msgstr "로그 드론"
 
 #: gui/builtinItemStatsViews/itemEffects.py:34
 msgid "Run Time"
-msgstr ""
+msgstr "런타임"
 
 #: gui/esiFittings.py:368
 msgid "SSO Character Management"
@@ -3206,7 +3209,7 @@ msgstr "SSO 로그인"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:45
 msgid "SSO Mode"
-msgstr ""
+msgstr "SSO 모드"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:126
 msgid "Salvage hold"
@@ -3288,7 +3291,7 @@ msgstr "시큐리티 상태: {0:.2f}"
 
 #: gui/characterEditor.py:914
 msgid "Security Status is used in some CONCORD hull calculations"
-msgstr ""
+msgstr "시큐리티 상태는 CONCORD의 선체량 계산에 사용됩니다."
 
 #: eos/saveddata/damagePattern.py:102 eos/saveddata/targetProfile.py:101
 #: eos/saveddata/targetProfile.py:108 eos/saveddata/targetProfile.py:115
@@ -3306,7 +3309,7 @@ msgstr "포맷 선택"
 
 #: gui/esiFittings.py:318
 msgid "Sending request and awaiting response"
-msgstr ""
+msgstr "요청을 보내고 응답을 기다리는중"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:65
 msgid "Sensor str."
@@ -3335,7 +3338,7 @@ msgstr "시큐리티 상태 설정"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 msgid "Set as Damage Pattern"
-msgstr ""
+msgstr "데미지 패턴 설정"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:53
 msgid "Set export destination"
@@ -3347,7 +3350,7 @@ msgstr ""
 
 #: gui/setEditor.py:229
 msgid "Sets exported to clipboard"
-msgstr ""
+msgstr "설정을 클립보드에 내보냈습니다"
 
 #: gui/characterEditor.py:326
 msgid "Setting an Alpha clone does not replace the character's skills, but rather caps them to Alpha levels."
@@ -3355,7 +3358,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/shipModeChange.py:20
 msgid "Sharpshooter"
-msgstr ""
+msgstr "저격모드"
 
 #: eos/saveddata/targetProfile.py:46
 msgid "Shield"
@@ -3387,7 +3390,7 @@ msgstr "실드 저항"
 #: gui/builtinStatsViews/outgoingViewMinimal.py:37
 #: gui/builtinStatsViews/outgoingViewFull.py:38
 msgid "Shield restored"
-msgstr ""
+msgstr "실드 회복됨"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:58
 msgid "Shield/Armor Tank"
@@ -3409,7 +3412,7 @@ msgstr ""
 
 #: gui/builtinShipBrowser/navigationPanel.py:48
 msgid "Ship groups"
-msgstr ""
+msgstr "함선 그룹"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:117
 msgid "Ship hold"
@@ -4062,19 +4065,19 @@ msgstr "이브 캐릭터에는 전체 스킬 0 혹은 5 캐릭터를 링크할 �
 
 #: gui/characterEditor.py:76
 msgid "You must supply a name for the Character!"
-msgstr ""
+msgstr "이 캐릭터의 이름을 입력해주세요"
 
 #: gui/setEditor.py:48
 msgid "You must supply a name for the Implant Set!"
-msgstr ""
+msgstr "이 임플란트 세트의 이름을 입력해주세요"
 
 #: gui/patternEditor.py:51
 msgid "You must supply a name for your Damage Profile!"
-msgstr ""
+msgstr "이 데미지 프로필의 이름을 입력해주세요"
 
 #: gui/targetProfileEditor.py:71
 msgid "You must supply a name for your Target Profile!"
-msgstr ""
+msgstr "이 타겟 프로필의 이름을 입력해주세요"
 
 #: eos/saveddata/damagePattern.py:43
 msgid "[T2] Aurora"
@@ -4134,23 +4137,23 @@ msgstr "[T2] 보이드"
 
 #: eos/utils/stats.py:123
 msgid "em"
-msgstr ""
+msgstr "em"
 
 #: eos/utils/stats.py:123
 msgid "exp"
-msgstr ""
+msgstr "exp"
 
 #: eos/utils/stats.py:123
 msgid "explosive"
-msgstr ""
+msgstr "폭발"
 
 #: eos/utils/stats.py:123
 msgid "kin"
-msgstr ""
+msgstr "kin"
 
 #: eos/utils/stats.py:123
 msgid "kinetic"
-msgstr ""
+msgstr "키네틱"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
@@ -4158,7 +4161,7 @@ msgstr ""
 
 #: gui/errorDialog.py:69
 msgid "pyfa error"
-msgstr ""
+msgstr "pyfa 에러"
 
 #: gui/errorDialog.py:76
 msgid "pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
@@ -4188,16 +4191,16 @@ msgstr ""
 
 #: eos/utils/stats.py:123
 msgid "th"
-msgstr ""
+msgstr "th"
 
 #: eos/utils/stats.py:123
 msgid "thermal"
-msgstr ""
+msgstr "열"
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #, python-brace-format
 msgid "{0} Market Group"
-msgstr ""
+msgstr "{0} 거래소 그룹"
 
 #: gui/itemStats.py:87
 #, python-brace-format
