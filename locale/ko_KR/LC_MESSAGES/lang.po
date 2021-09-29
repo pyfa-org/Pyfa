@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-09-28 01:36\n"
+"PO-Revision-Date: 2021-09-29 10:59\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -820,7 +820,7 @@ msgstr "클라이언트 ID:"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:85
 msgid "Client Secret:"
-msgstr ""
+msgstr "클라이언트 비밀 키:"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:114
 msgid "Color fitting view by slot"
@@ -1324,7 +1324,7 @@ msgstr "ESI로 내보내기"
 
 #: graphs/data/fitEwarStats/graph.py:38
 msgid "ECM: combined strength"
-msgstr ""
+msgstr "ECM: 총합 강도"
 
 #: gui/mainFrame.py:837
 msgid "EFT text fitting files"
@@ -1483,7 +1483,7 @@ msgstr "모든 이용 가능한 버튼 활성화"
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:100
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:114
 msgid "Enable all meta buttons"
-msgstr ""
+msgstr "모든 메타 버튼 활성화"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:92
 msgid "Enable all meta buttons for a duration of search / recents"
