@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-09-29 10:59\n"
+"PO-Revision-Date: 2021-09-30 10:55\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -1901,7 +1901,7 @@ msgstr "일반"
 
 #: gui/mainFrame.py:904
 msgid "Generating HTML file at: {}"
-msgstr ""
+msgstr "이 경로에 HTML 파일 생성: {}"
 
 #: eos/saveddata/damagePattern.py:39 eos/saveddata/damagePattern.py:40
 #: eos/saveddata/damagePattern.py:41 eos/saveddata/damagePattern.py:42
@@ -1910,7 +1910,7 @@ msgstr "일반적"
 
 #: gui/characterEditor.py:778
 msgid "Get Skills"
-msgstr ""
+msgstr "스킬 불러오기"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:68
 msgid "Global Default Spoolup Percentage:"
@@ -2023,7 +2023,7 @@ msgstr "ID"
 
 #: eos/saveddata/targetProfile.py:293
 msgid "Ideal Target"
-msgstr ""
+msgstr "이상적인 목표"
 
 #: gui/builtinContextMenus/graphDroneControlRange.py:23
 msgid "Ignore Drone Control Range"
@@ -3177,7 +3177,7 @@ msgstr "변경사항 취소"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Revert to {}"
-msgstr ""
+msgstr "{}로 되돌리기"
 
 #: gui/builtinViewColumns/baseName.py:63
 msgid "Rig"
@@ -3718,11 +3718,11 @@ msgstr ""
 
 #: gui/mainFrame.py:949
 msgid "The following error was generated"
-msgstr ""
+msgstr "다음 오류가 발생했습니다."
 
 #: gui/mainFrame.py:893
 msgid "The following path is invalid or does not exist:"
-msgstr ""
+msgstr "다음 경로가 유효하지 않거나 존재하지 않습니다:"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:64
 msgid "The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose will also be tried first, and if no data is available, global price will be used."
@@ -3835,7 +3835,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/capacitorViewFull.py:67
 msgid "Total: "
-msgstr ""
+msgstr "합계: "
 
 #: gui/itemStats.py:166
 msgid "Traits"
@@ -3849,7 +3849,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:165 eos/saveddata/targetProfile.py:172
 #: eos/saveddata/targetProfile.py:179 eos/saveddata/targetProfile.py:186
 msgid "Triglavian"
-msgstr ""
+msgstr "트리글라비안"
 
 #: eos/saveddata/damagePattern.py:130 eos/saveddata/damagePattern.py:131
 #: eos/saveddata/damagePattern.py:134 eos/saveddata/damagePattern.py:137
@@ -3893,27 +3893,27 @@ msgstr "울트라바이올렛"
 
 #: gui/mainMenuBar.py:83
 msgid "Undo the most recent action"
-msgstr ""
+msgstr "가장 최근 작업 취소"
 
 #: eos/saveddata/damagePattern.py:38
 msgid "Uniform"
-msgstr ""
+msgstr "균등"
 
 #: eos/saveddata/targetProfile.py:42
 msgid "Uniform (25%)"
-msgstr ""
+msgstr "균등 (25%)"
 
 #: eos/saveddata/targetProfile.py:43
 msgid "Uniform (50%)"
-msgstr ""
+msgstr "균등 (50%)"
 
 #: eos/saveddata/targetProfile.py:44
 msgid "Uniform (75%)"
-msgstr ""
+msgstr "균등 (75%)"
 
 #: eos/saveddata/targetProfile.py:45
 msgid "Uniform (90%)"
-msgstr ""
+msgstr "균등 (90%)"
 
 #: gui/characterEditor.py:614
 msgid "Unlearn"
@@ -4057,7 +4057,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemEffects.py:56
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: gui/characterEditor.py:757
 msgid "You cannot link All 0 or All 5 characters to an EVE character."
@@ -4183,11 +4183,11 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
-msgstr ""
+msgstr "pyfa.io"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
 msgid "pyfa:"
-msgstr ""
+msgstr "pyfa:"
 
 #: eos/utils/stats.py:123
 msgid "th"
