@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-09-30 10:55\n"
+"PO-Revision-Date: 2021-10-01 11:20\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -1101,7 +1101,7 @@ msgstr "디버그 로깅 활성화"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:58
 msgid "Default Market Prices:"
-msgstr ""
+msgstr "기본 시장 가격:"
 
 #: gui/propertyEditor.py:271
 #, python-format
@@ -1362,7 +1362,7 @@ msgstr "이브 데이터:"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:49
 msgid "EVE IGB HTML fitting file"
-msgstr ""
+msgstr "EVE IGB HTML 피팅 파일"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 #: gui/characterEditor.py:162
@@ -4157,7 +4157,7 @@ msgstr "키네틱"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
-msgstr ""
+msgstr "pyfa 사용자 경로:"
 
 #: gui/errorDialog.py:69
 msgid "pyfa error"
