@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-10-01 11:20\n"
+"PO-Revision-Date: 2021-10-07 10:17\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -799,7 +799,7 @@ msgstr "전체 삭제"
 
 #: gui/propertyEditor.py:40
 msgid "Clear all overrides"
-msgstr ""
+msgstr "모든 사용자 정의 속성 지우기"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:97
 #: gui/builtinStatsViews/resistancesViewFull.py:169
