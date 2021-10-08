@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-10-07 10:17\n"
+"PO-Revision-Date: 2021-10-08 10:37\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -808,7 +808,7 @@ msgstr "이곳을 클릭하여 EHP나 HP를 볼 수 있습니다."
 
 #: gui/builtinStatsViews/miningyieldViewFull.py:102
 msgid "Click to toggle to Firepower View"
-msgstr ""
+msgstr "클릭하여 공격 정보로 전환"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:115
 msgid "Click to toggle to Mining Yield"
