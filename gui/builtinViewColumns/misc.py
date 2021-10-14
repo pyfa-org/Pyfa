@@ -708,40 +708,40 @@ class Miscellanea(ViewColumn):
                 text = f"{-buff_value:.1f}%"
                 tooltip = "Shield Resistance Bonus"
 
-            if buff_id == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
+            elif buff_id == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                 text = f"{buff_value:+.1f}%"
                 tooltip = "Shield Repair Modules: Duration & Capacictor-use bonus"
 
-            if buff_id == 12:  # Shield Burst: Shield Extension: Shield HP
+            elif buff_id == 12:  # Shield Burst: Shield Extension: Shield HP
                 text = f"{buff_value:.1f}%"
                 tooltip = "Shield HP Bonus"
 
-            if buff_id == 13:  # Armor Burst: Armor Energizing: Armor Resistance
+            elif buff_id == 13:  # Armor Burst: Armor Energizing: Armor Resistance
                 # minus buff value because ingame shows positive value
                 text = f"{-buff_value:.1f}%"
                 tooltip = "Armor Resistance Bonus"
 
-            if buff_id == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
+            elif buff_id == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
                 text = f"{buff_value:+.1f}%"
                 tooltip = "Armor Repair Modules: Duration & Capacitor-use bonus"
 
-            if buff_id == 15:  # Armor Burst: Armor Reinforcement: Armor HP
+            elif buff_id == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                 text = f"{buff_value:.1f}%"
                 tooltip = "Armor HP Bonus"
 
-            if buff_id == 16:  # Information Burst: Sensor Optimization: Scan Resolution
+            elif buff_id == 16:  # Information Burst: Sensor Optimization: Scan Resolution
                 text = f"{buff_value:.1f}%"
                 tooltip = "Scan Resolution bonus"
             
-            if buff_id == 26:  # Information Burst: Sensor Optimization: Targeting Range
+            elif buff_id == 26:  # Information Burst: Sensor Optimization: Targeting Range
                 text += f" | {buff_value:.1f}%"
                 tooltip += " | Targeting Range bonus"
 
-            if buff_id == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
+            elif buff_id == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
                 text = f"{buff_value:.1f}%"
                 tooltip = "Electronic Warfare modules: Range and Strength bonus"
 
-            if buff_id == 18:  # Information Burst: Electronic Hardening: Sensor Strength
+            elif buff_id == 18:  # Information Burst: Electronic Hardening: Sensor Strength
                 text = f"{buff_value:.1f}%"
                 tooltip = "Sensor Strength bonus"
 
@@ -751,7 +751,7 @@ class Miscellanea(ViewColumn):
                 text += f" | {buff2_value:+.1f}%"
                 tooltip += " | Remote Sensor Dampener / Remote Weapon Disruption Resistance bonus"
 
-            if buff_id == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
+            elif buff_id == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
                 text = f"{buff_value:+.1f}%"
                 tooltip = "Signature Radius bonus"
 
@@ -761,23 +761,23 @@ class Miscellanea(ViewColumn):
                 text += f" | {-buff2_value:.1f}%"
                 tooltip += " | Agility bonus"
 
-            if buff_id == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
+            elif buff_id == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
                 text = f"{buff_value:.1f}%"
                 tooltip = "Propulsion disruption module range bonus"
 
-            if buff_id == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
+            elif buff_id == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
                 text = f"{buff_value:.1f}%"
                 tooltip = "AB/MWD module speed increase"
 
-            if buff_id == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
+            elif buff_id == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
                 text = f"{buff_value:.1f}%"
                 tooltip = "Mining/Survey module range bonus"
 
-            if buff_id == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
+            elif buff_id == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
                 text = f"{buff_value:+.1f}%"
                 tooltip = "Mining Modules: Duration & Capacitor-use bonus"
 
-            if buff_id == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
+            elif buff_id == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
                 text = f"{buff_value:+.1f}%"
                 tooltip = "Mining crystal volatility bonus"
 
