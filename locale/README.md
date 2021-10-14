@@ -60,7 +60,7 @@ A: pyfa will automatically try to use the en_US local as the default unless otgh
     1. Edit the file `/etc/locale.gen`, find the line `# en_US.UTF-8 UTF-8`, remove `#` part
     2. Run `locale-gen` to generate new locale files
 
-Please note that you may have to perform this operation after updating your distro, as the locales may revert.
+Please note that you may have to perform this operation after updating your distro, as the locales may revert. See https://github.com/pyfa-org/Pyfa/issues/2314 for more info
 
 Q: The English text isn't in the `.pot`/`.po` file for me to translate<br />
 A: This is probably one of two things:
