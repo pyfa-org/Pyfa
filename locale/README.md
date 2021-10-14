@@ -54,6 +54,14 @@ edit the translation and hit Save :)
 
 ## FAQ
 
+Q: I'm running Linux and getting "Cannot set locale to language "English (U.S.)" when trying to run pyfa.<br />
+A: pyfa will automatically try to use the en_US local as the default unless otgherwise set. This error can happen when your Linux distribution does not have the en_US locale enabled. The fix for thiss may be distro-speecific, but the process for Debian-based distros is as follows:
+
+    1. Edit the file `/etc/locale.gen`, find the line `# en_US.UTF-8 UTF-8`, remove `#` part
+    2. Run `locale-gen` to generate new locale files
+
+Please note that you may have to perform this operation after updating your distro, as the locales may revert.
+
 Q: The English text isn't in the `.pot`/`.po` file for me to translate<br />
 A: This is probably one of two things:
 
