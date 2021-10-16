@@ -17,6 +17,7 @@ import config
 import base64
 import secrets
 import hashlib
+import json
 
 import datetime
 from service.const import EsiSsoMode, EsiEndpoints
@@ -138,21 +139,23 @@ class EsiAccess:
             m.update(code_verifier)
             d = m.digest()
             code_challenge = base64.urlsafe_b64encode(d).decode().replace("=", "")
-
+            state_arg = {
+                'mode': self.settings.get('loginMode'),
+                'redirect': redirect,
+                'state': self.state
+            }
             args = {
                 # 'pyfa_version': config.version,
                 # 'login_method': self.settings.get('loginMode'), # todo: encode this into the state
                 # 'client_hash': config.getClientSecret(),
                 'response_type': 'code',
-                'redirect_uri': 'http://localhost:6465',
+                'redirect_uri': 'http://127.0.0.1:5500/callback.html',
                 'client_id': '095d8cd841ac40b581330919b49fe746', # pyfa PKCE app # TODO: move this to some central config location, not hardcoded
                 'scope': ' '.join(scopes),
                 'code_challenge': code_challenge,
                 'code_challenge_method':  'S256',
-                'state': self.state,
+                'state': base64.b64encode(bytes(json.dumps(state_arg), 'utf-8'))
             }
-            if redirect is not None:
-                args['redirect'] = redirect
 
             return '%s?%s' % (
                 self.oauth_authorize,

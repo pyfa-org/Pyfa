@@ -4,7 +4,7 @@ import socket
 import threading
 from logbook import Logger
 import socketserver
-
+import json
 pyfalog = Logger(__name__)
 
 # noinspection PyPep8
@@ -69,38 +69,35 @@ if (window.location.href.indexOf('step=2') == -1) {{
 
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(http.server.BaseHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+
     def do_GET(self):
         if self.path == "/favicon.ico":
             return
 
         parsed_path = urllib.parse.urlparse(self.path)
         parts = urllib.parse.parse_qs(parsed_path.query)
-        msg = ""
-
-        step2 = 'step' in parts
-
+        is_success = False
         try:
-            if step2:
-                self.server.callback(parts)
-                pyfalog.info("Successfully logged into EVE.")
-                msg = "If you see this message then it means you should be logged into EVE SSO. You may close this window and return to the application."
-            else:
-                # For implicit mode, we have to serve up the page which will take the hash and redirect using a querystring
-                pyfalog.info("Processing response from EVE Online.")
-                msg = "Processing response from EVE Online"
+            self.server.callback(parts)
+            pyfalog.info("Successfully logged into EVE.")
+            is_success = True
+            self.send_response(200)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as ex:
             pyfalog.error("Error logging into EVE")
             pyfalog.error(ex)
-            msg = "<h2>Error</h2>\n<p>{}</p>".format(ex.message)
+            self.send_response(500)
+            # send error
         finally:
-            self.send_response(200)
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(str.encode(HTML.format(msg)))
 
-        if step2:
-            # Only stop once if we've received something in the querystring
+        if is_success:
             self.server.stop()
 
     def log_message(self, format, *args):
