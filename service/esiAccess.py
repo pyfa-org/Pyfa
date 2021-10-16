@@ -15,6 +15,8 @@ import uuid
 import time
 import config
 import base64
+import secrets
+import hashlib
 
 import datetime
 from service.const import EsiSsoMode, EsiEndpoints
@@ -78,9 +80,9 @@ class EsiAccess:
 
     @property
     def sso_url(self):
-        if self.settings.get("ssoMode") == EsiSsoMode.CUSTOM:
-            return "https://login.eveonline.com"
-        return "https://www.pyfa.io"
+        # if self.settings.get("ssoMode") == EsiSsoMode.CUSTOM:
+            return "https://login.eveonline.com/v2"
+        # return "https://www.pyfa.io"
 
     @property
     def esi_url(self):
@@ -129,13 +131,26 @@ class EsiAccess:
         self.state = str(uuid.uuid4())
 
         if self.settings.get("ssoMode") == EsiSsoMode.AUTO:
-            args = {
-                'state': self.state,
-                'pyfa_version': config.version,
-                'login_method': self.settings.get('loginMode'),
-                'client_hash': config.getClientSecret()
-            }
 
+            # Generate the PKCE code challenge
+            code_verifier = base64.urlsafe_b64encode(secrets.token_bytes(32))
+            m = hashlib.sha256()
+            m.update(code_verifier)
+            d = m.digest()
+            code_challenge = base64.urlsafe_b64encode(d).decode().replace("=", "")
+
+            args = {
+                # 'pyfa_version': config.version,
+                # 'login_method': self.settings.get('loginMode'), # todo: encode this into the state
+                # 'client_hash': config.getClientSecret(),
+                'response_type': 'code',
+                'redirect_uri': 'http://localhost:6465',
+                'client_id': '095d8cd841ac40b581330919b49fe746', # pyfa PKCE app # TODO: move this to some central config location, not hardcoded
+                'scope': ' '.join(scopes),
+                'code_challenge': code_challenge,
+                'code_challenge_method':  'S256',
+                'state': self.state,
+            }
             if redirect is not None:
                 args['redirect'] = redirect
 
