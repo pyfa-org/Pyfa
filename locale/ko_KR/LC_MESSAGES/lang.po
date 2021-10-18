@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-10-08 10:37\n"
+"PO-Revision-Date: 2021-10-18 11:10\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -1333,7 +1333,7 @@ msgstr "EFT 텍스트 피팅 파일"
 #: gui/builtinStatsViews/resistancesViewFull.py:96
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "EHP"
-msgstr "유효 HP"
+msgstr "실질 내구도"
 
 #: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
@@ -1413,7 +1413,7 @@ msgstr "유효 알파 샷"
 #: gui/builtinStatsViews/resistancesViewFull.py:220
 #, python-format
 msgid "Effective: %d HP"
-msgstr "유효HP: %d HP"
+msgstr "실질 내구도: %d"
 
 #: gui/itemStats.py:192
 msgid "Effects"
@@ -2135,7 +2135,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/resistancesViewFull.py:115
 msgid "Incoming damage pattern"
-msgstr ""
+msgstr "들어오는 피해 분포"
 
 #: gui/targetProfileEditor.py:50
 msgid "Incorrect formatting (decimals only)"
