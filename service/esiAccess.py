@@ -18,9 +18,12 @@ import base64
 import secrets
 import hashlib
 import json
+from jose import jwt
+from jose.exceptions import ExpiredSignatureError, JWTError, JWTClaimsError
 
 import datetime
 from service.const import EsiSsoMode, EsiEndpoints
+from service.server import SSOError
 from service.settings import EsiSettings, NetworkSettings
 
 from requests import Session
@@ -131,45 +134,37 @@ class EsiAccess:
     def getLoginURI(self, redirect=None):
         self.state = str(uuid.uuid4())
 
-        if self.settings.get("ssoMode") == EsiSsoMode.AUTO:
+        # Generate the PKCE code challenge
+        self.code_verifier = base64.urlsafe_b64encode(secrets.token_bytes(32))
+        m = hashlib.sha256()
+        m.update(self.code_verifier)
+        d = m.digest()
+        code_challenge = base64.urlsafe_b64encode(d).decode().replace("=", "")
 
-            # Generate the PKCE code challenge
-            code_verifier = base64.urlsafe_b64encode(secrets.token_bytes(32))
-            m = hashlib.sha256()
-            m.update(code_verifier)
-            d = m.digest()
-            code_challenge = base64.urlsafe_b64encode(d).decode().replace("=", "")
-            state_arg = {
-                'mode': self.settings.get('loginMode'),
-                'redirect': redirect,
-                'state': self.state
-            }
-            args = {
-                # 'pyfa_version': config.version,
-                # 'login_method': self.settings.get('loginMode'), # todo: encode this into the state
-                # 'client_hash': config.getClientSecret(),
-                'response_type': 'code',
-                'redirect_uri': 'http://127.0.0.1:5500/callback.html',
-                'client_id': '095d8cd841ac40b581330919b49fe746', # pyfa PKCE app # TODO: move this to some central config location, not hardcoded
-                'scope': ' '.join(scopes),
-                'code_challenge': code_challenge,
-                'code_challenge_method':  'S256',
-                'state': base64.b64encode(bytes(json.dumps(state_arg), 'utf-8'))
-            }
+        state_arg = {
+            'mode': self.settings.get('loginMode'),
+            'redirect': redirect,
+            'state': self.state
+        }
 
-            return '%s?%s' % (
-                self.oauth_authorize,
-                urlencode(args)
-            )
-        else:
-            return '%s?response_type=%s&redirect_uri=%s&client_id=%s%s%s' % (
-                self.oauth_authorize,
-                'code',
-                quote('http://localhost:6461', safe=''),
-                self.settings.get('clientID'),
-                '&scope=%s' % '+'.join(scopes) if scopes else '',
-                '&state=%s' % self.state
-            )
+        args = {
+            # 'pyfa_version': config.version,
+            # 'login_method': self.settings.get('loginMode'), # todo: encode this into the state
+            # 'client_hash': config.getClientSecret(),
+            'response_type': 'code',
+            'redirect_uri': 'http://127.0.0.1:5500/callback.html',
+            'client_id': self.settings.get('clientID') or '095d8cd841ac40b581330919b49fe746', # pyfa PKCE app # TODO: move this to some central config location, not hardcoded
+            'scope': ' '.join(scopes),
+            'code_challenge': code_challenge,
+            'code_challenge_method':  'S256',
+            'state': base64.b64encode(bytes(json.dumps(state_arg), 'utf-8'))
+        }
+
+        return '%s?%s' % (
+            self.oauth_authorize,
+            urlencode(args)
+        )
+
 
     def get_oauth_header(self, token):
         """ Return the Bearer Authorization header required in oauth calls
@@ -229,20 +224,82 @@ class EsiAccess:
             {
                 'grant_type': 'authorization_code',
                 'code': code,
+                'client_id': self.settings.get('clientID') or '095d8cd841ac40b581330919b49fe746',
+                "code_verifier": self.code_verifier
             }
         )
 
     def auth(self, code):
-        request_data = self.get_access_token_request_params(code)
-        res = self._session.post(**request_data)
+        # todo: handle invalid auth code, or one that has been used already
+        values = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'client_id': self.settings.get('clientID') or '095d8cd841ac40b581330919b49fe746',
+            "code_verifier": self.code_verifier
+        }
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Host": "login.eveonline.com",
+        }
+
+        res = self._session.post(
+            "https://login.eveonline.com/v2/oauth/token",
+            data=values,
+            headers=headers,
+        )
+
         if res.status_code != 200:
-            raise Exception(
-                request_data['url'],
+            raise SSOError(
+                "https://login.eveonline.com/v2/oauth/token",
                 res.status_code,
                 res.json()
             )
         json_res = res.json()
+
+        self.validate_eve_jwt(json_res['access_token'])
         return json_res
+
+    def validate_eve_jwt(self, jwt_token):
+        """Validate a JWT token retrieved from the EVE SSO.
+        Args:
+            jwt_token: A JWT token originating from the EVE SSO
+        Returns
+            dict: The contents of the validated JWT token if there are no
+                  validation errors
+        """
+
+        jwk_set_url = "https://login.eveonline.com/oauth/jwks"
+
+        res = self._session.get(jwk_set_url)
+        res.raise_for_status()
+
+        data = res.json()
+
+        try:
+            jwk_sets = data["keys"]
+        except KeyError as e:
+            raise SSOError("Something went wrong when retrieving the JWK set. The returned "
+                  "payload did not have the expected key {}. \nPayload returned "
+                  "from the SSO looks like: {}".format(e, data))
+
+        jwk_set = next((item for item in jwk_sets if item["alg"] == "RS256"))
+
+        try:
+            return jwt.decode(
+                jwt_token,
+                jwk_set,
+                algorithms=jwk_set["alg"],
+                issuer=["login.eveonline.com", "https://login.eveonline.com"]
+            )
+        except ExpiredSignatureError as e:
+            raise SSOError("The JWT token has expired: {}").format(str(e))
+        except JWTError as e:
+            raise SSOError("The JWT signature was invalid: {}").format(str(e))
+        except JWTClaimsError as e:
+            raise SSOError("The issuer claim was not from login.eveonline.com or "
+                "https://login.eveonline.com: {}".format(str(e)))
+
 
     def refresh(self, ssoChar):
         request_data = self.get_refresh_token_params(config.cipher.decrypt(ssoChar.refreshToken).decode())

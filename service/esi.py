@@ -14,7 +14,7 @@ from eos.saveddata.ssocharacter import SsoCharacter
 from service.esiAccess import APIException
 import gui.globalEvents as GE
 from gui.ssoLogin import SsoLogin, SsoLoginServer
-from service.server import StoppableHTTPServer, AuthHandler
+from service.server import StoppableHTTPServer, AuthHandler, SSOError
 from service.settings import EsiSettings
 from service.esiAccess import EsiAccess
 import gui.mainFrame
@@ -134,14 +134,7 @@ class Esi(EsiAccess):
         return 'http://localhost:{}'.format(port)
 
     def handleLogin(self, message):
-
-        # we already have authenticated stuff for the auto mode
-        if self.settings.get('ssoMode') == EsiSsoMode.AUTO:
-            ssoInfo = message['SSOInfo'][0]
-            auth_response = json.loads(base64.b64decode(ssoInfo))
-        else:
-            # otherwise, we need to fetch the information
-            auth_response = self.auth(message['code'][0])
+        auth_response = self.auth(message['code'][0])
 
         res = self._session.get(
             self.oauth_verify,
@@ -169,11 +162,17 @@ class Esi(EsiAccess):
 
     def handleServerLogin(self, message):
         if not message:
-            raise Exception("Could not parse out querystring parameters.")
+            raise SSOError("Could not parse out querystring parameters.")
 
-        if message['state'][0] != self.state:
+        try:
+            state_enc = message['state'][0]
+            state = json.loads(base64.b64decode(state_enc))['state']
+        except Exception:
+            raise SSOError("There was a problem decoding state parameter.")
+
+        if state != self.state:
             pyfalog.warn("OAUTH state mismatch")
-            raise Exception("OAUTH State Mismatch.")
+            raise SSOError("OAUTH State Mismatch.")
 
         pyfalog.debug("Handling SSO login with: {0}", message)
 
