@@ -1,14 +1,3 @@
-"""
-
-A lot of the inspiration (and straight up code copying!) for this class comes from EsiPy <https://github.com/Kyria/EsiPy>
-Much of the credit goes to the maintainer of that package, Kyria <tweetfleet slack: @althalus>. The reasoning for no
-longer using EsiPy was due to it's reliance on pyswagger, which has caused a bit of a headache in how it operates on a
-low level.
-
-Eventually I'll rewrite this to be a bit cleaner and a bit more generic, but for now, it works!
-
-"""
-
 # noinspection PyPackageRequirements
 from collections import namedtuple
 
@@ -34,15 +23,6 @@ from requests import Session
 from urllib.parse import urlencode, quote
 
 pyfalog = Logger(__name__)
-
-# todo: reimplement Caching for calls
-# from esipy.cache import FileCache
-# file_cache = FileCache(cache_path)
-# cache_path = os.path.join(config.savePath, config.ESI_CACHE)
-#
-# if not os.path.exists(cache_path):
-#     os.mkdir(cache_path)
-#
 
 class SSOError(Exception):
     pass
