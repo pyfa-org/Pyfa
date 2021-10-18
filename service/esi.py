@@ -108,7 +108,8 @@ class Esi(EsiAccess):
         else:
             with gui.ssoLogin.SsoLogin() as dlg:
                 if dlg.ShowModal() == wx.ID_OK:
-                    self.handleLogin({'SSOInfo': [dlg.ssoInfoCtrl.Value.strip()]})
+                    message = json.loads(base64.b64decode(dlg.ssoInfoCtrl.Value.strip()))
+                    self.handleLogin(message)
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
@@ -134,7 +135,7 @@ class Esi(EsiAccess):
         return 'http://localhost:{}'.format(port)
 
     def handleLogin(self, message):
-        auth_response, data = self.auth(message['code'][0])
+        auth_response, data = self.auth(message['code'])
 
         currentCharacter = self.getSsoCharacter(data['name'])
 
@@ -157,7 +158,7 @@ class Esi(EsiAccess):
             raise SSOError("Could not parse out querystring parameters.")
 
         try:
-            state_enc = message['state'][0]
+            state_enc = message['state']
             state = json.loads(base64.b64decode(state_enc))['state']
         except Exception:
             raise SSOError("There was a problem decoding state parameter.")

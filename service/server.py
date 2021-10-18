@@ -22,7 +22,7 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
             return
 
         parsed_path = urllib.parse.urlparse(self.path)
-        parts = urllib.parse.parse_qs(parsed_path.query)
+        parts = {k: ";".join(v) for k, v in urllib.parse.parse_qs(parsed_path.query).items()}
         is_success = False
         try:
             self.server.callback(parts)
@@ -47,8 +47,6 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             # send error
-
-
 
         if is_success:
             self.server.stop()

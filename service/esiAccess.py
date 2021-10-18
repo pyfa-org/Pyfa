@@ -63,6 +63,7 @@ class APIException(Exception):
 class EsiAccess:
     def __init__(self):
         self.settings = EsiSettings.getInstance()
+        self.server_base: ApiBase = supported_servers[self.settings.get("server")]
 
         # session request stuff
         self._session = Session()
@@ -94,8 +95,6 @@ class EsiAccess:
         jwks_call = cached_session.get(self.server_meta["jwks_uri"])
         jwks_call.raise_for_status()
         self.jwks = jwks_call.json()
-
-        self.server_base: ApiBase = supported_servers[self.settings.get("server")]
 
     @property
     def sso_url(self):
@@ -173,7 +172,7 @@ class EsiAccess:
         }
 
         res = self.token_call(values)
-        json_res = res.json();
+        json_res = res.json()
 
         decoded_jwt = self.validate_eve_jwt(json_res['access_token'])
         return json_res, decoded_jwt
@@ -187,7 +186,7 @@ class EsiAccess:
         }
 
         res = self.token_call(values)
-        json_res = res.json();
+        json_res = res.json()
         self.update_token(ssoChar, json_res)
         return json_res
 
