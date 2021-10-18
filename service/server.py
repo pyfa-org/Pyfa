@@ -6,10 +6,9 @@ from logbook import Logger
 import socketserver
 import json
 
-pyfalog = Logger(__name__)
+from service.esiAccess import APIException, SSOError
 
-class SSOError(Exception):
-    pass
+pyfalog = Logger(__name__)
 
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(http.server.BaseHTTPRequestHandler):
@@ -34,7 +33,7 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
         except (KeyboardInterrupt, SystemExit):
             raise
-        except SSOError as ex:
+        except (SSOError, APIException) as ex:
             pyfalog.error("Error logging into EVE")
             pyfalog.error(ex)
             self.send_response(500)

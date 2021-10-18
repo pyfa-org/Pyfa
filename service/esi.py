@@ -11,10 +11,10 @@ import webbrowser
 import eos.db
 from service.const import EsiLoginMethod, EsiSsoMode
 from eos.saveddata.ssocharacter import SsoCharacter
-from service.esiAccess import APIException
+from service.esiAccess import APIException, SSOError
 import gui.globalEvents as GE
 from gui.ssoLogin import SsoLogin, SsoLoginServer
-from service.server import StoppableHTTPServer, AuthHandler, SSOError
+from service.server import StoppableHTTPServer, AuthHandler
 from service.settings import EsiSettings
 from service.esiAccess import EsiAccess
 import gui.mainFrame
@@ -134,24 +134,16 @@ class Esi(EsiAccess):
         return 'http://localhost:{}'.format(port)
 
     def handleLogin(self, message):
-        auth_response = self.auth(message['code'][0])
+        auth_response, data = self.auth(message['code'][0])
 
-        res = self._session.get(
-            self.oauth_verify,
-            headers=self.get_oauth_header(auth_response['access_token'])
-        )
-        if res.status_code != 200:
-            raise APIException(
-                self.oauth_verify,
-                res.status_code,
-                res.json()
-            )
-        cdata = res.json()
+        currentCharacter = self.getSsoCharacter(data['name'])
 
-        currentCharacter = self.getSsoCharacter(cdata['CharacterName'])
-
+        sub_split = data["sub"].split(":")
+        if (len(sub_split) != 3):
+            raise SSOError("JWT sub does not contain the expected data. Contents: %s" % data["sub"])
+        cid = sub_split[-1]
         if currentCharacter is None:
-            currentCharacter = SsoCharacter(cdata['CharacterID'], cdata['CharacterName'], config.getClientSecret())
+            currentCharacter = SsoCharacter(cid, data['name'], config.getClientSecret())
 
         Esi.update_token(currentCharacter, auth_response)
 
