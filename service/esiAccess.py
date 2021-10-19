@@ -144,7 +144,7 @@ class EsiAccess:
 
         args = {
             'response_type': 'code',
-            'redirect_uri': 'http://127.0.0.1:5500/callback.html',
+            'redirect_uri': config.SSO_CALLBACK,
             'client_id': self.client_id,
             'scope': ' '.join(scopes),
             'code_challenge': code_challenge,

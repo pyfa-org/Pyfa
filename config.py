@@ -45,6 +45,7 @@ language = None
 
 API_CLIENT_ID = '095d8cd841ac40b581330919b49fe746'
 ESI_CACHE = 'esi_cache'
+SSO_CALLBACK = 'http://127.0.0.1:5500/callback.html'
 
 LOGLEVEL_MAP = {
     "critical": CRITICAL,

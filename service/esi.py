@@ -102,8 +102,8 @@ class Esi(EsiAccess):
 
     def login(self):
         # always start the local server if user is using client details. Otherwise, start only if they choose to do so.
-        if self.settings.get('ssoMode') == EsiSsoMode.CUSTOM or self.settings.get('loginMode') == EsiLoginMethod.SERVER:
-            with gui.ssoLogin.SsoLoginServer(6461 if self.settings.get('ssoMode') == EsiSsoMode.CUSTOM else 0) as dlg:
+        if self.settings.get('loginMode') == EsiLoginMethod.SERVER:
+            with gui.ssoLogin.SsoLoginServer(0) as dlg:
                 dlg.ShowModal()
         else:
             with gui.ssoLogin.SsoLogin() as dlg:
