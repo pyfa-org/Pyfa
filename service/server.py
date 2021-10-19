@@ -5,8 +5,9 @@ import threading
 from logbook import Logger
 import socketserver
 import json
+import traceback
 
-from service.esiAccess import APIException, SSOError
+from service.esiAccess import APIException, GenericSsoError
 
 pyfalog = Logger(__name__)
 
@@ -33,10 +34,10 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
         except (KeyboardInterrupt, SystemExit):
             raise
-        except (SSOError, APIException) as ex:
+        except (GenericSsoError, APIException) as ex:
             pyfalog.error("Error logging into EVE")
             pyfalog.error(ex)
-            self.send_response(500)
+            self.send_response(400)
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(str.encode(str(ex)))
@@ -46,6 +47,8 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(500)
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
+            self.wfile.write(str.encode(str(''.join(traceback.format_tb(ex.__traceback__)))))
+
             # send error
 
         if is_success:

@@ -11,7 +11,7 @@ import webbrowser
 import eos.db
 from service.const import EsiLoginMethod, EsiSsoMode
 from eos.saveddata.ssocharacter import SsoCharacter
-from service.esiAccess import APIException, SSOError
+from service.esiAccess import APIException, GenericSsoError
 import gui.globalEvents as GE
 from gui.ssoLogin import SsoLogin, SsoLoginServer
 from service.server import StoppableHTTPServer, AuthHandler
@@ -141,7 +141,7 @@ class Esi(EsiAccess):
 
         sub_split = data["sub"].split(":")
         if (len(sub_split) != 3):
-            raise SSOError("JWT sub does not contain the expected data. Contents: %s" % data["sub"])
+            raise GenericSsoError("JWT sub does not contain the expected data. Contents: %s" % data["sub"])
         cid = sub_split[-1]
         if currentCharacter is None:
             currentCharacter = SsoCharacter(cid, data['name'], config.getClientSecret())
@@ -155,17 +155,17 @@ class Esi(EsiAccess):
 
     def handleServerLogin(self, message):
         if not message:
-            raise SSOError("Could not parse out querystring parameters.")
+            raise GenericSsoError("Could not parse out querystring parameters.")
 
         try:
             state_enc = message['state']
             state = json.loads(base64.b64decode(state_enc))['state']
         except Exception:
-            raise SSOError("There was a problem decoding state parameter.")
+            raise GenericSsoError("There was a problem decoding state parameter.")
 
         if state != self.state:
             pyfalog.warn("OAUTH state mismatch")
-            raise SSOError("OAUTH State Mismatch.")
+            raise GenericSsoError("OAUTH State Mismatch.")
 
         pyfalog.debug("Handling SSO login with: {0}", message)
 

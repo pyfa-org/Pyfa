@@ -20,12 +20,9 @@ from datetime import timedelta
 from requests_cache import CachedSession
 
 from requests import Session
-from urllib.parse import urlencode, quote
+from urllib.parse import urlencode
 
 pyfalog = Logger(__name__)
-
-class SSOError(Exception):
-    pass
 
 scopes = [
     'esi-skills.read_skills.v1',
@@ -40,9 +37,13 @@ supported_servers = {
     "Serenity": ApiBase("login.evepc.163.com", "esi.evepc.163.com")
 }
 
+class GenericSsoError(Exception):
+    """ Exception used for generic SSO errors that aren't directly related to an API call
+    """
+    pass
 
 class APIException(Exception):
-    """ Exception for SSO related errors """
+    """ Exception for API related errors """
 
     def __init__(self, url, code, json_response):
         self.url = url
@@ -50,10 +51,11 @@ class APIException(Exception):
         self.response = json_response
         super(APIException, self).__init__(str(self))
 
+
     def __str__(self):
-        if 'error' in self.response:
+        if 'error_description' in self.response:
             return 'HTTP Error %s: %s' % (self.status_code,
-                                          self.response['error'])
+                                          self.response['error_description'])
         elif 'message' in self.response:
             return 'HTTP Error %s: %s' % (self.status_code,
                                           self.response['message'])
@@ -163,7 +165,6 @@ class EsiAccess:
         return {'Authorization': 'Bearer %s' % token}
 
     def auth(self, code):
-        # todo: properly handle invalid auth code, or one that has been used already
         values = {
             'grant_type': 'authorization_code',
             'code': code,
@@ -223,7 +224,7 @@ class EsiAccess:
         try:
             jwk_sets = self.jwks["keys"]
         except KeyError as e:
-            raise SSOError("Something went wrong when retrieving the JWK set. The returned "
+            raise GenericSsoError("Something went wrong when retrieving the JWK set. The returned "
                   "payload did not have the expected key {}. \nPayload returned "
                   "from the SSO looks like: {}".format(e, self.jwks))
 
@@ -237,11 +238,11 @@ class EsiAccess:
                 issuer=[self.server_base.sso, "https://%s" % self.server_base.sso]
             )
         except ExpiredSignatureError as e:
-            raise SSOError("The JWT token has expired: {}").format(str(e))
+            raise GenericSsoError("The JWT token has expired: {}".format(str(e)))
         except JWTError as e:
-            raise SSOError("The JWT signature was invalid: {}").format(str(e))
+            raise GenericSsoError("The JWT signature was invalid: {}".format(str(e)))
         except JWTClaimsError as e:
-            raise SSOError("The issuer claim was not from login.eveonline.com or "
+            raise GenericSsoError("The issuer claim was not from login.eveonline.com or "
                 "https://login.eveonline.com: {}".format(str(e)))
 
     def _before_request(self, ssoChar):
