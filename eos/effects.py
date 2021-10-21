@@ -614,8 +614,7 @@ class Effect101(BaseEffect):
             # Lockbreaker Bombs
             ecmStrengthBonus = src.getModifiedChargeAttr('scan{0}StrengthBonus'.format(fit.scanType))
             if ecmStrengthBonus:
-                strModifier = 1 - min(1, ecmStrengthBonus / fit.scanStrength)
-                fit.ecmProjectedStr *= strModifier
+                fit.addProjectedEcm(ecmStrengthBonus)
         elif src.item.group.name == 'Interdiction Sphere Launcher':
             speedFactor = src.getModifiedChargeAttr('speedFactor')
             if speedFactor:
@@ -9638,11 +9637,10 @@ class Effect3182(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' not in context:
-            for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
-                module.boostItemAttr('scan{0}StrengthBonus'.format(scanType),
-                                     module.getModifiedItemAttr('overloadECMStrengthBonus'),
-                                     stackingPenalties=True, **kwargs)
+        for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
+            module.boostItemAttr('scan{0}StrengthBonus'.format(scanType),
+                                 module.getModifiedItemAttr('overloadECMStrengthBonus'),
+                                 stackingPenalties=True, **kwargs)
 
 
 class Effect3196(BaseEffect):
@@ -27265,8 +27263,7 @@ class Effect6437(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6439(BaseEffect):
@@ -27460,8 +27457,7 @@ class Effect6470(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6472(BaseEffect):
@@ -27954,8 +27950,7 @@ class Effect6513(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6526(BaseEffect):
@@ -30586,8 +30581,7 @@ class Effect6685(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6686(BaseEffect):
@@ -30846,8 +30840,7 @@ class Effect6695(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6697(BaseEffect):
@@ -31133,6 +31126,7 @@ class Effect6714(BaseEffect):
     """
 
     type = 'projected', 'active'
+    runTime = 'late'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -31146,8 +31140,7 @@ class Effect6714(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6717(BaseEffect):
