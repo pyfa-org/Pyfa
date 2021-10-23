@@ -20,16 +20,16 @@ class GuiChangeCargosAmountCommand(wx.Command):
         self.amount = amount
 
     def Do(self):
-        cmds = []
+        results = []
         if self.amount > 0:
             for itemID in self.itemIDs:
                 cmd = CalcChangeCargoAmountCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=itemID, amount=self.amount))
-                cmds.append(cmd)
+                results.append(self.internalHistory.submit(cmd))
         else:
             for itemID in self.itemIDs:
                 cmd = CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=itemID, amount=math.inf))
-                cmds.append(cmd)
-        success = self.internalHistory.submitBatch(*cmds)
+                results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success
