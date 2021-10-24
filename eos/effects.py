@@ -30176,9 +30176,6 @@ class Effect6658(BaseEffect):
         # Speed penalty
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), **kwargs)
 
-        # Max locked targets
-        fit.ship.forceItemAttr('maxLockedTargets', src.getModifiedItemAttr('maxLockedTargets'), **kwargs)
-
         # new with April 2016 release
         for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
             fit.ship.boostItemAttr('scan{}Strength'.format(scanType),
