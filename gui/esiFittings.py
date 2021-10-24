@@ -242,6 +242,16 @@ class ESIExceptionHandler:
                     SsoCharacterMgmt.openOne(parent=gui.mainFrame.MainFrame.getInstance())
                     # todo: spawn manage esi characters
                     pass
+        elif ex.response['error'].startswith('Timeout contacting'):
+            pyfalog.error(ex)
+            with wx.MessageDialog(
+                    gui.mainFrame.MainFrame.getInstance(),
+                    "HTTP %s: %s\n\n" % (ex.status_code, ex.response['error'])
+                    + _t("The server took too long to response. Please try again in a moment."),
+                    _t("Timeout"),
+                    wx.OK | wx.ICON_ERROR
+            ) as dlg:
+                dlg.ShowModal()
         else:
             # We don't know how to handle the error, raise it for the global error handler to pick it up
             raise ex
