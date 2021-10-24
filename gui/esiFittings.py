@@ -9,6 +9,7 @@ import config
 import gui.globalEvents as GE
 from eos.db import getItem
 from eos.saveddata.cargo import Cargo
+import gui.mainFrame
 from gui.auxWindow import AuxiliaryFrame
 from gui.display import Display
 from gui.characterEditor import APIView
@@ -223,16 +224,23 @@ class ESIServerExceptionHandler:
 class ESIExceptionHandler:
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
-        if ex.response['error'].startswith('Token is not valid') or ex.response['error'] == 'invalid_token':  # todo: this seems messy, figure out a better response
+        if ex.response['error'].startswith('Token is not valid') \
+                or ex.response['error'] == 'invalid_token' \
+                or ex.response['error'] == 'invalid_grant':  # todo: this seems messy, figure out a better response
             pyfalog.error(ex)
             with wx.MessageDialog(
                 parentWindow,
                 _t("There was an error validating characters' SSO token. Please try "
                 "logging into the character again to reset the token."),
                 _t("Invalid Token"),
-                wx.OK | wx.ICON_ERROR
+                wx.OK | wx.ICON_ERROR | wx.CANCEL
             ) as dlg:
-                dlg.ShowModal()
+                dlg.SetOKLabel("Manage ESI Characters")
+                ret = dlg.ShowModal()
+                if ret == wx.ID_OK:
+                    SsoCharacterMgmt.openOne(parent=gui.mainFrame.MainFrame.getInstance())
+                    # todo: spawn manage esi characters
+                    pass
         else:
             # We don't know how to handle the error, raise it for the global error handler to pick it up
             raise ex
