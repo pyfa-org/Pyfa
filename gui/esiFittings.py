@@ -150,6 +150,7 @@ class EveFittings(AuxiliaryFrame):
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):
+        self.statusbar.SetStatusText("")
         sEsi = Esi.getInstance()
         selection = self.fitView.fitSelection
         if not selection:
@@ -165,16 +166,26 @@ class EveFittings(AuxiliaryFrame):
                 if activeChar is None:
                     return
                 try:
-                    sEsi.delFitting(activeChar, data['fitting_id'])
-                    # repopulate the fitting list
-                    self.fitTree.populateSkillTree(self.fittings)
-                    self.fitView.update([])
+                    try:
+                        sEsi.delFitting(activeChar, data['fitting_id'])
+                        # repopulate the fitting list
+                        self.fitTree.populateSkillTree(self.fittings)
+                        self.fitView.update([])
+                    except APIException as ex:
+                        pyfalog.error(ex)
+                        self.statusbar.SetStatusText("Failed to delete fit: ESI error {} received - {}".format(ex.status_code, ex.response["error"]))
+                        try:
+                            ESIExceptionHandler(ex)
+                        except:
+                            # don't need to do anything - we should already have error code in the status
+                            pass
                 except requests.exceptions.ConnectionError:
                     msg = _t("Connection error, please check your internet connection")
                     pyfalog.error(msg)
                     self.statusbar.SetStatusText(msg)
 
     def deleteAllFittings(self, event):
+        self.statusbar.SetStatusText("")
         sEsi = Esi.getInstance()
         activeChar = self.getActiveCharacter()
         if activeChar is None:
@@ -187,20 +198,30 @@ class EveFittings(AuxiliaryFrame):
                 ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
                 try:
-                    for fit in self.fittings:
-                        sEsi.delFitting(activeChar, fit['fitting_id'])
-                        anyDeleted = True
+                    try:
+                        for fit in self.fittings:
+                            sEsi.delFitting(activeChar, fit['fitting_id'])
+                            anyDeleted = True
+                    except APIException as ex:
+                        pyfalog.error(ex)
+                        if anyDeleted:
+                            msg = "Some fits were not deleted: ESI error {} received - {}".format(ex.status_code,
+                                                                                          ex.response["error"])
+                        else:
+                            msg = "Failed to delete fits: ESI error {} received - {}".format(ex.status_code,
+                                                                                          ex.response["error"])
+                        pyfalog.error(msg)
+                        self.statusbar.SetStatusText(msg)
+                        try:
+                            ESIExceptionHandler(ex)
+                        except:
+                            # don't need to do anything - we should already have error code in the status
+                            pass
                 except requests.exceptions.ConnectionError:
                     msg = "Connection error, please check your internet connection"
                     pyfalog.error(msg)
                     self.statusbar.SetStatusText(msg)
-                except APIException as ex:
-                    if anyDeleted:
-                        msg = "Some fits were not deleted: ESI error {} received".format(ex.status_code)
-                    else:
-                        msg = "Failed to delete fits: ESI error {} received".format(ex.status_code)
-                    pyfalog.error(msg)
-                    self.statusbar.SetStatusText(msg)
+
         # repopulate the fitting list
         self.fitTree.populateSkillTree(self.fittings)
         self.fitView.update([])
