@@ -13565,7 +13565,7 @@ class Effect4162(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalized = False if 'skill' in context or 'implant' in context else True
+        penalized = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseSensorStrength', container.getModifiedItemAttr('scanStrengthBonus') * level,
                                         stackingPenalties=penalized, **kwargs)
