@@ -133,7 +133,7 @@ class EveFittings(AuxiliaryFrame):
         except APIException as ex:
             #  Can't do this in a finally because then it obscures the message dialog
             del waitDialog  # noqa: F821
-            ESIExceptionHandler(self, ex)
+            ESIExceptionHandler(ex)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as ex:
@@ -223,13 +223,14 @@ class ESIServerExceptionHandler:
 
 class ESIExceptionHandler:
     # todo: make this a generate excetpion handler for all calls
-    def __init__(self, parentWindow, ex):
+    def __init__(self, ex):
+        # raise ex
         if ex.response['error'].startswith('Token is not valid') \
                 or ex.response['error'] == 'invalid_token' \
                 or ex.response['error'] == 'invalid_grant':  # todo: this seems messy, figure out a better response
             pyfalog.error(ex)
             with wx.MessageDialog(
-                parentWindow,
+                gui.mainFrame.MainFrame.getInstance(),
                 _t("There was an error validating characters' SSO token. Please try "
                 "logging into the character again to reset the token."),
                 _t("Invalid Token"),
@@ -343,9 +344,9 @@ class ExportToEve(AuxiliaryFrame):
             pyfalog.warning(msg)
             self.statusbar.SetStatusText(msg, 1)
             return
-        res = sEsi.postFitting(activeChar, data)
 
         try:
+            res = sEsi.postFitting(activeChar, data)
             res.raise_for_status()
             self.statusbar.SetStatusText("", 0)
             self.statusbar.SetStatusText(res.reason, 1)
@@ -354,19 +355,19 @@ class ExportToEve(AuxiliaryFrame):
             pyfalog.error(msg)
             self.statusbar.SetStatusText(_t("ERROR"), 0)
             self.statusbar.SetStatusText(msg, 1)
-        except ESIExportException as ex:
+        except APIException as ex:
             pyfalog.error(ex)
             self.statusbar.SetStatusText(_t("ERROR"), 0)
-            self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
-        except APIException as ex:
+            self.statusbar.SetStatusText("HTTP {} - {}".format(ex.status_code, ex.response["error"]), 1)
             try:
-                ESIExceptionHandler(self, ex)
-            except (KeyboardInterrupt, SystemExit):
-                raise
-            except Exception as ex:
-                self.statusbar.SetStatusText(_t("ERROR"), 0)
-                self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
-                pyfalog.error(ex)
+                ESIExceptionHandler(ex)
+            except:
+                # don't need to do anything - we should already get the error in ex.response
+                pass
+        except Exception as ex:
+            self.statusbar.SetStatusText(_t("ERROR"), 0)
+            self.statusbar.SetStatusText("Unknown error", 1)
+            pyfalog.error(ex)
 
 
 class SsoCharacterMgmt(AuxiliaryFrame):
