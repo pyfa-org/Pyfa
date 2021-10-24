@@ -1193,7 +1193,7 @@ class Effect395(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalties = 'skill' not in context and 'implant' not in context
+        penalties = 'skill' not in context and 'implant' not in context and 'booster' not in context
         fit.ship.boostItemAttr('agility', container.getModifiedItemAttr('agilityBonus') * level,
                                stackingPenalties=penalties, **kwargs)
 
