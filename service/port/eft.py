@@ -229,7 +229,7 @@ def importEft(lines):
 
     stubPattern = '^\[.+?\]$'
     modulePattern = '^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS, OFFLINE_SUFFIX)
-    droneCargoPattern = '^(?P<typeName>{}+?) x(?P<amount>\d+?)$'.format(NAME_CHARS)
+    droneCargoPattern = '^(?P<typeName>{}+?) x(?P<amount>\d+?)(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS)
 
     sections = []
     for section in _importSectionIter(lines):
@@ -249,6 +249,8 @@ def importEft(lines):
                 else:
                     itemSpec.amount = int(m.group('amount'))
                     section.itemSpecs.append(itemSpec)
+                    if m.group('mutation'):
+                        itemSpec.mutationIdx = int(m.group('mutation'))
                 continue
             # All other items
             m = re.match(modulePattern, line)
@@ -337,7 +339,7 @@ def importEft(lines):
         fit.implants.append(implant)
     for booster in aFit.boosters:
         fit.boosters.append(booster)
-    for drone in aFit.drones.values():
+    for drone in aFit.drones:
         fit.drones.append(drone)
     for fighter in aFit.fighters:
         fit.fighters.append(fighter)
@@ -765,6 +767,7 @@ class MultiItemSpec(BaseItemSpec):
     def __init__(self, typeName):
         super().__init__(typeName)
         self.amount = 0
+        self.mutationIdx = None
 
     @property
     def isDrone(self):
@@ -792,7 +795,7 @@ class AbstractFit:
         # Non-modules
         self.implants = []
         self.boosters = []
-        self.drones = {}  # Format: {item: Drone}
+        self.drones = []
         self.fighters = []
         self.cargo = {}  # Format: {item: Cargo}
         # Other stuff
@@ -896,9 +899,34 @@ class AbstractFit:
     def addDrone(self, itemSpec):
         if itemSpec is None:
             return
-        if itemSpec.item not in self.drones:
-            self.drones[itemSpec.item] = Drone(itemSpec.item)
-        self.drones[itemSpec.item].amount += itemSpec.amount
+        drone = None
+        if itemSpec.mutationIdx in self.mutations:
+            mutaItem, mutaAttrs = self.mutations[itemSpec.mutationIdx]
+            mutaplasmid = getDynamicItem(mutaItem.ID)
+            if mutaplasmid:
+                try:
+                    drone = Drone(mutaplasmid.resultingItem, itemSpec.item, mutaplasmid)
+                except ValueError:
+                    pass
+                else:
+                    for attrID, mutator in drone.mutators.items():
+                        if attrID in mutaAttrs:
+                            mutator.value = mutaAttrs[attrID]
+        if drone is None:
+            try:
+                drone = Drone(itemSpec.item)
+            except ValueError:
+                return
+        drone.amount = itemSpec.amount
+        if drone.isMutated:
+            self.drones.append(drone)
+        else:
+            for fitDrone in self.drones:
+                if fitDrone.item.ID == itemSpec.item.ID:
+                    fitDrone.amount += drone.amount
+                    break
+            else:
+                self.drones.append(drone)
 
     def addFighter(self, itemSpec):
         if itemSpec is None:
