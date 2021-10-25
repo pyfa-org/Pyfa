@@ -6830,6 +6830,30 @@ class Effect2255(BaseEffect):
     type = 'active'
 
 
+class Effect2296(BaseEffect):
+    """
+    modifyArmorResonancePassivePostPercentPassive
+
+    Used by:
+    Implants named like: Tetrimon Resistance Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for srcResType, tgtResType in (
+                ('Em', 'Em'),
+                ('Explosive', 'Explosive'),
+                ('Kinetic', 'Kinetic'),
+                ('Thermic', 'Thermal')
+        ):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(tgtResType),
+                src.getModifiedItemAttr('passive{}DamageResistanceBonus'.format(srcResType)),
+                **kwargs)
+
+
 class Effect2298(BaseEffect):
     """
     scanStrengthBonusPercentPassive
@@ -7614,9 +7638,10 @@ class Effect2696(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalties = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalties, **kwargs)
 
 
 class Effect2697(BaseEffect):
@@ -8362,9 +8387,10 @@ class Effect2803(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalties = 'booster' not in context
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
-                                         stackingPenalties=True, **kwargs)
+                                         stackingPenalties=penalties, **kwargs)
 
 
 class Effect2804(BaseEffect):
@@ -18152,9 +18178,10 @@ class Effect5189(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalties = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalties, **kwargs)
 
 
 class Effect5190(BaseEffect):
@@ -27768,14 +27795,11 @@ class Effect6502(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
-        fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
-        fit.ship.boostItemAttr('armorThermalDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
-        fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(dmgType.capitalize()),
+                src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
+                skill='Amarr Dreadnought', **kwargs)
 
 
 class Effect6503(BaseEffect):
@@ -37545,3 +37569,71 @@ class Effect8158(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Cloaking'), 'stabilizeCloakDuration',
             booster.getModifiedItemAttr('stabilizeCloakDurationBonus'), **kwargs)
+
+
+class Effect8267(BaseEffect):
+    """
+    weaponDisruptorResistanceBonusPassive
+
+    Used by:
+    Implants named like: Harvest Anti Disruptor Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'weaponDisruptionResistance',
+            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
+
+
+class Effect8268(BaseEffect):
+    """
+    nosferatuDurationBonusPassive
+
+    Used by:
+    Implants named like: Harvest Nosferatu Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
+            module.getModifiedItemAttr('durationBonus'), **kwargs)
+
+
+class Effect8269(BaseEffect):
+    """
+    stasisWebifierMaxRangeAddPassive
+
+    Used by:
+    Implants named like: Harvest Webifier Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
+            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
+
+
+class Effect8270(BaseEffect):
+    """
+    capacitorWarfareResistanceBonusPassive
+
+    Used by:
+    Implants named like: Tetrimon Anti Drain Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'energyWarfareResistance',
+            container.getModifiedItemAttr('energyWarfareResistanceBonus'), **kwargs)
