@@ -23,13 +23,14 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, Table
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.saveddata.mutator import Mutator
+from eos.saveddata.mutator import MutatorDrone
 
-mutator_table = Table("mutators", saveddata_meta,
-                        Column("moduleID", Integer, ForeignKey("modules.ID"), primary_key=True, index=True),
-                        Column("attrID", Integer, primary_key=True, index=True),
-                        Column("value", Float, nullable=False),
-                        Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
+mutatorDrones_table = Table(
+    "mutatorsDrones", saveddata_meta,
+    Column("groupID", Integer, ForeignKey("drones.groupID"), primary_key=True, index=True),
+    Column("attrID", Integer, primary_key=True, index=True),
+    Column("value", Float, nullable=False),
+    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
 
-mapper(Mutator, mutator_table)
+mapper(MutatorDrone, mutatorDrones_table)

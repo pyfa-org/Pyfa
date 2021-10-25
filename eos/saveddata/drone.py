@@ -25,6 +25,8 @@ from sqlalchemy.orm import reconstructor, validates
 import eos.db
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
+from eos.saveddata.mutatedMixin import MutatedMixin, MutaError
+from eos.saveddata.mutator import MutatorDrone
 from eos.utils.cycles import CycleInfo
 from eos.utils.default import DEFAULT
 from eos.utils.stats import DmgTypes, RRTypes
@@ -33,12 +35,13 @@ from eos.utils.stats import DmgTypes, RRTypes
 pyfalog = Logger(__name__)
 
 
-class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
+class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, MutatedMixin):
     MINING_ATTRIBUTES = ("miningAmount",)
 
-    def __init__(self, item):
+    def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a drone from the program"""
-        self.__item = item
+        self._item = item
+        self._mutaInit(baseItem=baseItem, mutaplasmid=mutaplasmid)
 
         if self.isInvalid:
             raise ValueError("Passed item is not a Drone")
@@ -53,13 +56,18 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @reconstructor
     def init(self):
         """Initialize a drone from the database and validate"""
-        self.__item = None
+        self._item = None
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
-            if self.__item is None:
+            self._item = eos.db.getItem(self.itemID)
+            if self._item is None:
                 pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
+
+        try:
+            self._mutaReconstruct()
+        except MutaError:
+            return
 
         if self.isInvalid:
             pyfalog.error("Item (id: {0}) is not a Drone", self.itemID)
@@ -74,10 +82,13 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__baseRRAmount = None
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.__item.attributes
-        self.__itemModifiedAttributes.overrides = self.__item.overrides
-
+        self.__itemModifiedAttributes.original = self._item.attributes
+        self.__itemModifiedAttributes.overrides = self._item.overrides
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
+
+        self._mutaLoadMutators(mutatorClass=MutatorDrone)
+        self.__itemModifiedAttributes.mutators = self.mutators
+
         # pheonix todo: check the attribute itself, not the modified. this will always return 0 now.
         chargeID = self.getModifiedItemAttr("entityMissileTypeID", None)
         if chargeID is not None:
@@ -96,11 +107,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isInvalid(self):
-        return self.__item is None or self.__item.category.name != "Drone"
+        if self._item is None:
+            return True
+        if self._item.category.name != "Drone":
+            return True
+        if self._mutaIsInvalid:
+            return True
+        return False
 
     @property
     def item(self):
-        return self.__item
+        return self._item
 
     @property
     def charge(self):
@@ -337,10 +354,11 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     effect.handler(fit, self, ("droneCharge",), projectionRange, effect=effect)
 
     def __deepcopy__(self, memo):
-        copy = Drone(self.item)
+        copy = Drone(self.item, self.baseItem, self.mutaplasmid)
         copy.amount = self.amount
         copy.amountActive = self.amountActive
         copy.projectionRange = self.projectionRange
+        self._mutaApplyMutators(mutatorClass=MutatorDrone, targetInstance=copy)
         return copy
 
     def rebase(self, item):
@@ -348,10 +366,11 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         amountActive = self.amountActive
         projectionRange = self.projectionRange
 
-        Drone.__init__(self, item)
+        Drone.__init__(self, item, self.baseItem, self.mutaplasmid)
         self.amount = amount
         self.amountActive = amountActive
         self.projectionRange = projectionRange
+        self._mutaApplyMutators(mutatorClass=MutatorDrone)
 
     def fits(self, fit):
         fitDroneGroupLimits = set()

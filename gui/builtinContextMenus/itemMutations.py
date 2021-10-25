@@ -1,16 +1,19 @@
-# noinspection PyPackageRequirements
+import re
 
+# noinspection PyPackageRequirements
 import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
-from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
+from gui.fitCommands import (
+    GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand,
+    GuiConvertMutatedLocalDroneCommand, GuiRevertMutatedLocalDroneCommand)
 from service.fit import Fit
 
 _t = wx.GetTranslation
 
 
-class ChangeModuleMutation(ContextMenuSingle):
+class ChangeItemMutation(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -18,10 +21,10 @@ class ChangeModuleMutation(ContextMenuSingle):
 
     def display(self, callingWindow, srcContext, mainItem):
 
-        if srcContext != "fittingModule" or self.mainFrame.getActiveFit() is None:
+        if srcContext not in ("fittingModule", "droneItem") or self.mainFrame.getActiveFit() is None:
             return False
 
-        if mainItem is None or mainItem.isEmpty:
+        if mainItem is None or getattr(mainItem, 'isEmpty', False):
             return False
 
         if len(mainItem.item.mutaplasmids) == 0 and not mainItem.isMutated:
@@ -44,10 +47,13 @@ class ChangeModuleMutation(ContextMenuSingle):
 
         for item in mainItem.item.mutaplasmids:
             label = item.item.name
-            keywords = ('Decayed', 'Gravid', 'Unstable', 'Exigent', 'Radical')
+            keywords = ('Decayed', 'Gravid', 'Unstable', 'Radical')
             for kw in keywords:
                 if item.item.name.startswith(f'{kw} '):
                     label = kw
+            m = re.match('(?P<mutagrade>\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', label)
+            if m:
+                label = '{} {}'.format(m.group('mutagrade'), m.group('mutatype'))
             id = ContextMenuSingle.nextID()
             self.eventIDs[id] = (item, mainItem)
             mItem = wx.MenuItem(menu, id, label)
@@ -57,12 +63,16 @@ class ChangeModuleMutation(ContextMenuSingle):
         return sub
 
     def handleMenu(self, event):
-        mutaplasmid, mod = self.eventIDs[event.Id]
+        mutaplasmid, item = self.eventIDs[event.Id]
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if mod in fit.modules:
-            position = fit.modules.index(mod)
+        if item in fit.modules:
+            position = fit.modules.index(item)
             self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
+                    fitID=fitID, position=position, mutaplasmid=mutaplasmid))
+        elif item in fit.drones:
+            position = fit.drones.index(item)
+            self.mainFrame.command.Submit(GuiConvertMutatedLocalDroneCommand(
                     fitID=fitID, position=position, mutaplasmid=mutaplasmid))
 
     def activate(self, callingWindow, fullContext, mainItem, i):
@@ -72,9 +82,13 @@ class ChangeModuleMutation(ContextMenuSingle):
             position = fit.modules.index(mainItem)
             self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
                     fitID=fitID, position=position))
+        elif mainItem in fit.drones:
+            position = fit.drones.index(mainItem)
+            self.mainFrame.command.Submit(GuiRevertMutatedLocalDroneCommand(
+                    fitID=fitID, position=position))
 
     def getBitmap(self, callingWindow, context, mainItem):
         return None
 
 
-ChangeModuleMutation.register()
+ChangeItemMutation.register()

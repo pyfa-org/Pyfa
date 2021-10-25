@@ -1,17 +1,20 @@
+import math
+
 import wx
 
 import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
-from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo
+from gui.fitCommands.calc.drone.localAdd import CalcAddLocalDroneCommand
+from gui.fitCommands.calc.drone.localRemove import CalcRemoveLocalDroneCommand
+from gui.fitCommands.helpers import DroneInfo, InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiConvertMutatedLocalModuleCommand(wx.Command):
+class GuiConvertMutatedLocalDroneCommand(wx.Command):
 
     def __init__(self, fitID, position, mutaplasmid):
-        wx.Command.__init__(self, True, 'Convert Local Module to Mutated')
+        wx.Command.__init__(self, True, 'Convert Local Drone to Mutated')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.position = position
@@ -22,29 +25,30 @@ class GuiConvertMutatedLocalModuleCommand(wx.Command):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         try:
-            mod = fit.modules[self.position]
+            drone = fit.drones[self.position]
         except IndexError:
             return False
-        if mod.isEmpty:
+        if drone.isMutated:
             return False
-        if mod.isMutated:
-            return False
-        cmd = CalcReplaceLocalModuleCommand(
+        info = DroneInfo(
+            amount=drone.amount,
+            amountActive=drone.amountActive,
+            itemID=self.itemID,
+            baseItemID=drone.item.ID,
+            mutaplasmidID=self.mutaplasmidID,
+            mutations={})
+        cmdRemove = CalcRemoveLocalDroneCommand(
             fitID=self.fitID,
             position=self.position,
-            newModInfo=ModuleInfo(
-                itemID=self.itemID,
-                baseItemID=mod.item.ID,
-                mutaplasmidID=self.mutaplasmidID,
-                mutations={},
-                chargeID=mod.chargeID,
-                state=mod.state,
-                spoolType=mod.spoolType,
-                spoolAmount=mod.spoolAmount))
-        success = self.internalHistory.submit(cmd)
-        if cmd.needsGuiRecalc:
-            eos.db.flush()
-            sFit.recalc(self.fitID)
+            amount=math.inf)
+        cmdAdd = CalcAddLocalDroneCommand(
+            fitID=self.fitID,
+            droneInfo=info,
+            forceNewStack=True,
+            ignoreRestrictions=True)
+        success = self.internalHistory.submitBatch(cmdRemove, cmdAdd)
+        eos.db.flush()
+        sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
