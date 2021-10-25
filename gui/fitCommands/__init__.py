@@ -26,6 +26,7 @@ from .gui.itemsRebase import GuiRebaseItemsCommand
 from .gui.localDrone.add import GuiAddLocalDroneCommand
 from .gui.localDrone.changeAmount import GuiChangeLocalDroneAmountCommand
 from .gui.localDrone.changeMetas import GuiChangeLocalDroneMetasCommand
+from .gui.localDrone.changeMutation import GuiChangeLocalDroneMutationCommand
 from .gui.localDrone.clone import GuiCloneLocalDroneCommand
 from .gui.localDrone.imprt import GuiImportLocalDronesCommand
 from .gui.localDrone.mutatedConvert import GuiConvertMutatedLocalDroneCommand

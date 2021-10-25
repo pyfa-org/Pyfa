@@ -240,7 +240,9 @@ class ItemMutatorList(wx.ScrolledWindow):
         # Submit mutation changes
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.carryingFitID)
-        if self.stuff in fit.modules:
+        isCurrentMod = self.stuff in fit.modules
+        isCurrentDrone = self.stuff in fit.drones
+        if isCurrentMod or isCurrentDrone:
             if self.isModified:
                 currentMutation = {}
                 for slider, m in self.event_mapping.items():
@@ -254,11 +256,18 @@ class ItemMutatorList(wx.ScrolledWindow):
             else:
                 currentMutation = self.initialMutations
             mainFrame = gui.mainFrame.MainFrame.getInstance()
-            mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
-                fitID=self.carryingFitID,
-                position=fit.modules.index(self.stuff),
-                mutation=currentMutation,
-                oldMutation=self.initialMutations))
+            if isCurrentMod:
+                mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
+                    fitID=self.carryingFitID,
+                    position=fit.modules.index(self.stuff),
+                    mutation=currentMutation,
+                    oldMutation=self.initialMutations))
+            elif isCurrentDrone:
+                mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalDroneMutationCommand(
+                    fitID=self.carryingFitID,
+                    position=fit.drones.index(self.stuff),
+                    mutation=currentMutation,
+                    oldMutation=self.initialMutations))
         for slider in self.event_mapping:
             slider.OnWindowClose()
 
