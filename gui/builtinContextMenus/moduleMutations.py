@@ -44,11 +44,15 @@ class ChangeModuleMutation(ContextMenuSingle):
 
         for item in mainItem.item.mutaplasmids:
             label = item.item.name
+            keywords = ('Decayed', 'Gravid', 'Unstable', 'Exigent', 'Radical')
+            for kw in keywords:
+                if item.item.name.startswith(f'{kw} '):
+                    label = kw
             id = ContextMenuSingle.nextID()
             self.eventIDs[id] = (item, mainItem)
-            skillItem = wx.MenuItem(menu, id, label)
-            menu.Bind(wx.EVT_MENU, self.handleMenu, skillItem)
-            sub.Append(skillItem)
+            mItem = wx.MenuItem(menu, id, label)
+            menu.Bind(wx.EVT_MENU, self.handleMenu, mItem)
+            sub.Append(mItem)
 
         return sub
 
