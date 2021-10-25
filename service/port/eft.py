@@ -49,7 +49,25 @@ OFFLINE_SUFFIX = '/OFFLINE'
 NAME_CHARS = '[^,/\[\]]'  # Characters which are allowed to be used in name
 
 
+class MutationExportData:
+
+    def __init__(self):
+        self.reference = 1
+        self.mutants = {}
+
+    def formatMutants(self):
+        mutationLines = []
+        if self.mutants:
+            for mutantReference in sorted(self.mutants):
+                mutant = self.mutants[mutantReference]
+                mutationLines.append(renderMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))
+        return '\n'.join(mutationLines)
+
+
 def exportEft(fit, options, callback):
+
+    mutaData = MutationExportData()
+
     # EFT formatted export is split in several sections, each section is
     # separated from another using 2 blank lines. Sections might have several
     # sub-sections, which are separated by 1 blank line
@@ -58,46 +76,15 @@ def exportEft(fit, options, callback):
     header = '[{}, {}]'.format(fit.ship.item.typeName, fit.name)
 
     # Section 1: modules, rigs, subsystems, services
-    modsBySlotType = {}
-    for module in fit.modules:
-        modsBySlotType.setdefault(module.slot, []).append(module)
-    modSection = []
-
-    mutants = {}  # Format: {reference number: module}
-    mutantReference = 1
-    for slotType in SLOT_ORDER:
-        rackLines = []
-        modules = modsBySlotType.get(slotType, ())
-        for module in modules:
-            if module.item:
-                # if module was mutated, use base item name for export
-                if module.isMutated:
-                    modName = module.baseItem.typeName
-                else:
-                    modName = module.item.typeName
-                if module.isMutated and options[PortEftOptions.MUTATIONS]:
-                    mutants[mutantReference] = module
-                    mutationSuffix = ' [{}]'.format(mutantReference)
-                    mutantReference += 1
-                else:
-                    mutationSuffix = ''
-                modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == FittingModuleState.OFFLINE else ''
-                if module.charge and options[PortEftOptions.LOADED_CHARGES]:
-                    rackLines.append('{}, {}{}{}'.format(
-                        modName, module.charge.typeName, modOfflineSuffix, mutationSuffix))
-                else:
-                    rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
-            else:
-                rackLines.append('[Empty {} slot]'.format(
-                    FittingSlot(slotType).name.capitalize() if slotType is not None else ''))
-        if rackLines:
-            modSection.append('\n'.join(rackLines))
-    if modSection:
-        sections.append('\n\n'.join(modSection))
+    moduleExport = exportModules(fit.modules, options, mutaData=mutaData)
+    if moduleExport:
+        sections.append(moduleExport)
 
     # Section 2: drones, fighters
     minionSection = []
-    droneExport = exportDrones(fit.drones)
+    droneExport = exportDrones(
+        fit.drones, exportMutants=options[PortEftOptions.MUTATIONS],
+        mutaData=mutaData, standAlone=False)
     if droneExport:
         minionSection.append(droneExport)
     fighterExport = exportFighters(fit.fighters)
@@ -125,14 +112,11 @@ def exportEft(fit, options, callback):
         if cargoExport:
             sections.append(cargoExport)
 
-    # Section 5: mutated modules' details
-    mutationLines = []
-    if mutants and options[PortEftOptions.MUTATIONS]:
-        for mutantReference in sorted(mutants):
-            mutant = mutants[mutantReference]
-            mutationLines.append(renderMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))
-    if mutationLines:
-        sections.append('\n'.join(mutationLines))
+    # Section 5: mutated items' details
+    if options[PortEftOptions.MUTATIONS]:
+        mutationExport = mutaData.formatMutants()
+        if mutationExport:
+            sections.append(mutationExport)
 
     text = '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
 
@@ -142,11 +126,67 @@ def exportEft(fit, options, callback):
         return text
 
 
-def exportDrones(drones):
+def exportModules(modules, options, mutaData=None):
+    if mutaData is None:
+        mutaData = MutationExportData()
+    modsBySlotType = {}
+    for module in modules:
+        modsBySlotType.setdefault(module.slot, []).append(module)
+    modSection = []
+    for slotType in SLOT_ORDER:
+        rackLines = []
+        rackModules = modsBySlotType.get(slotType, ())
+        for module in rackModules:
+            if module.item:
+                # if module was mutated, use base item name for export
+                if module.isMutated:
+                    modName = module.baseItem.typeName
+                else:
+                    modName = module.item.typeName
+                if module.isMutated and options[PortEftOptions.MUTATIONS]:
+                    mutaData.mutants[mutaData.reference] = module
+                    mutationSuffix = ' [{}]'.format(mutaData.reference)
+                    mutaData.reference += 1
+                else:
+                    mutationSuffix = ''
+                modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == FittingModuleState.OFFLINE else ''
+                if module.charge and options[PortEftOptions.LOADED_CHARGES]:
+                    rackLines.append('{}, {}{}{}'.format(
+                        modName, module.charge.typeName, modOfflineSuffix, mutationSuffix))
+                else:
+                    rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
+            else:
+                rackLines.append('[Empty {} slot]'.format(
+                    FittingSlot(slotType).name.capitalize() if slotType is not None else ''))
+        if rackLines:
+            modSection.append('\n'.join(rackLines))
+    return '\n\n'.join(modSection)
+
+
+def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
+
+    def getDroneName(drone):
+        if drone.isMutated:
+            return drone.baseItem.typeName
+        return drone.item.typeName
+
+    if mutaData is None:
+        mutaData = MutationExportData()
+    sections = []
     droneLines = []
-    for drone in sorted(drones, key=lambda d: d.item.typeName):
-        droneLines.append('{} x{}'.format(drone.item.typeName, drone.amount))
-    return '\n'.join(droneLines)
+    for drone in sorted(drones, key=getDroneName):
+        if drone.isMutated and exportMutants:
+            mutaData.mutants[mutaData.reference] = drone
+            mutationSuffix = ' [{}]'.format(mutaData.reference)
+            mutaData.reference += 1
+        else:
+            mutationSuffix = ''
+        droneLines.append('{} x{}{}'.format(getDroneName(drone), drone.amount, mutationSuffix))
+    if droneLines:
+        sections.append('\n'.join(droneLines))
+    if exportMutants and mutaData.mutants and standAlone:
+        sections.append(mutaData.formatMutants())
+    return '\n\n\n'.join(sections)
 
 
 def exportFighters(fighters):
