@@ -567,7 +567,18 @@ class Group(EqBase):
 
 
 class DynamicItem(EqBase):
-    pass
+
+    @property
+    def shortName(self):
+        name = self.item.name
+        keywords = ('Decayed', 'Gravid', 'Unstable', 'Radical')
+        for kw in keywords:
+            if name.startswith(f'{kw} '):
+                name = kw
+        m = re.match('(?P<mutagrade>\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', name)
+        if m:
+            name = '{} {}'.format(m.group('mutagrade'), m.group('mutatype'))
+        return name
 
 
 class DynamicItemAttribute(EqBase):

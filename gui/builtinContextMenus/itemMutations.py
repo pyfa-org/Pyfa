@@ -45,18 +45,10 @@ class ChangeItemMutation(ContextMenuSingle):
 
         menu = rootMenu if msw else sub
 
-        for item in mainItem.item.mutaplasmids:
-            label = item.item.name
-            keywords = ('Decayed', 'Gravid', 'Unstable', 'Radical')
-            for kw in keywords:
-                if item.item.name.startswith(f'{kw} '):
-                    label = kw
-            m = re.match('(?P<mutagrade>\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', label)
-            if m:
-                label = '{} {}'.format(m.group('mutagrade'), m.group('mutatype'))
+        for mutaplasmid in mainItem.item.mutaplasmids:
             id = ContextMenuSingle.nextID()
-            self.eventIDs[id] = (item, mainItem)
-            mItem = wx.MenuItem(menu, id, label)
+            self.eventIDs[id] = (mutaplasmid, mainItem)
+            mItem = wx.MenuItem(menu, id, mutaplasmid.shortName)
             menu.Bind(wx.EVT_MENU, self.handleMenu, mItem)
             sub.Append(mItem)
 
