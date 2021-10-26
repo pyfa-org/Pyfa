@@ -70,7 +70,10 @@ class BaseName(ViewColumn):
             stuff = stuff.item
 
         if isinstance(stuff, Drone):
-            return "%dx %s" % (stuff.amount, stuff.fullName)
+            if FitSvc.getInstance().serviceFittingOptions["expandedMutantNames"]:
+                return "%dx %s" % (stuff.amount, stuff.fullName)
+            else:
+                return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fighter):
             return "%d/%d %s" % \
                    (stuff.amount, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
@@ -117,7 +120,10 @@ class BaseName(ViewColumn):
             if stuff.isEmpty:
                 return "%s Slot" % FittingSlot(stuff.slot).name.capitalize()
             else:
-                return stuff.fullName
+                if FitSvc.getInstance().serviceFittingOptions["expandedMutantNames"]:
+                    return stuff.fullName
+                else:
+                    return stuff.item.customName
         elif isinstance(stuff, Implant):
             return stuff.item.name
         elif isinstance(stuff, TargetProfile):

@@ -93,6 +93,7 @@ class Fit:
             "marketSearchDelay": 250,
             "ammoChangeAll": False,
             "additionsLabels": 1,
+            "expandedMutantNames": False,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
