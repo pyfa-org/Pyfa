@@ -33,8 +33,7 @@ class ItemMutatorPanel(wx.Panel):
         mutaIcon = BitmapLoader.getStaticBitmap(stuff.mutaplasmid.item.iconID, self, "icons")
         if mutaIcon is not None:
             headerSizer.Add(mutaIcon, 0, wx.LEFT, 0)
-        sourceItemShort = "{} {}".format(stuff.mutaplasmid.shortName, stuff.baseItem.name)
-        sourceItemText = wx.StaticText(self, wx.ID_ANY, sourceItemShort)
+        sourceItemText = wx.StaticText(self, wx.ID_ANY, stuff.fullName)
         font = parent.GetFont()
         font.SetWeight(wx.BOLD)
         sourceItemText.SetFont(font)

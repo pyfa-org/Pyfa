@@ -34,7 +34,7 @@ class MutatedMixin:
 
     @property
     def isMutated(self):
-        return self.baseItemID and self.mutaplasmidID
+        return bool(self.baseItemID and self.mutaplasmidID)
 
     @property
     def baseItem(self):
@@ -43,6 +43,12 @@ class MutatedMixin:
     @property
     def mutaplasmid(self):
         return self.__mutaplasmid
+
+    @property
+    def fullName(self):
+        if self.isMutated:
+            return f'{self.mutaplasmid.shortName} {self.baseItem.customName}'
+        return self.item.customName
 
     def _mutaInit(self, baseItem, mutaplasmid):
         self.baseItemID = baseItem.ID if baseItem is not None else None
