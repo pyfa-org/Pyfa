@@ -8,7 +8,7 @@ from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.fit import Fit as es_Fit
-from gui.contextMenu import ContextMenuSingle
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 
 # noinspection PyPackageRequirements
@@ -16,12 +16,12 @@ from service.fit import Fit
 _t = wx.GetTranslation
 
 
-class ChangeItemAmount(ContextMenuSingle):
+class ChangeItemAmount(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, callingWindow, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext not in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter"):
             return False
 
@@ -30,10 +30,12 @@ class ChangeItemAmount(ContextMenuSingle):
 
         return True
 
-    def getText(self, callingWindow, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem, selection):
+        if isinstance(mainItem, es_Cargo):
+            return _t("Change Selection Quantity")
         return _t("Change {0} Quantity").format(itmContext)
 
-    def activate(self, callingWindow, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
         srcContext = fullContext[0]
         if isinstance(mainItem, es_Fit):
@@ -56,8 +58,12 @@ class ChangeItemAmount(ContextMenuSingle):
                 cleanInput = int(float(re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())))
 
                 if isinstance(mainItem, es_Cargo):
-                    self.mainFrame.command.Submit(cmd.GuiChangeCargoAmountCommand(
-                            fitID=fitID, itemID=mainItem.itemID, amount=cleanInput))
+                    itemIDs = []
+                    for cargo in selection:
+                        if cargo in fit.cargo:
+                            itemIDs.append(cargo.itemID)
+                    self.mainFrame.command.Submit(cmd.GuiChangeCargosAmountCommand(
+                            fitID=fitID, itemIDs=itemIDs, amount=cleanInput))
                 elif isinstance(mainItem, Drone):
                     if srcContext == "projectedDrone":
                         self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneAmountCommand(

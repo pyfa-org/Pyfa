@@ -61,8 +61,9 @@ class Effect10(BaseEffect):
 
     Used by:
     Celestials from group: Destructible Effect Beacon (6 of 6)
-    Drones from group: Combat Drone (75 of 75)
+    Drones from group: Combat Drone (79 of 79)
     Modules from group: Energy Weapon (212 of 214)
+    Celestial: EDENCOM Stockpile Non-Interactable (Do not translate)
     """
 
     dealsDamage = True
@@ -614,8 +615,7 @@ class Effect101(BaseEffect):
             # Lockbreaker Bombs
             ecmStrengthBonus = src.getModifiedChargeAttr('scan{0}StrengthBonus'.format(fit.scanType))
             if ecmStrengthBonus:
-                strModifier = 1 - min(1, ecmStrengthBonus / fit.scanStrength)
-                fit.ecmProjectedStr *= strModifier
+                fit.addProjectedEcm(ecmStrengthBonus)
         elif src.item.group.name == 'Interdiction Sphere Launcher':
             speedFactor = src.getModifiedChargeAttr('speedFactor')
             if speedFactor:
@@ -871,7 +871,7 @@ class Effect230(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Afterburner AB (6 of 6)
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
-    Implant: Serenity Anniversary Limited 'Overclocker' Dose
+    Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
     Implant: Zor's Custom Navigation Link
     Skill: Afterburner
     """
@@ -907,7 +907,7 @@ class Effect242(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Acceleration Control AC (6 of 6)
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
-    Implant: Serenity Anniversary Limited 'Overclocker' Dose
+    Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
     """
 
     type = 'passive'
@@ -1109,9 +1109,9 @@ class Effect391(BaseEffect):
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
     Implants named like: Mining Blitz Yield Booster Dose (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
     Implant: Michi's Excavation Augmentor
-    Implant: Serenity Anniversary Limited 'Efficiency' Dose
     Skill: Astrogeology
     Skill: Mining
     """
@@ -1133,8 +1133,8 @@ class Effect392(BaseEffect):
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' HH Dose (4 of 4)
     Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
+    Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Modules named like: Transverse Bulkhead (8 of 8)
-    Implant: Serenity Anniversary Limited 'Hardshell' Dose
     Skill: Mechanics
     """
 
@@ -1156,7 +1156,7 @@ class Effect394(BaseEffect):
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: Grand Prix Velocity Booster
-    Implant: Quafe Zero
+    Implant: Quafe Zero Classic
     Implant: Serenity YC122.9 Season Booster - Max Velocity
     Skill: Navigation
     """
@@ -1182,6 +1182,7 @@ class Effect395(BaseEffect):
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
     Implant: Genolution Core Augmentation CA-4
+    Implant: Quafe Zero Green Apple
     Implant: Serenity YC122.9 Season Booster - Agility
     Skill: Evasive Maneuvering
     Skill: Spaceship Command
@@ -1192,7 +1193,7 @@ class Effect395(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalties = 'skill' not in context and 'implant' not in context
+        penalties = 'skill' not in context and 'implant' not in context and 'booster' not in context
         fit.ship.boostItemAttr('agility', container.getModifiedItemAttr('agilityBonus') * level,
                                stackingPenalties=penalties, **kwargs)
 
@@ -1283,11 +1284,11 @@ class Effect446(BaseEffect):
     Used by:
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
+    Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: Genolution Core Augmentation CA-3
     Implant: Sansha Modified 'Gnome' Implant
-    Implant: Serenity Anniversary Limited 'Hardshell' Dose
     Skill: Shield Management
     """
 
@@ -1309,6 +1310,7 @@ class Effect485(BaseEffect):
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
+    Implant: Quafe Zero Green Apple
     Skill: Capacitor Systems Operation
     """
 
@@ -1738,9 +1740,8 @@ class Effect584(BaseEffect):
     surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringGunnery
 
     Used by:
-    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
-    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
     Implant: Standard Cerebral Accelerator
     """
 
@@ -2120,7 +2121,7 @@ class Effect699(BaseEffect):
     Used by:
     Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
     Modules named like: Targeting System Subcontroller (8 of 8)
-    Implant: Quafe Zero
+    Implant: Quafe Zero Classic
     Skill: Signature Analysis
     """
 
@@ -2463,10 +2464,10 @@ class Effect856(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
+    Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
     Implant: Grand Prix Warp Booster
-    Implant: Serenity Anniversary Limited 'Overclocker' Dose
     Implant: Serenity YC122.9 Season Booster - Warp Speed
     """
 
@@ -3749,8 +3750,8 @@ class Effect1190(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
-    Implant: Serenity Anniversary Limited 'Efficiency' Dose
     Module: Medium Ice Harvester Accelerator I
     Skill: Ice Harvesting
     """
@@ -4259,9 +4260,9 @@ class Effect1409(BaseEffect):
     systemScanDurationSkillAstrometrics
 
     Used by:
-    Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
+    Implants named like: Acquisition (6 of 6)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
-    Implant: Serenity Anniversary Limited 'Sharpeye' Dose
+    Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Skill: Astrometric Acquisition
     Skill: Astrometrics
     """
@@ -4404,7 +4405,6 @@ class Effect1446(BaseEffect):
     ewSkillTpMaxRangeBonus
 
     Used by:
-    Implants named like: Liberation Games EWar Booster (3 of 3)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4568,7 +4568,6 @@ class Effect1550(BaseEffect):
     ewSkillTargetPaintingStrengthBonus
 
     Used by:
-    Implants named like: Liberation Games EWar Booster (3 of 3)
     Skill: Signature Focusing
     """
 
@@ -4722,7 +4721,6 @@ class Effect1590(BaseEffect):
     missileSkillAoeVelocityBonus
 
     Used by:
-    Implants named like: Liberation Games Accuracy Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
     Skill: Target Navigation Prediction
@@ -4798,8 +4796,7 @@ class Effect1595(BaseEffect):
     missileSkillWarheadUpgradesEmDamageBonus
 
     Used by:
-    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
-    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
+    Implants named like: 'Pyrolancea' Dose (7 of 7)
     Skill: Warhead Upgrades
     """
 
@@ -4817,8 +4814,7 @@ class Effect1596(BaseEffect):
     missileSkillWarheadUpgradesExplosiveDamageBonus
 
     Used by:
-    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
-    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
+    Implants named like: 'Pyrolancea' Dose (7 of 7)
     Skill: Warhead Upgrades
     """
 
@@ -4836,8 +4832,7 @@ class Effect1597(BaseEffect):
     missileSkillWarheadUpgradesKineticDamageBonus
 
     Used by:
-    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
-    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
+    Implants named like: 'Pyrolancea' Dose (7 of 7)
     Skill: Warhead Upgrades
     """
 
@@ -4855,7 +4850,7 @@ class Effect1615(BaseEffect):
     shipAdvancedSpaceshipCommandAgilityBonus
 
     Used by:
-    Items from market group: Ships > Capital Ships (40 of 41)
+    Items from market group: Ships > Capital Ships (41 of 41)
     """
 
     type = 'passive'
@@ -4888,7 +4883,12 @@ class Effect1617(BaseEffect):
     shipCapitalAgilityBonus
 
     Used by:
-    Items from market group: Ships > Capital Ships (31 of 41)
+    Ships from group: Carrier (4 of 4)
+    Ships from group: Dreadnought (8 of 8)
+    Ships from group: Force Auxiliary (6 of 6)
+    Ships from group: Supercarrier (6 of 6)
+    Ships from group: Titan (7 of 7)
+    Ship: Rorqual
     """
 
     type = 'passive'
@@ -5079,8 +5079,7 @@ class Effect1657(BaseEffect):
     missileSkillWarheadUpgradesThermalDamageBonus
 
     Used by:
-    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
-    Implant: Serenity Anniversary Limited 'Pyrolancea' Dose
+    Implants named like: 'Pyrolancea' Dose (7 of 7)
     Skill: Warhead Upgrades
     """
 
@@ -5253,7 +5252,7 @@ class Effect1730(BaseEffect):
     droneDmgBonus
 
     Used by:
-    Skills from group: Drones (8 of 27)
+    Skills from group: Drones (9 of 28)
     """
 
     type = 'passive'
@@ -5301,7 +5300,6 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
-    Implants named like: Liberation Games Range Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -6832,6 +6830,30 @@ class Effect2255(BaseEffect):
     type = 'active'
 
 
+class Effect2296(BaseEffect):
+    """
+    modifyArmorResonancePassivePostPercentPassive
+
+    Used by:
+    Implants named like: Tetrimon Resistance Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for srcResType, tgtResType in (
+                ('Em', 'Em'),
+                ('Explosive', 'Explosive'),
+                ('Kinetic', 'Kinetic'),
+                ('Thermic', 'Thermal')
+        ):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(tgtResType),
+                src.getModifiedItemAttr('passive{}DamageResistanceBonus'.format(srcResType)),
+                **kwargs)
+
+
 class Effect2298(BaseEffect):
     """
     scanStrengthBonusPercentPassive
@@ -6988,6 +7010,7 @@ class Effect2432(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
+    Implants named like: Tetrimon Capacitor Booster (3 of 3)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -7098,10 +7121,10 @@ class Effect2485(BaseEffect):
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' AH Dose (4 of 4)
     Implants named like: Inherent Implants 'Noble' Hull Upgrades HG (7 of 7)
+    Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Implant: Genolution Core Augmentation CA-4
     Implant: Imperial Navy Modified 'Noble' Implant
     Implant: Imperial Special Ops Field Enhancer - Standard
-    Implant: Serenity Anniversary Limited 'Hardshell' Dose
     """
 
     type = 'passive'
@@ -7589,7 +7612,6 @@ class Effect2695(BaseEffect):
     falloffBonusEffectProjectiles
 
     Used by:
-    Implants named like: Liberation Games Range Booster (3 of 3)
     Modules named like: Projectile Ambit Extension (8 of 8)
     """
 
@@ -7608,6 +7630,7 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (3 of 3)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -7615,9 +7638,10 @@ class Effect2696(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalties = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'maxRange', module.getModifiedItemAttr('maxRangeBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalties, **kwargs)
 
 
 class Effect2697(BaseEffect):
@@ -7642,7 +7666,6 @@ class Effect2698(BaseEffect):
     maxRangeBonusEffectProjectiles
 
     Used by:
-    Implants named like: Liberation Games Range Booster (3 of 3)
     Modules named like: Projectile Locus Coordinator (8 of 8)
     """
 
@@ -8287,7 +8310,6 @@ class Effect2798(BaseEffect):
     projectileWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Liberation Games Damage Booster (3 of 3)
     Modules named like: Projectile Collision Accelerator (8 of 8)
     """
 
@@ -8357,6 +8379,7 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Harvest Damage Booster (3 of 3)
     Modules named like: Energy Collision Accelerator (8 of 8)
     """
 
@@ -8364,9 +8387,10 @@ class Effect2803(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalties = 'booster' not in context
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Energy Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
-                                         stackingPenalties=True, **kwargs)
+                                         stackingPenalties=penalties, **kwargs)
 
 
 class Effect2804(BaseEffect):
@@ -8554,7 +8578,6 @@ class Effect2851(BaseEffect):
     missileDMGBonusPassive
 
     Used by:
-    Implants named like: Liberation Games Damage Booster (3 of 3)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     """
 
@@ -8783,8 +8806,8 @@ class Effect2885(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
+    Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
-    Implant: Serenity Anniversary Limited 'Efficiency' Dose
     """
 
     type = 'passive'
@@ -9638,11 +9661,10 @@ class Effect3182(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        if 'projected' not in context:
-            for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
-                module.boostItemAttr('scan{0}StrengthBonus'.format(scanType),
-                                     module.getModifiedItemAttr('overloadECMStrengthBonus'),
-                                     stackingPenalties=True, **kwargs)
+        for scanType in ('Gravimetric', 'Magnetometric', 'Radar', 'Ladar'):
+            module.boostItemAttr('scan{0}StrengthBonus'.format(scanType),
+                                 module.getModifiedItemAttr('overloadECMStrengthBonus'),
+                                 stackingPenalties=True, **kwargs)
 
 
 class Effect3196(BaseEffect):
@@ -13529,9 +13551,9 @@ class Effect4161(BaseEffect):
     baseMaxScanDeviationModifierRequiringAstrometrics
 
     Used by:
-    Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
+    Implants named like: Pinpointing (6 of 6)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
-    Implant: Serenity Anniversary Limited 'Sharpeye' Dose
+    Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Skill: Astrometric Pinpointing
     Skill: Astrometrics
     """
@@ -13552,11 +13574,11 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (4 of 7)
-    Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
+    Implants named like: Rangefinding (6 of 6)
+    Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
-    Implant: Serenity Anniversary Limited 'Sharpeye' Dose
     Implant: Serenity YC122.9 Season Booster - Probe Scanning Strength
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
@@ -13567,7 +13589,7 @@ class Effect4162(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalized = False if 'skill' in context or 'implant' in context else True
+        penalized = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
                                         'baseSensorStrength', container.getModifiedItemAttr('scanStrengthBonus') * level,
                                         stackingPenalties=penalized, **kwargs)
@@ -18148,6 +18170,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (3 of 3)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -18155,9 +18178,10 @@ class Effect5189(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalties = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalties, **kwargs)
 
 
 class Effect5190(BaseEffect):
@@ -18165,7 +18189,6 @@ class Effect5190(BaseEffect):
     trackingSpeedBonusEffectProjectiles
 
     Used by:
-    Implants named like: Liberation Games Accuracy Booster (3 of 3)
     Modules named like: Projectile Metastasis Adjuster (8 of 8)
     """
 
@@ -24319,7 +24342,12 @@ class Effect6104(BaseEffect):
     entosisDurationMultiply
 
     Used by:
-    Items from market group: Ships > Capital Ships (31 of 41)
+    Ships from group: Carrier (4 of 4)
+    Ships from group: Dreadnought (8 of 8)
+    Ships from group: Force Auxiliary (6 of 6)
+    Ships from group: Supercarrier (6 of 6)
+    Ships from group: Titan (7 of 7)
+    Ship: Rorqual
     """
 
     type = 'passive'
@@ -27265,8 +27293,7 @@ class Effect6437(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6439(BaseEffect):
@@ -27460,8 +27487,7 @@ class Effect6470(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6472(BaseEffect):
@@ -27769,14 +27795,11 @@ class Effect6502(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
-        fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
-        fit.ship.boostItemAttr('armorThermalDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
-        fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
-                               skill='Amarr Dreadnought', **kwargs)
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(dmgType.capitalize()),
+                src.getModifiedItemAttr('shipBonusDreadnoughtA2'),
+                skill='Amarr Dreadnought', **kwargs)
 
 
 class Effect6503(BaseEffect):
@@ -27954,8 +27977,7 @@ class Effect6513(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6526(BaseEffect):
@@ -28275,7 +28297,7 @@ class Effect6556(BaseEffect):
     moduleBonusDroneDamageAmplifier
 
     Used by:
-    Modules from group: Drone Damage Modules (11 of 11)
+    Modules from group: Drone Damage Modules (12 of 12)
     Modules named like: C3 'Hivaa Saitsuo' Ballistic Control System (2 of 2)
     Module: Abyssal Ballistic Control System
     """
@@ -28532,7 +28554,7 @@ class Effect6566(BaseEffect):
     moduleBonusFighterSupportUnit
 
     Used by:
-    Modules from group: Fighter Support Unit (8 of 8)
+    Modules from group: Fighter Support Unit (9 of 9)
     """
 
     type = 'passive'
@@ -30181,9 +30203,6 @@ class Effect6658(BaseEffect):
         # Speed penalty
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), **kwargs)
 
-        # Max locked targets
-        fit.ship.forceItemAttr('maxLockedTargets', src.getModifiedItemAttr('maxLockedTargets'), **kwargs)
-
         # new with April 2016 release
         for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
             fit.ship.boostItemAttr('scan{}Strength'.format(scanType),
@@ -30586,8 +30605,7 @@ class Effect6685(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6686(BaseEffect):
@@ -30846,8 +30864,7 @@ class Effect6695(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6697(BaseEffect):
@@ -31133,6 +31150,7 @@ class Effect6714(BaseEffect):
     """
 
     type = 'projected', 'active'
+    runTime = 'late'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -31146,8 +31164,7 @@ class Effect6714(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             strength *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        chanceModifier = 1 - min(1, strength / fit.scanStrength)
-        fit.ecmProjectedStr *= chanceModifier
+        fit.addProjectedEcm(strength)
 
 
 class Effect6717(BaseEffect):
@@ -34065,7 +34082,6 @@ class Effect7020(BaseEffect):
     Used by:
     Implants named like: Inquest 'Eros' Stasis Webifier MR (3 of 3)
     Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
-    Implants named like: Liberation Games EWar Booster (3 of 3)
     """
 
     type = 'passive'
@@ -35648,7 +35664,7 @@ class Effect7193(BaseEffect):
     systemMiningCycleTimeBonus
 
     Used by:
-    Celestials named like: Stellar Observatory (4 of 4)
+    Celestials from group: Destructible Effect Beacon (4 of 6)
     Celestials named like: Triglavian Invasion System Effects (3 of 3)
     """
 
@@ -37553,3 +37569,71 @@ class Effect8158(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Cloaking'), 'stabilizeCloakDuration',
             booster.getModifiedItemAttr('stabilizeCloakDurationBonus'), **kwargs)
+
+
+class Effect8267(BaseEffect):
+    """
+    weaponDisruptorResistanceBonusPassive
+
+    Used by:
+    Implants named like: Harvest Anti Disruptor Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'weaponDisruptionResistance',
+            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
+
+
+class Effect8268(BaseEffect):
+    """
+    nosferatuDurationBonusPassive
+
+    Used by:
+    Implants named like: Harvest Nosferatu Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
+            module.getModifiedItemAttr('durationBonus'), **kwargs)
+
+
+class Effect8269(BaseEffect):
+    """
+    stasisWebifierMaxRangeAddPassive
+
+    Used by:
+    Implants named like: Harvest Webifier Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
+            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
+
+
+class Effect8270(BaseEffect):
+    """
+    capacitorWarfareResistanceBonusPassive
+
+    Used by:
+    Implants named like: Tetrimon Anti Drain Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'energyWarfareResistance',
+            container.getModifiedItemAttr('energyWarfareResistanceBonus'), **kwargs)

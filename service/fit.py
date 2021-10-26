@@ -379,7 +379,7 @@ class Fit:
         return fits
 
     def changeMutatedValuePrelim(self, mutator, value):
-        pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.module, mutator.module.mutaplasmid, mutator.value, value))
+        pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.item, mutator.item.mutaplasmid, mutator.value, value))
         if mutator.value != value:
             mutator.value = value
             eos.db.flush()

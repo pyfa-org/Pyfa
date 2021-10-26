@@ -158,8 +158,11 @@ class ModuleInfo:
 
 class DroneInfo:
 
-    def __init__(self, itemID, amount, amountActive):
+    def __init__(self, amount, amountActive, itemID, baseItemID=None, mutaplasmidID=None, mutations=None):
         self.itemID = itemID
+        self.baseItemID = baseItemID
+        self.mutaplasmidID = mutaplasmidID
+        self.mutations = mutations
         self.amount = amount
         self.amountActive = amountActive
 
@@ -170,22 +173,40 @@ class DroneInfo:
         info = cls(
             itemID=drone.itemID,
             amount=drone.amount,
-            amountActive=drone.amountActive)
+            amountActive=drone.amountActive,
+            baseItemID=drone.baseItemID,
+            mutaplasmidID=drone.mutaplasmidID,
+            mutations={m.attrID: m.value for m in drone.mutators.values()})
         return info
 
     def toDrone(self):
-        item = Market.getInstance().getItem(self.itemID, eager=('attributes', 'group.category'))
+        mkt = Market.getInstance()
+        item = mkt.getItem(self.itemID, eager=('attributes', 'group.category'))
+        if self.baseItemID and self.mutaplasmidID:
+            baseItem = mkt.getItem(self.baseItemID, eager=('attributes', 'group.category'))
+            mutaplasmid = eos.db.getDynamicItem(self.mutaplasmidID)
+        else:
+            baseItem = None
+            mutaplasmid = None
         try:
-            drone = Drone(item)
+            drone = Drone(item, baseItem=baseItem, mutaplasmid=mutaplasmid)
         except ValueError:
             pyfalog.warning('Invalid item: {}'.format(self.itemID))
             return None
+
+        if self.mutations is not None:
+            for attrID, mutator in drone.mutators.items():
+                if attrID in self.mutations:
+                    mutator.value = self.mutations[attrID]
+
         drone.amount = self.amount
         drone.amountActive = self.amountActive
         return drone
 
     def __repr__(self):
-        return makeReprStr(self, ['itemID', 'amount', 'amountActive'])
+        return makeReprStr(self, [
+            'itemID', 'amount', 'amountActive',
+            'baseItemID', 'mutaplasmidID', 'mutations'])
 
 
 class FighterInfo:

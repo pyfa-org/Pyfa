@@ -27,6 +27,8 @@ import re
 import sqlite3
 import sys
 
+from sqlalchemy import or_
+
 
 # todo: need to set the EOS language to en, becasuse this assumes it's being run within an English context
 # Need to know what that would do if called from pyfa
@@ -591,7 +593,10 @@ def update_db():
     # pyfa, we can do it here as a post-processing step
     for attr in eos.db.gamedata_session.query(eos.gamedata.Attribute).filter(eos.gamedata.Attribute.ID == 1367).all():
         attr.value = 4.0
-    for item in eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.name.like('%abyssal%')).all():
+    for item in eos.db.gamedata_session.query(eos.gamedata.Item).filter(or_(
+        eos.gamedata.Item.name.like('%abyssal%'),
+        eos.gamedata.Item.name.like('%mutated%')
+    )).all():
         item.published = False
 
     for x in [
