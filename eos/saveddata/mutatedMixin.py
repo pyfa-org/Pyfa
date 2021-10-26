@@ -52,7 +52,6 @@ class MutatedMixin:
             # Note: there may be a better way of doing this, such as a metho on this classe to convert(mutaplamid). This
             # will require a bit more research though, considering there has never been a need to "swap" out the item of a Module
             # before, and there may be assumptions taken with regards to the item never changing (pre-calculated / cached results, for example)
-            print('muta init', self, self._item.ID, self.baseItemID)
             self._item = eos.db.getItemWithBaseItemAttribute(self._item.ID, self.baseItemID)
             self.__baseItem = baseItem
             self.__mutaplasmid = mutaplasmid

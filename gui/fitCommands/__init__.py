@@ -30,6 +30,7 @@ from .gui.localDrone.changeMutation import GuiChangeLocalDroneMutationCommand
 from .gui.localDrone.clone import GuiCloneLocalDroneCommand
 from .gui.localDrone.imprt import GuiImportLocalDronesCommand
 from .gui.localDrone.mutatedConvert import GuiConvertMutatedLocalDroneCommand
+from .gui.localDrone.mutatedImport import GuiImportLocalMutatedDroneCommand
 from .gui.localDrone.mutatedRevert import GuiRevertMutatedLocalDroneCommand
 from .gui.localDrone.remove import GuiRemoveLocalDronesCommand
 from .gui.localDrone.stackSplit import GuiSplitLocalDroneStackCommand

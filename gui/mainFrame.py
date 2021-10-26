@@ -762,7 +762,12 @@ class MainFrame(wx.Frame):
             if importType == "FittingItem":
                 baseItem, mutaplasmidItem, mutations = importData[0]
                 if mutaplasmidItem:
-                    self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, baseItem, mutaplasmidItem, mutations))
+                    if baseItem.isDrone:
+                        self.command.Submit(cmd.GuiImportLocalMutatedDroneCommand(
+                            activeFit, baseItem, mutaplasmidItem, mutations, amount=1))
+                    else:
+                        self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(
+                            activeFit, baseItem, mutaplasmidItem, mutations))
                 else:
                     self.command.Submit(cmd.GuiAddLocalModuleCommand(activeFit, baseItem.ID))
                 return
