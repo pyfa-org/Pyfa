@@ -5,7 +5,7 @@ from gui import fitCommands as cmd
 from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.clipboard import fromClipboard
 from service.fit import Fit
-from service.port.eft import parseAdditions
+from service.port.eft import parseAdditions, importGetMutationData, lineIter
 
 _t = wx.GetTranslation
 
@@ -41,9 +41,12 @@ class AdditionsImport(ContextMenuUnconditional):
 
     def activate(self, callingWindow, fullContext, i):
         text = fromClipboard()
-        items = parseAdditions(text)
+        lines = list(lineIter(text))
+        mutaData = importGetMutationData(lines)
+        text = '\n'.join(lines)
+        items = parseAdditions(text, mutaData=mutaData)
         filterFunc = self.viewSpecMap[self.srcContext][1]
-        items = [(i.ID, a) for i, a in items if filterFunc(i)]
+        items = [(i.ID, a, m) for i, a, m in items if filterFunc(i)]
         if not items:
             return
         command = self.viewSpecMap[self.srcContext][2]

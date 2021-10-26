@@ -27,7 +27,8 @@ from eos.const import FittingHardpoint, FittingModuleState, FittingSlot
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.mutator import Mutator
+from eos.saveddata.mutatedMixin import MutatedMixin, MutaError
+from eos.saveddata.mutator import MutatorModule
 from eos.utils.cycles import CycleInfo, CycleSequence
 from eos.utils.default import DEFAULT
 from eos.utils.float import floatUnerr
@@ -61,7 +62,7 @@ ProjectedSystem = {
 }
 
 
-class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
+class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, MutatedMixin):
     """An instance of this class represents a module together with its charge and modified attributes"""
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = (
@@ -72,21 +73,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         """Initialize a module from the program"""
 
         self.itemID = item.ID if item is not None else None
-        self.baseItemID = baseItem.ID if baseItem is not None else None
-        self.mutaplasmidID = mutaplasmid.ID if mutaplasmid is not None else None
 
-        if baseItem is not None:
-            # we're working with a mutated module, need to get abyssal module loaded with the base attributes
-            # Note: there may be a better way of doing this, such as a metho on this classe to convert(mutaplamid). This
-            # will require a bit more research though, considering there has never been a need to "swap" out the item of a Module
-            # before, and there may be assumptions taken with regards to the item never changing (pre-calculated / cached results, for example)
-            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
-            self.__baseItem = baseItem
-            self.__mutaplasmid = mutaplasmid
-        else:
-            self.__item = item
-            self.__baseItem = baseItem
-            self.__mutaplasmid = mutaplasmid
+        self._item = item
+        self._mutaInit(baseItem=baseItem, mutaplasmid=mutaplasmid)
 
         if item is not None and self.isInvalid:
             raise ValueError("Passed item is not a Module")
@@ -101,27 +90,22 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @reconstructor
     def init(self):
         """Initialize a module from the database and validate"""
-        self.__item = None
-        self.__baseItem = None
+        self._item = None
         self.__charge = None
-        self.__mutaplasmid = None
 
         # we need this early if module is invalid and returns early
         self.__slot = self.dummySlot
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
-            if self.__item is None:
+            self._item = eos.db.getItem(self.itemID)
+            if self._item is None:
                 pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
-        if self.baseItemID:
-            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
-            self.__baseItem = eos.db.getItem(self.baseItemID)
-            self.__mutaplasmid = eos.db.getMutaplasmid(self.mutaplasmidID)
-            if self.__baseItem is None:
-                pyfalog.error("Base Item (id: {0}) does not exist", self.itemID)
-                return
+        try:
+            self._mutaReconstruct()
+        except MutaError:
+            return
 
         if self.isInvalid:
             pyfalog.error("Item (id: {0}) is not a Module", self.itemID)
@@ -149,21 +133,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__chargeModifiedAttributes = ModifiedAttributeDict(parent=self)
         self.__slot = self.dummySlot  # defaults to None
 
-        if self.__item:
-            self.__itemModifiedAttributes.original = self.__item.attributes
-            self.__itemModifiedAttributes.overrides = self.__item.overrides
-            self.__hardpoint = self.__calculateHardpoint(self.__item)
-            self.__slot = self.calculateSlot(self.__item)
+        if self._item:
+            self.__itemModifiedAttributes.original = self._item.attributes
+            self.__itemModifiedAttributes.overrides = self._item.overrides
+            self.__hardpoint = self.__calculateHardpoint(self._item)
+            self.__slot = self.calculateSlot(self._item)
 
-            # Instantiate / remove mutators if this is a mutated module
-            if self.__baseItem:
-                for x in self.mutaplasmid.attributes:
-                    attr = self.item.attributes[x.name]
-                    id = attr.ID
-                    if id not in self.mutators:  # create the mutator
-                        Mutator(self, attr, attr.value)
-                # @todo: remove attributes that are no longer part of the mutaplasmid.
-
+            self._mutaLoadMutators(mutatorClass=MutatorModule)
             self.__itemModifiedAttributes.mutators = self.mutators
 
         if self.__charge:
@@ -198,27 +174,21 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # todo: validate baseItem as well if it's set.
         if self.isEmpty:
             return False
-        if self.__item is None:
+        if self._item is None:
             return True
         if (
-            self.__item.category.name not in ("Module", "Subsystem", "Structure Module")
-            and self.__item.group.name not in self.SYSTEM_GROUPS
+            self._item.category.name not in ("Module", "Subsystem", "Structure Module")
+            and self._item.group.name not in self.SYSTEM_GROUPS
         ):
             return True
         if (
-            self.__item.category.name == "Structure Module"
-            and self.__item.group.name == "Quantum Cores"
+            self._item.category.name == "Structure Module"
+            and self._item.group.name == "Quantum Cores"
         ):
             return True
-        if self.item.isAbyssal and not self.isMutated:
-            return True
-        if self.isMutated and not self.__mutaplasmid:
+        if self._mutaIsInvalid:
             return True
         return False
-
-    @property
-    def isMutated(self):
-        return self.baseItemID and self.mutaplasmidID
 
     @property
     def numCharges(self):
@@ -419,15 +389,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def item(self):
-        return self.__item if self.__item != 0 else None
-
-    @property
-    def baseItem(self):
-        return self.__baseItem
-
-    @property
-    def mutaplasmid(self):
-        return self.__mutaplasmid
+        return self._item if self._item != 0 else None
 
     @property
     def charge(self):
@@ -1098,9 +1060,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy.spoolType = self.spoolType
         copy.spoolAmount = self.spoolAmount
         copy.projectionRange = self.projectionRange
-
-        for x in self.mutators.values():
-            Mutator(copy, x.attribute, x.value)
+        self._mutaApplyMutators(mutatorClass=MutatorModule, targetInstance=copy)
 
         return copy
 
@@ -1118,14 +1078,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.spoolType = spoolType
         self.spoolAmount = spoolAmount
         self.projectionRange = projectionRange
-        for x in self.mutators.values():
-            Mutator(self, x.attribute, x.value)
+        self._mutaApplyMutators(mutatorClass=MutatorModule)
 
     def __repr__(self):
         if self.item:
-            return "Module(ID={}, name={}) at {}".format(
-                    self.item.ID, self.item.name, hex(id(self))
-            )
+            return "Module(ID={}, name={}) at {}".format(self.item.ID, self.item.name, hex(id(self)))
         else:
             return "EmptyModule() at {}".format(hex(id(self)))
 

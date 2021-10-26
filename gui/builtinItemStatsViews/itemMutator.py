@@ -18,23 +18,22 @@ _t = wx.GetTranslation
 
 class ItemMutatorPanel(wx.Panel):
 
-    def __init__(self, parent, mod):
+    def __init__(self, parent, stuff):
         wx.Panel.__init__(self, parent)
-        self.stuff = mod
+        self.stuff = stuff
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         headerSizer = wx.BoxSizer(wx.HORIZONTAL)
         headerSizer.AddStretchSpacer()
-        itemIcon = BitmapLoader.getStaticBitmap(mod.item.iconID, self, "icons")
+        itemIcon = BitmapLoader.getStaticBitmap(stuff.item.iconID, self, "icons")
         if itemIcon is not None:
             headerSizer.Add(itemIcon, 0, 0, 0)
-        mutaIcon = BitmapLoader.getStaticBitmap(mod.mutaplasmid.item.iconID, self, "icons")
+        mutaIcon = BitmapLoader.getStaticBitmap(stuff.mutaplasmid.item.iconID, self, "icons")
         if mutaIcon is not None:
             headerSizer.Add(mutaIcon, 0, wx.LEFT, 0)
-        sourceItemShort = "{} {}".format(mod.mutaplasmid.item.name.split(" ")[0], mod.baseItem.name)
-        sourceItemText = wx.StaticText(self, wx.ID_ANY, sourceItemShort)
+        sourceItemText = wx.StaticText(self, wx.ID_ANY, stuff.fullName)
         font = parent.GetFont()
         font.SetWeight(wx.BOLD)
         sourceItemText.SetFont(font)
@@ -43,7 +42,7 @@ class ItemMutatorPanel(wx.Panel):
         mainSizer.Add(headerSizer, 0, wx.ALL | wx.EXPAND, 5)
         mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 0)
 
-        self.mutaList = ItemMutatorList(self, mod)
+        self.mutaList = ItemMutatorList(self, stuff)
         mainSizer.Add(self.mutaList, 1, wx.EXPAND | wx.ALL, 0)
 
         mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 0)
@@ -68,13 +67,13 @@ class ItemMutatorPanel(wx.Panel):
 
 class ItemMutatorList(wx.ScrolledWindow):
 
-    def __init__(self, parent, mod):
+    def __init__(self, parent, stuff):
         wx.ScrolledWindow.__init__(self, parent)
         self.SetScrollRate(0, 15)
         self.carryingFitID = gui.mainFrame.MainFrame.getInstance().getActiveFit()
         self.initialMutations = {}
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
-        self.mod = mod
+        self.stuff = stuff
         self.timer = None
         self.isModified = False
 
@@ -91,9 +90,8 @@ class ItemMutatorList(wx.ScrolledWindow):
             ('Damage Control', 'duration'): True,
             ('Siege Module', 'siegeLocalLogisticsDurationBonus'): False
         }
-
         first = True
-        for m in sorted(mod.mutators.values(), key=lambda x: x.attribute.displayName):
+        for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
             if m.baseValue == 0:
                 continue
             if not first:
@@ -102,10 +100,10 @@ class ItemMutatorList(wx.ScrolledWindow):
 
             self.initialMutations[m.attrID] = m.value
 
-            highIsGood = higOverrides.get((mod.item.group.name, m.attribute.name), m.highIsGood)
+            highIsGood = higOverrides.get((stuff.item.group.name, m.attribute.name), m.highIsGood)
             # Format: [raw value, modifier applied to base raw value, display value]
-            range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
-            range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
+            range1 = (m.minValue, self._simplifyValue(m, m.minValue))
+            range2 = (m.maxValue, self._simplifyValue(m, m.maxValue))
 
             # minValue/maxValue do not always correspond to min/max, because these are
             # just base value multiplied by minMod/maxMod, and in case base is negative
@@ -148,11 +146,11 @@ class ItemMutatorList(wx.ScrolledWindow):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            worseVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worseRange[0]), rounding='dec')
+            worseVal = ItemParams.FormatValue(*self._preformatValue(m, worseRange[0]), rounding='dec')
             worseText = wx.StaticText(self, wx.ID_ANY, worseVal)
             worseText.SetForegroundColour(badColor)
 
-            betterVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(betterRange[0]), rounding='dec')
+            betterVal = ItemParams.FormatValue(*self._preformatValue(m, betterRange[0]), rounding='dec')
             betterText = wx.StaticText(self, wx.ID_ANY, betterVal)
             betterText.SetForegroundColour(goodColor)
 
@@ -163,23 +161,38 @@ class ItemMutatorList(wx.ScrolledWindow):
             sizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
             slider = AttributeSlider(parent=self,
-                                     baseValue=m.attribute.unit.SimplifyValue(sliderBaseValue),
+                                     baseValue=self._simplifyValue(m, sliderBaseValue),
                                      minValue=displayMinRange[1],
                                      maxValue=displayMaxRange[1],
                                      inverse=displayMaxRange is worseRange)
-            slider.SetValue(m.attribute.unit.SimplifyValue(m.value), False)
+            slider.SetValue(self._simplifyValue(m, m.value), False)
             slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
             self.event_mapping[slider] = m
             sizer.Add(slider, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 10)
 
         self.SetSizer(sizer)
 
+    def _simplifyValue(self, mutator, value):
+        if mutator.attribute.unit is None:
+            return value
+        return mutator.attribute.unit.SimplifyValue(value)
+
+    def _complicateValue(self, mutator, value):
+        if mutator.attribute.unit is None:
+            return value
+        return mutator.attribute.unit.ComplicateValue(value)
+
+    def _preformatValue(self, mutator, value):
+        if mutator.attribute.unit is None:
+            return value, None
+        return mutator.attribute.unit.PreformatValue(value)
+
     def changeMutatedValue(self, evt):
         if evt.AffectsModifiedFlag:
             self.isModified = True
         m = self.event_mapping[evt.Object]
         value = evt.Value
-        value = m.attribute.unit.ComplicateValue(value)
+        value = self._complicateValue(m, value)
         sFit = Fit.getInstance()
 
         sFit.changeMutatedValuePrelim(m, value)
@@ -198,7 +211,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         sFit = Fit.getInstance()
         for slider, m in self.event_mapping.items():
             value = sFit.changeMutatedValuePrelim(m, m.baseValue)
-            value = m.attribute.unit.SimplifyValue(value)
+            value = self._simplifyValue(m, value)
             slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
@@ -208,7 +221,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         for slider, m in self.event_mapping.items():
             value = random.uniform(m.minValue, m.maxValue)
             value = sFit.changeMutatedValuePrelim(m, value)
-            value = m.attribute.unit.SimplifyValue(value)
+            value = self._simplifyValue(m, value)
             slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
@@ -218,7 +231,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         for slider, m in self.event_mapping.items():
             if m.attrID in self.initialMutations:
                 value = sFit.changeMutatedValuePrelim(m, self.initialMutations[m.attrID])
-                value = m.attribute.unit.SimplifyValue(value)
+                value = self._simplifyValue(m, value)
                 slider.SetValue(value, affect_modified_flag=False)
         evt.Skip()
 
@@ -226,25 +239,34 @@ class ItemMutatorList(wx.ScrolledWindow):
         # Submit mutation changes
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.carryingFitID)
-        if self.mod in fit.modules:
+        isCurrentMod = self.stuff in fit.modules
+        isCurrentDrone = self.stuff in fit.drones
+        if isCurrentMod or isCurrentDrone:
             if self.isModified:
                 currentMutation = {}
                 for slider, m in self.event_mapping.items():
                     # Sliders may have more up-to-date info than mutator in case we changed
                     # value in slider and without confirming it, decided to close window
                     value = slider.GetValue()
-                    value = m.attribute.unit.ComplicateValue(value)
+                    value = self._complicateValue(m, value)
                     if value != m.value:
                         value = sFit.changeMutatedValuePrelim(m, value)
                     currentMutation[m.attrID] = value
             else:
                 currentMutation = self.initialMutations
             mainFrame = gui.mainFrame.MainFrame.getInstance()
-            mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
-                fitID=self.carryingFitID,
-                position=fit.modules.index(self.mod),
-                mutation=currentMutation,
-                oldMutation=self.initialMutations))
+            if isCurrentMod:
+                mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
+                    fitID=self.carryingFitID,
+                    position=fit.modules.index(self.stuff),
+                    mutation=currentMutation,
+                    oldMutation=self.initialMutations))
+            elif isCurrentDrone:
+                mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalDroneMutationCommand(
+                    fitID=self.carryingFitID,
+                    position=fit.drones.index(self.stuff),
+                    mutation=currentMutation,
+                    oldMutation=self.initialMutations))
         for slider in self.event_mapping:
             slider.OnWindowClose()
 

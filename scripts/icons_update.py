@@ -14,7 +14,7 @@ from shutil import copyfile
 from PIL import Image
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
-parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')
+parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s shared cache folder')
 parser.add_argument('-s', '--server', required=False, default='tq', type=str, help='which server to use (defaults to tq)')
 parser.add_argument('-i', '--icons', required=True, type=str, help='Path to iconids.json extracted by phobos')
 args = parser.parse_args()

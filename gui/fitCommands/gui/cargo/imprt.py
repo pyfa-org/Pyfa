@@ -14,7 +14,7 @@ class GuiImportCargosCommand(wx.Command):
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.cargos = {}
-        for itemID, amount in cargos:
+        for itemID, amount, mutation in cargos:
             if itemID not in self.cargos:
                 self.cargos[itemID] = 0
             self.cargos[itemID] += amount

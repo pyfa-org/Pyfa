@@ -70,7 +70,7 @@ class BaseName(ViewColumn):
             stuff = stuff.item
 
         if isinstance(stuff, Drone):
-            return "%dx %s" % (stuff.amount, stuff.item.name)
+            return "%dx %s" % (stuff.amount, stuff.fullName)
         elif isinstance(stuff, Fighter):
             return "%d/%d %s" % \
                    (stuff.amount, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
@@ -117,7 +117,7 @@ class BaseName(ViewColumn):
             if stuff.isEmpty:
                 return "%s Slot" % FittingSlot(stuff.slot).name.capitalize()
             else:
-                return stuff.item.customName
+                return stuff.fullName
         elif isinstance(stuff, Implant):
             return stuff.item.name
         elif isinstance(stuff, TargetProfile):

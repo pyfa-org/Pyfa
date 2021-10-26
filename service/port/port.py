@@ -232,14 +232,14 @@ class Port:
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
-        if re.match("\[.*\]", firstLine) and path is not None:
+        if re.match("^\s*\[.*\]", firstLine) and path is not None:
             filename = os.path.split(path)[1]
             shipName = filename.rsplit('.')[0]
             return "EFT Config", True, cls.importEftCfg(shipName, lines, iportuser)
 
         # If no file is specified and there's comma between brackets,
         # consider that we have [ship, setup name] and detect like eft export format
-        if re.match("\[.*,.*\]", firstLine):
+        if re.match("^\s*\[.*,.*\]", firstLine):
             return "EFT", True, (cls.importEft(lines),)
 
         # Check if string is in DNA format

@@ -355,4 +355,5 @@ class ItemParams(wx.Panel):
             fvalue = roundDec(value, digits)
         else:
             fvalue = value
-        return "%s %s" % (fvalue, unit)
+        unitSuffix = f' {unit}' if unit is not None else ''
+        return f'{fvalue}{unitSuffix}'
