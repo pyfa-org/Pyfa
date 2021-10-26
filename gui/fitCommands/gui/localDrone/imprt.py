@@ -18,11 +18,19 @@ class GuiImportLocalDronesCommand(wx.Command):
 
     def Do(self):
         results = []
-        for itemID, amount in self.drones:
-            cmd = CalcAddLocalDroneCommand(
-                fitID=self.fitID,
-                droneInfo=DroneInfo(itemID=itemID, amount=amount, amountActive=0),
-                forceNewStack=True)
+        for itemID, amount, mutation in self.drones:
+            if mutation:
+                mutaplasmid, attrs = mutation
+                info = DroneInfo(
+                    itemID=mutaplasmid.resultingItem.ID,
+                    amount=amount,
+                    amountActive=0,
+                    baseItemID=itemID,
+                    mutaplasmidID=mutaplasmid.ID,
+                    mutations=attrs)
+            else:
+                info = DroneInfo(itemID=itemID, amount=amount, amountActive=0)
+            cmd = CalcAddLocalDroneCommand(fitID=self.fitID, droneInfo=info, forceNewStack=True)
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
         eos.db.flush()

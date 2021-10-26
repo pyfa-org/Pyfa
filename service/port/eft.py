@@ -225,7 +225,7 @@ def importEft(lines):
         return
 
     aFit = AbstractFit()
-    aFit.mutations = _importGetMutationData(lines)
+    aFit.mutations = importGetMutationData(lines)
 
     stubPattern = '^\[.+?\]$'
     modulePattern = '^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS, OFFLINE_SUFFIX)
@@ -572,8 +572,7 @@ def _importPrepare(lines):
 mutantHeaderPattern = re.compile('^\[(?P<ref>\d+)\](?P<tail>.*)')
 
 
-def _importGetMutationData(lines):
-    data = {}
+def importGetMutationData(lines):
     # Format: {ref: [lines]}
     mutaLinesMap = {}
     currentMutaRef = None
@@ -943,7 +942,7 @@ class AbstractFit:
         self.cargo[itemSpec.item].amount += itemSpec.amount
 
 
-def _lineIter(text):
+def lineIter(text):
     """Iterate over non-blank lines."""
     for line in text.splitlines():
         line = line.strip()
@@ -951,11 +950,11 @@ def _lineIter(text):
             yield line
 
 
-def parseAdditions(text):
+def parseAdditions(text, mutaData=None):
     items = []
     sMkt = Market.getInstance()
-    pattern = '^(?P<typeName>{}+?)( x(?P<amount>\d+?))?$'.format(NAME_CHARS)
-    for line in _lineIter(text):
+    pattern = '^(?P<typeName>{}+?)( x(?P<amount>\d+?))?(\s*\[(?P<mutaref>\d+?)\])?$'.format(NAME_CHARS)
+    for line in lineIter(text):
         m = re.match(pattern, line)
         if not m:
             continue
@@ -964,19 +963,27 @@ def parseAdditions(text):
             continue
         amount = m.group('amount')
         amount = 1 if amount is None else int(amount)
-        items.append((item, amount))
+        mutaRef = int(m.group('mutaref')) if m.group('mutaref') else None
+        if mutaRef and mutaData and mutaRef in mutaData:
+            mutation = mutaData[mutaRef]
+        else:
+            mutation = None
+        items.append((item, amount, mutation))
     return items
 
 
 def isValidDroneImport(text):
-    pattern = 'x\d+$'
-    for line in _lineIter(text):
+    lines = list(lineIter(text))
+    mutaData = importGetMutationData(lines)
+    text = '\n'.join(lines)
+    pattern = 'x\d+(\s*\[\d+\])?$'
+    for line in lineIter(text):
         if not re.search(pattern, line):
             return False, ()
-    itemData = parseAdditions(text)
+    itemData = parseAdditions(text, mutaData=mutaData)
     if not itemData:
         return False, ()
-    for item, amount in itemData:
+    for item, amount, mutation in itemData:
         if not item.isDrone:
             return False, ()
     return True, itemData
@@ -984,13 +991,13 @@ def isValidDroneImport(text):
 
 def isValidFighterImport(text):
     pattern = 'x\d+$'
-    for line in _lineIter(text):
+    for line in lineIter(text):
         if not re.search(pattern, line):
             return False, ()
     itemData = parseAdditions(text)
     if not itemData:
         return False, ()
-    for item, amount in itemData:
+    for item, amount, mutation in itemData:
         if not item.isFighter:
             return False, ()
     return True, itemData
@@ -998,13 +1005,13 @@ def isValidFighterImport(text):
 
 def isValidCargoImport(text):
     pattern = 'x\d+$'
-    for line in _lineIter(text):
+    for line in lineIter(text):
         if not re.search(pattern, line):
             return False, ()
     itemData = parseAdditions(text)
     if not itemData:
         return False, ()
-    for item, amount in itemData:
+    for item, amount, mutation in itemData:
         if item.isAbyssal:
             return False, ()
     return True, itemData
@@ -1012,13 +1019,13 @@ def isValidCargoImport(text):
 
 def isValidImplantImport(text):
     pattern = 'x\d+$'
-    for line in _lineIter(text):
+    for line in lineIter(text):
         if re.search(pattern, line):
             return False, ()
     itemData = parseAdditions(text)
     if not itemData:
         return False, ()
-    for item, amount in itemData:
+    for item, amount, mutation in itemData:
         if not item.isImplant:
             return False, ()
     return True, itemData
@@ -1026,13 +1033,13 @@ def isValidImplantImport(text):
 
 def isValidBoosterImport(text):
     pattern = 'x\d+$'
-    for line in _lineIter(text):
+    for line in lineIter(text):
         if re.search(pattern, line):
             return False, ()
     itemData = parseAdditions(text)
     if not itemData:
         return False, ()
-    for item, amount in itemData:
+    for item, amount, mutation in itemData:
         if not item.isBooster:
             return False, ()
     return True, itemData

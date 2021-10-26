@@ -18,7 +18,7 @@ class GuiImportLocalFightersCommand(wx.Command):
 
     def Do(self):
         results = []
-        for itemID, amount in self.fighters:
+        for itemID, amount, mutation in self.fighters:
             cmd = CalcAddLocalFighterCommand(fitID=self.fitID, fighterInfo=FighterInfo(itemID=itemID, amount=amount, state=False))
             results.append(self.internalHistory.submit(cmd))
         success = any(results)

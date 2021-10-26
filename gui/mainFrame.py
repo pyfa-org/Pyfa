@@ -772,23 +772,23 @@ class MainFrame(wx.Frame):
                     self.command.Submit(cmd.GuiAddLocalModuleCommand(activeFit, baseItem.ID))
                 return
             if importType == "AdditionsDrones":
-                if self.command.Submit(cmd.GuiImportLocalDronesCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
+                if self.command.Submit(cmd.GuiImportLocalDronesCommand(activeFit, [(i.ID, a, m) for i, a, m in importData[0]])):
                     self.additionsPane.select("Drones")
                 return
             if importType == "AdditionsFighters":
-                if self.command.Submit(cmd.GuiImportLocalFightersCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
+                if self.command.Submit(cmd.GuiImportLocalFightersCommand(activeFit, [(i.ID, a, m) for i, a, m in importData[0]])):
                     self.additionsPane.select("Fighters")
                 return
             if importType == "AdditionsImplants":
-                if self.command.Submit(cmd.GuiImportImplantsCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
+                if self.command.Submit(cmd.GuiImportImplantsCommand(activeFit, [(i.ID, a, m) for i, a, m in importData[0]])):
                     self.additionsPane.select("Implants")
                 return
             if importType == "AdditionsBoosters":
-                if self.command.Submit(cmd.GuiImportBoostersCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
+                if self.command.Submit(cmd.GuiImportBoostersCommand(activeFit, [(i.ID, a, m) for i, a, m in importData[0]])):
                     self.additionsPane.select("Boosters")
                 return
             if importType == "AdditionsCargo":
-                if self.command.Submit(cmd.GuiImportCargosCommand(activeFit, [(i.ID, a) for i, a in importData[0]])):
+                if self.command.Submit(cmd.GuiImportCargosCommand(activeFit, [(i.ID, a, m) for i, a, m in importData[0]])):
                     self.additionsPane.select("Cargo")
                 return
         except (KeyboardInterrupt, SystemExit):
