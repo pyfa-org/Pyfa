@@ -37,7 +37,7 @@ class PFEsiPref(PreferenceView):
         rbSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.rbMode = wx.RadioBox(panel, -1, _t("Login Authentication Method"), wx.DefaultPosition, wx.DefaultSize,
                                   [_t('Local Server'), _t('Manual')], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetItemToolTip(0, _t("This options starts a local webserver that EVE SSO Server will call back to"
+        self.rbMode.SetItemToolTip(0, _t("This option starts a local webserver that EVE SSO Server will call back to"
                                          " with information about the character login."))
         self.rbMode.SetItemToolTip(1, _t("This option prompts users to copy and paste information to allow for"
                                          " character login. Use this if having issues with the local server."))
