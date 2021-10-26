@@ -47,7 +47,10 @@ class MutatedMixin:
     @property
     def fullName(self):
         if self.isMutated:
-            return f'{self.mutaplasmid.shortName} {self.baseItem.customName}'
+            mutaShortName = self.mutaplasmid.shortName
+            mutaFullName = self.mutaplasmid.item.customName
+            if mutaShortName != mutaFullName:
+                return f'{self.mutaplasmid.shortName} {self.baseItem.customName}'
         return self.item.customName
 
     def _mutaInit(self, baseItem, mutaplasmid):

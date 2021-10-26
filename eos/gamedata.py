@@ -570,7 +570,7 @@ class DynamicItem(EqBase):
 
     @property
     def shortName(self):
-        name = self.item.name
+        name = self.item.customName
         keywords = ('Decayed', 'Gravid', 'Unstable', 'Radical')
         for kw in keywords:
             if name.startswith(f'{kw} '):
