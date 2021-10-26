@@ -11,3 +11,5 @@ packaging >= 16.8
 roman >= 2.0.0
 beautifulsoup4 >= 4.6.0
 pyyaml >= 5.1
+python-jose==3.0.1
+requests-cache==0.8.1

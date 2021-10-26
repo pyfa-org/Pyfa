@@ -9,6 +9,7 @@ import config
 import gui.globalEvents as GE
 from eos.db import getItem
 from eos.saveddata.cargo import Cargo
+import gui.mainFrame
 from gui.auxWindow import AuxiliaryFrame
 from gui.display import Display
 from gui.characterEditor import APIView
@@ -132,7 +133,7 @@ class EveFittings(AuxiliaryFrame):
         except APIException as ex:
             #  Can't do this in a finally because then it obscures the message dialog
             del waitDialog  # noqa: F821
-            ESIExceptionHandler(self, ex)
+            ESIExceptionHandler(ex)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as ex:
@@ -149,6 +150,7 @@ class EveFittings(AuxiliaryFrame):
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):
+        self.statusbar.SetStatusText("")
         sEsi = Esi.getInstance()
         selection = self.fitView.fitSelection
         if not selection:
@@ -164,16 +166,26 @@ class EveFittings(AuxiliaryFrame):
                 if activeChar is None:
                     return
                 try:
-                    sEsi.delFitting(activeChar, data['fitting_id'])
-                    # repopulate the fitting list
-                    self.fitTree.populateSkillTree(self.fittings)
-                    self.fitView.update([])
+                    try:
+                        sEsi.delFitting(activeChar, data['fitting_id'])
+                        # repopulate the fitting list
+                        self.fitTree.populateSkillTree(self.fittings)
+                        self.fitView.update([])
+                    except APIException as ex:
+                        pyfalog.error(ex)
+                        self.statusbar.SetStatusText("Failed to delete fit: ESI error {} received - {}".format(ex.status_code, ex.response["error"]))
+                        try:
+                            ESIExceptionHandler(ex)
+                        except:
+                            # don't need to do anything - we should already have error code in the status
+                            pass
                 except requests.exceptions.ConnectionError:
                     msg = _t("Connection error, please check your internet connection")
                     pyfalog.error(msg)
                     self.statusbar.SetStatusText(msg)
 
     def deleteAllFittings(self, event):
+        self.statusbar.SetStatusText("")
         sEsi = Esi.getInstance()
         activeChar = self.getActiveCharacter()
         if activeChar is None:
@@ -186,20 +198,30 @@ class EveFittings(AuxiliaryFrame):
                 ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
                 try:
-                    for fit in self.fittings:
-                        sEsi.delFitting(activeChar, fit['fitting_id'])
-                        anyDeleted = True
+                    try:
+                        for fit in self.fittings:
+                            sEsi.delFitting(activeChar, fit['fitting_id'])
+                            anyDeleted = True
+                    except APIException as ex:
+                        pyfalog.error(ex)
+                        if anyDeleted:
+                            msg = "Some fits were not deleted: ESI error {} received - {}".format(ex.status_code,
+                                                                                          ex.response["error"])
+                        else:
+                            msg = "Failed to delete fits: ESI error {} received - {}".format(ex.status_code,
+                                                                                          ex.response["error"])
+                        pyfalog.error(msg)
+                        self.statusbar.SetStatusText(msg)
+                        try:
+                            ESIExceptionHandler(ex)
+                        except:
+                            # don't need to do anything - we should already have error code in the status
+                            pass
                 except requests.exceptions.ConnectionError:
                     msg = "Connection error, please check your internet connection"
                     pyfalog.error(msg)
                     self.statusbar.SetStatusText(msg)
-                except APIException as ex:
-                    if anyDeleted:
-                        msg = "Some fits were not deleted: ESI error {} received".format(ex.status_code)
-                    else:
-                        msg = "Failed to delete fits: ESI error {} received".format(ex.status_code)
-                    pyfalog.error(msg)
-                    self.statusbar.SetStatusText(msg)
+
         # repopulate the fitting list
         self.fitTree.populateSkillTree(self.fittings)
         self.fitView.update([])
@@ -222,15 +244,33 @@ class ESIServerExceptionHandler:
 
 class ESIExceptionHandler:
     # todo: make this a generate excetpion handler for all calls
-    def __init__(self, parentWindow, ex):
-        if ex.response['error'].startswith('Token is not valid') or ex.response['error'] == 'invalid_token':  # todo: this seems messy, figure out a better response
+    def __init__(self, ex):
+        # raise ex
+        if ex.response['error'].startswith('Token is not valid') \
+                or ex.response['error'] == 'invalid_token' \
+                or ex.response['error'] == 'invalid_grant':  # todo: this seems messy, figure out a better response
             pyfalog.error(ex)
             with wx.MessageDialog(
-                parentWindow,
+                gui.mainFrame.MainFrame.getInstance(),
                 _t("There was an error validating characters' SSO token. Please try "
                 "logging into the character again to reset the token."),
                 _t("Invalid Token"),
-                wx.OK | wx.ICON_ERROR
+                wx.OK | wx.ICON_ERROR | wx.CANCEL
+            ) as dlg:
+                dlg.SetOKLabel("Manage ESI Characters")
+                ret = dlg.ShowModal()
+                if ret == wx.ID_OK:
+                    SsoCharacterMgmt.openOne(parent=gui.mainFrame.MainFrame.getInstance())
+                    # todo: spawn manage esi characters
+                    pass
+        elif ex.response['error'].startswith('Timeout contacting'):
+            pyfalog.error(ex)
+            with wx.MessageDialog(
+                    gui.mainFrame.MainFrame.getInstance(),
+                    "HTTP %s: %s\n\n" % (ex.status_code, ex.response['error'])
+                    + _t("The server took too long to response. Please try again in a moment."),
+                    _t("Timeout"),
+                    wx.OK | wx.ICON_ERROR
             ) as dlg:
                 dlg.ShowModal()
         else:
@@ -335,9 +375,9 @@ class ExportToEve(AuxiliaryFrame):
             pyfalog.warning(msg)
             self.statusbar.SetStatusText(msg, 1)
             return
-        res = sEsi.postFitting(activeChar, data)
 
         try:
+            res = sEsi.postFitting(activeChar, data)
             res.raise_for_status()
             self.statusbar.SetStatusText("", 0)
             self.statusbar.SetStatusText(res.reason, 1)
@@ -346,19 +386,19 @@ class ExportToEve(AuxiliaryFrame):
             pyfalog.error(msg)
             self.statusbar.SetStatusText(_t("ERROR"), 0)
             self.statusbar.SetStatusText(msg, 1)
-        except ESIExportException as ex:
+        except APIException as ex:
             pyfalog.error(ex)
             self.statusbar.SetStatusText(_t("ERROR"), 0)
-            self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
-        except APIException as ex:
+            self.statusbar.SetStatusText("HTTP {} - {}".format(ex.status_code, ex.response["error"]), 1)
             try:
-                ESIExceptionHandler(self, ex)
-            except (KeyboardInterrupt, SystemExit):
-                raise
-            except Exception as ex:
-                self.statusbar.SetStatusText(_t("ERROR"), 0)
-                self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
-                pyfalog.error(ex)
+                ESIExceptionHandler(ex)
+            except:
+                # don't need to do anything - we should already get the error in ex.response
+                pass
+        except Exception as ex:
+            self.statusbar.SetStatusText(_t("ERROR"), 0)
+            self.statusbar.SetStatusText("Unknown error", 1)
+            pyfalog.error(ex)
 
 
 class SsoCharacterMgmt(AuxiliaryFrame):
