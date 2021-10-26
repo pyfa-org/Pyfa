@@ -149,6 +149,14 @@ class PFGeneralPref(PreferenceView):
                 _t('When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge.')))
         mainSizer.Add(self.cbReloadAll, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.cbExpMutants = wx.CheckBox(panel, wx.ID_ANY, _t("Include more information in names of mutated items"),
+                                        wx.DefaultPosition, wx.DefaultSize, 0)
+        if "wxGTK" not in wx.PlatformInfo:
+            self.cbExpMutants.SetCursor(helpCursor)
+        self.cbExpMutants.SetToolTip(wx.ToolTip(
+                _t('Use short mutaplasmid name and base item name instead of actual item name. Works if EVE data language is set to English.')))
+        mainSizer.Add(self.cbExpMutants, 0, wx.ALL | wx.EXPAND, 5)
+
         self.rbAddLabels = wx.RadioBox(panel, -1, _t("Extra info in Additions panel tab names"), wx.DefaultPosition, wx.DefaultSize,
                                        [_t("None"), _t("Quantity of active items"), _t("Quantity of all items")], 1, wx.RA_SPECIFY_COLS)
         mainSizer.Add(self.rbAddLabels, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
@@ -169,6 +177,7 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
         self.cbReloadAll.SetValue(self.sFit.serviceFittingOptions["ammoChangeAll"])
+        self.cbExpMutants.SetValue(self.sFit.serviceFittingOptions["expandedMutantNames"])
         self.rbAddLabels.SetSelection(self.sFit.serviceFittingOptions["additionsLabels"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
@@ -184,6 +193,7 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
         self.cbReloadAll.Bind(wx.EVT_CHECKBOX, self.onCBReloadAll)
+        self.cbExpMutants.Bind(wx.EVT_CHECKBOX, self.onCBExpMutants)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -265,6 +275,11 @@ class PFGeneralPref(PreferenceView):
 
     def onCBReloadAll(self, event):
         self.sFit.serviceFittingOptions["ammoChangeAll"] = self.cbReloadAll.GetValue()
+
+    def onCBExpMutants(self, event):
+        self.sFit.serviceFittingOptions["expandedMutantNames"] = self.cbExpMutants.GetValue()
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def OnAddLabelsChange(self, event):
         self.sFit.serviceFittingOptions["additionsLabels"] = event.GetInt()
