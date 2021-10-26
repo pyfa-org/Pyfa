@@ -49,6 +49,7 @@ class MutatedMixin:
         if self.isMutated:
             mutaShortName = self.mutaplasmid.shortName
             mutaFullName = self.mutaplasmid.item.customName
+            # Short name can be unavailable for non-english language
             if mutaShortName != mutaFullName:
                 return f'{self.mutaplasmid.shortName} {self.baseItem.customName}'
         return self.item.customName
