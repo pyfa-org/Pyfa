@@ -18,14 +18,14 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, CheckConstraint, Boolean, DateTime
-from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.orm import relation, mapper
+from sqlalchemy.orm.collections import attribute_mapped_collection
 import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.module import Module
-from eos.saveddata.mutator import Mutator
 from eos.saveddata.fit import Fit
+from eos.saveddata.mutator import MutatorModule
 
 modules_table = Table("modules", saveddata_meta,
                       Column("ID", Integer, primary_key=True),
@@ -45,13 +45,12 @@ modules_table = Table("modules", saveddata_meta,
                       Column("projectionRange", Float, nullable=True),
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
+
 mapper(Module, modules_table,
        properties={
            "owner": relation(Fit),
            "mutators": relation(
-                   Mutator,
-                   backref="module",
+                   MutatorModule,
+                   backref="item",
                    cascade="all,delete-orphan",
-                   collection_class=attribute_mapped_collection('attrID')
-           )
-       })
+                   collection_class=attribute_mapped_collection('attrID'))})

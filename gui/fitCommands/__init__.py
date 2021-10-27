@@ -5,7 +5,7 @@ from .gui.booster.remove import GuiRemoveBoostersCommand
 from .gui.booster.sideEffectToggleState import GuiToggleBoosterSideEffectStateCommand
 from .gui.booster.toggleStates import GuiToggleBoosterStatesCommand
 from .gui.cargo.add import GuiAddCargoCommand
-from .gui.cargo.changeAmount import GuiChangeCargoAmountCommand
+from .gui.cargo.changeAmount import GuiChangeCargosAmountCommand
 from .gui.cargo.changeMetas import GuiChangeCargoMetasCommand
 from .gui.cargo.imprt import GuiImportCargosCommand
 from .gui.cargo.remove import GuiRemoveCargosCommand
@@ -26,8 +26,12 @@ from .gui.itemsRebase import GuiRebaseItemsCommand
 from .gui.localDrone.add import GuiAddLocalDroneCommand
 from .gui.localDrone.changeAmount import GuiChangeLocalDroneAmountCommand
 from .gui.localDrone.changeMetas import GuiChangeLocalDroneMetasCommand
+from .gui.localDrone.changeMutation import GuiChangeLocalDroneMutationCommand
 from .gui.localDrone.clone import GuiCloneLocalDroneCommand
 from .gui.localDrone.imprt import GuiImportLocalDronesCommand
+from .gui.localDrone.mutatedConvert import GuiConvertMutatedLocalDroneCommand
+from .gui.localDrone.mutatedImport import GuiImportLocalMutatedDroneCommand
+from .gui.localDrone.mutatedRevert import GuiRevertMutatedLocalDroneCommand
 from .gui.localDrone.remove import GuiRemoveLocalDronesCommand
 from .gui.localDrone.stackSplit import GuiSplitLocalDroneStackCommand
 from .gui.localDrone.stacksMerge import GuiMergeLocalDroneStacksCommand

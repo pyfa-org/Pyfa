@@ -18,27 +18,35 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, Boolean, DateTime
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy.orm import mapper, relation, synonym
+from sqlalchemy.orm.collections import attribute_mapped_collection
 import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.drone import Drone
 from eos.saveddata.fit import Fit
+from eos.saveddata.mutator import MutatorDrone
 
 drones_table = Table("drones", saveddata_meta,
                      Column("groupID", Integer, primary_key=True),
                      Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
                      Column("itemID", Integer, nullable=False),
+                     Column("baseItemID", Integer, nullable=True),
+                     Column("mutaplasmidID", Integer, nullable=True),
                      Column("amount", Integer, nullable=False),
                      Column("amountActive", Integer, nullable=False),
                      Column("projected", Boolean, default=False),
                      Column("created", DateTime, nullable=True, default=datetime.datetime.now),
                      Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
-                     Column("projectionRange", Float, nullable=True)
-                     )
+                     Column("projectionRange", Float, nullable=True))
+
 
 mapper(Drone, drones_table,
    properties={
-       "owner": relation(Fit)
-   }
-)
+       "ID": synonym("groupID"),
+       "owner": relation(Fit),
+       "mutators": relation(
+               MutatorDrone,
+               backref="item",
+               cascade="all,delete-orphan",
+               collection_class=attribute_mapped_collection('attrID'))})

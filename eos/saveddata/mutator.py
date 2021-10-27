@@ -27,10 +27,10 @@ from eos.eqBase import EqBase
 pyfalog = Logger(__name__)
 
 
-class Mutator(EqBase):
-    """ Mutators are the object that represent an attribute override on the module level, in conjunction with
-    mutaplasmids. Each mutated module, when created, is instantiated with a list of these objects, dictated by the
-    mutaplasmid that is used on the base module.
+class MutatorBase(EqBase):
+    """ Mutators are the object that represent an attribute override on the eos item level, in conjunction with
+    mutaplasmids. Each mutated item, when created, is instantiated with a list of these objects, dictated by the
+    mutaplasmid that is used on the base item.
 
     A note on the different attributes on this object:
     * attribute: points to the definition of the attribute from dgmattribs.
@@ -40,13 +40,13 @@ class Mutator(EqBase):
     This could probably be cleaned up with smarter relationships, but whatever
     """
 
-    def __init__(self, module, attr, value):
-        # this needs to be above module assignment, as assigning the module will add it to the list and it via
+    def __init__(self, item, attr, value):
+        # this needs to be above item assignment, as assigning the item will add it to the list and it via
         # relationship and needs this set 4correctly
         self.attrID = attr.ID
 
-        self.module = module
-        self.moduleID = module.ID
+        self.item = item
+        self.itemID = item.ID
 
         self.__attr = attr
         self.build()
@@ -67,20 +67,20 @@ class Mutator(EqBase):
 
     def build(self):
         # try...except here to catch orphaned mutators. Pretty rare, only happens so far if hacking the database
-        # But put it here to remove the module link if it happens, until a better solution can be developed
+        # But put it here to remove the eos item link if it happens, until a better solution can be developed
         try:
             # dynamic attribute links to the Mutaplasmids attribute definition for this mutated definition
-            self.dynamicAttribute = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
+            self.dynamicAttribute = next(a for a in self.item.mutaplasmid.attributes if a.attributeID == self.attrID)
             # base attribute links to the base ite's attribute for this mutated definition (contains original, base value)
-            self.baseAttribute = self.module.item.attributes[self.dynamicAttribute.name]
+            self.baseAttribute = self.item.item.attributes[self.dynamicAttribute.name]
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
-            self.module = None
+            self.item = None
 
     @validates("value")
     def validator(self, key, val):
-        """ Validates values as properly falling within the range of the modules' Mutaplasmid """
+        """ Validates values as properly falling within the range of the items' Mutaplasmid """
         if self.baseValue == 0:
             return 0
         mod = val / self.baseValue
@@ -99,7 +99,7 @@ class Mutator(EqBase):
         # @todo: need to test what happens:
         # 1) if an attribute is removed from the EVE database
         # 2) if a mutaplasmid does not have the attribute anymore
-        # 3) if a mutaplasmid does not exist (in eve or on the module's item)
+        # 3) if a mutaplasmid does not exist (in eve or on the pyfa item's item)
         # Can remove invalid ones in a SQLAlchemy collection class... eventually
         return self.__attr is None
 
@@ -139,3 +139,11 @@ class Mutator(EqBase):
     @property
     def attribute(self):
         return self.__attr
+
+
+class MutatorModule(MutatorBase):
+    pass
+
+
+class MutatorDrone(MutatorBase):
+    pass

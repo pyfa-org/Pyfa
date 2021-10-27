@@ -18497,7 +18497,7 @@
     "description_de": "Muss in einen leeren Modifikationsslot eingebaut werden.", 
     "description_en-us": "Must be installed into an open rig slot", 
     "description_es": "Must be installed into an open rig slot", 
-    "description_fr": "Must be installed into an open rig slot", 
+    "description_fr": "Doit être installé sur un emplacement d'optimisation libre", 
     "description_it": "Must be installed into an open rig slot", 
     "description_ja": "リグの空いているスロットに設置する必要あり", 
     "description_ko": "반드시 열려있는 리그 슬롯에 설치되어야 합니다.", 
@@ -69259,13 +69259,6 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 192, 
-        "modifyingAttributeID": 192, 
-        "operation": 7
-      }, 
-      {
-        "domain": "shipID", 
-        "func": "ItemModifier", 
         "modifiedAttributeID": 104, 
         "modifyingAttributeID": 852, 
         "operation": 2
@@ -87172,6 +87165,96 @@
         "modifyingAttributeID": 3134, 
         "operation": 6, 
         "skillTypeID": 11579
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8267": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8267, 
+    "effectName": "weaponDisruptorResistanceBonusPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2113, 
+        "modifyingAttributeID": 2353, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8268": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8268, 
+    "effectName": "nosferatuDurationBonusPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 66, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8269": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8269, 
+    "effectName": "stasisWebifierMaxRangeAddPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 65, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 3206, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8270": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8270, 
+    "effectName": "capacitorWarfareResistanceBonusPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2045, 
+        "modifyingAttributeID": 2267, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 

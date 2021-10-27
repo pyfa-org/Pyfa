@@ -374,6 +374,7 @@ class EsiSettings:
             "clientID": "",
             "clientSecret": "",
             "timeout": 60,
+            "server": "Tranquility",
             "exportCharges": True}
 
         self.settings = SettingsProvider.getInstance().getSettings(

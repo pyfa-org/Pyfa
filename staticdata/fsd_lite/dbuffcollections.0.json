@@ -2496,5 +2496,116 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2141": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Link-with-ship damage resistance bonus", 
+    "displayName_de": "Schadensresistenzbonus", 
+    "displayName_en-us": "Damage Resistance Bonus", 
+    "displayName_es": "Damage Resistance Bonus", 
+    "displayName_fr": "Bonus de résistance aux dégâts.", 
+    "displayName_it": "Damage Resistance Bonus", 
+    "displayName_ja": "ダメージレジスタンスボーナス", 
+    "displayName_ko": "피해 저항력 보너스", 
+    "displayName_ru": "Усиление сопротивляемости урону", 
+    "displayName_zh": "Damage Resistance Bonus", 
+    "displayNameID": 587608, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 109
+      }, 
+      {
+        "dogmaAttributeID": 110
+      }, 
+      {
+        "dogmaAttributeID": 111
+      }, 
+      {
+        "dogmaAttributeID": 113
+      }, 
+      {
+        "dogmaAttributeID": 267
+      }, 
+      {
+        "dogmaAttributeID": 268
+      }, 
+      {
+        "dogmaAttributeID": 269
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }, 
+      {
+        "dogmaAttributeID": 271
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2142": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Small Energy Turret Damage Bonus", 
+    "displayName_de": "Small Energy Turret Damage Bonus", 
+    "displayName_en-us": "Small Energy Turret Damage Bonus", 
+    "displayName_es": "Small Energy Turret Damage Bonus", 
+    "displayName_fr": "Small Energy Turret Damage Bonus", 
+    "displayName_it": "Small Energy Turret Damage Bonus", 
+    "displayName_ja": "Small Energy Turret Damage Bonus", 
+    "displayName_ko": "Small Energy Turret Damage Bonus", 
+    "displayName_ru": "Small Energy Turret Damage Bonus", 
+    "displayName_zh": "Small Energy Turret Damage Bonus", 
+    "displayNameID": 588970, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3303
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2143": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Nos and Neut Drain Bonus", 
+    "displayName_de": "Energy Warfare Strength Bonus", 
+    "displayName_en-us": "Energy Warfare Strength Bonus", 
+    "displayName_es": "Energy Warfare Strength Bonus", 
+    "displayName_fr": "Energy Warfare Strength Bonus", 
+    "displayName_it": "Energy Warfare Strength Bonus", 
+    "displayName_ja": "Energy Warfare Strength Bonus", 
+    "displayName_ko": "Energy Warfare Strength Bonus", 
+    "displayName_ru": "Energy Warfare Strength Bonus", 
+    "displayName_zh": "Energy Warfare Strength Bonus", 
+    "displayNameID": 588971, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 90, 
+        "groupID": 68
+      }, 
+      {
+        "dogmaAttributeID": 97, 
+        "groupID": 71
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

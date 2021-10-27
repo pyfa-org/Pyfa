@@ -155,7 +155,7 @@ class Fit:
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
-        self.ecmProjectedStr = 1
+        self.__ecmProjectedList = []
         self.commandBonuses = {}
 
     def clearFactorReloadDependentData(self):
@@ -411,7 +411,11 @@ class Fit:
 
     @property
     def jamChance(self):
-        return (1 - self.ecmProjectedStr) * 100
+        sensors = self.scanStrength
+        retainLockChance = 1
+        for jamStr in self.__ecmProjectedList:
+            retainLockChance *= 1 - min(1, jamStr / sensors)
+        return (1 - retainLockChance) * 100
 
     @property
     def maxSpeed(self):
@@ -499,7 +503,7 @@ class Fit:
         self.__capUsed = None
         self.__capRecharge = None
         self.__savedCapSimData.clear()
-        self.ecmProjectedStr = 1
+        self.__ecmProjectedList = []
         # self.commandBonuses = {}
 
         del self.__calculatedTargets[:]
@@ -561,6 +565,9 @@ class Fit:
         # (abs is old method, ccp now provides the aggregate function in their data)
         if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][1]) < abs(value):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
+
+    def addProjectedEcm(self, strength):
+        self.__ecmProjectedList.append(strength)
 
     def __runCommandBoosts(self, runTime="normal"):
         pyfalog.debug("Applying gang boosts for {0}", repr(self))
