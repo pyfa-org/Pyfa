@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-10-18 11:10\n"
+"PO-Revision-Date: 2021-11-03 23:22\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -455,7 +455,7 @@ msgstr "장갑 수리량"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Armor resistance"
-msgstr "장갑 저항"
+msgstr "장갑 저항력"
 
 #: gui/builtinStatsViews/outgoingViewMinimal.py:43
 #: gui/builtinStatsViews/outgoingViewFull.py:44
@@ -531,7 +531,7 @@ msgstr "돌아가기"
 
 #: gui/mainFrame.py:873
 msgid "Backing up {} fits to: {}"
-msgstr ""
+msgstr "{} 피팅을 다음에 백업:{}"
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
@@ -2231,7 +2231,7 @@ msgstr "키네틱"
 #: gui/builtinStatsViews/resistancesViewFull.py:87
 #: gui/targetProfileEditor.py:121
 msgid "Kinetic resistance"
-msgstr "키네틱 저항"
+msgstr "키네틱 저항력"
 
 #: eos/saveddata/fit.py:402
 msgid "Ladar"
@@ -2311,7 +2311,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:201
 msgid "Lock Times"
-msgstr ""
+msgstr "타겟팅 시간"
 
 #: graphs/data/fitEwarStats/graph.py:39
 msgid "Lock range reduction"
@@ -2685,7 +2685,7 @@ msgstr "네트워크"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:149
 msgid "Neutralizer resistance"
-msgstr "뉴트럴라이저 저항"
+msgstr "뉴트럴라이저 저항력"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
@@ -3385,7 +3385,7 @@ msgstr "실드 회복"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
-msgstr "실드 저항"
+msgstr "실드 저항력"
 
 #: gui/builtinStatsViews/outgoingViewMinimal.py:37
 #: gui/builtinStatsViews/outgoingViewFull.py:38
@@ -3694,11 +3694,11 @@ msgstr "타겟 속도"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:40
 msgid "Targeting && Misc"
-msgstr "타게팅 && 기타"
+msgstr "타겟팅 && 기타"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:62
 msgid "Targets"
-msgstr "타겟들"
+msgstr "타겟"
 
 #: eos/saveddata/damagePattern.py:60
 msgid "Tetryon"
@@ -3885,7 +3885,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:222
 msgid "Type: {}"
-msgstr ""
+msgstr "타입: {}"
 
 #: eos/saveddata/damagePattern.py:49
 msgid "Ultraviolet"
