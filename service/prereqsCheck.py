@@ -38,19 +38,16 @@ def version_precheck():
     try:
         # the way that the version string is imported in wx is odd, causing us to have to split out the imports like this. :(
         from wx.__version__ import VERSION, VERSION_STRING
-
-        if VERSION[0] < 4:
+        M, m, f, x = VERSION
+        if M != 4 or m != 0 or f != 6:
             raise Exception()
-        if VERSION[3] != '':
-            if VERSION[3][0] == 'b' and int(VERSION[3][-1]) < 2:
-                raise Exception()
 
         import wx
         version_block += "\nwxPython version: {} ({})".format(VERSION_STRING, wx.wxWidgets_version)
     except (KeyboardInterrupt, SystemExit):
         raise
     except:
-        msg = "pyfa requires wxPython v4.0.0b2+. You can download wxPython from https://wxpython.org/pages/downloads/"
+        msg = "pyfa requires wxPython v4.0.6. You can download wxPython from https://wxpython.org/pages/downloads/"
         raise PreCheckException(msg)
 
     try:
