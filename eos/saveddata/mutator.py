@@ -72,7 +72,7 @@ class MutatorBase(EqBase):
             # dynamic attribute links to the Mutaplasmids attribute definition for this mutated definition
             self.dynamicAttribute = next(a for a in self.item.mutaplasmid.attributes if a.attributeID == self.attrID)
             # base attribute links to the base ite's attribute for this mutated definition (contains original, base value)
-            self.baseAttribute = self.item.item.attributes[self.dynamicAttribute.name]
+            self.baseAttribute = self.item.baseItem.attributes[self.dynamicAttribute.name]
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
