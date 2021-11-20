@@ -38,7 +38,7 @@ class SsoLogin(wx.Dialog):
         from service.esi import Esi
 
         self.sEsi = Esi.getInstance()
-        uri = self.sEsi.getLoginURI(None)
+        uri = self.sEsi.get_login_uri(None)
         webbrowser.open(uri)
 
 
@@ -53,7 +53,7 @@ class SsoLoginServer(wx.Dialog):
         self.sEsi = Esi.getInstance()
         serverAddr = self.sEsi.startServer(port)
 
-        uri = self.sEsi.getLoginURI(serverAddr)
+        uri = self.sEsi.get_login_uri(serverAddr)
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.OnLogin)

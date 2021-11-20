@@ -26,7 +26,7 @@ from gui.builtinContextMenus import itemAmountChange
 from gui.builtinContextMenus import itemProjectionRange
 from gui.builtinContextMenus import droneSplitStack
 from gui.builtinContextMenus import itemVariationChange
-from gui.builtinContextMenus import moduleMutations
+from gui.builtinContextMenus import itemMutations
 from gui.builtinContextMenus import moduleFill
 from gui.builtinContextMenus import moduleMutatedExport
 from gui.builtinContextMenus import skillAffectors

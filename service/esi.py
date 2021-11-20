@@ -11,7 +11,7 @@ import webbrowser
 import eos.db
 from service.const import EsiLoginMethod, EsiSsoMode
 from eos.saveddata.ssocharacter import SsoCharacter
-from service.esiAccess import APIException
+from service.esiAccess import APIException, GenericSsoError
 import gui.globalEvents as GE
 from gui.ssoLogin import SsoLogin, SsoLoginServer
 from service.server import StoppableHTTPServer, AuthHandler
@@ -102,13 +102,14 @@ class Esi(EsiAccess):
 
     def login(self):
         # always start the local server if user is using client details. Otherwise, start only if they choose to do so.
-        if self.settings.get('ssoMode') == EsiSsoMode.CUSTOM or self.settings.get('loginMode') == EsiLoginMethod.SERVER:
-            with gui.ssoLogin.SsoLoginServer(6461 if self.settings.get('ssoMode') == EsiSsoMode.CUSTOM else 0) as dlg:
+        if self.settings.get('loginMode') == EsiLoginMethod.SERVER:
+            with gui.ssoLogin.SsoLoginServer(0) as dlg:
                 dlg.ShowModal()
         else:
             with gui.ssoLogin.SsoLogin() as dlg:
                 if dlg.ShowModal() == wx.ID_OK:
-                    self.handleLogin({'SSOInfo': [dlg.ssoInfoCtrl.Value.strip()]})
+                    message = json.loads(base64.b64decode(dlg.ssoInfoCtrl.Value.strip()))
+                    self.handleLogin(message)
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
@@ -134,31 +135,16 @@ class Esi(EsiAccess):
         return 'http://localhost:{}'.format(port)
 
     def handleLogin(self, message):
+        auth_response, data = self.auth(message['code'])
 
-        # we already have authenticated stuff for the auto mode
-        if self.settings.get('ssoMode') == EsiSsoMode.AUTO:
-            ssoInfo = message['SSOInfo'][0]
-            auth_response = json.loads(base64.b64decode(ssoInfo))
-        else:
-            # otherwise, we need to fetch the information
-            auth_response = self.auth(message['code'][0])
+        currentCharacter = self.getSsoCharacter(data['name'])
 
-        res = self._session.get(
-            self.oauth_verify,
-            headers=self.get_oauth_header(auth_response['access_token'])
-        )
-        if res.status_code != 200:
-            raise APIException(
-                self.oauth_verify,
-                res.status_code,
-                res.json()
-            )
-        cdata = res.json()
-
-        currentCharacter = self.getSsoCharacter(cdata['CharacterName'])
-
+        sub_split = data["sub"].split(":")
+        if (len(sub_split) != 3):
+            raise GenericSsoError("JWT sub does not contain the expected data. Contents: %s" % data["sub"])
+        cid = sub_split[-1]
         if currentCharacter is None:
-            currentCharacter = SsoCharacter(cdata['CharacterID'], cdata['CharacterName'], config.getClientSecret())
+            currentCharacter = SsoCharacter(cid, data['name'], config.getClientSecret())
 
         Esi.update_token(currentCharacter, auth_response)
 
@@ -169,11 +155,17 @@ class Esi(EsiAccess):
 
     def handleServerLogin(self, message):
         if not message:
-            raise Exception("Could not parse out querystring parameters.")
+            raise GenericSsoError("Could not parse out querystring parameters.")
 
-        if message['state'][0] != self.state:
+        try:
+            state_enc = message['state']
+            state = json.loads(base64.b64decode(state_enc))['state']
+        except Exception:
+            raise GenericSsoError("There was a problem decoding state parameter.")
+
+        if state != self.state:
             pyfalog.warn("OAUTH state mismatch")
-            raise Exception("OAUTH State Mismatch.")
+            raise GenericSsoError("OAUTH State Mismatch.")
 
         pyfalog.debug("Handling SSO login with: {0}", message)
 

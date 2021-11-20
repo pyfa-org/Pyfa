@@ -193,11 +193,8 @@ class DroneView(Display):
 
     @staticmethod
     def droneKey(drone):
-        sMkt = Market.getInstance()
-
-        groupName = sMkt.getMarketGroupByItem(drone.item).marketGroupName
-
-        return (DRONE_ORDER.index(groupName), drone.item.name)
+        groupName = Market.getInstance().getMarketGroupByItem(drone.item).marketGroupName
+        return (DRONE_ORDER.index(groupName), drone.isMutated, drone.fullName)
 
     def fitChanged(self, event):
         event.Skip()

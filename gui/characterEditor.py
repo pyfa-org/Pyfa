@@ -42,6 +42,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.clipboard import fromClipboard, toClipboard
 from service.character import Character
 from service.esi import Esi
+from service.esiAccess import APIException
 from service.fit import Fit
 from service.market import Market
 
@@ -888,14 +889,7 @@ class APIView(wx.Panel):
     def fetchCallback(e=None):
         if e:
             pyfalog.warn("Error fetching skill information for character for __fetchCallback")
-            exc_type, exc_value, exc_trace = e
-            if config.debug:
-                exc_value = ''.join(traceback.format_exception(exc_type, exc_value, exc_trace))
-            pyfalog.warn(exc_value)
-
-            wx.MessageBox(
-                _t("Error fetching skill information"),
-                _t("Error"), wx.ICON_ERROR | wx.STAY_ON_TOP)
+            SkillFetchExceptionHandler(e)
         else:
             wx.MessageBox(
                 _t("Successfully fetched skills"), _t("Success"), wx.ICON_INFORMATION | wx.STAY_ON_TOP)
@@ -926,3 +920,24 @@ class SecStatusDialog(wx.Dialog):
         self.Layout()
 
         self.Center(wx.BOTH)
+
+
+class SkillFetchExceptionHandler:
+    def __init__(self, e):
+        from gui.esiFittings import ESIExceptionHandler
+        exc_type, exc_value, exc_trace = e
+        if config.debug:
+            exc_value = ''.join(traceback.format_exception(exc_type, exc_value, exc_trace))
+        pyfalog.warn(exc_value)
+
+        try:
+            try:
+                raise exc_value
+            except APIException as ex:
+                pyfalog.error(ex)
+                ESIExceptionHandler(ex)
+        except Exception as ex:
+            pyfalog.error(ex)
+            wx.MessageBox(
+                _t("Error fetching skill information"),
+                _t("Error"), wx.ICON_ERROR | wx.STAY_ON_TOP)

@@ -163,15 +163,9 @@ class CharacterSelection(wx.Panel):
         if e is None:
             self.refreshCharacterList()
         else:
+            from gui.characterEditor import SkillFetchExceptionHandler
             pyfalog.warn("Error fetching skill information for character for refreshAPICallback")
-            exc_type, exc_value, exc_trace = e
-            if config.debug:
-                exc_value = ''.join(traceback.format_exception(exc_type, exc_value, exc_trace))
-            pyfalog.warn(exc_value)
-
-            wx.MessageBox(
-                _t("Error fetching skill information"),
-                _t("Error"), wx.ICON_ERROR | wx.STAY_ON_TOP)
+            SkillFetchExceptionHandler(e)
 
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
