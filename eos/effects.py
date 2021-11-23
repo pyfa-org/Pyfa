@@ -37188,3 +37188,74 @@ class Effect8158(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Cloaking'), 'stabilizeCloakDuration',
             booster.getModifiedItemAttr('stabilizeCloakDurationBonus'), **kwargs)
+
+
+class Effect8208(BaseEffect):
+    """
+    shipRoleBonusScanProbeStrength
+
+    Used by:
+    Ships from group: Expedition Frigate (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseSensorStrength',
+            ship.getModifiedItemAttr('shipRoleBonusScanProbeBonus'), **kwargs)
+
+
+class Effect8209(BaseEffect):
+    """
+    expeditionFrigateBonusMiningLaserDuration
+
+    Used by:
+    Ship: Prospect
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+            ship.getModifiedItemAttr('expeditionFrigateBonusMiningLaserDuration'),
+            skill='Expedition Frigates', **kwargs)
+
+
+class Effect8210(BaseEffect):
+    """
+    expeditionFrigateBonusIceHarvestingDuration
+
+    Used by:
+    Ship: Prospect
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('expeditionFrigateBonusIceHarvestingDuration'),
+            skill='Expedition Frigates', **kwargs)
+
+
+class Effect8211(BaseEffect):
+    """
+    expeditionFrigateBonusGasHarvestingDuration
+
+    Used by:
+    Ship: Prospect
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('expeditionFrigateBonusGasHarvestingDuration'),
+            skill='Expedition Frigates', **kwargs)
