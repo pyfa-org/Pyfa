@@ -17426,7 +17426,7 @@ class Effect5067(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
+        fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('miningBargeBonusOreHoldCapacity'), skill='Mining Barge', **kwargs)
 
 
 class Effect5068(BaseEffect):
@@ -17441,7 +17441,7 @@ class Effect5068(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
+        fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('miningBargeBonusShieldCapacity'), skill='Mining Barge', **kwargs)
 
 
 class Effect5069(BaseEffect):
@@ -22477,7 +22477,7 @@ class Effect5852(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'miningAmount', module.getModifiedItemAttr('eliteBonusExpedition1'),
+                                      'miningAmount', module.getModifiedItemAttr('expeditionFrigateBonusOreMiningYield'),
                                       skill='Expedition Frigates', **kwargs)
 
 
@@ -22493,7 +22493,7 @@ class Effect5853(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('eliteBonusExpedition2'),
+        fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('expeditionFrigateBonusSignatureRadius'),
                                skill='Expedition Frigates', **kwargs)
 
 
@@ -25044,7 +25044,7 @@ class Effect6195(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         for dmgType in ('Em', 'Thermal', 'Kinetic', 'Explosive'):
             fit.ship.boostItemAttr('shield{}DamageResonance'.format(dmgType),
-                                   src.getModifiedItemAttr('eliteBonusExpedition1'),
+                                   src.getModifiedItemAttr('expeditionFrigateBonusShieldResistance'),
                                    skill='Expedition Frigates', **kwargs)
 
 
