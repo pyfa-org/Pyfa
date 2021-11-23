@@ -8126,7 +8126,7 @@
     "description_zh": "专为采集不同的矿石所定制的频率晶体", 
     "descriptionID": 64766, 
     "hasTypes": 1, 
-    "iconID": 2654, 
+    "iconID": 24968, 
     "name_de": "Bergbaukristalle", 
     "name_en-us": "Mining Crystals", 
     "name_es": "Mining Crystals", 
@@ -43714,6 +43714,21 @@
     "nameID": 584819, 
     "parentGroupID": 977
   }, 
+  "2795": {
+    "hasTypes": 1, 
+    "iconID": 3074, 
+    "name_de": "Gas Cloud Hoarders", 
+    "name_en-us": "Gas Cloud Hoarders", 
+    "name_es": "Gas Cloud Hoarders", 
+    "name_fr": "Gas Cloud Hoarders", 
+    "name_it": "Gas Cloud Hoarders", 
+    "name_ja": "Gas Cloud Hoarders", 
+    "name_ko": "Gas Cloud Hoarders", 
+    "name_ru": "Gas Cloud Hoarders", 
+    "name_zh": "Gas Cloud Hoarders", 
+    "nameID": 587197, 
+    "parentGroupID": 1711
+  }, 
   "2797": {
     "description_de": "Blaupausen für Analysesignalfeuer", 
     "description_en-us": "Blueprints for Analysis Beacons", 
@@ -43793,5 +43808,20 @@
     "name_zh": "Drone Mutaplasmids", 
     "nameID": 588707, 
     "parentGroupID": 2436
+  }, 
+  "2801": {
+    "hasTypes": 1, 
+    "iconID": 10065, 
+    "name_de": "AEGIS-Datenbanken", 
+    "name_en-us": "AEGIS Databases", 
+    "name_es": "AEGIS Databases", 
+    "name_fr": "Base de données d'AEGIS", 
+    "name_it": "AEGIS Databases", 
+    "name_ja": "イージスデータベース", 
+    "name_ko": "AEGIS 데이터베이스", 
+    "name_ru": "Базы данных ЭГИДА", 
+    "name_zh": "AEGIS Databases", 
+    "nameID": 589184, 
+    "parentGroupID": 19
   }
 }

@@ -2557,14 +2557,14 @@
   "2142": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Small Energy Turret Damage Bonus", 
-    "displayName_de": "Small Energy Turret Damage Bonus", 
+    "displayName_de": "Schadensbonus auf kleinen Energiegeschützturm", 
     "displayName_en-us": "Small Energy Turret Damage Bonus", 
     "displayName_es": "Small Energy Turret Damage Bonus", 
-    "displayName_fr": "Small Energy Turret Damage Bonus", 
+    "displayName_fr": "Bonus de dégâts des petites tourelles à énergie", 
     "displayName_it": "Small Energy Turret Damage Bonus", 
-    "displayName_ja": "Small Energy Turret Damage Bonus", 
-    "displayName_ko": "Small Energy Turret Damage Bonus", 
-    "displayName_ru": "Small Energy Turret Damage Bonus", 
+    "displayName_ja": "小型エネルギータレットダメージボーナス", 
+    "displayName_ko": "소형 에너지 터렛 피해량 보너스", 
+    "displayName_ru": "Бонус к урону от малых лазерных орудий", 
     "displayName_zh": "Small Energy Turret Damage Bonus", 
     "displayNameID": 588970, 
     "itemModifiers": [], 
@@ -2582,14 +2582,14 @@
   "2143": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Nos and Neut Drain Bonus", 
-    "displayName_de": "Energy Warfare Strength Bonus", 
+    "displayName_de": "Stärkebonus auf Energiekriegsführung", 
     "displayName_en-us": "Energy Warfare Strength Bonus", 
     "displayName_es": "Energy Warfare Strength Bonus", 
-    "displayName_fr": "Energy Warfare Strength Bonus", 
+    "displayName_fr": "Bonus de puissance de guerre d'énergie", 
     "displayName_it": "Energy Warfare Strength Bonus", 
-    "displayName_ja": "Energy Warfare Strength Bonus", 
-    "displayName_ko": "Energy Warfare Strength Bonus", 
-    "displayName_ru": "Energy Warfare Strength Bonus", 
+    "displayName_ja": "エネルギー戦強度ボーナス", 
+    "displayName_ko": "에너지전 효과 보너스", 
+    "displayName_ru": "Бонус к мощности средств воздействия на накопитель", 
     "displayName_zh": "Energy Warfare Strength Bonus", 
     "displayNameID": 588971, 
     "itemModifiers": [], 
@@ -2605,6 +2605,68 @@
     ], 
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2144": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Turret Damage Bonus", 
+    "displayName_de": "Geschützturmschadensbonus", 
+    "displayName_en-us": "Turret Damage Bonus", 
+    "displayName_es": "Turret Damage Bonus", 
+    "displayName_fr": "Bonus de dégâts des tourelles", 
+    "displayName_it": "Turret Damage Bonus", 
+    "displayName_ja": "タレットダメージボーナス", 
+    "displayName_ko": "터렛 피해량 보너스", 
+    "displayName_ru": "Увеличение урона от турелей", 
+    "displayName_zh": "Turret Damage Bonus", 
+    "displayNameID": 589384, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2145": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Missile Damage Bonus", 
+    "displayName_de": "Lenkwaffeschadensbonus", 
+    "displayName_en-us": "Missile Damage Bonuus", 
+    "displayName_es": "Missile Damage Bonuus", 
+    "displayName_fr": "Bonus aux dégâts des missiles", 
+    "displayName_it": "Missile Damage Bonuus", 
+    "displayName_ja": "ミサイルダメージボーナス", 
+    "displayName_ko": "미사일 피해량 보너스", 
+    "displayName_ru": "Увеличение урона от ракет", 
+    "displayName_zh": "Missile Damage Bonuus", 
+    "displayNameID": 589393, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 114, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 116, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 117, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 118, 
+        "skillID": 3319
+      }
+    ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }

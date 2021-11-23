@@ -614,6 +614,20 @@
     "categoryNameID": 573416, 
     "published": true
   }, 
+  "2107": {
+    "categoryID": 2107, 
+    "categoryName_de": "Mining", 
+    "categoryName_en-us": "Mining", 
+    "categoryName_es": "Mining", 
+    "categoryName_fr": "Mining", 
+    "categoryName_it": "Mining", 
+    "categoryName_ja": "Mining", 
+    "categoryName_ko": "Mining", 
+    "categoryName_ru": "Mining", 
+    "categoryName_zh": "Mining", 
+    "categoryNameID": 587126, 
+    "published": false
+  }, 
   "350001": {
     "categoryID": 350001, 
     "categoryName_de": "Infanterie", 
