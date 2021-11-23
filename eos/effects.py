@@ -37259,3 +37259,92 @@ class Effect8211(BaseEffect):
             lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
             ship.getModifiedItemAttr('expeditionFrigateBonusGasHarvestingDuration'),
             skill='Expedition Frigates', **kwargs)
+
+
+class Effect8215(BaseEffect):
+    """
+    expeditionFrigateBonusArmorResistance
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(type),
+                ship.getModifiedItemAttr('expeditionFrigateBonusArmorResistance'),
+                skill='Expedition Frigates', **kwargs)
+
+
+class Effect8221(BaseEffect):
+    """
+    shipRoleBonusOreMiningDroneCycleTime
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusOreMiningDroneCycleTime'), **kwargs)
+
+
+class Effect8222(BaseEffect):
+    """
+    shipRoleBonusIceMiningDroneCycleTime
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusIceMiningDroneCycleTime'), **kwargs)
+
+
+class Effect8283(BaseEffect):
+    """
+    expeditionFrigateBonusLightDronesDamage
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Light Drone Operation'), 'damageMultiplier',
+            ship.getModifiedItemAttr('expeditionFrigateBonusLightDronesDamage'),
+            skill='Expedition Frigates', **kwargs)
+
+
+class Effect8284(BaseEffect):
+    """
+    expeditionFrigateBonusMediumDronesDamage
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Medium Drone Operation'), 'damageMultiplier',
+            ship.getModifiedItemAttr('expeditionFrigateBonusMediumDroneDamage'),
+            skill='Expedition Frigates', **kwargs)
