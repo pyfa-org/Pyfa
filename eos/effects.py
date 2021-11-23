@@ -37314,6 +37314,93 @@ class Effect8222(BaseEffect):
             ship.getModifiedItemAttr('shipRoleBonusIceMiningDroneCycleTime'), **kwargs)
 
 
+class Effect8261(BaseEffect):
+    """
+    industrialCommandBonusDroneDamage
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'damageMultiplier',
+            ship.getModifiedItemAttr('industrialCommandBonusDroneDamage'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8271(BaseEffect):
+    """
+    industrialCommandBonusGasHoldCapacity
+
+    Used by:
+    Ship: Porpoise
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialGasHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusGasHoldCapacity'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8272(BaseEffect):
+    """
+    industrialCommandBonusIceHoldCapacity
+
+    Used by:
+    Ship: Porpoise
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialIceHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusIceHoldCapacity'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8278(BaseEffect):
+    """
+    industrialCommandBonusOreHoldCapacity
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialOreHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusOreHoldCapacity'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8279(BaseEffect):
+    """
+    industrialCommandBonusShipHoldCapacity
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'capacity', ship.getModifiedItemAttr('industrialCommandBonusShipCargoCapacity'),
+            skill='Industrial Command Ships', **kwargs)
+
+
 class Effect8283(BaseEffect):
     """
     expeditionFrigateBonusLightDronesDamage
