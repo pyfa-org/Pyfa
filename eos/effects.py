@@ -17842,7 +17842,7 @@ class Effect5139(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'miningAmount', module.getModifiedItemAttr('shipBonusOREfrig1'),
+                                      'miningAmount', module.getModifiedItemAttr('miningFrigatesBonusOreMiningYield'),
                                       skill='Mining Frigate', **kwargs)
 
 
