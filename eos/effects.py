@@ -37798,6 +37798,78 @@ class Effect8291(BaseEffect):
             booster.getModifiedItemAttr('speedFBonus'), **kwargs)
 
 
+class Effect8294(BaseEffect):
+    """
+    industrialCommandBonusDroneOreMiningYield
+
+    Used by:
+    Ship: Orca
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningAmount',
+            ship.getModifiedItemAttr('industrialCommandBonusDroneOreMiningYield'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8295(BaseEffect):
+    """
+    industrialCommandBonusDroneIceHarvestingCycleTime
+
+    Used by:
+    Ship: Orca
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
+            ship.getModifiedItemAttr('industrialCommandBonusDroneIceHarvestingCycleTime'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8296(BaseEffect):
+    """
+    capitalIndustrialShipBonusDroneOreMiningYield
+
+    Used by:
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningAmount',
+            ship.getModifiedItemAttr('capitalIndustrialShipBonusDroneOreMiningYield'),
+            skill='Capital Industrial Ships', **kwargs)
+
+
+class Effect8297(BaseEffect):
+    """
+    capitalIndustrialShipBonusDroneIceCycleTime
+
+    Used by:
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
+            ship.getModifiedItemAttr('capitalIndustrialShipBonusDroneIceCycleTime'),
+            skill='Capital Industrial Ships', **kwargs)
+
+
 class Effect8300(BaseEffect):
     """
     shipRoleBonusGasHarvestingDuration
@@ -37902,3 +37974,41 @@ class Effect8308(BaseEffect):
             'generalMiningHoldCapacity',
             ship.getModifiedItemAttr('shipRoleBonusGeneralMiningHoldCapacity'),
             **kwargs)
+
+
+class Effect8309(BaseEffect):
+    """
+    capitalIndustrialShipBonusDroneHitPoints
+
+    Used by:
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), layer,
+                ship.getModifiedItemAttr('capitalIndustrialShipBonusDroneHitPoints'),
+                skill='Capital Industrial Ships', **kwargs)
+
+
+class Effect8311(BaseEffect):
+    """
+    industrialCommandBonusDroneHitPoints
+
+    Used by:
+    Ship: Orca
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), layer,
+                ship.getModifiedItemAttr('industrialCommandBonusDroneHitPoints'),
+                skill='Industrial Command Ships', **kwargs)
