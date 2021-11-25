@@ -23284,10 +23284,9 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 3264, 
-    "effectName": "skillIndustrialReconfigurationConsumptionQuantityBonus", 
+    "effectName": "skillCapitalIndustrialReconfigurationConsumptionQuantityBonus", 
     "electronicChance": 0, 
     "guid": "None", 
-    "iconID": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -40443,7 +40442,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 5067, 
-    "effectName": "miningBargeBonusOreHoldCapacity", 
+    "effectName": "miningBargeBonusGeneralMiningHoldCapacity", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -87716,7 +87715,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8223, 
-    "effectName": "shipRoleBonusOreMiningDuration", 
+    "effectName": "shipRoleBonusOreMiningYield", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -87725,7 +87724,7 @@
       {
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 73, 
+        "modifiedAttributeID": 77, 
         "modifyingAttributeID": 3177, 
         "operation": 6, 
         "skillTypeID": 3386
@@ -87930,11 +87929,11 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "charID", 
-        "func": "OwnerRequiredSkillModifier", 
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 3181, 
         "modifyingAttributeID": 280, 
-        "operation": 6
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
@@ -87952,11 +87951,11 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "charID", 
-        "func": "OwnerRequiredSkillModifier", 
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 3182, 
         "modifyingAttributeID": 280, 
-        "operation": 6
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
@@ -87974,11 +87973,11 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "charID", 
-        "func": "OwnerRequiredSkillModifier", 
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 3183, 
         "modifyingAttributeID": 280, 
-        "operation": 6
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
@@ -87996,11 +87995,11 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "charID", 
-        "func": "OwnerRequiredSkillModifier", 
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 3184, 
         "modifyingAttributeID": 280, 
-        "operation": 6
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
@@ -88018,11 +88017,11 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "charID", 
-        "func": "OwnerRequiredSkillModifier", 
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 3185, 
         "modifyingAttributeID": 280, 
-        "operation": 6
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
@@ -88077,7 +88076,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8240, 
-    "effectName": "miningBargeSkillLevelOreCargoHoldCapacity", 
+    "effectName": "miningBargeSkillLevelGeneralMiningHoldCapacity", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -88322,7 +88321,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8251, 
-    "effectName": "exhumersBonusOreHoldCapacity", 
+    "effectName": "exhumersBonusGeneralMiningHoldCapacity", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -88344,7 +88343,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8252, 
-    "effectName": "exhumersSkillLevelOreHoldCapacity", 
+    "effectName": "exhumersSkillLevelGeneralMiningHoldCapacity", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -88965,7 +88964,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8278, 
-    "effectName": "industrialCommandBonusOreHoldCapacity", 
+    "effectName": "industrialCommandBonusGeneralMiningHoldCapacity", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -89009,7 +89008,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8280, 
-    "effectName": "industrialCommandSkillLevelOreHoldCapacity", 
+    "effectName": "industrialCommandSkillLevelGeneralMiningHoldCapacity", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -89156,6 +89155,512 @@
         "modifyingAttributeID": 318, 
         "operation": 6, 
         "skillTypeID": 3450
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8292": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8292, 
+    "effectName": "industrialCommandSkillLevelDroneOreMiningYield", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3221, 
+        "modifyingAttributeID": 280, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8293": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8293, 
+    "effectName": "industrialCommandSkillLevelDroneIceHarvestingCycleTime", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3222, 
+        "modifyingAttributeID": 280, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8294": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8294, 
+    "effectName": "industrialCommandBonusDroneOreMiningYield", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 77, 
+        "modifyingAttributeID": 3221, 
+        "operation": 6, 
+        "skillTypeID": 3438
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8295": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8295, 
+    "effectName": "industrialCommandBonusDroneIceHarvestingCycleTime", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3222, 
+        "operation": 6, 
+        "skillTypeID": 43702
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8296": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8296, 
+    "effectName": "capitalIndustrialShipBonusDroneOreMiningYield", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 77, 
+        "modifyingAttributeID": 3223, 
+        "operation": 6, 
+        "skillTypeID": 3438
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8297": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8297, 
+    "effectName": "capitalIndustrialShipBonusDroneIceCycleTime", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3224, 
+        "operation": 6, 
+        "skillTypeID": 43702
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8298": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8298, 
+    "effectName": "capitalIndustrialShipSkillLevelDroneOreMiningYield", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3223, 
+        "modifyingAttributeID": 280, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8299": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8299, 
+    "effectName": "capitalIndustrialShipSkillLevelDroneIceHarvestingCycleTime", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3224, 
+        "modifyingAttributeID": 280, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8300": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8300, 
+    "effectName": "shipRoleBonusGasHarvestingDuration", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3225, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8301": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8301, 
+    "effectName": "exhumersBonusGasHarvestingDuration", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3226, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8302": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8302, 
+    "effectName": "exhumersSkillLevelGasHarvestingDuration", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3226, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8303": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8303, 
+    "effectName": "shipRoleBonusStripMinerActivationCost", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 3228, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8304": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8304, 
+    "effectName": "shipRoleBonusIceHarvestingActivationCost", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 3229, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8305": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8305, 
+    "effectName": "shipRoleBonusOreMiningDuration", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3230, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8306": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8306, 
+    "effectName": "industrialReconfigurationBonusConsumptionQuantity", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 714, 
+        "modifyingAttributeID": 885, 
+        "operation": 3, 
+        "skillTypeID": 58956
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8307": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8307, 
+    "effectName": "industrialReconfigurationSkillLevelConsumptionQuantity", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 885, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8308": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8308, 
+    "effectName": "shipRoleBonusGeneralMiningHoldCapacity", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 1556, 
+        "modifyingAttributeID": 3231, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8309": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8309, 
+    "effectName": "capitalIndustrialShipBonusDroneHitPoints", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 3233, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 3233, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 3233, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8310": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8310, 
+    "effectName": "capitalIndustrialShipSkillLevelDroneHitPoints", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3233, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8311": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8311, 
+    "effectName": "industrialCommandBonusDroneHitPoints", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 3235, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 3235, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 3235, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8312": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8312, 
+    "effectName": "industrialCommandSkillLevelDroneHitPoints", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3235, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
