@@ -12,4 +12,6 @@ CONVERSIONS = {
     'Rare Moon Ore Mining Crystal II': 'Rare Moon Ore Mining Crystal Type A II',
     'Exceptional Moon Ore Mining Crystal I': 'Exceptional Moon Ore Mining Crystal Type A I',
     'Exceptional Moon Ore Mining Crystal II': 'Exceptional Moon Ore Mining Crystal Type A II',
+    'Industrial Core I': 'Capital Industrial Core I',
+    'Industrial Core II': 'Capital Industrial Core II',
 }
