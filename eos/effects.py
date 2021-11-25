@@ -37331,6 +37331,346 @@ class Effect8222(BaseEffect):
             ship.getModifiedItemAttr('shipRoleBonusIceMiningDroneCycleTime'), **kwargs)
 
 
+class Effect8223(BaseEffect):
+    """
+    shipRoleBonusOreMiningDuration
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    Variations of ship: Retriever (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusStripMinerDuration'), **kwargs)
+
+
+class Effect8224(BaseEffect):
+    """
+    shipRoleBonusIceMiningDuration
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    Variations of ship: Retriever (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusIceHarvestingDuration'), **kwargs)
+
+
+class Effect8225(BaseEffect):
+    """
+    shipRoleBonusLightDroneDamage
+
+    Used by:
+    Variations of ship: Procurer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Light Drone Operation'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipRoleBonusLightDroneDamage'), **kwargs)
+
+
+class Effect8226(BaseEffect):
+    """
+    shipRoleBonusMediumDroneDamage
+
+    Used by:
+    Variations of ship: Procurer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Medium Drone Operation'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipRoleBonusMediumDroneDamage'), **kwargs)
+
+
+class Effect8227(BaseEffect):
+    """
+    miningBargeBonusOreMiningYield
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    Ships from group: Mining Barge (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('miningBargeBonusOreMiningYield'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8228(BaseEffect):
+    """
+    miningBargeBonusIceHarvestingDuration
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    Ships from group: Mining Barge (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningBargeBonusIceHarvestingDuration'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8229(BaseEffect):
+    """
+    miningBargeBonusGasHarvestingDuration
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningBargeBonusGasHarvestingDuration'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8230(BaseEffect):
+    """
+    miningBargeBonusOreMiningRange
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'maxRange',
+            ship.getModifiedItemAttr('miningBargeBonusOreMiningRange'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8231(BaseEffect):
+    """
+    miningBargeBonusIceHarvestingRange
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'maxRange',
+            ship.getModifiedItemAttr('miningBargeBonusIceHarvestingRange'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8237(BaseEffect):
+    """
+    miningBargeBonusArmorHP
+
+    Used by:
+    Variations of ship: Procurer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('miningBargeBonusArmorHP'),
+                               skill='Mining Barge', **kwargs)
+
+
+class Effect8243(BaseEffect):
+    """
+    exhumersBonusOreMiningDuration
+
+    Used by:
+    Ship: Hulk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+            ship.getModifiedItemAttr('exhumersBonusOreMiningDuration'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8244(BaseEffect):
+    """
+    exhumersBonusIceHarvestingDuration
+
+    Used by:
+    Ship: Hulk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('exhumersBonusIceHarvestingDuration'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8245(BaseEffect):
+    """
+    exhumersBonusSignatureRadius
+
+    Used by:
+    Ship: Hulk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('exhumersBonusSingatureRadius'),
+                               skill='Exhumers', **kwargs)
+
+
+class Effect8249(BaseEffect):
+    """
+    exhumersBonusOreMiningYield
+
+    Used by:
+    Ship: Mackinaw
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('exhumersBonusOreMiningYield'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8251(BaseEffect):
+    """
+    exhumersBonusOreHoldCapacity
+
+    Used by:
+    Ship: Mackinaw
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialOreHoldCapacity', ship.getModifiedItemAttr('exhumersBonusOreHoldCapacity'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8253(BaseEffect):
+    """
+    exhumersBonusShieldResistance
+
+    Used by:
+    Ship: Skiff
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
+        for damageType in damageTypes:
+            fit.ship.boostItemAttr(
+                'shield{}DamageResonance'.format(damageType),
+                ship.getModifiedItemAttr('exhumersBonusShieldResistance'),
+                skill='Exhumers', **kwargs)
+
+
+class Effect8254(BaseEffect):
+    """
+    exhumersBonusArmorResistance
+
+    Used by:
+    Ship: Skiff
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(type),
+                ship.getModifiedItemAttr('exhumersBonusArmorResistance'),
+                skill='Exhumers', **kwargs)
+
+
+class Effect8257(BaseEffect):
+    """
+    exhumersBonusLightDronesDamage
+
+    Used by:
+    Ship: Skiff
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Light Drone Operation'), 'damageMultiplier',
+            ship.getModifiedItemAttr('exhumersBonusLightDroneDamage'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8258(BaseEffect):
+    """
+    exhumersBonusMediumDronesDamage
+
+    Used by:
+    Ship: Skiff
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Medium Drone Operation'), 'damageMultiplier',
+            ship.getModifiedItemAttr('exhumersBonusMediumDronesDamage'),
+            skill='Exhumers', **kwargs)
+
+
 class Effect8261(BaseEffect):
     """
     industrialCommandBonusDroneDamage
