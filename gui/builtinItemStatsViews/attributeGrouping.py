@@ -59,7 +59,7 @@ AttrGroupDict = {
             "agility",
             "droneCapacity",
             "droneBandwidth",
-            "specialOreHoldCapacity",
+            "generalMiningHoldCapacity",
             "specialIceHoldCapacity",
             "specialGasHoldCapacity",
             "specialMineralHoldCapacity",

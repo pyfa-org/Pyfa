@@ -9837,10 +9837,10 @@ class Effect3244(BaseEffect):
 
 class Effect3264(BaseEffect):
     """
-    skillIndustrialReconfigurationConsumptionQuantityBonus
+    skillCapitalIndustrialReconfigurationConsumptionQuantityBonus
 
     Used by:
-    Skill: Industrial Reconfiguration
+    Skill: Capital Industrial Reconfiguration
     """
 
     type = 'passive'
@@ -15298,7 +15298,7 @@ class Effect4575(BaseEffect):
     industrialCoreEffect2
 
     Used by:
-    Variations of module: Industrial Core I (2 of 2)
+    Variations of module: Capital Industrial Core I (2 of 2)
     """
 
     runTime = 'early'
@@ -17315,7 +17315,7 @@ class Effect5066(BaseEffect):
 
 class Effect5067(BaseEffect):
     """
-    miningBargeBonusOreHoldCapacity
+    miningBargeBonusGeneralMiningHoldCapacity
 
     Used by:
     Variations of ship: Retriever (2 of 2)
@@ -17325,7 +17325,9 @@ class Effect5067(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('miningBargeBonusOreHoldCapacity'), skill='Mining Barge', **kwargs)
+        fit.ship.boostItemAttr(
+            'generalMiningHoldCapacity', ship.getModifiedItemAttr('miningBargeBonusGeneralMiningHoldCapacity'),
+            skill='Mining Barge', **kwargs)
 
 
 class Effect5068(BaseEffect):
@@ -20402,22 +20404,6 @@ class Effect5471(BaseEffect):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusAI2'), skill='Amarr Industrial', **kwargs)
 
 
-class Effect5476(BaseEffect):
-    """
-    shipBonusOreCapacityGI2
-
-    Used by:
-    Ship: Miasmos
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('shipBonusGI2'),
-                               skill='Gallente Industrial', **kwargs)
-
-
 class Effect5477(BaseEffect):
     """
     shipBonusAmmoBayMI2
@@ -22264,23 +22250,6 @@ class Effect5827(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Weapon Disruption'),
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
-
-
-class Effect5839(BaseEffect):
-    """
-    eliteBargeShieldResistance1
-
-    Used by:
-    Ship: Skiff
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        for damageType in ('em', 'thermal', 'explosive', 'kinetic'):
-            fit.ship.boostItemAttr('shield{}DamageResonance'.format(damageType.capitalize()),
-                                   ship.getModifiedItemAttr('eliteBonusBarge1'), skill='Exhumers', **kwargs)
 
 
 class Effect5853(BaseEffect):
@@ -37417,11 +37386,10 @@ class Effect8222(BaseEffect):
 
 class Effect8223(BaseEffect):
     """
-    shipRoleBonusOreMiningDuration
+    shipRoleBonusOreMiningYield
 
     Used by:
-    Variations of ship: Covetor (2 of 2)
-    Variations of ship: Retriever (2 of 2)
+    Ship: Retriever
     """
 
     type = 'passive'
@@ -37429,8 +37397,8 @@ class Effect8223(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
-            ship.getModifiedItemAttr('shipRoleBonusStripMinerDuration'), **kwargs)
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('shipRoleBonusOreMiningYield'), **kwargs)
 
 
 class Effect8224(BaseEffect):
@@ -37528,7 +37496,9 @@ class Effect8229(BaseEffect):
     miningBargeBonusGasHarvestingDuration
 
     Used by:
-    Variations of ship: Covetor (2 of 2)
+    Ships from group: Mining Barge (3 of 3)
+    Ship: Hulk
+    Ship: Mackinaw
     """
 
     type = 'passive'
@@ -37577,22 +37547,6 @@ class Effect8231(BaseEffect):
             skill='Mining Barge', **kwargs)
 
 
-class Effect8237(BaseEffect):
-    """
-    miningBargeBonusArmorHP
-
-    Used by:
-    Variations of ship: Procurer (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('miningBargeBonusArmorHP'),
-                               skill='Mining Barge', **kwargs)
-
-
 class Effect8243(BaseEffect):
     """
     exhumersBonusOreMiningDuration
@@ -37629,28 +37583,12 @@ class Effect8244(BaseEffect):
             skill='Exhumers', **kwargs)
 
 
-class Effect8245(BaseEffect):
-    """
-    exhumersBonusSignatureRadius
-
-    Used by:
-    Ship: Hulk
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('exhumersBonusSingatureRadius'),
-                               skill='Exhumers', **kwargs)
-
-
 class Effect8249(BaseEffect):
     """
     exhumersBonusOreMiningYield
 
     Used by:
-    Ship: Mackinaw
+    Ships from group: Exhumer (3 of 3)
     """
 
     type = 'passive'
@@ -37665,7 +37603,7 @@ class Effect8249(BaseEffect):
 
 class Effect8251(BaseEffect):
     """
-    exhumersBonusOreHoldCapacity
+    exhumersBonusGeneralMiningHoldCapacity
 
     Used by:
     Ship: Mackinaw
@@ -37676,7 +37614,7 @@ class Effect8251(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
-            'specialOreHoldCapacity', ship.getModifiedItemAttr('exhumersBonusOreHoldCapacity'),
+            'generalMiningHoldCapacity', ship.getModifiedItemAttr('exhumersBonusGeneralMiningHoldCapacity'),
             skill='Exhumers', **kwargs)
 
 
@@ -37685,7 +37623,7 @@ class Effect8253(BaseEffect):
     exhumersBonusShieldResistance
 
     Used by:
-    Ship: Skiff
+    Ships from group: Exhumer (3 of 3)
     """
 
     type = 'passive'
@@ -37698,61 +37636,6 @@ class Effect8253(BaseEffect):
                 'shield{}DamageResonance'.format(damageType),
                 ship.getModifiedItemAttr('exhumersBonusShieldResistance'),
                 skill='Exhumers', **kwargs)
-
-
-class Effect8254(BaseEffect):
-    """
-    exhumersBonusArmorResistance
-
-    Used by:
-    Ship: Skiff
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
-            fit.ship.boostItemAttr(
-                'armor{}DamageResonance'.format(type),
-                ship.getModifiedItemAttr('exhumersBonusArmorResistance'),
-                skill='Exhumers', **kwargs)
-
-
-class Effect8257(BaseEffect):
-    """
-    exhumersBonusLightDronesDamage
-
-    Used by:
-    Ship: Skiff
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Light Drone Operation'), 'damageMultiplier',
-            ship.getModifiedItemAttr('exhumersBonusLightDroneDamage'),
-            skill='Exhumers', **kwargs)
-
-
-class Effect8258(BaseEffect):
-    """
-    exhumersBonusMediumDronesDamage
-
-    Used by:
-    Ship: Skiff
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Medium Drone Operation'), 'damageMultiplier',
-            ship.getModifiedItemAttr('exhumersBonusMediumDronesDamage'),
-            skill='Exhumers', **kwargs)
 
 
 class Effect8261(BaseEffect):
@@ -37811,40 +37694,6 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
-class Effect8271(BaseEffect):
-    """
-    industrialCommandBonusGasHoldCapacity
-
-    Used by:
-    Ship: Porpoise
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'specialGasHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusGasHoldCapacity'),
-            skill='Industrial Command Ships', **kwargs)
-
-
-class Effect8272(BaseEffect):
-    """
-    industrialCommandBonusIceHoldCapacity
-
-    Used by:
-    Ship: Porpoise
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'specialIceHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusIceHoldCapacity'),
-            skill='Industrial Command Ships', **kwargs)
-
-
 class Effect8275(BaseEffect):
     """
     minmatarIndustrialBonusGasHoldCapacity
@@ -37864,7 +37713,7 @@ class Effect8275(BaseEffect):
 
 class Effect8278(BaseEffect):
     """
-    industrialCommandBonusOreHoldCapacity
+    industrialCommandBonusGeneralMiningHoldCapacity
 
     Used by:
     Ships from group: Industrial Command Ship (2 of 2)
@@ -37875,7 +37724,7 @@ class Effect8278(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
-            'specialOreHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusOreHoldCapacity'),
+            'generalMiningHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusGeneralMiningHoldCapacity'),
             skill='Industrial Command Ships', **kwargs)
 
 
