@@ -37190,6 +37190,23 @@ class Effect8158(BaseEffect):
             booster.getModifiedItemAttr('stabilizeCloakDurationBonus'), **kwargs)
 
 
+class Effect8199(BaseEffect):
+    """
+    gallenteIndustrialBonusIceHoldCapacity
+
+    Used by:
+    Ship: Kryos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialIceHoldCapacity', ship.getModifiedItemAttr('gallenteIndustrialBonusIceHoldCapacity'),
+            skill='Gallente Industrial', **kwargs)
+
+
 class Effect8208(BaseEffect):
     """
     shipRoleBonusScanProbeStrength
@@ -37402,6 +37419,23 @@ class Effect8272(BaseEffect):
         fit.ship.boostItemAttr(
             'specialIceHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusIceHoldCapacity'),
             skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8275(BaseEffect):
+    """
+    minmatarIndustrialBonusGasHoldCapacity
+
+    Used by:
+    Ship: Hoarder
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialGasHoldCapacity', ship.getModifiedItemAttr('minmatarIndustrialBonusGasHoldCapacity'),
+            skill='Minmatar Industrial', **kwargs)
 
 
 class Effect8278(BaseEffect):
