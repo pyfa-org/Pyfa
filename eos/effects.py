@@ -9644,9 +9644,11 @@ class Effect3196(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: 'heatDamage' in mod.item.attributes, 'heatDamage',
-                                      skill.getModifiedItemAttr('thermodynamicsHeatDamage') * skill.level, **kwargs)
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
+        fit.modules.filteredItemBoost(
+            lambda mod: 'heatDamage' in mod.item.attributes, 'heatDamage',
+            container.getModifiedItemAttr('thermodynamicsHeatDamage') * level, **kwargs)
 
 
 class Effect3200(BaseEffect):
@@ -37928,3 +37930,20 @@ class Effect8284(BaseEffect):
             lambda drone: drone.item.requiresSkill('Medium Drone Operation'), 'damageMultiplier',
             ship.getModifiedItemAttr('expeditionFrigateBonusMediumDroneDamage'),
             skill='Expedition Frigates', **kwargs)
+
+
+class Effect8291(BaseEffect):
+    """
+    afterburnerSpeedBoostBonusPassive
+
+    Used by:
+    Implants named like: Wightstorm Afterburner Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
+            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
