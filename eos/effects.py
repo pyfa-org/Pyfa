@@ -37958,6 +37958,23 @@ class Effect8305(BaseEffect):
             ship.getModifiedItemAttr('shipRoleBonusOreMiningDuration'), **kwargs)
 
 
+class Effect8306(BaseEffect):
+    """
+    industrialReconfigurationBonusConsumptionQuantity
+
+    Used by:
+    Skill: Industrial Reconfiguration
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        amount = -skill.getModifiedItemAttr('consumptionQuantityBonus')
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill(skill),
+                                         'consumptionQuantity', amount * skill.level, **kwargs)
+
+
 class Effect8308(BaseEffect):
     """
     shipRoleBonusGeneralMiningHoldCapacity
