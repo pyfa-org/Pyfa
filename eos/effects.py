@@ -37796,3 +37796,109 @@ class Effect8291(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
             booster.getModifiedItemAttr('speedFBonus'), **kwargs)
+
+
+class Effect8300(BaseEffect):
+    """
+    shipRoleBonusGasHarvestingDuration
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    Variations of ship: Retriever (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusGasHarvesterDuration'), **kwargs)
+
+
+class Effect8301(BaseEffect):
+    """
+    exhumersBonusGasHarvestingDuration
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('exhumersBonusGasHarvestingDuration'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8303(BaseEffect):
+    """
+    shipRoleBonusStripMinerActivationCost
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'capacitorNeed',
+            ship.getModifiedItemAttr('shipRoleBonusStripMinerActivationCost'), **kwargs)
+
+
+class Effect8304(BaseEffect):
+    """
+    shipRoleBonusIceHarvestingActivationCost
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'capacitorNeed',
+            ship.getModifiedItemAttr('shipRoleBonusIceHarvesterActivationCost'), **kwargs)
+
+
+class Effect8305(BaseEffect):
+    """
+    shipRoleBonusOreMiningDuration
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    Ship: Mackinaw
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusOreMiningDuration'), **kwargs)
+
+
+class Effect8308(BaseEffect):
+    """
+    shipRoleBonusGeneralMiningHoldCapacity
+
+    Used by:
+    Ship: Miasmos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'generalMiningHoldCapacity',
+            ship.getModifiedItemAttr('shipRoleBonusGeneralMiningHoldCapacity'),
+            **kwargs)
