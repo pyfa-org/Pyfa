@@ -37333,6 +37333,43 @@ class Effect8261(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
+class Effect8263(BaseEffect):
+    """
+    industrialCommandBonusFuelConsuptionCompactIndustrialCore
+
+    Used by:
+    Ship: Orca
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Compact Industrial Reconfiguration'), 'consumptionQuantity',
+            ship.getModifiedItemAttr('industrialCommandBonusFuelConsuptionCompactIndustrialCore'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8264(BaseEffect):
+    """
+    industrialCommandBonusMiningForemanBurstRange
+
+    Used by:
+    Ship: Orca
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining Foreman'), 'maxRange',
+            ship.getModifiedItemAttr('industrialCommandBonusMiningForemanBurstRange'),
+            skill='Industrial Command Ships', **kwargs)
+
+
 class Effect8271(BaseEffect):
     """
     industrialCommandBonusGasHoldCapacity
