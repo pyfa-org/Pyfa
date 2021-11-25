@@ -36858,6 +36858,73 @@ class Effect8117(BaseEffect):
         fit.ship.preAssignItemAttr('warpBubbleImmune', module.getModifiedItemAttr('warpBubbleImmuneBonus'), **kwargs)
 
 
+class Effect8119(BaseEffect):
+    """
+    industrialCompactCoreEffect2
+
+    Used by:
+    Modules named like: Compact Industrial Core (2 of 2)
+    """
+
+    runTime = 'early'
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.multiplyItemAttr('mass', src.getModifiedItemAttr('siegeMassMultiplier'), **kwargs)
+
+        #  Local Shield Repper Bonuses
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'),
+                                      'duration', src.getModifiedItemAttr('industrialCoreLocalLogisticsDurationBonus'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'),
+                                      'shieldBonus', src.getModifiedItemAttr('industrialCoreLocalLogisticsAmountBonus'),
+                                      stackingPenalties=True, **kwargs)
+
+        # Mining Burst Bonuses
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff1Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff2Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff3Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff4Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+
+        #  Command Burst Range Bonus
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'),
+                                      'maxRange', src.getModifiedItemAttr('industrialCoreBonusCommandBurstRange'),
+                                      stackingPenalties=True, **kwargs)
+
+        # Drone Bonuses
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'),
+                                     'duration', src.getModifiedItemAttr('industrialCoreBonusDroneIceHarvesting'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
+                                     'miningAmount', src.getModifiedItemAttr('industrialCoreBonusDroneMining'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'maxVelocity', src.getModifiedItemAttr('industrialCoreBonusDroneVelocity'),
+                                     stackingPenalties=True, **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'damageMultiplier', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'),
+                                     stackingPenalties=True, **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'shieldCapacity', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'armorHP', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'hp', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'), **kwargs)
+
+        # Remote impedance (no reps, etc)
+        fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+        fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
+        fit.ship.increaseItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'), **kwargs)
+        fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
+        fit.ship.increaseItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'), **kwargs)
+        fit.ship.increaseItemAttr('gateScrambleStatus', src.getModifiedItemAttr('gateScrambleStrength'), **kwargs)
+        fit.ship.forceItemAttr('ECMResistance', src.getModifiedItemAttr('ECMResistance'), **kwargs)
+
+
 class Effect8120(BaseEffect):
     """
     interceptorNullificationRoleBonus
@@ -37205,6 +37272,21 @@ class Effect8199(BaseEffect):
         fit.ship.boostItemAttr(
             'specialIceHoldCapacity', ship.getModifiedItemAttr('gallenteIndustrialBonusIceHoldCapacity'),
             skill='Gallente Industrial', **kwargs)
+
+
+class Effect8206(BaseEffect):
+    """
+    bonusSpecialisationAsteroidDurationMultiplierEffect
+
+    Used by:
+    Charges named like: Ore Mining Crystal Type (66 of 66)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.multiplyItemAttr('duration', module.getModifiedChargeAttr('specialisationAsteroidDurationMultiplier'), **kwargs)
 
 
 class Effect8208(BaseEffect):
