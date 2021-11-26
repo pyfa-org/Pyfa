@@ -21,10 +21,15 @@
 import math
 from collections import OrderedDict
 
+import wx
+
 from eos.const import FittingHardpoint
 from eos.saveddata.module import Module
 from eos.utils.stats import DmgTypes
 from service.market import Market
+
+
+_t = wx.GetTranslation
 
 
 class Ammo:
@@ -141,6 +146,50 @@ class Ammo:
                 if sub:
                     all[prevType] = sub
             return 'ddMissile', all
+
+        elif mod.item.group.name == 'Frequency Mining Laser':
+
+            def crystalSorter(charge):
+                if charge.name.endswith(' II'):
+                    techLvl = 2
+                elif charge.name.endswith(' I'):
+                    techLvl = 1
+                else:
+                    techLvl = 0
+                if ' A ' in charge.name:
+                    type_ = 'A'
+                elif ' B ' in charge.name:
+                    type_ = 'B'
+                elif ' C ' in charge.name:
+                    type_ = 'C'
+                else:
+                    type_ = '0'
+                return type_, techLvl, charge.name
+
+            typeMap = {
+                253: 'a1',
+                254: 'a2',
+                255: 'a3',
+                256: 'a4',
+                257: 'a5',
+                258: 'a6',
+                259: 'r4',
+                260: 'r8',
+                261: 'r16',
+                262: 'r32',
+                263: 'r64'}
+
+            prelim = {}
+            for charge in chargesFlat:
+                oreTypeList = charge.getAttribute('specialisationAsteroidTypeList')
+                category = typeMap.get(oreTypeList, _t('Misc'))
+                prelim.setdefault(category, set()).add(charge)
+
+            final = OrderedDict()
+            for category, charges in prelim.items():
+                final[category] = sorted(charges, key=crystalSorter)
+
+            return 'miner', final
 
         else:
 
