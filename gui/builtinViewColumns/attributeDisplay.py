@@ -80,7 +80,7 @@ class AttributeDisplay(ViewColumn):
             else:
                 attr = mod.getAttribute(self.info.name)
 
-        if attr is None:
+        if not attr:
             return ""
 
         if self.info.name == "volume":

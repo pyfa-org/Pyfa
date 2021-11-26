@@ -90,9 +90,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         self._mutaLoadMutators(mutatorClass=MutatorDrone)
         self.__itemModifiedAttributes.mutators = self.mutators
 
-        # pheonix todo: check the attribute itself, not the modified. this will always return 0 now.
         chargeID = self.getModifiedItemAttr("entityMissileTypeID", None)
-        if chargeID is not None:
+        if chargeID:
             charge = eos.db.getItem(int(chargeID))
             self.__charge = charge
             self.__chargeModifiedAttributes.original = charge.attributes
@@ -264,7 +263,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
                 cycleTime = cycleParams.averageTime
                 yield_ = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
                 yps = yield_ / (cycleTime / 1000.0)
-            wasteChance = self.getModifiedItemAttr("miningWasteProbability")
+            wasteChance = max(0, min(1, self.getModifiedItemAttr("miningWasteProbability")))
             wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
             wps = yps * wasteChance * wasteMult
             return yps, wps

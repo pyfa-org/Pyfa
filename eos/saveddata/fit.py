@@ -397,6 +397,10 @@ class Fit:
         return self.droneYield + self.minerYield
 
     @property
+    def totalWaste(self):
+        return self.droneWaste + self.minerWaste
+
+    @property
     def maxTargets(self):
         maxTargets = min(self.extraAttributes["maxTargetsLockedFromSkills"],
                          self.ship.getModifiedItemAttr("maxLockedTargets"))

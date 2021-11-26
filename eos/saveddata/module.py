@@ -443,6 +443,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         if self.charge is not None:
             wasteChance += self.getModifiedChargeAttr("specializationCrystalMiningWasteProbabilityBonus", 0)
             wasteMult *= self.getModifiedChargeAttr("specializationCrystalMiningWastedVolumeMultiplierBonus", 1)
+        wasteChance = max(0, min(1, wasteChance))
         wps = yps * wasteChance * wasteMult
         return yps, wps
 
@@ -748,7 +749,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         # Check if the local module is over it's max limit; if it's not, we're fine
         maxGroupOnline = self.getModifiedItemAttr("maxGroupOnline", None)
         maxGroupActive = self.getModifiedItemAttr("maxGroupActive", None)
-        if maxGroupOnline is None and maxGroupActive is None and projectedOnto is None:
+        if not maxGroupOnline and not maxGroupActive and projectedOnto is None:
             return True
 
         # Following is applicable only to local modules, we do not want to limit projected
@@ -764,11 +765,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                         currOnline += 1
                     if mod.state >= FittingModuleState.ACTIVE:
                         currActive += 1
-                    if maxGroupOnline is not None and currOnline > maxGroupOnline:
+                    if maxGroupOnline and currOnline > maxGroupOnline:
                         if maxState is None or maxState > FittingModuleState.OFFLINE:
                             maxState = FittingModuleState.OFFLINE
                             break
-                    if maxGroupActive is not None and currActive > maxGroupActive:
+                    if maxGroupActive and currActive > maxGroupActive:
                         if maxState is None or maxState > FittingModuleState.ONLINE:
                             maxState = FittingModuleState.ONLINE
             return True if maxState is None else maxState
@@ -806,7 +807,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         chargeGroup = charge.groupID
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
-            if itemChargeGroup is None:
+            if not itemChargeGroup:
                 continue
             if itemChargeGroup == chargeGroup:
                 return True
@@ -817,7 +818,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         validCharges = set()
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
-            if itemChargeGroup is not None:
+            if itemChargeGroup:
                 g = eos.db.getGroup(int(itemChargeGroup), eager="items.attributes")
                 if g is None:
                     continue
