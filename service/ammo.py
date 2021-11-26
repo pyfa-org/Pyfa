@@ -55,7 +55,7 @@ class Ammo:
     def getModuleStructuredAmmo(cls, mod, ammo=None):
         chargesFlat = cls.getModuleFlatAmmo(mod) if ammo is None else ammo
         # Make sure we do not consider mining turrets as combat turrets
-        if mod.hardpoint == FittingHardpoint.TURRET and mod.getModifiedItemAttr('miningAmount', None) is None:
+        if mod.hardpoint == FittingHardpoint.TURRET and not mod.getModifiedItemAttr('miningAmount'):
 
             def turretSorter(charge):
                 damage = 0
