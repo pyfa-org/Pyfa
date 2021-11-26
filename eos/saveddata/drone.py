@@ -80,7 +80,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         self.__charge = None
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self._item.attributes
         self.__itemModifiedAttributes.overrides = self._item.overrides
@@ -242,21 +243,33 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         return CycleInfo(self.cycleTime, 0, math.inf, False)
 
     @property
-    def miningStats(self):
-        if self.__miningyield is None:
-            if self.mines is True and self.amountActive > 0:
-                getter = self.getModifiedItemAttr
-                cycleParams = self.getCycleParameters()
-                if cycleParams is None:
-                    self.__miningyield = 0
-                else:
-                    cycleTime = cycleParams.averageTime
-                    volley = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
-                    self.__miningyield = volley / (cycleTime / 1000.0)
-            else:
-                self.__miningyield = 0
+    def miningYPS(self):
+        if self.__miningYield is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningYield
 
-        return self.__miningyield
+    @property
+    def miningWPS(self):
+        if self.__miningWaste is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningWaste
+
+    def __calculateMining(self):
+        if self.mines is True and self.amountActive > 0:
+            getter = self.getModifiedItemAttr
+            cycleParams = self.getCycleParameters()
+            if cycleParams is None:
+                yps = 0
+            else:
+                cycleTime = cycleParams.averageTime
+                yield_ = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
+                yps = yield_ / (cycleTime / 1000.0)
+            wasteChance = self.getModifiedItemAttr("miningWasteProbability")
+            wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
+            wps = yps * wasteChance * wasteMult
+            return yps, wps
+        else:
+            return 0, 0
 
     @property
     def maxRange(self):
@@ -302,7 +315,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
     def clear(self):
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 

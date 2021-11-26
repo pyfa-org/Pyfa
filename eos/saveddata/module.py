@@ -124,7 +124,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
 
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -410,27 +411,40 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         self.__itemModifiedAttributes.clear()
 
     @property
-    def miningStats(self):
-        if self.__miningyield is None:
-            if self.isEmpty:
-                self.__miningyield = 0
-            else:
-                if self.state >= FittingModuleState.ACTIVE:
-                    volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
-                            "miningAmount") or 0
-                    if volley:
-                        cycleParams = self.getCycleParameters()
-                        if cycleParams is None:
-                            self.__miningyield = 0
-                        else:
-                            cycleTime = cycleParams.averageTime
-                            self.__miningyield = volley / (cycleTime / 1000.0)
-                    else:
-                        self.__miningyield = 0
-                else:
-                    self.__miningyield = 0
+    def miningYPS(self):
+        if self.__miningYield is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningYield
 
-        return self.__miningyield
+    @property
+    def miningWPS(self):
+        if self.__miningWaste is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningWaste
+
+    def __calculateMining(self):
+        if self.isEmpty:
+            return 0, 0
+        if self.state >= FittingModuleState.ACTIVE:
+            yield_ = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr("miningAmount") or 0
+            if yield_:
+                cycleParams = self.getCycleParameters()
+                if cycleParams is None:
+                    yps = 0
+                else:
+                    cycleTime = cycleParams.averageTime
+                    yps = yield_ / (cycleTime / 1000.0)
+            else:
+                yps = 0
+        else:
+            yps = 0
+        wasteChance = self.getModifiedItemAttr("miningWasteProbability")
+        wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
+        if self.charge is not None:
+            wasteChance += self.getModifiedChargeAttr("specializationCrystalMiningWasteProbabilityBonus", 0)
+            wasteMult *= self.getModifiedChargeAttr("specializationCrystalMiningWastedVolumeMultiplierBonus", 1)
+        wps = yps * wasteChance * wasteMult
+        return yps, wps
 
     def isDealingDamage(self, ignoreState=False):
         volleyParams = self.getVolleyParameters(ignoreState=ignoreState)
@@ -865,7 +879,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
     def clear(self):
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
