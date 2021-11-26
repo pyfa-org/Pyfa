@@ -695,8 +695,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 return False
 
         # Check max group fitted
-        max = self.getModifiedItemAttr("maxGroupFitted", None)
-        if max is not None:
+        max = self.getModifiedItemAttr("maxGroupFitted")
+        if max:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
                 if (mod.item and mod.item.groupID == self.item.groupID and
