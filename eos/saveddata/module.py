@@ -372,8 +372,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
     def falloff(self):
         attrs = ("falloffEffectiveness", "falloff", "shipScanFalloff")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr, None)
-            if falloff is not None:
+            falloff = self.getModifiedItemAttr(attr)
+            if falloff:
                 return falloff
 
     @property

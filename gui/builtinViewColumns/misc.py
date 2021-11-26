@@ -538,13 +538,23 @@ class Miscellanea(ViewColumn):
             tooltip = "Optimal signature radius"
             return text, tooltip
         elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester", "Mining Drone", "Gas Cloud Hoarders"):
-            miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr("miningAmount")
-            cycleTime = getattr(stuff, 'cycleTime', stuff.getModifiedItemAttr("duration"))
-            if not miningAmount or not cycleTime:
+            yps = stuff.miningYPS
+            if not yps:
                 return "", None
-            minePerSec = (float(miningAmount) * 1000 / cycleTime)
-            text = "{0} m3/s".format(formatAmount(minePerSec, 3, 0, 3))
-            tooltip = "Mining Yield per second ({0} per hour)".format(formatAmount(minePerSec * 3600, 3, 0, 3))
+            yph = yps * 3600
+            wps = stuff.miningWPS
+            wph = wps * 3600
+            textParts = []
+            textParts.append(formatAmount(yps, 3, 0, 3))
+            tipLines = []
+            tipLines.append("{} m\u00B3 mining yield per second ({} m\u00B3 per hour)".format(
+                formatAmount(yps, 3, 0, 3), formatAmount(yph, 3, 0, 3)))
+            if wps > 0:
+                textParts.append(formatAmount(wps, 3, 0, 3))
+                tipLines.append("{} m\u00B3 mining waste per second ({} m\u00B3 per hour)".format(
+                    formatAmount(wps, 3, 0, 3), formatAmount(wph, 3, 0, 3)))
+            text = '{} m3/s'.format('+'.join(textParts))
+            tooltip = '\n'.join(tipLines)
             return text, tooltip
         elif itemGroup == "Logistic Drone":
             rpsData = stuff.getRemoteReps(ignoreState=True)

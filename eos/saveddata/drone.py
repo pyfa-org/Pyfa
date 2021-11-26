@@ -129,8 +129,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
             cycleTime = self.getModifiedItemAttr("missileLaunchDuration", 0)
         else:
             for attr in ("speed", "duration", "durationHighisGood"):
-                cycleTime = self.getModifiedItemAttr(attr, None)
-                if cycleTime is not None:
+                cycleTime = self.getModifiedItemAttr(attr)
+                if cycleTime:
                     break
         if cycleTime is None:
             return 0
@@ -237,7 +237,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
 
     def getCycleParameters(self, reloadOverride=None):
         cycleTime = self.cycleTime
-        if cycleTime == 0:
+        if not cycleTime:
             return None
         return CycleInfo(self.cycleTime, 0, math.inf, False)
 
@@ -262,6 +262,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
             else:
                 cycleTime = cycleParams.averageTime
                 yield_ = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
+                print(self, yield_)
                 yps = yield_ / (cycleTime / 1000.0)
             wasteChance = max(0, min(1, self.getModifiedItemAttr("miningWasteProbability")))
             wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
