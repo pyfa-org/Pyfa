@@ -703,6 +703,96 @@ class Miscellanea(ViewColumn):
             text = "{}s".format(formatAmount(duration / 1000, 3, 0, 0))
             tooltip = "Scan duration"
             return text, tooltip
+
+        elif itemGroup == "Command Burst":
+
+            # Text and tooltip are empty if there is no charge.
+            text = ""
+            tooltip = ""
+
+            
+            buff_value = stuff.getModifiedItemAttr('warfareBuff1Value')
+            buff_id = stuff.getModifiedChargeAttr('warfareBuff1ID')
+            if buff_id == 10:  # Shield Burst: Shield Harmonizing: Shield Resistance
+                # minus buff value because ingame shows positive value
+                text = f"{-buff_value:.1f}%"
+                tooltip = "Shield Resistance Bonus"
+
+            elif buff_id == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
+                text = f"{buff_value:+.1f}%"
+                tooltip = "Shield Repair Modules: Duration & Capacictor-use bonus"
+
+            elif buff_id == 12:  # Shield Burst: Shield Extension: Shield HP
+                text = f"{buff_value:.1f}%"
+                tooltip = "Shield HP Bonus"
+
+            elif buff_id == 13:  # Armor Burst: Armor Energizing: Armor Resistance
+                # minus buff value because ingame shows positive value
+                text = f"{-buff_value:.1f}%"
+                tooltip = "Armor Resistance Bonus"
+
+            elif buff_id == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
+                text = f"{buff_value:+.1f}%"
+                tooltip = "Armor Repair Modules: Duration & Capacitor-use bonus"
+
+            elif buff_id == 15:  # Armor Burst: Armor Reinforcement: Armor HP
+                text = f"{buff_value:.1f}%"
+                tooltip = "Armor HP Bonus"
+
+            elif buff_id == 16:  # Information Burst: Sensor Optimization: Scan Resolution
+                text = f"{buff_value:.1f}%"
+                tooltip = "Scan Resolution bonus"
+            
+            elif buff_id == 26:  # Information Burst: Sensor Optimization: Targeting Range
+                text += f" | {buff_value:.1f}%"
+                tooltip += " | Targeting Range bonus"
+
+            elif buff_id == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
+                text = f"{buff_value:.1f}%"
+                tooltip = "Electronic Warfare modules: Range and Strength bonus"
+
+            elif buff_id == 18:  # Information Burst: Electronic Hardening: Sensor Strength
+                text = f"{buff_value:.1f}%"
+                tooltip = "Sensor Strength bonus"
+
+                buff2_value = stuff.getModifiedItemAttr('warfareBuff2Value')
+
+                # Information Burst: Electronic Hardening: RSD/RWD Resistance
+                text += f" | {buff2_value:+.1f}%"
+                tooltip += " | Remote Sensor Dampener / Remote Weapon Disruption Resistance bonus"
+
+            elif buff_id == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
+                text = f"{buff_value:+.1f}%"
+                tooltip = "Signature Radius bonus"
+
+                buff2_value = stuff.getModifiedItemAttr('warfareBuff2Value')
+                # Skirmish Burst: Evasive Maneuvers: Agility
+                # minus the buff value because we want Agility as shown ingame, not inertia modifier
+                text += f" | {-buff2_value:.1f}%"
+                tooltip += " | Agility bonus"
+
+            elif buff_id == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
+                text = f"{buff_value:.1f}%"
+                tooltip = "Propulsion disruption module range bonus"
+
+            elif buff_id == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
+                text = f"{buff_value:.1f}%"
+                tooltip = "AB/MWD module speed increase"
+
+            elif buff_id == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
+                text = f"{buff_value:.1f}%"
+                tooltip = "Mining/Survey module range bonus"
+
+            elif buff_id == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
+                text = f"{buff_value:+.1f}%"
+                tooltip = "Mining Modules: Duration & Capacitor-use bonus"
+
+            elif buff_id == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
+                text = f"{buff_value:+.1f}%"
+                tooltip = "Mining crystal volatility bonus"
+
+            return text, tooltip
+
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup.endswith("Rocket") or chargeGroup.endswith("Missile") or chargeGroup.endswith("Torpedo"):
