@@ -388,8 +388,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
     def fits(self, fit):
         fitDroneGroupLimits = set()
         for i in range(1, 3):
-            groneGrp = fit.ship.getModifiedItemAttr("allowedDroneGroup%d" % i, None)
-            if groneGrp is not None:
+            groneGrp = fit.ship.getModifiedItemAttr("allowedDroneGroup%d" % i)
+            if groneGrp:
                 fitDroneGroupLimits.add(int(groneGrp))
         if len(fitDroneGroupLimits) == 0:
             return True
