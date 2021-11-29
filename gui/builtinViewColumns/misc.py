@@ -553,7 +553,7 @@ class Miscellanea(ViewColumn):
                 textParts.append(formatAmount(wps, 3, 0, 3))
                 tipLines.append("{} m\u00B3 mining waste per second ({} m\u00B3 per hour)".format(
                     formatAmount(wps, 3, 0, 3), formatAmount(wph, 3, 0, 3)))
-            text = '{} m3/s'.format('+'.join(textParts))
+            text = '{} m\u00B3/s'.format('+'.join(textParts))
             tooltip = '\n'.join(tipLines)
             return text, tooltip
         elif itemGroup == "Logistic Drone":
