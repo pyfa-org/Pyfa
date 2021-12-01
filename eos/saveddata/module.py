@@ -307,10 +307,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                  "shipScanRange", "surveyScanRange")
         maxRange = None
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr, None)
-            if maxRange is not None:
+            maxRange = self.getModifiedItemAttr(attr)
+            if maxRange:
                 break
-        if maxRange is not None:
+        if maxRange:
             if 'burst projector' in self.item.name.lower():
                 maxRange -= self.owner.ship.getModifiedItemAttr("radius")
             return maxRange
