@@ -10673,10 +10673,9 @@
     "displayNameID": 109505, 
     "effectCategory": 0, 
     "effectID": 1200, 
-    "effectName": "miningInfoMultiplier", 
+    "effectName": "miningCrystalsMiningAtributesAdjustments", 
     "electronicChance": 0, 
     "guid": "", 
-    "iconID": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -10684,9 +10683,23 @@
       {
         "domain": "otherID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 789, 
+        "modifiedAttributeID": 77, 
         "modifyingAttributeID": 782, 
         "operation": 0
+      }, 
+      {
+        "domain": "otherID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3153, 
+        "modifyingAttributeID": 3159, 
+        "operation": 2
+      }, 
+      {
+        "domain": "otherID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3154, 
+        "modifyingAttributeID": 3160, 
+        "operation": 2
       }
     ], 
     "propulsionChance": 0, 
@@ -86743,7 +86756,7 @@
         "modifiedAttributeID": 68, 
         "modifyingAttributeID": 2607, 
         "operation": 6, 
-        "skillTypeID": 21802
+        "skillTypeID": 3416
       }, 
       {
         "domain": "shipID", 
@@ -86751,7 +86764,7 @@
         "modifiedAttributeID": 73, 
         "modifyingAttributeID": 2606, 
         "operation": 6, 
-        "skillTypeID": 21802
+        "skillTypeID": 3416
       }
     ], 
     "propulsionChance": 0, 
@@ -87334,7 +87347,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8206, 
-    "effectName": "bonusSpecialisationAsteroidDurationMultiplierEffect", 
+    "effectName": "specializationAsteroidDurationMultiplierEffect", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -87738,7 +87751,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8224, 
-    "effectName": "shipRoleBonusIceMiningDuration", 
+    "effectName": "shipRoleBonusIceHarvestingDuration", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -89661,6 +89674,141 @@
         "modifiedAttributeID": 3235, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8313": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8313, 
+    "effectName": "miningFrigateBonusGasCloudHarvestingDuration", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3237, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8314": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8314, 
+    "effectName": "miningFrigateSkillLevelGasCloudHarvesting", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3237, 
+        "modifyingAttributeID": 280, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8315": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8315, 
+    "effectName": "shipRoleBonusGasHarvestingYield", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 77, 
+        "modifyingAttributeID": 3239, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8316": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8316, 
+    "effectName": "expeditionFrigateSkillLevelOreMiningYield", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3191, 
+        "modifyingAttributeID": 280, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8317": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8317, 
+    "effectName": "miningFrigateBonusIceHarvestingDuration", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 3240, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8318": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8318, 
+    "effectName": "miningFrigateSkillLevelIceHarvestingDuration", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3240, 
+        "modifyingAttributeID": 280, 
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 

@@ -2669,5 +2669,30 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2146": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Afterburner Speed Bonus", 
+    "displayName_de": "AB speed increase bonus", 
+    "displayName_en-us": "AB speed increase bonus", 
+    "displayName_es": "AB speed increase bonus", 
+    "displayName_fr": "AB speed increase bonus", 
+    "displayName_it": "AB speed increase bonus", 
+    "displayName_ja": "AB speed increase bonus", 
+    "displayName_ko": "AB speed increase bonus", 
+    "displayName_ru": "AB speed increase bonus", 
+    "displayName_zh": "AB speed increase bonus", 
+    "displayNameID": 591759, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "skillID": 3450
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
