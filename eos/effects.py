@@ -3781,8 +3781,18 @@ class Effect1200(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        module.multiplyItemAttr('specialtyMiningAmount',
-                                module.getModifiedChargeAttr('specializationAsteroidYieldMultiplier'), **kwargs)
+        module.multiplyItemAttr(
+            'miningAmount',
+            module.getModifiedChargeAttr('specializationAsteroidYieldMultiplier'),
+            **kwargs)
+        module.increaseItemAttr(
+            'miningWastedVolumeMultiplier',
+            module.getModifiedChargeAttr('specializationCrystalMiningWastedVolumeMultiplierBonus'),
+            **kwargs)
+        module.increaseItemAttr(
+            'miningWasteProbability',
+            module.getModifiedChargeAttr('specializationCrystalMiningWasteProbabilityBonus'),
+            **kwargs)
 
 
 class Effect1212(BaseEffect):
@@ -36846,9 +36856,9 @@ class Effect8119(BaseEffect):
         fit.ship.multiplyItemAttr('mass', src.getModifiedItemAttr('siegeMassMultiplier'), **kwargs)
 
         #  Local Shield Repper Bonuses
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'duration', src.getModifiedItemAttr('industrialCoreLocalLogisticsDurationBonus'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', src.getModifiedItemAttr('industrialCoreLocalLogisticsAmountBonus'),
                                       stackingPenalties=True, **kwargs)
 

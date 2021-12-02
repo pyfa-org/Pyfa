@@ -426,7 +426,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         if self.isEmpty:
             return 0, 0
         if self.state >= FittingModuleState.ACTIVE:
-            yield_ = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr("miningAmount") or 0
+            yield_ = self.getModifiedItemAttr("miningAmount")
             if yield_:
                 cycleParams = self.getCycleParameters()
                 if cycleParams is None:
@@ -440,11 +440,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             yps = 0
         wasteChance = self.getModifiedItemAttr("miningWasteProbability")
         wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
-        if self.charge is not None:
-            wasteChance += self.getModifiedChargeAttr("specializationCrystalMiningWasteProbabilityBonus", 0)
-            wasteMult *= self.getModifiedChargeAttr("specializationCrystalMiningWastedVolumeMultiplierBonus", 1)
-        wasteChance = max(0, min(100, wasteChance))
-        wps = yps * (wasteChance / 100) * wasteMult
+        wps = yps * max(0, min(1, wasteChance / 100)) * wasteMult
         return yps, wps
 
     def isDealingDamage(self, ignoreState=False):
