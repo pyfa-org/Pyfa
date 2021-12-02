@@ -181,7 +181,7 @@ class Ammo:
 
             prelim = {}
             for charge in chargesFlat:
-                oreTypeList = charge.getAttribute('specialisationAsteroidTypeList')
+                oreTypeList = charge.getAttribute('specializationAsteroidTypeList')
                 category = typeMap.get(oreTypeList, _t('Misc'))
                 prelim.setdefault(category, set()).add(charge)
 

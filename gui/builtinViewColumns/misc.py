@@ -537,7 +537,7 @@ class Miscellanea(ViewColumn):
             text = "{0}m".format(formatAmount(optimalSig, 3, 0, 3))
             tooltip = "Optimal signature radius"
             return text, tooltip
-        elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester", "Mining Drone", "Gas Cloud Hoarders"):
+        elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Scoops", "Mining Drone", "Gas Cloud Harvesters"):
             yps = stuff.miningYPS
             if not yps:
                 return "", None

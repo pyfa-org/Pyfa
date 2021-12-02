@@ -3782,7 +3782,7 @@ class Effect1200(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         module.multiplyItemAttr('specialtyMiningAmount',
-                                module.getModifiedChargeAttr('specialisationAsteroidYieldMultiplier'), **kwargs)
+                                module.getModifiedChargeAttr('specializationAsteroidYieldMultiplier'), **kwargs)
 
 
 class Effect1212(BaseEffect):
@@ -7812,7 +7812,7 @@ class Effect2727(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == 'Gas Cloud Scoops',
                                          'maxGroupActive', skill.level, **kwargs)
 
 
@@ -11396,7 +11396,7 @@ class Effect3671(BaseEffect):
 
     @staticmethod
     def handler(fit, implant, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Gas Cloud Scoops',
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
 
@@ -17359,7 +17359,7 @@ class Effect5069(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Mercoxit Processing'),
-                                        'specialisationAsteroidYieldMultiplier',
+                                        'specializationAsteroidYieldMultiplier',
                                         module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
 
 
