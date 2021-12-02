@@ -22262,6 +22262,24 @@ class Effect5827(BaseEffect):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
 
+class Effect5852(BaseEffect):
+    """
+    expeditionFrigateBonusOreMiningYield
+
+    Used by:
+    Ship: Prospect
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('expeditionFrigateBonusOreMiningYield'),
+            skill='Expedition Frigates', **kwargs)
+
+
 class Effect5853(BaseEffect):
     """
     expeditionFrigateBonusSignatureRadius
@@ -37900,3 +37918,58 @@ class Effect8311(BaseEffect):
                 lambda drone: drone.item.requiresSkill('Drones'), layer,
                 ship.getModifiedItemAttr('industrialCommandBonusDroneHitPoints'),
                 skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8313(BaseEffect):
+    """
+    miningFrigateBonusGasCloudHarvestingDuration
+
+    Used by:
+    Ship: Prospect
+    Ship: Venture
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningFrigateBonusGasCloudHarvestingDuration'),
+            skill='Mining Frigate', **kwargs)
+
+
+class Effect8315(BaseEffect):
+    """
+    shipRoleBonusGasHarvestingYield
+
+    Used by:
+    Ship: Prospect
+    Ship: Venture
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'miningAmount',
+            ship.getModifiedItemAttr('shipRoleBonusGasHarvestingYield'), **kwargs)
+
+
+class Effect8317(BaseEffect):
+    """
+    miningFrigateBonusIceHarvestingDuration
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningFrigateBonusIceHarvestingDuration'),
+            skill='Mining Frigate', **kwargs)
