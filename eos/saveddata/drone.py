@@ -263,9 +263,9 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
                 cycleTime = cycleParams.averageTime
                 yield_ = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
                 yps = yield_ / (cycleTime / 1000.0)
-            wasteChance = max(0, min(1, self.getModifiedItemAttr("miningWasteProbability")))
+            wasteChance = max(0, min(100, self.getModifiedItemAttr("miningWasteProbability")))
             wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
-            wps = yps * wasteChance * wasteMult
+            wps = yps * (wasteChance / 100) * wasteMult
             return yps, wps
         else:
             return 0, 0
