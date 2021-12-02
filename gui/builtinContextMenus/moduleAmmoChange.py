@@ -28,10 +28,10 @@ class ChangeModuleAmmo(ContextMenuCombined):
             'kinetic': _t('Kinetic'),
             'mixed': _t('Mixed')}
         self.oreChargeCatTrans = OrderedDict([
-            ('a1', _t('Asteroid Common')),
-            ('a2', _t('Asteroid Uncommon')),
-            ('a3', _t('Asteroid Rare')),
-            ('a4', _t('Asteroid Premium')),
+            ('a1', _t('Asteroid Simple')),
+            ('a2', _t('Asteroid Coherent')),
+            ('a3', _t('Asteroid Variegated')),
+            ('a4', _t('Asteroid Complex')),
             ('a5', _t('Asteroid Abyssal')),
             ('a6', _t('Asteroid Mercoxit')),
             ('r4', _t('Moon Ubiquitous')),
