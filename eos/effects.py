@@ -1826,7 +1826,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1033)
+    Items from category: Charge (608 of 1003)
     """
 
     type = 'passive'
@@ -2396,7 +2396,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (568 of 1033)
+    Items from category: Charge (538 of 1003)
     """
 
     type = 'passive'
@@ -3770,11 +3770,11 @@ class Effect1190(BaseEffect):
 
 class Effect1200(BaseEffect):
     """
-    miningInfoMultiplier
+    miningCrystalsMiningAtributesAdjustments
 
     Used by:
     Charges from group: Mercoxit Mining Crystal (6 of 6)
-    Charges from group: Mining Crystal (90 of 90)
+    Charges from group: Mining Crystal (60 of 60)
     """
 
     type = 'passive'
@@ -8344,7 +8344,7 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Wightstorm Damage Booster (3 of 3)
+    Implants named like: Wightstorm Vitarka Booster (3 of 3)
     Modules named like: Energy Collision Accelerator (8 of 8)
     """
 
@@ -9637,7 +9637,7 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
-    Implants named like: Wightstorm Chill Booster (3 of 3)
+    Implants named like: Wightstorm Sunyata Booster (3 of 3)
     Skill: Thermodynamics
     """
 
@@ -18038,7 +18038,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
-    Implants named like: Wightstorm Tracking Booster (3 of 3)
+    Implants named like: Wightstorm Manasikara Booster (3 of 3)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -36834,7 +36834,7 @@ class Effect8119(BaseEffect):
     industrialCompactCoreEffect2
 
     Used by:
-    Modules named like: Compact Industrial Core (2 of 2)
+    Variations of module: Large Industrial Core I (2 of 2)
     """
 
     runTime = 'early'
@@ -37247,52 +37247,18 @@ class Effect8199(BaseEffect):
 
 class Effect8206(BaseEffect):
     """
-    bonusSpecialisationAsteroidDurationMultiplierEffect
+    specializationAsteroidDurationMultiplierEffect
 
     Used by:
-    Charges named like: Ore Mining Crystal Type (66 of 66)
+    Charges from group: Mercoxit Mining Crystal (6 of 6)
+    Charges from group: Mining Crystal (60 of 60)
     """
 
     type = 'passive'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        module.multiplyItemAttr('duration', module.getModifiedChargeAttr('specialisationAsteroidDurationMultiplier'), **kwargs)
-
-
-class Effect8208(BaseEffect):
-    """
-    shipRoleBonusScanProbeStrength
-
-    Used by:
-    Ships from group: Expedition Frigate (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(
-            lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseSensorStrength',
-            ship.getModifiedItemAttr('shipRoleBonusScanProbeBonus'), **kwargs)
-
-
-class Effect8209(BaseEffect):
-    """
-    expeditionFrigateBonusMiningLaserDuration
-
-    Used by:
-    Ship: Prospect
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
-            ship.getModifiedItemAttr('expeditionFrigateBonusMiningLaserDuration'),
-            skill='Expedition Frigates', **kwargs)
+        module.multiplyItemAttr('duration', module.getModifiedChargeAttr('specializationAsteroidDurationMultiplier'), **kwargs)
 
 
 class Effect8210(BaseEffect):
@@ -37300,7 +37266,7 @@ class Effect8210(BaseEffect):
     expeditionFrigateBonusIceHarvestingDuration
 
     Used by:
-    Ship: Prospect
+    Ship: Endurance
     """
 
     type = 'passive'
@@ -37313,82 +37279,12 @@ class Effect8210(BaseEffect):
             skill='Expedition Frigates', **kwargs)
 
 
-class Effect8211(BaseEffect):
-    """
-    expeditionFrigateBonusGasHarvestingDuration
-
-    Used by:
-    Ship: Prospect
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
-            ship.getModifiedItemAttr('expeditionFrigateBonusGasHarvestingDuration'),
-            skill='Expedition Frigates', **kwargs)
-
-
-class Effect8215(BaseEffect):
-    """
-    expeditionFrigateBonusArmorResistance
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
-            fit.ship.boostItemAttr(
-                'armor{}DamageResonance'.format(type),
-                ship.getModifiedItemAttr('expeditionFrigateBonusArmorResistance'),
-                skill='Expedition Frigates', **kwargs)
-
-
-class Effect8221(BaseEffect):
-    """
-    shipRoleBonusOreMiningDroneCycleTime
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'duration',
-            ship.getModifiedItemAttr('shipRoleBonusOreMiningDroneCycleTime'), **kwargs)
-
-
-class Effect8222(BaseEffect):
-    """
-    shipRoleBonusIceMiningDroneCycleTime
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
-            ship.getModifiedItemAttr('shipRoleBonusIceMiningDroneCycleTime'), **kwargs)
-
-
 class Effect8223(BaseEffect):
     """
     shipRoleBonusOreMiningYield
 
     Used by:
+    Ships from group: Expedition Frigate (2 of 2)
     Ship: Retriever
     """
 
@@ -37403,11 +37299,12 @@ class Effect8223(BaseEffect):
 
 class Effect8224(BaseEffect):
     """
-    shipRoleBonusIceMiningDuration
+    shipRoleBonusIceHarvestingDuration
 
     Used by:
     Variations of ship: Covetor (2 of 2)
     Variations of ship: Retriever (2 of 2)
+    Ship: Endurance
     """
 
     type = 'passive'
@@ -37745,48 +37642,12 @@ class Effect8279(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
-class Effect8283(BaseEffect):
-    """
-    expeditionFrigateBonusLightDronesDamage
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Light Drone Operation'), 'damageMultiplier',
-            ship.getModifiedItemAttr('expeditionFrigateBonusLightDronesDamage'),
-            skill='Expedition Frigates', **kwargs)
-
-
-class Effect8284(BaseEffect):
-    """
-    expeditionFrigateBonusMediumDronesDamage
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Medium Drone Operation'), 'damageMultiplier',
-            ship.getModifiedItemAttr('expeditionFrigateBonusMediumDroneDamage'),
-            skill='Expedition Frigates', **kwargs)
-
-
 class Effect8291(BaseEffect):
     """
     afterburnerSpeedBoostBonusPassive
 
     Used by:
-    Implants named like: Wightstorm Afterburner Booster (3 of 3)
+    Implants named like: Wightstorm Cetana Booster (3 of 3)
     """
 
     type = 'passive'
@@ -37803,7 +37664,7 @@ class Effect8294(BaseEffect):
     industrialCommandBonusDroneOreMiningYield
 
     Used by:
-    Ship: Orca
+    Ships from group: Industrial Command Ship (2 of 2)
     """
 
     type = 'passive'
@@ -37821,7 +37682,7 @@ class Effect8295(BaseEffect):
     industrialCommandBonusDroneIceHarvestingCycleTime
 
     Used by:
-    Ship: Orca
+    Ships from group: Industrial Command Ship (2 of 2)
     """
 
     type = 'passive'
@@ -38017,7 +37878,7 @@ class Effect8311(BaseEffect):
     industrialCommandBonusDroneHitPoints
 
     Used by:
-    Ship: Orca
+    Ships from group: Industrial Command Ship (2 of 2)
     """
 
     type = 'passive'
