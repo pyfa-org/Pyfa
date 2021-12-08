@@ -45311,11 +45311,12 @@
     "displayName_ru": "Прибавка к коэффициенту объёма отходов", 
     "displayName_zh": "Residue Volume Multiplier Bonus", 
     "displayNameID": 591643, 
-    "displayWhenZero": 0, 
+    "displayWhenZero": 1, 
     "highIsGood": 0, 
     "name": "specializationCrystalMiningWastedVolumeMultiplierBonus", 
     "published": 1, 
-    "stackable": 0
+    "stackable": 0, 
+    "unitID": 139
   }, 
   "3160": {
     "attributeID": 3160, 
@@ -45333,11 +45334,12 @@
     "displayName_ru": "Прибавка к шансу получения отходов", 
     "displayName_zh": "Residue Probability Bonus", 
     "displayNameID": 591644, 
-    "displayWhenZero": 0, 
+    "displayWhenZero": 1, 
     "highIsGood": 0, 
     "name": "specializationCrystalMiningWasteProbabilityBonus", 
     "published": 1, 
-    "stackable": 0
+    "stackable": 0, 
+    "unitID": 139
   }, 
   "3161": {
     "attributeID": 3161, 
@@ -46142,6 +46144,17 @@
     "displayWhenZero": 0, 
     "highIsGood": 0, 
     "name": "miningFrigateBonusIceHarvestingDuration", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3241": {
+    "attributeID": 3241, 
+    "categoryID": 37, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "gallenteIndustrialBonusMiningHoldCapacity", 
     "published": 0, 
     "stackable": 1
   }

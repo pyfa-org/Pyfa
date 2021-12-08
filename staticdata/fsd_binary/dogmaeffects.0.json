@@ -89525,7 +89525,7 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
+        "domain": "itemID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 885, 
         "modifyingAttributeID": 280, 
@@ -89809,6 +89809,50 @@
         "modifiedAttributeID": 3240, 
         "modifyingAttributeID": 280, 
         "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8322": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8322, 
+    "effectName": "gallenteIndustrialSkillLevelMiningHoldCapacity", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3241, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8323": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8323, 
+    "effectName": "gallenteIndustrialBonusMiningHoldCapacity", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 1556, 
+        "modifyingAttributeID": 3241, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 
