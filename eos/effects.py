@@ -37864,24 +37864,6 @@ class Effect8306(BaseEffect):
                                          'consumptionQuantity', amount * skill.level, **kwargs)
 
 
-class Effect8308(BaseEffect):
-    """
-    shipRoleBonusGeneralMiningHoldCapacity
-
-    Used by:
-    Ship: Miasmos
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'generalMiningHoldCapacity',
-            ship.getModifiedItemAttr('shipRoleBonusGeneralMiningHoldCapacity'),
-            **kwargs)
-
-
 class Effect8309(BaseEffect):
     """
     capitalIndustrialShipBonusDroneHitPoints
@@ -37973,3 +37955,21 @@ class Effect8317(BaseEffect):
             lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
             ship.getModifiedItemAttr('miningFrigateBonusIceHarvestingDuration'),
             skill='Mining Frigate', **kwargs)
+
+
+class Effect8323(BaseEffect):
+    """
+    gallenteIndustrialBonusMiningHoldCapacity
+
+    Used by:
+    Ship: Miasmos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'generalMiningHoldCapacity',
+            ship.getModifiedItemAttr('gallenteIndustrialBonusMiningHoldCapacity'),
+            skill='Gallente Industrial', **kwargs)
