@@ -26385,7 +26385,7 @@ class Effect6385(BaseEffect):
     ignoreCloakVelocityPenalty
 
     Used by:
-    Ship: Prospect
+    Ships from group: Expedition Frigate (2 of 2)
     """
 
     runTime = 'early'
@@ -26394,7 +26394,7 @@ class Effect6385(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemForce(lambda mod: mod.item.group.name == 'Cloaking Device',
-                                      'maxVelocityModifier', src.getModifiedItemAttr('velocityPenaltyReduction'), **kwargs)
+                                      'maxVelocityModifier', src.getModifiedItemAttr('ignoreCloakVelocityPenalty'), **kwargs)
 
 
 class Effect6386(BaseEffect):
@@ -35180,38 +35180,6 @@ class Effect7177(BaseEffect):
                                      src.getModifiedItemAttr('shieldCapacityBonus'), **kwargs)
 
 
-class Effect7179(BaseEffect):
-    """
-    stripMinerDurationMultiplier
-
-    Used by:
-    Module: Frostline 'Omnivore' Harvester Upgrade
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Strip Miner',
-                                      'duration', module.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
-
-
-class Effect7180(BaseEffect):
-    """
-    miningDurationMultiplierOnline
-
-    Used by:
-    Module: Frostline 'Omnivore' Harvester Upgrade
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mining Laser',
-                                      'duration', module.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
-
-
 class Effect7183(BaseEffect):
     """
     implantWarpScrambleRangeBonus
@@ -37346,7 +37314,7 @@ class Effect8224(BaseEffect):
 
 class Effect8225(BaseEffect):
     """
-    shipRoleBonusLightDroneDamage
+    shipRoleBonusDroneDamage
 
     Used by:
     Variations of ship: Procurer (2 of 2)
@@ -37357,13 +37325,13 @@ class Effect8225(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Light Drone Operation'), 'damageMultiplier',
-            ship.getModifiedItemAttr('shipRoleBonusLightDroneDamage'), **kwargs)
+            lambda drone: drone.item.requiresSkill('Drones'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipRoleBonusDroneDamage'), **kwargs)
 
 
 class Effect8226(BaseEffect):
     """
-    shipRoleBonusMediumDroneDamage
+    shipRoleBonusDroneHitPoints
 
     Used by:
     Variations of ship: Procurer (2 of 2)
@@ -37373,9 +37341,10 @@ class Effect8226(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Medium Drone Operation'), 'damageMultiplier',
-            ship.getModifiedItemAttr('shipRoleBonusMediumDroneDamage'), **kwargs)
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), layer,
+                ship.getModifiedItemAttr('shipRoleBonusDroneHitPoints'), **kwargs)
 
 
 class Effect8227(BaseEffect):
