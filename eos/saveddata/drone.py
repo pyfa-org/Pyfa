@@ -292,8 +292,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
     def falloff(self):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr, None)
-            if falloff is not None:
+            falloff = self.getModifiedItemAttr(attr)
+            if falloff:
                 return falloff
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
