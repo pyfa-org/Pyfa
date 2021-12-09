@@ -87682,15 +87682,15 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8221, 
-    "effectName": "shipRoleBonusOreMiningDroneCycleTime", 
+    "effectName": "shipRoleBonusDroneOreMiningCycleTime", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
         "modifiedAttributeID": 73, 
         "modifyingAttributeID": 3172, 
         "operation": 6, 
@@ -87705,15 +87705,15 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8222, 
-    "effectName": "shipRoleBonusIceMiningDroneCycleTime", 
+    "effectName": "shipRoleBonusDroneIceMiningCycleTime", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
         "modifiedAttributeID": 73, 
         "modifyingAttributeID": 3173, 
         "operation": 6, 
@@ -87774,19 +87774,19 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8225, 
-    "effectName": "shipRoleBonusLightDroneDamage", 
+    "effectName": "shipRoleBonusDroneDamage", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
         "modifiedAttributeID": 64, 
         "modifyingAttributeID": 3179, 
         "operation": 6, 
-        "skillTypeID": 24241
+        "skillTypeID": 3436
       }
     ], 
     "propulsionChance": 0, 
@@ -87797,19 +87797,35 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8226, 
-    "effectName": "shipRoleBonusMediumDroneDamage", 
+    "effectName": "shipRoleBonusDroneHitPoints", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 64, 
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
         "modifyingAttributeID": 3180, 
         "operation": 6, 
-        "skillTypeID": 33699
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 3180, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 3180, 
+        "operation": 6, 
+        "skillTypeID": 3436
       }
     ], 
     "propulsionChance": 0, 
@@ -89853,6 +89869,29 @@
         "modifiedAttributeID": 1556, 
         "modifyingAttributeID": 3241, 
         "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8324": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8324, 
+    "effectName": "shipRoleBonusDroneOreMiningYield", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 77, 
+        "modifyingAttributeID": 3242, 
+        "operation": 6, 
+        "skillTypeID": 3438
       }
     ], 
     "propulsionChance": 0, 

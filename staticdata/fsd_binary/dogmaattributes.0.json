@@ -32316,13 +32316,13 @@
   }, 
   "2102": {
     "attributeID": 2102, 
-    "categoryID": 7, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
     "displayWhenZero": 0, 
     "highIsGood": 1, 
-    "name": "velocityPenaltyReduction", 
+    "name": "ignoreCloakVelocityPenalty", 
     "published": 1, 
     "stackable": 1
   }, 
@@ -45492,7 +45492,7 @@
     "defaultValue": 0.0, 
     "displayWhenZero": 0, 
     "highIsGood": 0, 
-    "name": "shipRoleBonusOreMiningDroneCycleTime", 
+    "name": "shipRoleBonusDroneOreMiningCycleTime", 
     "published": 0, 
     "stackable": 1
   }, 
@@ -45503,7 +45503,7 @@
     "defaultValue": 0.0, 
     "displayWhenZero": 0, 
     "highIsGood": 0, 
-    "name": "shipRoleBonusIceMiningDroneCycleTime", 
+    "name": "shipRoleBonusDroneIceMiningCycleTime", 
     "published": 0, 
     "stackable": 1
   }, 
@@ -45569,7 +45569,7 @@
     "defaultValue": 0.0, 
     "displayWhenZero": 0, 
     "highIsGood": 1, 
-    "name": "shipRoleBonusLightDroneDamage", 
+    "name": "shipRoleBonusDroneDamage", 
     "published": 0, 
     "stackable": 1
   }, 
@@ -45580,7 +45580,7 @@
     "defaultValue": 0.0, 
     "displayWhenZero": 0, 
     "highIsGood": 1, 
-    "name": "shipRoleBonusMediumDroneDamage", 
+    "name": "shipRoleBonusDroneHitPoints", 
     "published": 0, 
     "stackable": 1
   }, 
@@ -46139,6 +46139,7 @@
   }, 
   "3240": {
     "attributeID": 3240, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "displayWhenZero": 0, 
@@ -46155,6 +46156,17 @@
     "displayWhenZero": 0, 
     "highIsGood": 1, 
     "name": "gallenteIndustrialBonusMiningHoldCapacity", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "3242": {
+    "attributeID": 3242, 
+    "categoryID": 37, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "shipRoleBonusDroneOreMiningYield", 
     "published": 0, 
     "stackable": 1
   }
