@@ -241,27 +241,29 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
             return None
         return CycleInfo(self.cycleTime, 0, math.inf, False)
 
-    @property
-    def miningYPS(self):
+    def getMiningYPS(self, ignoreState=False):
+        if not ignoreState and self.amountActive <= 0:
+            return 0
         if self.__miningYield is None:
             self.__miningYield, self.__miningWaste = self.__calculateMining()
         return self.__miningYield
 
-    @property
-    def miningWPS(self):
+    def getMiningWPS(self, ignoreState=False):
+        if not ignoreState and self.amountActive <= 0:
+            return 0
         if self.__miningWaste is None:
             self.__miningYield, self.__miningWaste = self.__calculateMining()
         return self.__miningWaste
 
     def __calculateMining(self):
-        if self.mines is True and self.amountActive > 0:
+        if self.mines is True:
             getter = self.getModifiedItemAttr
             cycleParams = self.getCycleParameters()
             if cycleParams is None:
                 yps = 0
             else:
                 cycleTime = cycleParams.averageTime
-                yield_ = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
+                yield_ = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amount
                 yps = yield_ / (cycleTime / 1000.0)
             wasteChance = self.getModifiedItemAttr("miningWasteProbability")
             wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")

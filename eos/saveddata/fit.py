@@ -1656,11 +1656,11 @@ class Fit:
         droneWaste = 0
 
         for mod in self.modules:
-            minerYield += mod.miningYPS
-            minerWaste += mod.miningWPS
+            minerYield += mod.getMiningYPS()
+            minerWaste += mod.getMiningWPS()
         for drone in self.drones:
-            droneYield += drone.miningYPS
-            droneWaste += drone.miningWPS
+            droneYield += drone.getMiningYPS()
+            droneWaste += drone.getMiningWPS()
 
         self.__minerYield = minerYield
         self.__minerWaste = minerWaste

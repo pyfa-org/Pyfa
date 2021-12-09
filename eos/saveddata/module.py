@@ -410,32 +410,33 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
 
         self.__itemModifiedAttributes.clear()
 
-    @property
-    def miningYPS(self):
+    def getMiningYPS(self, ignoreState=False):
+        if self.isEmpty:
+            return 0
+        if not ignoreState and self.state < FittingModuleState.ACTIVE:
+            return 0
         if self.__miningYield is None:
             self.__miningYield, self.__miningWaste = self.__calculateMining()
         return self.__miningYield
 
-    @property
-    def miningWPS(self):
+    def getMiningWPS(self, ignoreState=False):
+        if self.isEmpty:
+            return 0
+        if not ignoreState and self.state < FittingModuleState.ACTIVE:
+            return 0
         if self.__miningWaste is None:
             self.__miningYield, self.__miningWaste = self.__calculateMining()
         return self.__miningWaste
 
     def __calculateMining(self):
-        if self.isEmpty:
-            return 0, 0
-        if self.state >= FittingModuleState.ACTIVE:
-            yield_ = self.getModifiedItemAttr("miningAmount")
-            if yield_:
-                cycleParams = self.getCycleParameters()
-                if cycleParams is None:
-                    yps = 0
-                else:
-                    cycleTime = cycleParams.averageTime
-                    yps = yield_ / (cycleTime / 1000.0)
-            else:
+        yield_ = self.getModifiedItemAttr("miningAmount")
+        if yield_:
+            cycleParams = self.getCycleParameters()
+            if cycleParams is None:
                 yps = 0
+            else:
+                cycleTime = cycleParams.averageTime
+                yps = yield_ / (cycleTime / 1000.0)
         else:
             yps = 0
         wasteChance = self.getModifiedItemAttr("miningWasteProbability")
