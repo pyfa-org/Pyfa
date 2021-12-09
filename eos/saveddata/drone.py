@@ -274,10 +274,10 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
     def maxRange(self):
         attrs = ("shieldTransferRange", "powerTransferRange",
                  "energyDestabilizationRange", "empFieldRange",
-                 "ecmBurstRange", "maxRange")
+                 "ecmBurstRange", "maxRange", "ECMRangeOptimal")
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr, None)
-            if maxRange is not None:
+            maxRange = self.getModifiedItemAttr(attr)
+            if maxRange:
                 return maxRange
         if self.charge is not None:
             delay = self.getModifiedChargeAttr("explosionDelay")
