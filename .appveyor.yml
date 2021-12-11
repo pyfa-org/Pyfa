@@ -99,6 +99,7 @@ for:
     # Should be enabled only for build process debugging
     init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+      - sh: ls ~
       - sh: source ~/venv3.7/bin/activate
     install:
       - sh: bash scripts/osx-setup.sh
