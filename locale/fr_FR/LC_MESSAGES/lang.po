@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-05-18 17:34\n"
+"PO-Revision-Date: 2022-01-02 22:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -339,7 +339,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr ""
+msgstr "Temps d'aligne"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
@@ -673,7 +673,7 @@ msgstr ""
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 msgid "Capacitor"
-msgstr ""
+msgstr "Condensateur"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:139
 msgid "Capacitor delta:"
@@ -735,7 +735,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/itemAmountChange.py:92
 msgid "Change Amount"
-msgstr ""
+msgstr "Changer la quantité"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
 msgid "Change Skills"
