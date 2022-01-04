@@ -85,7 +85,7 @@ class CategoryItem(SFBrowserItem):
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
         self.shipBmpx = self.padding
-        self.shipBmpy = (rect.height - self.shipBmp.GetWidth()) / 2
+        self.shipBmpy = (rect.height - self.shipBmp.GetWidth()) // 2
 
         self.shipBmpx -= self.animCount
 
@@ -94,7 +94,7 @@ class CategoryItem(SFBrowserItem):
         wtext, htext = mdc.GetTextExtent(categoryName)
 
         self.catx = self.shipBmpx + self.shipBmp.GetWidth() + self.padding
-        self.caty = (rect.height - htext) / 2
+        self.caty = (rect.height - htext) // 2
 
     def DrawItem(self, mdc):
         # rect = self.GetRect()

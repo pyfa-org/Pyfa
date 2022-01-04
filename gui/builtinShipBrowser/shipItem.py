@@ -194,26 +194,26 @@ class ShipItem(SFItem.SFBrowserItem):
         rect = self.GetRect()
 
         self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
-        self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
+        self.toolbary = (rect.height - self.toolbar.GetHeight()) // 2
 
         self.toolbarx += self.animCount
 
-        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) / 2
-        self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) / 2
+        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) // 2
+        self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) // 2
 
         self.shipEffx -= self.animCount
 
-        self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
-        self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
+        self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) // 2
+        self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) // 2
 
         self.shipBmpx -= self.animCount
 
         self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
-        self.raceBmpy = (rect.height - self.raceBmp.GetHeight()) / 2
+        self.raceBmpy = (rect.height - self.raceBmp.GetHeight()) // 2
 
         self.textStartx = self.raceBmpx + self.raceBmp.GetWidth() + self.padding
 
-        self.shipNamey = (rect.height - self.shipBmp.GetHeight()) / 2
+        self.shipNamey = (rect.height - self.shipBmp.GetHeight()) // 2
 
         shipName, shipTrait, fittings = self.shipFittingInfo
 
@@ -227,7 +227,7 @@ class ShipItem(SFItem.SFBrowserItem):
         wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
         self.thoverx = self.toolbarx - self.padding - wlabel
-        self.thovery = (rect.height - hlabel) / 2
+        self.thovery = (rect.height - hlabel) // 2
         self.thoverw = wlabel
 
     def DrawItem(self, mdc):
@@ -283,7 +283,7 @@ class ShipItem(SFItem.SFBrowserItem):
         fnEditSize = editCtl.GetSize()
         wSize = self.GetSize()
         fnEditPosX = end
-        fnEditPosY = (wSize.height - fnEditSize.height) / 2
+        fnEditPosY = (wSize.height - fnEditSize.height) // 2
         if fnEditPosX < start:
             editCtl.SetSize((self.editWidth + fnEditPosX - start, -1))
             editCtl.SetPosition((start, fnEditPosY))

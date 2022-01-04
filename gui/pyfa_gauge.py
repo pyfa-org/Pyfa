@@ -255,7 +255,7 @@ class PyGauge(wx.Window):
             if value > 100:
                 w = rect.width
             else:
-                w = rect.width * (float(value) / 100)
+                w = int(rect.width * (float(value) / 100))
             r = copy.copy(rect)
             r.width = w
             dc.DrawRectangle(r)
@@ -267,7 +267,7 @@ class PyGauge(wx.Window):
             if value > 100:
                 w = rect.width
             else:
-                w = rect.width * (float(value) / 100)
+                w = int(rect.width * (float(value) / 100))
             r = copy.copy(rect)
             r.width = w
 
@@ -275,16 +275,16 @@ class PyGauge(wx.Window):
             # progress between the two transition ranges)
             pv = value
             if pv <= 100:
-                xv = pv / 100
+                xv = int(pv / 100)
                 transition = 0
             elif pv <= 101:
-                xv = pv - 100
+                xv = int(pv - 100)
                 transition = 1
             elif pv <= 103:
-                xv = (pv - 101) / 2
+                xv = int((pv - 101) / 2)
                 transition = 2
             elif pv <= 105:
-                xv = (pv - 103) / 2
+                xv = int((pv - 103) / 2)
                 transition = 3
             else:
                 pv = 106

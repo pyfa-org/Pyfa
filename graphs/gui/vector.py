@@ -35,10 +35,10 @@ class VectorPicker(wx.Window):
         self._label = str(kwargs.pop('label', ''))
         self._labelpos = int(kwargs.pop('labelpos', 0))
         self._offset = float(kwargs.pop('offset', 0))
-        self._size = max(0, float(kwargs.pop('size', 50)))
+        self._size = max(0, int(kwargs.pop('size', 50)))
         self._directionOnly = kwargs.pop('directionOnly', False)
         super().__init__(*args, **kwargs)
-        self._fontsize = max(1, float(kwargs.pop('fontsize', 8 / self.GetContentScaleFactor())))
+        self._fontsize = int(max(1, kwargs.pop('fontsize', 8 / self.GetContentScaleFactor())))
         self._font = wx.Font(self._fontsize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self._angle = 0
         self.__length = 1
@@ -110,7 +110,7 @@ class VectorPicker(wx.Window):
     def GetScaledClientSize(self):
         return tuple([dim / self.GetContentScaleFactor() for dim in self.GetClientSize()])
 
-    def Draw(self, dc):
+    def Draw(self, dc: wx.BufferedPaintDC):
         width, height = self.GetScaledClientSize()
         if not width or not height:
             return
@@ -119,17 +119,17 @@ class VectorPicker(wx.Window):
         dc.SetTextForeground(wx.Colour(0))
         dc.SetFont(self._font)
 
-        radius = min(width, height) / 2 - 2
+        radius = int(min(width, height) / 2 - 2)
         dc.SetBrush(wx.WHITE_BRUSH)
         dc.DrawCircle(radius + 2, radius + 2, radius)
         a = math.radians(self._angle + self._offset)
-        x = math.cos(a) * radius
-        y = math.sin(a) * radius
+        x = int(math.cos(a) * radius)
+        y = int(math.sin(a) * radius)
         # See PR #2260 on why this is needed
-        pointRadius = 2 / self.GetContentScaleFactor() if 'wxGTK' in wx.PlatformInfo else 2
-        dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * self._length, radius + 2 - y * self._length)
+        pointRadius = int(2 / self.GetContentScaleFactor() if 'wxGTK' in wx.PlatformInfo else 2)
+        dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * int(self._length), radius + 2 - y * int(self._length))
         dc.SetBrush(wx.BLACK_BRUSH)
-        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, pointRadius)
+        dc.DrawCircle(int(radius + 2 + x * self._length), int(radius + 2 - y * self._length), pointRadius)
 
         if self._label:
             labelText = self._label
@@ -141,14 +141,14 @@ class VectorPicker(wx.Window):
         if not self._directionOnly:
             lengthText = '%d%%' % (100 * self._length,)
             lengthTextW, lengthTextH = dc.GetTextExtent(lengthText)
-            lengthTextX = radius + 2 + x / 2 - y / 3 - lengthTextW / 2
-            lengthTextY = radius + 2 - y / 2 - x / 3 - lengthTextH / 2
+            lengthTextX = radius + 2 + x // 2 - y // 3 - lengthTextW // 2
+            lengthTextY = radius + 2 - y // 2 - x // 3 - lengthTextH // 2
             dc.DrawText(lengthText, lengthTextX, lengthTextY)
 
         angleText = '%d\u00B0' % (self._angle,)
         angleTextW, angleTextH = dc.GetTextExtent(angleText)
-        angleTextX = radius + 2 - x / 2 - angleTextW / 2
-        angleTextY = radius + 2 + y / 2 - angleTextH / 2
+        angleTextX = radius + 2 - x // 2 - angleTextW // 2
+        angleTextY = radius + 2 + y // 2 - angleTextH // 2
         dc.DrawText(angleText, angleTextX, angleTextY)
 
     def OnEraseBackground(self, event):

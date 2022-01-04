@@ -81,11 +81,11 @@ class PFListPane(wx.ScrolledWindow):
 
         # is it before the left edge?
         if cr.x < 0 < sppu_x:
-            new_vs_x = vs_x + (cr.x / sppu_x)
+            new_vs_x = vs_x + (cr.x // sppu_x)
 
         # is it above the top?
         if cr.y < 0 < sppu_y:
-            new_vs_y = vs_y + (cr.y / sppu_y)
+            new_vs_y = vs_y + (cr.y // sppu_y)
 
         # For the right and bottom edges, scroll enough to show the
         # whole control if possible, but if not just scroll such that
@@ -93,19 +93,19 @@ class PFListPane(wx.ScrolledWindow):
 
         # is it past the right edge ?
         if cr.right > clntsz.width and sppu_x > 0:
-            diff = (cr.right - clntsz.width + 1) / sppu_x
+            diff = (cr.right - clntsz.width + 1) // sppu_x
             if cr.x - diff * sppu_x > 0:
                 new_vs_x = vs_x + diff
             else:
-                new_vs_x = vs_x + (cr.x / sppu_x)
+                new_vs_x = vs_x + (cr.x // sppu_x)
 
         # is it below the bottom ?
         if cr.bottom > clntsz.height and sppu_y > 0:
-            diff = (cr.bottom - clntsz.height + 1) / sppu_y
+            diff = (cr.bottom - clntsz.height + 1) // sppu_y
             if cr.y - diff * sppu_y > 0:
                 new_vs_y = vs_y + diff
             else:
-                new_vs_y = vs_y + (cr.y / sppu_y)
+                new_vs_y = vs_y + (cr.y // sppu_y)
 
         # if we need to adjust
         if new_vs_x != -1 or new_vs_y != -1:

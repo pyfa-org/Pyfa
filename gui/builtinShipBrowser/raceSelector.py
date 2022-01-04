@@ -116,8 +116,8 @@ class RaceSelector(wx.Window):
                 width += bmp.GetWidth() + self.buttonsPadding
                 height = max(bmp.GetHeight(), height)
 
-            posx = (rect.width - width) / 2
-            posy = (rect.height - height) / 2
+            posx = (rect.width - width) // 2
+            posy = (rect.height - height) // 2
 
             self.buttonsBarPos = (posx, posy)
 
@@ -208,11 +208,11 @@ class RaceSelector(wx.Window):
 
         if self.direction < 1:
             if self.layout == wx.VERTICAL:
-                mdc.DrawBitmap(self.bmpArrow, -2, (rect.height - self.bmpArrow.GetHeight()) / 2)
+                mdc.DrawBitmap(self.bmpArrow, -2, (rect.height - self.bmpArrow.GetHeight()) // 2)
             else:
                 mdc.SetPen(wx.Pen(sepColor, 1))
                 mdc.DrawLine(0, 0, rect.width, 0)
-                mdc.DrawBitmap(self.bmpArrow, (rect.width - self.bmpArrow.GetWidth()) / 2, -2)
+                mdc.DrawBitmap(self.bmpArrow, (rect.width - self.bmpArrow.GetWidth()) // 2, -2)
 
     def OnTimer(self, event):
         if event.GetId() == self.animTimerID:

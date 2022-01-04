@@ -228,12 +228,12 @@ class PFToolbar:
 
             if btnState & BTN_PRESSED:
                 bmp = button.GetBitmap()
-                by += self.padding / 2
-                tbx += self.padding / 2
+                by += self.padding // 2
+                tbx += self.padding // 2
 
             bmpWidth = bmp.GetWidth()
 
-            pdc.DrawBitmap(dropShadowBmp, bx + self.padding / 2, self.toolbarY + self.padding / 2)
+            pdc.DrawBitmap(dropShadowBmp, bx + self.padding // 2, self.toolbarY + self.padding // 2)
             pdc.DrawBitmap(bmp, tbx, by)
 
             bx += bmpWidth + self.padding

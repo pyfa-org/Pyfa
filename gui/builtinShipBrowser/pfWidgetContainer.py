@@ -15,8 +15,8 @@ class PFWidgetsContainer(PFListPane):
         if mode:
             aweight, aheight = self.anim.GetSize()
             cweight, cheight = self.GetSize()
-            ax = (cweight - aweight) / 2
-            ay = (cheight - aheight) / 2
+            ax = (cweight - aweight) // 2
+            ay = (cheight - aheight) // 2
             self.anim.SetPosition((ax, ay))
             self.anim.Show()
             self.anim.Play()

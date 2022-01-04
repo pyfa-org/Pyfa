@@ -220,15 +220,15 @@ class PFSearchBox(wx.Window):
         cheight = rect.height
 
         self.searchButtonX = self.padding
-        self.searchButtonY = (cheight - sh) / 2
+        self.searchButtonY = (cheight - sh) // 2
         self.cancelButtonX = cwidth - self.padding - cw
-        self.cancelButtonY = (cheight - ch) / 2
+        self.cancelButtonY = (cheight - ch) // 2
 
         self.editX = self.searchButtonX + self.padding + sw
 
         editWidth, editHeight = self.EditBox.GetSize()
 
-        self.editY = (cheight - editHeight) / 2
+        self.editY = (cheight - editHeight) // 2
         self.EditBox.SetPosition((self.editX, self.editY))
         self.EditBox.SetSize((self.cancelButtonX - self.padding - self.editX, -1))
 

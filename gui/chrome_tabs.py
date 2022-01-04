@@ -454,7 +454,7 @@ class _TabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width / 2 + 16 + self.padding * 2
+        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width // 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
         return totalSize, self.tab_height
 
@@ -553,8 +553,8 @@ class _TabRenderer:
 
         x_offset = self.content_width \
             + self.left_width \
-            - self.ctab_close_bmp.GetWidth() / 2
-        y_offset = (self.tab_height - self.ctab_close_bmp.GetHeight()) / 2
+            - self.ctab_close_bmp.GetWidth() // 2
+        y_offset = (self.tab_height - self.ctab_close_bmp.GetHeight()) // 2
         self.close_region.Offset(x_offset, y_offset)
 
     def InitColors(self):
@@ -590,8 +590,8 @@ class _TabRenderer:
                 # Draw tab icon
                 mdc.DrawBitmap(
                     bmp,
-                    self.left_width + self.padding - bmp.GetWidth() / 2,
-                    (height - bmp.GetHeight()) / 2)
+                    self.left_width + self.padding - bmp.GetWidth() // 2,
+                    (height - bmp.GetHeight()) // 2)
 
         # draw close button
         if self.closeable:
@@ -604,8 +604,8 @@ class _TabRenderer:
 
             mdc.DrawBitmap(
                 cbmp,
-                self.content_width + self.left_width - cbmp.GetWidth() / 2,
-                (height - cbmp.GetHeight()) / 2)
+                self.content_width + self.left_width - cbmp.GetWidth() // 2,
+                (height - cbmp.GetHeight()) // 2)
 
         mdc.SelectObject(wx.NullBitmap)
 
@@ -625,7 +625,7 @@ class _TabRenderer:
         dc.SetFont(self.font)
 
         if self.tab_img:
-            text_start = self.left_width + self.padding + self.tab_img.GetWidth() / 2
+            text_start = self.left_width + self.padding + self.tab_img.GetWidth() // 2
         else:
             text_start = self.left_width
 
@@ -640,7 +640,7 @@ class _TabRenderer:
         # draw text (with no ellipses)
         text = draw.GetPartialText(dc, self.text, maxsize, "")
         tx, ty = dc.GetTextExtent(text)
-        dc.DrawText(text, text_start + self.padding, height / 2 - ty / 2)
+        dc.DrawText(text, text_start + self.padding, height // 2 - ty // 2)
 
     def __repr__(self):
         return "_TabRenderer(text={}, disabled={}) at {}".format(
@@ -1198,7 +1198,7 @@ class _TabsContainer(wx.Panel):
 
         if self.show_add_button:
             ax, ay = self.add_button.GetPosition()
-            mdc.DrawBitmap(self.add_button.Render(), ax, ay, True)
+            mdc.DrawBitmap(self.add_button.Render(), int(ax), int(ay), True)
 
         for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
@@ -1359,7 +1359,7 @@ class _TabsContainer(wx.Panel):
             # Divide tab container by number of tabs and add inclination. This will
             # return the ideal max size for the containers size
             if self.GetTabsCount() > 0:
-                dx = self.tab_container_width / self.GetTabsCount() + self.inclination * 2
+                dx = self.tab_container_width // self.GetTabsCount() + self.inclination * 2
                 tabWidth = min(dx, max_width)
 
             # Apply new size to all tabs
@@ -1391,7 +1391,7 @@ class _TabsContainer(wx.Panel):
             selected.SetPosition((selpos, self.container_height - self.height))
 
         self.add_button.SetPosition((round(tabsWidth) + self.inclination * 2,
-                                     self.container_height - self.height / 2 - self.add_button.GetHeight() / 3))
+                                     self.container_height - self.height // 2 - self.add_button.GetHeight() // 3))
 
     def OnLeaveWindow(self, event):
         if self.start_drag and not self.dragging:

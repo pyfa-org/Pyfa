@@ -62,7 +62,7 @@ class LoadAnimation(wx.Window):
         barColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
         shadeColor = colorUtils.GetSuitable(barColor, 0.75)
 
-        barWidth = rect.width / self.bars
+        barWidth = rect.width // self.bars
         barHeight = rect.height - self.padding * 2
 
         x = self.padding

@@ -200,19 +200,19 @@ class NavigationPanel(SFItem.SFBrowserItem):
         rect = self.GetRect()
 
         self.toolbarx = self.padding
-        self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
+        self.toolbary = (rect.height - self.toolbar.GetHeight()) // 2
 
         mdc.SetFont(self.fontSmall)
 
         wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
         self.thoverx = self.toolbar.GetWidth() + self.padding
-        self.thovery = (rect.height - hlabel) / 2
+        self.thovery = (rect.height - hlabel) // 2
         self.thoverw = wlabel
 
         self.browserBoxX = self.thoverx
         bEditBoxWidth, bEditBoxHeight = self.BrowserSearchBox.GetSize()
-        self.browserBoxY = (rect.height - bEditBoxHeight) / 2
+        self.browserBoxY = (rect.height - bEditBoxHeight) // 2
 
         self.bEditBoxWidth = rect.width - self.browserBoxX - self.padding
 

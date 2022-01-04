@@ -12,7 +12,7 @@ def Brighten(color, factor):
     b += (255 - b) * factor
     g += (255 - g) * factor
 
-    return wx.Colour(r, g, b, a)
+    return wx.Colour(int(r), int(g), int(b), a)
 
 
 def Darken(color, factor):
@@ -26,9 +26,9 @@ def Darken(color, factor):
     g *= factor
     b *= factor
 
-    r = min(max(r, 0), 255)
-    b = min(max(b, 0), 255)
-    g = min(max(g, 0), 255)
+    r = int(min(max(r, 0), 255))
+    b = int(min(max(b, 0), 255))
+    g = int(min(max(g, 0), 255))
 
     return wx.Colour(r, g, b, a)
 
@@ -70,4 +70,4 @@ def CalculateTransition(s_color, e_color, delta):
     tG = sG + (eG - sG) * delta
     tB = sB + (eB - sB) * delta
 
-    return wx.Colour(tR, tG, tB, (sA + eA) / 2)
+    return wx.Colour(tR, tG, tB, (sA + eA) // 2)
