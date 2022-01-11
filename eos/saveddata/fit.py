@@ -21,7 +21,7 @@ import datetime
 import time
 from copy import deepcopy
 from itertools import chain
-from math import floor, log, sqrt
+from math import ceil, log, sqrt
 
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
@@ -404,7 +404,7 @@ class Fit:
     def maxTargets(self):
         maxTargets = min(self.extraAttributes["maxTargetsLockedFromSkills"],
                          self.ship.getModifiedItemAttr("maxLockedTargets"))
-        return floor(floatUnerr(maxTargets))
+        return ceil(floatUnerr(maxTargets))
 
     @property
     def maxTargetRange(self):
