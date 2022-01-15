@@ -27,7 +27,8 @@ import re
 import sqlite3
 import sys
 
-from sqlalchemy import or_
+import sqlalchemy.orm
+from sqlalchemy import or_, and_
 
 
 # todo: need to set the EOS language to en, becasuse this assumes it's being run within an English context
@@ -606,6 +607,147 @@ def update_db():
         cat = eos.db.gamedata_session.query(eos.gamedata.Category).filter(eos.gamedata.Category.ID == x).first()
         print ('Removing Category: {}'.format(cat.name))
         eos.db.gamedata_session.delete(cat)
+
+    def _hardcodeAttribs(typeID, attrMap):
+        for attrName, value in attrMap.items():
+            try:
+                attr = eos.db.gamedata_session.query(eos.gamedata.Attribute).filter(and_(
+                    eos.gamedata.Attribute.name == attrName, eos.gamedata.Attribute.typeID == typeID)).one()
+            except sqlalchemy.orm.exc.NoResultFound:
+                attrInfo = eos.db.gamedata_session.query(eos.gamedata.AttributeInfo).filter(eos.gamedata.AttributeInfo.name == attrName).one()
+                attr = eos.gamedata.Attribute()
+                attr.ID = attrInfo.ID
+                attr.typeID = typeID
+                attr.value = value
+                eos.db.gamedata_session.add(attr)
+            else:
+                attr.value = value
+
+    def _hardcodeEffects(typeID, effectMap):
+        item = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.ID == typeID).one()
+        item.effects.clear()
+        for effectID, effectName in effectMap.items():
+            effect = eos.gamedata.Effect()
+            effect.effectID = effectID
+            effect.effectName = effectName
+            item.effects[effectName] = effect
+
+    def hardcodeRaiju():
+        attrMap = {
+            'hp': 600,
+            'capacity': 130,
+            'mass': 987000,
+            'volume': 27289,
+            'agility': 3.1,
+            'emDamageResonance': 1 - 0.33,
+            'thermalDamageResonance': 1 - 0.33,
+            'kineticDamageResonance': 1 - 0.33,
+            'explosiveDamageResonance': 1 - 0.33,
+            'armorHP': 700,
+            'armorEmDamageResonance': 1 - 0.5,
+            'armorThermalDamageResonance': 1 - 0.8625,
+            'armorKineticDamageResonance': 1 - 0.625,
+            'armorExplosiveDamageResonance': 1 - 0.1,
+            'shieldCapacity': 850,
+            'shieldRechargeRate': 625000,
+            'shieldEmDamageResonance': 1 - 0.15,
+            'shieldThermalDamageResonance': 1 - 0.8,
+            'shieldKineticDamageResonance': 1 - 0.7,
+            'shieldExplosiveDamageResonance': 1 - 0.5,
+            'energyWarfareResistance': 1,
+            'weaponDisruptionResistance': 1,
+            'capacitorCapacity': 400,
+            'rechargeRate': 195000,
+            'maxTargetRange': 70000,
+            'maxLockedTargets': 7,
+            'signatureRadius': 32,
+            'scanResolution': 650,
+            'scanRadarStrength': 0,
+            'scanLadarStrength': 0,
+            'scanMagnetometricStrength': 0,
+            'scanGravimetricStrength': 13,
+            'maxVelocity': 440,
+            'cpuOutput': 178,
+            'powerOutput': 38,
+            'upgradeCapacity': 400,
+            'launcherSlotsLeft': 3,
+            'hiSlots': 3,
+            'medSlots': 6,
+            'lowSlots': 3,
+            'rigSlots': 3,
+            'rigSize': 1}
+        effectMap = {
+            100100: 'pyfaCustomRaijuPointRange',
+            100101: 'pyfaCustomRaijuPointCap',
+            100102: 'pyfaCustomRaijuDampStr',
+            100103: 'pyfaCustomRaijuDampCap',
+            100104: 'pyfaCustomRaijuMissileDmg',
+            100105: 'pyfaCustomRaijuMissileFlightTime',
+            100106: 'pyfaCustomRaijuMissileFlightVelocity'}
+        _hardcodeAttribs(60765, attrMap)
+        _hardcodeEffects(60765, effectMap)
+
+    def hardcodeLaelaps():
+        attrMap = {
+            'hp': 2300,
+            'capacity': 420,
+            'droneCapacity': 25,
+            'droneBandwidth': 25,
+            'mass': 10298000,
+            'volume': 101000,
+            'agility': 0.48,
+            'emDamageResonance': 1 - 0.33,
+            'thermalDamageResonance': 1 - 0.33,
+            'kineticDamageResonance': 1 - 0.33,
+            'explosiveDamageResonance': 1 - 0.33,
+            'armorHP': 2730,
+            'armorEmDamageResonance': 1 - 0.5,
+            'armorThermalDamageResonance': 1 - 0.8625,
+            'armorKineticDamageResonance': 1 - 0.625,
+            'armorExplosiveDamageResonance': 1 - 0.1,
+            'shieldCapacity': 3540,
+            'shieldRechargeRate': 1250000,
+            'shieldEmDamageResonance': 1 - 0.15,
+            'shieldThermalDamageResonance': 1 - 0.8,
+            'shieldKineticDamageResonance': 1 - 0.7,
+            'shieldExplosiveDamageResonance': 1 - 0.5,
+            'energyWarfareResistance': 1,
+            'weaponDisruptionResistance': 1,
+            'capacitorCapacity': 1550,
+            'rechargeRate': 490000,
+            'maxTargetRange': 80000,
+            'maxLockedTargets': 7,
+            'signatureRadius': 135,
+            'scanResolution': 300,
+            'scanRadarStrength': 0,
+            'scanLadarStrength': 0,
+            'scanMagnetometricStrength': 0,
+            'scanGravimetricStrength': 21,
+            'maxVelocity': 230,
+            'warpSpeedMultiplier': 4,
+            'cpuOutput': 560,
+            'powerOutput': 900,
+            'upgradeCapacity': 400,
+            'launcherSlotsLeft': 5,
+            'hiSlots': 7,
+            'medSlots': 5,
+            'lowSlots': 4,
+            'rigSlots': 3,
+            'rigSize': 2}
+        effectMap = {
+            100200: 'pyfaCustomLaelapsWdfgRange',
+            100201: 'pyfaCustomLaelapsMissileReload',
+            100202: 'pyfaCustomLaelapsMissileDamageKin',
+            100203: 'pyfaCustomLaelapsMissileRof',
+            100204: 'pyfaCustomLaelapsShieldResists',
+            100205: 'pyfaCustomLaelapsMissileFlightTime',
+            100206: 'pyfaCustomLaelapsWdfgSigPenalty',
+            100207: 'pyfaCustomLaelapsMissileFlightVelocity'}
+        _hardcodeAttribs(60764, attrMap)
+        _hardcodeEffects(60764, effectMap)
+
+    hardcodeRaiju()
+    hardcodeLaelaps()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')
