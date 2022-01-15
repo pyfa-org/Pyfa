@@ -21691,7 +21691,7 @@
   }, 
   "1356": {
     "attributeID": 1356, 
-    "categoryID": 9, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
@@ -21704,7 +21704,7 @@
   }, 
   "1357": {
     "attributeID": 1357, 
-    "categoryID": 9, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
@@ -21717,7 +21717,7 @@
   }, 
   "1358": {
     "attributeID": 1358, 
-    "categoryID": 9, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
@@ -21730,7 +21730,7 @@
   }, 
   "1359": {
     "attributeID": 1359, 
-    "categoryID": 9, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
@@ -24760,14 +24760,14 @@
     "name": "specialGasHoldCapacity", 
     "published": 1, 
     "stackable": 1, 
-    "tooltipDescription_de": "The total volume that can be stored in the gas hold", 
+    "tooltipDescription_de": "Das maximale Volumen, das im Gasfrachtraum gelagert werden kann", 
     "tooltipDescription_en-us": "The total volume that can be stored in the gas hold", 
     "tooltipDescription_es": "The total volume that can be stored in the gas hold", 
-    "tooltipDescription_fr": "The total volume that can be stored in the gas hold", 
+    "tooltipDescription_fr": "Volume total pouvant être stocké dans la soute à gaz", 
     "tooltipDescription_it": "The total volume that can be stored in the gas hold", 
-    "tooltipDescription_ja": "The total volume that can be stored in the gas hold", 
-    "tooltipDescription_ko": "The total volume that can be stored in the gas hold", 
-    "tooltipDescription_ru": "The total volume that can be stored in the gas hold", 
+    "tooltipDescription_ja": "ガスホールドに積載できる総量", 
+    "tooltipDescription_ko": "가스 저장고에 보관할 수 있는 최대 용량", 
+    "tooltipDescription_ru": "Максимальный объём, допустимый к размещению в газовом отсеке", 
     "tooltipDescription_zh": "The total volume that can be stored in the gas hold", 
     "tooltipDescriptionID": 592043, 
     "tooltipTitleID": 592042, 
@@ -39879,7 +39879,7 @@
   }, 
   "2577": {
     "attributeID": 2577, 
-    "categoryID": 9, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
@@ -39892,7 +39892,7 @@
   }, 
   "2578": {
     "attributeID": 2578, 
-    "categoryID": 9, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
@@ -39905,7 +39905,7 @@
   }, 
   "2579": {
     "attributeID": 2579, 
-    "categoryID": 9, 
+    "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
     "description": "", 
@@ -45316,7 +45316,7 @@
     "name": "specializationCrystalMiningWastedVolumeMultiplierBonus", 
     "published": 1, 
     "stackable": 0, 
-    "unitID": 139
+    "unitID": 205
   }, 
   "3160": {
     "attributeID": 3160, 
@@ -45339,7 +45339,7 @@
     "name": "specializationCrystalMiningWasteProbabilityBonus", 
     "published": 1, 
     "stackable": 0, 
-    "unitID": 139
+    "unitID": 205
   }, 
   "3161": {
     "attributeID": 3161, 
@@ -46169,5 +46169,28 @@
     "name": "shipRoleBonusDroneOreMiningYield", 
     "published": 0, 
     "stackable": 1
+  }, 
+  "3246": {
+    "attributeID": 3246, 
+    "categoryID": 7, 
+    "dataType": 4, 
+    "defaultValue": 0.0, 
+    "displayName_de": "Optimale Reichweite", 
+    "displayName_en-us": "Optimal Range", 
+    "displayName_es": "Optimal Range", 
+    "displayName_fr": "Portée optimale", 
+    "displayName_it": "Optimal Range", 
+    "displayName_ja": "最適射程距離", 
+    "displayName_ko": "최적사거리", 
+    "displayName_ru": "Оптимальная дальность", 
+    "displayName_zh": "Optimal Range", 
+    "displayNameID": 593073, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "iconID": 1391, 
+    "name": "pointDefenseRange", 
+    "published": 1, 
+    "stackable": 0, 
+    "unitID": 1
   }
 }

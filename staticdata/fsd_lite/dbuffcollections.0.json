@@ -2694,5 +2694,139 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2147": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "SpacetimeNexusVelocity", 
+    "displayName_de": "Schiffsgeschwindigkeit", 
+    "displayName_en-us": "Ship Velocity", 
+    "displayName_es": "Ship Velocity", 
+    "displayName_fr": "Vitesse du vaisseau", 
+    "displayName_it": "Ship Velocity", 
+    "displayName_ja": "航行速度", 
+    "displayName_ko": "함선 속도", 
+    "displayName_ru": "Скорость корабля", 
+    "displayName_zh": "Ship Velocity", 
+    "displayNameID": 592692, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2148": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusInertia", 
+    "displayName_de": "Schiffsträgheit", 
+    "displayName_en-us": "Ship Inertia", 
+    "displayName_es": "Ship Inertia", 
+    "displayName_fr": "Inertie du vaisseau", 
+    "displayName_it": "Ship Inertia", 
+    "displayName_ja": "艦船の慣性", 
+    "displayName_ko": "관성 계수", 
+    "displayName_ru": "Инертность корабля", 
+    "displayName_zh": "Ship Inertia", 
+    "displayNameID": 592693, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2149": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusRecharge", 
+    "displayName_de": "Schild- und Energiespeicherladezeit", 
+    "displayName_en-us": "Shield and Capacitor Recharge Rate", 
+    "displayName_es": "Shield and Capacitor Recharge Rate", 
+    "displayName_fr": "Vitesse de recharge du bouclier et du capaciteur", 
+    "displayName_it": "Shield and Capacitor Recharge Rate", 
+    "displayName_ja": "シールドとキャパシタの充電速度", 
+    "displayName_ko": "실드 및 캐패시터 충전 속도", 
+    "displayName_ru": "Скорость перезарядки щита и накопителя", 
+    "displayName_zh": "Shield and Capacitor Recharge Rate", 
+    "displayNameID": 592694, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }, 
+      {
+        "dogmaAttributeID": 479
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2150": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusModuleCycle", 
+    "displayName_de": "Modulzyklus und Nachladegeschwindigkeit", 
+    "displayName_en-us": "Module Cycle and Reload Speed", 
+    "displayName_es": "Module Cycle and Reload Speed", 
+    "displayName_fr": "Cycle du module et vitesse de recharge", 
+    "displayName_it": "Module Cycle and Reload Speed", 
+    "displayName_ja": "モジュールのサイクルとリロード速度", 
+    "displayName_ko": "모듈 사이클 시간 및 재장전 속도", 
+    "displayName_ru": "Время и скорость перезарядки модуля", 
+    "displayName_zh": "Module Cycle and Reload Speed", 
+    "displayNameID": 592695, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 51
+      }, 
+      {
+        "dogmaAttributeID": 73
+      }, 
+      {
+        "dogmaAttributeID": 1795
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2151": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "SpacetimeNexusTracking", 
+    "displayName_de": "Geschützturm-Nachführung und Lenkwaffen-Explosionsgeschwindigkeit", 
+    "displayName_en-us": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_es": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_fr": "Poursuite des tourelles et vitesse d'explosion des missiles", 
+    "displayName_it": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_ja": "タレットの追跡速度とミサイルの爆発速度", 
+    "displayName_ko": "터렛 트래킹 및 미사일 폭발 속도", 
+    "displayName_ru": "Скорость наведения орудий и распространения взрыва ракет", 
+    "displayName_zh": "Turret Tracking and Missile Explosion Velocity", 
+    "displayNameID": 593084, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 653, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
