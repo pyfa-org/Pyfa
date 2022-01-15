@@ -667,7 +667,7 @@ def update_db():
             'scanMagnetometricStrength': 0,
             'scanGravimetricStrength': 13,
             'maxVelocity': 440,
-            'cpuOutput': 178,
+            'cpuOutput': 247,
             'powerOutput': 38,
             'upgradeCapacity': 400,
             'launcherSlotsLeft': 3,

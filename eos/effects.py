@@ -2609,7 +2609,6 @@ class Effect899(BaseEffect):
 
     Used by:
     Ship: Cerberus
-    Ship: Laelaps
     Ship: Onyx
     Ship: Orthrus
     """
@@ -3944,9 +3943,7 @@ class Effect1230(BaseEffect):
     Used by:
     Ship: Barghest
     Ship: Garmur
-    Ship: Laelaps
     Ship: Orthrus
-    Ship: Raiju
     """
 
     type = 'passive'
@@ -5607,7 +5604,6 @@ class Effect1862(BaseEffect):
 
     Used by:
     Ship: Garmur
-    Ship: Raiju
     """
 
     type = 'passive'
@@ -5625,7 +5621,6 @@ class Effect1863(BaseEffect):
 
     Used by:
     Ship: Garmur
-    Ship: Raiju
     """
 
     type = 'passive'
@@ -5643,7 +5638,6 @@ class Effect1864(BaseEffect):
 
     Used by:
     Ship: Garmur
-    Ship: Raiju
     """
 
     type = 'passive'
@@ -15458,7 +15452,6 @@ class Effect4620(BaseEffect):
 
     Used by:
     Ship: Garmur
-    Ship: Raiju
     Ship: Utu
     """
 
@@ -15558,7 +15551,6 @@ class Effect4626(BaseEffect):
 
     Used by:
     Ship: Adrestia
-    Ship: Laelaps
     Ship: Orthrus
     """
 
@@ -17383,7 +17375,6 @@ class Effect5079(BaseEffect):
 
     Used by:
     Ship: Garmur
-    Ship: Raiju
     """
 
     type = 'passive'
@@ -19800,7 +19791,6 @@ class Effect5383(BaseEffect):
     shipMissileEMDamageCC
 
     Used by:
-    Ship: Laelaps
     Ship: Orthrus
     Ship: Osprey Navy Issue
     """
@@ -19818,7 +19808,6 @@ class Effect5384(BaseEffect):
     shipMissileThermDamageCC
 
     Used by:
-    Ship: Laelaps
     Ship: Orthrus
     Ship: Osprey Navy Issue
     """
@@ -19836,7 +19825,6 @@ class Effect5385(BaseEffect):
     shipMissileExpDamageCC
 
     Used by:
-    Ship: Laelaps
     Ship: Orthrus
     Ship: Osprey Navy Issue
     """
@@ -22414,9 +22402,7 @@ class Effect5867(BaseEffect):
     Used by:
     Ship: Barghest
     Ship: Garmur
-    Ship: Laelaps
     Ship: Orthrus
-    Ship: Raiju
     """
 
     type = 'passive'
@@ -38014,3 +38000,267 @@ class Effect8329(BaseEffect):
     def handler(fit, container, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
             'signatureRadius', container.getModifiedItemAttr('signatureRadiusBonusPercent'), **kwargs)
+
+
+class Effect100100(BaseEffect):
+    """
+    pyfaCustomRaijuPointRange
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Scrambler',
+            'maxRange', 20.0, skill='Electronic Attack Ships', **kwargs)
+
+
+class Effect100101(BaseEffect):
+    """
+    pyfaCustomRaijuPointCap
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Scrambler',
+            'capacitorNeed', -10.0, skill='Electronic Attack Ships', **kwargs)
+
+
+class Effect100102(BaseEffect):
+    """
+    pyfaCustomRaijuDampStr
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Sensor Dampener',
+            'maxTargetRangeBonus', 10.0, skill='Gallente Frigate', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Sensor Dampener',
+            'scanResolutionBonus', 10.0, skill='Gallente Frigate', **kwargs)
+
+
+class Effect100103(BaseEffect):
+    """
+    pyfaCustomRaijuDampCap
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Sensor Dampener',
+            'capacitorNeed', -15.0, skill='Gallente Frigate', **kwargs)
+
+
+class Effect100104(BaseEffect):
+    """
+    pyfaCustomRaijuMissileDmg
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                f'{dmgType}Damage', 25.0, skill='Caldari Frigate', **kwargs)
+
+
+class Effect100105(BaseEffect):
+    """
+    pyfaCustomRaijuMissileFlightTime
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosionDelay', -25.0, **kwargs)
+
+
+class Effect100106(BaseEffect):
+    """
+    pyfaCustomRaijuMissileFlightVelocity
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'maxVelocity', 200.0, **kwargs)
+
+
+class Effect100200(BaseEffect):
+    """
+    pyfaCustomLaelapsWdfgRange
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
+            'warpScrambleRange', 20.0, skill='Heavy Interdiction Cruisers', **kwargs)
+
+
+class Effect100201(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileReload
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
+            'reloadTime', -10.0, skill='Gallente Cruiser', **kwargs)
+
+
+class Effect100202(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileDamageKin
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Light Missiles') or
+                        mod.charge.requiresSkill('Heavy Missiles') or
+                        mod.charge.requiresSkill('Heavy Assault Missiles'),
+            'kineticDamage', 20.0, skill='Caldari Cruiser', **kwargs)
+
+
+class Effect100203(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileRof
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Missile Launcher Rapid Light',
+                                                'Missile Launcher Heavy',
+                                                'Missile Launcher Heavy Assault'),
+            'speed', -5.0, skill='Caldari Cruiser', **kwargs)
+
+
+class Effect100204(BaseEffect):
+    """
+    pyfaCustomLaelapsShieldResists
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            tgtAttr = 'shield{}DamageResonance'.format(dmgType.capitalize())
+            fit.ship.boostItemAttr(tgtAttr, -10.0, **kwargs)
+
+
+class Effect100205(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileFlightTime
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosionDelay', -50.0, **kwargs)
+
+
+class Effect100206(BaseEffect):
+    """
+    pyfaCustomLaelapsWdfgSigPenalty
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
+            'signatureRadiusBonus', -100.0, **kwargs)
+
+
+class Effect100207(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileFlightVelocity
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'maxVelocity', 200.0, **kwargs)
