@@ -788,7 +788,7 @@ class Miscellanea(ViewColumn):
                                                 formatAmount(aoeVelocity, 3, 0, 3), "m/s")
                 tooltip = "Explosion radius and explosion velocity"
                 return text, tooltip
-            elif chargeGroup in ("Bomb", "Structure Guided Bomb"):
+            elif chargeGroup in ("Bomb", "Guided Bomb"):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 if not cloudSize:
                     return "", None
