@@ -146,6 +146,7 @@ def update_db():
             # Nearly useless and clutter search results too much
             elif (
                 row['typeName_en-us'].startswith('Limited Synth ') or
+                row['typeName_en-us'].startswith('Expired ') or
                 row['typeName_en-us'].endswith(' Filament') and (
                     "'Needlejack'" not in row['typeName_en-us'] and
                     "'Devana'" not in row['typeName_en-us'] and
