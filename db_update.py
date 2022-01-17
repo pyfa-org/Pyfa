@@ -635,7 +635,7 @@ def update_db():
     def hardcodeRaiju():
         attrMap = {
             'hp': 600,
-            'capacity': 130,
+            'capacity': 220,
             'mass': 987000,
             'volume': 27289,
             'agility': 3.1,
@@ -667,6 +667,7 @@ def update_db():
             'scanMagnetometricStrength': 0,
             'scanGravimetricStrength': 13,
             'maxVelocity': 440,
+            'warpSpeedMultiplier': 5.5,
             'cpuOutput': 247,
             'powerOutput': 38,
             'upgradeCapacity': 400,
@@ -714,7 +715,7 @@ def update_db():
             'energyWarfareResistance': 1,
             'weaponDisruptionResistance': 1,
             'capacitorCapacity': 1550,
-            'rechargeRate': 490000,
+            'rechargeRate': 315000,
             'maxTargetRange': 80000,
             'maxLockedTargets': 7,
             'signatureRadius': 135,
@@ -724,7 +725,7 @@ def update_db():
             'scanMagnetometricStrength': 0,
             'scanGravimetricStrength': 21,
             'maxVelocity': 230,
-            'warpSpeedMultiplier': 4,
+            'warpSpeedMultiplier': 4.5,
             'cpuOutput': 560,
             'powerOutput': 900,
             'upgradeCapacity': 400,
@@ -737,7 +738,7 @@ def update_db():
         effectMap = {
             100200: 'pyfaCustomLaelapsWdfgRange',
             100201: 'pyfaCustomLaelapsMissileReload',
-            100202: 'pyfaCustomLaelapsMissileDamageKin',
+            100202: 'pyfaCustomLaelapsMissileDamage',
             100203: 'pyfaCustomLaelapsMissileRof',
             100204: 'pyfaCustomLaelapsShieldResists',
             100205: 'pyfaCustomLaelapsMissileFlightTime',

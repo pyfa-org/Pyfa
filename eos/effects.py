@@ -4274,7 +4274,8 @@ class Effect1409(BaseEffect):
     systemScanDurationSkillAstrometrics
 
     Used by:
-    Implants named like: Acquisition (6 of 6)
+    Implants named like: AIR Astro Acquisition Booster (3 of 3)
+    Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Skill: Astrometric Acquisition
@@ -38161,7 +38162,7 @@ class Effect100201(BaseEffect):
 
 class Effect100202(BaseEffect):
     """
-    pyfaCustomLaelapsMissileDamageKin
+    pyfaCustomLaelapsMissileDamage
 
     Used by:
     Ship: Laelaps
@@ -38171,11 +38172,12 @@ class Effect100202(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(
-            lambda mod: mod.charge.requiresSkill('Light Missiles') or
-                        mod.charge.requiresSkill('Heavy Missiles') or
-                        mod.charge.requiresSkill('Heavy Assault Missiles'),
-            'kineticDamage', 20.0, skill='Caldari Cruiser', **kwargs)
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Light Missiles') or
+                            mod.charge.requiresSkill('Heavy Missiles') or
+                            mod.charge.requiresSkill('Heavy Assault Missiles'),
+                f'{dmgType}Damage', 20.0, skill='Caldari Cruiser', **kwargs)
 
 
 class Effect100203(BaseEffect):
@@ -38211,7 +38213,7 @@ class Effect100204(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
             tgtAttr = 'shield{}DamageResonance'.format(dmgType.capitalize())
-            fit.ship.boostItemAttr(tgtAttr, -10.0, **kwargs)
+            fit.ship.boostItemAttr(tgtAttr, -20.0, **kwargs)
 
 
 class Effect100205(BaseEffect):
