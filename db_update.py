@@ -599,6 +599,8 @@ def update_db():
         eos.gamedata.Item.name.like('%abyssal%'),
         eos.gamedata.Item.name.like('%mutated%')
     )).all():
+        if 'Asteroid Mining Crystal' in item.name:
+            continue
         item.published = False
 
     for x in [
