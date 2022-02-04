@@ -31231,7 +31231,7 @@ class Effect6737(BaseEffect):
     Items from market group: Ammunition & Charges > Command Burst Charges (15 of 15)
     """
 
-    type = 'active'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
