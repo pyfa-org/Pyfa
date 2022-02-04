@@ -42,8 +42,8 @@ class ItemParams(wx.Panel):
         self.toggleView = AttributeView.NORMAL
         self.stuff = stuff
         self.item = item
-        self.isStuffItem = stuff is not None and getattr(stuff, 'item') == item
-        self.isStuffCharge = stuff is not None and getattr(stuff, 'charge') == item
+        self.isStuffItem = stuff is not None and item is not None and getattr(stuff, 'item', None) == item
+        self.isStuffCharge = stuff is not None and item is not None and getattr(stuff, 'charge', None) == item
         self.attrInfo = {}
         self.attrValues = {}
         self._fetchValues()
@@ -297,9 +297,9 @@ class ItemParams(wx.Panel):
         valDefault = getattr(info, "value", None)  # Get default value from attribute
         if self.stuff is not None:
             # if it's a stuff, overwrite default (with fallback to current value)
-            if self.stuff.item == self.item:
+            if self.isStuffItem:
                 valDefault = self.stuff.getItemBaseAttrValue(attr, valDefault)
-            elif self.stuff.charge == self.item:
+            elif self.isStuffCharge:
                 valDefault = self.stuff.getChargeBaseAttrValue(attr, valDefault)
 
         valueDefault = valDefault if valDefault is not None else att

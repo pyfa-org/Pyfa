@@ -63,7 +63,7 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
                 oldMod = oldModMap.get(position)
                 newMod = newModMap.get(position)
                 if oldMod is not newMod:
-                    events.append(GE.ItemChangedInplace(fitID=self.fitID, old=oldMod, new=newMod))
+                    events.append(GE.ItemChangedInplace(old=oldMod, new=newMod))
         for event in events:
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success
