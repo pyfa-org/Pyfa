@@ -1956,7 +1956,8 @@ class Effect607(BaseEffect):
         # This is used to apply cloak-only bonuses, like Black Ops' speed bonus
         fit.extraAttributes['cloaked'] = True
         # Apply speed penalty
-        fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'), **kwargs)
+        fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'),
+                                  stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect623(BaseEffect):
@@ -37081,11 +37082,13 @@ class Effect8151(BaseEffect):
     """
 
     type = 'passive'
+    runTime = 'early'
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        if fit.extraAttributes['cloaked']:
-            fit.ship.multiplyItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Cloaking'), 'maxVelocityModifier',
+            ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
 
 class Effect8152(BaseEffect):
