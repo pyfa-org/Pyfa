@@ -49,7 +49,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             # relationship via .owner attribute, which is handled by SQLAlchemy
             eos.db.flush()
             sFit.recalc(fit)
-            self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if not self.ignoreRestrictions and not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             self.Undo()
@@ -62,6 +61,8 @@ class CalcReplaceLocalModuleCommand(wx.Command):
                 pyfalog.warning('Invalid charge')
                 self.Undo()
                 return False
+        if self.recalc:
+            self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         return True
 
     def Undo(self):
