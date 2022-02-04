@@ -1,15 +1,18 @@
 import csv
-import config
+from enum import IntEnum
 
 # noinspection PyPackageRequirements
 import wx
 import wx.lib.agw.hypertreelist
 
+import config
+import gui
+from gui import globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount, roundDec
-from enum import IntEnum
 from gui.builtinItemStatsViews.attributeGrouping import *
+from gui.utils.numberFormatter import formatAmount, roundDec
 from service.const import GuiAttrGroup
+
 
 _t = wx.GetTranslation
 
@@ -25,6 +28,8 @@ class ItemParams(wx.Panel):
         wx.Panel.__init__(self, parent, size=(1000, 1000))
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY,
@@ -37,6 +42,8 @@ class ItemParams(wx.Panel):
         self.toggleView = AttributeView.NORMAL
         self.stuff = stuff
         self.item = item
+        self.isStuffItem = stuff is not None and getattr(stuff, 'item') == item
+        self.isStuffCharge = stuff is not None and getattr(stuff, 'charge') == item
         self.attrInfo = {}
         self.attrValues = {}
         self._fetchValues()
@@ -71,6 +78,10 @@ class ItemParams(wx.Panel):
 
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleViewMode)
         self.exportStatsBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ExportItemStats)
+        self.mainFrame.Bind(GE.ITEM_CHANGED_INPLACE, self.OnUpdateStuff)
+
+    def OnWindowClose(self):
+        self.mainFrame.Unbind(GE.ITEM_CHANGED_INPLACE)
 
     def _fetchValues(self):
         if self.stuff is None:
@@ -78,12 +89,12 @@ class ItemParams(wx.Panel):
             self.attrValues.clear()
             self.attrInfo.update(self.item.attributes)
             self.attrValues.update(self.item.attributes)
-        elif self.stuff.item == self.item:
+        elif self.isStuffItem:
             self.attrInfo.clear()
             self.attrValues.clear()
             self.attrInfo.update(self.stuff.item.attributes)
             self.attrValues.update(self.stuff.itemModifiedAttributes)
-        elif self.stuff.charge == self.item:
+        elif self.isStuffCharge:
             self.attrInfo.clear()
             self.attrValues.clear()
             self.attrInfo.update(self.stuff.charge.attributes)
@@ -170,6 +181,10 @@ class ItemParams(wx.Panel):
                                 attribute_value,
                             ]
                     )
+
+    def OnUpdateStuff(self, event):
+        if self.stuff is event.old:
+            self.stuff = event.new
 
     def SetupImageList(self):
         self.imageList.RemoveAll()
@@ -357,3 +372,4 @@ class ItemParams(wx.Panel):
             fvalue = value
         unitSuffix = f' {unit}' if unit is not None else ''
         return f'{fvalue}{unitSuffix}'
+

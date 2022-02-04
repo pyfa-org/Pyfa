@@ -11,6 +11,9 @@ GraphOptionChanged, GRAPH_OPTION_CHANGED = wx.lib.newevent.NewEvent()
 TargetProfileRenamed, TARGET_PROFILE_RENAMED = wx.lib.newevent.NewEvent()
 TargetProfileChanged, TARGET_PROFILE_CHANGED = wx.lib.newevent.NewEvent()
 TargetProfileRemoved, TARGET_PROFILE_REMOVED = wx.lib.newevent.NewEvent()
+# For events when item is actually replaced under the hood,
+# but from user's perspective it's supposed to change/mutate
+ItemChangedInplace, ITEM_CHANGED_INPLACE = wx.lib.newevent.NewEvent()
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
