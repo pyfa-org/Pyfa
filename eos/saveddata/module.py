@@ -654,6 +654,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         """
 
         slot = self.slot
+        if slot is None:
+            return False
         if fit.getSlotsFree(slot) <= (0 if self.owner != fit else -1):
             return False
 
