@@ -601,6 +601,8 @@ def update_db():
     )).all():
         if 'Asteroid Mining Crystal' in item.name:
             continue
+        if 'Mutated Drone Specialization' in item.name:
+            continue
         item.published = False
 
     for x in [
