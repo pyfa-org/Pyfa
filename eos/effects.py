@@ -37589,7 +37589,7 @@ class Effect8263(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Compact Industrial Reconfiguration'), 'consumptionQuantity',
+            lambda mod: mod.item.requiresSkill('Industrial Reconfiguration'), 'consumptionQuantity',
             ship.getModifiedItemAttr('industrialCommandBonusFuelConsuptionCompactIndustrialCore'),
             skill='Industrial Command Ships', **kwargs)
 
