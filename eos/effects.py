@@ -7585,9 +7585,10 @@ class Effect2694(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect2695(BaseEffect):
@@ -7603,7 +7604,7 @@ class Effect2695(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        penalize = False if 'booster' in context else True
+        penalize = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
                                       stackingPenalties=penalize, **kwargs)
@@ -8301,7 +8302,7 @@ class Effect2798(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        penalize = False if 'booster' in context else True
+        penalize = 'booster' not in context
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
                                          stackingPenalties=penalize, **kwargs)
@@ -8354,9 +8355,10 @@ class Effect2802(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = 'booster' not in context
         fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                          'damageMultiplier', module.getModifiedItemAttr('damageMultiplier'),
-                                         stackingPenalties=True, **kwargs)
+                                         stackingPenalties=penalize, **kwargs)
 
 
 class Effect2803(BaseEffect):
@@ -18053,9 +18055,10 @@ class Effect5188(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Hybrid Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect5189(BaseEffect):
@@ -18090,7 +18093,7 @@ class Effect5190(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        penalize = False if 'booster' in context else True
+        penalize = 'booster' not in context
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Projectile Weapon',
                                       'trackingSpeed', module.getModifiedItemAttr('trackingSpeedBonus'),
                                       stackingPenalties=penalize, **kwargs)
@@ -35761,8 +35764,10 @@ class Effect8018(BaseEffect):
 
     @staticmethod
     def handler(fit, implant, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
-                                      'duration', implant.getModifiedItemAttr('remoteRepDurationBonus'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems')
+                        or mod.item.requiresSkill('Remote Armor Repair Systems'),
+            'duration', implant.getModifiedItemAttr('remoteRepDurationBonus'), **kwargs)
 
 
 class Effect8020(BaseEffect):
@@ -37608,6 +37613,24 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
+class Effect8269(BaseEffect):
+    """
+    stasisWebifierMaxRangeAddPassive
+
+    Used by:
+    Implants named like: Guardian 'Hod' Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
+            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
+
+
+
 class Effect8275(BaseEffect):
     """
     minmatarIndustrialBonusGasHoldCapacity
@@ -38065,3 +38088,59 @@ class Effect8362(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
             'signatureRadiusBonus', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors3'), **kwargs)
+
+
+class Effect8365(BaseEffect):
+    """
+    mwdCapUseAndSigBonusPassive
+
+    Used by:
+    Implants named like: Guardian 'Chokmah' Booster (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering'), 'signatureRadiusBonus',
+            ship.getModifiedItemAttr('MWDSignatureRadiusBonus'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering'), 'capacitorNeed',
+            ship.getModifiedItemAttr('MWDSignatureRadiusBonus'), **kwargs)
+
+
+class Effect8366(BaseEffect):
+    """
+    modifyHullResonancePostPercentpassive
+
+    Used by:
+    Implants named like: Guardian 'Yesod' Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(f'{dmgType}DamageResonance',
+                                   src.getModifiedItemAttr(f'{dmgType}DamageResistanceBonus'),
+                                   **kwargs)
+
+
+class Effect8367(BaseEffect):
+    """
+    warpScramblerMaxRangeAddPassive
+
+    Used by:
+    Implants named like: Guardian 'Hod' Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('Navigation'), 'maxRange',
+            module.getModifiedItemAttr('scramblerRangeAdd'), **kwargs)
