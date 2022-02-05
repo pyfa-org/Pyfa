@@ -2828,5 +2828,79 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2152": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving HP Addition", 
+    "displayName_de": "Zusätzliche Basis-HP des Rumpfs", 
+    "displayName_en-us": "Additional Base Hull Hitpoints", 
+    "displayName_es": "Additional Base Hull Hitpoints", 
+    "displayName_fr": "Points de vie de la coque de base supplémentaires", 
+    "displayName_it": "Additional Base Hull Hitpoints", 
+    "displayName_ja": "追加ベース船体HP", 
+    "displayName_ko": "추가 선체 내구도", 
+    "displayName_ru": "Увеличение основного запаса прочности корпуса", 
+    "displayName_zh": "Additional Base Hull Hitpoints", 
+    "displayNameID": 594653, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 9
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2153": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Turret Tracking", 
+    "displayName_de": "Geschützturmnachführung", 
+    "displayName_en-us": "Turret Tracking", 
+    "displayName_es": "Turret Tracking", 
+    "displayName_fr": "Poursuite des tourelles", 
+    "displayName_it": "Turret Tracking", 
+    "displayName_ja": "タレットのトラッキング", 
+    "displayName_ko": "터렛 트래킹", 
+    "displayName_ru": "Скорость наведения турелей", 
+    "displayName_zh": "Turret Tracking", 
+    "displayNameID": 594691, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2154": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Turret Falloff", 
+    "displayName_de": "Geschützturm-Präzisionsabfall", 
+    "displayName_en-us": "Turret Falloff", 
+    "displayName_es": "Turret Falloff", 
+    "displayName_fr": "Déperdition des tourelles", 
+    "displayName_it": "Turret Falloff", 
+    "displayName_ja": "タレットの精度低下範囲", 
+    "displayName_ko": "터렛 유효사거리", 
+    "displayName_ru": "Остаточная дальность орудий", 
+    "displayName_zh": "Turret Falloff", 
+    "displayNameID": 594692, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 158, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
