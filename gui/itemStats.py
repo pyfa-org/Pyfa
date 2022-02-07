@@ -216,3 +216,4 @@ class ItemStatsContainer(wx.Panel):
         mutaPanel = getattr(self, 'mutator', None)
         if mutaPanel is not None:
             mutaPanel.OnWindowClose()
+        self.params.OnWindowClose()

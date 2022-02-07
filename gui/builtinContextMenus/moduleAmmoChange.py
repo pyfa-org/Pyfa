@@ -1,5 +1,6 @@
-# noinspection PyPackageRequirements
+from collections import OrderedDict
 
+# noinspection PyPackageRequirements
 import wx
 
 import gui.fitCommands as cmd
@@ -25,8 +26,20 @@ class ChangeModuleAmmo(ContextMenuCombined):
             'thermal': _t('Thermal'),
             'explosive': _t('Explosive'),
             'kinetic': _t('Kinetic'),
-            'mixed': _t('Mixed')
-        }
+            'mixed': _t('Mixed')}
+        self.oreChargeCatTrans = OrderedDict([
+            ('a1', _t('Asteroid Simple')),
+            ('a2', _t('Asteroid Coherent')),
+            ('a3', _t('Asteroid Variegated')),
+            ('a4', _t('Asteroid Complex')),
+            ('a5', _t('Asteroid Abyssal')),
+            ('a6', _t('Asteroid Mercoxit')),
+            ('r4', _t('Moon Ubiquitous')),
+            ('r8', _t('Moon Common')),
+            ('r16', _t('Moon Uncommon')),
+            ('r32', _t('Moon Rare')),
+            ('r64', _t('Moon Exceptional')),
+            ('misc', _t('Misc'))])
 
     def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext not in ('fittingModule', 'projectedModule'):
@@ -113,6 +126,24 @@ class ChangeModuleAmmo(ContextMenuCombined):
                 for charge in charges:
                     subMenu.Append(self._addCharge(rootMenu if msw else subMenu, charge))
                 self._addSeparator(subMenu, _t('More Damage'))
+            for menuItem in menuItems:
+                menu.Append(menuItem)
+        elif modType == 'miner':
+            menuItems = []
+            for catHandle, catLabel in self.oreChargeCatTrans.items():
+                charges = chargeDict.get(catHandle)
+                if not charges:
+                    continue
+                if len(charges) == 1:
+                    menuItems.append(self._addCharge(rootMenu if msw else menu, charges[0]))
+                else:
+                    menuItem = wx.MenuItem(menu, wx.ID_ANY, catLabel)
+                    menuItems.append(menuItem)
+                    subMenu = wx.Menu()
+                    subMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
+                    menuItem.SetSubMenu(subMenu)
+                    for charge in charges:
+                        subMenu.Append(self._addCharge(rootMenu if msw else subMenu, charge))
             for menuItem in menuItems:
                 menu.Append(menuItem)
         elif modType == 'general':

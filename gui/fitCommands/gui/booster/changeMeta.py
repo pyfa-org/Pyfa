@@ -16,6 +16,7 @@ class GuiChangeBoosterMetaCommand(wx.Command):
         self.fitID = fitID
         self.position = position
         self.newItemID = newItemID
+        self.newPosition = None
 
     def Do(self):
         sFit = Fit.getInstance()
@@ -31,15 +32,24 @@ class GuiChangeBoosterMetaCommand(wx.Command):
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
+        self.newPosition = cmd.newPosition
+        newBooster = fit.boosters[self.newPosition]
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        wx.PostEvent(mainFrame, GE.FitChanged(fitIDs=(self.fitID,)))
+        wx.PostEvent(mainFrame, GE.ItemChangedInplace(old=booster, new=newBooster))
         return success
 
     def Undo(self):
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        oldBooster = fit.boosters[self.newPosition]
         success = self.internalHistory.undoAll()
         eos.db.flush()
-        sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
+        newBooster = fit.boosters[self.position]
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        wx.PostEvent(mainFrame, GE.FitChanged(fitIDs=(self.fitID,)))
+        wx.PostEvent(mainFrame, GE.ItemChangedInplace(old=oldBooster, new=newBooster))
         return success

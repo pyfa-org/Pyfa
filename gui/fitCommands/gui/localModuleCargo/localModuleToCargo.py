@@ -57,41 +57,42 @@ class GuiLocalModuleToCargoCommand(wx.Command):
             commands.append(cmdReplace)
             # Submit batch now because we need to have updated info on fit to keep going
             success = self.internalHistory.submitBatch(*commands)
-            newMod = fit.modules[self.srcModPosition]
-            # Process charge changes if module is moved to proper slot
-            if newMod.slot == srcModSlot:
-                # If we had to unload charge, add it to cargo
-                if cmdReplace.unloadedCharge and srcModChargeItemID is not None:
-                    cmdAddCargoCharge = CalcAddCargoCommand(
-                        fitID=self.fitID,
-                        cargoInfo=CargoInfo(itemID=srcModChargeItemID, amount=srcModChargeAmount))
-                    success = self.internalHistory.submit(cmdAddCargoCharge)
-                # If we did not unload charge and there still was a charge, see if amount differs and process it
-                elif not cmdReplace.unloadedCharge and srcModChargeItemID is not None:
-                    # How many extra charges do we need to take from cargo
-                    extraChargeAmount = newMod.numCharges - srcModChargeAmount
-                    if extraChargeAmount > 0:
-                        cmdRemoveCargoExtraCharge = CalcRemoveCargoCommand(
+            if success:
+                newMod = fit.modules[self.srcModPosition]
+                # Process charge changes if module is moved to proper slot
+                if newMod.slot == srcModSlot:
+                    # If we had to unload charge, add it to cargo
+                    if cmdReplace.unloadedCharge and srcModChargeItemID is not None:
+                        cmdAddCargoCharge = CalcAddCargoCommand(
                             fitID=self.fitID,
-                            cargoInfo=CargoInfo(itemID=srcModChargeItemID, amount=extraChargeAmount))
-                        # Do not check if operation was successful or not, we're okay if we have no such
-                        # charges in cargo
-                        self.internalHistory.submit(cmdRemoveCargoExtraCharge)
-                    elif extraChargeAmount < 0:
-                        cmdAddCargoExtraCharge = CalcAddCargoCommand(
-                            fitID=self.fitID,
-                            cargoInfo=CargoInfo(itemID=srcModChargeItemID, amount=abs(extraChargeAmount)))
-                        success = self.internalHistory.submit(cmdAddCargoExtraCharge)
-                if success:
-                    # Store info to properly send events later
-                    self.removedModItemID = srcModItemID
-                    self.addedModItemID = self.dstCargoItemID
-            # If drag happened to module which cannot be fit into current slot - consider it as failure
-            else:
-                success = False
-            # And in case of any failures, cancel everything to try to do move instead
-            if not success:
-                self.internalHistory.undoAll()
+                            cargoInfo=CargoInfo(itemID=srcModChargeItemID, amount=srcModChargeAmount))
+                        success = self.internalHistory.submit(cmdAddCargoCharge)
+                    # If we did not unload charge and there still was a charge, see if amount differs and process it
+                    elif not cmdReplace.unloadedCharge and srcModChargeItemID is not None:
+                        # How many extra charges do we need to take from cargo
+                        extraChargeAmount = newMod.numCharges - srcModChargeAmount
+                        if extraChargeAmount > 0:
+                            cmdRemoveCargoExtraCharge = CalcRemoveCargoCommand(
+                                fitID=self.fitID,
+                                cargoInfo=CargoInfo(itemID=srcModChargeItemID, amount=extraChargeAmount))
+                            # Do not check if operation was successful or not, we're okay if we have no such
+                            # charges in cargo
+                            self.internalHistory.submit(cmdRemoveCargoExtraCharge)
+                        elif extraChargeAmount < 0:
+                            cmdAddCargoExtraCharge = CalcAddCargoCommand(
+                                fitID=self.fitID,
+                                cargoInfo=CargoInfo(itemID=srcModChargeItemID, amount=abs(extraChargeAmount)))
+                            success = self.internalHistory.submit(cmdAddCargoExtraCharge)
+                    if success:
+                        # Store info to properly send events later
+                        self.removedModItemID = srcModItemID
+                        self.addedModItemID = self.dstCargoItemID
+                # If drag happened to module which cannot be fit into current slot - consider it as failure
+                else:
+                    success = False
+                # And in case of any failures, cancel everything to try to do move instead
+                if not success:
+                    self.internalHistory.undoAll()
         # Just dump module and its charges into cargo when copying or moving to cargo
         if not success:
             commands = []

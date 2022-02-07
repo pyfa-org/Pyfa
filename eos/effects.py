@@ -61,7 +61,7 @@ class Effect10(BaseEffect):
 
     Used by:
     Celestials from group: Destructible Effect Beacon (6 of 6)
-    Drones from group: Combat Drone (79 of 79)
+    Drones from group: Combat Drone (80 of 80)
     Modules from group: Energy Weapon (212 of 214)
     Celestial: EDENCOM Stockpile Non-Interactable (Do not translate)
     """
@@ -961,6 +961,7 @@ class Effect272(BaseEffect):
     repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
 
     Used by:
+    Implants named like: AIR Repairer Booster (3 of 3)
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: Numon Family Heirloom
@@ -1178,6 +1179,7 @@ class Effect395(BaseEffect):
 
     Used by:
     Modules from group: Rig Anchor (4 of 4)
+    Implants named like: AIR Agility Booster (3 of 3)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
@@ -1285,6 +1287,7 @@ class Effect446(BaseEffect):
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
+    Implants named like: Wightstorm Nirvana Booster (3 of 3)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: Genolution Core Augmentation CA-3
@@ -1306,6 +1309,7 @@ class Effect485(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
+    Implants named like: Wightstorm Rapture Booster (3 of 3)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -1824,7 +1828,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 978)
+    Items from category: Charge (608 of 1004)
     """
 
     type = 'passive'
@@ -1839,7 +1843,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (33 of 33)
+    Charges from group: Festival Charges (35 of 35)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -1952,7 +1956,8 @@ class Effect607(BaseEffect):
         # This is used to apply cloak-only bonuses, like Black Ops' speed bonus
         fit.extraAttributes['cloaked'] = True
         # Apply speed penalty
-        fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'), **kwargs)
+        fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'),
+                                  stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
 class Effect623(BaseEffect):
@@ -2394,7 +2399,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (514 of 978)
+    Items from category: Charge (538 of 1004)
     """
 
     type = 'passive'
@@ -3767,19 +3772,29 @@ class Effect1190(BaseEffect):
 
 class Effect1200(BaseEffect):
     """
-    miningInfoMultiplier
+    miningCrystalsMiningAtributesAdjustments
 
     Used by:
-    Charges from group: Mining Crystal (40 of 40)
-    Charges named like: Mining Crystal (42 of 42)
+    Charges from group: Mercoxit Mining Crystal (6 of 6)
+    Charges from group: Mining Crystal (60 of 60)
     """
 
     type = 'passive'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        module.multiplyItemAttr('specialtyMiningAmount',
-                                module.getModifiedChargeAttr('specialisationAsteroidYieldMultiplier'), **kwargs)
+        module.multiplyItemAttr(
+            'miningAmount',
+            module.getModifiedChargeAttr('specializationAsteroidYieldMultiplier'),
+            **kwargs)
+        module.increaseItemAttr(
+            'miningWastedVolumeMultiplier',
+            module.getModifiedChargeAttr('specializationCrystalMiningWastedVolumeMultiplierBonus'),
+            **kwargs)
+        module.increaseItemAttr(
+            'miningWasteProbability',
+            module.getModifiedChargeAttr('specializationCrystalMiningWasteProbabilityBonus'),
+            **kwargs)
 
 
 class Effect1212(BaseEffect):
@@ -4260,7 +4275,8 @@ class Effect1409(BaseEffect):
     systemScanDurationSkillAstrometrics
 
     Used by:
-    Implants named like: Acquisition (6 of 6)
+    Implants named like: AIR Astro Acquisition Booster (3 of 3)
+    Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Skill: Astrometric Acquisition
@@ -4922,6 +4938,7 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
+    Implants named like: AIR Repairer Booster (3 of 3)
     Modules named like: Nanobot Accelerator (8 of 8)
     Skill: Capital Repair Systems
     """
@@ -5685,23 +5702,6 @@ class Effect1886(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo',
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'),
                                       skill='Caldari Battleship', **kwargs)
-
-
-class Effect1896(BaseEffect):
-    """
-    eliteBargeBonusIceHarvestingCycleTimeBarge3
-
-    Used by:
-    Ships from group: Exhumer (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
-                                      'duration', ship.getModifiedItemAttr('eliteBonusBarge2'),
-                                      skill='Exhumers', **kwargs)
 
 
 class Effect1910(BaseEffect):
@@ -6830,30 +6830,6 @@ class Effect2255(BaseEffect):
     type = 'active'
 
 
-class Effect2296(BaseEffect):
-    """
-    modifyArmorResonancePassivePostPercentPassive
-
-    Used by:
-    Implants named like: Tetrimon Resistance Booster (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        for srcResType, tgtResType in (
-                ('Em', 'Em'),
-                ('Explosive', 'Explosive'),
-                ('Kinetic', 'Kinetic'),
-                ('Thermic', 'Thermal')
-        ):
-            fit.ship.boostItemAttr(
-                'armor{}DamageResonance'.format(tgtResType),
-                src.getModifiedItemAttr('passive{}DamageResistanceBonus'.format(srcResType)),
-                **kwargs)
-
-
 class Effect2298(BaseEffect):
     """
     scanStrengthBonusPercentPassive
@@ -7010,7 +6986,6 @@ class Effect2432(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
-    Implants named like: Tetrimon Capacitor Booster (3 of 3)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -7630,7 +7605,6 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (3 of 3)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -7829,7 +7803,7 @@ class Effect2726(BaseEffect):
     miningClouds
 
     Used by:
-    Modules from group: Gas Cloud Harvester (5 of 5)
+    Modules named like: Gas Cloud (8 of 8)
     """
 
     type = 'active'
@@ -7847,7 +7821,7 @@ class Effect2727(BaseEffect):
 
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == 'Gas Cloud Scoops',
                                          'maxGroupActive', skill.level, **kwargs)
 
 
@@ -8379,7 +8353,7 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Harvest Damage Booster (3 of 3)
+    Implants named like: Wightstorm Vitarka Booster (3 of 3)
     Modules named like: Energy Collision Accelerator (8 of 8)
     """
 
@@ -9284,7 +9258,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (444 of 907)
+    Items from market group: Ship Equipment > Turrets & Launchers (444 of 909)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9672,15 +9646,18 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
+    Implants named like: Wightstorm Sunyata Booster (3 of 3)
     Skill: Thermodynamics
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: 'heatDamage' in mod.item.attributes, 'heatDamage',
-                                      skill.getModifiedItemAttr('thermodynamicsHeatDamage') * skill.level, **kwargs)
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
+        fit.modules.filteredItemBoost(
+            lambda mod: 'heatDamage' in mod.item.attributes, 'heatDamage',
+            container.getModifiedItemAttr('thermodynamicsHeatDamage') * level, **kwargs)
 
 
 class Effect3200(BaseEffect):
@@ -9869,10 +9846,10 @@ class Effect3244(BaseEffect):
 
 class Effect3264(BaseEffect):
     """
-    skillIndustrialReconfigurationConsumptionQuantityBonus
+    skillCapitalIndustrialReconfigurationConsumptionQuantityBonus
 
     Used by:
-    Skill: Industrial Reconfiguration
+    Skill: Capital Industrial Reconfiguration
     """
 
     type = 'passive'
@@ -10452,7 +10429,7 @@ class Effect3468(BaseEffect):
     eliteBonusHeavyInterdictorsWarpDisruptFieldGeneratorWarpScrambleRange2
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (5 of 5)
+    Ships from group: Heavy Interdiction Cruiser (5 of 6)
     """
 
     type = 'passive'
@@ -11428,7 +11405,7 @@ class Effect3671(BaseEffect):
 
     @staticmethod
     def handler(fit, implant, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Gas Cloud Scoops',
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
 
@@ -11703,27 +11680,6 @@ class Effect3740(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam', 'maxTractorVelocity',
                                       ship.getModifiedItemAttr('roleBonusTractorBeamVelocity'), **kwargs)
-
-
-class Effect3742(BaseEffect):
-    """
-    cargoAndOreHoldCapacityBonusICS1
-
-    Used by:
-    Ships from group: Industrial Command Ship (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('specialOreHoldCapacity',
-                               src.getModifiedItemAttr('shipBonusICS1'),
-                               skill='Industrial Command Ships', **kwargs)
-
-        fit.ship.boostItemAttr('capacity',
-                               src.getModifiedItemAttr('shipBonusICS1'),
-                               skill='Industrial Command Ships', **kwargs)
 
 
 class Effect3744(BaseEffect):
@@ -15351,7 +15307,7 @@ class Effect4575(BaseEffect):
     industrialCoreEffect2
 
     Used by:
-    Variations of module: Industrial Core I (2 of 2)
+    Variations of module: Capital Industrial Core I (2 of 2)
     """
 
     runTime = 'early'
@@ -16715,6 +16671,7 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
+    Implants named like: AIR Repairer Booster (3 of 3)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
     """
 
@@ -16995,7 +16952,7 @@ class Effect5008(BaseEffect):
     shipShieldEMResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ships from group: Heavy Interdiction Cruiser (3 of 6)
     Ship: Ibis
     Ship: Taipan
     """
@@ -17012,7 +16969,7 @@ class Effect5009(BaseEffect):
     shipShieldExplosiveResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ships from group: Heavy Interdiction Cruiser (3 of 6)
     Ship: Ibis
     Ship: Taipan
     """
@@ -17029,7 +16986,7 @@ class Effect5011(BaseEffect):
     shipShieldKineticResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ships from group: Heavy Interdiction Cruiser (3 of 6)
     Ship: Ibis
     Ship: Taipan
     """
@@ -17046,7 +17003,7 @@ class Effect5012(BaseEffect):
     shipShieldThermalResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ships from group: Heavy Interdiction Cruiser (3 of 6)
     Ship: Ibis
     Ship: Taipan
     """
@@ -17227,22 +17184,6 @@ class Effect5028(BaseEffect):
                                           ship.getModifiedItemAttr('rookieECMStrengthBonus'), **kwargs)
 
 
-class Effect5029(BaseEffect):
-    """
-    shipBonusDroneMiningAmountRole
-
-    Used by:
-    Ships from group: Industrial Command Ship (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
-                                     'miningAmount', src.getModifiedItemAttr('roleBonusDroneMiningYield'), **kwargs)
-
-
 class Effect5030(BaseEffect):
     """
     shipBonusMiningDroneAmountPercentRookie
@@ -17267,7 +17208,6 @@ class Effect5035(BaseEffect):
     shipBonusDroneHitpointsRookie
 
     Used by:
-    Variations of ship: Procurer (2 of 2)
     Ship: Gnosis
     Ship: Praxis
     Ship: Sunesis
@@ -17348,28 +17288,12 @@ class Effect5051(BaseEffect):
                                       'duration', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate', **kwargs)
 
 
-class Effect5055(BaseEffect):
-    """
-    iceHarvesterDurationMultiplier
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
-                                         'duration', ship.getModifiedItemAttr('iceHarvestCycleBonus'), **kwargs)
-
-
 class Effect5058(BaseEffect):
     """
     miningYieldMultiplyPassive
 
     Used by:
-    Variations of ship: Venture (3 of 3)
+    Ship: Venture
     """
 
     type = 'passive'
@@ -17378,23 +17302,6 @@ class Effect5058(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Mining'),
                                          'miningAmount', module.getModifiedItemAttr('miningAmountMultiplier'), **kwargs)
-
-
-class Effect5059(BaseEffect):
-    """
-    shipBonusIceHarvesterDurationORE3
-
-    Used by:
-    Ships from group: Exhumer (3 of 3)
-    Ships from group: Mining Barge (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'),
-                                      'duration', container.getModifiedItemAttr('shipBonusORE3'), skill='Mining Barge', **kwargs)
 
 
 class Effect5066(BaseEffect):
@@ -17416,7 +17323,7 @@ class Effect5066(BaseEffect):
 
 class Effect5067(BaseEffect):
     """
-    shipBonusOreHoldORE2
+    miningBargeBonusGeneralMiningHoldCapacity
 
     Used by:
     Variations of ship: Retriever (2 of 2)
@@ -17426,12 +17333,14 @@ class Effect5067(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
+        fit.ship.boostItemAttr(
+            'generalMiningHoldCapacity', ship.getModifiedItemAttr('miningBargeBonusGeneralMiningHoldCapacity'),
+            skill='Mining Barge', **kwargs)
 
 
 class Effect5068(BaseEffect):
     """
-    shipBonusShieldCapacityORE2
+    miningBargeBonusShieldCapacity
 
     Used by:
     Variations of ship: Procurer (2 of 2)
@@ -17441,7 +17350,7 @@ class Effect5068(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
+        fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('miningBargeBonusShieldCapacity'), skill='Mining Barge', **kwargs)
 
 
 class Effect5069(BaseEffect):
@@ -17458,7 +17367,7 @@ class Effect5069(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Mercoxit Processing'),
-                                        'specialisationAsteroidYieldMultiplier',
+                                        'specializationAsteroidYieldMultiplier',
                                         module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
 
 
@@ -17933,7 +17842,7 @@ class Effect5136(BaseEffect):
 
 class Effect5139(BaseEffect):
     """
-    shipMiningBonusOREfrig1
+    miningFrigateBonusOreMiningYield
 
     Used by:
     Variations of ship: Venture (3 of 3)
@@ -17944,25 +17853,8 @@ class Effect5139(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'miningAmount', module.getModifiedItemAttr('shipBonusOREfrig1'),
+                                      'miningAmount', module.getModifiedItemAttr('miningFrigatesBonusOreMiningYield'),
                                       skill='Mining Frigate', **kwargs)
-
-
-class Effect5142(BaseEffect):
-    """
-    GCHYieldMultiplyPassive
-
-    Used by:
-    Ship: Prospect
-    Ship: Venture
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
-                                         'miningAmount', module.getModifiedItemAttr('miningAmountMultiplier'), **kwargs)
 
 
 class Effect5153(BaseEffect):
@@ -17980,23 +17872,6 @@ class Effect5153(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
-
-
-class Effect5156(BaseEffect):
-    """
-    shipGCHYieldBonusOREfrig2
-
-    Used by:
-    Ship: Prospect
-    Ship: Venture
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Gas Cloud Harvester',
-                                      'duration', module.getModifiedItemAttr('shipBonusOREfrig2'), skill='Mining Frigate', **kwargs)
 
 
 class Effect5162(BaseEffect):
@@ -18170,7 +18045,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (3 of 3)
+    Implants named like: Wightstorm Manasikara Booster (3 of 3)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -20320,6 +20195,7 @@ class Effect5437(BaseEffect):
     archaeologySkillVirusBonus
 
     Used by:
+    Implants named like: AIR Relic Coherence Booster (3 of 3)
     Modules named like: Emission Scope Sharpener (8 of 8)
     Implant: Poteque 'Prospector' Archaeology AC-905
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
@@ -20531,22 +20407,6 @@ class Effect5471(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusAI2'), skill='Amarr Industrial', **kwargs)
-
-
-class Effect5476(BaseEffect):
-    """
-    shipBonusOreCapacityGI2
-
-    Used by:
-    Ship: Miasmos
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('shipBonusGI2'),
-                               skill='Gallente Industrial', **kwargs)
 
 
 class Effect5477(BaseEffect):
@@ -22397,29 +22257,12 @@ class Effect5827(BaseEffect):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
 
 
-class Effect5829(BaseEffect):
+class Effect5852(BaseEffect):
     """
-    shipBonusMiningDurationORE3
+    expeditionFrigateBonusOreMiningYield
 
     Used by:
-    Ships from group: Exhumer (3 of 3)
-    Ships from group: Mining Barge (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'duration', ship.getModifiedItemAttr('shipBonusORE3'), skill='Mining Barge', **kwargs)
-
-
-class Effect5832(BaseEffect):
-    """
-    shipBonusMiningIceHarvestingRangeORE2
-
-    Used by:
-    Variations of ship: Covetor (2 of 2)
+    Ship: Prospect
     """
 
     type = 'passive'
@@ -22427,63 +22270,14 @@ class Effect5832(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
-            'maxRange', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge', **kwargs)
-
-
-class Effect5839(BaseEffect):
-    """
-    eliteBargeShieldResistance1
-
-    Used by:
-    Ships from group: Exhumer (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        for damageType in ('em', 'thermal', 'explosive', 'kinetic'):
-            fit.ship.boostItemAttr('shield{}DamageResonance'.format(damageType.capitalize()),
-                                   ship.getModifiedItemAttr('eliteBonusBarge1'), skill='Exhumers', **kwargs)
-
-
-class Effect5840(BaseEffect):
-    """
-    eliteBargeBonusMiningDurationBarge2
-
-    Used by:
-    Ships from group: Exhumer (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'duration', ship.getModifiedItemAttr('eliteBonusBarge2'), skill='Exhumers', **kwargs)
-
-
-class Effect5852(BaseEffect):
-    """
-    eliteBonusExpeditionMining1
-
-    Used by:
-    Ship: Prospect
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'miningAmount', module.getModifiedItemAttr('eliteBonusExpedition1'),
-                                      skill='Expedition Frigates', **kwargs)
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('expeditionFrigateBonusOreMiningYield'),
+            skill='Expedition Frigates', **kwargs)
 
 
 class Effect5853(BaseEffect):
     """
-    eliteBonusExpeditionSigRadius2
+    expeditionFrigateBonusSignatureRadius
 
     Used by:
     Ship: Prospect
@@ -22493,7 +22287,7 @@ class Effect5853(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('eliteBonusExpedition2'),
+        fit.ship.boostItemAttr('signatureRadius', ship.getModifiedItemAttr('expeditionFrigateBonusSignatureRadius'),
                                skill='Expedition Frigates', **kwargs)
 
 
@@ -25032,7 +24826,7 @@ class Effect6188(BaseEffect):
 
 class Effect6195(BaseEffect):
     """
-    expeditionFrigateShieldResistance1
+    expeditionFrigateBonusShieldResistance
 
     Used by:
     Ship: Endurance
@@ -25044,24 +24838,8 @@ class Effect6195(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         for dmgType in ('Em', 'Thermal', 'Kinetic', 'Explosive'):
             fit.ship.boostItemAttr('shield{}DamageResonance'.format(dmgType),
-                                   src.getModifiedItemAttr('eliteBonusExpedition1'),
+                                   src.getModifiedItemAttr('expeditionFrigateBonusShieldResistance'),
                                    skill='Expedition Frigates', **kwargs)
-
-
-class Effect6196(BaseEffect):
-    """
-    expeditionFrigateBonusIceHarvestingCycleTime2
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
-                                      src.getModifiedItemAttr('eliteBonusExpedition2'), skill='Expedition Frigates', **kwargs)
 
 
 class Effect6197(BaseEffect):
@@ -25289,22 +25067,6 @@ class Effect6238(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'falloffEffectiveness',
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships', **kwargs)
-
-
-class Effect6239(BaseEffect):
-    """
-    miningFrigateBonusIceHarvestingCycleTime2
-
-    Used by:
-    Ship: Endurance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
-                                      src.getModifiedItemAttr('shipBonusOREfrig2'), skill='Mining Frigate', **kwargs)
 
 
 class Effect6241(BaseEffect):
@@ -26616,7 +26378,7 @@ class Effect6385(BaseEffect):
     ignoreCloakVelocityPenalty
 
     Used by:
-    Ship: Endurance
+    Ships from group: Expedition Frigate (2 of 2)
     """
 
     runTime = 'early'
@@ -26625,7 +26387,7 @@ class Effect6385(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemForce(lambda mod: mod.item.group.name == 'Cloaking Device',
-                                      'maxVelocityModifier', src.getModifiedItemAttr('velocityPenaltyReduction'), **kwargs)
+                                      'maxVelocityModifier', src.getModifiedItemAttr('ignoreCloakVelocityPenalty'), **kwargs)
 
 
 class Effect6386(BaseEffect):
@@ -26684,7 +26446,7 @@ class Effect6396(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        groups = ('Structure Anti-Capital Missile', 'Structure Anti-Subcapital Missile', 'Structure Guided Bomb')
+        groups = ('Structure Anti-Capital Missile', 'Structure Anti-Subcapital Missile', 'Guided Bomb')
         for damageType in ('em', 'thermal', 'explosive', 'kinetic'):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name in groups,
                                             '%sDamage' % damageType, src.getModifiedItemAttr('damageMultiplierBonus'),
@@ -26894,7 +26656,7 @@ class Effect6410(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Structure Guided Bomb',
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Guided Bomb',
                                         'aoeCloudSize', src.getModifiedItemAttr('structureRigMissileExplosionRadiusBonus'),
                                         stackingPenalties=True, **kwargs)
 
@@ -26912,7 +26674,7 @@ class Effect6411(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Structure Guided Bomb',
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == 'Guided Bomb',
                                         'maxVelocity', src.getModifiedItemAttr('structureRigMissileVelocityBonus'),
                                         stackingPenalties=True, **kwargs)
 
@@ -31167,28 +30929,6 @@ class Effect6714(BaseEffect):
         fit.addProjectedEcm(strength)
 
 
-class Effect6717(BaseEffect):
-    """
-    roleBonusIceOreMiningDurationCap
-
-    Used by:
-    Variations of ship: Covetor (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'capacitorNeed',
-                                      src.getModifiedItemAttr('miningDurationRoleBonus'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'duration',
-                                      src.getModifiedItemAttr('miningDurationRoleBonus'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
-                                      src.getModifiedItemAttr('miningDurationRoleBonus'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'capacitorNeed',
-                                      src.getModifiedItemAttr('miningDurationRoleBonus'), **kwargs)
-
-
 class Effect6720(BaseEffect):
     """
     shipBonusDroneRepairMC1
@@ -31491,7 +31231,7 @@ class Effect6737(BaseEffect):
     Items from market group: Ammunition & Charges > Command Burst Charges (15 of 15)
     """
 
-    type = 'active'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -31891,62 +31631,6 @@ class Effect6786(BaseEffect):
                                       src.getModifiedItemAttr('shipBonusICS3'), skill='Industrial Command Ships', **kwargs)
 
 
-class Effect6787(BaseEffect):
-    """
-    shipBonusDroneHPDamageMiningICS4
-
-    Used by:
-    Ships from group: Industrial Command Ship (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'damageMultiplier',
-                                     src.getModifiedItemAttr('shipBonusICS4'),
-                                     skill='Industrial Command Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'shieldCapacity',
-                                     src.getModifiedItemAttr('shipBonusICS4'),
-                                     skill='Industrial Command Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'armorHP',
-                                     src.getModifiedItemAttr('shipBonusICS4'),
-                                     skill='Industrial Command Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'hp',
-                                     src.getModifiedItemAttr('shipBonusICS4'),
-                                     skill='Industrial Command Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
-                                     'miningAmount',
-                                     src.getModifiedItemAttr('shipBonusICS4'),
-                                     skill='Industrial Command Ships', **kwargs)
-
-
-class Effect6788(BaseEffect):
-    """
-    shipBonusDroneIceHarvestingICS5
-
-    Used by:
-    Ships from group: Industrial Command Ship (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'),
-                                     'duration',
-                                     src.getModifiedItemAttr('shipBonusICS5'),
-                                     skill='Industrial Command Ships', **kwargs)
-
-
 class Effect6789(BaseEffect):
     """
     industrialBonusDroneDamage
@@ -31954,11 +31638,10 @@ class Effect6789(BaseEffect):
     Used by:
     Ships from group: Blockade Runner (4 of 4)
     Ships from group: Deep Space Transport (4 of 4)
-    Ships from group: Exhumer (3 of 3)
     Ships from group: Industrial (17 of 17)
     Ships from group: Industrial Command Ship (2 of 2)
-    Ships from group: Mining Barge (3 of 3)
-    Variations of ship: Venture (3 of 3)
+    Ship: Hulk
+    Ship: Mackinaw
     Ship: Rorqual
     """
 
@@ -31969,60 +31652,6 @@ class Effect6789(BaseEffect):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'damageMultiplier',
                                      src.getModifiedItemAttr('industrialBonusDroneDamage'), **kwargs)
-
-
-class Effect6790(BaseEffect):
-    """
-    shipBonusDroneIceHarvestingRole
-
-    Used by:
-    Ship: Orca
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
-                                     src.getModifiedItemAttr('roleBonusDroneIceHarvestingSpeed'), **kwargs)
-
-
-class Effect6792(BaseEffect):
-    """
-    shipBonusDroneHPDamageMiningORECapital4
-
-    Used by:
-    Ship: Rorqual
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'damageMultiplier',
-                                     src.getModifiedItemAttr('shipBonusORECapital4'),
-                                     skill='Capital Industrial Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'shieldCapacity',
-                                     src.getModifiedItemAttr('shipBonusORECapital4'),
-                                     skill='Capital Industrial Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'armorHP',
-                                     src.getModifiedItemAttr('shipBonusORECapital4'),
-                                     skill='Capital Industrial Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'hp',
-                                     src.getModifiedItemAttr('shipBonusORECapital4'),
-                                     skill='Capital Industrial Ships', **kwargs)
-
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
-                                     'miningAmount',
-                                     src.getModifiedItemAttr('shipBonusORECapital4'),
-                                     skill='Capital Industrial Ships', **kwargs)
 
 
 class Effect6793(BaseEffect):
@@ -32071,24 +31700,6 @@ class Effect6794(BaseEffect):
                                       src.getModifiedItemAttr('shipBonusORECapital3'), skill='Capital Industrial Ships', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Command'), 'warfareBuff2Value',
                                       src.getModifiedItemAttr('shipBonusORECapital3'), skill='Capital Industrial Ships', **kwargs)
-
-
-class Effect6795(BaseEffect):
-    """
-    shipBonusDroneIceHarvestingORECapital5
-
-    Used by:
-    Ship: Rorqual
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'),
-                                     'duration',
-                                     src.getModifiedItemAttr('shipBonusORECapital5'),
-                                     skill='Capital Industrial Ships', **kwargs)
 
 
 class Effect6796(BaseEffect):
@@ -35562,38 +35173,6 @@ class Effect7177(BaseEffect):
                                      src.getModifiedItemAttr('shieldCapacityBonus'), **kwargs)
 
 
-class Effect7179(BaseEffect):
-    """
-    stripMinerDurationMultiplier
-
-    Used by:
-    Module: Frostline 'Omnivore' Harvester Upgrade
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Strip Miner',
-                                      'duration', module.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
-
-
-class Effect7180(BaseEffect):
-    """
-    miningDurationMultiplierOnline
-
-    Used by:
-    Module: Frostline 'Omnivore' Harvester Upgrade
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mining Laser',
-                                      'duration', module.getModifiedItemAttr('miningDurationMultiplier'), **kwargs)
-
-
 class Effect7183(BaseEffect):
     """
     implantWarpScrambleRangeBonus
@@ -37239,6 +36818,73 @@ class Effect8117(BaseEffect):
         fit.ship.preAssignItemAttr('warpBubbleImmune', module.getModifiedItemAttr('warpBubbleImmuneBonus'), **kwargs)
 
 
+class Effect8119(BaseEffect):
+    """
+    industrialCompactCoreEffect2
+
+    Used by:
+    Variations of module: Large Industrial Core I (2 of 2)
+    """
+
+    runTime = 'early'
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.multiplyItemAttr('mass', src.getModifiedItemAttr('siegeMassMultiplier'), **kwargs)
+
+        #  Local Shield Repper Bonuses
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
+                                      'duration', src.getModifiedItemAttr('industrialCoreLocalLogisticsDurationBonus'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
+                                      'shieldBonus', src.getModifiedItemAttr('industrialCoreLocalLogisticsAmountBonus'),
+                                      stackingPenalties=True, **kwargs)
+
+        # Mining Burst Bonuses
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff1Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff2Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff3Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
+                                      'warfareBuff4Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'), **kwargs)
+
+        #  Command Burst Range Bonus
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'),
+                                      'maxRange', src.getModifiedItemAttr('industrialCoreBonusCommandBurstRange'),
+                                      stackingPenalties=True, **kwargs)
+
+        # Drone Bonuses
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'),
+                                     'duration', src.getModifiedItemAttr('industrialCoreBonusDroneIceHarvesting'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
+                                     'miningAmount', src.getModifiedItemAttr('industrialCoreBonusDroneMining'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'maxVelocity', src.getModifiedItemAttr('industrialCoreBonusDroneVelocity'),
+                                     stackingPenalties=True, **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'damageMultiplier', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'),
+                                     stackingPenalties=True, **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'shieldCapacity', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'armorHP', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'), **kwargs)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'hp', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'), **kwargs)
+
+        # Remote impedance (no reps, etc)
+        fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+        fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
+        fit.ship.increaseItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'), **kwargs)
+        fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
+        fit.ship.increaseItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'), **kwargs)
+        fit.ship.increaseItemAttr('gateScrambleStatus', src.getModifiedItemAttr('gateScrambleStrength'), **kwargs)
+        fit.ship.forceItemAttr('ECMResistance', src.getModifiedItemAttr('ECMResistance'), **kwargs)
+
+
 class Effect8120(BaseEffect):
     """
     interceptorNullificationRoleBonus
@@ -37436,11 +37082,13 @@ class Effect8151(BaseEffect):
     """
 
     type = 'passive'
+    runTime = 'early'
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        if fit.extraAttributes['cloaked']:
-            fit.ship.multiplyItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Cloaking'), 'maxVelocityModifier',
+            ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
 
 class Effect8152(BaseEffect):
@@ -37571,63 +37219,783 @@ class Effect8158(BaseEffect):
             booster.getModifiedItemAttr('stabilizeCloakDurationBonus'), **kwargs)
 
 
-class Effect8267(BaseEffect):
+class Effect8199(BaseEffect):
     """
-    weaponDisruptorResistanceBonusPassive
+    gallenteIndustrialBonusIceHoldCapacity
 
     Used by:
-    Implants named like: Harvest Anti Disruptor Booster (3 of 3)
+    Ship: Kryos
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
-            'weaponDisruptionResistance',
-            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
+            'specialIceHoldCapacity', ship.getModifiedItemAttr('gallenteIndustrialBonusIceHoldCapacity'),
+            skill='Gallente Industrial', **kwargs)
 
 
-class Effect8268(BaseEffect):
+class Effect8206(BaseEffect):
     """
-    nosferatuDurationBonusPassive
+    specializationAsteroidDurationMultiplierEffect
 
     Used by:
-    Implants named like: Harvest Nosferatu Booster (3 of 3)
+    Charges from group: Mercoxit Mining Crystal (6 of 6)
+    Charges from group: Mining Crystal (60 of 60)
     """
 
     type = 'passive'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        module.multiplyItemAttr('duration', module.getModifiedChargeAttr('specializationAsteroidDurationMultiplier'), **kwargs)
+
+
+class Effect8210(BaseEffect):
+    """
+    expeditionFrigateBonusIceHarvestingDuration
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
-            module.getModifiedItemAttr('durationBonus'), **kwargs)
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('expeditionFrigateBonusIceHarvestingDuration'),
+            skill='Expedition Frigates', **kwargs)
 
 
-class Effect8269(BaseEffect):
+class Effect8223(BaseEffect):
     """
-    stasisWebifierMaxRangeAddPassive
+    shipRoleBonusOreMiningYield
 
     Used by:
-    Implants named like: Harvest Webifier Booster (3 of 3)
+    Ships from group: Expedition Frigate (2 of 2)
+    Ship: Retriever
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
-            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('shipRoleBonusOreMiningYield'), **kwargs)
 
 
-class Effect8270(BaseEffect):
+class Effect8224(BaseEffect):
     """
-    capacitorWarfareResistanceBonusPassive
+    shipRoleBonusIceHarvestingDuration
 
     Used by:
-    Implants named like: Tetrimon Anti Drain Booster (3 of 3)
+    Variations of ship: Covetor (2 of 2)
+    Variations of ship: Retriever (2 of 2)
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusIceHarvestingDuration'), **kwargs)
+
+
+class Effect8225(BaseEffect):
+    """
+    shipRoleBonusDroneDamage
+
+    Used by:
+    Variations of ship: Procurer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipRoleBonusDroneDamage'), **kwargs)
+
+
+class Effect8226(BaseEffect):
+    """
+    shipRoleBonusDroneHitPoints
+
+    Used by:
+    Variations of ship: Procurer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), layer,
+                ship.getModifiedItemAttr('shipRoleBonusDroneHitPoints'), **kwargs)
+
+
+class Effect8227(BaseEffect):
+    """
+    miningBargeBonusOreMiningYield
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    Ships from group: Mining Barge (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('miningBargeBonusOreMiningYield'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8228(BaseEffect):
+    """
+    miningBargeBonusIceHarvestingDuration
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    Ships from group: Mining Barge (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningBargeBonusIceHarvestingDuration'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8229(BaseEffect):
+    """
+    miningBargeBonusGasHarvestingDuration
+
+    Used by:
+    Ships from group: Mining Barge (3 of 3)
+    Ship: Hulk
+    Ship: Mackinaw
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningBargeBonusGasHarvestingDuration'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8230(BaseEffect):
+    """
+    miningBargeBonusOreMiningRange
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'maxRange',
+            ship.getModifiedItemAttr('miningBargeBonusOreMiningRange'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8231(BaseEffect):
+    """
+    miningBargeBonusIceHarvestingRange
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'maxRange',
+            ship.getModifiedItemAttr('miningBargeBonusIceHarvestingRange'),
+            skill='Mining Barge', **kwargs)
+
+
+class Effect8243(BaseEffect):
+    """
+    exhumersBonusOreMiningDuration
+
+    Used by:
+    Ship: Hulk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+            ship.getModifiedItemAttr('exhumersBonusOreMiningDuration'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8244(BaseEffect):
+    """
+    exhumersBonusIceHarvestingDuration
+
+    Used by:
+    Ship: Hulk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('exhumersBonusIceHarvestingDuration'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8249(BaseEffect):
+    """
+    exhumersBonusOreMiningYield
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            ship.getModifiedItemAttr('exhumersBonusOreMiningYield'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8251(BaseEffect):
+    """
+    exhumersBonusGeneralMiningHoldCapacity
+
+    Used by:
+    Ship: Mackinaw
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'generalMiningHoldCapacity', ship.getModifiedItemAttr('exhumersBonusGeneralMiningHoldCapacity'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8253(BaseEffect):
+    """
+    exhumersBonusShieldResistance
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
+        for damageType in damageTypes:
+            fit.ship.boostItemAttr(
+                'shield{}DamageResonance'.format(damageType),
+                ship.getModifiedItemAttr('exhumersBonusShieldResistance'),
+                skill='Exhumers', **kwargs)
+
+
+class Effect8261(BaseEffect):
+    """
+    industrialCommandBonusDroneDamage
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'damageMultiplier',
+            ship.getModifiedItemAttr('industrialCommandBonusDroneDamage'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8263(BaseEffect):
+    """
+    industrialCommandBonusFuelConsuptionCompactIndustrialCore
+
+    Used by:
+    Ship: Orca
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Compact Industrial Reconfiguration'), 'consumptionQuantity',
+            ship.getModifiedItemAttr('industrialCommandBonusFuelConsuptionCompactIndustrialCore'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8264(BaseEffect):
+    """
+    industrialCommandBonusMiningForemanBurstRange
+
+    Used by:
+    Ship: Orca
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining Foreman'), 'maxRange',
+            ship.getModifiedItemAttr('industrialCommandBonusMiningForemanBurstRange'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8275(BaseEffect):
+    """
+    minmatarIndustrialBonusGasHoldCapacity
+
+    Used by:
+    Ship: Hoarder
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialGasHoldCapacity', ship.getModifiedItemAttr('minmatarIndustrialBonusGasHoldCapacity'),
+            skill='Minmatar Industrial', **kwargs)
+
+
+class Effect8278(BaseEffect):
+    """
+    industrialCommandBonusGeneralMiningHoldCapacity
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'generalMiningHoldCapacity', ship.getModifiedItemAttr('industrialCommandBonusGeneralMiningHoldCapacity'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8279(BaseEffect):
+    """
+    industrialCommandBonusShipHoldCapacity
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'capacity', ship.getModifiedItemAttr('industrialCommandBonusShipCargoCapacity'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8291(BaseEffect):
+    """
+    afterburnerSpeedBoostBonusPassive
+
+    Used by:
+    Implants named like: Wightstorm Cetana Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
+            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
+
+
+class Effect8294(BaseEffect):
+    """
+    industrialCommandBonusDroneOreMiningYield
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningAmount',
+            ship.getModifiedItemAttr('industrialCommandBonusDroneOreMiningYield'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8295(BaseEffect):
+    """
+    industrialCommandBonusDroneIceHarvestingCycleTime
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
+            ship.getModifiedItemAttr('industrialCommandBonusDroneIceHarvestingCycleTime'),
+            skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8296(BaseEffect):
+    """
+    capitalIndustrialShipBonusDroneOreMiningYield
+
+    Used by:
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningAmount',
+            ship.getModifiedItemAttr('capitalIndustrialShipBonusDroneOreMiningYield'),
+            skill='Capital Industrial Ships', **kwargs)
+
+
+class Effect8297(BaseEffect):
+    """
+    capitalIndustrialShipBonusDroneIceCycleTime
+
+    Used by:
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration',
+            ship.getModifiedItemAttr('capitalIndustrialShipBonusDroneIceCycleTime'),
+            skill='Capital Industrial Ships', **kwargs)
+
+
+class Effect8300(BaseEffect):
+    """
+    shipRoleBonusGasHarvestingDuration
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    Variations of ship: Retriever (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusGasHarvesterDuration'), **kwargs)
+
+
+class Effect8301(BaseEffect):
+    """
+    exhumersBonusGasHarvestingDuration
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('exhumersBonusGasHarvestingDuration'),
+            skill='Exhumers', **kwargs)
+
+
+class Effect8303(BaseEffect):
+    """
+    shipRoleBonusStripMinerActivationCost
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'capacitorNeed',
+            ship.getModifiedItemAttr('shipRoleBonusStripMinerActivationCost'), **kwargs)
+
+
+class Effect8304(BaseEffect):
+    """
+    shipRoleBonusIceHarvestingActivationCost
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'capacitorNeed',
+            ship.getModifiedItemAttr('shipRoleBonusIceHarvesterActivationCost'), **kwargs)
+
+
+class Effect8305(BaseEffect):
+    """
+    shipRoleBonusOreMiningDuration
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    Ship: Mackinaw
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'duration',
+            ship.getModifiedItemAttr('shipRoleBonusOreMiningDuration'), **kwargs)
+
+
+class Effect8306(BaseEffect):
+    """
+    industrialReconfigurationBonusConsumptionQuantity
+
+    Used by:
+    Skill: Industrial Reconfiguration
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        amount = -skill.getModifiedItemAttr('consumptionQuantityBonus')
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill(skill),
+                                         'consumptionQuantity', amount * skill.level, **kwargs)
+
+
+class Effect8309(BaseEffect):
+    """
+    capitalIndustrialShipBonusDroneHitPoints
+
+    Used by:
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), layer,
+                ship.getModifiedItemAttr('capitalIndustrialShipBonusDroneHitPoints'),
+                skill='Capital Industrial Ships', **kwargs)
+
+
+class Effect8311(BaseEffect):
+    """
+    industrialCommandBonusDroneHitPoints
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), layer,
+                ship.getModifiedItemAttr('industrialCommandBonusDroneHitPoints'),
+                skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8313(BaseEffect):
+    """
+    miningFrigateBonusGasCloudHarvestingDuration
+
+    Used by:
+    Ship: Prospect
+    Ship: Venture
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningFrigateBonusGasCloudHarvestingDuration'),
+            skill='Mining Frigate', **kwargs)
+
+
+class Effect8315(BaseEffect):
+    """
+    shipRoleBonusGasHarvestingYield
+
+    Used by:
+    Ship: Prospect
+    Ship: Venture
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'miningAmount',
+            ship.getModifiedItemAttr('shipRoleBonusGasHarvestingYield'), **kwargs)
+
+
+class Effect8317(BaseEffect):
+    """
+    miningFrigateBonusIceHarvestingDuration
+
+    Used by:
+    Ship: Endurance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'duration',
+            ship.getModifiedItemAttr('miningFrigateBonusIceHarvestingDuration'),
+            skill='Mining Frigate', **kwargs)
+
+
+class Effect8323(BaseEffect):
+    """
+    gallenteIndustrialBonusMiningHoldCapacity
+
+    Used by:
+    Ship: Miasmos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'generalMiningHoldCapacity',
+            ship.getModifiedItemAttr('gallenteIndustrialBonusMiningHoldCapacity'),
+            skill='Gallente Industrial', **kwargs)
+
+
+class Effect8324(BaseEffect):
+    """
+    shipRoleBonusDroneOreMiningYield
+
+    Used by:
+    Ship: Porpoise
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningAmount',
+            ship.getModifiedItemAttr('shipRoleBonusDroneOreMiningYield'), **kwargs)
+
+
+class Effect8327(BaseEffect):
+    """
+    relicAnalyzerRangeBonusPassive
+
+    Used by:
+    Implants named like: AIR Relic Range Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Archaeology'), 'maxRange',
+            container.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
+
+
+class Effect8328(BaseEffect):
+    """
+    relicVirusStrengthBonusPassive
+
+    Used by:
+    Implants named like: AIR Relic Strength Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('Archaeology'), 'virusStrength',
+            container.getModifiedItemAttr('virusStrengthBonus'), **kwargs)
+
+
+class Effect8329(BaseEffect):
+    """
+    signatureRadiusBonusPassive
+
+    Used by:
+    Implants named like: AIR Signature Booster (3 of 3)
     """
 
     type = 'passive'
@@ -37635,5 +38003,269 @@ class Effect8270(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
-            'energyWarfareResistance',
-            container.getModifiedItemAttr('energyWarfareResistanceBonus'), **kwargs)
+            'signatureRadius', container.getModifiedItemAttr('signatureRadiusBonusPercent'), **kwargs)
+
+
+class Effect100100(BaseEffect):
+    """
+    pyfaCustomRaijuPointRange
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Scrambler',
+            'maxRange', 20.0, skill='Electronic Attack Ships', **kwargs)
+
+
+class Effect100101(BaseEffect):
+    """
+    pyfaCustomRaijuPointCap
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Scrambler',
+            'capacitorNeed', -10.0, skill='Electronic Attack Ships', **kwargs)
+
+
+class Effect100102(BaseEffect):
+    """
+    pyfaCustomRaijuDampStr
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Sensor Dampener',
+            'maxTargetRangeBonus', 10.0, skill='Gallente Frigate', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Sensor Dampener',
+            'scanResolutionBonus', 10.0, skill='Gallente Frigate', **kwargs)
+
+
+class Effect100103(BaseEffect):
+    """
+    pyfaCustomRaijuDampCap
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Sensor Dampener',
+            'capacitorNeed', -15.0, skill='Gallente Frigate', **kwargs)
+
+
+class Effect100104(BaseEffect):
+    """
+    pyfaCustomRaijuMissileDmg
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                f'{dmgType}Damage', 25.0, skill='Caldari Frigate', **kwargs)
+
+
+class Effect100105(BaseEffect):
+    """
+    pyfaCustomRaijuMissileFlightTime
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosionDelay', -25.0, **kwargs)
+
+
+class Effect100106(BaseEffect):
+    """
+    pyfaCustomRaijuMissileFlightVelocity
+
+    Used by:
+    Ship: Raiju
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'maxVelocity', 200.0, **kwargs)
+
+
+class Effect100200(BaseEffect):
+    """
+    pyfaCustomLaelapsWdfgRange
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
+            'warpScrambleRange', 20.0, skill='Heavy Interdiction Cruisers', **kwargs)
+
+
+class Effect100201(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileReload
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
+            'reloadTime', -10.0, skill='Gallente Cruiser', **kwargs)
+
+
+class Effect100202(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileDamage
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Light Missiles') or
+                            mod.charge.requiresSkill('Heavy Missiles') or
+                            mod.charge.requiresSkill('Heavy Assault Missiles'),
+                f'{dmgType}Damage', 20.0, skill='Caldari Cruiser', **kwargs)
+
+
+class Effect100203(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileRof
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Missile Launcher Rapid Light',
+                                                'Missile Launcher Heavy',
+                                                'Missile Launcher Heavy Assault'),
+            'speed', -5.0, skill='Caldari Cruiser', **kwargs)
+
+
+class Effect100204(BaseEffect):
+    """
+    pyfaCustomLaelapsShieldResists
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            tgtAttr = 'shield{}DamageResonance'.format(dmgType.capitalize())
+            fit.ship.boostItemAttr(tgtAttr, -20.0, **kwargs)
+
+
+class Effect100205(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileFlightTime
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosionDelay', -50.0, **kwargs)
+
+
+class Effect100206(BaseEffect):
+    """
+    pyfaCustomLaelapsWdfgSigPenalty
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
+            'signatureRadiusBonus', -100.0, **kwargs)
+
+
+class Effect100207(BaseEffect):
+    """
+    pyfaCustomLaelapsMissileFlightVelocity
+
+    Used by:
+    Ship: Laelaps
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'maxVelocity', 200.0, **kwargs)

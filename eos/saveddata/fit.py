@@ -21,7 +21,7 @@ import datetime
 import time
 from copy import deepcopy
 from itertools import chain
-from math import floor, log, sqrt
+from math import ceil, log, sqrt
 
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
@@ -139,9 +139,11 @@ class Fit:
         self.__weaponVolleyMap = {}
         self.__remoteRepMap = {}
         self.__minerYield = None
+        self.__droneYield = None
+        self.__minerWaste = None
+        self.__droneWaste = None
         self.__droneDps = None
         self.__droneVolley = None
-        self.__droneYield = None
         self.__sustainableTank = None
         self.__effectiveSustainableTank = None
         self.__effectiveTank = None
@@ -365,26 +367,44 @@ class Fit:
     @property
     def minerYield(self):
         if self.__minerYield is None:
-            self.calculateMiningStats()
+            self.calculatemining()
 
         return self.__minerYield
 
     @property
+    def minerWaste(self):
+        if self.__minerWaste is None:
+            self.calculatemining()
+
+        return self.__minerWaste
+
+    @property
     def droneYield(self):
         if self.__droneYield is None:
-            self.calculateMiningStats()
+            self.calculatemining()
 
         return self.__droneYield
+
+    @property
+    def droneWaste(self):
+        if self.__droneWaste is None:
+            self.calculatemining()
+
+        return self.__droneWaste
 
     @property
     def totalYield(self):
         return self.droneYield + self.minerYield
 
     @property
+    def totalWaste(self):
+        return self.droneWaste + self.minerWaste
+
+    @property
     def maxTargets(self):
         maxTargets = min(self.extraAttributes["maxTargetsLockedFromSkills"],
                          self.ship.getModifiedItemAttr("maxLockedTargets"))
-        return floor(floatUnerr(maxTargets))
+        return ceil(floatUnerr(maxTargets))
 
     @property
     def maxTargetRange(self):
@@ -491,11 +511,13 @@ class Fit:
         self.__weaponVolleyMap = {}
         self.__remoteRepMap = {}
         self.__minerYield = None
+        self.__droneYield = None
+        self.__minerWaste = None
+        self.__droneWaste = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
         self.__droneDps = None
         self.__droneVolley = None
-        self.__droneYield = None
         self.__ehp = None
         self.__calculated = False
         self.__capStable = None
@@ -1627,18 +1649,23 @@ class Fit:
         else:
             return self.ship.getModifiedItemAttr("scanSpeed") / 1000.0
 
-    def calculateMiningStats(self):
+    def calculatemining(self):
         minerYield = 0
+        minerWaste = 0
         droneYield = 0
+        droneWaste = 0
 
         for mod in self.modules:
-            minerYield += mod.miningStats
-
+            minerYield += mod.getMiningYPS()
+            minerWaste += mod.getMiningWPS()
         for drone in self.drones:
-            droneYield += drone.miningStats
+            droneYield += drone.getMiningYPS()
+            droneWaste += drone.getMiningWPS()
 
         self.__minerYield = minerYield
+        self.__minerWaste = minerWaste
         self.__droneYield = droneYield
+        self.__droneWaste = droneWaste
 
     def calculateWeaponDmgStats(self, spoolOptions):
         weaponVolley = DmgTypes(0, 0, 0, 0)

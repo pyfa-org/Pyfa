@@ -22,6 +22,7 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
     def Do(self):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
+        oldModMap = self._getPositionMap(fit)
         results = []
         self.replacedItemIDs = set()
         lastSuccessfulCmd = None
@@ -49,6 +50,7 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
             sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
+        newModMap = self._getPositionMap(fit)
         events = []
         if success and self.replacedItemIDs:
             events.append(GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.replacedItemIDs))
@@ -56,6 +58,12 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
             events.append(GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.newItemID))
         if not events:
             events.append(GE.FitChanged(fitIDs=(self.fitID,)))
+        if success:
+            for position in self.positions:
+                oldMod = oldModMap.get(position)
+                newMod = newModMap.get(position)
+                if oldMod is not newMod:
+                    events.append(GE.ItemChangedInplace(old=oldMod, new=newMod))
         for event in events:
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success
@@ -63,12 +71,16 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
     def Undo(self):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
+        oldModMap = self._getPositionMap(fit)
+        for position in self.positions:
+            oldModMap[position] = fit.modules[position]
         restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
         eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
+        newModMap = self._getPositionMap(fit)
         events = []
         if success:
             events.append(GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.newItemID))
@@ -76,6 +88,18 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
             events.append(GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.replacedItemIDs))
         if not events:
             events.append(GE.FitChanged(fitIDs=(self.fitID,)))
+        if success:
+            for position in self.positions:
+                oldMod = oldModMap.get(position)
+                newMod = newModMap.get(position)
+                if oldMod is not newMod:
+                    events.append(GE.ItemChangedInplace(fitID=self.fitID, old=oldMod, new=newMod))
         for event in events:
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success
+
+    def _getPositionMap(self, fit):
+        positionMap = {}
+        for position in self.positions:
+            positionMap[position] = fit.modules[position]
+        return positionMap

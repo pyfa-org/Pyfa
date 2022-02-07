@@ -124,7 +124,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
 
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -306,10 +307,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                  "shipScanRange", "surveyScanRange")
         maxRange = None
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr, None)
-            if maxRange is not None:
+            maxRange = self.getModifiedItemAttr(attr)
+            if maxRange:
                 break
-        if maxRange is not None:
+        if maxRange:
             if 'burst projector' in self.item.name.lower():
                 maxRange -= self.owner.ship.getModifiedItemAttr("radius")
             return maxRange
@@ -371,8 +372,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
     def falloff(self):
         attrs = ("falloffEffectiveness", "falloff", "shipScanFalloff")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr, None)
-            if falloff is not None:
+            falloff = self.getModifiedItemAttr(attr)
+            if falloff:
                 return falloff
 
     @property
@@ -409,28 +410,39 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
 
         self.__itemModifiedAttributes.clear()
 
-    @property
-    def miningStats(self):
-        if self.__miningyield is None:
-            if self.isEmpty:
-                self.__miningyield = 0
-            else:
-                if self.state >= FittingModuleState.ACTIVE:
-                    volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
-                            "miningAmount") or 0
-                    if volley:
-                        cycleParams = self.getCycleParameters()
-                        if cycleParams is None:
-                            self.__miningyield = 0
-                        else:
-                            cycleTime = cycleParams.averageTime
-                            self.__miningyield = volley / (cycleTime / 1000.0)
-                    else:
-                        self.__miningyield = 0
-                else:
-                    self.__miningyield = 0
+    def getMiningYPS(self, ignoreState=False):
+        if self.isEmpty:
+            return 0
+        if not ignoreState and self.state < FittingModuleState.ACTIVE:
+            return 0
+        if self.__miningYield is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningYield
 
-        return self.__miningyield
+    def getMiningWPS(self, ignoreState=False):
+        if self.isEmpty:
+            return 0
+        if not ignoreState and self.state < FittingModuleState.ACTIVE:
+            return 0
+        if self.__miningWaste is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningWaste
+
+    def __calculateMining(self):
+        yield_ = self.getModifiedItemAttr("miningAmount")
+        if yield_:
+            cycleParams = self.getCycleParameters()
+            if cycleParams is None:
+                yps = 0
+            else:
+                cycleTime = cycleParams.averageTime
+                yps = yield_ / (cycleTime / 1000.0)
+        else:
+            yps = 0
+        wasteChance = self.getModifiedItemAttr("miningWasteProbability")
+        wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
+        wps = yps * max(0, min(1, wasteChance / 100)) * wasteMult
+        return yps, wps
 
     def isDealingDamage(self, ignoreState=False):
         volleyParams = self.getVolleyParameters(ignoreState=ignoreState)
@@ -642,6 +654,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         """
 
         slot = self.slot
+        if slot is None:
+            return False
         if fit.getSlotsFree(slot) <= (0 if self.owner != fit else -1):
             return False
 
@@ -680,8 +694,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 return False
 
         # Check max group fitted
-        max = self.getModifiedItemAttr("maxGroupFitted", None)
-        if max is not None:
+        max = self.getModifiedItemAttr("maxGroupFitted")
+        if max:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
                 if (mod.item and mod.item.groupID == self.item.groupID and
@@ -734,7 +748,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         # Check if the local module is over it's max limit; if it's not, we're fine
         maxGroupOnline = self.getModifiedItemAttr("maxGroupOnline", None)
         maxGroupActive = self.getModifiedItemAttr("maxGroupActive", None)
-        if maxGroupOnline is None and maxGroupActive is None and projectedOnto is None:
+        if not maxGroupOnline and not maxGroupActive and projectedOnto is None:
             return True
 
         # Following is applicable only to local modules, we do not want to limit projected
@@ -750,11 +764,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                         currOnline += 1
                     if mod.state >= FittingModuleState.ACTIVE:
                         currActive += 1
-                    if maxGroupOnline is not None and currOnline > maxGroupOnline:
+                    if maxGroupOnline and currOnline > maxGroupOnline:
                         if maxState is None or maxState > FittingModuleState.OFFLINE:
                             maxState = FittingModuleState.OFFLINE
                             break
-                    if maxGroupActive is not None and currActive > maxGroupActive:
+                    if maxGroupActive and currActive > maxGroupActive:
                         if maxState is None or maxState > FittingModuleState.ONLINE:
                             maxState = FittingModuleState.ONLINE
             return True if maxState is None else maxState
@@ -792,7 +806,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         chargeGroup = charge.groupID
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
-            if itemChargeGroup is None:
+            if not itemChargeGroup:
                 continue
             if itemChargeGroup == chargeGroup:
                 return True
@@ -803,7 +817,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         validCharges = set()
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
-            if itemChargeGroup is not None:
+            if itemChargeGroup:
                 g = eos.db.getGroup(int(itemChargeGroup), eager="items.attributes")
                 if g is None:
                     continue
@@ -865,7 +879,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
     def clear(self):
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
