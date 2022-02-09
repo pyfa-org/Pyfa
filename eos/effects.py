@@ -15570,7 +15570,6 @@ class Effect4626(BaseEffect):
 
     Used by:
     Ship: Adrestia
-    Ship: Laelaps
     Ship: Orthrus
     """
 
@@ -38125,7 +38124,7 @@ class Effect8366(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
             fit.ship.boostItemAttr(f'{dmgType}DamageResonance',
-                                   src.getModifiedItemAttr(f'{dmgType}DamageResistanceBonus'),
+                                   src.getModifiedItemAttr('hullDamageResistanceBonus'),
                                    **kwargs)
 
 
