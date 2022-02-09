@@ -90056,28 +90056,28 @@
         "domain": "shipID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 113, 
-        "modifyingAttributeID": 984, 
+        "modifyingAttributeID": 3258, 
         "operation": 6
       }, 
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 111, 
-        "modifyingAttributeID": 985, 
+        "modifyingAttributeID": 3258, 
         "operation": 6
       }, 
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 109, 
-        "modifyingAttributeID": 986, 
+        "modifyingAttributeID": 3258, 
         "operation": 6
       }, 
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 110, 
-        "modifyingAttributeID": 987, 
+        "modifyingAttributeID": 3258, 
         "operation": 6
       }
     ], 
