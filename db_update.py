@@ -598,6 +598,7 @@ def update_db():
     for item in eos.db.gamedata_session.query(eos.gamedata.Item).filter(or_(
         eos.gamedata.Item.name.like('%abyssal%'),
         eos.gamedata.Item.name.like('%mutated%'),
+        eos.gamedata.Item.name.like('%_PLACEHOLDER%'),
         # Drifter weapons are published for some reason
         eos.gamedata.Item.name.in_(('Lux Kontos', 'Lux Xiphos'))
     )).all():
