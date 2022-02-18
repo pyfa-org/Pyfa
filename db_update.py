@@ -135,7 +135,7 @@ def update_db():
 
     def processEveTypes():
         print('processing evetypes')
-        data = _readData('fsd_lite', 'evetypes', keyIdName='typeID')
+        data = _readData('fsd_binary', 'types', keyIdName='typeID')
         for row in data:
             if (
                 # Apparently people really want Civilian modules available
@@ -183,7 +183,7 @@ def update_db():
 
     def processEveGroups():
         print('processing evegroups')
-        data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
+        data = _readData('fsd_binary', 'groups', keyIdName='groupID')
         map = {'groupName_en-us': 'name'}
         map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Group, fieldMap=map)
@@ -191,7 +191,7 @@ def update_db():
 
     def processEveCategories():
         print('processing evecategories')
-        data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
+        data = _readData('fsd_binary', 'categories', keyIdName='categoryID')
         map = { 'categoryName_en-us': 'name' }
         map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Category, fieldMap=map)

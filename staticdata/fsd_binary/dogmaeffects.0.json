@@ -90011,6 +90011,20 @@
     "published": 0, 
     "rangeChance": 0
   }, 
+  "8364": {
+    "disallowAutoRepeat": 0, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 8364, 
+    "effectName": "industrialItemCompression", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
   "8365": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -90102,6 +90116,114 @@
         "modifyingAttributeID": 3257, 
         "operation": 2, 
         "skillTypeID": 3449
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8369": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8369, 
+    "effectName": "refineryGasDecompressionEfficiencyBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "structureID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 1322, 
+        "modifiedAttributeID": 3262, 
+        "modifyingAttributeID": 3261, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8372": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8372, 
+    "effectName": "fleetCompressionLogisticsRangeBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 3263, 
+        "operation": 6, 
+        "skillTypeID": 62450
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8373": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8373, 
+    "effectName": "fleetCompressionLogisticsSkillLevelBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 3263, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "8377": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 8377, 
+    "effectName": "BattleshipRoleBonusArmorPlate&ShieldExtenderHP", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 38, 
+        "modifiedAttributeID": 72, 
+        "modifyingAttributeID": 3267, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 329, 
+        "modifiedAttributeID": 1159, 
+        "modifyingAttributeID": 3266, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 78, 
+        "modifiedAttributeID": 150, 
+        "modifyingAttributeID": 3268, 
+        "operation": 2
       }
     ], 
     "propulsionChance": 0, 

@@ -43903,5 +43903,50 @@
     "name_zh": "Moon Mining Crystals", 
     "nameID": 591671, 
     "parentGroupID": 753
+  }, 
+  "2814": {
+    "hasTypes": 1, 
+    "iconID": 25169, 
+    "name_de": "Compressed Gas", 
+    "name_en-us": "Compressed Gas", 
+    "name_es": "Compressed Gas", 
+    "name_fr": "Compressed Gas", 
+    "name_it": "Compressed Gas", 
+    "name_ja": "Compressed Gas", 
+    "name_ko": "Compressed Gas", 
+    "name_ru": "Compressed Gas", 
+    "name_zh": "Compressed Gas", 
+    "nameID": 594613, 
+    "parentGroupID": 1032
+  }, 
+  "2815": {
+    "hasTypes": 1, 
+    "iconID": 25152, 
+    "name_de": "Compressors", 
+    "name_en-us": "Compressors", 
+    "name_es": "Compressors", 
+    "name_fr": "Compressors", 
+    "name_it": "Compressors", 
+    "name_ja": "Compressors", 
+    "name_ko": "Compressors", 
+    "name_ru": "Compressors", 
+    "name_zh": "Compressors", 
+    "nameID": 595064, 
+    "parentGroupID": 9
+  }, 
+  "2816": {
+    "hasTypes": 1, 
+    "iconID": 3010, 
+    "name_de": "Compressor Blueprints", 
+    "name_en-us": "Compressor Blueprints", 
+    "name_es": "Compressor Blueprints", 
+    "name_fr": "Compressor Blueprints", 
+    "name_it": "Compressor Blueprints", 
+    "name_ja": "Compressor Blueprints", 
+    "name_ko": "Compressor Blueprints", 
+    "name_ru": "Compressor Blueprints", 
+    "name_zh": "Compressor Blueprints", 
+    "nameID": 595232, 
+    "parentGroupID": 209
   }
 }
