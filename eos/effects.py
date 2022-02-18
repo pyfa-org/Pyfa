@@ -1287,7 +1287,6 @@ class Effect446(BaseEffect):
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
-    Implants named like: Wightstorm Nirvana Booster (3 of 3)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: Genolution Core Augmentation CA-3
@@ -1309,7 +1308,6 @@ class Effect485(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
-    Implants named like: Wightstorm Rapture Booster (3 of 3)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -8366,7 +8364,6 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Wightstorm Vitarka Booster (3 of 3)
     Modules named like: Energy Collision Accelerator (8 of 8)
     """
 
@@ -9271,7 +9268,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (444 of 909)
+    Items from market group: Ship Equipment > Turrets & Launchers (444 of 911)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9659,7 +9656,6 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
-    Implants named like: Wightstorm Sunyata Booster (3 of 3)
     Skill: Thermodynamics
     """
 
@@ -10113,6 +10109,7 @@ class Effect3366(BaseEffect):
     Used by:
     Ship: Keres
     Ship: Maulus
+    Ship: Raiju
     """
 
     type = 'passive'
@@ -18065,7 +18062,6 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
-    Implants named like: Wightstorm Manasikara Booster (3 of 3)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -26960,8 +26956,8 @@ class Effect6431(BaseEffect):
     fighterAbilityMissiles
 
     Used by:
-    Items from category: Fighter (48 of 82)
-    Fighters from group: Light Fighter (32 of 32)
+    Items from category: Fighter (51 of 86)
+    Fighters from group: Light Fighter (34 of 34)
     """
 
     dealsDamage = True
@@ -27089,7 +27085,7 @@ class Effect6439(BaseEffect):
     fighterAbilityEvasiveManeuvers
 
     Used by:
-    Fighters from group: Light Fighter (16 of 32)
+    Fighters from group: Light Fighter (17 of 34)
     """
 
     displayName = 'Evasive Maneuvers'
@@ -27146,7 +27142,7 @@ class Effect6441(BaseEffect):
     fighterAbilityMicroWarpDrive
 
     Used by:
-    Items from category: Fighter (44 of 82)
+    Items from category: Fighter (46 of 86)
     """
 
     displayName = 'Microwarpdrive'
@@ -27240,8 +27236,8 @@ class Effect6465(BaseEffect):
     fighterAbilityAttackM
 
     Used by:
-    Items from category: Fighter (50 of 82)
-    Fighters from group: Heavy Fighter (34 of 34)
+    Items from category: Fighter (53 of 86)
+    Fighters from group: Heavy Fighter (36 of 36)
     """
 
     dealsDamage = True
@@ -27511,7 +27507,7 @@ class Effect6485(BaseEffect):
     fighterAbilityLaunchBomb
 
     Used by:
-    Fighters from group: Heavy Fighter (16 of 34)
+    Fighters from group: Heavy Fighter (17 of 36)
     """
 
     dealsDamage = True
@@ -36852,7 +36848,7 @@ class Effect8119(BaseEffect):
     industrialCompactCoreEffect2
 
     Used by:
-    Variations of module: Large Industrial Core I (2 of 2)
+    Modules named like: Industrial Core (4 of 6)
     """
 
     runTime = 'early'
@@ -37598,7 +37594,7 @@ class Effect8264(BaseEffect):
     industrialCommandBonusMiningForemanBurstRange
 
     Used by:
-    Ship: Orca
+    Ships from group: Industrial Command Ship (2 of 2)
     Ship: Rorqual
     """
 
@@ -37679,23 +37675,6 @@ class Effect8279(BaseEffect):
         fit.ship.boostItemAttr(
             'capacity', ship.getModifiedItemAttr('industrialCommandBonusShipCargoCapacity'),
             skill='Industrial Command Ships', **kwargs)
-
-
-class Effect8291(BaseEffect):
-    """
-    afterburnerSpeedBoostBonusPassive
-
-    Used by:
-    Implants named like: Wightstorm Cetana Booster (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, booster, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
-            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
 
 
 class Effect8294(BaseEffect):
@@ -37986,23 +37965,6 @@ class Effect8323(BaseEffect):
             skill='Gallente Industrial', **kwargs)
 
 
-class Effect8324(BaseEffect):
-    """
-    shipRoleBonusDroneOreMiningYield
-
-    Used by:
-    Ship: Porpoise
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(
-            lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningAmount',
-            ship.getModifiedItemAttr('shipRoleBonusDroneOreMiningYield'), **kwargs)
-
-
 class Effect8327(BaseEffect):
     """
     relicAnalyzerRangeBonusPassive
@@ -38089,6 +38051,17 @@ class Effect8362(BaseEffect):
             'signatureRadiusBonus', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors3'), **kwargs)
 
 
+class Effect8364(BaseEffect):
+    """
+    industrialItemCompression
+
+    Used by:
+    Modules from group: Compressors (12 of 12)
+    """
+
+    type = 'active'
+
+
 class Effect8365(BaseEffect):
     """
     mwdCapUseAndSigBonusPassive
@@ -38143,3 +38116,46 @@ class Effect8367(BaseEffect):
         fit.modules.filteredItemIncrease(
             lambda mod: mod.item.requiresSkill('Navigation'), 'maxRange',
             module.getModifiedItemAttr('scramblerRangeAdd'), **kwargs)
+
+
+class Effect8372(BaseEffect):
+    """
+    fleetCompressionLogisticsRangeBonus
+
+    Used by:
+    Skill: Fleet Compression Logistics
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shipboard Compression Technology'),
+            'maxRange', skill.getModifiedItemAttr('fleetCompressionLogisticsRangeBonus') * skill.level, **kwargs)
+
+
+class Effect8377(BaseEffect):
+    """
+    BattleshipRoleBonusArmorPlate&ShieldExtenderHP
+
+    Used by:
+    Ships from group: Battleship (34 of 35)
+    Ships from group: Black Ops (5 of 5)
+    Ships from group: Marauder (4 of 4)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Shield Extender',
+            'capacityBonus', ship.getModifiedItemAttr('battleshipExtenderHPBonus'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate',
+            'armorHPBonusAdd', ship.getModifiedItemAttr('battleshipPlateHPBonus'), **kwargs)
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Reinforced Bulkhead',
+            'structureHPMultiplier', ship.getModifiedItemAttr('battleshipBulkheadHPModifierBonus'), **kwargs)

@@ -347,7 +347,8 @@ def activeStateLimit(itemIdentity):
         'cloneJumpAccepting', 'cloakingWarpSafe', 'cloakingPrototype', 'cloaking',
         'massEntanglerEffect5', 'electronicAttributeModifyOnline', 'targetPassively',
         'cargoScan', 'shipScan', 'surveyScan', 'targetSpectrumBreakerBonus',
-        'interdictionNullifierBonus', 'warpCoreStabilizerActive'
+        'interdictionNullifierBonus', 'warpCoreStabilizerActive',
+        'industrialItemCompression'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
