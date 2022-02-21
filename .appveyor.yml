@@ -1,15 +1,15 @@
 image:
-  - Visual Studio 2019
-  - macos
+  - Visual Studio 2022
+  - macos-bigsur
 clone_depth: 400
 
 for:
   -
     matrix:
       only:
-        - image: Visual Studio 2019
+        - image: Visual Studio 2022
     environment:
-      PYTHON: "C:\\Python37-x64"
+      PYTHON: "C:\\Python310-x64"
     # Should be enabled only for build process debugging
     # init:
     #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -49,10 +49,8 @@ for:
       # pip will build them from source using the MSVC compiler matching the
       # target Python version and architecture
       - ps: echo("Install pip requirements:")
-      # This one is needed to build wxpython 4.0.6 on windows
-      - cmd: "python -m pip install pathlib2"
       - cmd: "python -m pip install -r requirements.txt"
-      - cmd: "python -m pip install PyInstaller==3.6"
+      - cmd: "python -m pip install PyInstaller"
     before_build:
         # directory that will contain the built files
       - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
@@ -95,11 +93,11 @@ for:
   -
     matrix:
       only:
-        - image: macos
+        - image: macos-bigsur
     # Should be enabled only for build process debugging
     init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-      - sh: source ~/venv3.7/bin/activate
+      - sh: source ~/venv3.10/bin/activate
     install:
       - sh: bash scripts/osx-setup.sh
     build_script:
