@@ -175,12 +175,13 @@ mapper(es_Fit, fits_table,
                    collection_class=HandledModuleList,
                    primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False),  # noqa
                    order_by=modules_table.c.position,
+                   overlaps='owner',
                    cascade='all, delete, delete-orphan'),
            "_Fit__projectedModules": relation(
                    Module,
                    collection_class=HandledProjectedModList,
+                   overlaps='owner',
                    cascade='all, delete, delete-orphan',
-                   single_parent=True,
                    primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),  # noqa
            "owner": relation(
                    User,
@@ -190,37 +191,37 @@ mapper(es_Fit, fits_table,
            "_Fit__boosters": relation(
                    Booster,
                    collection_class=HandledBoosterList,
-                   cascade='all, delete, delete-orphan',
-                   single_parent=True),
+                   overlaps='owner',
+                   cascade='all, delete, delete-orphan'),
            "_Fit__drones": relation(
                    Drone,
                    collection_class=HandledDroneCargoList,
+                   overlaps='owner',
                    cascade='all, delete, delete-orphan',
-                   single_parent=True,
                    primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)),  # noqa
            "_Fit__fighters": relation(
                    Fighter,
                    collection_class=HandledDroneCargoList,
+                   overlaps='owner',
                    cascade='all, delete, delete-orphan',
-                   single_parent=True,
                    primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == False)),  # noqa
            "_Fit__cargo": relation(
                    Cargo,
                    collection_class=HandledDroneCargoList,
+                   overlaps='owner',
                    cascade='all, delete, delete-orphan',
-                   single_parent=True,
                    primaryjoin=and_(cargo_table.c.fitID == fits_table.c.ID)),
            "_Fit__projectedDrones": relation(
                    Drone,
                    collection_class=HandledProjectedDroneList,
+                   overlaps='owner',
                    cascade='all, delete, delete-orphan',
-                   single_parent=True,
                    primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),  # noqa
            "_Fit__projectedFighters": relation(
                    Fighter,
                    collection_class=HandledProjectedDroneList,
+                   overlaps='owner',
                    cascade='all, delete, delete-orphan',
-                   single_parent=True,
                    primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)),  # noqa
            "_Fit__implants": relation(
                    Implant,
