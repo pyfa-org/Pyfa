@@ -180,7 +180,7 @@ mapper(es_Fit, fits_table,
            "_Fit__projectedModules": relation(
                    Module,
                    collection_class=HandledProjectedModList,
-                   overlaps='owner',
+                   overlaps='owner, _Fit__modules',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),  # noqa
            "owner": relation(
@@ -214,13 +214,13 @@ mapper(es_Fit, fits_table,
            "_Fit__projectedDrones": relation(
                    Drone,
                    collection_class=HandledProjectedDroneList,
-                   overlaps='owner',
+                   overlaps='owner, _Fit__drones',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),  # noqa
            "_Fit__projectedFighters": relation(
                    Fighter,
                    collection_class=HandledProjectedDroneList,
-                   overlaps='owner',
+                   overlaps='owner, _Fit__fighters',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)),  # noqa
            "_Fit__implants": relation(
