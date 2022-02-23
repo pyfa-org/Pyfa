@@ -43936,7 +43936,7 @@
   }, 
   "2816": {
     "hasTypes": 1, 
-    "iconID": 3010, 
+    "iconID": 2703, 
     "name_de": "Compressor Blueprints", 
     "name_en-us": "Compressor Blueprints", 
     "name_es": "Compressor Blueprints", 
@@ -43948,5 +43948,30 @@
     "name_zh": "Compressor Blueprints", 
     "nameID": 595232, 
     "parentGroupID": 209
+  }, 
+  "2819": {
+    "description_de": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_en-us": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_es": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_fr": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_it": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_ja": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_ko": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_ru": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "description_zh": "Electronic Attack Frigates which have been offered to capsuleers on occasion for limited periods.", 
+    "descriptionID": 596353, 
+    "hasTypes": 1, 
+    "iconID": 1443, 
+    "name_de": "Special Edition Electronic Attack Frigates", 
+    "name_en-us": "Special Edition Electronic Attack Frigates", 
+    "name_es": "Special Edition Electronic Attack Frigates", 
+    "name_fr": "Special Edition Electronic Attack Frigates", 
+    "name_it": "Special Edition Electronic Attack Frigates", 
+    "name_ja": "Special Edition Electronic Attack Frigates", 
+    "name_ko": "Special Edition Electronic Attack Frigates", 
+    "name_ru": "Special Edition Electronic Attack Frigates", 
+    "name_zh": "Special Edition Electronic Attack Frigates", 
+    "nameID": 596354, 
+    "parentGroupID": 1612
   }
 }
