@@ -10355,7 +10355,7 @@
     "displayName_ru": "Метауровень", 
     "displayName_zh": "衍生等级", 
     "displayNameID": 233633, 
-    "displayWhenZero": 0, 
+    "displayWhenZero": 1, 
     "highIsGood": 1, 
     "name": "metaLevelOld", 
     "published": 1, 
