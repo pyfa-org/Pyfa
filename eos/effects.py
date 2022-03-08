@@ -961,7 +961,6 @@ class Effect272(BaseEffect):
     repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
 
     Used by:
-    Implants named like: AIR Repairer Booster (3 of 3)
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: Numon Family Heirloom
@@ -1179,7 +1178,6 @@ class Effect395(BaseEffect):
 
     Used by:
     Modules from group: Rig Anchor (4 of 4)
-    Implants named like: AIR Agility Booster (3 of 3)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
@@ -4278,7 +4276,7 @@ class Effect1409(BaseEffect):
     systemScanDurationSkillAstrometrics
 
     Used by:
-    Implants named like: Acquisition (6 of 6)
+    Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Skill: Astrometric Acquisition
@@ -4940,7 +4938,6 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
-    Implants named like: AIR Repairer Booster (3 of 3)
     Modules named like: Nanobot Accelerator (8 of 8)
     Skill: Capital Repair Systems
     """
@@ -13521,7 +13518,7 @@ class Effect4161(BaseEffect):
     baseMaxScanDeviationModifierRequiringAstrometrics
 
     Used by:
-    Implants named like: Pinpointing (6 of 6)
+    Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Skill: Astrometric Pinpointing
@@ -13544,8 +13541,8 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (4 of 7)
+    Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
-    Implants named like: Rangefinding (6 of 6)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
@@ -16685,7 +16682,6 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
-    Implants named like: AIR Repairer Booster (3 of 3)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
     """
 
@@ -20215,7 +20211,6 @@ class Effect5437(BaseEffect):
     archaeologySkillVirusBonus
 
     Used by:
-    Implants named like: AIR Relic Coherence Booster (3 of 3)
     Modules named like: Emission Scope Sharpener (8 of 8)
     Implant: Poteque 'Prospector' Archaeology AC-905
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
@@ -37963,56 +37958,6 @@ class Effect8323(BaseEffect):
             'generalMiningHoldCapacity',
             ship.getModifiedItemAttr('gallenteIndustrialBonusMiningHoldCapacity'),
             skill='Gallente Industrial', **kwargs)
-
-
-class Effect8327(BaseEffect):
-    """
-    relicAnalyzerRangeBonusPassive
-
-    Used by:
-    Implants named like: AIR Relic Range Booster (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Archaeology'), 'maxRange',
-            container.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
-
-
-class Effect8328(BaseEffect):
-    """
-    relicVirusStrengthBonusPassive
-
-    Used by:
-    Implants named like: AIR Relic Strength Booster (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.requiresSkill('Archaeology'), 'virusStrength',
-            container.getModifiedItemAttr('virusStrengthBonus'), **kwargs)
-
-
-class Effect8329(BaseEffect):
-    """
-    signatureRadiusBonusPassive
-
-    Used by:
-    Implants named like: AIR Signature Booster (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'signatureRadius', container.getModifiedItemAttr('signatureRadiusBonusPercent'), **kwargs)
 
 
 class Effect8360(BaseEffect):
