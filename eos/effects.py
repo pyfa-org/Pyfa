@@ -16439,13 +16439,10 @@ class Effect4928(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         # pyfalog = Logger(__name__)
 
-        damagePattern = fit.damagePattern
+        damagePattern = module.rahPatternOverride if module.rahPatternOverride is not None else fit.damagePattern
         # pyfalog.debug('==============================')
 
-        static_adaptive_behavior = eos.config.settings['useStaticAdaptiveArmorHardener']
-
-        if (damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount) and static_adaptive_behavior:
-            # pyfalog.debug('Setting adaptivearmorhardener resists to uniform profile.')
+        if damagePattern == 'disable':
             for attr in ('armorEmDamageResonance', 'armorThermalDamageResonance', 'armorKineticDamageResonance', 'armorExplosiveDamageResonance'):
                 fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup='preMul')
             return

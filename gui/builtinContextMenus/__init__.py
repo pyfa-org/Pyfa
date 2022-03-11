@@ -11,6 +11,7 @@ from gui.builtinContextMenus import graphFitAmmoPicker
 from gui.builtinContextMenus import shipModeChange
 from gui.builtinContextMenus import moduleAmmoChange
 from gui.builtinContextMenus import moduleSpool
+from gui.builtinContextMenus import moduleRahPattern
 from gui.builtinContextMenus import boosterSideEffects
 from gui.builtinContextMenus import fighterAbilities
 from gui.builtinContextMenus import resistMode
