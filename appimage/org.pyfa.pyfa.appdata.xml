@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>org.pyfa.pyfa</id>
+    <metadata_license>MIT</metadata_license>
+    <project_license>GPL-3</project_license>
+    <name>Pyfa</name>
+    <summary>Pyfa </summary>
+    <description>
+        <p>  Python Fitting Assitant for EVE Online
+        </p>
+    </description>
+    <launchable type="desktop-id">pyfa.desktop</launchable>
+    <url type="homepage">https://github.com/pyfa-org/Pyfa</url>
+    <provides>
+        <binary>pyfa</binary>
+    </provides>
+</component>
