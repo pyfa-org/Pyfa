@@ -4,6 +4,7 @@ Needed for building:
 
 - Linux distro, currently tested is Arch/Manjaro
 - make, curl
+- GTK3 libraries are needed (`gtk3` for Arch based, `libgtk-3-dev` for debian based)
 - patience, first time building wxPython can take about 10 minutes 
 
 Steps:
