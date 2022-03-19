@@ -78,7 +78,7 @@ BUILTINS = OrderedDict([
     (-37, (_c(_t('NPC')) + _c(_t('Mission')) + _t('Mordus Legion'), 0.32, 0.48, 0.4, 0.62)),
     (-38, (_c(_t('NPC')) + _c(_t('Other')) + _t('Sleeper'), 0.61, 0.61, 0.61, 0.61)),
     (-39, (_c(_t('NPC')) + _c(_t('Other')) + _t('Sansha Incursion'), 0.65, 0.63, 0.64, 0.65)),
-    # Anomic Team
+    # Anomic Team, source: client data dump
     (-40, (_c(_t('NPC')) + _c(_t('Burner')) + _c(_t('Team')) + _t('Enyo'), 0.575, 0.724, 0.862, 0.235, 1020, 37, 39)),
     (-41, (_c(_t('NPC')) + _c(_t('Burner')) + _c(_t('Team')) + _t('Navitas'), 0.681, 0.586, 0.522, 0.49, 870, 30, 35)),
     (-42, (_c(_t('NPC')) + _c(_t('Burner')) + _c(_t('Team')) + _t('Hawk'), 0.3, 0.86, 0.79, 0.65, 1122, 48, 39)),
@@ -87,7 +87,7 @@ BUILTINS = OrderedDict([
     (-45, (_c(_t('NPC')) + _c(_t('Burner')) + _c(_t('Team')) + _t('Burst'), 0.344, 0.475, 0.606, 0.672, 1174, 39, 31)),
     (-46, (_c(_t('NPC')) + _c(_t('Burner')) + _c(_t('Team')) + _t('Vengeance'), 0.66, 0.558, 0.745, 0.864, 1050, 37, 40)),
     (-47, (_c(_t('NPC')) + _c(_t('Burner')) + _c(_t('Team')) + _t('Inquisitor'), 0.681, 0.586, 0.522, 0.49, 920, 29, 20.5)),
-    # Anomic Agent & Base
+    # Anomic Agent & Base, source: client data dump
     (-48, (_c(_t('NPC')) + _c(_t('Burner')) + _t('Cruor'), 0.795, 0.734, 0.693, 0.672, 900, 18, 20.5)),
     (-49, (_c(_t('NPC')) + _c(_t('Burner')) + _t('Dramiel'), 0.351, 0.481, 0.611, 0.676, 2100, 11, 25)),
     (-50, (_c(_t('NPC')) + _c(_t('Burner')) + _t('Daredevil'), 0.685, 0.59, 0.59, 0.433, 1200, 18, 25)),
