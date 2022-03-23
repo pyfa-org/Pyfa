@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Pyfa
+Exec=pyfa
+Comment=Python Fitting Assistant for EVE: Online
+Icon=python
+Categories=Game;
