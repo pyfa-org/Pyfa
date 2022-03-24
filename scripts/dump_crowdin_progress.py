@@ -19,6 +19,10 @@ params = {
 resp = requests.get('https://api.crowdin.com/api/project/pyfa/status', params=params)
 data = resp.json()
 
+if resp.status_code is not 200:
+    print("Error fetching Crowdin progress. Error: {}; {}".format(data['error']['message'], key[-3:]))
+    sys.exit()
+
 for x in data:
     x['code'] = x['code'].replace('-', '_')
     lang = wx.Locale.FindLanguageInfo(x['code'])
