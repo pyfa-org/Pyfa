@@ -163,7 +163,7 @@ if __name__ == "__main__":
         import threading
         from utils.timer import CountdownTimer
 
-        timer = CountdownTimer(5)
+        timer = CountdownTimer(1)
         stoppableThreads = []
         for t in threading.enumerate():
             if t is not threading.main_thread() and hasattr(t, 'stop'):

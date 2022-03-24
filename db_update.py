@@ -27,6 +27,9 @@ import re
 import sqlite3
 import sys
 
+import sqlalchemy.orm
+from sqlalchemy import or_, and_
+
 
 # todo: need to set the EOS language to en, becasuse this assumes it's being run within an English context
 # Need to know what that would do if called from pyfa
@@ -132,7 +135,7 @@ def update_db():
 
     def processEveTypes():
         print('processing evetypes')
-        data = _readData('fsd_lite', 'evetypes', keyIdName='typeID')
+        data = _readData('fsd_binary', 'types', keyIdName='typeID')
         for row in data:
             if (
                 # Apparently people really want Civilian modules available
@@ -144,6 +147,7 @@ def update_db():
             # Nearly useless and clutter search results too much
             elif (
                 row['typeName_en-us'].startswith('Limited Synth ') or
+                row['typeName_en-us'].startswith('Expired ') or
                 row['typeName_en-us'].endswith(' Filament') and (
                     "'Needlejack'" not in row['typeName_en-us'] and
                     "'Devana'" not in row['typeName_en-us'] and
@@ -179,7 +183,7 @@ def update_db():
 
     def processEveGroups():
         print('processing evegroups')
-        data = _readData('fsd_lite', 'evegroups', keyIdName='groupID')
+        data = _readData('fsd_binary', 'groups', keyIdName='groupID')
         map = {'groupName_en-us': 'name'}
         map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Group, fieldMap=map)
@@ -187,7 +191,7 @@ def update_db():
 
     def processEveCategories():
         print('processing evecategories')
-        data = _readData('fsd_lite', 'evecategories', keyIdName='categoryID')
+        data = _readData('fsd_binary', 'categories', keyIdName='categoryID')
         map = { 'categoryName_en-us': 'name' }
         map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Category, fieldMap=map)
@@ -591,7 +595,17 @@ def update_db():
     # pyfa, we can do it here as a post-processing step
     for attr in eos.db.gamedata_session.query(eos.gamedata.Attribute).filter(eos.gamedata.Attribute.ID == 1367).all():
         attr.value = 4.0
-    for item in eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.name.like('%abyssal%')).all():
+    for item in eos.db.gamedata_session.query(eos.gamedata.Item).filter(or_(
+        eos.gamedata.Item.name.like('%abyssal%'),
+        eos.gamedata.Item.name.like('%mutated%'),
+        eos.gamedata.Item.name.like('%_PLACEHOLDER%'),
+        # Drifter weapons are published for some reason
+        eos.gamedata.Item.name.in_(('Lux Kontos', 'Lux Xiphos'))
+    )).all():
+        if 'Asteroid Mining Crystal' in item.name:
+            continue
+        if 'Mutated Drone Specialization' in item.name:
+            continue
         item.published = False
 
     for x in [
@@ -600,6 +614,31 @@ def update_db():
         cat = eos.db.gamedata_session.query(eos.gamedata.Category).filter(eos.gamedata.Category.ID == x).first()
         print ('Removing Category: {}'.format(cat.name))
         eos.db.gamedata_session.delete(cat)
+
+    # Unused normally, can be useful for customizing items
+    def _hardcodeAttribs(typeID, attrMap):
+        for attrName, value in attrMap.items():
+            try:
+                attr = eos.db.gamedata_session.query(eos.gamedata.Attribute).filter(and_(
+                    eos.gamedata.Attribute.name == attrName, eos.gamedata.Attribute.typeID == typeID)).one()
+            except sqlalchemy.orm.exc.NoResultFound:
+                attrInfo = eos.db.gamedata_session.query(eos.gamedata.AttributeInfo).filter(eos.gamedata.AttributeInfo.name == attrName).one()
+                attr = eos.gamedata.Attribute()
+                attr.ID = attrInfo.ID
+                attr.typeID = typeID
+                attr.value = value
+                eos.db.gamedata_session.add(attr)
+            else:
+                attr.value = value
+
+    def _hardcodeEffects(typeID, effectMap):
+        item = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.ID == typeID).one()
+        item.effects.clear()
+        for effectID, effectName in effectMap.items():
+            effect = eos.gamedata.Effect()
+            effect.effectID = effectID
+            effect.effectName = effectName
+            item.effects[effectName] = effect
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')

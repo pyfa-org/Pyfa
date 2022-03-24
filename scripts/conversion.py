@@ -13,13 +13,39 @@ sys.path.append(os.path.realpath(os.path.join(path, "..")))
 # change to correct conversion
 
 rename_phrase = " renamed to "
-conversion_phrase = " converted to "
+conversion_phrase = " -> "
 
 text = """
-    'Hypnos' Signal Distortion Amplifier I renamed to Hypnos Compact Signal Distortion Amplifier I
-    Initiated Signal Distortion Amplifier I converted to Hypnos Compact Signal Distortion Amplifier I
-    Induced Signal Distortion Amplifier I converted to Hypnos Compact Signal Distortion Amplifier I
-    Compulsive Signal Distortion Amplifier I converted to Hypnos Compact Signal Distortion Amplifier I
+Veldspar Mining Crystal I -> Simple Asteroid Mining Crystal Type A I
+Scordite Mining Crystal I -> Simple Asteroid Mining Crystal Type A I
+Pyroxeres Mining Crystal I -> Simple Asteroid Mining Crystal Type A I
+Plagioclase Mining Crystal I -> Simple Asteroid Mining Crystal Type A I
+Veldspar Mining Crystal II -> Simple Asteroid Mining Crystal Type A II
+Scordite Mining Crystal II -> Simple Asteroid Mining Crystal Type A II
+Pyroxeres Mining Crystal II -> Simple Asteroid Mining Crystal Type A II
+Plagioclase Mining Crystal II -> Simple Asteroid Mining Crystal Type A II
+Omber Mining Crystal I -> Coherent Asteroid Mining Crystal Type A I
+Kernite Mining Crystal I -> Coherent Asteroid Mining Crystal Type A I
+Jaspet Mining Crystal I -> Coherent Asteroid Mining Crystal Type A I
+Hemorphite Mining Crystal I -> Coherent Asteroid Mining Crystal Type A I
+Hedbergite Mining Crystal I -> Coherent Asteroid Mining Crystal Type A I
+Omber Mining Crystal II -> Coherent Asteroid Mining Crystal Type A II
+Jaspet Mining Crystal II -> Coherent Asteroid Mining Crystal Type A II
+Kernite Mining Crystal II -> Coherent Asteroid Mining Crystal Type A II
+Hedbergite Mining Crystal II -> Coherent Asteroid Mining Crystal Type A II
+Hemorphite Mining Crystal II -> Coherent Asteroid Mining Crystal Type A II
+Gneiss Mining Crystal I -> Variegated Asteroid Mining Crystal Type A I
+Dark Ochre Mining Crystal I -> Variegated Asteroid Mining Crystal Type A I
+Crokite Mining Crystal I -> Variegated Asteroid Mining Crystal Type A I
+Gneiss Mining Crystal II -> Variegated Asteroid Mining Crystal Type A II
+Dark Ochre Mining Crystal II -> Variegated Asteroid Mining Crystal Type A II
+Crokite Mining Crystal II -> Variegated Asteroid Mining Crystal Type A II
+Bistot Mining Crystal I -> Complex Asteroid Mining Crystal Type A I
+Arkonor Mining Crystal I -> Complex Asteroid Mining Crystal Type A I
+Spodumain Mining Crystal I -> Complex Asteroid Mining Crystal Type A I
+Bistot Mining Crystal II -> Complex Asteroid Mining Crystal Type A II
+Arkonor Mining Crystal II -> Complex Asteroid Mining Crystal Type A II
+Spodumain Mining Crystal II -> Complex Asteroid Mining Crystal Type A II
     """
 
 def main(old, new):

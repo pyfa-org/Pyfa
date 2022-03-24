@@ -25,6 +25,8 @@ from sqlalchemy.orm import reconstructor, validates
 import eos.db
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
+from eos.saveddata.mutatedMixin import MutatedMixin, MutaError
+from eos.saveddata.mutator import MutatorDrone
 from eos.utils.cycles import CycleInfo
 from eos.utils.default import DEFAULT
 from eos.utils.stats import DmgTypes, RRTypes
@@ -33,12 +35,13 @@ from eos.utils.stats import DmgTypes, RRTypes
 pyfalog = Logger(__name__)
 
 
-class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
+class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, MutatedMixin):
     MINING_ATTRIBUTES = ("miningAmount",)
 
-    def __init__(self, item):
+    def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a drone from the program"""
-        self.__item = item
+        self._item = item
+        self._mutaInit(baseItem=baseItem, mutaplasmid=mutaplasmid)
 
         if self.isInvalid:
             raise ValueError("Passed item is not a Drone")
@@ -53,13 +56,18 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @reconstructor
     def init(self):
         """Initialize a drone from the database and validate"""
-        self.__item = None
+        self._item = None
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
-            if self.__item is None:
+            self._item = eos.db.getItem(self.itemID)
+            if self._item is None:
                 pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
+
+        try:
+            self._mutaReconstruct()
+        except MutaError:
+            return
 
         if self.isInvalid:
             pyfalog.error("Item (id: {0}) is not a Drone", self.itemID)
@@ -72,15 +80,18 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__charge = None
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.__item.attributes
-        self.__itemModifiedAttributes.overrides = self.__item.overrides
-
+        self.__itemModifiedAttributes.original = self._item.attributes
+        self.__itemModifiedAttributes.overrides = self._item.overrides
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
-        # pheonix todo: check the attribute itself, not the modified. this will always return 0 now.
+
+        self._mutaLoadMutators(mutatorClass=MutatorDrone)
+        self.__itemModifiedAttributes.mutators = self.mutators
+
         chargeID = self.getModifiedItemAttr("entityMissileTypeID", None)
-        if chargeID is not None:
+        if chargeID:
             charge = eos.db.getItem(int(chargeID))
             self.__charge = charge
             self.__chargeModifiedAttributes.original = charge.attributes
@@ -96,11 +107,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isInvalid(self):
-        return self.__item is None or self.__item.category.name != "Drone"
+        if self._item is None:
+            return True
+        if self._item.category.name != "Drone":
+            return True
+        if self._mutaIsInvalid:
+            return True
+        return False
 
     @property
     def item(self):
-        return self.__item
+        return self._item
 
     @property
     def charge(self):
@@ -112,8 +129,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             cycleTime = self.getModifiedItemAttr("missileLaunchDuration", 0)
         else:
             for attr in ("speed", "duration", "durationHighisGood"):
-                cycleTime = self.getModifiedItemAttr(attr, None)
-                if cycleTime is not None:
+                cycleTime = self.getModifiedItemAttr(attr)
+                if cycleTime:
                     break
         if cycleTime is None:
             return 0
@@ -220,35 +237,49 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def getCycleParameters(self, reloadOverride=None):
         cycleTime = self.cycleTime
-        if cycleTime == 0:
+        if not cycleTime:
             return None
         return CycleInfo(self.cycleTime, 0, math.inf, False)
 
-    @property
-    def miningStats(self):
-        if self.__miningyield is None:
-            if self.mines is True and self.amountActive > 0:
-                getter = self.getModifiedItemAttr
-                cycleParams = self.getCycleParameters()
-                if cycleParams is None:
-                    self.__miningyield = 0
-                else:
-                    cycleTime = cycleParams.averageTime
-                    volley = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
-                    self.__miningyield = volley / (cycleTime / 1000.0)
-            else:
-                self.__miningyield = 0
+    def getMiningYPS(self, ignoreState=False):
+        if not ignoreState and self.amountActive <= 0:
+            return 0
+        if self.__miningYield is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningYield
 
-        return self.__miningyield
+    def getMiningWPS(self, ignoreState=False):
+        if not ignoreState and self.amountActive <= 0:
+            return 0
+        if self.__miningWaste is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningWaste
+
+    def __calculateMining(self):
+        if self.mines is True:
+            getter = self.getModifiedItemAttr
+            cycleParams = self.getCycleParameters()
+            if cycleParams is None:
+                yps = 0
+            else:
+                cycleTime = cycleParams.averageTime
+                yield_ = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amount
+                yps = yield_ / (cycleTime / 1000.0)
+            wasteChance = self.getModifiedItemAttr("miningWasteProbability")
+            wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
+            wps = yps * max(0, min(1, wasteChance / 100)) * wasteMult
+            return yps, wps
+        else:
+            return 0, 0
 
     @property
     def maxRange(self):
         attrs = ("shieldTransferRange", "powerTransferRange",
                  "energyDestabilizationRange", "empFieldRange",
-                 "ecmBurstRange", "maxRange")
+                 "ecmBurstRange", "maxRange", "ECMRangeOptimal")
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr, None)
-            if maxRange is not None:
+            maxRange = self.getModifiedItemAttr(attr)
+            if maxRange:
                 return maxRange
         if self.charge is not None:
             delay = self.getModifiedChargeAttr("explosionDelay")
@@ -263,8 +294,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def falloff(self):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr, None)
-            if falloff is not None:
+            falloff = self.getModifiedItemAttr(attr)
+            if falloff:
                 return falloff
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
@@ -285,7 +316,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def clear(self):
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 
@@ -337,10 +369,11 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     effect.handler(fit, self, ("droneCharge",), projectionRange, effect=effect)
 
     def __deepcopy__(self, memo):
-        copy = Drone(self.item)
+        copy = Drone(self.item, self.baseItem, self.mutaplasmid)
         copy.amount = self.amount
         copy.amountActive = self.amountActive
         copy.projectionRange = self.projectionRange
+        self._mutaApplyMutators(mutatorClass=MutatorDrone, targetInstance=copy)
         return copy
 
     def rebase(self, item):
@@ -348,16 +381,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         amountActive = self.amountActive
         projectionRange = self.projectionRange
 
-        Drone.__init__(self, item)
+        Drone.__init__(self, item, self.baseItem, self.mutaplasmid)
         self.amount = amount
         self.amountActive = amountActive
         self.projectionRange = projectionRange
+        self._mutaApplyMutators(mutatorClass=MutatorDrone)
 
     def fits(self, fit):
         fitDroneGroupLimits = set()
         for i in range(1, 3):
-            groneGrp = fit.ship.getModifiedItemAttr("allowedDroneGroup%d" % i, None)
-            if groneGrp is not None:
+            groneGrp = fit.ship.getModifiedItemAttr("allowedDroneGroup%d" % i)
+            if groneGrp:
                 fitDroneGroupLimits.add(int(groneGrp))
         if len(fitDroneGroupLimits) == 0:
             return True

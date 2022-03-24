@@ -27,7 +27,8 @@ from eos.const import FittingHardpoint, FittingModuleState, FittingSlot
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.mutator import Mutator
+from eos.saveddata.mutatedMixin import MutatedMixin, MutaError
+from eos.saveddata.mutator import MutatorModule
 from eos.utils.cycles import CycleInfo, CycleSequence
 from eos.utils.default import DEFAULT
 from eos.utils.float import floatUnerr
@@ -61,7 +62,7 @@ ProjectedSystem = {
 }
 
 
-class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
+class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, MutatedMixin):
     """An instance of this class represents a module together with its charge and modified attributes"""
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = (
@@ -72,21 +73,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         """Initialize a module from the program"""
 
         self.itemID = item.ID if item is not None else None
-        self.baseItemID = baseItem.ID if baseItem is not None else None
-        self.mutaplasmidID = mutaplasmid.ID if mutaplasmid is not None else None
 
-        if baseItem is not None:
-            # we're working with a mutated module, need to get abyssal module loaded with the base attributes
-            # Note: there may be a better way of doing this, such as a metho on this classe to convert(mutaplamid). This
-            # will require a bit more research though, considering there has never been a need to "swap" out the item of a Module
-            # before, and there may be assumptions taken with regards to the item never changing (pre-calculated / cached results, for example)
-            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
-            self.__baseItem = baseItem
-            self.__mutaplasmid = mutaplasmid
-        else:
-            self.__item = item
-            self.__baseItem = baseItem
-            self.__mutaplasmid = mutaplasmid
+        self._item = item
+        self._mutaInit(baseItem=baseItem, mutaplasmid=mutaplasmid)
 
         if item is not None and self.isInvalid:
             raise ValueError("Passed item is not a Module")
@@ -101,27 +90,22 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @reconstructor
     def init(self):
         """Initialize a module from the database and validate"""
-        self.__item = None
-        self.__baseItem = None
+        self._item = None
         self.__charge = None
-        self.__mutaplasmid = None
 
         # we need this early if module is invalid and returns early
         self.__slot = self.dummySlot
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
-            if self.__item is None:
+            self._item = eos.db.getItem(self.itemID)
+            if self._item is None:
                 pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
-        if self.baseItemID:
-            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
-            self.__baseItem = eos.db.getItem(self.baseItemID)
-            self.__mutaplasmid = eos.db.getMutaplasmid(self.mutaplasmidID)
-            if self.__baseItem is None:
-                pyfalog.error("Base Item (id: {0}) does not exist", self.itemID)
-                return
+        try:
+            self._mutaReconstruct()
+        except MutaError:
+            return
 
         if self.isInvalid:
             pyfalog.error("Item (id: {0}) is not a Module", self.itemID)
@@ -138,9 +122,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.__charge and self.__charge.category.name != "Charge":
             self.__charge = None
 
+        self.rahPatternOverride = None
+
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -149,21 +136,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__chargeModifiedAttributes = ModifiedAttributeDict(parent=self)
         self.__slot = self.dummySlot  # defaults to None
 
-        if self.__item:
-            self.__itemModifiedAttributes.original = self.__item.attributes
-            self.__itemModifiedAttributes.overrides = self.__item.overrides
-            self.__hardpoint = self.__calculateHardpoint(self.__item)
-            self.__slot = self.calculateSlot(self.__item)
+        if self._item:
+            self.__itemModifiedAttributes.original = self._item.attributes
+            self.__itemModifiedAttributes.overrides = self._item.overrides
+            self.__hardpoint = self.__calculateHardpoint(self._item)
+            self.__slot = self.calculateSlot(self._item)
 
-            # Instantiate / remove mutators if this is a mutated module
-            if self.__baseItem:
-                for x in self.mutaplasmid.attributes:
-                    attr = self.item.attributes[x.name]
-                    id = attr.ID
-                    if id not in self.mutators:  # create the mutator
-                        Mutator(self, attr, attr.value)
-                # @todo: remove attributes that are no longer part of the mutaplasmid.
-
+            self._mutaLoadMutators(mutatorClass=MutatorModule)
             self.__itemModifiedAttributes.mutators = self.mutators
 
         if self.__charge:
@@ -198,27 +177,21 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # todo: validate baseItem as well if it's set.
         if self.isEmpty:
             return False
-        if self.__item is None:
+        if self._item is None:
             return True
         if (
-            self.__item.category.name not in ("Module", "Subsystem", "Structure Module")
-            and self.__item.group.name not in self.SYSTEM_GROUPS
+            self._item.category.name not in ("Module", "Subsystem", "Structure Module")
+            and self._item.group.name not in self.SYSTEM_GROUPS
         ):
             return True
         if (
-            self.__item.category.name == "Structure Module"
-            and self.__item.group.name == "Quantum Cores"
+            self._item.category.name == "Structure Module"
+            and self._item.group.name == "Quantum Cores"
         ):
             return True
-        if self.item.isAbyssal and not self.isMutated:
-            return True
-        if self.isMutated and not self.__mutaplasmid:
+        if self._mutaIsInvalid:
             return True
         return False
-
-    @property
-    def isMutated(self):
-        return self.baseItemID and self.mutaplasmidID
 
     @property
     def numCharges(self):
@@ -336,10 +309,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "shipScanRange", "surveyScanRange")
         maxRange = None
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr, None)
-            if maxRange is not None:
+            maxRange = self.getModifiedItemAttr(attr)
+            if maxRange:
                 break
-        if maxRange is not None:
+        if maxRange:
             if 'burst projector' in self.item.name.lower():
                 maxRange -= self.owner.ship.getModifiedItemAttr("radius")
             return maxRange
@@ -401,8 +374,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def falloff(self):
         attrs = ("falloffEffectiveness", "falloff", "shipScanFalloff")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr, None)
-            if falloff is not None:
+            falloff = self.getModifiedItemAttr(attr)
+            if falloff:
                 return falloff
 
     @property
@@ -419,15 +392,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def item(self):
-        return self.__item if self.__item != 0 else None
-
-    @property
-    def baseItem(self):
-        return self.__baseItem
-
-    @property
-    def mutaplasmid(self):
-        return self.__mutaplasmid
+        return self._item if self._item != 0 else None
 
     @property
     def charge(self):
@@ -447,28 +412,39 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.__itemModifiedAttributes.clear()
 
-    @property
-    def miningStats(self):
-        if self.__miningyield is None:
-            if self.isEmpty:
-                self.__miningyield = 0
-            else:
-                if self.state >= FittingModuleState.ACTIVE:
-                    volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
-                            "miningAmount") or 0
-                    if volley:
-                        cycleParams = self.getCycleParameters()
-                        if cycleParams is None:
-                            self.__miningyield = 0
-                        else:
-                            cycleTime = cycleParams.averageTime
-                            self.__miningyield = volley / (cycleTime / 1000.0)
-                    else:
-                        self.__miningyield = 0
-                else:
-                    self.__miningyield = 0
+    def getMiningYPS(self, ignoreState=False):
+        if self.isEmpty:
+            return 0
+        if not ignoreState and self.state < FittingModuleState.ACTIVE:
+            return 0
+        if self.__miningYield is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningYield
 
-        return self.__miningyield
+    def getMiningWPS(self, ignoreState=False):
+        if self.isEmpty:
+            return 0
+        if not ignoreState and self.state < FittingModuleState.ACTIVE:
+            return 0
+        if self.__miningWaste is None:
+            self.__miningYield, self.__miningWaste = self.__calculateMining()
+        return self.__miningWaste
+
+    def __calculateMining(self):
+        yield_ = self.getModifiedItemAttr("miningAmount")
+        if yield_:
+            cycleParams = self.getCycleParameters()
+            if cycleParams is None:
+                yps = 0
+            else:
+                cycleTime = cycleParams.averageTime
+                yps = yield_ / (cycleTime / 1000.0)
+        else:
+            yps = 0
+        wasteChance = self.getModifiedItemAttr("miningWasteProbability")
+        wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
+        wps = yps * max(0, min(1, wasteChance / 100)) * wasteMult
+        return yps, wps
 
     def isDealingDamage(self, ignoreState=False):
         volleyParams = self.getVolleyParameters(ignoreState=ignoreState)
@@ -680,6 +656,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         """
 
         slot = self.slot
+        if slot is None:
+            return False
         if fit.getSlotsFree(slot) <= (0 if self.owner != fit else -1):
             return False
 
@@ -718,8 +696,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return False
 
         # Check max group fitted
-        max = self.getModifiedItemAttr("maxGroupFitted", None)
-        if max is not None:
+        max = self.getModifiedItemAttr("maxGroupFitted")
+        if max:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
                 if (mod.item and mod.item.groupID == self.item.groupID and
@@ -772,7 +750,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check if the local module is over it's max limit; if it's not, we're fine
         maxGroupOnline = self.getModifiedItemAttr("maxGroupOnline", None)
         maxGroupActive = self.getModifiedItemAttr("maxGroupActive", None)
-        if maxGroupOnline is None and maxGroupActive is None and projectedOnto is None:
+        if not maxGroupOnline and not maxGroupActive and projectedOnto is None:
             return True
 
         # Following is applicable only to local modules, we do not want to limit projected
@@ -788,11 +766,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         currOnline += 1
                     if mod.state >= FittingModuleState.ACTIVE:
                         currActive += 1
-                    if maxGroupOnline is not None and currOnline > maxGroupOnline:
+                    if maxGroupOnline and currOnline > maxGroupOnline:
                         if maxState is None or maxState > FittingModuleState.OFFLINE:
                             maxState = FittingModuleState.OFFLINE
                             break
-                    if maxGroupActive is not None and currActive > maxGroupActive:
+                    if maxGroupActive and currActive > maxGroupActive:
                         if maxState is None or maxState > FittingModuleState.ONLINE:
                             maxState = FittingModuleState.ONLINE
             return True if maxState is None else maxState
@@ -830,7 +808,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         chargeGroup = charge.groupID
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
-            if itemChargeGroup is None:
+            if not itemChargeGroup:
                 continue
             if itemChargeGroup == chargeGroup:
                 return True
@@ -841,7 +819,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         validCharges = set()
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
-            if itemChargeGroup is not None:
+            if itemChargeGroup:
                 g = eos.db.getGroup(int(itemChargeGroup), eager="items.attributes")
                 if g is None:
                     continue
@@ -903,7 +881,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def clear(self):
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__miningyield = None
+        self.__miningYield = None
+        self.__miningWaste = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -1098,9 +1077,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy.spoolType = self.spoolType
         copy.spoolAmount = self.spoolAmount
         copy.projectionRange = self.projectionRange
-
-        for x in self.mutators.values():
-            Mutator(copy, x.attribute, x.value)
+        copy.rahPatternOverride = self.rahPatternOverride
+        self._mutaApplyMutators(mutatorClass=MutatorModule, targetInstance=copy)
 
         return copy
 
@@ -1110,6 +1088,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         spoolType = self.spoolType
         spoolAmount = self.spoolAmount
         projectionRange = self.projectionRange
+        rahPatternOverride = self.rahPatternOverride
 
         Module.__init__(self, item, self.baseItem, self.mutaplasmid)
         self.state = state
@@ -1118,14 +1097,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.spoolType = spoolType
         self.spoolAmount = spoolAmount
         self.projectionRange = projectionRange
-        for x in self.mutators.values():
-            Mutator(self, x.attribute, x.value)
+        self.rahPatternOverride = rahPatternOverride
+        self._mutaApplyMutators(mutatorClass=MutatorModule)
 
     def __repr__(self):
         if self.item:
-            return "Module(ID={}, name={}) at {}".format(
-                    self.item.ID, self.item.name, hex(id(self))
-            )
+            return "Module(ID={}, name={}) at {}".format(self.item.ID, self.item.name, hex(id(self)))
         else:
             return "EmptyModule() at {}".format(hex(id(self)))
 

@@ -93,6 +93,7 @@ class Fit:
             "marketSearchDelay": 250,
             "ammoChangeAll": False,
             "additionsLabels": 1,
+            "expandedMutantNames": False,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
@@ -379,7 +380,7 @@ class Fit:
         return fits
 
     def changeMutatedValuePrelim(self, mutator, value):
-        pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.module, mutator.module.mutaplasmid, mutator.value, value))
+        pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.item, mutator.item.mutaplasmid, mutator.value, value))
         if mutator.value != value:
             mutator.value = value
             eos.db.flush()
@@ -454,6 +455,14 @@ class Fit:
             setattr(dp, "%sAmount" % attr, ammo.getAttribute("%sDamage" % attr) or 0)
 
         fit.damagePattern = dp
+        self.recalc(fit)
+
+    def setRahPattern(self, fitID, module, pattern):
+        pyfalog.debug("Set as pattern for fit ID: {0}", fitID)
+        if fitID is None:
+            return
+        module.rahPatternOverride = pattern
+        fit = eos.db.getFit(fitID)
         self.recalc(fit)
 
     def checkStates(self, fit, base):

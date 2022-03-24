@@ -311,6 +311,8 @@ class Market:
             "Virtuoso"                    : self.les_grp,  # AT15 prize
             "Hydra"                       : self.les_grp,  # AT16 prize
             "Tiamat"                      : self.les_grp,  # AT16 prize
+            "Raiju"                       : self.les_grp,  # AT17 prize
+            "Laelaps"                     : self.les_grp,  # AT17 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)

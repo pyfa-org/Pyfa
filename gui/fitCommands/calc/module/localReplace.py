@@ -71,7 +71,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         # Remove if there was no module
         if self.oldModInfo is None:
             from .localRemove import CalcRemoveLocalModulesCommand
-            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], recalc=False)
+            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], recalc=self.recalc)
             if not cmd.Do():
                 return False
             restoreCheckedStates(fit, self.savedStateCheckChanges)

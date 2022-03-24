@@ -21,7 +21,10 @@ class GuiConvertMutatedLocalModuleCommand(wx.Command):
     def Do(self):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
-        mod = fit.modules[self.position]
+        try:
+            mod = fit.modules[self.position]
+        except IndexError:
+            return False
         if mod.isEmpty:
             return False
         if mod.isMutated:

@@ -22,6 +22,7 @@ import wx
 
 import config
 import gui.mainFrame
+from eos.saveddata.drone import Drone
 from eos.saveddata.module import Module
 from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
@@ -165,7 +166,7 @@ class ItemStatsContainer(wx.Panel):
             self.traits = ItemTraits(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.traits, _t("Traits"))
 
-        if isinstance(stuff, Module) and stuff.isMutated:
+        if isinstance(stuff, (Module, Drone)) and stuff.isMutated:
             self.mutator = ItemMutatorPanel(self.nbContainer, stuff)
             self.nbContainer.AddPage(self.mutator, _t("Mutations"))
 
@@ -215,3 +216,4 @@ class ItemStatsContainer(wx.Panel):
         mutaPanel = getattr(self, 'mutator', None)
         if mutaPanel is not None:
             mutaPanel.OnWindowClose()
+        self.params.OnWindowClose()

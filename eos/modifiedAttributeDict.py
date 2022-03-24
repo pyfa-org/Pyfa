@@ -71,30 +71,30 @@ class ItemAttrShortcut:
 
     def getModifiedItemAttr(self, key, default=0):
         return_value = self.itemModifiedAttributes.get(key)
-        return return_value or default
+        return return_value if return_value is not None else default
 
     def getModifiedItemAttrExtended(self, key, extraMultipliers=None, ignoreAfflictors=(), default=0):
         return_value = self.itemModifiedAttributes.getExtended(key, extraMultipliers=extraMultipliers, ignoreAfflictors=ignoreAfflictors)
-        return return_value or default
+        return return_value if return_value is not None else default
 
     def getItemBaseAttrValue(self, key, default=0):
         return_value = self.itemModifiedAttributes.getOriginal(key)
-        return return_value or default
+        return return_value if return_value is not None else default
 
 
 class ChargeAttrShortcut:
 
     def getModifiedChargeAttr(self, key, default=0):
         return_value = self.chargeModifiedAttributes.get(key)
-        return return_value or default
+        return return_value if return_value is not None else default
 
     def getModifiedChargeAttrExtended(self, key, extraMultipliers=None, ignoreAfflictors=(), default=0):
         return_value = self.chargeModifiedAttributes.getExtended(key, extraMultipliers=extraMultipliers, ignoreAfflictors=ignoreAfflictors)
-        return return_value or default
+        return return_value if return_value is not None else default
 
     def getChargeBaseAttrValue(self, key, default=0):
         return_value = self.chargeModifiedAttributes.getOriginal(key)
-        return return_value or default
+        return return_value if return_value is not None else default
 
 
 class ModifiedAttributeDict(MutableMapping):

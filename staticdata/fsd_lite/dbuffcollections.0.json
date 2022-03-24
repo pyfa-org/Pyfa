@@ -2496,5 +2496,426 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2141": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Link-with-ship damage resistance bonus", 
+    "displayName_de": "Schadensresistenzbonus", 
+    "displayName_en-us": "Damage Resistance Bonus", 
+    "displayName_es": "Damage Resistance Bonus", 
+    "displayName_fr": "Bonus de résistance aux dégâts.", 
+    "displayName_it": "Damage Resistance Bonus", 
+    "displayName_ja": "ダメージレジスタンスボーナス", 
+    "displayName_ko": "피해 저항력 보너스", 
+    "displayName_ru": "Усиление сопротивляемости урону", 
+    "displayName_zh": "Damage Resistance Bonus", 
+    "displayNameID": 587608, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 109
+      }, 
+      {
+        "dogmaAttributeID": 110
+      }, 
+      {
+        "dogmaAttributeID": 111
+      }, 
+      {
+        "dogmaAttributeID": 113
+      }, 
+      {
+        "dogmaAttributeID": 267
+      }, 
+      {
+        "dogmaAttributeID": 268
+      }, 
+      {
+        "dogmaAttributeID": 269
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }, 
+      {
+        "dogmaAttributeID": 271
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2142": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Small Energy Turret Damage Bonus", 
+    "displayName_de": "Schadensbonus auf kleinen Energiegeschützturm", 
+    "displayName_en-us": "Small Energy Turret Damage Bonus", 
+    "displayName_es": "Small Energy Turret Damage Bonus", 
+    "displayName_fr": "Bonus de dégâts des petites tourelles à énergie", 
+    "displayName_it": "Small Energy Turret Damage Bonus", 
+    "displayName_ja": "小型エネルギータレットダメージボーナス", 
+    "displayName_ko": "소형 에너지 터렛 피해량 보너스", 
+    "displayName_ru": "Бонус к урону от малых лазерных орудий", 
+    "displayName_zh": "Small Energy Turret Damage Bonus", 
+    "displayNameID": 588970, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3303
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2143": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Nos and Neut Drain Bonus", 
+    "displayName_de": "Stärkebonus auf Energiekriegsführung", 
+    "displayName_en-us": "Energy Warfare Strength Bonus", 
+    "displayName_es": "Energy Warfare Strength Bonus", 
+    "displayName_fr": "Bonus de puissance de guerre d'énergie", 
+    "displayName_it": "Energy Warfare Strength Bonus", 
+    "displayName_ja": "エネルギー戦強度ボーナス", 
+    "displayName_ko": "에너지전 효과 보너스", 
+    "displayName_ru": "Бонус к мощности средств воздействия на накопитель", 
+    "displayName_zh": "Energy Warfare Strength Bonus", 
+    "displayNameID": 588971, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 90, 
+        "groupID": 68
+      }, 
+      {
+        "dogmaAttributeID": 97, 
+        "groupID": 71
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2144": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Turret Damage Bonus", 
+    "displayName_de": "Geschützturmschadensbonus", 
+    "displayName_en-us": "Turret Damage Bonus", 
+    "displayName_es": "Turret Damage Bonus", 
+    "displayName_fr": "Bonus de dégâts des tourelles", 
+    "displayName_it": "Turret Damage Bonus", 
+    "displayName_ja": "タレットダメージボーナス", 
+    "displayName_ko": "터렛 피해량 보너스", 
+    "displayName_ru": "Увеличение урона от турелей", 
+    "displayName_zh": "Turret Damage Bonus", 
+    "displayNameID": 589384, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2145": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Missile Damage Bonus", 
+    "displayName_de": "Lenkwaffeschadensbonus", 
+    "displayName_en-us": "Missile Damage Bonuus", 
+    "displayName_es": "Missile Damage Bonuus", 
+    "displayName_fr": "Bonus aux dégâts des missiles", 
+    "displayName_it": "Missile Damage Bonuus", 
+    "displayName_ja": "ミサイルダメージボーナス", 
+    "displayName_ko": "미사일 피해량 보너스", 
+    "displayName_ru": "Увеличение урона от ракет", 
+    "displayName_zh": "Missile Damage Bonuus", 
+    "displayNameID": 589393, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 114, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 116, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 117, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 118, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2146": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Afterburner Speed Bonus", 
+    "displayName_de": "Bonus auf die Nachbrenner-Geschwindigkeitserhöhung", 
+    "displayName_en-us": "AB speed increase bonus", 
+    "displayName_es": "AB speed increase bonus", 
+    "displayName_fr": "Bonus de vitesse PC", 
+    "displayName_it": "AB speed increase bonus", 
+    "displayName_ja": "AB速度増加ボーナス", 
+    "displayName_ko": "애프터버너 속도 증가 보너스", 
+    "displayName_ru": "Бонус к увеличению скорости форсажного ускорителя", 
+    "displayName_zh": "AB speed increase bonus", 
+    "displayNameID": 591759, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "skillID": 3450
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2147": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "SpacetimeNexusVelocity", 
+    "displayName_de": "Schiffsgeschwindigkeit", 
+    "displayName_en-us": "Ship Velocity", 
+    "displayName_es": "Ship Velocity", 
+    "displayName_fr": "Vitesse du vaisseau", 
+    "displayName_it": "Ship Velocity", 
+    "displayName_ja": "航行速度", 
+    "displayName_ko": "함선 속도", 
+    "displayName_ru": "Скорость корабля", 
+    "displayName_zh": "Ship Velocity", 
+    "displayNameID": 592692, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2148": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusInertia", 
+    "displayName_de": "Schiffsträgheit", 
+    "displayName_en-us": "Ship Inertia", 
+    "displayName_es": "Ship Inertia", 
+    "displayName_fr": "Inertie du vaisseau", 
+    "displayName_it": "Ship Inertia", 
+    "displayName_ja": "艦船の慣性", 
+    "displayName_ko": "관성 계수", 
+    "displayName_ru": "Инертность корабля", 
+    "displayName_zh": "Ship Inertia", 
+    "displayNameID": 592693, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2149": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusRecharge", 
+    "displayName_de": "Schild- und Energiespeicherladezeit", 
+    "displayName_en-us": "Shield and Capacitor Recharge Rate", 
+    "displayName_es": "Shield and Capacitor Recharge Rate", 
+    "displayName_fr": "Vitesse de recharge du bouclier et du capaciteur", 
+    "displayName_it": "Shield and Capacitor Recharge Rate", 
+    "displayName_ja": "シールドとキャパシタの充電速度", 
+    "displayName_ko": "실드 및 캐패시터 충전 속도", 
+    "displayName_ru": "Скорость перезарядки щита и накопителя", 
+    "displayName_zh": "Shield and Capacitor Recharge Rate", 
+    "displayNameID": 592694, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }, 
+      {
+        "dogmaAttributeID": 479
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2150": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusModuleCycle", 
+    "displayName_de": "Modulzyklus und Nachladegeschwindigkeit", 
+    "displayName_en-us": "Module Cycle and Reload Speed", 
+    "displayName_es": "Module Cycle and Reload Speed", 
+    "displayName_fr": "Cycle du module et vitesse de recharge", 
+    "displayName_it": "Module Cycle and Reload Speed", 
+    "displayName_ja": "モジュールのサイクルとリロード速度", 
+    "displayName_ko": "모듈 사이클 시간 및 재장전 속도", 
+    "displayName_ru": "Время и скорость перезарядки модуля", 
+    "displayName_zh": "Module Cycle and Reload Speed", 
+    "displayNameID": 592695, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 51
+      }, 
+      {
+        "dogmaAttributeID": 73
+      }, 
+      {
+        "dogmaAttributeID": 1795
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2151": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "SpacetimeNexusTracking", 
+    "displayName_de": "Geschützturm-Nachführung und Lenkwaffen-Explosionsgeschwindigkeit", 
+    "displayName_en-us": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_es": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_fr": "Poursuite des tourelles et vitesse d'explosion des missiles", 
+    "displayName_it": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_ja": "タレットの追跡速度とミサイルの爆発速度", 
+    "displayName_ko": "터렛 트래킹 및 미사일 폭발 속도", 
+    "displayName_ru": "Скорость наведения орудий и распространения взрыва ракет", 
+    "displayName_zh": "Turret Tracking and Missile Explosion Velocity", 
+    "displayNameID": 593084, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 653, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2152": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving HP Addition", 
+    "displayName_de": "Zusätzliche Basis-HP des Rumpfs", 
+    "displayName_en-us": "Additional Base Hull Hitpoints", 
+    "displayName_es": "Additional Base Hull Hitpoints", 
+    "displayName_fr": "Points de vie de la coque de base supplémentaires", 
+    "displayName_it": "Additional Base Hull Hitpoints", 
+    "displayName_ja": "追加ベース船体HP", 
+    "displayName_ko": "추가 선체 내구도", 
+    "displayName_ru": "Увеличение основного запаса прочности корпуса", 
+    "displayName_zh": "Additional Base Hull Hitpoints", 
+    "displayNameID": 594653, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 9
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2153": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Turret Tracking", 
+    "displayName_de": "Geschützturmnachführung", 
+    "displayName_en-us": "Turret Tracking", 
+    "displayName_es": "Turret Tracking", 
+    "displayName_fr": "Poursuite des tourelles", 
+    "displayName_it": "Turret Tracking", 
+    "displayName_ja": "タレットのトラッキング", 
+    "displayName_ko": "터렛 트래킹", 
+    "displayName_ru": "Скорость наведения турелей", 
+    "displayName_zh": "Turret Tracking", 
+    "displayNameID": 594691, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2154": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Turret Falloff", 
+    "displayName_de": "Geschützturm-Präzisionsabfall", 
+    "displayName_en-us": "Turret Falloff", 
+    "displayName_es": "Turret Falloff", 
+    "displayName_fr": "Déperdition des tourelles", 
+    "displayName_it": "Turret Falloff", 
+    "displayName_ja": "タレットの精度低下範囲", 
+    "displayName_ko": "터렛 유효사거리", 
+    "displayName_ru": "Остаточная дальность орудий", 
+    "displayName_zh": "Turret Falloff", 
+    "displayNameID": 594692, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 158, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2155": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "[AIR] Mining amount penelty", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 77, 
+        "skillID": 3386
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

@@ -16,6 +16,7 @@ class GuiChangeImplantMetaCommand(wx.Command):
         self.fitID = fitID
         self.position = position
         self.newItemID = newItemID
+        self.newPosition = None
 
     def Do(self):
         sFit = Fit.getInstance()
@@ -31,15 +32,25 @@ class GuiChangeImplantMetaCommand(wx.Command):
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
+        self.newPosition = cmd.newPosition
+        newImplant = fit.implants[self.newPosition]
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        wx.PostEvent(mainFrame, GE.FitChanged(fitIDs=(self.fitID,)))
+        wx.PostEvent(mainFrame, GE.ItemChangedInplace(old=implant, new=newImplant))
         return success
 
     def Undo(self):
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        oldImplant = fit.implants[self.newPosition]
         success = self.internalHistory.undoAll()
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
+        newImplant = fit.implants[self.position]
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        wx.PostEvent(mainFrame, GE.FitChanged(fitIDs=(self.fitID,)))
+        wx.PostEvent(mainFrame, GE.ItemChangedInplace(old=oldImplant, new=newImplant))
         return success

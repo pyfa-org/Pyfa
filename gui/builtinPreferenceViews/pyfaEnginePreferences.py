@@ -57,12 +57,6 @@ class PFFittingEnginePref(PreferenceView):
 
         mainSizer.Add(self.cbStrictSkillLevels, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
-                                                            _t("When damage profile is Uniform, set Reactive Armor "
-                                                               "Hardener to match (old behavior)."),
-                                                            wx.DefaultPosition, wx.DefaultSize, 0)
-        mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
-
         spoolup_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.spool_up_label = wx.StaticText(panel, wx.ID_ANY, _t("Global Default Spoolup Percentage:"), wx.DefaultPosition, wx.DefaultSize, 0)
@@ -110,9 +104,6 @@ class PFFittingEnginePref(PreferenceView):
         self.cbStrictSkillLevels.SetValue(self.engine_settings.get("strictSkillLevels"))
         self.cbStrictSkillLevels.Bind(wx.EVT_CHECKBOX, self.OnCBStrictSkillLevelsChange)
 
-        self.cbUniversalAdaptiveArmorHardener.SetValue(self.engine_settings.get("useStaticAdaptiveArmorHardener"))
-        self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
-
         self.spoolup_value.SetValue(int(self.engine_settings.get("globalDefaultSpoolupPercentage") * 100))
         self.spoolup_value.Bind(wx.lib.intctrl.EVT_INT, self.OnSpoolupChange)
 
@@ -129,8 +120,6 @@ class PFFittingEnginePref(PreferenceView):
     def OnCBStrictSkillLevelsChange(self, event):
         self.engine_settings.set("strictSkillLevels", self.cbStrictSkillLevels.GetValue())
 
-    def OnCBUniversalAdaptiveArmorHardenerChange(self, event):
-        self.engine_settings.set("useStaticAdaptiveArmorHardener", self.cbUniversalAdaptiveArmorHardener.GetValue())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_fitting", "gui")

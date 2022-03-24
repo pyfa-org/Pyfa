@@ -42,7 +42,7 @@ class EsiEndpoints(Enum):
     """
     Contains the endpoint paths for the ESI access
     """
-    CHAR = "/v4/characters/{character_id}/"
+    CHAR = "/v5/characters/{character_id}/"
     CHAR_SKILLS = "/v4/characters/{character_id}/skills/"
     CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
     CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"

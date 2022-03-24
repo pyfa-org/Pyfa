@@ -58,7 +58,9 @@ class InternalCommandHistory:
 
 class ModuleInfo:
 
-    def __init__(self, itemID, baseItemID=None, mutaplasmidID=None, mutations=None, chargeID=None, state=None, spoolType=None, spoolAmount=None):
+    def __init__(
+            self, itemID, baseItemID=None, mutaplasmidID=None, mutations=None, chargeID=None,
+            state=None, spoolType=None, spoolAmount=None, rahPattern=None):
         self.itemID = itemID
         self.baseItemID = baseItemID
         self.mutaplasmidID = mutaplasmidID
@@ -67,6 +69,7 @@ class ModuleInfo:
         self.state = state
         self.spoolType = spoolType
         self.spoolAmount = spoolAmount
+        self.rahPattern = rahPattern
 
     @classmethod
     def fromModule(cls, mod, unmutate=False):
@@ -81,7 +84,8 @@ class ModuleInfo:
                 chargeID=mod.chargeID,
                 state=mod.state,
                 spoolType=mod.spoolType,
-                spoolAmount=mod.spoolAmount)
+                spoolAmount=mod.spoolAmount,
+                rahPattern=mod.rahPatternOverride)
         else:
             info = cls(
                 itemID=mod.itemID,
@@ -91,7 +95,8 @@ class ModuleInfo:
                 chargeID=mod.chargeID,
                 state=mod.state,
                 spoolType=mod.spoolType,
-                spoolAmount=mod.spoolAmount)
+                spoolAmount=mod.spoolAmount,
+                rahPattern=mod.rahPatternOverride)
         return info
 
     def toModule(self, fallbackState=None):
@@ -118,6 +123,8 @@ class ModuleInfo:
         if self.spoolType is not None and self.spoolAmount is not None:
             mod.spoolType = self.spoolType
             mod.spoolAmount = self.spoolAmount
+
+        mod.rahPatternOverride = self.rahPattern
 
         if self.state is not None:
             if mod.isValidState(self.state):
@@ -148,18 +155,22 @@ class ModuleInfo:
             self.chargeID == other.chargeID,
             self.state == other.state,
             self.spoolType == other.spoolType,
-            self.spoolAmount == other.spoolAmount))
+            self.spoolAmount == other.spoolAmount,
+            self.rahPattern == other.rahPattern))
 
     def __repr__(self):
         return makeReprStr(self, [
             'itemID', 'baseItemID', 'mutaplasmidID', 'mutations',
-            'chargeID', 'state', 'spoolType', 'spoolAmount'])
+            'chargeID', 'state', 'spoolType', 'spoolAmount', 'rahPattern'])
 
 
 class DroneInfo:
 
-    def __init__(self, itemID, amount, amountActive):
+    def __init__(self, amount, amountActive, itemID, baseItemID=None, mutaplasmidID=None, mutations=None):
         self.itemID = itemID
+        self.baseItemID = baseItemID
+        self.mutaplasmidID = mutaplasmidID
+        self.mutations = mutations
         self.amount = amount
         self.amountActive = amountActive
 
@@ -170,22 +181,40 @@ class DroneInfo:
         info = cls(
             itemID=drone.itemID,
             amount=drone.amount,
-            amountActive=drone.amountActive)
+            amountActive=drone.amountActive,
+            baseItemID=drone.baseItemID,
+            mutaplasmidID=drone.mutaplasmidID,
+            mutations={m.attrID: m.value for m in drone.mutators.values()})
         return info
 
     def toDrone(self):
-        item = Market.getInstance().getItem(self.itemID, eager=('attributes', 'group.category'))
+        mkt = Market.getInstance()
+        item = mkt.getItem(self.itemID, eager=('attributes', 'group.category'))
+        if self.baseItemID and self.mutaplasmidID:
+            baseItem = mkt.getItem(self.baseItemID, eager=('attributes', 'group.category'))
+            mutaplasmid = eos.db.getDynamicItem(self.mutaplasmidID)
+        else:
+            baseItem = None
+            mutaplasmid = None
         try:
-            drone = Drone(item)
+            drone = Drone(item, baseItem=baseItem, mutaplasmid=mutaplasmid)
         except ValueError:
             pyfalog.warning('Invalid item: {}'.format(self.itemID))
             return None
+
+        if self.mutations is not None:
+            for attrID, mutator in drone.mutators.items():
+                if attrID in self.mutations:
+                    mutator.value = self.mutations[attrID]
+
         drone.amount = self.amount
         drone.amountActive = self.amountActive
         return drone
 
     def __repr__(self):
-        return makeReprStr(self, ['itemID', 'amount', 'amountActive'])
+        return makeReprStr(self, [
+            'itemID', 'amount', 'amountActive',
+            'baseItemID', 'mutaplasmidID', 'mutations'])
 
 
 class FighterInfo:
@@ -326,7 +355,8 @@ def activeStateLimit(itemIdentity):
         'cloneJumpAccepting', 'cloakingWarpSafe', 'cloakingPrototype', 'cloaking',
         'massEntanglerEffect5', 'electronicAttributeModifyOnline', 'targetPassively',
         'cargoScan', 'shipScan', 'surveyScan', 'targetSpectrumBreakerBonus',
-        'interdictionNullifierBonus', 'warpCoreStabilizerActive'
+        'interdictionNullifierBonus', 'warpCoreStabilizerActive',
+        'industrialItemCompression'
     }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE

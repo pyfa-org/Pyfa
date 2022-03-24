@@ -25,12 +25,20 @@ class AddToCargoAmmo(ContextMenuSingle):
         return True
 
     def getText(self, callingWindow, itmContext, mainItem):
+        if mainItem.marketGroup.name == "Scan Probes":
+            return _t("Add {0} to Cargo (x8)").format(itmContext)
+            
         return _t("Add {0} to Cargo (x1000)").format(itmContext)
-
+        
     def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         typeID = int(mainItem.ID)
-        command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=typeID, amount=1000)
+
+        if mainItem.marketGroup.name == "Scan Probes":
+            command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=typeID, amount=8)
+        else:
+            command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=typeID, amount=1000)
+        
         if self.mainFrame.command.Submit(command):
             self.mainFrame.additionsPane.select("Cargo", focus=False)
 

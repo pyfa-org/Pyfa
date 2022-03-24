@@ -1,39 +1,28 @@
-"""
-
-A lot of the inspiration (and straight up code copying!) for this class comes from EsiPy <https://github.com/Kyria/EsiPy>
-Much of the credit goes to the maintainer of that package, Kyria <tweetfleet slack: @althalus>. The reasoning for no
-longer using EsiPy was due to it's reliance on pyswagger, which has caused a bit of a headache in how it operates on a
-low level.
-
-Eventually I'll rewrite this to be a bit cleaner and a bit more generic, but for now, it works!
-
-"""
-
 # noinspection PyPackageRequirements
+from collections import namedtuple
+
 from logbook import Logger
 import uuid
 import time
 import config
 import base64
-
+import secrets
+import hashlib
+import json
+from jose import jwt
+from jose.exceptions import ExpiredSignatureError, JWTError, JWTClaimsError
+import os
 import datetime
 from service.const import EsiSsoMode, EsiEndpoints
 from service.settings import EsiSettings, NetworkSettings
 
+from datetime import timedelta
+from requests_cache import CachedSession
+
 from requests import Session
-from urllib.parse import urlencode, quote
+from urllib.parse import urlencode
 
 pyfalog = Logger(__name__)
-
-# todo: reimplement Caching for calls
-# from esipy.cache import FileCache
-# file_cache = FileCache(cache_path)
-# cache_path = os.path.join(config.savePath, config.ESI_CACHE)
-#
-# if not os.path.exists(cache_path):
-#     os.mkdir(cache_path)
-#
-
 
 scopes = [
     'esi-skills.read_skills.v1',
@@ -41,9 +30,20 @@ scopes = [
     'esi-fittings.write_fittings.v1'
 ]
 
+ApiBase = namedtuple('ApiBase', ['sso', 'esi'])
+supported_servers = {
+    "Tranquility": ApiBase("login.eveonline.com", "esi.evetech.net"),
+    "Singularity": ApiBase("sisilogin.testeveonline.com", "esi.evetech.net"),
+    "Serenity": ApiBase("login.evepc.163.com", "esi.evepc.163.com")
+}
+
+class GenericSsoError(Exception):
+    """ Exception used for generic SSO errors that aren't directly related to an API call
+    """
+    pass
 
 class APIException(Exception):
-    """ Exception for SSO related errors """
+    """ Exception for API related errors """
 
     def __init__(self, url, code, json_response):
         self.url = url
@@ -51,10 +51,11 @@ class APIException(Exception):
         self.response = json_response
         super(APIException, self).__init__(str(self))
 
+
     def __str__(self):
-        if 'error' in self.response:
+        if 'error_description' in self.response:
             return 'HTTP Error %s: %s' % (self.status_code,
-                                          self.response['error'])
+                                          self.response['error_description'])
         elif 'message' in self.response:
             return 'HTTP Error %s: %s' % (self.status_code,
                                           self.response['message'])
@@ -64,6 +65,7 @@ class APIException(Exception):
 class EsiAccess:
     def __init__(self):
         self.settings = EsiSettings.getInstance()
+        self.server_base: ApiBase = supported_servers[self.settings.get("server")]
 
         # session request stuff
         self._session = Session()
@@ -76,46 +78,45 @@ class EsiAccess:
         self._session.headers.update(self._basicHeaders)
         self._session.proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
 
+        # Set up cached session. This is only used for SSO meta data for now, but can be expanded to actually handle
+        # various ESI caching (using ETag, for example) in the future
+        cached_session = CachedSession(
+            os.path.join(config.savePath, config.ESI_CACHE),
+            backend="sqlite",
+            cache_control=True,                # Use Cache-Control headers for expiration, if available
+            expire_after=timedelta(days=1),    # Otherwise expire responses after one day
+            stale_if_error=True,               # In case of request errors, use stale cache data if possible
+        )
+        cached_session.headers.update(self._basicHeaders)
+        cached_session.proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
+
+        meta_call = cached_session.get("https://%s/.well-known/oauth-authorization-server" % self.server_base.sso)
+        meta_call.raise_for_status()
+        self.server_meta = meta_call.json()
+
+        jwks_call = cached_session.get(self.server_meta["jwks_uri"])
+        jwks_call.raise_for_status()
+        self.jwks = jwks_call.json()
+
     @property
     def sso_url(self):
-        if self.settings.get("ssoMode") == EsiSsoMode.CUSTOM:
-            return "https://login.eveonline.com"
-        return "https://www.pyfa.io"
+        return 'https://%s/v2' % self.server_base.sso
 
     @property
     def esi_url(self):
-        return "https://esi.evetech.net"
-
-    @property
-    def oauth_verify(self):
-        return '%s/verify/' % self.esi_url
+        return 'https://%s' % self.server_base.esi
 
     @property
     def oauth_authorize(self):
-        return '%s/oauth/authorize' % self.sso_url
+        return self.server_meta["authorization_endpoint"]
 
     @property
     def oauth_token(self):
-        return '%s/oauth/token' % self.sso_url
+        return self.server_meta["token_endpoint"]
 
-    def getDynamicItem(self, typeID, itemID):
-        return self.get(None, EsiEndpoints.DYNAMIC_ITEM.value, type_id=typeID, item_id=itemID)
-
-    def getSkills(self, char):
-        return self.get(char, EsiEndpoints.CHAR_SKILLS.value, character_id=char.characterID)
-
-    def getSecStatus(self, char):
-        return self.get(char, EsiEndpoints.CHAR.value, character_id=char.characterID)
-
-    def getFittings(self, char):
-        return self.get(char, EsiEndpoints.CHAR_FITTINGS.value, character_id=char.characterID)
-
-    def postFitting(self, char, json_str):
-        # @todo: new fitting ID can be recovered from resp.data,
-        return self.post(char, EsiEndpoints.CHAR_FITTINGS.value, json_str, character_id=char.characterID)
-
-    def delFitting(self, char, fittingID):
-        return self.delete(char, EsiEndpoints.CHAR_DEL_FIT.value, character_id=char.characterID, fitting_id=fittingID)
+    @property
+    def client_id(self):
+        return self.settings.get('clientID') or config.API_CLIENT_ID
 
     @staticmethod
     def update_token(char, tokenResponse):
@@ -125,33 +126,36 @@ class EsiAccess:
         if 'refresh_token' in tokenResponse:
             char.refreshToken = config.cipher.encrypt(tokenResponse['refresh_token'].encode())
 
-    def getLoginURI(self, redirect=None):
+    def get_login_uri(self, redirect=None):
         self.state = str(uuid.uuid4())
 
-        if self.settings.get("ssoMode") == EsiSsoMode.AUTO:
-            args = {
-                'state': self.state,
-                'pyfa_version': config.version,
-                'login_method': self.settings.get('loginMode'),
-                'client_hash': config.getClientSecret()
-            }
+        # Generate the PKCE code challenge
+        self.code_verifier = base64.urlsafe_b64encode(secrets.token_bytes(32))
+        m = hashlib.sha256()
+        m.update(self.code_verifier)
+        d = m.digest()
+        code_challenge = base64.urlsafe_b64encode(d).decode().replace("=", "")
 
-            if redirect is not None:
-                args['redirect'] = redirect
+        state_arg = {
+            'mode': self.settings.get('loginMode'),
+            'redirect': redirect,
+            'state': self.state
+        }
 
-            return '%s?%s' % (
-                self.oauth_authorize,
-                urlencode(args)
-            )
-        else:
-            return '%s?response_type=%s&redirect_uri=%s&client_id=%s%s%s' % (
-                self.oauth_authorize,
-                'code',
-                quote('http://localhost:6461', safe=''),
-                self.settings.get('clientID'),
-                '&scope=%s' % '+'.join(scopes) if scopes else '',
-                '&state=%s' % self.state
-            )
+        args = {
+            'response_type': 'code',
+            'redirect_uri': config.SSO_CALLBACK,
+            'client_id': self.client_id,
+            'scope': ' '.join(scopes),
+            'code_challenge': code_challenge,
+            'code_challenge_method':  'S256',
+            'state': base64.b64encode(bytes(json.dumps(state_arg), 'utf-8'))
+        }
+
+        return '%s?%s' % (
+            self.oauth_authorize,
+            urlencode(args)
+        )
 
     def get_oauth_header(self, token):
         """ Return the Bearer Authorization header required in oauth calls
@@ -160,84 +164,86 @@ class EsiAccess:
         """
         return {'Authorization': 'Bearer %s' % token}
 
-    def get_refresh_token_params(self, refreshToken):
-        """ Return the param object for the post() call to get the access_token
-        from the refresh_token
-
-        :param code: the refresh token
-        :return: a dict with the url, params and header
-        """
-        if refreshToken is None:
-            raise AttributeError('No refresh token is defined.')
-
-        data = {
-            'grant_type': 'refresh_token',
-            'refresh_token': refreshToken,
-        }
-
-        if self.settings.get('ssoMode') == EsiSsoMode.AUTO:
-            # data is all we really need, the rest is handled automatically by pyfa.io
-            return {
-                'data': data,
-                'url': self.oauth_token,
-            }
-
-        # otherwise, we need to make the token with the client keys
-        return self.__make_token_request_parameters(data)
-
-    def __get_token_auth_header(self):
-        """ Return the Basic Authorization header required to get the tokens
-
-        :return: a dict with the headers
-        """
-        # encode/decode for py2/py3 compatibility
-        auth_b64 = "%s:%s" % (self.settings.get('clientID'), self.settings.get('clientSecret'))
-        auth_b64 = base64.b64encode(auth_b64.encode('latin-1'))
-        auth_b64 = auth_b64.decode('latin-1')
-
-        return {'Authorization': 'Basic %s' % auth_b64}
-
-    def __make_token_request_parameters(self, params):
-        request_params = {
-            'headers': self.__get_token_auth_header(),
-            'data': params,
-            'url': self.oauth_token,
-        }
-
-        return request_params
-
-    def get_access_token_request_params(self, code):
-        return self.__make_token_request_parameters(
-            {
-                'grant_type': 'authorization_code',
-                'code': code,
-            }
-        )
-
     def auth(self, code):
-        request_data = self.get_access_token_request_params(code)
-        res = self._session.post(**request_data)
-        if res.status_code != 200:
-            raise Exception(
-                request_data['url'],
-                res.status_code,
-                res.json()
-            )
+        values = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'client_id': self.client_id,
+            "code_verifier": self.code_verifier
+        }
+
+        res = self.token_call(values)
         json_res = res.json()
-        return json_res
+
+        decoded_jwt = self.validate_eve_jwt(json_res['access_token'])
+        return json_res, decoded_jwt
 
     def refresh(self, ssoChar):
-        request_data = self.get_refresh_token_params(config.cipher.decrypt(ssoChar.refreshToken).decode())
-        res = self._session.post(**request_data)
-        if res.status_code != 200:
-            raise APIException(
-                request_data['url'],
-                res.status_code,
-                res.json()
-            )
+        # todo: properly handle invalid refresh token
+        values = {
+            "grant_type": "refresh_token",
+            "refresh_token": config.cipher.decrypt(ssoChar.refreshToken).decode(),
+            "client_id": self.client_id,
+        }
+
+        res = self.token_call(values)
         json_res = res.json()
         self.update_token(ssoChar, json_res)
         return json_res
+
+    def token_call(self, values):
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Host": self.server_base.sso,
+        }
+
+        res = self._session.post(
+            self.server_meta["token_endpoint"],
+            data=values,
+            headers=headers,
+        )
+
+        if res.status_code != 200:
+            raise APIException(
+                self.server_meta["token_endpoint"],
+                res.status_code,
+                res.json()
+            )
+
+        return res
+
+    def validate_eve_jwt(self, jwt_token):
+        """Validate a JWT token retrieved from the EVE SSO.
+        Args:
+            jwt_token: A JWT token originating from the EVE SSO
+        Returns
+            dict: The contents of the validated JWT token if there are no
+                  validation errors
+        """
+
+        try:
+            jwk_sets = self.jwks["keys"]
+        except KeyError as e:
+            raise GenericSsoError("Something went wrong when retrieving the JWK set. The returned "
+                  "payload did not have the expected key {}. \nPayload returned "
+                  "from the SSO looks like: {}".format(e, self.jwks))
+
+        jwk_set = next((item for item in jwk_sets if item["alg"] == "RS256"))
+
+        try:
+            return jwt.decode(
+                jwt_token,
+                jwk_set,
+                algorithms=jwk_set["alg"],
+                issuer=[self.server_base.sso, "https://%s" % self.server_base.sso]
+            )
+        except ExpiredSignatureError as e:
+            raise GenericSsoError("The JWT token has expired: {}".format(str(e)))
+        except JWTError as e:
+            raise GenericSsoError("The JWT signature was invalid: {}".format(str(e)))
+        except JWTClaimsError as e:
+            raise GenericSsoError("The issuer claim was not from login.eveonline.com or "
+                "https://login.eveonline.com: {}".format(str(e)))
 
     def _before_request(self, ssoChar):
         self._session.headers.clear()
@@ -279,3 +285,24 @@ class EsiAccess:
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
         return self._after_request(self._session.delete("{}{}".format(self.esi_url, endpoint)))
+
+    # todo: move these off to another class which extends this one. This class should only handle the low level
+    # authentication and
+    def getDynamicItem(self, typeID, itemID):
+        return self.get(None, EsiEndpoints.DYNAMIC_ITEM.value, type_id=typeID, item_id=itemID)
+
+    def getSkills(self, char):
+        return self.get(char, EsiEndpoints.CHAR_SKILLS.value, character_id=char.characterID)
+
+    def getSecStatus(self, char):
+        return self.get(char, EsiEndpoints.CHAR.value, character_id=char.characterID)
+
+    def getFittings(self, char):
+        return self.get(char, EsiEndpoints.CHAR_FITTINGS.value, character_id=char.characterID)
+
+    def postFitting(self, char, json_str):
+        # @todo: new fitting ID can be recovered from resp.data,
+        return self.post(char, EsiEndpoints.CHAR_FITTINGS.value, json_str, character_id=char.characterID)
+
+    def delFitting(self, char, fittingID):
+        return self.delete(char, EsiEndpoints.CHAR_DEL_FIT.value, character_id=char.characterID, fitting_id=fittingID)
