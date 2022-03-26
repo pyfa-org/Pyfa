@@ -67,13 +67,20 @@ class PassThroughOptionParser(OptionParser):
 # Parse command line options
 usage = "usage: %prog [--root]"
 parser = PassThroughOptionParser(usage=usage)
-parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
+parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data "
+                                                                                 "in root folder, use this option",
+                  default=False)
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
-parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
-parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.", default=None)
-parser.add_option("-i", "--language", action="store", dest="language", help="Sets the language for pyfa. Overrides user's saved settings. Format: xx_YY (eg: en_US). If translation doesn't exist, defaults to en_US", default=None)
+parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel",
+                  help="Set desired logging level [""Critical|Error|Warning|Info|Debug]", default="Error")
+parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.",
+                  default=None)
+parser.add_option("-i", "--language", action="store", dest="language", help="Sets the language for pyfa. Overrides "
+                                                                            "user's saved settings. Format: xx_YY ("
+                                                                            "eg: en_US). If translation doesn't "
+                                                                            "exist, defaults to en_US", default=None)
 
 (options, args) = parser.parse_args()
 
@@ -151,7 +158,8 @@ if __name__ == "__main__":
         ErrorHandler.SetParent(mf)
 
         if options.profile_path:
-            profile_path = os.path.join(options.profile_path, 'pyfa-{}.profile'.format(datetime.datetime.now().strftime('%Y%m%d_%H%M%S')))
+            profile_path = os.path.join(options.profile_path,
+                                        'pyfa-{}.profile'.format(datetime.datetime.now().strftime('%Y%m%d_%H%M%S')))
             pyfalog.debug("Starting pyfa with a profiler, saving to {}".format(profile_path))
             import cProfile
 
