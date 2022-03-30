@@ -1,9 +1,83 @@
 image:
   - Visual Studio 2019
+  - Ubuntu
   - macos
-clone_depth: 400
-
+clone_depth: 1
 for:
+  -
+    matrix:
+      only:
+        - image: Ubuntu
+    environment:
+      APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJDW/+oYNGOiPvwuwAL9tc/LQgg58aosIVpMYfepQZ20V+VZnHpZh8IRDA8Jo5xht19p2PksA+hFgqA0kpKtrSkuiWdE8rATQItfk4gf7yB0yGasJGGQZYazy9k/9XtmYkq2HHOOeEqdxvrICddJQ88MLCLT9lJENSUP/YS/yGcjZFXVxE11pTeIcqlCRU+3eYa1v7BeNvXIKNhZoK5orXWrtuH3cy8jrSns/u70aYfJ6B2jA8CnWnDbuvpeQtEY61SQqlKUsSArNa8NAsXj41wr3Ar9gAG9330w7EMTqlutk8HZO35uHI0q5qinUhaQYufPPrVkb2L/N+ZCfu0fnh appveyor"
+      APPIMAGE_TOOL: appimagetool-x86_64.AppImage
+      PYTHON_APPIMAGE: python3.7.13-cp37-cp37m-manylinux2014_x86_64.AppImage
+      DEPLOY_DIR: AppDir/opt/pyfa
+#      APPVEYOR_SSH_BLOCK: true
+    cache:
+      - /home/appveyor/.cache/pip -> requirements.txt
+    init:
+      - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+    install:
+      - sh: git fetch --prune --unshallow # to fix the version dump issues
+      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3.7-dev libgtk-3-dev python3-pip libwebkit2gtk-4.0-dev
+    before_build:
+      - sh: mkdir build && cd build
+      - sh: curl -LO https://github.com/AppImage/AppImageKit/releases/download/13/$APPIMAGE_TOOL && chmod +x $APPIMAGE_TOOL
+      - sh: curl -LO https://github.com/niess/python-appimage/releases/download/python3.7/$PYTHON_APPIMAGE && chmod +x $PYTHON_APPIMAGE
+    build_script:
+      # Prepare Python base AppImage, stripping Python metadata
+      - sh: ./$PYTHON_APPIMAGE --appimage-extract
+      - sh: mv squashfs-root AppDir
+      - sh: rm AppDir/python*.desktop
+      - sh: rm AppDir/usr/share/applications/*.desktop
+      - sh: rm AppDir/usr/share/metainfo/*.appdata.xml
+      - sh: mkdir -p $DEPLOY_DIR
+      # run install pyfa packages and any other requirements
+
+      - sh: AppDir/usr/bin/python -s -m pip install -U pip setuptools==41.6.0 wheel pathlib2
+      - sh: AppDir/usr/bin/python -s -m pip install -r ../requirements.txt
+
+      # Run scripts to prep pyfa data and build database
+      - sh: cd ../
+      - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
+      - sh: build/AppDir/usr/bin/python scripts/compile_lang.py
+      - sh: build/AppDir/usr/bin/python scripts/dump_crowdin_progress.py
+      - sh: build/AppDir/usr/bin/python db_update.py
+      - sh: export PYFA_VERSION="$(python3.7 scripts/dump_version.py)"
+
+      # Copy pyfa files to host
+      - sh: cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml ./build/$DEPLOY_DIR
+      - sh: find ./build/$DEPLOY_DIR | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+
+      # Copy static AppImage files
+      - sh: cd dist_assets/linux
+      - sh: cp AppRun pyfa.desktop ../../build/AppDir/
+      - sh: cp pyfa.desktop ../../build/AppDir/usr/share/applications/
+      - sh: cp org.pyfa.pyfa.appdata.xml ../../build/AppDir/usr/share/metainfo/
+      - sh: chmod +x pyfa && cp pyfa ../../build/AppDir/usr/bin
+      - sh: cd ../../
+
+        # Package it all up
+      - sh: mkdir dist
+      - sh: ./build/$APPIMAGE_TOOL build/AppDir dist/pyfa-$PYFA_VERSION-linux.AppImage
+    after_build:
+      - sh: ls -la build
+    artifacts:
+      - path: dist/pyfa-$PYFA_VERSION-linux.AppImage
+    deploy:
+      tag: $PYFA_VERSION
+      release: pyfa $PYFA_VERSION
+      description: 'Release description'
+      provider: GitHub
+      auth_token:
+        secure: M94o0xMtzxrvlKpqMcXU2KfbJdd3aYJ3UxWzePUz/pkT1/Ojiis052CiLsLVyzJg
+      draft: true
+      force_update: false
+      # deploy on tag push only
+      on:
+        APPVEYOR_REPO_TAG: true
   -
     matrix:
       only:
@@ -13,7 +87,11 @@ for:
     # Should be enabled only for build process debugging
     # init:
     #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    cache:
+      - C:\users\appveyor\appdata\local\pip\cache\ -> requirements.txt
     install:
+      - cmd: git fetch --prune --unshallow # to fix the version dump issues
+
       - ps: echo("OS version:")
       - ps: "[System.Environment]::OSVersion.Version"
 
@@ -96,11 +174,15 @@ for:
     matrix:
       only:
         - image: macos
-    # Should be enabled only for build process debugging
+    environment:
+      APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJDW/+oYNGOiPvwuwAL9tc/LQgg58aosIVpMYfepQZ20V+VZnHpZh8IRDA8Jo5xht19p2PksA+hFgqA0kpKtrSkuiWdE8rATQItfk4gf7yB0yGasJGGQZYazy9k/9XtmYkq2HHOOeEqdxvrICddJQ88MLCLT9lJENSUP/YS/yGcjZFXVxE11pTeIcqlCRU+3eYa1v7BeNvXIKNhZoK5orXWrtuH3cy8jrSns/u70aYfJ6B2jA8CnWnDbuvpeQtEY61SQqlKUsSArNa8NAsXj41wr3Ar9gAG9330w7EMTqlutk8HZO35uHI0q5qinUhaQYufPPrVkb2L/N+ZCfu0fnh appveyor"
+    cache:
+      - /Users/appveyor/Library/Caches/pip/ -> requirements.txt
     init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
       - sh: source ~/venv3.7/bin/activate
     install:
+      - sh: git fetch --prune --unshallow # to fix the version dump issues
       - sh: bash scripts/osx-setup.sh
     build_script:
       - sh: bash scripts/osx-translations.sh
@@ -110,6 +192,9 @@ for:
     after_build:
       - sh: export PYFA_VERSION="$(python3 scripts/dump_version.py)"
       - sh: bash scripts/osx-package.sh
+#    on_finish:
+#      - sh: export APPVEYOR_SSH_BLOCK=true
+#      - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     artifacts:
       - path: dist/pyfa*-mac.zip
     before_deploy:

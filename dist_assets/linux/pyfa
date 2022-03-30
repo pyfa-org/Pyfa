@@ -1,0 +1,3 @@
+#! /bin/bash
+
+${APPDIR}/usr/bin/python3.7 -s "${APPDIR}/opt/pyfa/pyfa.py" "$@"
