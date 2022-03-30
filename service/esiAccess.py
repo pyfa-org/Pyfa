@@ -241,7 +241,7 @@ class EsiAccess:
                 algorithms=jwk_set["alg"],
                 issuer=[self.server_base.sso, "https://%s" % self.server_base.sso],
                 # ignore "aud" claim: https://tweetfleet.slack.com/archives/C30KX8UUX/p1648495011905969
-                options={"verify_aud": False}
+                options={"verify_aud": False, "verify_exp": self.settings.get("enforceJwtExpiration")}
             )
         except ExpiredSignatureError as e:
             raise GenericSsoError("The JWT token has expired: {}".format(str(e)))
