@@ -2745,7 +2745,7 @@
   }, 
   "2149": {
     "aggregateMode": "Maximum", 
-    "developerDescription": "SpacetimeNexusRecharge", 
+    "developerDescription": "SpacetimeNexusCapShieldRecharge", 
     "displayName_de": "Schild- und Energiespeicherladezeit", 
     "displayName_en-us": "Shield and Capacitor Recharge Rate", 
     "displayName_es": "Shield and Capacitor Recharge Rate", 
@@ -2882,14 +2882,14 @@
     "aggregateMode": "Maximum", 
     "developerDescription": "Proving Turret Falloff", 
     "displayName_de": "Geschützturm-Präzisionsabfall", 
-    "displayName_en-us": "Turret Falloff", 
-    "displayName_es": "Turret Falloff", 
+    "displayName_en-us": "Turret Falloff Bonus", 
+    "displayName_es": "Turret Falloff Bonus", 
     "displayName_fr": "Déperdition des tourelles", 
-    "displayName_it": "Turret Falloff", 
+    "displayName_it": "Turret Falloff Bonus", 
     "displayName_ja": "タレットの精度低下範囲", 
     "displayName_ko": "터렛 유효사거리", 
     "displayName_ru": "Остаточная дальность орудий", 
-    "displayName_zh": "Turret Falloff", 
+    "displayName_zh": "Turret Falloff Bonus", 
     "displayNameID": 594692, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2913,6 +2913,323 @@
       {
         "dogmaAttributeID": 77, 
         "skillID": 3386
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2158": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Turret Optimal", 
+    "displayName_de": "Geschützturm (Optimal)", 
+    "displayName_en-us": "Turret Optimal Bonus", 
+    "displayName_es": "Turret Optimal Bonus", 
+    "displayName_fr": "Optimisation de la tourelle", 
+    "displayName_it": "Turret Optimal Bonus", 
+    "displayName_ja": "タレットの最適射程距離", 
+    "displayName_ko": "터렛 최적사거리", 
+    "displayName_ru": "Оптимальность турели", 
+    "displayName_zh": "Turret Optimal Bonus", 
+    "displayNameID": 596685, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2159": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Proving Turret Cap Use", 
+    "displayName_de": "Geschützturm-Energiespeicherverbrauch", 
+    "displayName_en-us": "Turret Cap Consumption", 
+    "displayName_es": "Turret Cap Consumption", 
+    "displayName_fr": "Consommation du capaciteur de la tourelle", 
+    "displayName_it": "Turret Cap Consumption", 
+    "displayName_ja": "タレットのキャパシタ消費", 
+    "displayName_ko": "터렛 캐패시터 소모", 
+    "displayName_ru": "Расход энергии накопителя турелей", 
+    "displayName_zh": "Turret Cap Consumption", 
+    "displayNameID": 596686, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2160": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving HP All", 
+    "displayName_de": "HP-Bonus", 
+    "displayName_en-us": "Hitpoint Bonus", 
+    "displayName_es": "Hitpoint Bonus", 
+    "displayName_fr": "Bonus de PV", 
+    "displayName_it": "Hitpoint Bonus", 
+    "displayName_ja": "HPボーナス", 
+    "displayName_ko": "내구도 보너스", 
+    "displayName_ru": "Увеличение запаса прочности", 
+    "displayName_zh": "Hitpoint Bonus", 
+    "displayNameID": 597492, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 9
+      }, 
+      {
+        "dogmaAttributeID": 263
+      }, 
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2161": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Velocity Bonus", 
+    "displayName_de": "Velocity Bonus", 
+    "displayName_en-us": "Velocity Bonus", 
+    "displayName_es": "Velocity Bonus", 
+    "displayName_fr": "Velocity Bonus", 
+    "displayName_it": "Velocity Bonus", 
+    "displayName_ja": "Velocity Bonus", 
+    "displayName_ko": "Velocity Bonus", 
+    "displayName_ru": "Velocity Bonus", 
+    "displayName_zh": "Velocity Bonus", 
+    "displayNameID": 597614, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2162": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Inertia Penalty", 
+    "displayName_de": "Inertia Penalty", 
+    "displayName_en-us": "Inertia Penalty", 
+    "displayName_es": "Inertia Penalty", 
+    "displayName_fr": "Inertia Penalty", 
+    "displayName_it": "Inertia Penalty", 
+    "displayName_ja": "Inertia Penalty", 
+    "displayName_ko": "Inertia Penalty", 
+    "displayName_ru": "Inertia Penalty", 
+    "displayName_zh": "Inertia Penalty", 
+    "displayNameID": 597615, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2163": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Capacitor Bonus", 
+    "displayName_de": "Capacitor Bonus", 
+    "displayName_en-us": "Capacitor Bonus", 
+    "displayName_es": "Capacitor Bonus", 
+    "displayName_fr": "Capacitor Bonus", 
+    "displayName_it": "Capacitor Bonus", 
+    "displayName_ja": "Capacitor Bonus", 
+    "displayName_ko": "Capacitor Bonus", 
+    "displayName_ru": "Capacitor Bonus", 
+    "displayName_zh": "Capacitor Bonus", 
+    "displayNameID": 597616, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 482
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2164": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Armor/Shield HP Bonus", 
+    "displayName_de": "Armor and Shield HP Bonus", 
+    "displayName_en-us": "Armor and Shield HP Bonus", 
+    "displayName_es": "Armor and Shield HP Bonus", 
+    "displayName_fr": "Armor and Shield HP Bonus", 
+    "displayName_it": "Armor and Shield HP Bonus", 
+    "displayName_ja": "Armor and Shield HP Bonus", 
+    "displayName_ko": "Armor and Shield HP Bonus", 
+    "displayName_ru": "Armor and Shield HP Bonus", 
+    "displayName_zh": "Armor and Shield HP Bonus", 
+    "displayNameID": 597617, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }, 
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2165": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Missile Flight Time Bonus", 
+    "displayName_de": "Missile Flight Time Bonus", 
+    "displayName_en-us": "Missile Flight Time Bonus", 
+    "displayName_es": "Missile Flight Time Bonus", 
+    "displayName_fr": "Missile Flight Time Bonus", 
+    "displayName_it": "Missile Flight Time Bonus", 
+    "displayName_ja": "Missile Flight Time Bonus", 
+    "displayName_ko": "Missile Flight Time Bonus", 
+    "displayName_ru": "Missile Flight Time Bonus", 
+    "displayName_zh": "Missile Flight Time Bonus", 
+    "displayNameID": 597618, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 281, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2166": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Mass Increase", 
+    "displayName_de": "Mass Increase", 
+    "displayName_en-us": "Mass Increase", 
+    "displayName_es": "Mass Increase", 
+    "displayName_fr": "Mass Increase", 
+    "displayName_it": "Mass Increase", 
+    "displayName_ja": "Mass Increase", 
+    "displayName_ko": "Mass Increase", 
+    "displayName_ru": "Mass Increase", 
+    "displayName_zh": "Mass Increase", 
+    "displayNameID": 597619, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 4
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2167": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusCapRecharge", 
+    "displayName_de": "Capacitor Recharge Rate", 
+    "displayName_en-us": "Capacitor Recharge Rate", 
+    "displayName_es": "Capacitor Recharge Rate", 
+    "displayName_fr": "Capacitor Recharge Rate", 
+    "displayName_it": "Capacitor Recharge Rate", 
+    "displayName_ja": "Capacitor Recharge Rate", 
+    "displayName_ko": "Capacitor Recharge Rate", 
+    "displayName_ru": "Capacitor Recharge Rate", 
+    "displayName_zh": "Capacitor Recharge Rate", 
+    "displayNameID": 597771, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2168": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SpacetimeNexusSigRadius", 
+    "displayName_de": "Signature Radius", 
+    "displayName_en-us": "Signature Radius", 
+    "displayName_es": "Signature Radius", 
+    "displayName_fr": "Signature Radius", 
+    "displayName_it": "Signature Radius", 
+    "displayName_ja": "Signature Radius", 
+    "displayName_ko": "Signature Radius", 
+    "displayName_ru": "Signature Radius", 
+    "displayName_zh": "Signature Radius", 
+    "displayNameID": 597772, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2169": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "SpacetimeNexusTurretMissileDamage", 
+    "displayName_de": "Turret and Missile Damage", 
+    "displayName_en-us": "Turret and Missile Damage", 
+    "displayName_es": "Turret and Missile Damage", 
+    "displayName_fr": "Turret and Missile Damage", 
+    "displayName_it": "Turret and Missile Damage", 
+    "displayName_ja": "Turret and Missile Damage", 
+    "displayName_ko": "Turret and Missile Damage", 
+    "displayName_ru": "Turret and Missile Damage", 
+    "displayName_zh": "Turret and Missile Damage", 
+    "displayNameID": 597773, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 114, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 116, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 117, 
+        "skillID": 3319
+      }, 
+      {
+        "dogmaAttributeID": 118, 
+        "skillID": 3319
       }
     ], 
     "operationName": "PostPercent", 

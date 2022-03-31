@@ -38073,7 +38073,8 @@ class Effect8372(BaseEffect):
     @staticmethod
     def handler(fit, skill, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Shipboard Compression Technology'),
+            lambda mod: mod.item.requiresSkill('Shipboard Compression Technology')
+                        or mod.item.requiresSkill('Capital Shipboard Compression Technology'),
             'maxRange', skill.getModifiedItemAttr('fleetCompressionLogisticsRangeBonus') * skill.level, **kwargs)
 
 

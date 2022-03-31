@@ -90162,6 +90162,14 @@
         "modifyingAttributeID": 3263, 
         "operation": 6, 
         "skillTypeID": 62450
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 3263, 
+        "operation": 6, 
+        "skillTypeID": 62451
       }
     ], 
     "propulsionChance": 0, 
