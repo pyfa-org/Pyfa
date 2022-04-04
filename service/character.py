@@ -155,24 +155,32 @@ class Character:
         self.all5()
 
     def exportText(self):
-        data = "Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
-        data += "=" * 79 + "\n"
-        data += "\n"
-        item = ""
+        numberToRoman = {
+            1: "I",
+            2: "II",
+            3: "III",
+            4: "IV",
+            5: "V"
+        }
+        skillReqLevelsDict = dict()
+        lines = []
+        
         try:
             for s in self.skillReqsDict['skills']:
-                if item == "" or not item == s["item"]:
-                    item = s["item"]
-                    data += "-" * 79 + "\n"
-                    data += "Skills required for {}:\n".format(item)
-                data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
-            data += "-" * 79 + "\n"
+                requireSkill = s["skill"]
+                requireLevel = s["level"]
+                gotLevel = skillReqLevelsDict.get(requireSkill, 0)
+                if requireLevel > gotLevel:
+                    skillReqLevelsDict[requireSkill] = requireLevel
+            
+            for skillRequired, levelRequired in skillReqLevelsDict.items():
+                lines.append("{} {}".format(skillRequired, numberToRoman[levelRequired]))
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception:
             pass
 
-        return data
+        return "\n".join(lines)
 
     def exportXml(self):
         root = ElementTree.Element("plan")
