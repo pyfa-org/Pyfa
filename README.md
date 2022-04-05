@@ -6,22 +6,25 @@
 
 ## What is it?
 
-Pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 3 and wxWidgets are available, including Windows, Mac OS X, and Linux.
+Pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 3 and wxWidgets are available, including Windows, macOS, and Linux.
 
 ## Latest Version and Changelogs
 The latest version along with release notes can always be found on the project's [releases](https://github.com/pyfa-org/Pyfa/releases) page. Pyfa will notify you if you are running an outdated version.
 
 ## Installation
-Windows and OS X users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/pyfa-org/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux, however, there are a number of third-party packages available through distribution-specific repositories.
+Windows, macOS, and Linux users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/pyfa-org/Pyfa/releases/latest) page.
 
-### OS X
-Apart from the official release, there is also a [Homebrew](http://brew.sh) option for installing pyfa on OS X. Please note this is maintained by a third-party and is not tested by pyfa developers. Simply fire up in terminal:
+### Third Party Packages
+Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
+
+#### macOS
+Apart from the official release, there is also a [Homebrew](https://formulae.brew.sh/cask/pyfa) option for installing pyfa on macOS. Simply fire up in terminal:
 ```
-$ brew install Caskroom/cask/pyfa
+$ brew install --cask pyfa
 ```
 
-### Linux Distro-specific Packages
-The following is a list of pyfa packages available for certain distributions. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
+#### Linux Distro-specific Packages
+The following is a list of pyfa packages available for certain distributions. 
 
 * Arch: https://aur.archlinux.org/packages/pyfa/
 * Gentoo: https://github.com/ZeroPointEnergy/gentoo-pyfa-overlay
