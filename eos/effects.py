@@ -5986,7 +5986,7 @@ class Effect2013(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalties = False if 'implant' in context else True
+        penalties = False if 'implant' in context or 'booster' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
                                      'maxVelocity', container.getModifiedItemAttr('droneMaxVelocityBonus') * level,
                                      stackingPenalties=penalties, **kwargs)
@@ -6865,6 +6865,51 @@ class Effect2255(BaseEffect):
     """
 
     type = 'active'
+
+
+class Effect2296(BaseEffect):
+    """
+    modifyArmorResonancePassivePostPercentPassive
+
+    Used by:
+    Implants named like: Halcyon Y Booster (5 of 5)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        for srcResType, tgtResType in (
+                ('Em', 'Em'),
+                ('Explosive', 'Explosive'),
+                ('Kinetic', 'Kinetic'),
+                ('Thermic', 'Thermal')
+        ):
+            fit.ship.boostItemAttr(f'armor{tgtResType}DamageResonance',
+                                   booster.getModifiedItemAttr(f'passive{srcResType}DamageResistanceBonus'), **kwargs)
+
+
+class Effect2297(BaseEffect):
+    """
+    modifyShieldResonancePassivePostPercentPassive
+
+    Used by:
+    Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: Hunt Resistance Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for srcResType, tgtResType in (
+                ('Em', 'Em'),
+                ('Explosive', 'Explosive'),
+                ('Kinetic', 'Kinetic'),
+                ('Thermic', 'Thermal')
+        ):
+            fit.ship.boostItemAttr(f'shield{tgtResType}DamageResonance',
+                                   ship.getModifiedItemAttr(f'passive{srcResType}DamageResistanceBonus'), **kwargs)
 
 
 class Effect2298(BaseEffect):
@@ -13574,9 +13619,9 @@ class Effect4161(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Astrometrics'),
-                                        'baseMaxScanDeviation',
-                                        container.getModifiedItemAttr('maxScanDeviationModifier') * level, **kwargs)
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseMaxScanDeviation',
+            container.getModifiedItemAttr('maxScanDeviationModifier') * level, **kwargs)
 
 
 class Effect4162(BaseEffect):
@@ -37649,6 +37694,23 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
+class Effect8270(BaseEffect):
+    """
+    capacitorWarfareResistanceBonusPassive
+
+    Used by:
+    Implants named like: Halcyon Y Booster (5 of 5)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'energyWarfareResistance',
+            container.getModifiedItemAttr('energyWarfareResistanceBonus'), **kwargs)
+
+
 class Effect8275(BaseEffect):
     """
     minmatarIndustrialBonusGasHoldCapacity
@@ -38077,3 +38139,132 @@ class Effect8377(BaseEffect):
         fit.modules.filteredItemIncrease(
             lambda mod: mod.item.group.name == 'Reinforced Bulkhead',
             'structureHPMultiplier', ship.getModifiedItemAttr('battleshipBulkheadHPModifierBonus'), **kwargs)
+
+
+class Effect8467(BaseEffect):
+    """
+    modifyJumpConduitPassengerRequired
+
+    Used by:
+    Module: Covert Jump Portal Generator I
+    Module: Industrial Jump Portal Generator I
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.forceItemAttr(
+            'jumpConduitPassengerRequiredAttributeID',
+            module.getModifiedChargeAttr('jumpConduitPassengerRequiredAttributeID'), **kwargs)
+
+
+class Effect8468(BaseEffect):
+    """
+    subsystemBonusBlackOpsJumpPassenger
+
+    Used by:
+    Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.forceItemAttr(
+            'isBlackOpsJumpPortalPassenger', module.getModifiedChargeAttr('isBlackOpsJumpPortalPassenger'), **kwargs)
+        module.forceItemAttr(
+            'isBlackOpsJumpConduitPassenger', module.getModifiedChargeAttr('isBlackOpsJumpConduitPassenger'), **kwargs)
+
+
+class Effect8470(BaseEffect):
+    """
+    capitalIndustrialCommandBonusDroneDamage
+
+    Used by:
+    Ship: Rorqual
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'damageMultiplier',
+            container.getModifiedItemAttr('capitalIndustrialCommandBonusDroneDamage'),
+            skill='Capital Industrial Ships', **kwargs)
+
+
+class Effect8474(BaseEffect):
+    """
+    subsystemBonusMassAddition
+
+    Used by:
+    Subsystem: Proteus Defensive - Augmented Plating
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
+            ship.getModifiedItemAttr('subsystemBonusMassAddition'), **kwargs)
+
+
+class Effect8477(BaseEffect):
+    """
+    droneTrackingBonusPassive
+
+    Used by:
+    Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Hunt Drone Precision Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'trackingSpeed',
+            container.getModifiedItemAttr('droneTrackingBonus'), **kwargs)
+
+
+class Effect8478(BaseEffect):
+    """
+    miningAndIceHarvestingCycleTimeBonusPassive
+
+    Used by:
+    Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: Halcyon G Booster (5 of 5)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting') or mod.item.requiresSkill('Mining'),
+            'duration', skill.getModifiedItemAttr('iceHarvestCycleBonus'), **kwargs)
+
+
+class Effect8479(BaseEffect):
+    """
+    droneOptimalFalloffBonusPassive
+
+    Used by:
+    Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Hunt Drone Precision Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'maxRange',
+            container.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'falloff',
+            container.getModifiedItemAttr('falloffBonus'), **kwargs)
