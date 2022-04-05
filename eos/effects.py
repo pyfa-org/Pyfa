@@ -1582,7 +1582,7 @@ class Effect527(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusMI'),
-                               skill='Minmatar Industrial', **kwargs)
+                               skill='Minmatar Hauler', **kwargs)
 
 
 class Effect529(BaseEffect):
@@ -1599,7 +1599,7 @@ class Effect529(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusAI'),
-                               skill='Amarr Industrial', **kwargs)
+                               skill='Amarr Hauler', **kwargs)
 
 
 class Effect536(BaseEffect):
@@ -2189,7 +2189,7 @@ class Effect726(BaseEffect):
             bonusAttr = 'shipBonusGI'
         else:
             bonusAttr = 'shipBonusGI2'
-        fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr(bonusAttr), skill='Gallente Industrial', **kwargs)
+        fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr(bonusAttr), skill='Gallente Hauler', **kwargs)
 
 
 class Effect727(BaseEffect):
@@ -2205,7 +2205,7 @@ class Effect727(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Industrial', **kwargs)
+        fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Hauler', **kwargs)
 
 
 class Effect728(BaseEffect):
@@ -2221,7 +2221,7 @@ class Effect728(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusMI'), skill='Minmatar Industrial', **kwargs)
+        fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusMI'), skill='Minmatar Hauler', **kwargs)
 
 
 class Effect729(BaseEffect):
@@ -2246,7 +2246,7 @@ class Effect729(BaseEffect):
             bonusAttr = 'shipBonusGI'
         else:
             bonusAttr = 'shipBonusGI2'
-        fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr(bonusAttr), skill='Gallente Industrial', **kwargs)
+        fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr(bonusAttr), skill='Gallente Hauler', **kwargs)
 
 
 class Effect730(BaseEffect):
@@ -2262,7 +2262,7 @@ class Effect730(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Industrial', **kwargs)
+        fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Hauler', **kwargs)
 
 
 class Effect732(BaseEffect):
@@ -2278,7 +2278,7 @@ class Effect732(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusAI'), skill='Amarr Industrial', **kwargs)
+        fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusAI'), skill='Amarr Hauler', **kwargs)
 
 
 class Effect736(BaseEffect):
@@ -15781,7 +15781,7 @@ class Effect4667(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Salvaging'),
                                       'duration', ship.getModifiedItemAttr('shipBonusOreIndustrial1'),
-                                      skill='ORE Industrial', **kwargs)
+                                      skill='ORE Hauler', **kwargs)
 
 
 class Effect4668(BaseEffect):
@@ -15798,7 +15798,7 @@ class Effect4668(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'duration', ship.getModifiedItemAttr('shipBonusOreIndustrial1'),
-                                      skill='ORE Industrial', **kwargs)
+                                      skill='ORE Hauler', **kwargs)
 
 
 class Effect4669(BaseEffect):
@@ -15815,7 +15815,7 @@ class Effect4669(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'maxTractorVelocity', ship.getModifiedItemAttr('shipBonusOreIndustrial2'),
-                                      skill='ORE Industrial', **kwargs)
+                                      skill='ORE Hauler', **kwargs)
 
 
 class Effect4670(BaseEffect):
@@ -15832,7 +15832,7 @@ class Effect4670(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Tractor Beam',
                                       'maxRange', ship.getModifiedItemAttr('shipBonusOreIndustrial2'),
-                                      skill='ORE Industrial', **kwargs)
+                                      skill='ORE Hauler', **kwargs)
 
 
 class Effect4728(BaseEffect):
@@ -20422,7 +20422,7 @@ class Effect5468(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Industrial', **kwargs)
+        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Hauler', **kwargs)
 
 
 class Effect5469(BaseEffect):
@@ -20437,7 +20437,7 @@ class Effect5469(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Industrial', **kwargs)
+        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Hauler', **kwargs)
 
 
 class Effect5470(BaseEffect):
@@ -20452,7 +20452,7 @@ class Effect5470(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusGI2'), skill='Gallente Industrial', **kwargs)
+        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusGI2'), skill='Gallente Hauler', **kwargs)
 
 
 class Effect5471(BaseEffect):
@@ -20467,7 +20467,7 @@ class Effect5471(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusAI2'), skill='Amarr Industrial', **kwargs)
+        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusAI2'), skill='Amarr Hauler', **kwargs)
 
 
 class Effect5477(BaseEffect):
@@ -20483,7 +20483,7 @@ class Effect5477(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialAmmoHoldCapacity', ship.getModifiedItemAttr('shipBonusMI2'),
-                               skill='Minmatar Industrial', **kwargs)
+                               skill='Minmatar Hauler', **kwargs)
 
 
 class Effect5478(BaseEffect):
@@ -20499,7 +20499,7 @@ class Effect5478(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialPlanetaryCommoditiesHoldCapacity', ship.getModifiedItemAttr('shipBonusGI2'),
-                               skill='Gallente Industrial', **kwargs)
+                               skill='Gallente Hauler', **kwargs)
 
 
 class Effect5479(BaseEffect):
@@ -20515,7 +20515,7 @@ class Effect5479(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('specialMineralHoldCapacity', ship.getModifiedItemAttr('shipBonusGI2'),
-                               skill='Gallente Industrial', **kwargs)
+                               skill='Gallente Hauler', **kwargs)
 
 
 class Effect5480(BaseEffect):
@@ -22522,7 +22522,7 @@ class Effect5870(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
-                                      'shieldBonus', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Industrial', **kwargs)
+                                      'shieldBonus', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Hauler', **kwargs)
 
 
 class Effect5871(BaseEffect):
@@ -22538,7 +22538,7 @@ class Effect5871(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
-                                      'shieldBonus', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Industrial', **kwargs)
+                                      'shieldBonus', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Hauler', **kwargs)
 
 
 class Effect5872(BaseEffect):
@@ -22555,7 +22555,7 @@ class Effect5872(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusAI2'),
-                                      skill='Amarr Industrial', **kwargs)
+                                      skill='Amarr Hauler', **kwargs)
 
 
 class Effect5873(BaseEffect):
@@ -22572,7 +22572,7 @@ class Effect5873(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGI2'),
-                                      skill='Gallente Industrial', **kwargs)
+                                      skill='Gallente Hauler', **kwargs)
 
 
 class Effect5874(BaseEffect):
@@ -37300,7 +37300,7 @@ class Effect8199(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
             'specialIceHoldCapacity', ship.getModifiedItemAttr('gallenteIndustrialBonusIceHoldCapacity'),
-            skill='Gallente Industrial', **kwargs)
+            skill='Gallente Hauler', **kwargs)
 
 
 class Effect8206(BaseEffect):
@@ -37663,7 +37663,7 @@ class Effect8275(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
             'specialGasHoldCapacity', ship.getModifiedItemAttr('minmatarIndustrialBonusGasHoldCapacity'),
-            skill='Minmatar Industrial', **kwargs)
+            skill='Minmatar Hauler', **kwargs)
 
 
 class Effect8278(BaseEffect):
@@ -37985,7 +37985,7 @@ class Effect8323(BaseEffect):
         fit.ship.boostItemAttr(
             'generalMiningHoldCapacity',
             ship.getModifiedItemAttr('gallenteIndustrialBonusMiningHoldCapacity'),
-            skill='Gallente Industrial', **kwargs)
+            skill='Gallente Hauler', **kwargs)
 
 
 class Effect8360(BaseEffect):
