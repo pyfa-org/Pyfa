@@ -26730,7 +26730,7 @@ class Effect6408(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.extraAttributes.increase('maxTargetsLockedFromSkills', src.getModifiedItemAttr('structureRigMaxTargetBonus'), **kwargs)
+        fit.ship.increaseItemAttr('maxLockedTargets', src.getModifiedItemAttr('structureRigMaxTargetBonus'), **kwargs)
 
 
 class Effect6409(BaseEffect):
