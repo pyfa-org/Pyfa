@@ -231,7 +231,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
         mdc.SetFont(self.fontSmall)
-        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+        mdc.DrawText(self.toolbar.hoverLabel, round(self.thoverx), round(self.thovery))
         mdc.SetPen(wx.Pen(sepColor, 1))
         mdc.DrawLine(0, rect.height - 1, rect.width, rect.height - 1)
 

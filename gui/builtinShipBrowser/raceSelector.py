@@ -194,25 +194,25 @@ class RaceSelector(wx.Window):
                     bmp = wx.Bitmap(img)
 
                 if self.layout == wx.VERTICAL:
-                    mdc.DrawBitmap(dropShadow, rect.width - self.buttonsPadding - bmp.GetWidth() + 1, y + 1)
-                    mdc.DrawBitmap(bmp, rect.width - self.buttonsPadding - bmp.GetWidth(), y)
+                    mdc.DrawBitmap(dropShadow, round(rect.width - self.buttonsPadding - bmp.GetWidth() + 1), round(y + 1))
+                    mdc.DrawBitmap(bmp, round(rect.width - self.buttonsPadding - bmp.GetWidth()), round(y))
                     y += raceBmp.GetHeight() + self.buttonsPadding
                     mdc.SetPen(wx.Pen(sepColor, 1))
                     mdc.DrawLine(rect.width - 1, 0, rect.width - 1, rect.height)
                 else:
-                    mdc.DrawBitmap(dropShadow, x + 1, self.buttonsPadding + 1)
-                    mdc.DrawBitmap(bmp, x, self.buttonsPadding)
+                    mdc.DrawBitmap(dropShadow, round(x + 1), round(self.buttonsPadding + 1))
+                    mdc.DrawBitmap(bmp, round(x), round(self.buttonsPadding))
                     x += raceBmp.GetWidth() + self.buttonsPadding
                     mdc.SetPen(wx.Pen(sepColor, 1))
                     mdc.DrawLine(0, 0, rect.width, 0)
 
         if self.direction < 1:
             if self.layout == wx.VERTICAL:
-                mdc.DrawBitmap(self.bmpArrow, -2, (rect.height - self.bmpArrow.GetHeight()) / 2)
+                mdc.DrawBitmap(self.bmpArrow, -2, round((rect.height - self.bmpArrow.GetHeight()) / 2))
             else:
                 mdc.SetPen(wx.Pen(sepColor, 1))
                 mdc.DrawLine(0, 0, rect.width, 0)
-                mdc.DrawBitmap(self.bmpArrow, (rect.width - self.bmpArrow.GetWidth()) / 2, -2)
+                mdc.DrawBitmap(self.bmpArrow, round((rect.width - self.bmpArrow.GetWidth()) / 2), -2)
 
     def OnTimer(self, event):
         if event.GetId() == self.animTimerID:

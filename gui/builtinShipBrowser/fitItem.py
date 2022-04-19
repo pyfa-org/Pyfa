@@ -493,9 +493,9 @@ class FitItem(SFItem.SFBrowserItem):
         else:
             shipEffBk = self.shipEffBk
 
-        mdc.DrawBitmap(shipEffBk, self.shipEffx, self.shipEffy, 0)
+        mdc.DrawBitmap(shipEffBk, round(self.shipEffx), round(self.shipEffy), 0)
 
-        mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
+        mdc.DrawBitmap(self.shipBmp, round(self.shipBmpx), round(self.shipBmpy), 0)
 
         mdc.SetFont(self.fontNormal)
 
@@ -504,17 +504,17 @@ class FitItem(SFItem.SFBrowserItem):
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(pfdate, self.textStartx, self.timestampy)
+        mdc.DrawText(pfdate, round(self.textStartx), round(self.timestampy))
 
         mdc.SetFont(self.fontSmall)
-        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+        mdc.DrawText(self.toolbar.hoverLabel, round(self.thoverx), round(self.thovery))
 
         mdc.SetFont(self.fontBig)
 
         psname = drawUtils.GetPartialText(mdc, self.fitName,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(psname, self.textStartx, self.fitNamey)
+        mdc.DrawText(psname, round(self.textStartx), round(self.fitNamey))
 
         if self.tcFitName.IsShown():
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)

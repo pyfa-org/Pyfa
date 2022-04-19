@@ -43,14 +43,14 @@ def DrawGradientBar(width, height, gStart, gEnd, gMid=None, fillRatio=4):
     mdc.SelectObject(canvas)
 
     r = wx.Rect(0, 0, width, height)
-    r.SetHeight(height / fillRatio)
+    r.SetHeight(round(height / fillRatio))
 
     if gMid is None:
         gMid = gStart
 
     mdc.GradientFillLinear(r, gStart, gMid, wx.SOUTH)
     r.SetTop(r.GetHeight())
-    r.SetHeight(height * (fillRatio - 1) / fillRatio + (1 if height % fillRatio != 0 else 0))
+    r.SetHeight(round(height * (fillRatio - 1) / fillRatio + (1 if height % fillRatio != 0 else 0)))
 
     mdc.GradientFillLinear(r, gMid, gEnd, wx.SOUTH)
 

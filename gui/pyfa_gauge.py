@@ -257,7 +257,7 @@ class PyGauge(wx.Window):
             else:
                 w = rect.width * (float(value) / 100)
             r = copy.copy(rect)
-            r.width = w
+            r.width = round(w)
             dc.DrawRectangle(r)
         else:
             # if bar color is not set, then we use pre-defined transitions
@@ -269,7 +269,7 @@ class PyGauge(wx.Window):
             else:
                 w = rect.width * (float(value) / 100)
             r = copy.copy(rect)
-            r.width = w
+            r.width = round(w)
 
             # determine transition range number and calculate xv (which is the
             # progress between the two transition ranges)
@@ -317,7 +317,7 @@ class PyGauge(wx.Window):
                 gradient_color
             )
             if gradient_bitmap is not None:
-                dc.DrawBitmap(gradient_bitmap, r.left, r.top)
+                dc.DrawBitmap(gradient_bitmap, round(r.left), round(r.top))
 
         # font stuff begins here
         dc.SetFont(self.font)
