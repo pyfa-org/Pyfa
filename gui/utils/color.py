@@ -12,7 +12,7 @@ def Brighten(color, factor):
     b += (255 - b) * factor
     g += (255 - g) * factor
 
-    return wx.Colour(r, g, b, a)
+    return wx.Colour(round(r), round(g), round(b), round(a))
 
 
 def Darken(color, factor):
@@ -30,7 +30,7 @@ def Darken(color, factor):
     b = min(max(b, 0), 255)
     g = min(max(g, 0), 255)
 
-    return wx.Colour(r, g, b, a)
+    return wx.Colour(round(r), round(g), round(b), round(a))
 
 
 def _getBrightness(color):
@@ -70,4 +70,4 @@ def CalculateTransition(s_color, e_color, delta):
     tG = sG + (eG - sG) * delta
     tB = sB + (eB - sB) * delta
 
-    return wx.Colour(tR, tG, tB, (sA + eA) / 2)
+    return wx.Colour(round(tR), round(tG), round(tB), round((sA + eA) / 2))
