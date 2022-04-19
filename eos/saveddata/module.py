@@ -122,6 +122,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         if self.__charge and self.__charge.category.name != "Charge":
             self.__charge = None
 
+        self.rahPatternOverride = None
+
         self.__baseVolley = None
         self.__baseRRAmount = None
         self.__miningYield = None
@@ -1075,6 +1077,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         copy.spoolType = self.spoolType
         copy.spoolAmount = self.spoolAmount
         copy.projectionRange = self.projectionRange
+        copy.rahPatternOverride = self.rahPatternOverride
         self._mutaApplyMutators(mutatorClass=MutatorModule, targetInstance=copy)
 
         return copy
@@ -1085,6 +1088,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         spoolType = self.spoolType
         spoolAmount = self.spoolAmount
         projectionRange = self.projectionRange
+        rahPatternOverride = self.rahPatternOverride
 
         Module.__init__(self, item, self.baseItem, self.mutaplasmid)
         self.state = state
@@ -1093,6 +1097,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         self.spoolType = spoolType
         self.spoolAmount = spoolAmount
         self.projectionRange = projectionRange
+        self.rahPatternOverride = rahPatternOverride
         self._mutaApplyMutators(mutatorClass=MutatorModule)
 
     def __repr__(self):

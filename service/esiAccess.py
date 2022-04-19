@@ -214,6 +214,10 @@ class EsiAccess:
 
     def validate_eve_jwt(self, jwt_token):
         """Validate a JWT token retrieved from the EVE SSO.
+
+        Ignores the `aud` claim in token due to avoid unexpected breaking
+        changes to ESI.
+
         Args:
             jwt_token: A JWT token originating from the EVE SSO
         Returns
@@ -235,7 +239,9 @@ class EsiAccess:
                 jwt_token,
                 jwk_set,
                 algorithms=jwk_set["alg"],
-                issuer=[self.server_base.sso, "https://%s" % self.server_base.sso]
+                issuer=[self.server_base.sso, "https://%s" % self.server_base.sso],
+                # ignore "aud" claim: https://tweetfleet.slack.com/archives/C30KX8UUX/p1648495011905969
+                options={"verify_aud": False}
             )
         except ExpiredSignatureError as e:
             raise GenericSsoError("The JWT token has expired: {}".format(str(e)))

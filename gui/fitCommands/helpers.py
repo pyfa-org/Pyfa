@@ -58,7 +58,9 @@ class InternalCommandHistory:
 
 class ModuleInfo:
 
-    def __init__(self, itemID, baseItemID=None, mutaplasmidID=None, mutations=None, chargeID=None, state=None, spoolType=None, spoolAmount=None):
+    def __init__(
+            self, itemID, baseItemID=None, mutaplasmidID=None, mutations=None, chargeID=None,
+            state=None, spoolType=None, spoolAmount=None, rahPattern=None):
         self.itemID = itemID
         self.baseItemID = baseItemID
         self.mutaplasmidID = mutaplasmidID
@@ -67,6 +69,7 @@ class ModuleInfo:
         self.state = state
         self.spoolType = spoolType
         self.spoolAmount = spoolAmount
+        self.rahPattern = rahPattern
 
     @classmethod
     def fromModule(cls, mod, unmutate=False):
@@ -81,7 +84,8 @@ class ModuleInfo:
                 chargeID=mod.chargeID,
                 state=mod.state,
                 spoolType=mod.spoolType,
-                spoolAmount=mod.spoolAmount)
+                spoolAmount=mod.spoolAmount,
+                rahPattern=mod.rahPatternOverride)
         else:
             info = cls(
                 itemID=mod.itemID,
@@ -91,7 +95,8 @@ class ModuleInfo:
                 chargeID=mod.chargeID,
                 state=mod.state,
                 spoolType=mod.spoolType,
-                spoolAmount=mod.spoolAmount)
+                spoolAmount=mod.spoolAmount,
+                rahPattern=mod.rahPatternOverride)
         return info
 
     def toModule(self, fallbackState=None):
@@ -118,6 +123,8 @@ class ModuleInfo:
         if self.spoolType is not None and self.spoolAmount is not None:
             mod.spoolType = self.spoolType
             mod.spoolAmount = self.spoolAmount
+
+        mod.rahPatternOverride = self.rahPattern
 
         if self.state is not None:
             if mod.isValidState(self.state):
@@ -148,12 +155,13 @@ class ModuleInfo:
             self.chargeID == other.chargeID,
             self.state == other.state,
             self.spoolType == other.spoolType,
-            self.spoolAmount == other.spoolAmount))
+            self.spoolAmount == other.spoolAmount,
+            self.rahPattern == other.rahPattern))
 
     def __repr__(self):
         return makeReprStr(self, [
             'itemID', 'baseItemID', 'mutaplasmidID', 'mutations',
-            'chargeID', 'state', 'spoolType', 'spoolAmount'])
+            'chargeID', 'state', 'spoolType', 'spoolAmount', 'rahPattern'])
 
 
 class DroneInfo:

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-05-18 17:34\n"
+"PO-Revision-Date: 2022-01-03 22:03\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -339,7 +339,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr ""
+msgstr "Temps d'aligne"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
@@ -673,7 +673,7 @@ msgstr ""
 #: gui/builtinStatsViews/capacitorViewFull.py:37
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:79
 msgid "Capacitor"
-msgstr ""
+msgstr "Condensateur"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:139
 msgid "Capacitor delta:"
@@ -735,7 +735,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/itemAmountChange.py:92
 msgid "Change Amount"
-msgstr ""
+msgstr "Changer la quantité"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
 msgid "Change Skills"
@@ -756,7 +756,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:31
 msgid "Changes require restart of pyfa to take effect."
-msgstr ""
+msgstr "Les changements requièrent un redémarrage de pyfa pour prendre effet."
 
 #: gui/esiFittings.py:375 gui/builtinStatsViews/priceViewFull.py:57
 #: gui/characterEditor.py:90
@@ -969,15 +969,15 @@ msgstr ""
 #: gui/builtinItemStatsViews/itemTraits.py:25
 #: gui/builtinShipBrowser/fitItem.py:107
 msgid "Copy"
-msgstr ""
+msgstr "Copier"
 
 #: gui/builtinContextMenus/additionsExportAll.py:39
 msgid "Copy All {}"
-msgstr ""
+msgstr "Tout Copier"
 
 #: gui/characterSelection.py:105
 msgid "Copy Missing Skills"
-msgstr ""
+msgstr "Copier les compétences manquantes"
 
 #: gui/builtinContextMenus/moduleMutatedExport.py:28
 msgid "Copy Module to Clipboard"
@@ -1034,7 +1034,7 @@ msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "DPS"
-msgstr ""
+msgstr "DPS"
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
@@ -1332,7 +1332,7 @@ msgstr ""
 #: gui/builtinStatsViews/resistancesViewFull.py:96
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "EHP"
-msgstr ""
+msgstr "PVE"
 
 #: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
@@ -1390,12 +1390,12 @@ msgstr ""
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "Effective DPS"
-msgstr ""
+msgstr "DPS effectifs"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:61
 #: gui/builtinStatsViews/resistancesViewFull.py:219
 msgid "Effective HP: "
-msgstr ""
+msgstr "PV effectifs: "
 
 #: gui/builtinStatsViews/capacitorViewFull.py:151
 msgid "Effective capacity"
@@ -1456,7 +1456,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:59
 msgid "Empty"
-msgstr ""
+msgstr "Vide"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:105
 msgid "Empty Market View"
@@ -1535,7 +1535,7 @@ msgstr ""
 #: gui/characterEditor.py:898 gui/patternEditor.py:58
 #: gui/targetProfileEditor.py:78
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #: gui/characterSelection.py:173 gui/characterEditor.py:897
 msgid "Error fetching skill information"
@@ -2166,7 +2166,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:65
 msgid "Interested in helping with translations?"
-msgstr ""
+msgstr "Vous voulez aider à traduire ?"
 
 #: gui/mainFrame.py:892
 msgid "Invalid Path"
@@ -2196,7 +2196,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:64
 msgid "Iron"
-msgstr ""
+msgstr "Fer"
 
 #: gui/builtinItemStatsViews/itemCompare.py:147
 #: gui/builtinContextMenus/itemRemove.py:43
@@ -2472,7 +2472,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:87
 msgid "Misc"
-msgstr ""
+msgstr "Divers"
 
 #: gui/builtinViewColumns/misc.py:50
 msgid "Misc data"
@@ -2668,7 +2668,7 @@ msgstr ""
 #: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: gui/esiFittings.py:334
 msgid "Need at least one ESI character to export"
@@ -2712,7 +2712,7 @@ msgstr ""
 
 #: gui/builtinContextMenus/targetProfile/switcher.py:85
 msgid "No Profile"
-msgstr ""
+msgstr "Aucun profil"
 
 #: gui/characterSelection.py:230
 msgid "No active fit"
@@ -2740,7 +2740,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:153
 #: gui/characterEditor.py:855
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: graphs/style.py:80
 msgid "Normal"
@@ -3587,7 +3587,7 @@ msgstr ""
 
 #: gui/characterEditor.py:901
 msgid "Success"
-msgstr ""
+msgstr "Réussi"
 
 #: gui/characterEditor.py:901
 msgid "Successfully fetched skills"
@@ -4144,7 +4144,7 @@ msgstr ""
 
 #: eos/utils/stats.py:123
 msgid "explosive"
-msgstr ""
+msgstr "explosif"
 
 #: eos/utils/stats.py:123
 msgid "kin"
@@ -4152,7 +4152,7 @@ msgstr ""
 
 #: eos/utils/stats.py:123
 msgid "kinetic"
-msgstr ""
+msgstr "cinétique"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:38
 msgid "pyfa User Path:"
