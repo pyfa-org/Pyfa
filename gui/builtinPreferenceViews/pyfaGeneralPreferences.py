@@ -64,7 +64,7 @@ class PFGeneralPref(PreferenceView):
             langBox.Add(hl.HyperLinkCtrl(panel, -1,
                                          _t("Interested in helping with translations?"),
                                          URL="https://github.com/pyfa-org/Pyfa/blob/master/locale/README.md"
-                                         ), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 15)
+                                         ), 0, wx.LEFT, 15)
         else:
             self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Pyfa language selection disabled. Please check if .mo files have been generated.\nRefer to locale/README.md for info."), wx.DefaultPosition, wx.DefaultSize, 0)
             self.stLangLabel.Wrap(-1)
@@ -93,7 +93,7 @@ class PFGeneralPref(PreferenceView):
         langBox.Add(wx.StaticText(panel, wx.ID_ANY,
                                   _t("Auto will use the same language pyfa uses if available, otherwise English"),
                                   wx.DefaultPosition,
-                                  wx.DefaultSize, 0), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 15)
+                                  wx.DefaultSize, 0), 0, wx.LEFT, 15)
 
         self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, _t("Use global character"), wx.DefaultPosition, wx.DefaultSize,
                                         0)
