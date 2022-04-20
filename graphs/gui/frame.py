@@ -114,7 +114,7 @@ class GraphFrame(AuxiliaryFrame):
         newW = max(curW, bestW)
         newH = max(curH, bestH)
         if newW > curW or newH > curH:
-            newSize = wx.Size(newW, newH)
+            newSize = wx.Size(round(newW), round(newH))
             self.SetSize(newSize)
             self.SetMinSize(newSize)
 
