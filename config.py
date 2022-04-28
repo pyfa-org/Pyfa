@@ -44,8 +44,12 @@ version = None
 language = None
 
 API_CLIENT_ID = '095d8cd841ac40b581330919b49fe746'
+API_CLIENT_ID_SERENITY = 'bc90aa496a404724a93f41b4f4e97761'
+
 ESI_CACHE = 'esi_cache'
 SSO_CALLBACK = 'https://pyfa-org.github.io/Pyfa/callback'
+SSO_CALLBACK_SERENITY='https://esi.evepc.163.com/ui/oauth2-redirect.html'
+SSO_LOGOFF_SERENITY='https://login.evepc.163.com/account/logoff'
 
 LOGLEVEL_MAP = {
     "critical": CRITICAL,

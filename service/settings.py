@@ -388,6 +388,9 @@ class EsiSettings:
     def set(self, type, value):
         self.settings[type] = value
 
+    def keys(self):
+        return list({"Tranquility":"Tranquility","Singularity":"Singularity","Serenity":"Serenity"})
+
 
 class StatViewSettings:
     _instance = None

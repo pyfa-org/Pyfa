@@ -108,7 +108,16 @@ class Esi(EsiAccess):
         else:
             with gui.ssoLogin.SsoLogin() as dlg:
                 if dlg.ShowModal() == wx.ID_OK:
-                    message = json.loads(base64.b64decode(dlg.ssoInfoCtrl.Value.strip()))
+                    message = {}
+                    if (self.server_name == "Serenity"):
+                        import re
+                        s=re.search(r'(?<=code=)[a-zA-Z0-9\-_]*',dlg.ssoInfoCtrl.Value.strip())
+                        if s:
+                            message['code']=s.group()
+                        else:
+                            message['code']=None
+                    else:
+                        message = json.loads(base64.b64decode(dlg.ssoInfoCtrl.Value.strip()))
                     self.handleLogin(message)
 
     def stopServer(self):

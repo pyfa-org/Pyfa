@@ -65,7 +65,8 @@ class APIException(Exception):
 class EsiAccess:
     def __init__(self):
         self.settings = EsiSettings.getInstance()
-        self.server_base: ApiBase = supported_servers[self.settings.get("server")]
+        self.server_name=self.settings.get('server')
+        self.server_base: ApiBase = supported_servers[self.server_name]
 
         # session request stuff
         self._session = Session()
@@ -116,7 +117,10 @@ class EsiAccess:
 
     @property
     def client_id(self):
-        return self.settings.get('clientID') or config.API_CLIENT_ID
+        if (self.server_name == "Serenity"):
+            return self.settings.get('clientID') or config.API_CLIENT_ID
+        else:
+            return self.settings.get('clientID') or config.API_CLIENT_ID_SERENITY
 
     @staticmethod
     def update_token(char, tokenResponse):
@@ -141,17 +145,25 @@ class EsiAccess:
             'redirect': redirect,
             'state': self.state
         }
-
-        args = {
-            'response_type': 'code',
-            'redirect_uri': config.SSO_CALLBACK,
-            'client_id': self.client_id,
-            'scope': ' '.join(scopes),
-            'code_challenge': code_challenge,
-            'code_challenge_method':  'S256',
-            'state': base64.b64encode(bytes(json.dumps(state_arg), 'utf-8'))
-        }
-
+        if(self.server_name=="Serenity"):
+            args = {
+                'response_type': 'code',
+                'redirect_uri': config.SSO_CALLBACK_SERENITY,
+                'client_id': self.client_id,
+                'scope': ' '.join(scopes),
+                'state': 'hilltech',
+                'device_id': 'eims'
+            }
+        else:
+            args = {
+                'response_type': 'code',
+                'redirect_uri': config.SSO_CALLBACK,
+                'client_id': self.client_id,
+                'scope': ' '.join(scopes),
+                'code_challenge': code_challenge,
+                'code_challenge_method': 'S256',
+                'state': base64.b64encode(bytes(json.dumps(state_arg), 'utf-8'))
+            }
         return '%s?%s' % (
             self.oauth_authorize,
             urlencode(args)

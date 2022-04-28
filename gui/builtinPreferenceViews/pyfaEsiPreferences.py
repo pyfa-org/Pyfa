@@ -48,9 +48,30 @@ class PFEsiPref(PreferenceView):
 
         self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
 
-        mainSizer.Add(rbSizer, 1, wx.ALL | wx.EXPAND, 0)
+        mainSizer.Add(rbSizer, 0, wx.ALL | wx.EXPAND, 0)
+
+        esiSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.esiServer = wx.StaticText(panel, wx.ID_ANY, _t("Default SSO Server:"), wx.DefaultPosition,wx.DefaultSize, 0)
+
+        self.esiServer.Wrap(-1)
+
+        esiSizer.Add(self.esiServer, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.esiServer.SetToolTip(wx.ToolTip(_t('The source you choose will be used on connection.')))
+
+        self.chESIserver = wx.Choice(panel, choices=list(self.settings.keys()))
+
+        self.chESIserver.SetStringSelection(self.settings.get("server"))
+
+        esiSizer.Add(self.chESIserver, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 10)
+
+        mainSizer.Add(esiSizer, 0, wx.TOP | wx.RIGHT , 10)
+
+        self.chESIserver.Bind(wx.EVT_CHOICE, self.OnServerChange)
 
         panel.SetSizer(mainSizer)
+
         panel.Layout()
 
     def OnTimeoutChange(self, event):
@@ -58,6 +79,10 @@ class PFEsiPref(PreferenceView):
 
     def OnModeChange(self, event):
         self.settings.set('loginMode', event.GetInt())
+
+    def OnServerChange(self, event):
+        source = self.chESIserver.GetString(self.chESIserver.GetSelection())
+        self.settings.set("server",source)
 
     def getImage(self):
         return BitmapLoader.getBitmap("eve", "gui")

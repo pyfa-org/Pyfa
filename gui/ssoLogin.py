@@ -26,6 +26,18 @@ class SsoLogin(wx.Dialog):
 
         bSizer1.Add(self.ssoInfoCtrl, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
 
+        from service.settings import EsiSettings
+        import config
+        import time
+        self.Esisettings = EsiSettings.getInstance()
+        if (self.Esisettings.get("server") == "Serenity"):
+            bSizer4 = wx.BoxSizer(wx.VERTICAL)
+            text = wx.StaticText(self, wx.ID_ANY, _t("Please copy the url when your authorization is completed"))
+            bSizer4.Add(text, 0, wx.ALL | wx.EXPAND, 10)
+            bSizer1.Add(bSizer4, 0, wx.ALL | wx.EXPAND, 10)
+            webbrowser.open(config.SSO_LOGOFF_SERENITY)
+            time.sleep(1)
+
         bSizer3 = wx.BoxSizer(wx.VERTICAL)
         bSizer3.Add(wx.StaticLine(self, wx.ID_ANY), 0, wx.BOTTOM | wx.EXPAND, 10)
 
@@ -39,6 +51,7 @@ class SsoLogin(wx.Dialog):
 
         self.sEsi = Esi.getInstance()
         uri = self.sEsi.get_login_uri(None)
+
         webbrowser.open(uri)
 
 
