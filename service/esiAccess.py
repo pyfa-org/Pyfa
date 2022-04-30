@@ -118,9 +118,9 @@ class EsiAccess:
     @property
     def client_id(self):
         if (self.server_name == "Serenity"):
-            return self.settings.get('clientID') or config.API_CLIENT_ID
-        else:
             return self.settings.get('clientID') or config.API_CLIENT_ID_SERENITY
+        else:
+            return self.settings.get('clientID') or config.API_CLIENT_ID
 
     @staticmethod
     def update_token(char, tokenResponse):
