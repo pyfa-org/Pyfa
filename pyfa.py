@@ -47,7 +47,6 @@ from db_update import db_needs_update, update_db
 #
 # print(ascii_text)
 
-# test comment
 class PassThroughOptionParser(OptionParser):
     """
     An unknown option pass-through implementation of OptionParser.
