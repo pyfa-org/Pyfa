@@ -7,6 +7,7 @@ import eos.db
 from eos.const import FittingModuleState
 from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
+from eos.saveddata.cart import Cart
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.implant import Implant
@@ -341,6 +342,30 @@ class CargoInfo:
         cargo = Cargo(item)
         cargo.amount = self.amount
         return cargo
+
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'amount'])
+
+class CartInfo:
+
+    def __init__(self, itemID, amount):
+        self.itemID = itemID
+        self.amount = amount
+
+    @classmethod
+    def fromCart(cls, cart):
+        if cart is None:
+            return None
+        info = cls(
+            itemID=cart.itemID,
+            amount=cart.amount)
+        return info
+
+    def toCart(self):
+        item = Market.getInstance().getItem(self.itemID)
+        cart = Cart(item)
+        cart.amount = self.amount
+        return cart
 
     def __repr__(self):
         return makeReprStr(self, ['itemID', 'amount'])
