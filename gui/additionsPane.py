@@ -29,6 +29,7 @@ from gui.builtinAdditionPanes.droneView import DroneView
 from gui.builtinAdditionPanes.fighterView import FighterView
 from gui.builtinAdditionPanes.implantView import ImplantView
 from gui.builtinAdditionPanes.notesView import NotesView
+from gui.builtinAdditionPanes.cartView import CartView
 from gui.builtinAdditionPanes.projectedView import ProjectedView
 from gui.chrome_tabs import ChromeNotebook
 from gui.toggle_panel import TogglePanel
@@ -61,6 +62,7 @@ class AdditionsPane(TogglePanel):
         gangImg = BitmapLoader.getImage("fleet_fc_small", "gui")
         cargoImg = BitmapLoader.getImage("cargo_small", "gui")
         notesImg = BitmapLoader.getImage("skill_small", "gui")
+        cartImg = BitmapLoader.getImage("cart_small", "gui")
 
         self.drone = DroneView(self.notebook)
         self.notebook.AddPage(self.drone, _t("Drones"), image=droneImg, closeable=False)
@@ -86,12 +88,16 @@ class AdditionsPane(TogglePanel):
         self.notes = NotesView(self.notebook)
         self.notebook.AddPage(self.notes, _t("Notes"), image=notesImg, closeable=False)
 
+
+        self.cart = CartView(self.notebook)
+        self.notebook.AddPage(self.cart, _t("Cart"), image=cartImg, closeable=False)
+
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.mainFrame.Bind(GE.FIT_NOTES_CHANGED, self.OnNotesChanged)
 
         self.notebook.SetSelection(0)
 
-    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Command", "Notes"]
+    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Command", "Notes", "Cart"]
 
     def select(self, name, focus=True):
         self.notebook.SetSelection(self.PANES.index(name), focus=focus)

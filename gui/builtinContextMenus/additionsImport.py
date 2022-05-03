@@ -21,7 +21,8 @@ class AdditionsImport(ContextMenuUnconditional):
             'cargoItemMisc': (_t('Cargo Items'), lambda i: not i.isAbyssal, cmd.GuiImportCargosCommand),
             'implantItemMisc': (_t('Implants'), lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
             'implantItemMiscChar': (_t('Implants'), lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
-            'boosterItemMisc': (_t('Boosters'), lambda i: i.isBooster, cmd.GuiImportBoostersCommand)
+            'boosterItemMisc': (_t('Boosters'), lambda i: i.isBooster, cmd.GuiImportBoostersCommand),
+            'cartItemMisc':(_t('Cart'), lambda i: i.isCart, cmd.GuiImportCartCommand)
         }
 
     def display(self, callingWindow, srcContext):
