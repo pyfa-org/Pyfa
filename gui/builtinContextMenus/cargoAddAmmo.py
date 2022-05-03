@@ -27,9 +27,6 @@ class AddToCargoAmmo(ContextMenuSingle):
     def getText(self, callingWindow, itmContext, mainItem):
         if mainItem.marketGroup.name == "Scan Probes":
             return _t("Add {0} to Cargo (x8)").format(itmContext)
-        # quantity_to_add = wx.TextEntryDialog(None, "How many {0} would you like to add to cargo", 'Quantity', 'number')
-        # if quantity_to_add.ShowModal() == wx.ID_OK:
-        #     quantity = int(quantity_to_add.GetValue())
         return _t("Add a variable amount of {0} to cargo").format(itmContext)
 
     def activate(self, callingWindow, fullContext, mainItem, i):
@@ -39,7 +36,7 @@ class AddToCargoAmmo(ContextMenuSingle):
         if mainItem.marketGroup.name == "Scan Probes":
             command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=typeID, amount=8)
         else:
-            quantity_to_add = wx.TextEntryDialog(None, "How many {0} would you like to add to cargo",
+            quantity_to_add = wx.TextEntryDialog(None, "How many would you like to add to cargo",
                                                  'Quantity', 'number')
             if quantity_to_add.ShowModal() == wx.ID_OK:
                 quantity = int(quantity_to_add.GetValue())
