@@ -39,11 +39,14 @@ class AddToCargoAmmo(ContextMenuSingle):
             quantity_to_add = wx.TextEntryDialog(None, "How many would you like to add to cargo",
                                                  'Quantity', 'number')
             if quantity_to_add.ShowModal() == wx.ID_OK:
-                quantity = int(quantity_to_add.GetValue())
+                try:
+                    quantity = int(quantity_to_add.GetValue())
+                except:
+                    quantity = 0
             else:
                 quantity = 0
             command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=typeID, amount=quantity)
-        
+
         if self.mainFrame.command.Submit(command):
             self.mainFrame.additionsPane.select("Cargo", focus=False)
 

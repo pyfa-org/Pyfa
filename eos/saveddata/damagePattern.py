@@ -91,7 +91,7 @@ BUILTINS = OrderedDict([
     (-52, (_c(_t('Bombs')) + _t('Scorch Bomb'), 0, 6400, 0, 0)),
     (-53, (_c(_t('Bombs')) + _t('Concussion Bomb'), 0, 0, 6400, 0)),
     (-54, (_c(_t('Bombs')) + _t('Shrapnel Bomb'), 0, 0, 0, 6400)),
-    # ticket #2413 (was solved 3 days ago)
+    # ticket #2413
     (-113, (_c(_t('Condenser Packs')) + _t('BlastShot'), 133, 0, 457, 0)),
     (-114, (_c(_t('Condenser Packs')) + _t('GalvaSurge'), 457.3, 0, 133, 0)),
     (-115, (_c(_t('Condenser Packs')) + _t('MesmerFlux'), 220.6, 0, 75, 0)),
