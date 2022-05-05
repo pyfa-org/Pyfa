@@ -34,6 +34,13 @@ class PFEsiPref(PreferenceView):
         self.stInfo.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stInfo, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
+        self.enforceJwtExpiration = wx.CheckBox(panel, wx.ID_ANY, _t("Enforce Token Expiration"), wx.DefaultPosition,
+                                        wx.DefaultSize,
+                                        0)
+        self.enforceJwtExpiration.SetToolTip(wx.ToolTip(_t("This option is a workaround in case you cannot log into EVE SSO "
+                                                       "due to 'Signature has expired' error")))
+        mainSizer.Add(self.enforceJwtExpiration, 0, wx.ALL | wx.EXPAND, 5)
+
         rbSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.rbMode = wx.RadioBox(panel, -1, _t("Login Authentication Method"), wx.DefaultPosition, wx.DefaultSize,
                                   [_t('Local Server'), _t('Manual')], 1, wx.RA_SPECIFY_COLS)
@@ -43,11 +50,12 @@ class PFEsiPref(PreferenceView):
                                          " character login. Use this if having issues with the local server."))
 
         self.rbMode.SetSelection(self.settings.get('loginMode'))
+        self.enforceJwtExpiration.SetValue(self.settings.get("enforceJwtExpiration" or True))
 
         rbSizer.Add(self.rbMode, 1, wx.TOP | wx.RIGHT, 5)
 
         self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
-
+        self.enforceJwtExpiration.Bind(wx.EVT_CHECKBOX, self.OnEnforceChange)
         mainSizer.Add(rbSizer, 1, wx.ALL | wx.EXPAND, 0)
 
         panel.SetSizer(mainSizer)
@@ -58,6 +66,10 @@ class PFEsiPref(PreferenceView):
 
     def OnModeChange(self, event):
         self.settings.set('loginMode', event.GetInt())
+
+    def OnEnforceChange(self, event):
+        self.settings.set('enforceJwtExpiration', self.enforceJwtExpiration.GetValue())
+        event.Skip()
 
     def getImage(self):
         return BitmapLoader.getBitmap("eve", "gui")
