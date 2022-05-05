@@ -3234,5 +3234,62 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2171": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Sensor Strength Bonus", 
+    "displayName_de": "Sensor Strength bonus", 
+    "displayName_en-us": "Sensor Strength bonus", 
+    "displayName_es": "Sensor Strength bonus", 
+    "displayName_fr": "Sensor Strength bonus", 
+    "displayName_it": "Sensor Strength bonus", 
+    "displayName_ja": "Sensor Strength bonus", 
+    "displayName_ko": "Sensor Strength bonus", 
+    "displayName_ru": "Sensor Strength bonus", 
+    "displayName_zh": "Sensor Strength bonus", 
+    "displayNameID": 600979, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 208
+      }, 
+      {
+        "dogmaAttributeID": 209
+      }, 
+      {
+        "dogmaAttributeID": 210
+      }, 
+      {
+        "dogmaAttributeID": 211
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2172": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Proving Signature Radius Bonus", 
+    "displayName_de": "Signature Radius bonus", 
+    "displayName_en-us": "Signature Radius bonus", 
+    "displayName_es": "Signature Radius bonus", 
+    "displayName_fr": "Signature Radius bonus", 
+    "displayName_it": "Signature Radius bonus", 
+    "displayName_ja": "Signature Radius bonus", 
+    "displayName_ko": "Signature Radius bonus", 
+    "displayName_ru": "Signature Radius bonus", 
+    "displayName_zh": "Signature Radius bonus", 
+    "displayNameID": 600983, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
