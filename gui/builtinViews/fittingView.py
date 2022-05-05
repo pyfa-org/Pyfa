@@ -956,7 +956,7 @@ class FittingView(d.Display):
             cx = padding
 
             if slotMap[st.slot]:
-                mdc.DrawRectangle(round(cx), round(cy), maxWidth - cx, maxRowHeight)
+                mdc.DrawRectangle(round(cx), round(cy), round(maxWidth - cx), round(maxRowHeight))
 
             for i, col in enumerate(self.activeColumns):
                 if i > maxColumns:

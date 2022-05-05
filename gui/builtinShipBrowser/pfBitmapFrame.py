@@ -63,4 +63,4 @@ class PFBitmapFrame(wx.Frame):
         mdc.DrawBitmap(self.bitmap, 0, 0)
         mdc.SetPen(wx.Pen("#000000", width=1))
         mdc.SetBrush(wx.TRANSPARENT_BRUSH)
-        mdc.DrawRectangle(0, 0, rect.width, rect.height)
+        mdc.DrawRectangle(0, 0, round(rect.width), round(rect.height))

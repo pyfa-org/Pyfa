@@ -212,7 +212,7 @@ class AttributeGauge(wx.Window):
             for x in range(1, 20):
                 dc.SetBrush(wx.Brush(wx.LIGHT_GREY))
                 dc.SetPen(wx.Pen(wx.LIGHT_GREY))
-                dc.DrawRectangle(round(x * 10), 1, 1, rect.height)
+                dc.DrawRectangle(round(x * 10), 1, 1, round(rect.height))
 
         dc.SetBrush(wx.Brush(colour))
         dc.SetPen(wx.Pen(colour))
@@ -222,19 +222,19 @@ class AttributeGauge(wx.Window):
 
         if value >= 0:
             padding = (half if is_even else math.ceil(half - 1)) + 1
-            dc.DrawRectangle(round(padding), 1, w, rect.height)
+            dc.DrawRectangle(round(padding), 1, round(w), round(rect.height))
         else:
             padding = half - w + 1 if is_even else math.ceil(half) - (w - 1)
-            dc.DrawRectangle(round(padding), 1, w, rect.height)
+            dc.DrawRectangle(round(padding), 1, round(w), round(rect.height))
 
         if self.leading_edge and (self.edge_on_neutral or value != 0):
             dc.SetPen(wx.Pen(wx.WHITE))
             dc.SetBrush(wx.Brush(wx.WHITE))
 
             if value > 0:
-                dc.DrawRectangle(round(min(padding + w, rect.width)), 1, 1, rect.height)
+                dc.DrawRectangle(round(min(padding + w, rect.width)), 1, 1, round(rect.height))
             else:
-                dc.DrawRectangle(round(max(padding - 1, 1)), 1, 1, rect.height)
+                dc.DrawRectangle(round(max(padding - 1, 1)), 1, 1, round(rect.height))
 
     def OnTimer(self, event):
         old_value = self._old_percentage

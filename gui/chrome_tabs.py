@@ -1514,7 +1514,7 @@ class PFNotebookPagePreview(wx.Frame):
         x, y = mdc.GetTextExtent(self.title)
 
         mdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
-        mdc.DrawRectangle(0, 0, rect.width, 16)
+        mdc.DrawRectangle(0, 0, round(rect.width), 16)
 
         mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
@@ -1523,4 +1523,4 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetPen(wx.Pen("#000000", width=1))
         mdc.SetBrush(wx.TRANSPARENT_BRUSH)
 
-        mdc.DrawRectangle(0, 16, rect.width, rect.height - 16)
+        mdc.DrawRectangle(0, 16, round(rect.width), round(rect.height - 16))
