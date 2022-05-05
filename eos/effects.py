@@ -1053,6 +1053,7 @@ class Effect290(BaseEffect):
     sharpshooterRangeSkillBonusPostPercentMaxRangeLocationShipModulesRequiringGunnery
 
     Used by:
+    Implants named like: DED Turret Booster (4 of 4)
     Implants named like: Frentix Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
@@ -1756,6 +1757,7 @@ class Effect584(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
+    Implants named like: DED Turret Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: Standard Cerebral Accelerator
@@ -1840,7 +1842,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1005)
+    Items from category: Charge (608 of 1006)
     """
 
     type = 'passive'
@@ -1855,7 +1857,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (35 of 35)
+    Charges from group: Festival Charges (36 of 36)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -2136,6 +2138,7 @@ class Effect699(BaseEffect):
     signatureAnalysisScanResolutionBonusPostPercentScanResolutionShip
 
     Used by:
+    Implants named like: DED Scan Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
@@ -2414,7 +2417,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (538 of 1005)
+    Items from category: Charge (538 of 1006)
     """
 
     type = 'passive'
@@ -3756,6 +3759,7 @@ class Effect1185(BaseEffect):
 
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Smuggler Low Observability Booster (4 of 4)
     Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
     Implant: Serenity YC122.9 Season Booster - Signature Radius
@@ -5327,6 +5331,7 @@ class Effect1763(BaseEffect):
 
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Smuggler Bay Loading Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Rapid Launch RL (6 of 6)
     Implant: Standard Cerebral Accelerator
     Implant: Whelan Machorin's Ballistic Smartlink
@@ -6923,6 +6928,7 @@ class Effect2298(BaseEffect):
     Implants named like: High grade Jackal (5 of 6)
     Implants named like: High grade Spur (5 of 6)
     Implants named like: High grade Talon (5 of 6)
+    Implants named like: Smuggler Low Observability Booster (4 of 4)
     """
 
     type = 'passive'
@@ -13630,6 +13636,7 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (4 of 7)
+    Implants named like: DED Scan Booster (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Hunt Probing Booster (4 of 4)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
@@ -16735,6 +16742,7 @@ class Effect4951(BaseEffect):
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
     Implants named like: Blue Pill Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Smuggler Shield Booster (4 of 4)
     Implant: Antipharmakon Thureo
     """
 
@@ -35288,6 +35296,7 @@ class Effect7183(BaseEffect):
     implantWarpScrambleRangeBonus
 
     Used by:
+    Implants named like: DED Apprehension Booster (4 of 4)
     Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
     """
 
@@ -35295,9 +35304,9 @@ class Effect7183(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
-                                      'maxRange', src.getModifiedItemAttr('warpScrambleRangeBonus'),
-                                      stackingPenalties=False, **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Scrambler',
+            'maxRange', src.getModifiedItemAttr('warpScrambleRangeBonus'), **kwargs)
 
 
 class Effect7184(BaseEffect):
@@ -38268,3 +38277,85 @@ class Effect8479(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'), 'falloff',
             container.getModifiedItemAttr('falloffBonus'), **kwargs)
+
+
+class Effect8517(BaseEffect):
+    """
+    stasisWebifierResistanceBonusPassive
+
+    Used by:
+    Implants named like: Smuggler Blockade Running Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('stasisWebifierResistance',
+                               booster.getModifiedItemAttr('stasisWebifierResistanceBonus'), **kwargs)
+
+
+class Effect8518(BaseEffect):
+    """
+    cargoScanResistanceAssign
+
+    Used by:
+    Implants named like: Smuggler Blockade Running Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.forceItemAttr('cargoScanResistance', module.getModifiedItemAttr('cargoScanResistance'), **kwargs)
+
+
+class Effect8519(BaseEffect):
+    """
+    warpScrambleStrengthBonusPassive
+
+    Used by:
+    Implants named like: DED Apprehension Booster (4 of 4)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Warp Scrambler', 'warpScrambleStrength',
+            booster.getModifiedItemAttr('warpScrambleStrengthBonus'), **kwargs)
+
+
+class Effect8590(BaseEffect):
+    """
+    launcherReloadTimeBonusPassive
+
+    Used by:
+    Implants named like: Smuggler Bay Loading Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Missile Launcher Operation'),
+                                      'reloadTime', booster.getModifiedItemAttr('reloadTimeBonus'), **kwargs)
+
+
+class Effect8594(BaseEffect):
+    """
+    modifyArmorDamageResistanceBonusPostPercentPassive
+
+    Used by:
+    Implants named like: DED Armor Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
+            fit.ship.boostItemAttr(f'armor{type}DamageResonance',
+                                   booster.getModifiedItemAttr('armorDamageResistanceBonus'), **kwargs)
