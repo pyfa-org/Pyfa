@@ -313,6 +313,7 @@ class Market:
             "Tiamat"                      : self.les_grp,  # AT16 prize
             "Raiju"                       : self.les_grp,  # AT17 prize
             "Laelaps"                     : self.les_grp,  # AT17 prize
+            "Boobook"                     : self.les_grp,  # 19th EVE anniversary gift
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
