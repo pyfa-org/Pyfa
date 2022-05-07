@@ -1,9 +1,11 @@
 # noinspection PyPackageRequirements
 import wx
 
+import config
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
+from service.esi import Esi
 from service.settings import EsiSettings
 
 # noinspection PyPackageRequirements
@@ -82,7 +84,9 @@ class PFEsiPref(PreferenceView):
 
     def OnServerChange(self, event):
         source = self.chESIserver.GetString(self.chESIserver.GetSelection())
-        self.settings.set("server",source)
+        esiService = Esi.getInstance()
+        esiService.init(config.supported_servers[source])
+        self.settings.set("server", source)
 
     def getImage(self):
         return BitmapLoader.getBitmap("eve", "gui")

@@ -856,7 +856,7 @@ class APIView(wx.Panel):
         noneID = self.charChoice.Append(_t("None"), None)
 
         for char in ssoChars:
-            currId = self.charChoice.Append(char.characterName, char.ID)
+            currId = self.charChoice.Append(char.characterDisplay, char.ID)
 
             if sso is not None and char.ID == sso.ID:
                 self.charChoice.SetSelection(currId)

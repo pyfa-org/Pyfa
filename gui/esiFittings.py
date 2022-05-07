@@ -96,7 +96,7 @@ class EveFittings(AuxiliaryFrame):
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.characterName, char.ID)
+            self.charChoice.Append(char.characterDisplay, char.ID)
         if len(chars) > 0:
             self.charChoice.SetSelection(0)
 
@@ -330,7 +330,7 @@ class ExportToEve(AuxiliaryFrame):
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.characterName, char.ID)
+            self.charChoice.Append(char.characterDisplay, char.ID)
 
         if len(chars) > 0:
             self.charChoice.SetSelection(0)
@@ -414,6 +414,7 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
         self.lcCharacters.InsertColumn(0, heading=_t('Character'))
         self.lcCharacters.InsertColumn(1, heading=_t('Character ID'))
+        self.lcCharacters.InsertColumn(2, heading=_t('Server'))
 
         self.popCharList()
 
@@ -476,9 +477,11 @@ class SsoCharacterMgmt(AuxiliaryFrame):
             self.lcCharacters.InsertItem(index, char.characterName)
             self.lcCharacters.SetItem(index, 1, str(char.characterID))
             self.lcCharacters.SetItemData(index, char.ID)
+            self.lcCharacters.SetItem(index, 2, char.server or "<unknown>")
 
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
+        self.lcCharacters.SetColumnWidth(2, wx.LIST_AUTOSIZE)
 
     def addChar(self, event):
         try:

@@ -30,13 +30,6 @@ scopes = [
     'esi-fittings.write_fittings.v1'
 ]
 
-ApiBase = namedtuple('ApiBase', ['sso', 'esi'])
-supported_servers = {
-    "Tranquility": ApiBase("login.eveonline.com", "esi.evetech.net"),
-    "Singularity": ApiBase("sisilogin.testeveonline.com", "esi.evetech.net"),
-    "Serenity": ApiBase("login.evepc.163.com", "esi.evepc.163.com")
-}
-
 class GenericSsoError(Exception):
     """ Exception used for generic SSO errors that aren't directly related to an API call
     """
@@ -63,11 +56,11 @@ class APIException(Exception):
 
 
 class EsiAccess:
+    server_meta = {}
     def __init__(self):
         self.settings = EsiSettings.getInstance()
-        self.server_name=self.settings.get('server')
-        self.server_base: ApiBase = supported_servers[self.server_name]
-
+        self.default_server_name = self.settings.get('server')
+        self.default_server_base = config.supported_servers[self.default_server_name]
         # session request stuff
         self._session = Session()
         self._basicHeaders = {
@@ -81,21 +74,25 @@ class EsiAccess:
 
         # Set up cached session. This is only used for SSO meta data for now, but can be expanded to actually handle
         # various ESI caching (using ETag, for example) in the future
-        cached_session = CachedSession(
+        self.cached_session = CachedSession(
             os.path.join(config.savePath, config.ESI_CACHE),
             backend="sqlite",
             cache_control=True,                # Use Cache-Control headers for expiration, if available
             expire_after=timedelta(days=1),    # Otherwise expire responses after one day
             stale_if_error=True,               # In case of request errors, use stale cache data if possible
         )
-        cached_session.headers.update(self._basicHeaders)
-        cached_session.proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
+        self.cached_session.headers.update(self._basicHeaders)
+        self.cached_session.proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
+        self.init(self.default_server_base)
 
-        meta_call = cached_session.get("https://%s/.well-known/oauth-authorization-server" % self.server_base.sso)
+    def init(self, server_base):
+        self.server_base: config.ApiServer = server_base
+        self.server_name = self.server_base.name
+        meta_call = self.cached_session.get("https://%s/.well-known/oauth-authorization-server" % self.server_base.sso)
         meta_call.raise_for_status()
         self.server_meta = meta_call.json()
 
-        jwks_call = cached_session.get(self.server_meta["jwks_uri"])
+        jwks_call = self.cached_session.get(self.server_meta["jwks_uri"])
         jwks_call.raise_for_status()
         self.jwks = jwks_call.json()
 
@@ -117,10 +114,7 @@ class EsiAccess:
 
     @property
     def client_id(self):
-        if (self.server_name == "Serenity"):
-            return self.settings.get('clientID') or config.API_CLIENT_ID_SERENITY
-        else:
-            return self.settings.get('clientID') or config.API_CLIENT_ID
+        return self.settings.get('clientID') or self.server_base.client_id
 
     @staticmethod
     def update_token(char, tokenResponse):
@@ -145,10 +139,11 @@ class EsiAccess:
             'redirect': redirect,
             'state': self.state
         }
+
         if(self.server_name=="Serenity"):
             args = {
                 'response_type': 'code',
-                'redirect_uri': config.SSO_CALLBACK_SERENITY,
+                'redirect_uri': self.server_base.callback,
                 'client_id': self.client_id,
                 'scope': ' '.join(scopes),
                 'state': 'hilltech',
@@ -157,7 +152,7 @@ class EsiAccess:
         else:
             args = {
                 'response_type': 'code',
-                'redirect_uri': config.SSO_CALLBACK,
+                'redirect_uri': self.server_base.callback,
                 'client_id': self.client_id,
                 'scope': ' '.join(scopes),
                 'code_challenge': code_challenge,
@@ -264,6 +259,11 @@ class EsiAccess:
                 "https://login.eveonline.com: {}".format(str(e)))
 
     def _before_request(self, ssoChar):
+        if ssoChar:
+            self.init(config.supported_servers[ssoChar.server])
+        else:
+            self.init(self.default_server_base)
+
         self._session.headers.clear()
         self._session.headers.update(self._basicHeaders)
         if ssoChar is None:
@@ -292,17 +292,17 @@ class EsiAccess:
     def get(self, ssoChar, endpoint, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
-        return self._after_request(self._session.get("{}{}".format(self.esi_url, endpoint)))
+        return self._after_request(self._session.get("{}{}?datasource={}".format(self.esi_url, endpoint, self.server_name.lower())))
 
     def post(self, ssoChar, endpoint, json, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
-        return self._after_request(self._session.post("{}{}".format(self.esi_url, endpoint), data=json))
+        return self._after_request(self._session.post("{}{}?datasource={}".format(self.esi_url, endpoint, self.server_name.lower()), data=json))
 
     def delete(self, ssoChar, endpoint, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
-        return self._after_request(self._session.delete("{}{}".format(self.esi_url, endpoint)))
+        return self._after_request(self._session.delete("{}{}?datasource={}".format(self.esi_url, endpoint, self.server_name.lower())))
 
     # todo: move these off to another class which extends this one. This class should only handle the low level
     # authentication and

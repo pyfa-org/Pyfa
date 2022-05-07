@@ -389,7 +389,7 @@ class EsiSettings:
         self.settings[type] = value
 
     def keys(self):
-        return list({"Tranquility":"Tranquility","Singularity":"Singularity","Serenity":"Serenity"})
+        return config.supported_servers.keys()
 
 
 class StatViewSettings:

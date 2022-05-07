@@ -69,8 +69,8 @@ class Esi(EsiAccess):
         chars = eos.db.getSsoCharacters(config.getClientSecret())
         return chars
 
-    def getSsoCharacter(self, id):
-        char = eos.db.getSsoCharacter(id, config.getClientSecret())
+    def getSsoCharacter(self, id, server=None):
+        char = eos.db.getSsoCharacter(id, config.getClientSecret(), server)
         eos.db.commit()
         return char
 
@@ -109,7 +109,7 @@ class Esi(EsiAccess):
             with gui.ssoLogin.SsoLogin() as dlg:
                 if dlg.ShowModal() == wx.ID_OK:
                     message = {}
-                    if (self.server_name == "Serenity"):
+                    if (self.default_server_name == "Serenity"):
                         import re
                         s=re.search(r'(?<=code=)[a-zA-Z0-9\-_]*',dlg.ssoInfoCtrl.Value.strip())
                         if s:
@@ -146,14 +146,14 @@ class Esi(EsiAccess):
     def handleLogin(self, message):
         auth_response, data = self.auth(message['code'])
 
-        currentCharacter = self.getSsoCharacter(data['name'])
+        currentCharacter = self.getSsoCharacter(data['name'], self.server_base.name)
 
         sub_split = data["sub"].split(":")
         if (len(sub_split) != 3):
             raise GenericSsoError("JWT sub does not contain the expected data. Contents: %s" % data["sub"])
         cid = sub_split[-1]
         if currentCharacter is None:
-            currentCharacter = SsoCharacter(cid, data['name'], config.getClientSecret())
+            currentCharacter = SsoCharacter(cid, data['name'], config.getClientSecret(), self.server_base.name)
 
         Esi.update_token(currentCharacter, auth_response)
 
