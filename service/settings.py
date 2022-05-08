@@ -375,7 +375,9 @@ class EsiSettings:
             "clientSecret": "",
             "timeout": 60,
             "server": "Tranquility",
-            "exportCharges": True}
+            "exportCharges": True,
+            "enforceJwtExpiration": True
+        }
 
         self.settings = SettingsProvider.getInstance().getSettings(
                 "pyfaServiceEsiSettings",
