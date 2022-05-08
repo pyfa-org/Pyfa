@@ -44,12 +44,12 @@ experimentalFeatures = None
 version = None
 language = None
 
-ApiServer = namedtuple('ApiBase', ['name', 'sso', 'esi', 'client_id', 'callback'])
+ApiServer = namedtuple('ApiBase', ['name', 'sso', 'esi', 'client_id', 'callback', 'supports_auto_login'])
 supported_servers = {
-    "Tranquility": ApiServer("Tranquility", "login.eveonline.com", "esi.evetech.net", '095d8cd841ac40b581330919b49fe746', 'https://pyfa-org.github.io/Pyfa/callback'),
+    "Tranquility": ApiServer("Tranquility", "login.eveonline.com", "esi.evetech.net", '095d8cd841ac40b581330919b49fe746', 'https://pyfa-org.github.io/Pyfa/callback', True),
     # No point having SISI: https://developers.eveonline.com/blog/article/removing-datasource-singularity
     # "Singularity": ApiServer("Singularity", "sisilogin.testeveonline.com", "esi.evetech.net", 'b9c3cc79448f449ab17f3aebd018842e', 'https://pyfa-org.github.io/Pyfa/callback'),
-    "Serenity": ApiServer("Serenity", "login.evepc.163.com", "esi.evepc.163.com", 'bc90aa496a404724a93f41b4f4e97761', 'https://esi.evepc.163.com/ui/oauth2-redirect.html')
+    "Serenity": ApiServer("Serenity", "login.evepc.163.com", "esi.evepc.163.com", 'bc90aa496a404724a93f41b4f4e97761', 'https://esi.evepc.163.com/ui/oauth2-redirect.html', False)
 }
 
 SSO_LOGOFF_SERENITY='https://login.evepc.163.com/account/logoff'

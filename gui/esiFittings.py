@@ -489,8 +489,6 @@ class SsoCharacterMgmt(AuxiliaryFrame):
             sEsi.login()
         except (KeyboardInterrupt, SystemExit):
             raise
-        except Exception as ex:
-            ESIServerExceptionHandler(self, ex)
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()
