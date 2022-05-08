@@ -60,11 +60,16 @@ class SsoLogin(wx.Dialog):
         if server.name == "Serenity":
             webbrowser.open(config.SSO_LOGOFF_SERENITY)
             time.sleep(1)
+
         self.okBtn = self.FindWindow(wx.ID_OK)
-        webbrowser.open(uri)
         self.okBtn.Enable(False)
+        # Ensure we clean up once they hit the "OK" button
+        self.okBtn.Bind(wx.EVT_BUTTON, self.OnDestroy)
+
+        webbrowser.open(uri)
 
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.OnLogin)
+        # Ensure we clean up if ESC is pressed
         self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy)
 
     def OnTextEnter(self, event):
@@ -76,10 +81,13 @@ class SsoLogin(wx.Dialog):
         event.Skip()
 
     def OnLogin(self, event):
+        # This would normally happen if it was logged in via server auto-login. In this case, the modal is done, we effectively want to cancel out
         self.EndModal(wx.ID_CANCEL)
         event.Skip()
 
     def OnDestroy(self, event):
+        # Clean up by unbinding some events and stopping the server
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.OnLogin)
+        self.Unbind(wx.EVT_WINDOW_DESTROY, handler=self.OnDestroy)
         self.sEsi.stopServer()
         event.Skip()

@@ -227,21 +227,6 @@ class EveFittings(AuxiliaryFrame):
         self.fitView.update([])
 
 
-class ESIServerExceptionHandler:
-    def __init__(self, parentWindow, ex):
-        pyfalog.error(ex)
-        with wx.MessageDialog(
-            parentWindow,
-            _t("There was an issue starting up the localized server, try setting "
-            "Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> "
-            "Login Authentication Method. If this doesn't fix the problem please file an "
-            "issue on Github."),
-            _t("Add Character Error"),
-            wx.OK | wx.ICON_ERROR
-        ) as dlg:
-            dlg.ShowModal()
-
-
 class ESIExceptionHandler:
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, ex):

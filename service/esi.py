@@ -22,6 +22,7 @@ import gui.mainFrame
 from requests import Session
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class Esi(EsiAccess):
@@ -104,16 +105,32 @@ class Esi(EsiAccess):
         start_server = self.settings.get('loginMode') == EsiLoginMethod.SERVER and self.server_base.supports_auto_login
         with gui.ssoLogin.SsoLogin(self.server_base, start_server) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
-                if self.default_server_name == "Serenity":
-                    s = re.search(r'(?<=code=)[a-zA-Z0-9\-_]*', dlg.ssoInfoCtrl.Value.strip())
-                    if s:
-                        # skip state verification and go directly through the auth code processing
-                        self.handleLogin(s.group)
+                from gui.esiFittings import ESIExceptionHandler
+
+                try:
+                    if self.default_server_name == "Serenity":
+                        s = re.search(r'(?<=code=)[a-zA-Z0-9\-_]*', dlg.ssoInfoCtrl.Value.strip())
+                        if s:
+                            # skip state verification and go directly through the auth code processing
+                            self.handleLogin(s.group)
+                        else:
+                            pass
+                            # todo: throw error
                     else:
-                        pass
-                        # todo: throw error
-                else:
-                    self.handleServerRequest(json.loads(base64.b64decode(dlg.ssoInfoCtrl.Value.strip())))
+                        self.handleServerRequest(json.loads(base64.b64decode(dlg.ssoInfoCtrl.Value.strip())))
+                except GenericSsoError as ex:
+                    pyfalog.error(ex)
+                    with wx.MessageDialog(
+                            self.mainFrame,
+                            str(ex),
+                            _t("SSO Error"),
+                            wx.OK | wx.ICON_ERROR
+                    ) as dlg:
+                        dlg.ShowModal()
+                except APIException as ex:
+                    pyfalog.error(ex)
+                    ESIExceptionHandler(ex)
+                    pass
 
 
     def stopServer(self):
