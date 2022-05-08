@@ -88,6 +88,7 @@ class SsoLogin(wx.Dialog):
     def OnDestroy(self, event):
         # Clean up by unbinding some events and stopping the server
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.OnLogin)
-        self.Unbind(wx.EVT_WINDOW_DESTROY, handler=self.OnDestroy)
+        if self:
+            self.Unbind(wx.EVT_WINDOW_DESTROY, handler=self.OnDestroy)
         self.sEsi.stopServer()
         event.Skip()

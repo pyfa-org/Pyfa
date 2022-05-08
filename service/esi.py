@@ -108,7 +108,7 @@ class Esi(EsiAccess):
                 from gui.esiFittings import ESIExceptionHandler
 
                 try:
-                    if self.default_server_name == "Serenity":
+                    if self.server_name == "Serenity":
                         s = re.search(r'(?<=code=)[a-zA-Z0-9\-_]*', dlg.ssoInfoCtrl.Value.strip())
                         if s:
                             # skip state verification and go directly through the auth code processing
