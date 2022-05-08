@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <title>pyfa Authentication Proxy</title>
+    <style type="text/css">
+
+    
+      body { width: 700px; margin: 150px auto; }
+      h1 { font-size: 40px; }
+      h2 { font-size: 32px; }
+      body { font: 20px Helvetica, sans-serif; color: #333; }
+      #article { display: block; text-align: left; width: 650px; margin: 0 auto; }
+      .hidden { display:none; }
+      .success { color: #28a745; }
+      .error { color: #dc3545; }
+      textarea { width: 100%; height: 100px; }
+      hr { border-width: 1px 0 0 0; border-style: solid; border-color: #333; }
+      button { cursor: pointer; background-color: white; border: 1px solid #333; color: #333; padding: 8px 11px; text-align: center; text-decoration: none; display: inline-block; }
+      @media (prefers-color-scheme: dark) {
+          body { background-color: #333; color: white; }
+          textarea { width: 100%; height: 100px; background-color: #aaa;}
+          button { background-color: #333; border: 1px solid white; color: white;  }
+          hr { border-color: white; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Layout from Short Circuit's CREST login. Shout out! https://github.com/farshield/shortcircuit -->
+      <h1>pyfa</h1>
+      <div id="mode0" class="hidden">
+        <p id="mode0-msg">Processing request...</p>
+        <button id="showBtn" onClick="showCode()">Show Code</button>
+      </div>
+      <div id="mode1" class="hidden">
+        <p id="mode1-p">Please copy and paste the token below into pyfa.</p>
+        <textarea id="authCodeText" readonly></textarea>
+      </div>
+      
+    </div>
+    <script>
+      debugger;
+      function showCode() {
+        var element = document.getElementById(`mode1`);
+        element.classList.remove("hidden");
+        element = document.getElementById(`showBtn`);
+        element.classList.add("hidden"); 
+      }
+
+      function httpPostAsync(url, callback)
+      {
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.onreadystatechange = function() { 
+              if (xmlHttp.readyState == XMLHttpRequest.DONE)
+                  callback(xmlHttp);
+          }
+          xmlHttp.open("GET", url, true); // true for asynchronous 
+          xmlHttp.send(null);
+      }
+
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const params = Object.fromEntries(urlSearchParams.entries());
+      let stateInfo;
+      try {
+        stateInfo = JSON.parse(atob(params.state))
+      } catch (err) {
+        // something has happened and we cannot continue.
+        // todo: show a simple message and exit.
+        throw err;
+      }
+
+      // we always want to show the text box for manual.
+      var element = document.getElementById(`mode${stateInfo.mode}`);
+      element.classList.remove("hidden");
+
+      if (stateInfo.mode === 0) {
+        let p = document.getElementById(`mode1-p`);
+        p.prepend(document.createElement("hr"))
+      }
+      debugger;
+      document.getElementById(`authCodeText`).value = btoa(JSON.stringify(params))
+
+      if (stateInfo.mode == 0) { // auto / server mode 
+        httpPostAsync(stateInfo.redirect + window.location.search, (req)=>{
+          debugger;
+          const msgDiv = document.getElementById(`mode0-msg`);
+          if (req.status === 200) {
+            msgDiv.innerHTML ="<span class='success'>Success!</span> You may close this window and return to the application.";
+            return;
+          } else if (req.status === 0){
+            msgDiv.innerHTML = "<span class='error'>Error!</span> Server response not received.<p><small>The local pyfa server may have timed out, or may not have started correctly.</small></p>";
+          } else if (req.status === 400){
+            msgDiv.innerHTML = `<span class='error'>Error!</span> <p><small>${req.responseText}</small></p>`
+          } else {
+            msgDiv.innerHTML = `<span class='error'>Error!</span> <p><small>There was an unknown error. Please report this to the pyfa issues page.</p><p><textarea readdonly>${req.responseText}</textarea></small></p>`
+          }
+          showCode()
+          // todo: bad request error when it's not  an error itself, but rather
+        })
+        // todo: post message to local EVE server
+      }
+    </script>
+  </body>
+</html>
