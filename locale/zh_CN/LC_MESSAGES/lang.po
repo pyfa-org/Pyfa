@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2021-05-18 17:34\n"
+"PO-Revision-Date: 2022-05-08 16:40\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/firepowerViewFull.py:107
 msgid " DPS: "
-msgstr ""
+msgstr " 秒伤： "
 
 #: gui/builtinContextMenus/itemRemove.py:44
 msgid " Stack"
@@ -402,7 +402,7 @@ msgstr "弹药仓"
 #: eos/saveddata/targetProfile.py:220 eos/saveddata/targetProfile.py:223
 #: eos/saveddata/targetProfile.py:226 eos/saveddata/targetProfile.py:229
 msgid "Angel"
-msgstr ""
+msgstr "天使"
 
 #: eos/saveddata/damagePattern.py:105 eos/saveddata/damagePattern.py:123
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
@@ -627,7 +627,7 @@ msgstr "统合部"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
@@ -862,7 +862,7 @@ msgstr "对比"
 #: eos/saveddata/targetProfile.py:218 eos/saveddata/targetProfile.py:221
 #: eos/saveddata/targetProfile.py:224 eos/saveddata/targetProfile.py:227
 msgid "Concord"
-msgstr ""
+msgstr "统合部"
 
 #: eos/saveddata/damagePattern.py:92
 msgid "Concussion Bomb"
@@ -905,15 +905,15 @@ msgstr ""
 
 #: gui/builtinContextMenus/envEffectAdd.py:107
 msgid "ContextMenu|ProjectedEffectManipulation|Exotic"
-msgstr ""
+msgstr "异种深渊"
 
 #: gui/builtinContextMenus/envEffectAdd.py:115
 msgid "ContextMenu|ProjectedEffectManipulation|Firestorm"
-msgstr ""
+msgstr "火瀑深渊"
 
 #: gui/builtinContextMenus/envEffectAdd.py:108
 msgid "ContextMenu|ProjectedEffectManipulation|Gamma"
-msgstr ""
+msgstr "伽玛深渊"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "ContextMenu|ProjectedEffectManipulation|Magnetar"
@@ -1032,7 +1032,7 @@ msgstr "青色"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "DPS"
-msgstr ""
+msgstr "秒伤"
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
@@ -1134,7 +1134,7 @@ msgstr "删除所有目标属性配置"
 
 #: gui/esiFittings.py:66
 msgid "Delete all from Eve"
-msgstr ""
+msgstr "从 EvE 中删除全部装配"
 
 #: gui/esiFittings.py:65
 msgid "Delete from EVE"
@@ -1271,7 +1271,7 @@ msgstr "流浪者"
 
 #: eos/saveddata/damagePattern.py:159 eos/saveddata/targetProfile.py:230
 msgid "Drifter Entities"
-msgstr ""
+msgstr "流浪者实体"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Drone"
@@ -1425,7 +1425,7 @@ msgstr "效果"
 #: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:194
 #: eos/saveddata/targetProfile.py:195 eos/saveddata/targetProfile.py:196
 msgid "Electrical T0/T1/T2"
-msgstr ""
+msgstr "电子深渊 T0/T1/T2"
 
 #: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:114
 #: eos/saveddata/targetProfile.py:115 eos/saveddata/targetProfile.py:116
@@ -1441,7 +1441,7 @@ msgstr "电子 T3 （含部分T5关卡）"
 #: eos/saveddata/targetProfile.py:126 eos/saveddata/targetProfile.py:200
 #: eos/saveddata/targetProfile.py:201 eos/saveddata/targetProfile.py:202
 msgid "Electrical T4/T5/T6"
-msgstr ""
+msgstr "电子深渊 T4/T5/T6"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:85
 msgid "Electromagnetic resistance"
@@ -1558,7 +1558,7 @@ msgstr "异种等离子"
 #: eos/saveddata/targetProfile.py:154 eos/saveddata/targetProfile.py:212
 #: eos/saveddata/targetProfile.py:213 eos/saveddata/targetProfile.py:214
 msgid "Exotic T0/T1/T2"
-msgstr ""
+msgstr "异种深渊 T0/T1/T2"
 
 #: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:156
 #: eos/saveddata/targetProfile.py:157 eos/saveddata/targetProfile.py:158
@@ -1574,7 +1574,7 @@ msgstr "异种 T3 （含部分T5关卡）"
 #: eos/saveddata/targetProfile.py:168 eos/saveddata/targetProfile.py:218
 #: eos/saveddata/targetProfile.py:219 eos/saveddata/targetProfile.py:220
 msgid "Exotic T4/T5/T6"
-msgstr ""
+msgstr "异种深渊 T4/T5/T6"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:67
 msgid "Expand All"
@@ -1764,7 +1764,7 @@ msgstr "火力"
 #: eos/saveddata/targetProfile.py:133 eos/saveddata/targetProfile.py:203
 #: eos/saveddata/targetProfile.py:204 eos/saveddata/targetProfile.py:205
 msgid "Firestorm T0/T1/T2"
-msgstr ""
+msgstr "火瀑深渊 T0/T1/T2"
 
 #: eos/saveddata/targetProfile.py:134 eos/saveddata/targetProfile.py:135
 #: eos/saveddata/targetProfile.py:136 eos/saveddata/targetProfile.py:137
@@ -1780,7 +1780,7 @@ msgstr "火瀑 T3 （含部分T5关卡）"
 #: eos/saveddata/targetProfile.py:147 eos/saveddata/targetProfile.py:209
 #: eos/saveddata/targetProfile.py:210 eos/saveddata/targetProfile.py:211
 msgid "Firestorm T4/T5/T6"
-msgstr ""
+msgstr "火瀑深渊 T4/T5/T6"
 
 #: graphs/gui/lists.py:306
 msgid "Fit"
@@ -1873,7 +1873,7 @@ msgstr "伽玛"
 #: eos/saveddata/targetProfile.py:175 eos/saveddata/targetProfile.py:221
 #: eos/saveddata/targetProfile.py:222 eos/saveddata/targetProfile.py:223
 msgid "Gamma T0/T1/T2"
-msgstr ""
+msgstr "伽玛深渊 T0/T1/T2"
 
 #: eos/saveddata/targetProfile.py:176 eos/saveddata/targetProfile.py:177
 #: eos/saveddata/targetProfile.py:178 eos/saveddata/targetProfile.py:179
@@ -1889,7 +1889,7 @@ msgstr "伽玛 T3 （含部分T5关卡）"
 #: eos/saveddata/targetProfile.py:189 eos/saveddata/targetProfile.py:227
 #: eos/saveddata/targetProfile.py:228 eos/saveddata/targetProfile.py:229
 msgid "Gamma T4/T5/T6"
-msgstr ""
+msgstr "伽玛深渊 T4/T5/T6"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:125
 msgid "Gas hold"
@@ -1948,7 +1948,7 @@ msgstr "古斯塔斯"
 #: gui/builtinStatsViews/resistancesViewFull.py:172
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "HP"
-msgstr ""
+msgstr "生命值"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:19
 msgid "HTML Export"
@@ -2019,7 +2019,7 @@ msgstr "混合弹药"
 
 #: gui/builtinItemStatsViews/itemEffects.py:35
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: eos/saveddata/targetProfile.py:293
 msgid "Ideal Target"
@@ -2664,7 +2664,7 @@ msgstr "变质"
 #: eos/saveddata/targetProfile.py:230 eos/saveddata/targetProfile.py:231
 #: eos/saveddata/targetProfile.py:232
 msgid "NPC"
-msgstr ""
+msgstr "NPC"
 
 #: gui/builtinItemStatsViews/itemEffects.py:30
 #: gui/builtinViewColumns/baseName.py:55
@@ -3012,7 +3012,8 @@ msgstr "Pyfa可以自动检查更新并提示。这个功能可在网络设置�
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:69
 msgid "Pyfa language selection disabled. Please check if .mo files have been generated.\n"
 "Refer to locale/README.md for info."
-msgstr ""
+msgstr "Pyfa语言选择已禁用。请检查.mo 文件是否已生成。\n"
+"请参阅locale/README.md获取信息。"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:129
 msgid "Quafe hold"
@@ -3189,7 +3190,7 @@ msgstr "自由无人机"
 
 #: eos/saveddata/damagePattern.py:160 eos/saveddata/targetProfile.py:231
 msgid "Rogue Drone Entities"
-msgstr ""
+msgstr "自由无人机实体"
 
 #: eos/saveddata/targetProfile.py:63 eos/saveddata/targetProfile.py:69
 msgid "Rogue Drones"
@@ -3227,7 +3228,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:219 eos/saveddata/targetProfile.py:222
 #: eos/saveddata/targetProfile.py:225 eos/saveddata/targetProfile.py:228
 msgid "Sansha"
-msgstr ""
+msgstr "萨沙"
 
 #: eos/saveddata/damagePattern.py:157 eos/saveddata/targetProfile.py:80
 #: gui/builtinContextMenus/envEffectAdd.py:124
@@ -3859,7 +3860,7 @@ msgstr "三神裔"
 #: eos/saveddata/damagePattern.py:134 eos/saveddata/damagePattern.py:137
 #: eos/saveddata/damagePattern.py:140 eos/saveddata/targetProfile.py:94
 msgid "Triglavian Entities"
-msgstr ""
+msgstr "三神裔实体"
 
 #: gui/builtinContextMenus/envEffectAdd.py:126
 #: gui/builtinContextMenus/envEffectAdd.py:128
@@ -4191,11 +4192,11 @@ msgstr "Pyfa属性自定义文件"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "pyfa.io"
-msgstr ""
+msgstr "pyfa.io"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:47
 msgid "pyfa:"
-msgstr ""
+msgstr "pyfa:"
 
 #: eos/utils/stats.py:123
 msgid "th"
