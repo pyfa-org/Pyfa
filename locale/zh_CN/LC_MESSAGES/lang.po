@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-05-08 16:40\n"
+"PO-Revision-Date: 2022-06-13 10:20\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -384,7 +384,7 @@ msgstr "艾玛（护盾）"
 
 #: eos/saveddata/damagePattern.py:143 eos/saveddata/targetProfile.py:95
 msgid "Amarr EDENCOM Entities"
-msgstr ""
+msgstr "艾玛EDENCOM实体"
 
 #: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:72
 msgid "Amarr Empire"
@@ -644,7 +644,7 @@ msgstr "加达里（护盾）"
 #: eos/saveddata/damagePattern.py:144 eos/saveddata/damagePattern.py:145
 #: eos/saveddata/targetProfile.py:96
 msgid "Caldari EDENCOM Entities"
-msgstr ""
+msgstr "加达里EDENCOM实体"
 
 #: eos/saveddata/damagePattern.py:150 eos/saveddata/targetProfile.py:73
 msgid "Caldari State"
@@ -1853,7 +1853,7 @@ msgstr "盖伦特（护盾）"
 
 #: eos/saveddata/damagePattern.py:146 eos/saveddata/targetProfile.py:97
 msgid "Gallente EDENCOM Entities"
-msgstr ""
+msgstr "盖伦特EDENCOM实体"
 
 #: eos/saveddata/damagePattern.py:152 eos/saveddata/targetProfile.py:75
 msgid "Gallente Federation"
@@ -2465,7 +2465,7 @@ msgstr "米玛塔尔(护盾）"
 #: eos/saveddata/damagePattern.py:147 eos/saveddata/damagePattern.py:148
 #: eos/saveddata/targetProfile.py:98
 msgid "Minmatar EDENCOM Entities"
-msgstr ""
+msgstr "米玛塔尔EDENCOM实体"
 
 #: eos/saveddata/damagePattern.py:154 eos/saveddata/targetProfile.py:77
 msgid "Minmatar Republic"
@@ -3498,7 +3498,7 @@ msgstr "冬眠者"
 
 #: eos/saveddata/damagePattern.py:161 eos/saveddata/targetProfile.py:232
 msgid "Sleeper Entities"
-msgstr ""
+msgstr "冬眠者实体"
 
 #: eos/saveddata/damagePattern.py:158
 msgid "Sleepers"
