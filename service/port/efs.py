@@ -28,7 +28,7 @@ pyfaVersion = getVersion()
 
 class EfsPort:
     wepTestSet = {}
-    version = 0.05
+    version = 0.06
 
     @staticmethod
     def attrDirectMap(values, target, source):
@@ -207,6 +207,9 @@ class EfsPort:
             ]:
                 stats["type"] = "Remote Armor Repairer"
                 EfsPort.attrDirectMap(["armorDamageAmount"], stats, mod)
+            elif mod.item.group.name in ["Remote Capacitor Transmitter"]:
+                stats["type"] = "Remote Capacitor Transmitter"
+                EfsPort.attrDirectMap(["powerTransferAmount"], stats, mod)
             elif mod.item.group.name == "Warp Scrambler":
                 stats["type"] = "Warp Scrambler"
                 EfsPort.attrDirectMap(["activationBlockedStrenght", "warpScrambleStrength"], stats, mod)
