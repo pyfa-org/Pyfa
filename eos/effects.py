@@ -1158,10 +1158,10 @@ class Effect394(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
+    Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
-    Implant: Grand Prix Velocity Booster
     Implant: Quafe Zero Classic
     Implant: Serenity YC122.9 Season Booster - Max Velocity
     Skill: Navigation
@@ -1185,9 +1185,9 @@ class Effect395(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
+    Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Hunt Pursuit Booster (4 of 4)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
     Implant: Genolution Core Augmentation CA-4
@@ -2487,12 +2487,11 @@ class Effect856(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
+    Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: Hunt Pursuit Booster (4 of 4)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
-    Implant: Grand Prix Warp Booster
     Implant: Serenity YC122.9 Season Booster - Warp Speed
     """
 
@@ -4302,7 +4301,6 @@ class Effect1409(BaseEffect):
 
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: Hunt Probing Booster (4 of 4)
     Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
@@ -4765,7 +4763,6 @@ class Effect1590(BaseEffect):
 
     Used by:
     Implants named like: Halcyon G Booster (5 of 5)
-    Implants named like: Hunt Missile Velocity Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
     Skill: Target Navigation Prediction
@@ -4881,7 +4878,6 @@ class Effect1597(BaseEffect):
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Hunt Missile Damage Booster (4 of 4)
     Skill: Warhead Upgrades
     """
 
@@ -5130,7 +5126,6 @@ class Effect1657(BaseEffect):
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Hunt Missile Damage Booster (4 of 4)
     Skill: Warhead Upgrades
     """
 
@@ -5353,7 +5348,6 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
-    Implants named like: Hunt Missile Velocity Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -6900,7 +6894,6 @@ class Effect2297(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: Hunt Resistance Booster (4 of 4)
     """
 
     type = 'passive'
@@ -9588,7 +9581,7 @@ class Effect3046(BaseEffect):
     Modules from group: Expanded Cargohold (7 of 7)
     """
 
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -13612,7 +13605,6 @@ class Effect4161(BaseEffect):
 
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: Hunt Probing Booster (4 of 4)
     Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
@@ -13638,7 +13630,6 @@ class Effect4162(BaseEffect):
     Modules from group: Scan Probe Launcher (4 of 7)
     Implants named like: DED Scan Booster (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
-    Implants named like: Hunt Probing Booster (4 of 4)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
@@ -16779,7 +16770,6 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
-    Implants named like: Hunt Rapid Repair Booster (4 of 4)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
     """
 
@@ -35258,7 +35248,6 @@ class Effect7176(BaseEffect):
 
     Used by:
     Implants named like: Halcyon G Booster (5 of 5)
-    Implants named like: Hunt Drone Damage Booster (4 of 4)
     Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
     Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
     """
@@ -38228,7 +38217,6 @@ class Effect8477(BaseEffect):
 
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: Hunt Drone Precision Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38264,7 +38252,6 @@ class Effect8479(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Hunt Drone Precision Booster (4 of 4)
     """
 
     type = 'passive'
