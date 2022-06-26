@@ -9588,7 +9588,7 @@ class Effect3046(BaseEffect):
     Modules from group: Expanded Cargohold (7 of 7)
     """
 
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
