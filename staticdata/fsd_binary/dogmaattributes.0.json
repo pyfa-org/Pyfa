@@ -29981,28 +29981,6 @@
     "stackable": 1, 
     "unitID": 127
   }, 
-  "1940": {
-    "attributeID": 1940, 
-    "dataType": 11, 
-    "defaultValue": 0.0, 
-    "description": "What type this type can be compressed into", 
-    "displayWhenZero": 0, 
-    "highIsGood": 1, 
-    "name": "compressionTypeID", 
-    "published": 1, 
-    "stackable": 1
-  }, 
-  "1941": {
-    "attributeID": 1941, 
-    "dataType": 4, 
-    "defaultValue": 0.0, 
-    "description": "Number of items needed to be able to compress it", 
-    "displayWhenZero": 0, 
-    "highIsGood": 1, 
-    "name": "compressionQuantityNeeded", 
-    "published": 1, 
-    "stackable": 1
-  }, 
   "1942": {
     "attributeID": 1942, 
     "categoryID": 37, 
@@ -44048,7 +44026,7 @@
     "displayWhenZero": 0, 
     "highIsGood": 1, 
     "name": "hasLongAnimationWhenAddedToSpaceScene", 
-    "published": 1, 
+    "published": 0, 
     "stackable": 1, 
     "unitID": 137
   }, 
