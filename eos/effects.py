@@ -64,6 +64,8 @@ class Effect10(BaseEffect):
     Drones from group: Combat Drone (80 of 80)
     Modules from group: Energy Weapon (212 of 214)
     Celestial: EDENCOM Stockpile Non-Interactable (Do not translate)
+    Celestial: Liberation Games Firework Sentry ( DO NOT TRANSLATE)
+    Celestial: Minmatar Sentry Gun (DO NOT TRANSLATE)
     """
 
     dealsDamage = True
@@ -964,6 +966,7 @@ class Effect272(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
     Modules named like: Nanobot Accelerator (8 of 8)
+    Implant: AIR Repairer Booster III
     Implant: Numon Family Heirloom
     Skill: Repair Systems
     """
@@ -1111,7 +1114,7 @@ class Effect391(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
-    Implants named like: Mining Blitz Yield Booster Dose (3 of 3)
+    Implants named like: Mining Yield Booster (6 of 6)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
@@ -1162,6 +1165,7 @@ class Effect394(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
+    Implant: AIR Overclocker Booster II
     Implant: Quafe Zero Classic
     Implant: Serenity YC122.9 Season Booster - Max Velocity
     Skill: Navigation
@@ -1190,6 +1194,8 @@ class Effect395(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
+    Implant: AIR Agility Booster II
+    Implant: AIR Overclocker Booster III
     Implant: Genolution Core Augmentation CA-4
     Implant: Quafe Zero Green Apple
     Implant: Serenity YC122.9 Season Booster - Agility
@@ -1298,6 +1304,7 @@ class Effect446(BaseEffect):
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
+    Implant: AIR Nirvana Booster II
     Implant: Genolution Core Augmentation CA-3
     Implant: Sansha Modified 'Gnome' Implant
     Skill: Shield Management
@@ -1321,6 +1328,8 @@ class Effect485(BaseEffect):
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
+    Implant: AIR Overclocker Booster III
+    Implant: AIR Rapture Booster II
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Implant: Quafe Zero Green Apple
@@ -1760,6 +1769,7 @@ class Effect584(BaseEffect):
     Implants named like: DED Turret Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implant: AIR Pyrolancea Booster II
     Implant: Standard Cerebral Accelerator
     """
 
@@ -4304,6 +4314,7 @@ class Effect1409(BaseEffect):
     Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
+    Implant: AIR Astro-Acquisition II Booster
     Skill: Astrometric Acquisition
     Skill: Astrometrics
     """
@@ -4446,6 +4457,7 @@ class Effect1446(BaseEffect):
     ewSkillTpMaxRangeBonus
 
     Used by:
+    Implants named like: Liberation Games EWar Booster (4 of 4)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4609,6 +4621,7 @@ class Effect1550(BaseEffect):
     ewSkillTargetPaintingStrengthBonus
 
     Used by:
+    Implants named like: Liberation Games EWar Booster (4 of 4)
     Skill: Signature Focusing
     """
 
@@ -4763,6 +4776,7 @@ class Effect1590(BaseEffect):
 
     Used by:
     Implants named like: Halcyon G Booster (5 of 5)
+    Implants named like: Liberation Games Accuracy Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
     Skill: Target Navigation Prediction
@@ -4840,6 +4854,7 @@ class Effect1595(BaseEffect):
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
     """
 
@@ -4859,6 +4874,7 @@ class Effect1596(BaseEffect):
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
     """
 
@@ -4878,6 +4894,7 @@ class Effect1597(BaseEffect):
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
     """
 
@@ -4968,6 +4985,7 @@ class Effect1635(BaseEffect):
 
     Used by:
     Modules named like: Nanobot Accelerator (8 of 8)
+    Implant: AIR Repairer Booster III
     Skill: Capital Repair Systems
     """
 
@@ -5126,6 +5144,7 @@ class Effect1657(BaseEffect):
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
     """
 
@@ -5348,6 +5367,7 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
+    Implants named like: Liberation Games Range Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -7673,6 +7693,7 @@ class Effect2695(BaseEffect):
     falloffBonusEffectProjectiles
 
     Used by:
+    Implants named like: Liberation Games Range Booster (4 of 4)
     Modules named like: Projectile Ambit Extension (8 of 8)
     """
 
@@ -7726,6 +7747,7 @@ class Effect2698(BaseEffect):
     maxRangeBonusEffectProjectiles
 
     Used by:
+    Implants named like: Liberation Games Range Booster (4 of 4)
     Modules named like: Projectile Locus Coordinator (8 of 8)
     """
 
@@ -8370,6 +8392,7 @@ class Effect2798(BaseEffect):
     projectileWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Liberation Games Damage Booster (4 of 4)
     Modules named like: Projectile Collision Accelerator (8 of 8)
     """
 
@@ -8639,6 +8662,7 @@ class Effect2851(BaseEffect):
     missileDMGBonusPassive
 
     Used by:
+    Implants named like: Liberation Games Damage Booster (4 of 4)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     """
 
@@ -13608,6 +13632,7 @@ class Effect4161(BaseEffect):
     Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
+    Implant: AIR Astro-Pinpointing II Booster
     Skill: Astrometric Pinpointing
     Skill: Astrometrics
     """
@@ -13635,6 +13660,7 @@ class Effect4162(BaseEffect):
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
+    Implant: AIR Astro-Rangefinding II Booster
     Implant: Serenity YC122.9 Season Booster - Probe Scanning Strength
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
@@ -16734,6 +16760,7 @@ class Effect4951(BaseEffect):
     Implants named like: Blue Pill Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Smuggler Shield Booster (4 of 4)
+    Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Thureo
     """
 
@@ -16771,6 +16798,7 @@ class Effect4967(BaseEffect):
 
     Used by:
     Modules named like: Core Defense Operational Solidifier (8 of 8)
+    Implant: AIR Repairer Booster III
     """
 
     type = 'passive'
@@ -18163,6 +18191,7 @@ class Effect5190(BaseEffect):
     trackingSpeedBonusEffectProjectiles
 
     Used by:
+    Implants named like: Liberation Games Accuracy Booster (4 of 4)
     Modules named like: Projectile Metastasis Adjuster (8 of 8)
     """
 
@@ -19740,6 +19769,7 @@ class Effect5364(BaseEffect):
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
     Implants named like: Exile Booster (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Kosybo
     """
 
@@ -27040,8 +27070,8 @@ class Effect6431(BaseEffect):
     fighterAbilityMissiles
 
     Used by:
-    Items from category: Fighter (51 of 86)
-    Fighters from group: Light Fighter (34 of 34)
+    Items from category: Fighter (48 of 82)
+    Fighters from group: Light Fighter (32 of 32)
     """
 
     dealsDamage = True
@@ -27169,7 +27199,7 @@ class Effect6439(BaseEffect):
     fighterAbilityEvasiveManeuvers
 
     Used by:
-    Fighters from group: Light Fighter (17 of 34)
+    Fighters from group: Light Fighter (16 of 32)
     """
 
     displayName = 'Evasive Maneuvers'
@@ -27226,7 +27256,7 @@ class Effect6441(BaseEffect):
     fighterAbilityMicroWarpDrive
 
     Used by:
-    Items from category: Fighter (46 of 86)
+    Items from category: Fighter (44 of 82)
     """
 
     displayName = 'Microwarpdrive'
@@ -27320,8 +27350,8 @@ class Effect6465(BaseEffect):
     fighterAbilityAttackM
 
     Used by:
-    Items from category: Fighter (53 of 86)
-    Fighters from group: Heavy Fighter (36 of 36)
+    Items from category: Fighter (50 of 82)
+    Fighters from group: Heavy Fighter (34 of 34)
     """
 
     dealsDamage = True
@@ -27591,7 +27621,7 @@ class Effect6485(BaseEffect):
     fighterAbilityLaunchBomb
 
     Used by:
-    Fighters from group: Heavy Fighter (17 of 36)
+    Fighters from group: Heavy Fighter (16 of 34)
     """
 
     dealsDamage = True
@@ -33799,6 +33829,7 @@ class Effect7020(BaseEffect):
     Used by:
     Implants named like: Inquest 'Eros' Stasis Webifier MR (3 of 3)
     Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
+    Implants named like: Liberation Games EWar Booster (4 of 4)
     """
 
     type = 'passive'
@@ -37048,6 +37079,22 @@ class Effect8123(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('droneBandwidth', module.getModifiedItemAttr('droneBandwidthPercentage'), **kwargs)
+
+
+class Effect8128(BaseEffect):
+    """
+    miningLaserRangeBonusLRSM
+
+    Used by:
+    Implants named like: Mining Range Booster (5 of 5)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, source, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'), 'maxRange',
+                                      source.getModifiedItemAttr('maxRangeBonus'), **kwargs)
 
 
 class Effect8129(BaseEffect):
