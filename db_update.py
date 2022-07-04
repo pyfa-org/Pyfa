@@ -147,9 +147,10 @@ def update_db():
                 row['published'] = True
             # Nearly useless and clutter search results too much
             elif (
-                row['typeName_en-us'].startswith('Limited Synth ') or
-                row['typeName_en-us'].startswith('Expired ') or
-                row['typeName_en-us'].endswith(' Filament') and (
+                row['typeName_en-us'].startswith('Limited Synth ')
+                or row['typeName_en-us'].startswith('Expired ')
+                or re.match('Mining Blitz .+ Booster Dose .+', row['typeName_en-us'])
+                or row['typeName_en-us'].endswith(' Filament') and (
                     "'Needlejack'" not in row['typeName_en-us'] and
                     "'Devana'" not in row['typeName_en-us'] and
                     "'Pochven'" not in row['typeName_en-us'] and
