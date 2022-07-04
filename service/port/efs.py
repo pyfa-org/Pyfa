@@ -246,7 +246,10 @@ class EfsPort:
                 pyfalog.error("Projected module {0} lacks efs export implementation".format(mod.item.typeName))
             if mod.getModifiedItemAttr("maxRange", None) is None:
                 pyfalog.error("Projected module {0} has no maxRange".format(mod.item.typeName))
-            stats["optimal"] = mod.getModifiedItemAttr("maxRange", maxRangeDefault)
+
+            # Burst jammer maxRange is 0 if the value is retrieved using mod.getModifiedItemAttr("maxRange")
+            # Despite it is correct, it still pulls 0.0.
+            stats["optimal"] = mod.getModifiedItemAttr("maxRange", maxRangeDefault) if mod.item.group.name != "Burst Jammer" else mod.maxRange
             stats["falloff"] = mod.getModifiedItemAttr("falloffEffectiveness", falloffDefault)
             EfsPort.attrDirectMap(["duration", "capacitorNeed"], stats, mod)
             projections.append(stats)
