@@ -139,9 +139,10 @@ def update_db():
         for row in data:
             if (
                 # Apparently people really want Civilian modules available
-                (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us']) or
-                row['typeName_en-us'] == 'Capsule' or
-                row['groupID'] == 4033  # destructible effect beacons
+                (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us'])
+                or row['typeName_en-us'] == 'Capsule'
+                or row['groupID'] == 4033  # destructible effect beacons
+                or re.match('AIR .+Booster.*', row['typeName_en-us'])
             ):
                 row['published'] = True
             # Nearly useless and clutter search results too much
