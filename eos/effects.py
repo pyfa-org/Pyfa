@@ -1113,8 +1113,8 @@ class Effect391(BaseEffect):
     astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining
 
     Used by:
+    Implants named like: AIR Mining Yield Booster (3 of 3)
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
-    Implants named like: Mining Yield Booster (6 of 6)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
@@ -8614,10 +8614,9 @@ class Effect2848(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(lambda module: module.item.requiresSkill('Archaeology'),
-                                         'accessDifficultyBonus',
-                                         container.getModifiedItemAttr('accessDifficultyBonusModifier'),
-                                         position='post', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda module: module.item.requiresSkill('Archaeology'), 'accessDifficultyBonus',
+            container.getModifiedItemAttr('accessDifficultyBonusModifier'), **kwargs)
 
 
 class Effect2849(BaseEffect):
@@ -8635,10 +8634,9 @@ class Effect2849(BaseEffect):
 
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(lambda c: c.item.requiresSkill('Hacking'),
-                                         'accessDifficultyBonus',
-                                         container.getModifiedItemAttr('accessDifficultyBonusModifier'),
-                                         position='post', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda c: c.item.requiresSkill('Hacking'), 'accessDifficultyBonus',
+            container.getModifiedItemAttr('accessDifficultyBonusModifier'), **kwargs)
 
 
 class Effect2850(BaseEffect):
@@ -33322,6 +33320,23 @@ class Effect6964(BaseEffect):
                                skill='Gallente Propulsion Systems', **kwargs)
 
 
+class Effect6965(BaseEffect):
+    """
+    surveyProbeExplosionDelayOnline
+
+    Used by:
+    Module: Survey Probe Launcher II
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Survey'), 'explosionDelay',
+            container.getModifiedItemAttr('surveyProbeDurationBonus'), **kwargs)
+
+
 class Effect6981(BaseEffect):
     """
     shipBonusTitanG1KinThermDamageBonus
@@ -37086,7 +37101,7 @@ class Effect8128(BaseEffect):
     miningLaserRangeBonusLRSM
 
     Used by:
-    Implants named like: Mining Range Booster (5 of 5)
+    Implants named like: AIR Mining Range Booster (2 of 2)
     """
 
     type = 'passive'
