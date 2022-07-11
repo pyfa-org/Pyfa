@@ -14,8 +14,8 @@ for:
       PYTHON_APPIMAGE: python3.7.13-cp37-cp37m-manylinux2014_x86_64.AppImage
       DEPLOY_DIR: AppDir/opt/pyfa
 #      APPVEYOR_SSH_BLOCK: true
-    cache:
-      - /home/appveyor/.cache/pip -> requirements.txt
+#    cache:
+#      - /home/appveyor/.cache/pip -> requirements.txt
     init:
       - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
