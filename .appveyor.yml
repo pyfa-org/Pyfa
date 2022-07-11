@@ -36,7 +36,8 @@ for:
       - sh: mkdir -p $DEPLOY_DIR
       # run install pyfa packages and any other requirements
 
-      - sh: AppDir/usr/bin/python -s -m pip install -U pip setuptools==41.6.0 wheel pathlib2
+      - sh: AppDir/usr/bin/python -s -m pip install pip==22.0.4 setuptools==41.6.0 wheel pathlib2
+      - sh: AppDir/usr/bin/python -s -m pip install requests==2.27.1 Pillow==9.1.0 kiwisolver==1.4.2 certifi==2021.10.8
       - sh: AppDir/usr/bin/python -s -m pip install -r ../requirements.txt
 
       # Run scripts to prep pyfa data and build database
