@@ -66,7 +66,7 @@ BUILTINS = OrderedDict([
     (-25, (_c(_t('Condenser Packs')) + _t('SlamBolt'), 23376, 0, 76624, 0)),
     (-26, (_c(_t('Condenser Packs')) + _t('BlastShot'), 19820, 0, 80180, 0)),
     (-27, (_c(_t('Condenser Packs')) + _t('GalvaSurge'), 80206, 0, 19794, 0)),
-    (-28, (_c(_t('Condenser Packs')) + '|' + _t('[T2] ElectroPunch'), 0, 50547, 0, 49453)),
+    (-28, (_c(_t('Condenser Packs')) + '|' + _t('[T2] ElectroPunch'), 50547, 0, 49453, 0)),
 
     (-29, (_c(_t('Hybrid Charges')) + '|' + _t('[T2] Spike'), 0, 4, 4, 0)),
     (-30, (_c(_t('Hybrid Charges')) + '|' + _t('[T2] Null'), 0, 6, 5, 0)),
