@@ -33,11 +33,14 @@ for:
       - sh: rm AppDir/python*.desktop
       - sh: rm AppDir/usr/share/applications/*.desktop
       - sh: rm AppDir/usr/share/metainfo/*.appdata.xml
+      - sh: unlink AppDir/AppRun
       - sh: mkdir -p $DEPLOY_DIR
       # run install pyfa packages and any other requirements
 
       - sh: AppDir/usr/bin/python -s -m pip install -U pip setuptools==41.6.0 wheel pathlib2
       - sh: AppDir/usr/bin/python -s -m pip install -r ../requirements.txt
+      # Speedup, but causes runtime incompatiblities
+      #- sh: AppDir/usr/bin/python -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 -r ../requirements.txt
 
       # Run scripts to prep pyfa data and build database
       - sh: cd ../
@@ -53,9 +56,10 @@ for:
 
       # Copy static AppImage files
       - sh: cd dist_assets/linux
+      - sh: chmod +x AppRun
       - sh: cp AppRun pyfa.desktop ../../build/AppDir/
       - sh: cp pyfa.desktop ../../build/AppDir/usr/share/applications/
-      - sh: cp org.pyfa.pyfa.appdata.xml ../../build/AppDir/usr/share/metainfo/
+      - sh: cp pyfa.appdata.xml ../../build/AppDir/usr/share/metainfo/
       - sh: chmod +x pyfa && cp pyfa ../../build/AppDir/usr/bin
       - sh: cd ../../
 
