@@ -66,6 +66,8 @@ class DroneView(Display):
         "Max Range",
         "Miscellanea",
         "attr:maxVelocity",
+        "Drone HP",
+        "Drone Regen",
         "Price",
     ]
 

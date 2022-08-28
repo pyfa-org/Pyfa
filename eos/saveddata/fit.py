@@ -1469,7 +1469,7 @@ class Fit:
             if self.damagePattern is None:
                 ehp = self.hp
             else:
-                ehp = self.damagePattern.calculateEhp(self)
+                ehp = self.damagePattern.calculateEhp(self.ship)
             self.__ehp = ehp
 
         return self.__ehp

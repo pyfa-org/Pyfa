@@ -96,6 +96,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__charge = None
         self.__baseVolley = None
         self.__miningyield = None
+        self.__ehp = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
 
@@ -345,6 +346,29 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if falloff is not None:
                 return falloff
 
+    @property
+    def hp(self):
+        hp = {}
+        for (type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
+            hp[type] = self.getModifiedItemAttr(attr)
+
+        return hp
+
+    @property
+    def ehp(self):
+        if self.__ehp is None:
+            if self.owner is None or self.owner.damagePattern is None:
+                ehp = self.hp
+            else:
+                ehp = self.owner.damagePattern.calculateEhp(self)
+            self.__ehp = ehp
+        return self.__ehp
+
+    def calculateShieldRecharge(self):
+        capacity = self.getModifiedItemAttr("shieldCapacity")
+        rechargeRate = self.getModifiedItemAttr("shieldRechargeRate") / 1000.0
+        return 10 / rechargeRate * math.sqrt(0.25) * (1 - math.sqrt(0.25)) * capacity
+
     @validates("ID", "itemID", "chargeID", "amount")
     def validator(self, key, val):
         map = {
@@ -361,6 +385,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def clear(self):
         self.__baseVolley = None
         self.__miningyield = None
+        self.__ehp = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
         [x.clear() for x in self.abilities]

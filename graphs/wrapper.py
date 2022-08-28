@@ -199,7 +199,7 @@ def _getAutoResists(fit):
     armorHp = hpData['armor']
     hullHp = hpData['hull']
     uniformDamagePattern = DamagePattern(emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25)
-    ehpData = uniformDamagePattern.calculateEhp(fit)
+    ehpData = uniformDamagePattern.calculateEhp(fit.ship)
     shieldEhp = ehpData['shield']
     armorEhp = ehpData['armor']
     hullEhp = ehpData['hull']
