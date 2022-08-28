@@ -3291,5 +3291,77 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2174": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "AOE_Beacon_proving_tachyon_signatureradius_cloud", 
+    "displayName_de": "Abzug auf Signaturradius", 
+    "displayName_en-us": "Signature Radius penalty", 
+    "displayName_es": "Signature Radius penalty", 
+    "displayName_fr": "Pénalité du rayon de signature", 
+    "displayName_it": "Signature Radius penalty", 
+    "displayName_ja": "シグネチャ半径ペナルティ", 
+    "displayName_ko": "시그니처 반경 페널티", 
+    "displayName_ru": "Штраф к радиусу сигнатуры", 
+    "displayName_zh": "信号半径惩罚", 
+    "displayNameID": 532898, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2176": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Armor HP Addition", 
+    "displayName_de": "Additional Base Armor Hitpoints", 
+    "displayName_en-us": "Additional Base Armor Hitpoints", 
+    "displayName_es": "Additional Base Armor Hitpoints", 
+    "displayName_fr": "Additional Base Armor Hitpoints", 
+    "displayName_it": "Additional Base Armor Hitpoints", 
+    "displayName_ja": "Additional Base Armor Hitpoints", 
+    "displayName_ko": "Additional Base Armor Hitpoints", 
+    "displayName_ru": "Additional Base Armor Hitpoints", 
+    "displayName_zh": "Additional Base Armor Hitpoints", 
+    "displayNameID": 629466, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2177": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Shield HP Addition", 
+    "displayName_de": "Additional Base Shield Hitpoints", 
+    "displayName_en-us": "Additional Base Shield Hitpoints", 
+    "displayName_es": "Additional Base Shield Hitpoints", 
+    "displayName_fr": "Additional Base Shield Hitpoints", 
+    "displayName_it": "Additional Base Shield Hitpoints", 
+    "displayName_ja": "Additional Base Shield Hitpoints", 
+    "displayName_ko": "Additional Base Shield Hitpoints", 
+    "displayName_ru": "Additional Base Shield Hitpoints", 
+    "displayName_zh": "Additional Base Shield Hitpoints", 
+    "displayNameID": 629467, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
