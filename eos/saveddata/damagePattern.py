@@ -216,11 +216,11 @@ class DamagePattern:
             pattern.builtin = True
             cls._builtins[id] = pattern
 
-    def calculateEhp(self, fit):
+    def calculateEhp(self, item):
         ehp = {}
         for (type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
-            rawCapacity = fit.ship.getModifiedItemAttr(attr)
-            ehp[type] = self.effectivify(fit, rawCapacity, type)
+            rawCapacity = item.getModifiedItemAttr(attr)
+            ehp[type] = self.effectivify(item, rawCapacity, type)
 
         return ehp
 
@@ -236,10 +236,10 @@ class DamagePattern:
         ereps = {}
         for field in tankInfo:
             if field in typeMap:
-                ereps[field] = self.effectivify(fit, tankInfo[field], typeMap[field])
+                ereps[field] = self.effectivify(fit.ship, tankInfo[field], typeMap[field])
         return ereps
 
-    def effectivify(self, fit, amount, type):
+    def effectivify(self, item, amount, type):
         type = type if type != "hull" else ""
         totalDamage = sum((self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount))
         specificDivider = 0
@@ -248,7 +248,7 @@ class DamagePattern:
             attrName = "%s%sDamageResonance" % (type, damageType.capitalize())
             attrName = attrName[0].lower() + attrName[1:]
 
-            resonance = fit.ship.getModifiedItemAttr(attrName)
+            resonance = item.getModifiedItemAttr(attrName)
             damage = getattr(self, "%sAmount" % damageType)
 
             specificDivider += damage / float(totalDamage or 1) * resonance
