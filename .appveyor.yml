@@ -38,9 +38,10 @@ for:
       # run install pyfa packages and any other requirements
 
       - sh: AppDir/usr/bin/python -s -m pip install -U pip setuptools==41.6.0 wheel pathlib2
-      - sh: AppDir/usr/bin/python -s -m pip install -r ../requirements.txt
-      # Speedup, but causes runtime incompatiblities
-      #- sh: AppDir/usr/bin/python -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 -r ../requirements.txt
+      # Use pre-built wx, since building it on appveyor takes almost full hour, which does not play nice with time limit
+      # Might cause compatibility issues, see https://wxpython.org/pages/downloads/index.html for more info
+      # - sh: AppDir/usr/bin/python -s -m pip install -r ../requirements.txt
+      - sh: AppDir/usr/bin/python -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 -r ../requirements.txt
 
       # Run scripts to prep pyfa data and build database
       - sh: cd ../
