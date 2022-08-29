@@ -35,6 +35,7 @@ from eos.gamedata import Category as types_Category, Group as types_Group, Item 
 from service import conversions
 from service.jargon import JargonLoader
 from service.settings import SettingsProvider
+from utils.cjk import isStringCjk
 
 pyfalog = Logger(__name__)
 _t = wx.GetTranslation
@@ -152,7 +153,11 @@ class SearchWorkerThread(threading.Thread):
             requestTokens = self.jargonLoader.get_jargon().apply(requestTokens)
 
             all_results = set()
-            if len(' '.join(requestTokens)) >= config.minItemSearchLength:
+            joinedTokens = ' '.join(requestTokens)
+            if (
+                (isStringCjk(joinedTokens) and len(joinedTokens) >= config.minItemSearchLengthCjk)
+                or len(joinedTokens) >= config.minItemSearchLength
+            ):
                 for filter_ in filters:
                     filtered_results = eos.db.searchItemsRegex(
                         requestTokens, where=filter_,
