@@ -237,3 +237,4 @@ class ItemCompare(wx.Panel):
             return "%s %s" % (fvalue, override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0), unitName)
+            
