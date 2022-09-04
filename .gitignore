@@ -125,5 +125,5 @@ gitversion
 *.fsdbinary
 /locale/progress.json
 
-launch.json
-eve.db
+# vscode settings
+.vscode
