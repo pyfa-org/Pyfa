@@ -90,6 +90,7 @@ target/
 
 # pyenv
 .python-version
+PyfaEnv/
 
 # celery beat schedule file
 celerybeat-schedule
@@ -123,3 +124,6 @@ gitversion
 
 *.fsdbinary
 /locale/progress.json
+
+launch.json
+eve.db

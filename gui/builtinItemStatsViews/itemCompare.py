@@ -36,6 +36,10 @@ class ItemCompare(wx.Panel):
         self.item = item
         self.items = sorted(items, key=defaultSort)
         self.attrs = {}
+        self.defaultRowBackgroundColour = None
+        self.HighlightOn = wx.Colour(255, 255, 0, wx.ALPHA_OPAQUE)
+        self.HighlightOff = wx.Colour(-1, -1, -1, -127)
+        self.highlightedRows = []
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
         for item in self.items:
@@ -87,6 +91,24 @@ class ItemCompare(wx.Panel):
 
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleViewMode)
         self.Bind(wx.EVT_LIST_COL_CLICK, self.SortCompareCols)
+
+        self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.HighlightRow)
+
+    def HighlightRow(self, event):
+        itemIdx = event.GetIndex()
+        item = self.paramList.GetItem(itemIdx)
+        if itemIdx in self.highlightedRows:
+            item.SetBackgroundColour(self.HighlightOff)
+            f = item.GetFont()
+            f.SetWeight(wx.FONTWEIGHT_NORMAL)
+            item.SetFont(f)
+            self.highlightedRows.remove(itemIdx)
+        else:
+            item.SetBackgroundColour(self.HighlightOn)
+            item.SetFont(item.GetFont().MakeBold())
+            self.highlightedRows.append(itemIdx)
+        self.paramList.SetItem(item)
+        
 
     def SortCompareCols(self, event):
         self.Freeze()
