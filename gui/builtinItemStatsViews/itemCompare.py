@@ -36,7 +36,6 @@ class ItemCompare(wx.Panel):
         self.item = item
         self.items = sorted(items, key=defaultSort)
         self.attrs = {}
-        self.defaultRowBackgroundColour = None
         self.HighlightOn = wx.Colour(255, 255, 0, wx.ALPHA_OPAQUE)
         self.HighlightOff = wx.Colour(-1, -1, -1, -127)
         self.highlightedRows = []
@@ -237,4 +236,3 @@ class ItemCompare(wx.Panel):
             return "%s %s" % (fvalue, override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0), unitName)
-            
