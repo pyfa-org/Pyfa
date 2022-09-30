@@ -66,7 +66,7 @@ class FitShieldRegenGraph(FitGraph):
         ('shieldAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity'),
         ('shieldAmountT0', '%'): lambda v, src, tgt: None if v is None else v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity'),
         # Needed only for "x mark" support, to convert EHP x into normalized value
-        ('shieldAmount', 'EHP'): lambda v, src, tgt: v / src.item.damagePattern.effectivify(src.item, 1, 'shield')}
+        ('shieldAmount', 'EHP'): lambda v, src, tgt: v / src.item.damagePattern.effectivify(src.item.ship, 1, 'shield')}
     _limiters = {
         'shieldAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity')),
         'shieldAmountT0': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity'))}
@@ -77,5 +77,5 @@ class FitShieldRegenGraph(FitGraph):
         ('shieldAmount', 'shieldRegen'): ShieldAmount2ShieldRegenGetter}
     _denormalizers = {
         ('shieldAmount', '%'): lambda v, src, tgt: v * 100 / src.item.ship.getModifiedItemAttr('shieldCapacity'),
-        ('shieldAmount', 'EHP'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item, v, 'shield'),
-        ('shieldRegen', 'EHP/s'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item, v, 'shield')}
+        ('shieldAmount', 'EHP'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item.ship, v, 'shield'),
+        ('shieldRegen', 'EHP/s'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item.ship, v, 'shield')}
