@@ -37,8 +37,7 @@ class ItemCompare(wx.Panel):
         self.items = sorted(items, key=defaultSort)
         self.attrs = {}
         self.HighlightOn = wx.Colour(255, 255, 0, wx.ALPHA_OPAQUE)
-        self.HighlightOff = wx.Colour(-1, -1, -1, -127)
-        self.highlightedRows = []
+        self.highlightedNames = []
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
         for item in self.items:
@@ -95,19 +94,16 @@ class ItemCompare(wx.Panel):
 
     def HighlightRow(self, event):
         itemIdx = event.GetIndex()
-        item = self.paramList.GetItem(itemIdx)
-        if itemIdx in self.highlightedRows:
-            item.SetBackgroundColour(self.HighlightOff)
-            f = item.GetFont()
-            f.SetWeight(wx.FONTWEIGHT_NORMAL)
-            item.SetFont(f)
-            self.highlightedRows.remove(itemIdx)
+        name = self.paramList.GetItem(itemIdx).Text
+        if name in self.highlightedNames:
+            self.highlightedNames.remove(name)
         else:
-            item.SetBackgroundColour(self.HighlightOn)
-            item.SetFont(item.GetFont().MakeBold())
-            self.highlightedRows.append(itemIdx)
-        self.paramList.SetItem(item)
-        
+            self.highlightedNames.append(name)
+        self.Freeze()
+        self.paramList.ClearAll()
+        self.PopulateList()
+        self.Thaw()
+        event.Skip()
 
     def SortCompareCols(self, event):
         self.Freeze()
@@ -176,6 +172,8 @@ class ItemCompare(wx.Panel):
         self.paramList.InsertColumn(len(self.attrs) + 1, _t("Price"))
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
+        toHighlight = []
+
         for item in self.items:
             i = self.paramList.InsertItem(self.paramList.GetItemCount(), item.name)
             for x, attr in enumerate(self.attrs.keys()):
@@ -193,9 +191,18 @@ class ItemCompare(wx.Panel):
 
             # Add prices
             self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True) if item.price.price else "")
+            if item.name in self.highlightedNames:
+                toHighlight.append(i)
 
         self.paramList.RefreshRows()
         self.Layout()
+
+        # Highlight after layout, otherwise colors are getting overwritten
+        for itemIdx in toHighlight:
+            listItem = self.paramList.GetItem(itemIdx)
+            listItem.SetBackgroundColour(self.HighlightOn)
+            listItem.SetFont(listItem.GetFont().MakeBold())
+            self.paramList.SetItem(listItem)
 
     @staticmethod
     def TranslateValueUnit(value, unitName, unitDisplayName):
