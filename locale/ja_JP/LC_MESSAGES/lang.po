@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-16 03:14\n"
+"PO-Revision-Date: 2022-10-17 03:43\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -308,41 +308,41 @@ msgstr "{0} をカーゴに追加 (x1000)"
 
 #: gui/builtinContextMenus/cargoAdd.py:33
 msgid "Add {} to Cargo"
-msgstr ""
+msgstr "{} をカーゴに追加"
 
 #: gui/builtinContextMenus/droneAddStack.py:40
 msgid "Add {} to Drone Bay{}"
-msgstr ""
+msgstr "{} をドローンベイ {} に追加"
 
 #: gui/additionsPane.py:45
 msgid "Additions"
-msgstr ""
+msgstr "追加"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Additions Panel Copy/Paste"
-msgstr ""
+msgstr "追加パネルのコピー/貼り付け"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:101
 msgid "Addr:"
-msgstr ""
+msgstr "アドレス"
 
 #: gui/itemStats.py:196
 msgid "Affected by"
-msgstr ""
+msgstr "影響を受けた"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:226
 #, python-format
 msgid "Agility:\t%.3fx"
-msgstr ""
+msgstr "機敏性:\t%.3fx"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr ""
+msgstr "調整時間"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
 msgid "Align:\t%.3fs"
-msgstr ""
+msgstr "調整:\t%.3fs"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/targetProfile.py:105
 #: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:119
@@ -368,11 +368,11 @@ msgstr "すべてのスキルの必要条件が満たされています"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:38
 msgid "Allow pre-release notifications"
-msgstr ""
+msgstr "プレリリース通知を許可"
 
 #: graphs/gui/ctrlPanel.py:75
 msgid "Always show Y = 0"
-msgstr ""
+msgstr "Y = 0 を常に表示"
 
 #: eos/saveddata/targetProfile.py:53
 msgid "Amarr (Armor)"
@@ -384,7 +384,7 @@ msgstr "アマー(シールド)"
 
 #: eos/saveddata/damagePattern.py:143 eos/saveddata/targetProfile.py:95
 msgid "Amarr EDENCOM Entities"
-msgstr ""
+msgstr "Amarr EDENCOM エンティティ"
 
 #: eos/saveddata/damagePattern.py:149 eos/saveddata/targetProfile.py:72
 msgid "Amarr Empire"
@@ -402,44 +402,44 @@ msgstr "弾薬ホールド"
 #: eos/saveddata/targetProfile.py:220 eos/saveddata/targetProfile.py:223
 #: eos/saveddata/targetProfile.py:226 eos/saveddata/targetProfile.py:229
 msgid "Angel"
-msgstr ""
+msgstr "エンジェル"
 
 #: eos/saveddata/damagePattern.py:105 eos/saveddata/damagePattern.py:123
 #: eos/saveddata/targetProfile.py:60 eos/saveddata/targetProfile.py:66
 msgid "Angel Cartel"
-msgstr ""
+msgstr "エンジェルカルテル"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:133
 msgid "Animate gauges"
-msgstr ""
+msgstr "ゲージのアニメーション"
 
 #: eos/saveddata/damagePattern.py:71
 msgid "Antimatter"
-msgstr ""
+msgstr "アンチマター"
 
 #: gui/builtinContextMenus/implantSetApply.py:25
 msgid "Apply Implant Set"
-msgstr ""
+msgstr "インプラントセットを適用"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Apply Mutaplasmid"
-msgstr ""
+msgstr "変異プラスミドを適用する"
 
 #: gui/builtinContextMenus/graphDmgApplyProjected.py:23
 msgid "Apply Projected Items"
-msgstr ""
+msgstr "計画されたアイテムを適用する"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:144
 msgid "Apply Proxy Settings"
-msgstr ""
+msgstr "Proxy 設定を適用する"
 
 #: gui/propertyEditor.py:146
 msgid "Are you sure you want to delete all overrides?"
-msgstr ""
+msgstr "全ての入力を削除します。よろしいですか？"
 
 #: gui/mainFrame.py:645
 msgid "Are you sure you wish to ignore fitting restrictions for the current fit? This could lead to wildly inaccurate results and possible errors."
-msgstr ""
+msgstr "現在のフィットに対するフィッティング制限を無視してもよろしいですか？これは大幅に不正確な結果やエラーにつながる可能性があります。"
 
 #: eos/saveddata/targetProfile.py:47
 msgid "Armor"
@@ -447,11 +447,11 @@ msgstr "アーマー"
 
 #: eos/saveddata/targetProfile.py:50
 msgid "Armor (+T2 DCU)"
-msgstr ""
+msgstr "アーマー (+T2 DCU)"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:77
 msgid "Armor repair amount"
-msgstr ""
+msgstr "アーマー船体回復量"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:113
 msgid "Armor resistance"
@@ -460,7 +460,7 @@ msgstr "アーマーレジスタンス"
 #: gui/builtinStatsViews/outgoingViewMinimal.py:43
 #: gui/builtinStatsViews/outgoingViewFull.py:44
 msgid "Armor restored"
-msgstr ""
+msgstr "アーマーを復元しました"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Armor: "
@@ -468,7 +468,7 @@ msgstr "アーマー: "
 
 #: eos/saveddata/damagePattern.py:120 eos/saveddata/targetProfile.py:90
 msgid "Ashimmu (Blood Raiders)"
-msgstr ""
+msgstr "アシッムー(ブラッドレイダー)"
 
 #: eos/saveddata/damagePattern.py:105 eos/saveddata/damagePattern.py:106
 #: eos/saveddata/damagePattern.py:107 eos/saveddata/damagePattern.py:108
@@ -477,7 +477,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:62 eos/saveddata/targetProfile.py:63
 #: eos/saveddata/targetProfile.py:64 eos/saveddata/targetProfile.py:65
 msgid "Asteroid"
-msgstr ""
+msgstr "アステロイド"
 
 #: graphs/data/fitDamageStats/graph.py:74
 msgid "Attacker"
@@ -490,11 +490,11 @@ msgstr "属性"
 
 #: gui/mainMenuBar.py:128
 msgid "Attribute &Overrides"
-msgstr ""
+msgstr "属性の上書き"
 
 #: gui/propertyEditor.py:28
 msgid "Attribute Editor"
-msgstr ""
+msgstr "属性エディター"
 
 #: gui/itemStats.py:177
 msgid "Attributes"
@@ -502,20 +502,20 @@ msgstr "属性"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:43
 msgid "Auto"
-msgstr ""
+msgstr "自動"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:94
 msgid "Auto will use the same language pyfa uses if available, otherwise English"
-msgstr ""
+msgstr "利用可能な場合、自動で同じ言語の pyfa が使用されます。それ以外の場合は英語で使用されます"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
 msgid "Auto-detected proxy settings"
-msgstr ""
+msgstr "プロキシ設定を自動検出"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:136
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:158
 msgid "Auto-detected: "
-msgstr ""
+msgstr "自動検出 "
 
 #: graphs/gui/ctrlPanel.py:64
 msgid "Axis X:"
@@ -531,23 +531,23 @@ msgstr "戻る"
 
 #: gui/mainFrame.py:873
 msgid "Backing up {} fits to: {}"
-msgstr ""
+msgstr "フィット {} を{} にバックアップします"
 
 #: gui/mainMenuBar.py:73
 msgid "Backup all fittings to a XML file"
-msgstr ""
+msgstr "すべてのフィットをXMLファイルにバックアップする"
 
 #: gui/mainFrame.py:872 gui/mainFrame.py:903
 msgid "Backup fits"
-msgstr ""
+msgstr "フィットをバックアップします"
 
 #: eos/saveddata/damagePattern.py:59
 msgid "Baryon"
-msgstr ""
+msgstr "重粒子"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:47
 msgid "Base Value"
-msgstr ""
+msgstr "基本値"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:166
 msgid "Battlecruiser"
@@ -559,25 +559,25 @@ msgstr "戦艦"
 
 #: gui/mainFrame.py:951
 msgid "Be aware that already processed fits were not saved"
-msgstr ""
+msgstr "処理済みのフィットは保存されていないことに注意してください"
 
 #: gui/builtinContextMenus/envEffectAdd.py:209
 msgid "Bioluminescence"
-msgstr ""
+msgstr "生物発光"
 
 #: eos/saveddata/damagePattern.py:106 eos/saveddata/damagePattern.py:124
 #: eos/saveddata/targetProfile.py:61 eos/saveddata/targetProfile.py:67
 msgid "Blood Raiders"
-msgstr ""
+msgstr "ブラッドレイダー"
 
 #: graphs/style.py:54
 msgid "Blue"
-msgstr ""
+msgstr "青"
 
 #: eos/saveddata/damagePattern.py:90 eos/saveddata/damagePattern.py:91
 #: eos/saveddata/damagePattern.py:92 eos/saveddata/damagePattern.py:93
 msgid "Bombs"
-msgstr ""
+msgstr "ボム"
 
 #: gui/builtinAdditionPanes/boosterView.py:215
 msgid "Booster"
@@ -592,19 +592,19 @@ msgstr "ブースター"
 
 #: graphs/style.py:82
 msgid "Bright"
-msgstr ""
+msgstr "ブライト"
 
 #: gui/esiFittings.py:32
 msgid "Browse EVE Fittings"
-msgstr ""
+msgstr "EVEのフィットを見る"
 
 #: graphs/data/fitMobility/graph.py:39
 msgid "Bump distance"
-msgstr ""
+msgstr "バンプ距離"
 
 #: graphs/data/fitMobility/graph.py:38
 msgid "Bump speed"
-msgstr ""
+msgstr "バンプ速度"
 
 #: eos/saveddata/damagePattern.py:111 eos/saveddata/damagePattern.py:112
 #: eos/saveddata/damagePattern.py:113 eos/saveddata/damagePattern.py:114
@@ -619,15 +619,15 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:89 eos/saveddata/targetProfile.py:90
 #: eos/saveddata/targetProfile.py:91 eos/saveddata/targetProfile.py:92
 msgid "Burner"
-msgstr ""
+msgstr "バーナー"
 
 #: eos/saveddata/damagePattern.py:151 eos/saveddata/targetProfile.py:74
 msgid "CONCORD"
-msgstr ""
+msgstr "コンコルド"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:153
 msgid "CPU"
-msgstr ""
+msgstr "CPU"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:118
 msgid "CSV files"
