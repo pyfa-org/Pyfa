@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-19 18:11\n"
+"PO-Revision-Date: 2022-10-20 18:38\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -702,7 +702,7 @@ msgstr "カーゴ"
 #: gui/builtinContextMenus/additionsExportSelection.py:20
 #: gui/builtinContextMenus/additionsImport.py:21
 msgid "Cargo Items"
-msgstr ""
+msgstr "貨物アイテム"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:158
 #: gui/builtinStatsViews/priceViewFull.py:58
@@ -720,58 +720,58 @@ msgstr "艦載機母艦"
 
 #: gui/builtinContextMenus/envEffectAdd.py:209
 msgid "Caustic"
-msgstr ""
+msgstr "苛性"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:47
 msgid "Cert Path:"
-msgstr ""
+msgstr "証明書パス:"
 
 #: gui/builtinContextMenus/skillAffectors.py:73
 #, python-format
 msgid "Change %s Skills"
-msgstr ""
+msgstr "%s スキルを変更"
 
 #: gui/builtinContextMenus/itemAmountChange.py:92
 msgid "Change Amount"
-msgstr ""
+msgstr "量を変更する"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
 msgid "Change Skills"
-msgstr ""
+msgstr "スキルを変更"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:144
 msgid "Change charge in all modules of the same type"
-msgstr ""
+msgstr "同じタイプのすべてのモジュールのチャージを変更する"
 
 #: gui/builtinContextMenus/itemAmountChange.py:34
 #, python-brace-format
 msgid "Change {0} Quantity"
-msgstr ""
+msgstr "変更 {0} 個"
 
 #: gui/builtinContextMenus/itemProjectionRange.py:34
 msgid "Change {} Range"
-msgstr ""
+msgstr "変更 範囲 {}"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:31
 msgid "Changes require restart of pyfa to take effect."
-msgstr ""
+msgstr "変更を有効にするには、pyfaの再起動が必要です。"
 
 #: gui/esiFittings.py:375 gui/builtinStatsViews/priceViewFull.py:57
 #: gui/characterEditor.py:90
 msgid "Character"
-msgstr ""
+msgstr "キャラクター"
 
 #: gui/characterEditor.py:137
 msgid "Character Editor"
-msgstr ""
+msgstr "キャラクター編集"
 
 #: gui/esiFittings.py:376
 msgid "Character ID"
-msgstr ""
+msgstr "キャラクターID"
 
 #: gui/characterEditor.py:78
 msgid "Character name already in use, please choose another."
-msgstr ""
+msgstr "キャラクター名が既に使われています。別の名前を指定してください。"
 
 #: gui/characterEditor.py:771
 msgid "Character:"
@@ -783,7 +783,7 @@ msgstr "キャラクター: "
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:48
 msgid "Charge"
-msgstr ""
+msgstr "チャージ"
 
 #: gui/builtinViews/fittingView.py:664
 msgid "Citadel"
@@ -791,68 +791,68 @@ msgstr "シタデル"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:37
 msgid "Citadel System Security"
-msgstr ""
+msgstr "シタデルシステムセキュリティ"
 
 #: gui/propertyEditor.py:40
 msgid "Clear All"
-msgstr ""
+msgstr "全てをクリア"
 
 #: gui/propertyEditor.py:40
 msgid "Clear all overrides"
-msgstr ""
+msgstr "全てのオーバーライドをクリア"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:97
 #: gui/builtinStatsViews/resistancesViewFull.py:169
 msgid "Click to toggle between effective HP and raw HP"
-msgstr ""
+msgstr "クリックして効果HPと元HPを切り替える"
 
 #: gui/builtinStatsViews/miningyieldViewFull.py:102
 msgid "Click to toggle to Firepower View"
-msgstr ""
+msgstr "クリックして火力表示に切り替え"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:115
 msgid "Click to toggle to Mining Yield"
-msgstr ""
+msgstr "クリックしてマイニング効率に切り替える"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:76
 msgid "Client ID:"
-msgstr ""
+msgstr "クライアントID:"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:85
 msgid "Client Secret:"
-msgstr ""
+msgstr "クライアントシークレット："
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:114
 msgid "Color fitting view by slot"
-msgstr ""
+msgstr "スロットごとの色フィットビュー"
 
 #: graphs/data/fitEwarStats/graph.py:38
 msgid "Combined ECM strength"
-msgstr ""
+msgstr "複合ECM強度"
 
 #: gui/additionsPane.py:84
 msgid "Command"
-msgstr ""
+msgstr "コマンド"
 
 #: gui/builtinAdditionPanes/commandView.py:201
 msgid "Command Fit"
-msgstr ""
+msgstr "コマンドフィット"
 
 #: gui/builtinContextMenus/commandFitAdd.py:51
 msgid "Command Fits"
-msgstr ""
+msgstr "コマンドフィット"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:127
 msgid "Command center hold"
-msgstr ""
+msgstr "コマンドセンターホールド"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:110
 msgid "Compact skills needed tooltip"
-msgstr ""
+msgstr "コンパクトスキルはツールチップが必要です"
 
 #: gui/itemStats.py:182
 msgid "Compare"
-msgstr ""
+msgstr "比較"
 
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/targetProfile.py:191
 #: eos/saveddata/targetProfile.py:194 eos/saveddata/targetProfile.py:197
@@ -862,106 +862,106 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:218 eos/saveddata/targetProfile.py:221
 #: eos/saveddata/targetProfile.py:224 eos/saveddata/targetProfile.py:227
 msgid "Concord"
-msgstr ""
+msgstr "Concord"
 
 #: eos/saveddata/damagePattern.py:92
 msgid "Concussion Bomb"
-msgstr ""
+msgstr "振動ボム"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:98
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:103
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:108
 #: gui/mainFrame.py:647 gui/mainFrame.py:653
 msgid "Confirm"
-msgstr ""
+msgstr "確認"
 
 #: gui/esiFittings.py:160 gui/propertyEditor.py:147
 msgid "Confirm Delete"
-msgstr ""
+msgstr "削除の確認"
 
 #: gui/esiFittings.py:129 gui/esiFittings.py:172 gui/esiFittings.py:345
 msgid "Connection error, please check your internet connection"
-msgstr ""
+msgstr "接続エラー： インターネット接続を確認してください。"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:14
 msgid "Context Menus"
-msgstr ""
+msgstr "コンテキストメニュー"
 
 #: gui/builtinContextMenus/envEffectAdd.py:117
 msgid "ContextMenu|ProjectedEffectManipulation|Black Hole"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|ブラックホール"
 
 #: gui/builtinContextMenus/envEffectAdd.py:118
 msgid "ContextMenu|ProjectedEffectManipulation|Cataclysmic Variable"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|特殊天体"
 
 #: gui/builtinContextMenus/envEffectAdd.py:144
 msgid "ContextMenu|ProjectedEffectManipulation|Effects"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|効果"
 
 #: gui/builtinContextMenus/envEffectAdd.py:106
 msgid "ContextMenu|ProjectedEffectManipulation|Electrical"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|電子系"
 
 #: gui/builtinContextMenus/envEffectAdd.py:107
 msgid "ContextMenu|ProjectedEffectManipulation|Exotic"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|エキゾチック"
 
 #: gui/builtinContextMenus/envEffectAdd.py:115
 msgid "ContextMenu|ProjectedEffectManipulation|Firestorm"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|ファイアストーム"
 
 #: gui/builtinContextMenus/envEffectAdd.py:108
 msgid "ContextMenu|ProjectedEffectManipulation|Gamma"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|ガンマ"
 
 #: gui/builtinContextMenus/envEffectAdd.py:119
 msgid "ContextMenu|ProjectedEffectManipulation|Magnetar"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|マグネター"
 
 #: gui/builtinContextMenus/envEffectAdd.py:113
 msgid "ContextMenu|ProjectedEffectManipulation|Matter"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|マター"
 
 #: gui/builtinContextMenus/envEffectAdd.py:111
 msgid "ContextMenu|ProjectedEffectManipulation|Metaliminal"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|メタリミナル"
 
 #: gui/builtinContextMenus/envEffectAdd.py:109
 msgid "ContextMenu|ProjectedEffectManipulation|Plasma"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|プラズマ"
 
 #: gui/builtinContextMenus/envEffectAdd.py:120
 msgid "ContextMenu|ProjectedEffectManipulation|Pulsar"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|パルサー"
 
 #: gui/builtinContextMenus/envEffectAdd.py:114
 msgid "ContextMenu|ProjectedEffectManipulation|Ray"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|レイ"
 
 #: gui/builtinContextMenus/envEffectAdd.py:121
 msgid "ContextMenu|ProjectedEffectManipulation|Red Giant"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|レッドジャイアント"
 
 #: gui/builtinContextMenus/envEffectAdd.py:125
 msgid "ContextMenu|ProjectedEffectManipulation|Sansha Incursion"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|サンシャインカージョン"
 
 #: gui/builtinContextMenus/envEffectAdd.py:112
 msgid "ContextMenu|ProjectedEffectManipulation|Storm"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|ストーム"
 
 #: gui/builtinContextMenus/envEffectAdd.py:143
 msgid "ContextMenu|ProjectedEffectManipulation|System Effects"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|システムエフェクト"
 
 #: gui/builtinContextMenus/envEffectAdd.py:127
 msgid "ContextMenu|ProjectedEffectManipulation|Triglavian Invasion"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|トリグラヴィアンの侵略"
 
 #: gui/builtinContextMenus/envEffectAdd.py:122
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
-msgstr ""
+msgstr "コンテキストメニュー|計画効果操作|ウォルフ・ライエ"
 
 #: gui/builtinItemStatsViews/itemDescription.py:43
 #: gui/builtinItemStatsViews/itemTraits.py:25
@@ -971,35 +971,35 @@ msgstr "コピー"
 
 #: gui/builtinContextMenus/additionsExportAll.py:39
 msgid "Copy All {}"
-msgstr ""
+msgstr "すべてコピー {}"
 
 #: gui/characterSelection.py:105
 msgid "Copy Missing Skills"
-msgstr ""
+msgstr "不足しているスキルをコピー"
 
 #: gui/builtinContextMenus/moduleMutatedExport.py:28
 msgid "Copy Module to Clipboard"
-msgstr ""
+msgstr "モジュールをクリップボードにコピー"
 
 #: gui/builtinContextMenus/additionsExportSelection.py:39
 msgid "Copy Selected {}"
-msgstr ""
+msgstr "選択されたものをコピー"
 
 #: gui/ssoLogin.py:20
 msgid "Copy and paste the block of text provided by pyfa.io"
-msgstr ""
+msgstr "Pyfaのテキストをコピーして貼り付けます"
 
 #: gui/setEditor.py:222 gui/patternEditor.py:290 gui/targetProfileEditor.py:366
 msgid "Could not import from clipboard"
-msgstr ""
+msgstr "クリップボードからインポートできませんでした"
 
 #: gui/targetProfileEditor.py:359
 msgid "Could not import from clipboard:"
-msgstr ""
+msgstr "クリップボードからインポートできませんでした:"
 
 #: gui/setEditor.py:218 gui/patternEditor.py:283
 msgid "Could not import from clipboard: unknown errors"
-msgstr ""
+msgstr "クリップボードからインポートできませんでした: 不明なエラー"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Cruiser"
@@ -1007,24 +1007,24 @@ msgstr "巡洋艦"
 
 #: eos/saveddata/damagePattern.py:111 eos/saveddata/targetProfile.py:81
 msgid "Cruor (Blood Raiders)"
-msgstr ""
+msgstr "カーソル(ブルッドレイダーズ)"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:175
 msgid "Current"
-msgstr ""
+msgstr "現在"
 
 #: gui/builtinItemStatsViews/itemProperties.py:57
 #: gui/builtinItemStatsViews/itemAttributes.py:45
 msgid "Current Value"
-msgstr ""
+msgstr "現在の値"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:63
 msgid "Custom Application"
-msgstr ""
+msgstr "カスタムアプリケーション"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
 msgid "Custom application"
-msgstr ""
+msgstr "カスタムアプリケーション"
 
 #: graphs/style.py:57
 msgid "Cyan"
@@ -1032,35 +1032,35 @@ msgstr "シアン"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "DPS"
-msgstr ""
+msgstr "DPS"
 
 #: gui/patternEditor.py:99
 msgid "Damage Pattern Editor"
-msgstr ""
+msgstr "ダメージパターンエディター"
 
 #: gui/patternEditor.py:65
 msgid "Damage Profile"
-msgstr ""
+msgstr "ダメージプロファイル"
 
 #: gui/patternEditor.py:53
 msgid "Damage Profile name already in use, please choose another."
-msgstr ""
+msgstr "ダメージプロファイル名は既に使われています。別の名前を指定してください。"
 
 #: graphs/data/fitDamageStats/graph.py:56
 msgid "Damage Stats"
-msgstr ""
+msgstr "ダメージ状態"
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Damage inflicted"
-msgstr ""
+msgstr "与えたダメージ:"
 
 #: graphs/data/fitEwarStats/graph.py:39
 msgid "Damps: lock range reduction"
-msgstr ""
+msgstr "リモートセンサーダンプナー: ロック範囲の減少"
 
 #: eos/saveddata/damagePattern.py:113 eos/saveddata/targetProfile.py:83
 msgid "Daredevil (Serpentis)"
-msgstr ""
+msgstr "デアデビル(サーペンティス)"
 
 #: graphs/style.py:81
 msgid "Dark"
@@ -1076,11 +1076,11 @@ msgstr "ダークマター全段階"
 
 #: graphs/style.py:89
 msgid "Dash-dotted"
-msgstr ""
+msgstr "点線の線"
 
 #: graphs/style.py:87
 msgid "Dashed"
-msgstr ""
+msgstr "点線"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:15
 msgid "Database"
@@ -1097,60 +1097,60 @@ msgstr "デッドスペース"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:56
 msgid "Debug Logging Enabled"
-msgstr ""
+msgstr "デバッグログを有効にする"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:58
 msgid "Default Market Prices:"
-msgstr ""
+msgstr "デフォルトの市場価格:"
 
 #: gui/propertyEditor.py:271
 #, python-format
 msgid "Default Value: %0.3f"
-msgstr ""
+msgstr "デフォルト値: %0.3f"
 
 #: gui/builtinContextMenus/shipModeChange.py:18
 msgid "Defense"
-msgstr ""
+msgstr "防御力"
 
 #: graphs/data/fitMobility/graph.py:44
 msgid "Defined in millions of kilograms"
-msgstr ""
+msgstr "数百万キログラムで定義"
 
 #: gui/builtinShipBrowser/fitItem.py:109
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:79
 msgid "Delete All Damage Pattern Profiles"
-msgstr ""
+msgstr "すべてのダメージパターンプロファイルを削除"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:87
 msgid "Delete All Prices"
-msgstr ""
+msgstr "すべての価格を削除"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:83
 msgid "Delete All Target Profiles"
-msgstr ""
+msgstr "すべてのターゲットプロファイルを削除"
 
 #: gui/esiFittings.py:66
 msgid "Delete all from Eve"
-msgstr ""
+msgstr "Eveから全てを削除"
 
 #: gui/esiFittings.py:65
 msgid "Delete from EVE"
-msgstr ""
+msgstr "EVE から削除"
 
 #: gui/itemStats.py:189
 msgid "Dependents"
-msgstr ""
+msgstr " 依存"
 
 #: eos/saveddata/damagePattern.py:79
 msgid "Depleted Uranium"
-msgstr ""
+msgstr "劣化ウラン"
 
 #: gui/itemStats.py:174
 msgid "Description"
-msgstr ""
+msgstr "説明"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:165
 msgid "Destroyer"
@@ -1158,15 +1158,15 @@ msgstr "駆逐艦"
 
 #: gui/builtinContextMenus/envEffectAdd.py:128
 msgid "Destructible Beacons"
-msgstr ""
+msgstr "破壊可能なビーコン"
 
 #: gui/mainMenuBar.py:167
 msgid "Dev Tools"
-msgstr ""
+msgstr "開発者ツール"
 
 #: gui/mainMenuBar.py:101 gui/mainMenuBar.py:202
 msgid "Disable Fitting Re&strictions"
-msgstr ""
+msgstr "絞り込みを無効にする"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
@@ -1176,12 +1176,13 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Disabled"
-msgstr ""
+msgstr "無効"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:28
 msgid "Disabling context menus can improve responsiveness.\n"
 "You can hold {} key + right-click to show all menu items regardless of these settings."
-msgstr ""
+msgstr "コンテキストメニューを無効にすると、応答性が向上します。\n"
+"これらの設定に関係なく、{} キーを押したまま右クリックしてすべてのメニュー項目を表示できます。"
 
 #: graphs/data/fitMobility/graph.py:36 graphs/data/fitRemoteReps/graph.py:50
 #: graphs/data/fitRemoteReps/graph.py:58 graphs/data/fitWarpTime/graph.py:47
@@ -1190,7 +1191,7 @@ msgstr ""
 #: graphs/data/fitDamageStats/graph.py:65 graphs/data/fitEwarStats/graph.py:34
 #: graphs/data/fitEwarStats/graph.py:44
 msgid "Distance"
-msgstr ""
+msgstr "距離"
 
 #: graphs/data/fitDamageStats/graph.py:66
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)"
@@ -1474,33 +1475,33 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:106
 msgid "Enable all available meta buttons"
-msgstr ""
+msgstr "利用可能なメタボタンをすべて有効にする"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:93
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:100
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:114
 msgid "Enable all meta buttons"
-msgstr ""
+msgstr "すべてのメタボタンを有効にする"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:92
 msgid "Enable all meta buttons for a duration of search / recents"
-msgstr ""
+msgstr "検索・履歴の間、全てのメタボタンを有効にする"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:113
 msgid "Enable item's meta button"
-msgstr ""
+msgstr "アイテム・メタボタンを有効にする"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:113
 msgid "Enable item's meta button, disable others"
-msgstr ""
+msgstr "アイテムのメタボタンを有効にし、他のメタボタンを無効にする"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:106
 msgid "Enable leftmost available meta button"
-msgstr ""
+msgstr "一番左のメタボタンを有効にする"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:61
 msgid "Enable minimal format"
-msgstr ""
+msgstr "最小フォーマットを有効にする"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:46
@@ -1510,23 +1511,23 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:76
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:81
 msgid "Enabled"
-msgstr ""
+msgstr "有効"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:50
 msgid "Enforce strict skill level requirements"
-msgstr ""
+msgstr "厳格なスキルレベル要件を適用"
 
 #: gui/characterEditor.py:281
 msgid "Enter a name for your new Character:"
-msgstr ""
+msgstr "新しいキャラクタ名を入力してください。"
 
 #: gui/builtinContextMenus/implantSetSave.py:51
 msgid "Enter a name for your new Implant Set:"
-msgstr ""
+msgstr "新しいインプラントセットを入力してください。"
 
 #: eos/saveddata/damagePattern.py:116 eos/saveddata/targetProfile.py:86
 msgid "Enyo"
-msgstr ""
+msgstr "エンヨ"
 
 #: gui/characterSelection.py:174 gui/setEditor.py:55 gui/mainFrame.py:896
 #: gui/characterEditor.py:83 gui/characterEditor.py:463
@@ -1537,7 +1538,7 @@ msgstr "エラー"
 
 #: gui/characterSelection.py:173 gui/characterEditor.py:897
 msgid "Error fetching skill information"
-msgstr ""
+msgstr "スキル情報の取得中にエラーが発生しました。"
 
 #: gui/errorDialog.py:68
 msgid "Error!"
@@ -1555,7 +1556,7 @@ msgstr "エキゾチックプラズマ"
 #: eos/saveddata/targetProfile.py:154 eos/saveddata/targetProfile.py:212
 #: eos/saveddata/targetProfile.py:213 eos/saveddata/targetProfile.py:214
 msgid "Exotic T0/T1/T2"
-msgstr ""
+msgstr "エキゾチックT0/T1/T2"
 
 #: eos/saveddata/targetProfile.py:155 eos/saveddata/targetProfile.py:156
 #: eos/saveddata/targetProfile.py:157 eos/saveddata/targetProfile.py:158
@@ -1571,7 +1572,7 @@ msgstr "エキゾチック T3 (一部T5層)"
 #: eos/saveddata/targetProfile.py:168 eos/saveddata/targetProfile.py:218
 #: eos/saveddata/targetProfile.py:219 eos/saveddata/targetProfile.py:220
 msgid "Exotic T4/T5/T6"
-msgstr ""
+msgstr "エキゾチックT4/T5/T6"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:67
 msgid "Expand All"
@@ -1589,135 +1590,135 @@ msgstr "Expレジスタンス"
 
 #: gui/propertyEditor.py:39
 msgid "Export"
-msgstr ""
+msgstr "エクスポート"
 
 #: gui/mainMenuBar.py:74
 msgid "Export All Fittings to &HTML"
-msgstr ""
+msgstr "すべてのフィットをHTMLにエクスポート"
 
 #: gui/mainFrame.py:946
 msgid "Export Error"
-msgstr ""
+msgstr "エクスポートエラー"
 
 #: gui/esiFittings.py:258
 msgid "Export Fit"
-msgstr ""
+msgstr "フィットをエクスポート"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:23
 msgid "Export Fittings in a minimal HTML Version, just containing the fittings links without any visual styling"
-msgstr ""
+msgstr "フィットを最小限の HTML バージョンでエクスポートします。視覚的スタイルのないフィッティングリンクを含みます。"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:57
 msgid "Export Item Stats"
-msgstr ""
+msgstr "アイテム状態をエクスポート"
 
 #: gui/esiFittings.py:263
 msgid "Export Loaded Charges"
-msgstr ""
+msgstr "読み込まれたチャージをエクスポート"
 
 #: gui/mainFrame.py:805
 msgid "Export Skills Needed As..."
-msgstr ""
+msgstr "必要スキルをエクスポート"
 
 #: gui/mainMenuBar.py:87
 msgid "Export a fit to the clipboard"
-msgstr ""
+msgstr "クリップボードにフィットをエクスポート"
 
 #: gui/copySelectDialog.py:48 gui/copySelectDialog.py:56
 msgid "Export boosters"
-msgstr ""
+msgstr "ブースターをエクスポート"
 
 #: gui/copySelectDialog.py:49
 msgid "Export cargo contents"
-msgstr ""
+msgstr "貨物をエクスポート"
 
 #: gui/copySelectDialog.py:57
 msgid "Export cargo hold contents"
-msgstr ""
+msgstr "カーゴホールドをエクスポート"
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Export charges loaded into modules"
-msgstr ""
+msgstr "モジュールにロードされたチャージをエクスポート"
 
 #: gui/esiFittings.py:245
 msgid "Export fit to EVE"
-msgstr ""
+msgstr "フィットをEVEにエクスポート"
 
 #: gui/mainMenuBar.py:74
 msgid "Export fits to HTML file (set in Preferences)"
-msgstr ""
+msgstr "フィットをHTMLにエクスポート (環境設定で設定)"
 
 #: gui/mainMenuBar.py:92
 msgid "Export fitting to another format"
-msgstr ""
+msgstr "別形式でフィットをエクスポート"
 
 #: gui/setEditor.py:149
 msgid "Export implant sets to clipboard"
-msgstr ""
+msgstr "インプラントセットをクリップボードにエクスポート"
 
 #: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
 msgid "Export implants"
-msgstr ""
+msgstr "インプラントをエクスポート"
 
 #: gui/copySelectDialog.py:54
 msgid "Export mutated modules' stats"
-msgstr ""
+msgstr "変更されたモジュール状態をエクスポート"
 
 #: gui/patternEditor.py:172
 msgid "Export patterns to clipboard"
-msgstr ""
+msgstr "パターンをクリップボードにエクスポート"
 
 #: gui/targetProfileEditor.py:222
 msgid "Export profiles to clipboard"
-msgstr ""
+msgstr "プロファイルをクリップボードにエクスポート"
 
 #: gui/characterEditor.py:373
 msgid "Export skills from clipboard"
-msgstr ""
+msgstr "クリップボードからスキルをエクスポート"
 
 #: gui/mainMenuBar.py:119
 msgid "Export skills needed for this fitting"
-msgstr ""
+msgstr "このフィットに必要なスキルをエクスポート"
 
 #: gui/mainFrame.py:827
 msgid "Exporting skills needed..."
-msgstr ""
+msgstr "必要なスキルをエクスポートしています..."
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:152
 msgid "Extra info in Additions panel tab names"
-msgstr ""
+msgstr "追加パネルのタブ名の追加情報"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:90
 msgid "Extra stats"
-msgstr ""
+msgstr "追加の状態"
 
 #: gui/builtinContextMenus/factorReload.py:26
 msgid "Factor in Reload Time"
-msgstr ""
+msgstr "リロード係数"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:44
 msgid "Factor in reload time when calculating capacitor usage, damage, and tank."
-msgstr ""
+msgstr "コンデンサ使用、損傷、およびタンクの計算されたリロード時間"
 
 #: gui/esiFittings.py:328
 msgid "Failed to generate export data"
-msgstr ""
+msgstr "エクスポートデータの生成に失敗しました"
 
 #: gui/aboutData.py:34
 msgid "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
-msgstr ""
+msgstr "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
 
 #: gui/esiFittings.py:44
 msgid "Fetch Fits"
-msgstr ""
+msgstr "フィットを取得"
 
 #: gui/esiFittings.py:114
 msgid "Fetching fits, please wait..."
-msgstr ""
+msgstr "フィットを取得中です。お待ちください..."
 
 #: gui/mainMenuBar.py:81
 msgid "Fi&t"
-msgstr ""
+msgstr "フィット"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:156
 msgid "Fighter bay"
@@ -1725,7 +1726,7 @@ msgstr "戦闘機ベイ"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:114
 msgid "Fighter squadrons active"
-msgstr ""
+msgstr "軽戦闘機隊を有効"
 
 #: gui/builtinContextMenus/additionsExportAll.py:19
 #: gui/builtinContextMenus/additionsExportSelection.py:19
@@ -1739,7 +1740,7 @@ msgstr "フィラメント"
 
 #: gui/builtinContextMenus/itemFill.py:32
 msgid "Fill With Module"
-msgstr ""
+msgstr "モジュールを埋める"
 
 #: gui/builtinContextMenus/moduleFill.py:24
 #, python-brace-format
@@ -2064,67 +2065,67 @@ msgstr ""
 
 #: gui/propertyEditor.py:38
 msgid "Import"
-msgstr ""
+msgstr "インポート"
 
 #: gui/mainFrame.py:946
 msgid "Import Error"
-msgstr ""
+msgstr "インポートエラー"
 
 #: gui/characterEditor.py:442
 msgid "Import Skills"
-msgstr ""
+msgstr "スキルのインポート"
 
 #: gui/mainMenuBar.py:88
 msgid "Import a fit from the clipboard"
-msgstr ""
+msgstr "クリップボードからフィットをエクスポート"
 
 #: gui/mainMenuBar.py:118
 msgid "Import characters into pyfa from file"
-msgstr ""
+msgstr "ファイルから pyfaにキャラクターをインポート"
 
 #: gui/mainMenuBar.py:91
 msgid "Import fittings into pyfa"
-msgstr ""
+msgstr "Pyfaにフィットをインポート"
 
 #: gui/setEditor.py:148
 msgid "Import implant sets from clipboard"
-msgstr ""
+msgstr "クリップボードからインプラントセットをインポート"
 
 #: gui/propertyEditor.py:38 gui/propertyEditor.py:39
 msgid "Import overrides"
-msgstr ""
+msgstr "オーバーライドをインポート"
 
 #: gui/patternEditor.py:171
 msgid "Import patterns from clipboard"
-msgstr ""
+msgstr "クリップボードからパターンをインポート"
 
 #: gui/targetProfileEditor.py:221
 msgid "Import profiles from clipboard"
-msgstr ""
+msgstr "クリップボードからプロファイルをインポート"
 
 #: gui/propertyEditor.py:107
 msgid "Import pyfa override file"
-msgstr ""
+msgstr "Pyfaのオーバーライドファイルをインポート"
 
 #: gui/characterEditor.py:372
 msgid "Import skills from clipboard"
-msgstr ""
+msgstr "クリップボードからスキルをエクスポート"
 
 #: gui/esiFittings.py:64
 msgid "Import to pyfa"
-msgstr ""
+msgstr "Pyfaにインポート"
 
 #: gui/mainFrame.py:1019
 msgid "Importing Character..."
-msgstr ""
+msgstr "キャラクターをインポート中..."
 
 #: gui/mainFrame.py:844
 msgid "Importing fits"
-msgstr ""
+msgstr "フィットをインポート中"
 
 #: gui/characterEditor.py:440
 msgid "Importing skills into this character will set the skill levels as pending. To save the skills permanently, please click the Save button at the bottom of the window after importing"
-msgstr ""
+msgstr "このキャラクターにスキルをインポートすると、スキルレベルが保留になります。 スキルを永久に保存するには、インポート後にウィンドウの下部にある保存ボタンをクリックしてください"
 
 #: gui/copySelectDialog.py:59
 msgid "Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
