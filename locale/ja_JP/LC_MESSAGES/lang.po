@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-20 18:38\n"
+"PO-Revision-Date: 2022-10-21 18:43\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -1195,33 +1195,34 @@ msgstr "距離"
 
 #: graphs/data/fitDamageStats/graph.py:66
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "オーバービュー上での攻撃者とターゲットの間の距離(表面から表面までの距離)"
 
 #: graphs/data/fitDamageStats/graph.py:67
 msgid "Distance between the attacker and the target, as seen in overview (surface-to-surface)\n"
 "When set, places the target that far away from the attacker\n"
 "When not set, attacker's weapons always hit the target"
-msgstr ""
+msgstr "攻撃者とターゲットの表向きの距離(表面から表面までの距離)\n"
+"ターベットが攻撃側より離れている場合、攻撃側の攻撃は当たらない"
 
 #: graphs/data/fitRemoteReps/graph.py:59 graphs/data/fitRemoteReps/graph.py:60
 msgid "Distance between the repairing ship and the target, as seen in overview (surface-to-surface)"
-msgstr ""
+msgstr "表面上のリペア船と対象との距離(表面から表面)"
 
 #: gui/esiFittings.py:159
 msgid "Do you really want to delete {} ({}) from EVE?"
-msgstr ""
+msgstr "EVEから{} ({}) を削除してもよろしいですか？"
 
 #: gui/updateDialog.py:102
 msgid "Don't remind me again for this release"
-msgstr ""
+msgstr "今後このリリースを通知しない"
 
 #: gui/characterEditor.py:789
 msgid "Don't see your EVE character in the list?"
-msgstr ""
+msgstr "リストにEVEキャラクターが表示されませんか？"
 
 #: graphs/style.py:88
 msgid "Dotted"
-msgstr ""
+msgstr "点線"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:71
 #: gui/updateDialog.py:113
@@ -1230,23 +1231,23 @@ msgstr "ダウンロード"
 
 #: graphs/gui/lists.py:313
 msgid "Drag a fit into this list to graph it"
-msgstr ""
+msgstr "グラフを描くには、このリストにフィットをドラッグしてください"
 
 #: graphs/gui/lists.py:370
 msgid "Drag a fit into this list to have your fits graphed against it"
-msgstr ""
+msgstr "グラフを描くには、このリストにフィットをドラッグしてください"
 
 #: gui/builtinAdditionPanes/commandView.py:163
 msgid "Drag a fit to this area"
-msgstr ""
+msgstr "このエリアにフィットをドラッグしてください"
 
 #: gui/builtinAdditionPanes/projectedView.py:224
 msgid "Drag an item or fit, or use right-click menu for wormhole effects"
-msgstr ""
+msgstr "アイテムをドラッグ・フィットするか、右クリックでワームホール効果を使用します"
 
 #: eos/saveddata/damagePattern.py:112 eos/saveddata/targetProfile.py:82
 msgid "Dramiel (Angel)"
-msgstr ""
+msgstr "ドラミエル(天使)"
 
 #: eos/saveddata/damagePattern.py:130 eos/saveddata/damagePattern.py:144
 #: eos/saveddata/damagePattern.py:147
@@ -1255,7 +1256,7 @@ msgstr "攻城艦"
 
 #: eos/saveddata/damagePattern.py:143 eos/saveddata/damagePattern.py:146
 msgid "Dread/Subcaps"
-msgstr ""
+msgstr "ドレッド/サブキャップ"
 
 #: eos/saveddata/damagePattern.py:98 eos/saveddata/targetProfile.py:103
 #: eos/saveddata/targetProfile.py:110 eos/saveddata/targetProfile.py:117
@@ -1265,11 +1266,11 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:166 eos/saveddata/targetProfile.py:173
 #: eos/saveddata/targetProfile.py:180 eos/saveddata/targetProfile.py:187
 msgid "Drifter"
-msgstr ""
+msgstr "ドリフター"
 
 #: eos/saveddata/damagePattern.py:159 eos/saveddata/targetProfile.py:230
 msgid "Drifter Entities"
-msgstr ""
+msgstr "ドリフターエンティティ"
 
 #: gui/builtinStatsViews/firepowerViewFull.py:67
 msgid "Drone"
@@ -1277,7 +1278,7 @@ msgstr "ドローン"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:26
 msgid "Drone Mode"
-msgstr ""
+msgstr "ドローンモード"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:157
 msgid "Drone bandwidth"
@@ -1310,33 +1311,33 @@ msgstr "ドローン"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:113
 msgid "Drones active"
-msgstr ""
+msgstr "ドローンが有効です"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:62
 msgid "Dump All Logs"
-msgstr ""
+msgstr "すべてのログをダンプ"
 
 #: gui/mainMenuBar.py:105
 msgid "E&xport to ESI"
-msgstr ""
+msgstr "ESIへエクスポート"
 
 #: graphs/data/fitEwarStats/graph.py:38
 msgid "ECM: combined strength"
-msgstr ""
+msgstr "ECM: 組み合わせ強度"
 
 #: gui/mainFrame.py:837
 msgid "EFT text fitting files"
-msgstr ""
+msgstr "EFT テキスト・フィッティングファイル"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:96
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "EHP"
-msgstr ""
+msgstr "EHP（ Effective Hit Point/実質ヒットポイント）"
 
 #: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
 msgid "EM"
-msgstr ""
+msgstr "EM （ElectroMagnetic Damage/電磁場によるダメージ）"
 
 #: gui/targetProfileEditor.py:119
 msgid "EM resistance"
@@ -1344,7 +1345,7 @@ msgstr "EMレジスタンス"
 
 #: eos/saveddata/damagePattern.py:81
 msgid "EMP"
-msgstr ""
+msgstr "EMP （electromagnetic pulse/電磁パルス）"
 
 #: gui/esiFittings.py:347 gui/esiFittings.py:351 gui/esiFittings.py:359
 msgid "ERROR"
@@ -1352,57 +1353,57 @@ msgstr "エラー"
 
 #: gui/mainFrame.py:1012
 msgid "EVE API XML character files"
-msgstr ""
+msgstr "EVE API XML キャラクタファイル"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:76
 msgid "EVE Data:"
-msgstr ""
+msgstr "EVEデータ:"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:49
 msgid "EVE IGB HTML fitting file"
-msgstr ""
+msgstr "EVE IGB HTMLフィットファイル"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
 #: gui/characterEditor.py:162
 msgid "EVE SSO"
-msgstr ""
+msgstr "EVE SSO（Single Sign On）"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:37
 msgid "EVE Servers (API && CREST import)"
-msgstr ""
+msgstr "EVE サーバー (API && CREST import)"
 
 #: gui/mainFrame.py:859
 msgid "EVE XML fitting file"
-msgstr ""
+msgstr "EVE XML フィットファイル"
 
 #: gui/mainFrame.py:466 gui/mainFrame.py:836
 msgid "EVE XML fitting files"
-msgstr ""
+msgstr "EVE XML フィットファイル"
 
 #: gui/mainFrame.py:808
 msgid "EVEMon skills training XML file"
-msgstr ""
+msgstr "EVEMonスキルトレーニング XMLファイル"
 
 #: gui/mainFrame.py:807
 msgid "EVEMon skills training file"
-msgstr ""
+msgstr "EVEMonスキルトレーニングファイル"
 
 #: graphs/data/fitDamageStats/graph.py:83
 msgid "Effective DPS"
-msgstr ""
+msgstr "有効なDPS"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:61
 #: gui/builtinStatsViews/resistancesViewFull.py:219
 msgid "Effective HP: "
-msgstr ""
+msgstr "有効HP: "
 
 #: gui/builtinStatsViews/capacitorViewFull.py:151
 msgid "Effective capacity"
-msgstr ""
+msgstr "有効キャパシタ"
 
 #: graphs/data/fitDamageStats/graph.py:85
 msgid "Effective damage inflicted"
-msgstr ""
+msgstr "有効ダメージ効果"
 
 #: graphs/data/fitDamageStats/graph.py:84
 msgid "Effective volley"
@@ -1415,7 +1416,7 @@ msgstr ""
 
 #: gui/itemStats.py:192
 msgid "Effects"
-msgstr ""
+msgstr "効果"
 
 #: eos/saveddata/targetProfile.py:106 eos/saveddata/targetProfile.py:107
 #: eos/saveddata/targetProfile.py:108 eos/saveddata/targetProfile.py:109
@@ -1423,7 +1424,7 @@ msgstr ""
 #: eos/saveddata/targetProfile.py:112 eos/saveddata/targetProfile.py:194
 #: eos/saveddata/targetProfile.py:195 eos/saveddata/targetProfile.py:196
 msgid "Electrical T0/T1/T2"
-msgstr ""
+msgstr "電気T1/T2/T3"
 
 #: eos/saveddata/targetProfile.py:113 eos/saveddata/targetProfile.py:114
 #: eos/saveddata/targetProfile.py:115 eos/saveddata/targetProfile.py:116
@@ -1439,15 +1440,15 @@ msgstr "電気T3 (一部T5層)"
 #: eos/saveddata/targetProfile.py:126 eos/saveddata/targetProfile.py:200
 #: eos/saveddata/targetProfile.py:201 eos/saveddata/targetProfile.py:202
 msgid "Electrical T4/T5/T6"
-msgstr ""
+msgstr "電気T4/T5/T6"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:85
 msgid "Electromagnetic resistance"
-msgstr ""
+msgstr "電磁ダメージ耐性"
 
 #: eos/saveddata/damagePattern.py:90
 msgid "Electron Bomb"
-msgstr ""
+msgstr "電子爆弾"
 
 #: graphs/data/fitEwarStats/graph.py:33
 msgid "Electronic Warfare Stats"
@@ -1455,15 +1456,15 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:59
 msgid "Empty"
-msgstr ""
+msgstr "空"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:105
 msgid "Empty Market View"
-msgstr ""
+msgstr "空の市場 ビュー"
 
 #: gui/multiSwitch.py:41
 msgid "Empty Tab"
-msgstr ""
+msgstr "空のタブ"
 
 #: gui/mainMenuBar.py:200
 msgid "Enable Fitting Re&strictions"
@@ -1471,7 +1472,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:33
 msgid "Enable Network"
-msgstr ""
+msgstr "ネットワークを有効化"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:106
 msgid "Enable all available meta buttons"
@@ -2041,11 +2042,11 @@ msgstr ""
 
 #: gui/setEditor.py:122
 msgid "Implant Set Editor"
-msgstr ""
+msgstr "インプラントセットエディター"
 
 #: gui/setEditor.py:50
 msgid "Implant Set name already in use, please choose another."
-msgstr ""
+msgstr "インプラントセット名が既に使われています。別の名前を指定してください。"
 
 #: gui/copySelectDialog.py:47 gui/copySelectDialog.py:55
 #: gui/builtinContextMenus/additionsExportAll.py:21
@@ -2056,12 +2057,12 @@ msgstr ""
 #: gui/builtinContextMenus/additionsImport.py:23 gui/characterEditor.py:161
 #: gui/additionsPane.py:75
 msgid "Implants"
-msgstr ""
+msgstr "インプラント"
 
 #: gui/builtinContextMenus/priceOptions.py:54
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:85
 msgid "Implants && Boosters"
-msgstr ""
+msgstr "インプラント&ブースター"
 
 #: gui/propertyEditor.py:38
 msgid "Import"
