@@ -3438,5 +3438,19 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2184": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving Nos Override", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 1945
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

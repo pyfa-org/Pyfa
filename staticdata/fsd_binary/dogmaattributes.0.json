@@ -42085,7 +42085,7 @@
     "description": "", 
     "displayWhenZero": 0, 
     "highIsGood": 1, 
-    "name": "BehaviorShieldBoosterAmount", 
+    "name": "behaviorShieldBoosterAmount", 
     "published": 0, 
     "stackable": 1, 
     "unitID": 113
@@ -42098,7 +42098,7 @@
     "description": "", 
     "displayWhenZero": 0, 
     "highIsGood": 1, 
-    "name": "BehaviorShieldBoosterDischarge", 
+    "name": "behaviorShieldBoosterDischarge", 
     "published": 0, 
     "stackable": 1, 
     "unitID": 114
@@ -42111,7 +42111,7 @@
     "description": "", 
     "displayWhenZero": 0, 
     "highIsGood": 1, 
-    "name": "BehaviorShieldBoosterDuration", 
+    "name": "behaviorShieldBoosterDuration", 
     "published": 0, 
     "stackable": 1, 
     "unitID": 101
