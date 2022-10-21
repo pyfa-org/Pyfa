@@ -11919,5 +11919,17 @@
   "25385": {
     "iconFile": "res:/UI/Asset/mannequin/outer/70855_Female_Outer_JacketCF01_R_Types_JacketCF01_R_Nugoeihuvi.png", 
     "iconType": "png"
+  }, 
+  "25447": {
+    "iconFile": "res:/UI/Asset/mannequin/bottomouter/73395_Male_bottomOuter_PantsCorpBusinessM01_Types_PantsCorpBusinessM01_DarkTurquoise.png", 
+    "iconType": "png"
+  }, 
+  "25448": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/73396_Male_outer_JacketCorpBusinessM01_Types_JacketCorpBusinessM01_DarkTurquoise.png", 
+    "iconType": "png"
+  }, 
+  "25463": {
+    "iconFile": "res:/ui/texture/corps/EverMore.png", 
+    "iconType": "png"
   }
 }
