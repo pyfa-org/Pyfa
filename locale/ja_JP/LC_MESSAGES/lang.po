@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-21 18:43\n"
+"PO-Revision-Date: 2022-10-22 18:46\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -1407,12 +1407,12 @@ msgstr "有効ダメージ効果"
 
 #: graphs/data/fitDamageStats/graph.py:84
 msgid "Effective volley"
-msgstr ""
+msgstr "実効ボレー（ダメージ）"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:220
 #, python-format
 msgid "Effective: %d HP"
-msgstr ""
+msgstr "有効HP %d"
 
 #: gui/itemStats.py:192
 msgid "Effects"
@@ -1452,7 +1452,7 @@ msgstr "電子爆弾"
 
 #: graphs/data/fitEwarStats/graph.py:33
 msgid "Electronic Warfare Stats"
-msgstr ""
+msgstr "電子戦の状態"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:59
 msgid "Empty"
