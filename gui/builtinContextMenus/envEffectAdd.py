@@ -123,9 +123,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
             _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion'))
-        data.groups[_t('Triglavian Invasion')] = self.getEffectBeacons(
-            _t('ContextMenu|ProjectedEffectManipulation|Triglavian Invasion'))
-        data.groups[_t('Triglavian Invasion')].groups[_t('Destructible Beacons')] = self.getDestructibleBeacons()
+        data.groups[_t('Triglavian Invasion')] = self.getDestructibleBeacons()
         return data
 
     def getEffectBeacons(self, *groups, extra_garbage=()):
