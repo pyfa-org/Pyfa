@@ -38668,7 +38668,7 @@ class Effect11417(BaseEffect):
             ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser', **kwargs)
 
 
-class Effect11426(BaseEffect):
+class Effect11419(BaseEffect):
     """
     shipBonusDroneDamageAB
 
