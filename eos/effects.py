@@ -1632,8 +1632,8 @@ class Effect542(BaseEffect):
     shipCapNeedBonusAB
 
     Used by:
-    Variations of ship: Armageddon (3 of 5)
-    Ship: Apocalypse Imperial Issue
+    Ships named like: Imperial Issue (2 of 2)
+    Ship: Redeemer
     """
 
     type = 'passive'
@@ -1926,10 +1926,11 @@ class Effect602(BaseEffect):
     shipPTurretSpeedBonusMC
 
     Used by:
-    Variations of ship: Rupture (3 of 3)
     Variations of ship: Stabber (3 of 3)
+    Ship: Broadsword
     Ship: Enforcer
     Ship: Huginn
+    Ship: Rupture
     Ship: Scythe Fleet Issue
     """
 
@@ -2533,7 +2534,8 @@ class Effect887(BaseEffect):
     shipETspeedBonusAB2
 
     Used by:
-    Variations of ship: Armageddon (3 of 5)
+    Ship: Armageddon Imperial Issue
+    Ship: Redeemer
     """
 
     type = 'passive'
@@ -2805,9 +2807,10 @@ class Effect968(BaseEffect):
     shipProjectileDmgMC2
 
     Used by:
-    Variations of ship: Rupture (3 of 3)
+    Ship: Broadsword
     Ship: Cynabal
     Ship: Moracha
+    Ship: Rupture
     """
 
     type = 'passive'
@@ -3433,10 +3436,7 @@ class Effect1049(BaseEffect):
 
 class Effect1056(BaseEffect):
     """
-    eliteBonusHeavyGunshipHybridOptimal1
-
-    Used by:
-    Ship: Eagle
+    Not used by any item
     """
 
     type = 'passive'
@@ -3450,10 +3450,7 @@ class Effect1056(BaseEffect):
 
 class Effect1057(BaseEffect):
     """
-    eliteBonusHeavyGunshipProjectileOptimal1
-
-    Used by:
-    Ship: Muninn
+    Not used by any item
     """
 
     type = 'passive'
@@ -3536,10 +3533,7 @@ class Effect1062(BaseEffect):
 
 class Effect1063(BaseEffect):
     """
-    eliteBonusHeavyGunshipProjectileTracking2
-
-    Used by:
-    Ship: Muninn
+    Not used by any item
     """
 
     type = 'passive'
@@ -3570,10 +3564,7 @@ class Effect1080(BaseEffect):
 
 class Effect1081(BaseEffect):
     """
-    eliteBonusHeavyGunshipHeavyMissileFlightTime1
-
-    Used by:
-    Ship: Cerberus
+    Not used by any item
     """
 
     type = 'passive'
@@ -3587,10 +3578,7 @@ class Effect1081(BaseEffect):
 
 class Effect1082(BaseEffect):
     """
-    eliteBonusHeavyGunshipLightMissileFlightTime1
-
-    Used by:
-    Ship: Cerberus
+    Not used by any item
     """
 
     type = 'passive'
@@ -7511,10 +7499,11 @@ class Effect2646(BaseEffect):
 
 class Effect2647(BaseEffect):
     """
-    eliteBonusHeavyGunshipHeavyMissileLaunhcerRof2
+    eliteBonusHeavyGunshipHeavyMissileLauncherRof2
 
     Used by:
     Ship: Cerberus
+    Ship: Muninn
     """
 
     type = 'passive'
@@ -7528,10 +7517,11 @@ class Effect2647(BaseEffect):
 
 class Effect2648(BaseEffect):
     """
-    eliteBonusHeavyGunshipHeavyAssaultMissileLaunhcerRof2
+    eliteBonusHeavyGunshipHeavyAssaultMissileLauncherRof2
 
     Used by:
     Ship: Cerberus
+    Ship: Muninn
     """
 
     type = 'passive'
@@ -7545,10 +7535,11 @@ class Effect2648(BaseEffect):
 
 class Effect2649(BaseEffect):
     """
-    eliteBonusHeavyGunshipAssaultMissileLaunhcerRof2
+    eliteBonusHeavyGunshipAssaultMissileLauncherRof2
 
     Used by:
     Ship: Cerberus
+    Ship: Muninn
     """
 
     type = 'passive'
@@ -8529,10 +8520,7 @@ class Effect2809(BaseEffect):
 
 class Effect2810(BaseEffect):
     """
-    eliteBonusHeavyGunshipAssaultMissileFlightTime1
-
-    Used by:
-    Ship: Cerberus
+    Not used by any item
     """
 
     type = 'passive'
@@ -11708,7 +11696,6 @@ class Effect3705(BaseEffect):
     shipHybridTurretROFBonusGC2
 
     Used by:
-    Ship: Exequror Navy Issue
     Ship: Phobos
     """
 
@@ -23215,10 +23202,7 @@ class Effect5934(BaseEffect):
 
 class Effect5938(BaseEffect):
     """
-    shipBonusSmallMissileExplosionRadiusCF2
-
-    Used by:
-    Ship: Crow
+    Not used by any item
     """
 
     type = 'passive'
@@ -25281,6 +25265,7 @@ class Effect6253(BaseEffect):
 
     Used by:
     Ship: Armageddon
+    Ship: Armageddon Navy Issue
     """
 
     type = 'passive'
@@ -25313,6 +25298,7 @@ class Effect6257(BaseEffect):
 
     Used by:
     Ship: Armageddon
+    Ship: Armageddon Navy Issue
     """
 
     type = 'passive'
@@ -33881,10 +33867,7 @@ class Effect7021(BaseEffect):
 
 class Effect7024(BaseEffect):
     """
-    shipBonusDroneTrackingEliteGunship2
-
-    Used by:
-    Ship: Ishkur
+    Not used by any item
     """
 
     type = 'passive'

@@ -18383,10 +18383,9 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 2647, 
-    "effectName": "eliteBonusHeavyGunshipHeavyMissileLaunhcerRof2", 
+    "effectName": "eliteBonusHeavyGunshipHeavyMissileLauncherRof2", 
     "electronicChance": 0, 
     "guid": "None", 
-    "iconID": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -18409,10 +18408,9 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 2648, 
-    "effectName": "eliteBonusHeavyGunshipHeavyAssaultMissileLaunhcerRof2", 
+    "effectName": "eliteBonusHeavyGunshipHeavyAssaultMissileLauncherRof2", 
     "electronicChance": 0, 
     "guid": "None", 
-    "iconID": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -18435,10 +18433,9 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 2649, 
-    "effectName": "eliteBonusHeavyGunshipAssaultMissileLaunhcerRof2", 
+    "effectName": "eliteBonusHeavyGunshipAssaultMissileLauncherRof2", 
     "electronicChance": 0, 
     "guid": "None", 
-    "iconID": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -50231,7 +50228,7 @@
         "modifiedAttributeID": 37, 
         "modifyingAttributeID": 657, 
         "operation": 6, 
-        "skillTypeID": 3319
+        "skillTypeID": 25719
       }
     ], 
     "propulsionChance": 0, 
@@ -91179,6 +91176,653 @@
         "modifiedAttributeID": 5207, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11411": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11411, 
+    "effectName": "shipMissileDmgMC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 659, 
+        "operation": 6, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 659, 
+        "operation": 6, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 659, 
+        "operation": 6, 
+        "skillTypeID": 3319
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 659, 
+        "operation": 6, 
+        "skillTypeID": 3319
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11412": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11412, 
+    "effectName": "shipBonusShieldArmorResonanceMC", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 267, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 268, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 269, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 270, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 271, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 272, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 273, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 274, 
+        "modifyingAttributeID": 489, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11413": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11413, 
+    "effectName": "eliteBonusHeavyGunshipMissileExplosionVelocity1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 653, 
+        "modifyingAttributeID": 692, 
+        "operation": 6, 
+        "skillTypeID": 3324
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 653, 
+        "modifyingAttributeID": 692, 
+        "operation": 6, 
+        "skillTypeID": 25719
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11414": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11414, 
+    "effectName": "eliteBonusShieldBoosterAmount1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 692, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11415": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11415, 
+    "effectName": "eliteBonusHybridTracking1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 692, 
+        "operation": 6, 
+        "skillTypeID": 3304
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11416": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11416, 
+    "effectName": "shipBonusHybridFalloffGC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 158, 
+        "modifyingAttributeID": 658, 
+        "operation": 6, 
+        "skillTypeID": 3304
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11417": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11417, 
+    "effectName": "shipBonusArmorPlateMassGC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "modifiedAttributeID": 796, 
+        "modifyingAttributeID": 2014, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11418": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11418, 
+    "effectName": "gallenteBattleshipSkillLevelPreMulShipBonusGB3Ship", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5240, 
+        "modifyingAttributeID": 280
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11419": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11419, 
+    "effectName": "shipBonusDroneTrackingGB2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 561, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11420": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11420, 
+    "effectName": "shipBonusRepairAmountGB3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 84, 
+        "modifyingAttributeID": 5240, 
+        "operation": 6, 
+        "skillTypeID": 3393
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11421": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11421, 
+    "effectName": "shipBonusTorpedoDamageAB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11422": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11422, 
+    "effectName": "shipBonusCruiseMissileDamageAB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11423": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11423, 
+    "effectName": "shipBonusHeavyMissileDamageAB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3324
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3324
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3324
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3324
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11424": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11424, 
+    "effectName": "shipBonusLargeEnergyTurretDamageAB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3309
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11425": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11425, 
+    "effectName": "shipBonusDroneHitpointsAB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11426": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11426, 
+    "effectName": "shipBonusDroneDamageAB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 492, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11428": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11428, 
+    "effectName": "shipBonusCruiseMissileExplosionVelocityMB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 653, 
+        "modifyingAttributeID": 490, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11429": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11429, 
+    "effectName": "shipBonusTorpedoMissileExplosionVelocityMB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 653, 
+        "modifyingAttributeID": 490, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11430": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11430, 
+    "effectName": "shipBonusLargeProjectileTrackingMB", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 490, 
+        "operation": 6, 
+        "skillTypeID": 3308
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11431": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11431, 
+    "effectName": "shipBonusShieldHpCF2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 588, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11432": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11432, 
+    "effectName": "shipBonusArmorRepairEliteGunship2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 84, 
+        "modifyingAttributeID": 675, 
+        "operation": 6, 
+        "skillTypeID": 3393
       }
     ], 
     "propulsionChance": 0, 
