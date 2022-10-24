@@ -1632,8 +1632,8 @@ class Effect542(BaseEffect):
     shipCapNeedBonusAB
 
     Used by:
-    Variations of ship: Armageddon (3 of 5)
-    Ship: Apocalypse Imperial Issue
+    Ships named like: Imperial Issue (2 of 2)
+    Ship: Redeemer
     """
 
     type = 'passive'
@@ -1926,10 +1926,11 @@ class Effect602(BaseEffect):
     shipPTurretSpeedBonusMC
 
     Used by:
-    Variations of ship: Rupture (3 of 3)
     Variations of ship: Stabber (3 of 3)
+    Ship: Broadsword
     Ship: Enforcer
     Ship: Huginn
+    Ship: Rupture
     Ship: Scythe Fleet Issue
     """
 
@@ -2533,7 +2534,8 @@ class Effect887(BaseEffect):
     shipETspeedBonusAB2
 
     Used by:
-    Variations of ship: Armageddon (3 of 5)
+    Ship: Armageddon Imperial Issue
+    Ship: Redeemer
     """
 
     type = 'passive'
@@ -2805,9 +2807,10 @@ class Effect968(BaseEffect):
     shipProjectileDmgMC2
 
     Used by:
-    Variations of ship: Rupture (3 of 3)
+    Ship: Broadsword
     Ship: Cynabal
     Ship: Moracha
+    Ship: Rupture
     """
 
     type = 'passive'
@@ -3431,40 +3434,6 @@ class Effect1049(BaseEffect):
                                       src.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
 
-class Effect1056(BaseEffect):
-    """
-    eliteBonusHeavyGunshipHybridOptimal1
-
-    Used by:
-    Ship: Eagle
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
-                                      'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
-                                      skill='Heavy Assault Cruisers', **kwargs)
-
-
-class Effect1057(BaseEffect):
-    """
-    eliteBonusHeavyGunshipProjectileOptimal1
-
-    Used by:
-    Ship: Muninn
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
-                                      'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
-                                      skill='Heavy Assault Cruisers', **kwargs)
-
-
 class Effect1058(BaseEffect):
     """
     eliteBonusHeavyGunshipLaserOptimal1
@@ -3534,23 +3503,6 @@ class Effect1062(BaseEffect):
                                       skill='Heavy Assault Cruisers', **kwargs)
 
 
-class Effect1063(BaseEffect):
-    """
-    eliteBonusHeavyGunshipProjectileTracking2
-
-    Used by:
-    Ship: Muninn
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Projectile Turret'),
-                                      'trackingSpeed', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
-                                      skill='Heavy Assault Cruisers', **kwargs)
-
-
 class Effect1080(BaseEffect):
     """
     eliteBonusHeavyGunshipHybridFallOff1
@@ -3566,40 +3518,6 @@ class Effect1080(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'falloff', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
                                       skill='Heavy Assault Cruisers', **kwargs)
-
-
-class Effect1081(BaseEffect):
-    """
-    eliteBonusHeavyGunshipHeavyMissileFlightTime1
-
-    Used by:
-    Ship: Cerberus
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
-                                        'explosionDelay', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
-                                        skill='Heavy Assault Cruisers', **kwargs)
-
-
-class Effect1082(BaseEffect):
-    """
-    eliteBonusHeavyGunshipLightMissileFlightTime1
-
-    Used by:
-    Ship: Cerberus
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
-                                        'explosionDelay', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
-                                        skill='Heavy Assault Cruisers', **kwargs)
 
 
 class Effect1084(BaseEffect):
@@ -7511,10 +7429,11 @@ class Effect2646(BaseEffect):
 
 class Effect2647(BaseEffect):
     """
-    eliteBonusHeavyGunshipHeavyMissileLaunhcerRof2
+    eliteBonusHeavyGunshipHeavyMissileLauncherRof2
 
     Used by:
     Ship: Cerberus
+    Ship: Muninn
     """
 
     type = 'passive'
@@ -7528,10 +7447,11 @@ class Effect2647(BaseEffect):
 
 class Effect2648(BaseEffect):
     """
-    eliteBonusHeavyGunshipHeavyAssaultMissileLaunhcerRof2
+    eliteBonusHeavyGunshipHeavyAssaultMissileLauncherRof2
 
     Used by:
     Ship: Cerberus
+    Ship: Muninn
     """
 
     type = 'passive'
@@ -7545,10 +7465,11 @@ class Effect2648(BaseEffect):
 
 class Effect2649(BaseEffect):
     """
-    eliteBonusHeavyGunshipAssaultMissileLaunhcerRof2
+    eliteBonusHeavyGunshipAssaultMissileLauncherRof2
 
     Used by:
     Ship: Cerberus
+    Ship: Muninn
     """
 
     type = 'passive'
@@ -8525,23 +8446,6 @@ class Effect2809(BaseEffect):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'),
                                         skill='Caldari Cruiser', **kwargs)
-
-
-class Effect2810(BaseEffect):
-    """
-    eliteBonusHeavyGunshipAssaultMissileFlightTime1
-
-    Used by:
-    Ship: Cerberus
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
-                                        'explosionDelay', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
-                                        skill='Heavy Assault Cruisers', **kwargs)
 
 
 class Effect2812(BaseEffect):
@@ -11708,7 +11612,6 @@ class Effect3705(BaseEffect):
     shipHybridTurretROFBonusGC2
 
     Used by:
-    Ship: Exequror Navy Issue
     Ship: Phobos
     """
 
@@ -21543,8 +21446,9 @@ class Effect5644(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                        'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'), 'maxVelocity',
+            ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
 
 class Effect5647(BaseEffect):
@@ -23211,23 +23115,6 @@ class Effect5934(BaseEffect):
         fit.modules.filteredItemIncrease(
             lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
             'activationBlocked', module.getModifiedItemAttr('activationBlockedStrenght'), **kwargs)
-
-
-class Effect5938(BaseEffect):
-    """
-    shipBonusSmallMissileExplosionRadiusCF2
-
-    Used by:
-    Ship: Crow
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(
-            lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
-            'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate', **kwargs)
 
 
 class Effect5939(BaseEffect):
@@ -25281,6 +25168,7 @@ class Effect6253(BaseEffect):
 
     Used by:
     Ship: Armageddon
+    Ship: Armageddon Navy Issue
     """
 
     type = 'passive'
@@ -25313,6 +25201,7 @@ class Effect6257(BaseEffect):
 
     Used by:
     Ship: Armageddon
+    Ship: Armageddon Navy Issue
     """
 
     type = 'passive'
@@ -33879,22 +33768,6 @@ class Effect7021(BaseEffect):
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('structureRigMaxTargetRangeBonus'), **kwargs)
 
 
-class Effect7024(BaseEffect):
-    """
-    shipBonusDroneTrackingEliteGunship2
-
-    Used by:
-    Ship: Ishkur
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'trackingSpeed',
-                                     src.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates', **kwargs)
-
-
 class Effect7026(BaseEffect):
     """
     scriptStandupWarpScram
@@ -38664,3 +38537,356 @@ class Effect11359(BaseEffect):
             fit.modules.filteredItemBoost(
                 lambda mod: mod.item.requiresSkill('Shield Operation'), attr,
                 ship.getModifiedItemAttr('shipBonusCBC3'), skill='Caldari Battlecruiser', **kwargs)
+
+
+class Effect11411(BaseEffect):
+    """
+    shipMissileDmgMC2
+
+    Used by:
+    Ship: Muninn
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), f'{dmgType}Damage',
+                ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
+
+
+class Effect11412(BaseEffect):
+    """
+    shipBonusShieldArmorResonanceMC
+
+    Used by:
+    Ship: Muninn
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(dmgType.capitalize()),
+                ship.getModifiedItemAttr('shipBonusMC'),
+                skill='Minmatar Cruiser', **kwargs)
+            fit.ship.boostItemAttr(
+                'shield{}DamageResonance'.format(dmgType.capitalize()),
+                ship.getModifiedItemAttr('shipBonusMC'),
+                skill='Minmatar Cruiser', **kwargs)
+
+
+class Effect11413(BaseEffect):
+    """
+    eliteBonusHeavyGunshipMissileExplosionVelocity1
+
+    Used by:
+    Ship: Muninn
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: (
+                mod.charge.requiresSkill('Heavy Assault Missiles')
+                or mod.charge.requiresSkill('Heavy Missiles')),
+            'aoeVelocity', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
+            skill='Heavy Assault Cruisers', **kwargs)
+
+
+class Effect11414(BaseEffect):
+    """
+    eliteBonusShieldBoosterAmount1
+
+    Used by:
+    Ship: Cerberus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('eliteBonusHeavyGunship1'), skill='Heavy Assault Cruisers', **kwargs)
+
+
+class Effect11415(BaseEffect):
+    """
+    eliteBonusHybridTracking1
+
+    Used by:
+    Ship: Eagle
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'trackingSpeed',
+            src.getModifiedItemAttr('eliteBonusHeavyGunship1'), skill='Heavy Assault Cruisers', **kwargs)
+
+
+class Effect11416(BaseEffect):
+    """
+    shipBonusHybridFalloffGC2
+
+    Used by:
+    Ship: Exequror Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'falloff',
+            src.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser', **kwargs)
+
+
+class Effect11417(BaseEffect):
+    """
+    shipBonusArmorPlateMassGC3
+
+    Used by:
+    Ship: Exequror Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
+            ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser', **kwargs)
+
+
+class Effect11426(BaseEffect):
+    """
+    shipBonusDroneDamageAB
+
+    Used by:
+    Ship: Armageddon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'trackingSpeed',
+            container.getModifiedItemAttr('shipBonusGB2'), skill='Gallente Battleship', **kwargs)
+
+
+class Effect11420(BaseEffect):
+    """
+    shipBonusRepairAmountGB3
+
+    Used by:
+    Ship: Dominix Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
+            ship.getModifiedItemAttr('shipBonusGB3'), skill='Gallente Battleship', **kwargs)
+
+
+class Effect11421(BaseEffect):
+    """
+    shipBonusTorpedoDamageAB
+
+    Used by:
+    Ship: Armageddon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Torpedoes'), f'{dmgType}Damage',
+                ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
+
+
+class Effect11422(BaseEffect):
+    """
+    shipBonusCruiseMissileDamageAB
+
+    Used by:
+    Ship: Armageddon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Cruise Missiles'), f'{dmgType}Damage',
+                ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
+
+
+class Effect11423(BaseEffect):
+    """
+    shipBonusHeavyMissileDamageAB
+
+    Used by:
+    Ship: Armageddon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Heavy Missiles'), f'{dmgType}Damage',
+                ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
+
+
+class Effect11424(BaseEffect):
+    """
+    shipBonusLargeEnergyTurretDamageAB
+
+    Used by:
+    Ship: Armageddon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Energy Turret'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
+
+
+class Effect11425(BaseEffect):
+    """
+    shipBonusDroneHitpointsAB
+
+    Used by:
+    Ship: Armageddon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), layer,
+                ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
+
+
+class Effect11426(BaseEffect):
+    """
+    shipBonusDroneDamageAB
+
+    Used by:
+    Ship: Armageddon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'damageMultiplier',
+            container.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
+
+
+class Effect11428(BaseEffect):
+    """
+    shipBonusCruiseMissileExplosionVelocityMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Cruise Missiles'), 'aoeVelocity',
+            ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
+
+
+class Effect11429(BaseEffect):
+    """
+    shipBonusTorpedoMissileExplosionVelocityMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Torpedoes'), 'aoeVelocity',
+            ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
+
+
+class Effect11430(BaseEffect):
+    """
+    shipBonusLargeProjectileTrackingMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Projectile Turret'), 'trackingSpeed',
+            ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship', **kwargs)
+
+
+class Effect11431(BaseEffect):
+    """
+    shipBonusShieldHpCF2
+
+    Used by:
+    Ship: Crow
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('shipBonusCF2'),
+                               skill='Caldari Frigate', **kwargs)
+
+
+class Effect11432(BaseEffect):
+    """
+    shipBonusArmorRepairEliteGunship2
+
+    Used by:
+    Ship: Ishkur
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
+            ship.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates', **kwargs)

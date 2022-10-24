@@ -11928,8 +11928,40 @@
     "iconFile": "res:/UI/Asset/mannequin/outer/73396_Male_outer_JacketCorpBusinessM01_Types_JacketCorpBusinessM01_DarkTurquoise.png", 
     "iconType": "png"
   }, 
+  "25451": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/73407_Female_Outer_JacketMilF02_Types_JacketMilF02_WhiteTurquoise.png", 
+    "iconType": "png"
+  }, 
+  "25452": {
+    "iconFile": "res:/UI/Asset/mannequin/accessories_masks/73423_Female_Accessories_Masks_Mask_Cyberpunk_F01_Types_Mask_Cyberpunk_F01_Tan_Worn.png", 
+    "iconType": "png"
+  }, 
+  "25453": {
+    "iconFile": "res:/UI/Asset/mannequin/accessories_glasses/73424_Female_Accessories_Glasses_Goggles_01_Types_goggles_01_tan_worn.png", 
+    "iconType": "png"
+  }, 
+  "25454": {
+    "iconFile": "res:/UI/Asset/mannequin/accessories_masks/73425_Male_Accessories_Masks_Mask_Cyberpunk_M01_Types_Mask_Cyberpunk_M01_Tan_Worn.png", 
+    "iconType": "png"
+  }, 
+  "25455": {
+    "iconFile": "res:/UI/Asset/mannequin/accessories_glasses/73426_Male_Accessories_Glasses_Goggles_01_Types_goggles_01_tan_worn.png", 
+    "iconType": "png"
+  }, 
+  "25456": {
+    "iconFile": "res:/UI/Asset/mannequin/makeup_augmentations/73436_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V7_Red.png", 
+    "iconType": "png"
+  }, 
+  "25457": {
+    "iconFile": "res:/UI/Asset/mannequin/makeup_augmentations/73437_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V3_Red.png", 
+    "iconType": "png"
+  }, 
   "25463": {
     "iconFile": "res:/ui/texture/corps/EverMore.png", 
+    "iconType": "png"
+  }, 
+  "25465": {
+    "iconFile": "res:/ui/texture/corps/Paragon_corp_logo.png", 
     "iconType": "png"
   }
 }

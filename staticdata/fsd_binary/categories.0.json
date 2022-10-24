@@ -628,6 +628,20 @@
     "categoryNameID": 587126, 
     "published": 0
   }, 
+  "2118": {
+    "categoryID": 2118, 
+    "categoryName_de": "Personalization", 
+    "categoryName_en-us": "Personalization", 
+    "categoryName_es": "Personalization", 
+    "categoryName_fr": "Personalization", 
+    "categoryName_it": "Personalization", 
+    "categoryName_ja": "Personalization", 
+    "categoryName_ko": "Personalization", 
+    "categoryName_ru": "Personalization", 
+    "categoryName_zh": "Personalization", 
+    "categoryNameID": 631766, 
+    "published": 1
+  }, 
   "350001": {
     "categoryID": 350001, 
     "categoryName_de": "Infanterie", 
