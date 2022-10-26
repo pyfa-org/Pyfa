@@ -91413,6 +91413,7 @@
       {
         "domain": "shipID", 
         "func": "LocationGroupModifier", 
+        "groupID": 329, 
         "modifiedAttributeID": 796, 
         "modifyingAttributeID": 2014, 
         "operation": 6
@@ -91436,7 +91437,8 @@
         "domain": "shipID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 5240, 
-        "modifyingAttributeID": 280
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 

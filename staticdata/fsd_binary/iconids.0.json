@@ -11961,7 +11961,15 @@
     "iconType": "png"
   }, 
   "25465": {
-    "iconFile": "res:/ui/texture/corps/Paragon_corp_logo.png", 
+    "iconFile": "res:/ui/texture/corps/paragon.png", 
+    "iconType": "png"
+  }, 
+  "25467": {
+    "iconFile": "res:/ui/texture/classes/fitting/cosmetics/alliance_logo_128px.png", 
+    "iconType": "png"
+  }, 
+  "25468": {
+    "iconFile": "res:/ui/texture/classes/fitting/cosmetics/corp_logo_128px.png", 
     "iconType": "png"
   }
 }

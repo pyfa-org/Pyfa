@@ -38670,10 +38670,10 @@ class Effect11417(BaseEffect):
 
 class Effect11419(BaseEffect):
     """
-    shipBonusDroneDamageAB
+    shipBonusDroneTrackingGB2
 
     Used by:
-    Ship: Armageddon Navy Issue
+    Ship: Dominix Navy Issue
     """
 
     type = 'passive'
