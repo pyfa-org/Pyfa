@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-23 19:57\n"
+"PO-Revision-Date: 2022-10-28 19:56\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -1840,7 +1840,7 @@ msgstr "合成"
 
 #: graphs/data/fitEwarStats/graph.py:41
 msgid "GDs: missile flight range reduction"
-msgstr ""
+msgstr "ミサイルの後続距離減少"
 
 #: eos/saveddata/targetProfile.py:57
 msgid "Gallente (Armor)"
@@ -1913,7 +1913,7 @@ msgstr "スキルを入手する"
 
 #: gui/builtinPreferenceViews/pyfaEnginePreferences.py:68
 msgid "Global Default Spoolup Percentage:"
-msgstr ""
+msgstr "グローバルデフォルトスプールアップ率:"
 
 #: gui/mainMenuBar.py:161
 msgid "Go to EVE Online Forum thread"
@@ -1933,7 +1933,7 @@ msgstr "グラフ"
 
 #: eos/saveddata/fit.py:402
 msgid "Gravimetric"
-msgstr ""
+msgstr "重力計"
 
 #: graphs/style.py:53
 msgid "Green"
@@ -1988,7 +1988,7 @@ msgstr "船体"
 
 #: eos/saveddata/targetProfile.py:51
 msgid "Hull (+T2 DCU)"
-msgstr ""
+msgstr "船体（ハル） (+T2 DCU)"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:78
 msgid "Hull repair amount"
@@ -2001,7 +2001,7 @@ msgstr "船体レジスタンス"
 #: gui/builtinStatsViews/outgoingViewMinimal.py:49
 #: gui/builtinStatsViews/outgoingViewFull.py:50
 msgid "Hull restored"
-msgstr ""
+msgstr "船体を復元"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:206
 msgid "Hull: "
@@ -2022,7 +2022,7 @@ msgstr "ID"
 
 #: eos/saveddata/targetProfile.py:293
 msgid "Ideal Target"
-msgstr ""
+msgstr "理想的なターゲット"
 
 #: gui/builtinContextMenus/graphDroneControlRange.py:23
 msgid "Ignore Drone Control Range"
