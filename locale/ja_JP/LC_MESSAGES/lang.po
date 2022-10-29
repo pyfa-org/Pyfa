@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-28 19:56\n"
+"PO-Revision-Date: 2022-10-29 19:53\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -2130,7 +2130,7 @@ msgstr "このキャラクターにスキルをインポートすると、スキ
 
 #: gui/copySelectDialog.py:59
 msgid "Include formatting tags to paste fit directly into corp bulletins, MOTD, etc."
-msgstr ""
+msgstr "フォーマットタグを含めてフィットをコープ掲示板、MOTD（Message Of The Day）、その他に貼り付ける"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:115
 msgid "Incoming damage pattern"
@@ -2142,11 +2142,11 @@ msgstr "フォーマットが正しくありません (小数点のみ)"
 
 #: gui/targetProfileEditor.py:52
 msgid "Incorrect range (must be 0-100)"
-msgstr ""
+msgstr "範囲が正しくありません(0-100でなければなりません)"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:121
 msgid "Industrial ship hold"
-msgstr ""
+msgstr "工業用艦艇ホールド"
 
 #: graphs/data/fitMobility/graph.py:46
 msgid "Inertia Modifier attribute value of the target ship"
@@ -2154,15 +2154,15 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:87
 msgid "Inferno"
-msgstr ""
+msgstr "焦熱地獄"
 
 #: eos/saveddata/damagePattern.py:47
 msgid "Infrared"
-msgstr ""
+msgstr "赤外線"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Interceptor"
-msgstr ""
+msgstr "インターセプター"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:65
 msgid "Interested in helping with translations?"
@@ -2170,11 +2170,11 @@ msgstr ""
 
 #: gui/mainFrame.py:892
 msgid "Invalid Path"
-msgstr ""
+msgstr "無効なパス"
 
 #: gui/esiFittings.py:232
 msgid "Invalid Token"
-msgstr ""
+msgstr "無効なトークン"
 
 #: eos/saveddata/damagePattern.py:130 eos/saveddata/damagePattern.py:131
 #: eos/saveddata/damagePattern.py:134 eos/saveddata/damagePattern.py:137
@@ -2196,7 +2196,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:64
 msgid "Iron"
-msgstr ""
+msgstr "鉄"
 
 #: gui/builtinItemStatsViews/itemCompare.py:147
 #: gui/builtinContextMenus/itemRemove.py:43
@@ -2204,7 +2204,7 @@ msgstr ""
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #: gui/builtinContextMenus/ammoToDmgPattern.py:32
 msgid "Item"
-msgstr ""
+msgstr "アイテム"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:112
 msgid "Item Market Group Jump"
@@ -2212,7 +2212,7 @@ msgstr ""
 
 #: gui/itemStats.py:58
 msgid "Item stats"
-msgstr ""
+msgstr "アイテムの統計"
 
 #: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:88
 msgid "Jaguar"
@@ -2242,7 +2242,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
 msgid "Large ship hold"
-msgstr ""
+msgstr "大型艦艇ホールド"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:77
 #: gui/builtinStatsViews/capacitorViewFull.py:170
@@ -2255,7 +2255,7 @@ msgstr "ランチャーハードポイント"
 
 #: eos/saveddata/damagePattern.py:67
 msgid "Lead"
-msgstr ""
+msgstr "リード"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:94
 #: gui/builtinContextMenus/moduleAmmoChange.py:112
@@ -2269,20 +2269,20 @@ msgstr "レベル"
 #: gui/builtinContextMenus/skillAffectors.py:79
 #, python-format
 msgid "Level %s"
-msgstr ""
+msgstr "レベル %s"
 
 #: gui/builtinItemStatsViews/itemDependants.py:46 gui/characterEditor.py:591
 #: gui/characterEditor.py:616 gui/characterEditor.py:649
 msgid "Level {}"
-msgstr ""
+msgstr "レベル {}"
 
 #: gui/characterEditor.py:532
 msgid "Level {}d"
-msgstr ""
+msgstr "レベル {}d"
 
 #: gui/builtinAdditionPanes/fighterView.py:62
 msgid "Light"
-msgstr ""
+msgstr "ライト"
 
 #: service/market.py:266
 msgid "Limited Issue Ships"
@@ -2298,11 +2298,11 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Local Server"
-msgstr ""
+msgstr "ローカルサーバ"
 
 #: gui/builtinContextMenus/envEffectAdd.py:205
 msgid "Localized"
-msgstr ""
+msgstr "ローカライズ"
 
 #: graphs/data/fitLockTime/graph.py:34
 msgid "Lock Time"
@@ -2322,15 +2322,15 @@ msgstr "ロックオン時間"
 
 #: gui/characterEditor.py:794
 msgid "Log In with EVE SSO"
-msgstr ""
+msgstr "EVE SSOでログイン"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:38
 msgid "Log file location:"
-msgstr ""
+msgstr "ログファイルの保存場所"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:19
 msgid "Logging"
-msgstr ""
+msgstr "ロギング"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:38
 msgid "Login Authentication Method"
@@ -2338,15 +2338,15 @@ msgstr ""
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:82
 msgid "Long Range"
-msgstr ""
+msgstr "長距離"
 
 #: gui/builtinViewColumns/baseName.py:61
 msgid "Low"
-msgstr ""
+msgstr "低い"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:20
 msgid "Low Security"
-msgstr ""
+msgstr "ローセキュリティ"
 
 #: graphs/style.py:56
 msgid "Magenta"
@@ -2362,7 +2362,7 @@ msgstr ""
 
 #: gui/mainFrame.py:671
 msgid "Manage Characters"
-msgstr ""
+msgstr "キャラクター管理"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Manual"
@@ -2874,19 +2874,19 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:32
 msgid "Please see the pyfa wiki on GitHub for information regarding these options."
-msgstr ""
+msgstr "これらのオプションについては、GitHubのpyfaのwikiをご覧ください。"
 
 #: gui/esiFittings.py:315
 msgid "Please select an active fitting in the main window"
-msgstr ""
+msgstr "メインウィンドウでアクティブなフィットを選択してください"
 
 #: gui/characterEditor.py:758
 msgid "Please select another character or make a new one."
-msgstr ""
+msgstr "別のキャラクターを選択するか、新しいキャラクターを作成してください。"
 
 #: gui/mainFrame.py:895
 msgid "Please verify path location pyfa's preferences."
-msgstr ""
+msgstr "Pyfaのパス設定を確認してください。"
 
 #: gui/builtinContextMenus/graphFitAmmoPicker.py:29
 msgid "Plot with Different Ammo..."
@@ -2894,7 +2894,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:70
 msgid "Plutonium"
-msgstr ""
+msgstr "プルトニウム"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:164
 msgid "Pod"
@@ -2920,11 +2920,11 @@ msgstr ""
 #: gui/builtinStatsViews/priceViewFull.py:40
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 msgid "Price"
-msgstr ""
+msgstr "価格"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:41
 msgid "Pricing updates"
-msgstr ""
+msgstr "価格の更新"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:265
 #, python-format
@@ -2974,7 +2974,7 @@ msgstr ""
 
 #: gui/itemStats.py:200
 msgid "Properties"
-msgstr ""
+msgstr "プロパティ"
 
 #: gui/builtinContextMenus/shipModeChange.py:19
 msgid "Propulsion"
@@ -2990,7 +2990,7 @@ msgstr ""
 
 #: graphs/style.py:58
 msgid "Purple"
-msgstr ""
+msgstr "紫"
 
 #: gui/builtinContextMenus/envEffectAdd.py:222
 msgid "PvP Weather"
@@ -3031,7 +3031,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:45
 msgid "Radio"
-msgstr ""
+msgstr "ラジオ"
 
 #: gui/targetProfileEditor.py:126
 msgid "Radius"
@@ -3043,16 +3043,16 @@ msgstr ""
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:63
 msgid "Range"
-msgstr ""
+msgstr "射程範囲"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:222
 msgid "Raw HP: "
-msgstr ""
+msgstr "元HP: "
 
 #: gui/builtinStatsViews/resistancesViewFull.py:223
 #, python-format
 msgid "Raw: %d HP"
-msgstr ""
+msgstr "元: %d HP"
 
 #: gui/mainFrame.py:652
 msgid "Re-enabling fitting restrictions for this fit will also remove any illegal items from the fit. Do you want to continue?"
@@ -3061,7 +3061,7 @@ msgstr ""
 #: gui/builtinShipBrowser/navigationPanel.py:56
 #: gui/builtinShipBrowser/navigationPanel.py:129
 msgid "Recent Fits"
-msgstr ""
+msgstr "最近のフィット"
 
 #: gui/builtinMarketBrowser/marketTree.py:37
 msgid "Recently Used Items"
@@ -3073,7 +3073,7 @@ msgstr ""
 
 #: graphs/style.py:52
 msgid "Red"
-msgstr ""
+msgstr "赤"
 
 #: gui/mainMenuBar.py:84
 msgid "Redo the most recent undone action"
@@ -3083,7 +3083,7 @@ msgstr ""
 #: gui/builtinItemStatsViews/itemAffectedBy.py:77
 #: gui/builtinItemStatsViews/itemCompare.py:79
 msgid "Refresh"
-msgstr ""
+msgstr "更新"
 
 #: gui/characterSelection.py:68
 msgid "Refresh Skills"
@@ -3099,17 +3099,17 @@ msgstr ""
 
 #: graphs/data/fitRemoteReps/graph.py:48
 msgid "Remote Repairs"
-msgstr ""
+msgstr "リモートリペア"
 
 #: gui/builtinStatsViews/outgoingViewMinimal.py:65
 #: gui/builtinStatsViews/outgoingViewFull.py:66
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 msgid "Remote Reps"
-msgstr ""
+msgstr "リモートリペア"
 
 #: gui/esiFittings.py:387
 msgid "Remove Character"
-msgstr ""
+msgstr "キャラクターを削除する"
 
 #: gui/propertyEditor.py:71
 msgid "Remove Overides for Item"
