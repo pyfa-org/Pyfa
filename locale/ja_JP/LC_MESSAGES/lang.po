@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-29 19:53\n"
+"PO-Revision-Date: 2022-10-30 20:14\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -2150,7 +2150,7 @@ msgstr "工業用艦艇ホールド"
 
 #: graphs/data/fitMobility/graph.py:46
 msgid "Inertia Modifier attribute value of the target ship"
-msgstr ""
+msgstr "ターゲットの艦艇の慣性修正乗数"
 
 #: eos/saveddata/damagePattern.py:87
 msgid "Inferno"
@@ -2166,7 +2166,7 @@ msgstr "インターセプター"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:65
 msgid "Interested in helping with translations?"
-msgstr ""
+msgstr "翻訳のヘルプに興味がありますか？"
 
 #: gui/mainFrame.py:892
 msgid "Invalid Path"
@@ -2188,11 +2188,11 @@ msgstr "無効なトークン"
 #: eos/saveddata/targetProfile.py:98 eos/saveddata/targetProfile.py:230
 #: eos/saveddata/targetProfile.py:231 eos/saveddata/targetProfile.py:232
 msgid "Invasion"
-msgstr ""
+msgstr "侵攻"
 
 #: eos/saveddata/damagePattern.py:66
 msgid "Iridium"
-msgstr ""
+msgstr "イリジウム"
 
 #: eos/saveddata/damagePattern.py:64
 msgid "Iron"
@@ -2208,7 +2208,7 @@ msgstr "アイテム"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:112
 msgid "Item Market Group Jump"
-msgstr ""
+msgstr "アイテムマーケットグループジャンプ"
 
 #: gui/itemStats.py:58
 msgid "Item stats"
@@ -2216,11 +2216,11 @@ msgstr "アイテムの統計"
 
 #: eos/saveddata/damagePattern.py:118 eos/saveddata/targetProfile.py:88
 msgid "Jaguar"
-msgstr ""
+msgstr "ジャガー"
 
 #: eos/saveddata/damagePattern.py:153 eos/saveddata/targetProfile.py:76
 msgid "Khanid"
-msgstr ""
+msgstr "クーニッド"
 
 #: eos/saveddata/damagePattern.py:41
 #: gui/builtinContextMenus/moduleAmmoChange.py:27
@@ -2234,11 +2234,11 @@ msgstr "Kinレジスタンス"
 
 #: eos/saveddata/fit.py:402
 msgid "Ladar"
-msgstr ""
+msgstr "レーダー"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:38
 msgid "Language (requires restart)"
-msgstr ""
+msgstr "言語設定(要再起動)"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:120
 msgid "Large ship hold"
@@ -2247,7 +2247,7 @@ msgstr "大型艦艇ホールド"
 #: gui/builtinStatsViews/capacitorViewFull.py:77
 #: gui/builtinStatsViews/capacitorViewFull.py:170
 msgid "Lasts "
-msgstr ""
+msgstr "続く "
 
 #: gui/builtinStatsViews/resourcesViewFull.py:112
 msgid "Launcher hardpoints"
@@ -2260,7 +2260,7 @@ msgstr "リード"
 #: gui/builtinContextMenus/moduleAmmoChange.py:94
 #: gui/builtinContextMenus/moduleAmmoChange.py:112
 msgid "Less Damage"
-msgstr ""
+msgstr "ダメージ軽減"
 
 #: gui/characterEditor.py:343
 msgid "Level"
@@ -2286,15 +2286,15 @@ msgstr "ライト"
 
 #: service/market.py:266
 msgid "Limited Issue Ships"
-msgstr ""
+msgstr "限定艦艇"
 
 #: gui/copySelectDialog.py:46 gui/copySelectDialog.py:53
 msgid "Loaded Charges"
-msgstr ""
+msgstr "ロードされたチャージ"
 
 #: gui/mainFrame.py:271
 msgid "Loading previous fits..."
-msgstr ""
+msgstr "以前のフィットを読み込んでいます..."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Local Server"
@@ -2314,7 +2314,7 @@ msgstr "ロックオン時間"
 
 #: graphs/data/fitEwarStats/graph.py:39
 msgid "Lock range reduction"
-msgstr ""
+msgstr "ロック範囲の減少"
 
 #: graphs/data/fitLockTime/graph.py:36
 msgid "Lock time"
@@ -2334,7 +2334,7 @@ msgstr "ロギング"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:38
 msgid "Login Authentication Method"
-msgstr ""
+msgstr "認証方法"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:82
 msgid "Long Range"
@@ -2354,11 +2354,11 @@ msgstr "マゼンタ"
 
 #: eos/saveddata/fit.py:402
 msgid "Magnetometric"
-msgstr ""
+msgstr "磁気測定"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:114
 msgid "Maintenance bay"
-msgstr ""
+msgstr "メンテナンスベイ"
 
 #: gui/mainFrame.py:671
 msgid "Manage Characters"
@@ -2416,7 +2416,7 @@ msgstr "最高速度"
 
 #: gui/builtinViewColumns/baseName.py:60
 msgid "Med"
-msgstr ""
+msgstr "中スロット"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:119
 msgid "Medium ship hold"
@@ -2424,7 +2424,7 @@ msgstr "中型船ホールド"
 
 #: eos/saveddata/damagePattern.py:58
 msgid "Meson"
-msgstr ""
+msgstr "中間子"
 
 #: gui/builtinContextMenus/envEffectAdd.py:105
 msgid "Metaliminal Storm"
@@ -2504,7 +2504,7 @@ msgstr "混合"
 
 #: eos/saveddata/damagePattern.py:86
 msgid "Mjolnir"
-msgstr ""
+msgstr "ミョルニール"
 
 #: graphs/data/fitMobility/graph.py:32
 msgid "Mobility"
@@ -2520,11 +2520,11 @@ msgstr "モジュール"
 
 #: graphs/data/fitMobility/graph.py:37
 msgid "Momentum"
-msgstr ""
+msgstr "惰性"
 
 #: eos/saveddata/damagePattern.py:155 eos/saveddata/targetProfile.py:78
 msgid "Mordus Legion"
-msgstr ""
+msgstr "モーダス レギオン"
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:97
 #: gui/builtinContextMenus/moduleAmmoChange.py:115
@@ -2533,19 +2533,19 @@ msgstr "より多くのダメージ"
 
 #: eos/saveddata/damagePattern.py:52
 msgid "Multifrequency"
-msgstr ""
+msgstr "多周波"
 
 #: eos/saveddata/fit.py:408
 msgid "Multispectral"
-msgstr ""
+msgstr "マルチスペクトル"
 
 #: gui/copySelectDialog.py:54
 msgid "Mutated Attributes"
-msgstr ""
+msgstr "変異した属性"
 
 #: gui/itemStats.py:170
 msgid "Mutations"
-msgstr ""
+msgstr "突然変異"
 
 #: eos/saveddata/damagePattern.py:95 eos/saveddata/damagePattern.py:96
 #: eos/saveddata/damagePattern.py:97 eos/saveddata/damagePattern.py:98
@@ -2688,7 +2688,7 @@ msgstr "ニュートライザへの耐性"
 
 #: graphs/data/fitEwarStats/graph.py:36
 msgid "Neuts: cap per second"
-msgstr ""
+msgstr "ニュート（ニュートラライザー）: キャップ/秒"
 
 #: gui/builtinContextMenus/itemAmountChange.py:98
 msgid "New Amount ({}-{})"
@@ -2748,7 +2748,7 @@ msgstr "通常"
 
 #: eos/saveddata/damagePattern.py:131
 msgid "Normal Subcaps"
-msgstr ""
+msgstr "標準サブキャップ"
 
 #: gui/builtinContextMenus/skillAffectors.py:77
 msgid "Not Learned"
@@ -2760,55 +2760,55 @@ msgstr "未習得"
 
 #: gui/additionsPane.py:87
 msgid "Notes"
-msgstr ""
+msgstr "ノート"
 
 #: eos/saveddata/damagePattern.py:89
 msgid "Nova"
-msgstr ""
+msgstr "新星"
 
 #: eos/saveddata/damagePattern.py:77
 msgid "Nuclear"
-msgstr ""
+msgstr "原子力"
 
 #: gui/builtinContextMenus/fitSystemSecurity.py:21
 msgid "Null Security"
-msgstr ""
+msgstr "ヌル セキュリティ"
 
 #: gui/mainMenuBar.py:167
 msgid "Open &Dev Tools"
-msgstr ""
+msgstr "開発ツールを開く"
 
 #: gui/characterSelection.py:150
 msgid "Open Character Editor"
-msgstr ""
+msgstr "キャラクター編集を開く"
 
 #: gui/builtinContextMenus/fitOpenNewTab.py:37
 msgid "Open Fit in New Tab"
-msgstr ""
+msgstr "新しいタブでフィットを開く"
 
 #: gui/mainFrame.py:1010
 msgid "Open One Or More Character Files"
-msgstr ""
+msgstr "1つ以上のキャラクターファイルを開く"
 
 #: gui/mainFrame.py:834
 msgid "Open One Or More Fitting Files"
-msgstr ""
+msgstr "1つ以上のフィットファイルを開く"
 
 #: gui/mainMenuBar.py:166
 msgid "Open Wid&gets Inspect tool"
-msgstr ""
+msgstr "ウィジェット調査画面を開く"
 
 #: gui/mainMenuBar.py:166
 msgid "Open Widgets Inspect tool"
-msgstr ""
+msgstr "ウィジェット調査画面を開く"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:136
 msgid "Open fittings in a new page by default"
-msgstr ""
+msgstr "デフォルトでフィットを新しいページで開く"
 
 #: gui/builtinContextMenus/shipJump.py:35
 msgid "Open in Fitting Browser"
-msgstr ""
+msgstr "フィットブラウザで開く"
 
 #: gui/builtinShipBrowser/fitItem.py:227
 msgid "Open in new tab"
@@ -2816,7 +2816,7 @@ msgstr "新しいタブで開く"
 
 #: gui/copySelectDialog.py:50
 msgid "Optimize Prices"
-msgstr ""
+msgstr "最適価格"
 
 #: graphs/style.py:55
 msgid "Orange"
@@ -2838,11 +2838,11 @@ msgstr "その他"
 #: eos/saveddata/targetProfile.py:163 eos/saveddata/targetProfile.py:170
 #: eos/saveddata/targetProfile.py:177 eos/saveddata/targetProfile.py:184
 msgid "Overmind"
-msgstr ""
+msgstr "オーバーマインド"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:75
 msgid "Passive shield recharge"
-msgstr ""
+msgstr "パッシブシールドリチャージ"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:125
 msgid "Password:"
@@ -2850,19 +2850,19 @@ msgstr "パスワード："
 
 #: gui/builtinContextMenus/additionsImport.py:40
 msgid "Paste {}"
-msgstr ""
+msgstr "{} を貼り付け"
 
 #: gui/patternEditor.py:295
 msgid "Patterns exported to clipboard"
-msgstr ""
+msgstr "パターンをクリップボードにエクスポートしました"
 
 #: gui/setEditor.py:210 gui/patternEditor.py:276
 msgid "Patterns successfully imported from clipboard"
-msgstr ""
+msgstr "パターンをクリップボードからインポートしました"
 
 #: eos/saveddata/damagePattern.py:82
 msgid "Phased Plasma"
-msgstr ""
+msgstr "フェーズプラズマ弾"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:128
 msgid "Planetary goods hold"
@@ -2870,7 +2870,7 @@ msgstr "惑星製品ホールド"
 
 #: gui/mainFrame.py:721
 msgid "Please Wait..."
-msgstr ""
+msgstr "しばらくお待ちください..."
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:32
 msgid "Please see the pyfa wiki on GitHub for information regarding these options."
@@ -2890,7 +2890,7 @@ msgstr "Pyfaのパス設定を確認してください。"
 
 #: gui/builtinContextMenus/graphFitAmmoPicker.py:29
 msgid "Plot with Different Ammo..."
-msgstr ""
+msgstr "異なる弾薬を装填"
 
 #: eos/saveddata/damagePattern.py:70
 msgid "Plutonium"
@@ -2914,7 +2914,7 @@ msgstr "設定"
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:59
 msgid "Pressing this button will cause all logs in memory to write to the log file:"
-msgstr ""
+msgstr "このボタンを押すと、メモリ内のすべてのログがログファイルに書き込まれます:"
 
 #: gui/builtinItemStatsViews/itemCompare.py:155
 #: gui/builtinStatsViews/priceViewFull.py:40
@@ -2933,19 +2933,19 @@ msgstr "プローブサイズ: %.3f"
 
 #: gui/targetProfileEditor.py:372
 msgid "Profiles exported to clipboard"
-msgstr ""
+msgstr "クリップボードにプロファイルをエクスポートしました"
 
 #: gui/targetProfileEditor.py:352
 msgid "Profiles successfully imported from clipboard"
-msgstr ""
+msgstr "プロファイルをクリップボードからインポートしました"
 
 #: gui/builtinShipBrowser/fitItem.py:230
 msgid "Project onto Active Fit"
-msgstr ""
+msgstr "アクティブフィットにプロジェクトを作成"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:61
 msgid "Project onto Fit"
-msgstr ""
+msgstr "フィットにプロジェクトする"
 
 #: gui/builtinContextMenus/itemProject.py:34
 #, python-brace-format
@@ -2954,14 +2954,14 @@ msgstr ""
 
 #: gui/additionsPane.py:81
 msgid "Projected"
-msgstr ""
+msgstr "プロジェクト"
 
 #: gui/builtinAdditionPanes/projectedView.py:304
 #: gui/builtinAdditionPanes/projectedView.py:314
 #: gui/builtinAdditionPanes/projectedView.py:319
 #: gui/builtinAdditionPanes/projectedView.py:324
 msgid "Projected Item"
-msgstr ""
+msgstr "計画されたアイテム"
 
 #: eos/saveddata/damagePattern.py:74 eos/saveddata/damagePattern.py:75
 #: eos/saveddata/damagePattern.py:76 eos/saveddata/damagePattern.py:77
@@ -2970,7 +2970,7 @@ msgstr ""
 #: eos/saveddata/damagePattern.py:82 eos/saveddata/damagePattern.py:83
 #: eos/saveddata/damagePattern.py:84 eos/saveddata/damagePattern.py:85
 msgid "Projectile Ammo"
-msgstr ""
+msgstr "プロジェクタイル弾"
 
 #: gui/itemStats.py:200
 msgid "Properties"
@@ -2978,15 +2978,15 @@ msgstr "プロパティ"
 
 #: gui/builtinContextMenus/shipModeChange.py:19
 msgid "Propulsion"
-msgstr ""
+msgstr "推進"
 
 #: eos/saveddata/damagePattern.py:78
 msgid "Proton"
-msgstr ""
+msgstr "陽子"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:49
 msgid "Proxy settings"
-msgstr ""
+msgstr "プロキシ設定"
 
 #: graphs/style.py:58
 msgid "Purple"
@@ -2994,15 +2994,15 @@ msgstr "紫"
 
 #: gui/builtinContextMenus/envEffectAdd.py:222
 msgid "PvP Weather"
-msgstr ""
+msgstr "PvP模様"
 
 #: gui/aboutData.py:49
 msgid "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of accuracy. Pyfa can run on all platforms where Python and wxWidgets are supported."
-msgstr ""
+msgstr "Pyfa(Python Fitting Assistant) は、非常に高精度でEVE-Online SciFi（Science Fiction）MMORPG用のフィットを作成・シミュレーションできるオープンソースのスタンドアロンアプリケーションです。 PyfaはPythonとwxWidgetがサポートされているすべてのプラットフォームで動作します。"
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:44
 msgid "Pyfa Update checks"
-msgstr ""
+msgstr "Pyfaアップデートのチェック"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:15
 msgid "Pyfa can automatically check and notify you of new releases. This feature is toggled in the Network settings. Here, you may allow pre-release notifications and view suppressed release notifications, if any."
@@ -3027,7 +3027,7 @@ msgstr ""
 
 #: eos/saveddata/fit.py:402
 msgid "Radar"
-msgstr ""
+msgstr "レーダー"
 
 #: eos/saveddata/damagePattern.py:45
 msgid "Radio"
@@ -3035,7 +3035,7 @@ msgstr "ラジオ"
 
 #: gui/targetProfileEditor.py:126
 msgid "Radius"
-msgstr ""
+msgstr "半径"
 
 #: gui/builtinItemStatsViews/itemMutator.py:54
 msgid "Random stats"
@@ -3087,7 +3087,7 @@ msgstr "更新"
 
 #: gui/characterSelection.py:68
 msgid "Refresh Skills"
-msgstr ""
+msgstr "スキル更新"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:86
 msgid "Reinforced"
@@ -3130,7 +3130,7 @@ msgstr ""
 
 #: graphs/data/fitRemoteReps/graph.py:53
 msgid "Repair speed"
-msgstr ""
+msgstr "修復速度"
 
 #: gui/copySelectDialog.py:50
 msgid "Replace items by cheaper alternatives"
@@ -3150,7 +3150,7 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemMutator.py:51
 msgid "Reset defaults"
-msgstr ""
+msgstr "デフォルトにリセット"
 
 #: gui/builtinContextMenus/resistMode.py:41
 msgid "Resist Mode"
@@ -3168,11 +3168,11 @@ msgstr "レジスタンス"
 #: gui/builtinStatsViews/resourcesViewFull.py:84
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:42
 msgid "Resources"
-msgstr ""
+msgstr "リソース"
 
 #: gui/builtinItemStatsViews/itemMutator.py:57
 msgid "Revert changes"
-msgstr ""
+msgstr "変更を元に戻す"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Revert to {}"
@@ -3244,15 +3244,15 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAttributes.py:117
 msgid "Save CSV file"
-msgstr ""
+msgstr "CSVファイルを保存"
 
 #: gui/mainMenuBar.py:114
 msgid "Save Character &As..."
-msgstr ""
+msgstr "名前を付けてキャラクターを保存..."
 
 #: gui/characterEditor.py:282
 msgid "Save Character As..."
-msgstr ""
+msgstr "名前を付けてキャラクターを保存..."
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:48
 #: gui/mainFrame.py:465
@@ -3286,7 +3286,7 @@ msgstr ""
 #: gui/characterEditor.py:356
 #, python-brace-format
 msgid "Sec Status: {0:.2f}"
-msgstr ""
+msgstr "セキュリティステータス: {0:.2f}"
 
 #: gui/characterEditor.py:914
 msgid "Security Status is used in some CONCORD hull calculations"
