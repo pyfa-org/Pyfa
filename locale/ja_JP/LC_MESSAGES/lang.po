@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-10-30 20:14\n"
+"PO-Revision-Date: 2022-10-31 20:47\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -2950,7 +2950,7 @@ msgstr "フィットにプロジェクトする"
 #: gui/builtinContextMenus/itemProject.py:34
 #, python-brace-format
 msgid "Project {0} onto Fit"
-msgstr ""
+msgstr "プロジェクト {0} をフィットに適用する"
 
 #: gui/additionsPane.py:81
 msgid "Projected"
@@ -3006,24 +3006,25 @@ msgstr "Pyfaアップデートのチェック"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:15
 msgid "Pyfa can automatically check and notify you of new releases. This feature is toggled in the Network settings. Here, you may allow pre-release notifications and view suppressed release notifications, if any."
-msgstr ""
+msgstr "Pyfaは自動的に新しいリリースを確認し、通知します。この機能はネットワーク設定で変更できます。 同じように、プレリリース通知を許可したり、リリース通知を抑制することもできます。"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:69
 msgid "Pyfa language selection disabled. Please check if .mo files have been generated.\n"
 "Refer to locale/README.md for info."
-msgstr ""
+msgstr "言語の選択が無効です。.moファイルが生成されているかどうかを確認してください。\n"
+"詳しくはlocale/README.mdを参照してください。"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:129
 msgid "Quafe hold"
-msgstr ""
+msgstr "クァフェホールド"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:153
 msgid "Quantity of active items"
-msgstr ""
+msgstr "アクティブなアイテムの数量"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:153
 msgid "Quantity of all items"
-msgstr ""
+msgstr "すべてのアイテムの数量"
 
 #: eos/saveddata/fit.py:402
 msgid "Radar"
@@ -3039,7 +3040,7 @@ msgstr "半径"
 
 #: gui/builtinItemStatsViews/itemMutator.py:54
 msgid "Random stats"
-msgstr ""
+msgstr "ランダムなステータス"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:63
 msgid "Range"
@@ -3056,7 +3057,7 @@ msgstr "元: %d HP"
 
 #: gui/mainFrame.py:652
 msgid "Re-enabling fitting restrictions for this fit will also remove any illegal items from the fit. Do you want to continue?"
-msgstr ""
+msgstr "このフィット制限を再有効にすると、不正なアイテムもフィットから削除されます。続行しますか？"
 
 #: gui/builtinShipBrowser/navigationPanel.py:56
 #: gui/builtinShipBrowser/navigationPanel.py:129
@@ -3065,11 +3066,11 @@ msgstr "最近のフィット"
 
 #: gui/builtinMarketBrowser/marketTree.py:37
 msgid "Recently Used Items"
-msgstr ""
+msgstr "最近使用したアイテム"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:43
 msgid "Recharge rates"
-msgstr ""
+msgstr "リチャージ率"
 
 #: graphs/style.py:52
 msgid "Red"
@@ -3077,7 +3078,7 @@ msgstr "赤"
 
 #: gui/mainMenuBar.py:84
 msgid "Redo the most recent undone action"
-msgstr ""
+msgstr "直前の動作をやり直す"
 
 #: gui/builtinItemStatsViews/itemAttributes.py:62
 #: gui/builtinItemStatsViews/itemAffectedBy.py:77
@@ -3091,7 +3092,7 @@ msgstr "スキル更新"
 
 #: gui/builtinStatsViews/rechargeViewFull.py:86
 msgid "Reinforced"
-msgstr ""
+msgstr "補強済み"
 
 #: graphs/data/fitRemoteReps/graph.py:62
 msgid "Reload ancillary RRs"
@@ -3118,7 +3119,7 @@ msgstr ""
 #: gui/builtinContextMenus/itemRemove.py:42
 #, python-brace-format
 msgid "Remove {item}{stack}"
-msgstr ""
+msgstr "{item}{stack} を削除"
 
 #: gui/builtinShipBrowser/fitItem.py:108
 msgid "Rename"
@@ -3126,7 +3127,7 @@ msgstr "名前を変更"
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:118
 msgid "Reopen previous fits on startup"
-msgstr ""
+msgstr "起動時に以前のFITを再開する"
 
 #: graphs/data/fitRemoteReps/graph.py:53
 msgid "Repair speed"
@@ -3134,11 +3135,11 @@ msgstr "修復速度"
 
 #: gui/copySelectDialog.py:50
 msgid "Replace items by cheaper alternatives"
-msgstr ""
+msgstr "より安い価格のアイテムで交換する"
 
 #: gui/itemStats.py:185
 msgid "Requirements"
-msgstr ""
+msgstr "必要条件"
 
 #: gui/builtinContextMenus/moduleSpool.py:98
 msgid "Reset"
@@ -3146,7 +3147,7 @@ msgstr "リセット"
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:76
 msgid "Reset Suppression"
-msgstr ""
+msgstr "ノイズ抑制"
 
 #: gui/builtinItemStatsViews/itemMutator.py:51
 msgid "Reset defaults"
@@ -3176,7 +3177,7 @@ msgstr "変更を元に戻す"
 
 #: gui/builtinContextMenus/moduleMutations.py:33
 msgid "Revert to {}"
-msgstr ""
+msgstr "{} に復元"
 
 #: gui/builtinViewColumns/baseName.py:63
 msgid "Rig"
@@ -3184,23 +3185,23 @@ msgstr "リグ"
 
 #: eos/saveddata/damagePattern.py:108 eos/saveddata/damagePattern.py:126
 msgid "Rogue Drone"
-msgstr ""
+msgstr "ローグ・ドローン"
 
 #: eos/saveddata/damagePattern.py:160 eos/saveddata/targetProfile.py:231
 msgid "Rogue Drone Entities"
-msgstr ""
+msgstr "ローグ・ドローンエンティティ"
 
 #: eos/saveddata/targetProfile.py:63 eos/saveddata/targetProfile.py:69
 msgid "Rogue Drones"
-msgstr ""
+msgstr "ローグ・ドローン"
 
 #: gui/builtinItemStatsViews/itemEffects.py:34
 msgid "Run Time"
-msgstr ""
+msgstr "実行時間"
 
 #: gui/esiFittings.py:368
 msgid "SSO Character Management"
-msgstr ""
+msgstr "SSO キャラクター管理"
 
 #: gui/ssoLogin.py:15 gui/ssoLogin.py:49
 msgid "SSO Login"
@@ -3216,7 +3217,7 @@ msgstr ""
 
 #: locale_test/getTextLocale.py:4
 msgid "Sample Title Text English"
-msgstr ""
+msgstr "サンプルタイトルテキスト英語"
 
 #: eos/saveddata/damagePattern.py:101 eos/saveddata/targetProfile.py:192
 #: eos/saveddata/targetProfile.py:195 eos/saveddata/targetProfile.py:198
@@ -3240,7 +3241,7 @@ msgstr "サンシャ国"
 
 #: gui/mainFrame.py:858
 msgid "Save Backup As..."
-msgstr ""
+msgstr "バックアップを名前を付けて保存..."
 
 #: gui/builtinItemStatsViews/itemAttributes.py:117
 msgid "Save CSV file"
@@ -3257,11 +3258,11 @@ msgstr "名前を付けてキャラクターを保存..."
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:48
 #: gui/mainFrame.py:465
 msgid "Save Fitting As..."
-msgstr ""
+msgstr "名前を付けてフィットを保存..."
 
 #: gui/propertyEditor.py:130
 msgid "Save Overrides As..."
-msgstr ""
+msgstr "上書き保存..."
 
 #: gui/builtinContextMenus/implantSetSave.py:27
 msgid "Save as New Implant Set"
@@ -3281,7 +3282,7 @@ msgstr ""
 
 #: gui/builtinShipBrowser/navigationPanel.py:61
 msgid "Search fittings"
-msgstr ""
+msgstr "フィットを検索"
 
 #: gui/characterEditor.py:356
 #, python-brace-format
@@ -3329,27 +3330,27 @@ msgstr ""
 
 #: gui/builtinViewColumns/baseName.py:64
 msgid "Service"
-msgstr ""
+msgstr "サービス"
 
 #: gui/characterEditor.py:907
 msgid "Set Security Status"
-msgstr ""
+msgstr "セキュリティ ステータスをセット"
 
 #: gui/builtinPreferenceViews/pyfaContextMenuPreferences.py:41
 msgid "Set as Damage Pattern"
-msgstr ""
+msgstr "ダメージパターンとして設定"
 
 #: gui/builtinPreferenceViews/pyfaHTMLExportPreferences.py:53
 msgid "Set export destination"
-msgstr ""
+msgstr "エクスポート先を設定"
 
 #: gui/builtinContextMenus/ammoToDmgPattern.py:32
 msgid "Set {} as Damage Pattern"
-msgstr ""
+msgstr "ダメージパターンとして {} を設定する"
 
 #: gui/setEditor.py:229
 msgid "Sets exported to clipboard"
-msgstr ""
+msgstr "クリップボードにコピーしました"
 
 #: gui/characterEditor.py:326
 msgid "Setting an Alpha clone does not replace the character's skills, but rather caps them to Alpha levels."
@@ -3553,7 +3554,7 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:22
 msgid "Statistics Panel"
-msgstr ""
+msgstr "状態パネル"
 
 #: gui/builtinContextMenus/graphDmgDroneMode.py:45
 msgid "Stick to Attacker"
@@ -3588,7 +3589,7 @@ msgstr "サブシステム"
 
 #: gui/characterEditor.py:901
 msgid "Success"
-msgstr ""
+msgstr "成功"
 
 #: gui/characterEditor.py:901
 msgid "Successfully fetched skills"
