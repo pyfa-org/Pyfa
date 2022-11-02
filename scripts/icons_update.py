@@ -59,8 +59,6 @@ copyfile(graphics_file, os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 import graphicIDsLoader
 
-print(dir(graphicIDsLoader))
-
 graphics = graphicIDsLoader.load(os.path.join(to_path, 'graphicIDs.fsdbinary'))
 
 graphics_py_ob = {}
@@ -216,8 +214,6 @@ if toadd:
         for fname in sorted(missing):
             print(('    {}'.format(fname)))
 
-print(missing)
-
 print("Doing renders")
 
 needed.clear()
@@ -232,7 +228,7 @@ toupdate = existing.intersection(needed)
 toadd = needed.difference(existing)
 
 if toadd:
-    print(('Adding {} icons...'.format(len(toadd))))
+    print(('Adding {} renders...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
         try:
@@ -252,6 +248,6 @@ if toadd:
             fullpath = os.path.join(render_dir, fullname)
             icon.save(fullpath, 'png')
     if missing:
-        print(('  {} icons are missing in export:'.format(len(missing))))
+        print(('  {} renders are missing in export:'.format(len(missing))))
         for fname in sorted(missing):
             print(('    {}'.format(fname)))

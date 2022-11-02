@@ -4687,7 +4687,6 @@ class Effect1590(BaseEffect):
     missileSkillAoeVelocityBonus
 
     Used by:
-    Implants named like: Caldari Union Day Accuracy Booster (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
@@ -4824,7 +4823,7 @@ class Effect1615(BaseEffect):
     shipAdvancedSpaceshipCommandAgilityBonus
 
     Used by:
-    Items from market group: Ships > Capital Ships (41 of 41)
+    Items from market group: Ships > Capital Ships (45 of 45)
     """
 
     type = 'passive'
@@ -4858,7 +4857,7 @@ class Effect1617(BaseEffect):
 
     Used by:
     Ships from group: Carrier (4 of 4)
-    Ships from group: Dreadnought (8 of 8)
+    Ships from group: Dreadnought (12 of 12)
     Ships from group: Force Auxiliary (6 of 6)
     Ships from group: Supercarrier (6 of 6)
     Ships from group: Titan (7 of 7)
@@ -5278,7 +5277,6 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
-    Implants named like: Caldari Union Day Range Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -6825,7 +6823,6 @@ class Effect2297(BaseEffect):
     modifyShieldResonancePassivePostPercentPassive
 
     Used by:
-    Implants named like: Caldari Union Day Resistance Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
     """
 
@@ -7591,7 +7588,6 @@ class Effect2694(BaseEffect):
     falloffBonusEffectHybrids
 
     Used by:
-    Implants named like: Caldari Union Day Range Booster (4 of 4)
     Modules named like: Hybrid Ambit Extension (8 of 8)
     """
 
@@ -7647,7 +7643,6 @@ class Effect2697(BaseEffect):
     maxRangeBonusEffectHybrids
 
     Used by:
-    Implants named like: Caldari Union Day Range Booster (4 of 4)
     Modules named like: Hybrid Locus Coordinator (8 of 8)
     """
 
@@ -8362,7 +8357,6 @@ class Effect2802(BaseEffect):
     hybridWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Caldari Union Day Damage Booster (4 of 4)
     Modules named like: Hybrid Collision Accelerator (8 of 8)
     """
 
@@ -8562,7 +8556,6 @@ class Effect2851(BaseEffect):
     missileDMGBonusPassive
 
     Used by:
-    Implants named like: Caldari Union Day Damage Booster (4 of 4)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     """
 
@@ -18055,7 +18048,6 @@ class Effect5188(BaseEffect):
     trackingSpeedBonusEffectHybrids
 
     Used by:
-    Implants named like: Caldari Union Day Accuracy Booster (4 of 4)
     Modules named like: Hybrid Metastasis Adjuster (8 of 8)
     """
 
@@ -18984,8 +18976,9 @@ class Effect5310(BaseEffect):
     shipHybridTracking1GD2
 
     Used by:
-    Variations of ship: Catalyst (2 of 2)
     Ship: Algos
+    Ship: Catalyst
+    Ship: Eris
     """
 
     type = 'passive'
@@ -19037,7 +19030,8 @@ class Effect5317(BaseEffect):
     shipProjectileDamageMD1
 
     Used by:
-    Variations of ship: Thrasher (2 of 2)
+    Ship: Sabre
+    Ship: Thrasher
     """
 
     type = 'passive'
@@ -19054,7 +19048,8 @@ class Effect5318(BaseEffect):
     shipProjectileTracking1MD2
 
     Used by:
-    Variations of ship: Thrasher (2 of 2)
+    Ship: Sabre
+    Ship: Thrasher
     """
 
     type = 'passive'
@@ -24166,7 +24161,7 @@ class Effect6104(BaseEffect):
 
     Used by:
     Ships from group: Carrier (4 of 4)
-    Ships from group: Dreadnought (8 of 8)
+    Ships from group: Dreadnought (12 of 12)
     Ships from group: Force Auxiliary (6 of 6)
     Ships from group: Supercarrier (6 of 6)
     Ships from group: Titan (7 of 7)
@@ -27565,7 +27560,7 @@ class Effect6501(BaseEffect):
     shipBonusDreadnoughtA1DamageBonus
 
     Used by:
-    Ship: Revelation
+    Ships named like: Revelation (2 of 2)
     """
 
     type = 'passive'
@@ -27581,7 +27576,7 @@ class Effect6502(BaseEffect):
     shipBonusDreadnoughtA2ArmorResists
 
     Used by:
-    Ship: Revelation
+    Ships named like: Revelation (2 of 2)
     """
 
     type = 'passive'
@@ -27600,7 +27595,7 @@ class Effect6503(BaseEffect):
     shipBonusDreadnoughtA3CapNeed
 
     Used by:
-    Ship: Revelation
+    Ships named like: Revelation (2 of 2)
     """
 
     type = 'passive'
@@ -27616,7 +27611,7 @@ class Effect6504(BaseEffect):
     shipBonusDreadnoughtC1DamageBonus
 
     Used by:
-    Ship: Phoenix
+    Ships named like: Phoenix (2 of 2)
     """
 
     type = 'passive'
@@ -27636,7 +27631,7 @@ class Effect6505(BaseEffect):
     shipBonusDreadnoughtC2ShieldResists
 
     Used by:
-    Variations of ship: Phoenix (2 of 2)
+    Variations of ship: Phoenix (3 of 3)
     """
 
     type = 'passive'
@@ -27674,7 +27669,7 @@ class Effect6507(BaseEffect):
     shipBonusDreadnoughtG2ROFBonus
 
     Used by:
-    Variations of ship: Moros (2 of 2)
+    Variations of ship: Moros (3 of 3)
     """
 
     type = 'passive'
@@ -27690,7 +27685,7 @@ class Effect6508(BaseEffect):
     shipBonusDreadnoughtG3RepairTime
 
     Used by:
-    Ship: Moros
+    Ships named like: Moros (2 of 2)
     """
 
     type = 'passive'
@@ -27706,7 +27701,7 @@ class Effect6509(BaseEffect):
     shipBonusDreadnoughtM1DamageBonus
 
     Used by:
-    Ship: Naglfar
+    Variations of ship: Naglfar (2 of 2)
     """
 
     type = 'passive'
@@ -27722,7 +27717,7 @@ class Effect6510(BaseEffect):
     shipBonusDreadnoughtM2ROFBonus
 
     Used by:
-    Ship: Naglfar
+    Variations of ship: Naglfar (2 of 2)
     """
 
     type = 'passive'
@@ -29372,7 +29367,7 @@ class Effect6620(BaseEffect):
     shipBonusDreadnoughtC3ReloadBonus
 
     Used by:
-    Ship: Phoenix
+    Ships named like: Phoenix (2 of 2)
     """
 
     type = 'passive'
@@ -38539,6 +38534,489 @@ class Effect11359(BaseEffect):
                 ship.getModifiedItemAttr('shipBonusCBC3'), skill='Caldari Battlecruiser', **kwargs)
 
 
+class Effect11373(BaseEffect):
+    """
+    shipBonusDreadnoughtM1ArmorBoostAmount&ShieldBoostAmount
+
+    Used by:
+    Ship: Naglfar Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Repair Systems'), 'armorDamageAmount',
+            src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought', **kwargs)
+
+
+class Effect11374(BaseEffect):
+    """
+    shipBonusDreadnoughtA4EnergyWarfareAmountBonus
+
+    Used by:
+    Ship: Revelation Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in ('powerTransferAmount', 'maxRange'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.group.name == 'Energy Nosferatu', attr,
+                ship.getModifiedItemAttr('shipBonusDreadnoughtA4'), skill='Amarr Dreadnought', **kwargs)
+
+
+class Effect11375(BaseEffect):
+    """
+    shipBonusDreadnoughtA4EnergyWarfareRangeBonus
+
+    Used by:
+    Ship: Revelation Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'powerTransferRange',
+            ship.getModifiedItemAttr('shipBonusDreadnoughtA4'), skill='Amarr Dreadnought', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Neutralizer', 'energyNeutralizerRangeOptimal',
+            ship.getModifiedItemAttr('shipBonusDreadnoughtA4'), skill='Amarr Dreadnought', **kwargs)
+
+
+class Effect11376(BaseEffect):
+    """
+    shipBonusDreadnoughtG1OptimalRangeBonus
+
+    Used by:
+    Ship: Moros Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'), 'maxRange',
+            src.getModifiedItemAttr('shipBonusDreadnoughtG1'), skill='Gallente Dreadnought', **kwargs)
+
+
+class Effect11380(BaseEffect):
+    """
+    shipBonusDreadnoughtG1ArmorBoostAmount
+
+    Used by:
+    Ship: Moros Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Repair Systems'), 'armorDamageAmount',
+            src.getModifiedItemAttr('shipBonusDreadnoughtG1'), skill='Gallente Dreadnought', **kwargs)
+
+
+class Effect11381(BaseEffect):
+    """
+    shipBonusWarpScramblerRangeBonusG5
+
+    Used by:
+    Ship: Moros Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Scrambler', 'maxRange',
+            ship.getModifiedItemAttr('shipBonusDreadnoughtG5'), skill='Gallente Dreadnought', **kwargs)
+
+
+class Effect11382(BaseEffect):
+    """
+    shipBonusDreadnoughtC1EwTargetPainter
+
+    Used by:
+    Ship: Phoenix Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Target Painter', 'signatureRadiusBonus',
+            src.getModifiedItemAttr('shipBonusDreadnoughtC1'), skill='Caldari Dreadnought', **kwargs)
+
+
+class Effect11387(BaseEffect):
+    """
+    shipHybridDamageBonusGalNavyDestroyer
+
+    Used by:
+    Ship: Catalyst Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerGallente1'), skill='Gallente Destroyer', **kwargs)
+
+
+class Effect11388(BaseEffect):
+    """
+    shipBonusArmorRepairGalNavyDestroyer
+
+    Used by:
+    Ship: Catalyst Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerGallente2'), skill='Gallente Destroyer', **kwargs)
+
+
+class Effect11390(BaseEffect):
+    """
+    armorUpgradesMassPenaltyReductionBonusGalNavyDestroyer
+
+    Used by:
+    Ship: Catalyst Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerGallente3'), skill='Gallente Destroyer', **kwargs)
+
+
+class Effect11391(BaseEffect):
+    """
+    shipHybridDamageBonusCalNavyDestroyer
+
+    Used by:
+    Ship: Cormorant Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerCaldari1'), skill='Caldari Destroyer', **kwargs)
+
+
+class Effect11392(BaseEffect):
+    """
+    shipHybridRangeBonusCalNavyDestroyer
+
+    Used by:
+    Ship: Cormorant Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerCaldari2'), skill='Caldari Destroyer', **kwargs)
+
+
+class Effect11393(BaseEffect):
+    """
+    shipHybridRangeBonusGalNavyDestroyer
+
+    Used by:
+    Ship: Catalyst Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerGallente4'), **kwargs)
+
+
+class Effect11394(BaseEffect):
+    """
+    shipHybridFallOffGalNavyDestroyer
+
+    Used by:
+    Ship: Catalyst Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerGallente5'), **kwargs)
+
+
+class Effect11395(BaseEffect):
+    """
+    shipBonusShieldBoosterCalNavyDestroyer
+
+    Used by:
+    Ship: Cormorant Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('shipBonusNavyDestroyerCaldari3'), skill='Caldari Destroyer', **kwargs)
+
+
+class Effect11396(BaseEffect):
+    """
+    shipHybridRangeBonus2CalNavyDestroyer
+
+    Used by:
+    Ship: Cormorant Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerCaldari4'), **kwargs)
+
+
+class Effect11397(BaseEffect):
+    """
+    shipHybridFallOffCalNavyDestroyer
+
+    Used by:
+    Ship: Cormorant Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerCaldari5'), **kwargs)
+
+
+class Effect11398(BaseEffect):
+    """
+    shipProjectileDamageMinNavyDestroyer
+
+    Used by:
+    Ship: Thrasher Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerMinmatar1'), skill='Minmatar Destroyer', **kwargs)
+
+
+class Effect11399(BaseEffect):
+    """
+    shipProjectileRofMinNavyDestroyer
+
+    Used by:
+    Ship: Thrasher Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'speed',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerMinmatar2'), skill='Minmatar Destroyer', **kwargs)
+
+
+class Effect11400(BaseEffect):
+    """
+    shipBonusMWDSignatureRadiusMinNavyDestroyer
+
+    Used by:
+    Ship: Thrasher Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering'), 'signatureRadiusBonus',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerMinmatar3'), skill='Minmatar Destroyer', **kwargs)
+
+
+class Effect11401(BaseEffect):
+    """
+    shipProjectileRangeBonusMinNavyDestroyer
+
+    Used by:
+    Ship: Thrasher Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerMinmatar4'), **kwargs)
+
+
+class Effect11402(BaseEffect):
+    """
+    shipProjectileFallOffMinNavyDestroyer
+
+    Used by:
+    Ship: Thrasher Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerMinmatar5'), **kwargs)
+
+
+class Effect11404(BaseEffect):
+    """
+    shipArmorHpAmaNavyDestroyer
+
+    Used by:
+    Ship: Coercer Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'armorHP', implant.getModifiedItemAttr('shipBonusNavyDestroyerAmarr1'),
+            skill='Amarr Destroyer', **kwargs)
+
+
+class Effect11405(BaseEffect):
+    """
+    shipBonusSmallEnergyTurretDamageAmaNavyDestroyer
+
+    Used by:
+    Ship: Coercer Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerAmarr2'), skill='Amarr Destroyer', **kwargs)
+
+
+class Effect11406(BaseEffect):
+    """
+    shipLaserCap1AmaNavyIssue
+
+    Used by:
+    Ship: Coercer Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'capacitorNeed',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerAmarr3'), skill='Amarr Destroyer', **kwargs)
+
+
+class Effect11407(BaseEffect):
+    """
+    shipNeutCap1AmaNavyDestroyer
+
+    Used by:
+    Ship: Coercer Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Neutralizer', 'capacitorNeed',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerAmarr4'), skill='Amarr Destroyer', **kwargs)
+
+
+class Effect11408(BaseEffect):
+    """
+    shipEnergyNeutralizerTransferAmountBonusAmaNavyDestroyer
+
+    Used by:
+    Ship: Coercer Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Neutralizer', 'energyNeutralizerAmount',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerAmarr5'), skill='Amarr Destroyer', **kwargs)
+
+
+class Effect11410(BaseEffect):
+    """
+    shipBonusSETFalloffAmaNavyDestroyer
+
+    Used by:
+    Ship: Coercer Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerAmarr7'), **kwargs)
+
+
 class Effect11411(BaseEffect):
     """
     shipMissileDmgMC2
@@ -38890,3 +39368,54 @@ class Effect11432(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
             ship.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates', **kwargs)
+
+
+class Effect11446(BaseEffect):
+    """
+    shipBonusDreadnoughtG4DamageBonus
+
+    Used by:
+    Ship: Moros Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Hybrid Turret'), 'damageMultiplier',
+            src.getModifiedItemAttr('shipBonusDreadnoughtG4'), skill='Gallente Dreadnought', **kwargs)
+
+
+class Effect11450(BaseEffect):
+    """
+    shipBonusSETOptimalAmarNavyDestroyer6
+
+    Used by:
+    Ship: Coercer Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusNavyDestroyerAmarr6'), **kwargs)
+
+
+class Effect11452(BaseEffect):
+    """
+    shipBonusWarpScramblerStrengthG5
+
+    Used by:
+    Ship: Moros Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Scrambler', 'warpScrambleStrength',
+            ship.getModifiedItemAttr('shipBonusDreadnoughtG5'), skill='Gallente Dreadnought', **kwargs)

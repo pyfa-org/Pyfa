@@ -11971,5 +11971,8 @@
   "25468": {
     "iconFile": "res:/ui/texture/classes/fitting/cosmetics/corp_logo_128px.png", 
     "iconType": "png"
+  }, 
+  "25475": {
+    "iconFile": "res:/ui/texture/icons/evermarks.png"
   }
 }

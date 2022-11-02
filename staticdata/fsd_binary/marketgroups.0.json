@@ -30707,7 +30707,7 @@
   "1828": {
     "description_de": "Blueprints für mobile Depots", 
     "description_en-us": "Blueprints for Mobile Depots", 
-    "description_es": "Planos para almacenes móviles.", 
+    "description_es": "Planos para depósitos móviles", 
     "description_fr": "Plans de construction de dépôts mobiles", 
     "description_it": "Blueprints for Mobile Depots", 
     "description_ja": "移動式貯蔵所のブループリント", 
@@ -30719,7 +30719,7 @@
     "iconID": 2703, 
     "name_de": "Mobile Depots", 
     "name_en-us": "Mobile Depots", 
-    "name_es": "Almacenes móviles", 
+    "name_es": "Depósitos móviles", 
     "name_fr": "Dépôts mobiles", 
     "name_it": "Mobile Depots", 
     "name_ja": "移動式貯蔵所", 
@@ -30784,7 +30784,7 @@
     "iconID": 16, 
     "name_de": "Mobile Depots", 
     "name_en-us": "Mobile Depots", 
-    "name_es": "Almacenes móviles", 
+    "name_es": "Depósitos móviles", 
     "name_fr": "Dépôts mobiles", 
     "name_it": "Mobile Depots", 
     "name_ja": "移動式貯蔵所", 
@@ -44163,5 +44163,20 @@
     "name_zh": "Gallente Federation", 
     "nameID": 636421, 
     "parentGroupID": 1897
+  }, 
+  "3478": {
+    "hasTypes": 1, 
+    "iconID": 24411, 
+    "name_de": "Masks", 
+    "name_en-us": "Masks", 
+    "name_es": "Masks", 
+    "name_fr": "Masks", 
+    "name_it": "Masks", 
+    "name_ja": "Masks", 
+    "name_ko": "Masks", 
+    "name_ru": "Masks", 
+    "name_zh": "Masks", 
+    "nameID": 638794, 
+    "parentGroupID": 1407
   }
 }

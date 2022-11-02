@@ -117,8 +117,7 @@ def update_db():
         for k, v in compiled_data.items():
             row = {}
             row.update(v)
-            if keyIdName not in row:
-                row[keyIdName] = int(k)
+            row[keyIdName] = int(k)
             data.append(row)
         return data
 
