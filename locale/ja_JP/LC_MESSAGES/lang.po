@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: pyfa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-28 15:28+0300\n"
-"PO-Revision-Date: 2022-11-01 21:03\n"
+"PO-Revision-Date: 2022-11-02 21:01\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -337,7 +337,7 @@ msgstr "機敏性:\t%.3fx"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:87
 msgid "Align time"
-msgstr "調整時間"
+msgstr "軸合わせ時間"
 
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:224
 #, python-format
@@ -1332,7 +1332,7 @@ msgstr "EFT テキスト・フィッティングファイル"
 #: gui/builtinStatsViews/resistancesViewFull.py:96
 #: gui/builtinStatsViews/resistancesViewFull.py:187
 msgid "EHP"
-msgstr "EHP（ Effective Hit Point/実質ヒットポイント）"
+msgstr "EHP"
 
 #: eos/saveddata/damagePattern.py:39
 #: gui/builtinContextMenus/moduleAmmoChange.py:24
@@ -3381,7 +3381,7 @@ msgstr "シールド容量"
 
 #: graphs/data/fitShieldRegen/graph.py:62
 msgid "Shield regen"
-msgstr ""
+msgstr "シールド再生"
 
 #: gui/builtinStatsViews/resistancesViewFull.py:112
 msgid "Shield resistance"
@@ -3550,7 +3550,7 @@ msgstr "開始上限額"
 
 #: graphs/data/fitShieldRegen/graph.py:46
 msgid "Starting shield amount"
-msgstr ""
+msgstr "シールド開始量"
 
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:22
 msgid "Statistics Panel"
@@ -3566,7 +3566,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:145 eos/saveddata/damagePattern.py:148
 msgid "Subcaps"
-msgstr ""
+msgstr "サブキャップ"
 
 #: eos/saveddata/damagePattern.py:136
 #, no-python-format
@@ -3610,7 +3610,7 @@ msgstr ""
 
 #: gui/builtinStatsViews/rechargeViewFull.py:87
 msgid "Sustained"
-msgstr ""
+msgstr "永続化"
 
 #: eos/saveddata/targetProfile.py:46 eos/saveddata/targetProfile.py:47
 #: eos/saveddata/targetProfile.py:48 eos/saveddata/targetProfile.py:49
@@ -3636,7 +3636,7 @@ msgstr ""
 #: gui/builtinViews/fittingView.py:660 gui/builtinViewColumns/baseName.py:102
 #: gui/builtinContextMenus/shipModeChange.py:37
 msgid "Tactical Mode"
-msgstr ""
+msgstr "戦術モード"
 
 #: eos/saveddata/damagePattern.py:121 eos/saveddata/targetProfile.py:91
 msgid "Talos"
@@ -3648,7 +3648,7 @@ msgstr "ターゲット"
 
 #: gui/targetProfileEditor.py:86
 msgid "Target Profile"
-msgstr ""
+msgstr "ターゲットプロファイル"
 
 #: gui/targetProfileEditor.py:130
 msgid "Target Profile Editor"
@@ -3703,7 +3703,7 @@ msgstr "ターゲット"
 
 #: eos/saveddata/damagePattern.py:60
 msgid "Tetryon"
-msgstr ""
+msgstr "テトリオン"
 
 #: gui/mainFrame.py:809
 msgid "Text skills training file"
@@ -3715,15 +3715,15 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:44
 msgid "The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box."
-msgstr ""
+msgstr "キー入力とマーケット検索の間には遅延があります。マーケット検索ボックスを使う事で遅延を軽減できます。"
 
 #: gui/mainFrame.py:949
 msgid "The following error was generated"
-msgstr ""
+msgstr "次のエラーが発生しました："
 
 #: gui/mainFrame.py:893
 msgid "The following path is invalid or does not exist:"
-msgstr ""
+msgstr "次のパスが無効または存在しません："
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:64
 msgid "The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose will also be tried first, and if no data is available, global price will be used."
@@ -3731,15 +3731,15 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:53
 msgid "There is a release available which you have chosen to suppress. You can choose to reset notification suppression for this release, or download the new release from GitHub."
-msgstr ""
+msgstr "あなたが抑制することを選択した通知があります。 通知抑制をリセットするか、GitHub から新しいリリースをダウンロードする事で改善できます。"
 
 #: gui/characterEditor.py:463
 msgid "There was an error importing skills, please see log file"
-msgstr ""
+msgstr "スキルのインポートでエラーが発生しました。ログファイルを参照してください。"
 
 #: gui/esiFittings.py:230
 msgid "There was an error validating characters' SSO token. Please try logging into the character again to reset the token."
-msgstr ""
+msgstr "キャラクターの SSO トークンの検証中にエラーが発生しました。再ログインしトークンをリセットしてください。"
 
 #: gui/esiFittings.py:213
 msgid "There was an issue starting up the localized server, try setting Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login Authentication Method. If this doesn't fix the problem please file an issue on Github."
@@ -3758,25 +3758,28 @@ msgstr "Thermレジスタンス"
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:107
 msgid "This is a destructive action that will delete all cached prices out of the database.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "キャッシュされたすべての価格を削除します。\n"
+"本当に実行しますか？"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:97
 msgid "This is a destructive action that will delete all damage pattern profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "全てのダメージパターンプロファイルを削除します。\n"
+"本当に実行しますか？"
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:102
 msgid "This is a destructive action that will delete all target profiles.\n"
 "Are you sure you want to do this?"
-msgstr ""
+msgstr "全てのターゲットプロファイルを削除します。\n"
+"本当に実行しますか？"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
 msgid "This option goes through EVE SSO directly, but requires more configuration. Use this if pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io."
-msgstr ""
+msgstr "このオプションは EVE SSO を使用しますが、設定が必要です。 何らかの理由でネットワークがブロックされているか、pyfa.ioへの通信が遮断されています。"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
 msgid "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server."
-msgstr ""
+msgstr "このオプションは、ログインを許可するためにWebサイトからコピー＆ペーストします。 ローカルサーバーに問題がある場合に使用します。"
 
 #: gui/builtinPreferenceViews/pyfaEsiPreferences.py:47
 msgid "This options routes SSO Logins through pyfa.io, allowing you to easily login without any configuration. When in doubt, use this option."
@@ -3810,29 +3813,29 @@ msgstr ""
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:70
 msgid "Toggle Names"
-msgstr ""
+msgstr "名前の切り替え"
 
 #: gui/builtinItemStatsViews/itemAffectedBy.py:73
 msgid "Toggle View"
-msgstr ""
+msgstr "表示を切り替え"
 
 #: gui/builtinItemStatsViews/itemCompare.py:75
 msgid "Toggle view mode"
-msgstr ""
+msgstr "表示モードの切り替え"
 
 #: gui/builtinStatsViews/priceViewMinimal.py:57
 #: gui/builtinStatsViews/miningyieldViewFull.py:89
 #: gui/builtinStatsViews/priceViewFull.py:58
 msgid "Total"
-msgstr ""
+msgstr "合計"
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:76
 msgid "Total Price Includes"
-msgstr ""
+msgstr "合計価格"
 
 #: graphs/data/fitRemoteReps/graph.py:54
 msgid "Total repaired"
-msgstr ""
+msgstr "修理合計額"
 
 #: gui/builtinStatsViews/capacitorViewFull.py:67
 msgid "Total: "
@@ -3865,7 +3868,7 @@ msgstr ""
 
 #: eos/saveddata/damagePattern.py:65
 msgid "Tungsten"
-msgstr ""
+msgstr "タングステン"
 
 #: gui/builtinStatsViews/resourcesViewFull.py:111
 msgid "Turret hardpoints"
@@ -3873,7 +3876,7 @@ msgstr "タレットハードポイント"
 
 #: graphs/data/fitEwarStats/graph.py:40
 msgid "Turret optimal range reduction"
-msgstr ""
+msgstr "タレット最適射程減少"
 
 #: gui/builtinItemStatsViews/itemEffects.py:32
 msgid "Type"
@@ -3890,7 +3893,7 @@ msgstr "タイプ: {}"
 
 #: eos/saveddata/damagePattern.py:49
 msgid "Ultraviolet"
-msgstr ""
+msgstr "紫外線"
 
 #: gui/mainMenuBar.py:83
 msgid "Undo the most recent action"
@@ -4054,7 +4057,7 @@ msgstr ""
 
 #: graphs/style.py:59
 msgid "Yellow"
-msgstr ""
+msgstr "黄色"
 
 #: gui/builtinItemStatsViews/itemEffects.py:56
 msgid "Yes"
@@ -4162,7 +4165,7 @@ msgstr "pyfaユーザーパス:"
 
 #: gui/errorDialog.py:69
 msgid "pyfa error"
-msgstr ""
+msgstr "pyfaエラー"
 
 #: gui/errorDialog.py:76
 msgid "pyfa has experienced an unexpected issue. Below is a message that contains crucial \n"
@@ -4176,7 +4179,7 @@ msgstr ""
 
 #: gui/propertyEditor.py:108
 msgid "pyfa override file"
-msgstr ""
+msgstr "pyfaのファイルの上書き"
 
 #: gui/propertyEditor.py:131
 msgid "pyfa overrides"
@@ -4196,7 +4199,7 @@ msgstr ""
 
 #: eos/utils/stats.py:123
 msgid "thermal"
-msgstr ""
+msgstr "熱力学"
 
 #: gui/builtinContextMenus/itemMarketJump.py:44
 #, python-brace-format
@@ -4206,17 +4209,17 @@ msgstr "{0} マーケットグループ"
 #: gui/itemStats.py:87
 #, python-brace-format
 msgid "{context}Stats: {name}{debug_info}"
-msgstr ""
+msgstr "{context}状態: {name}{debug_info}"
 
 #: gui/pyfa_gauge.py:347
 #, python-brace-format
 msgid "{{0:.{0}f}} left"
-msgstr ""
+msgstr "{{0:.{0}f}} 残り"
 
 #: gui/pyfa_gauge.py:344
 #, python-brace-format
 msgid "{{0:.{0}f}} over"
-msgstr ""
+msgstr "{{0:.{0}f}} オーバー"
 
 #: gui/builtinContextMenus/moduleSpool.py:83
 msgid "{} (default)"
@@ -4238,5 +4241,5 @@ msgstr[0] "{} {} スロット"
 #: gui/builtinStatsViews/targetingMiscViewMinimal.py:220
 #, no-python-format, python-brace-format
 msgid "{}% chance to be jammed"
-msgstr ""
+msgstr "{}%の確率で妨害されます"
 
