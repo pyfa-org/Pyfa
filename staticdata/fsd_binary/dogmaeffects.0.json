@@ -63142,6 +63142,13 @@
         "modifiedAttributeID": 2294, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5248, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
@@ -91239,7 +91246,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 11374, 
-    "effectName": "shipBonusDreadnoughtA4EnergyWarfareAmountBonus", 
+    "effectName": "shipBonusDreadnoughtA4EnergyWarfareRangeAmountBonus", 
     "electronicChance": 0, 
     "guid": "", 
     "isAssistance": 0, 
@@ -91267,40 +91274,6 @@
     "published": 0, 
     "rangeChance": 0
   }, 
-  "11375": {
-    "disallowAutoRepeat": 0, 
-    "effectCategory": 0, 
-    "effectID": 11375, 
-    "effectName": "shipBonusDreadnoughtA4EnergyWarfareRangeBonus", 
-    "electronicChance": 0, 
-    "guid": "", 
-    "isAssistance": 0, 
-    "isOffensive": 0, 
-    "isWarpSafe": 0, 
-    "modifierInfo": [
-      {
-        "domain": "shipID", 
-        "func": "LocationGroupModifier", 
-        "groupID": 71, 
-        "modifiedAttributeID": 98, 
-        "modifyingAttributeID": 5214, 
-        "operation": 6, 
-        "skillTypeID": 3423
-      }, 
-      {
-        "domain": "shipID", 
-        "func": "LocationGroupModifier", 
-        "groupID": 68, 
-        "modifiedAttributeID": 91, 
-        "modifyingAttributeID": 5214, 
-        "operation": 6, 
-        "skillTypeID": 3423
-      }
-    ], 
-    "propulsionChance": 0, 
-    "published": 0, 
-    "rangeChance": 0
-  }, 
   "11376": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -91319,81 +91292,6 @@
         "modifyingAttributeID": 2289, 
         "operation": 6, 
         "skillTypeID": 21666
-      }
-    ], 
-    "propulsionChance": 0, 
-    "published": 0, 
-    "rangeChance": 0
-  }, 
-  "11377": {
-    "disallowAutoRepeat": 0, 
-    "effectCategory": 0, 
-    "effectID": 1587, 
-    "effectName": "capitalTurretSkillHybridOptimalRange", 
-    "electronicChance": 0, 
-    "guid": "", 
-    "iconID": 0, 
-    "isAssistance": 0, 
-    "isOffensive": 0, 
-    "isWarpSafe": 0, 
-    "modifierInfo": [
-      {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 64, 
-        "modifyingAttributeID": 292, 
-        "operation": 6, 
-        "skillTypeID": 21666
-      }
-    ], 
-    "propulsionChance": 0, 
-    "published": 0, 
-    "rangeChance": 0
-  }, 
-  "11378": {
-    "disallowAutoRepeat": 0, 
-    "effectCategory": 0, 
-    "effectID": 2868, 
-    "effectName": "armorDamageAmountBonusCapitalArmorRepairers", 
-    "electronicChance": 0, 
-    "guid": "None", 
-    "iconID": 0, 
-    "isAssistance": 0, 
-    "isOffensive": 0, 
-    "isWarpSafe": 0, 
-    "modifierInfo": [
-      {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 84, 
-        "modifyingAttributeID": 806, 
-        "operation": 6, 
-        "skillTypeID": 21803
-      }
-    ], 
-    "propulsionChance": 0, 
-    "published": 0, 
-    "rangeChance": 0, 
-    "sfxName": "None"
-  }, 
-  "11379": {
-    "disallowAutoRepeat": 0, 
-    "effectCategory": 0, 
-    "effectID": 6509, 
-    "effectName": "shipBonusDreadnoughtM1DamageBonus", 
-    "electronicChance": 0, 
-    "guid": "", 
-    "isAssistance": 0, 
-    "isOffensive": 0, 
-    "isWarpSafe": 0, 
-    "modifierInfo": [
-      {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 64, 
-        "modifyingAttributeID": 2292, 
-        "operation": 6, 
-        "skillTypeID": 21667
       }
     ], 
     "propulsionChance": 0, 
@@ -92718,6 +92616,49 @@
     "published": 0, 
     "rangeChance": 0
   }, 
+  "11445": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 7, 
+    "effectID": 11445, 
+    "effectName": "systemSensorStrengthBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 208, 
+        "modifyingAttributeID": 1851, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 209, 
+        "modifyingAttributeID": 1851, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 210, 
+        "modifyingAttributeID": 1851, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 211, 
+        "modifyingAttributeID": 1851, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
   "11446": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -92938,6 +92879,47 @@
         "groupID": 52, 
         "modifiedAttributeID": 105, 
         "modifyingAttributeID": 5216, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11453": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 2674, 
+    "distribution": 2, 
+    "durationAttributeID": 2490, 
+    "effectCategory": 2, 
+    "effectID": 11453, 
+    "effectName": "npcBehaviorFakeMiningLaser", 
+    "electronicChance": 0, 
+    "guid": "effects.Laser", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 2673, 
+    "rangeChance": 0
+  }, 
+  "11454": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11454, 
+    "effectName": "shipBonusGrapplerFalloffM4", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 1672, 
+        "modifiedAttributeID": 2044, 
+        "modifyingAttributeID": 5248, 
         "operation": 6
       }
     ], 

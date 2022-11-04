@@ -12396,6 +12396,7 @@ class Effect3993(BaseEffect):
     Used by:
     Celestials named like: Class Black Hole Effects (6 of 6)
     Celestials named like: Class Magnetar Effects (6 of 6)
+    Celestial: Turnur Aftermath
     """
 
     runTime = 'early'
@@ -35591,6 +35592,7 @@ class Effect7237(BaseEffect):
 
     Used by:
     Celestial: Dazh Liminality Locus
+    Celestial: Turnur Aftermath
     """
 
     runTime = 'early'
@@ -36374,6 +36376,23 @@ class Effect8076(BaseEffect):
     @staticmethod
     def handler(fit, beacon, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('thermalDamageResonance', beacon.getModifiedItemAttr('thermalDamageResistanceBonus'),
+                               stackingPenalties=True, **kwargs)
+
+
+class Effect8082(BaseEffect):
+    """
+    systemScanResolutionBonus
+
+    Used by:
+    Celestial: Turnur Aftermath
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('scanResolution', beacon.getModifiedItemAttr('scanResolutionBonus'),
                                stackingPenalties=True, **kwargs)
 
 
@@ -38556,7 +38575,7 @@ class Effect11373(BaseEffect):
 
 class Effect11374(BaseEffect):
     """
-    shipBonusDreadnoughtA4EnergyWarfareAmountBonus
+    shipBonusDreadnoughtA4EnergyWarfareRangeAmountBonus
 
     Used by:
     Ship: Revelation Navy Issue
@@ -38570,26 +38589,6 @@ class Effect11374(BaseEffect):
             fit.modules.filteredItemBoost(
                 lambda mod: mod.item.group.name == 'Energy Nosferatu', attr,
                 ship.getModifiedItemAttr('shipBonusDreadnoughtA4'), skill='Amarr Dreadnought', **kwargs)
-
-
-class Effect11375(BaseEffect):
-    """
-    shipBonusDreadnoughtA4EnergyWarfareRangeBonus
-
-    Used by:
-    Ship: Revelation Navy Issue
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'powerTransferRange',
-            ship.getModifiedItemAttr('shipBonusDreadnoughtA4'), skill='Amarr Dreadnought', **kwargs)
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Energy Neutralizer', 'energyNeutralizerRangeOptimal',
-            ship.getModifiedItemAttr('shipBonusDreadnoughtA4'), skill='Amarr Dreadnought', **kwargs)
 
 
 class Effect11376(BaseEffect):
@@ -39370,6 +39369,24 @@ class Effect11432(BaseEffect):
             ship.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates', **kwargs)
 
 
+class Effect11445(BaseEffect):
+    """
+    systemSensorStrengthBonus
+
+    Used by:
+    Celestial: Turnur Aftermath
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        for sensor_type in ('Gravimetric', 'Ladar', 'Magnetometric', 'Radar'):
+            fit.ship.boostItemAttr(f'scan{sensor_type}Strength', beacon.getModifiedItemAttr('sensorStrengthBonus'),
+                                   stackingPenalties=True, **kwargs)
+
+
 class Effect11446(BaseEffect):
     """
     shipBonusDreadnoughtG4DamageBonus
@@ -39419,3 +39436,20 @@ class Effect11452(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Warp Scrambler', 'warpScrambleStrength',
             ship.getModifiedItemAttr('shipBonusDreadnoughtG5'), skill='Gallente Dreadnought', **kwargs)
+
+
+class Effect11454(BaseEffect):
+    """
+    shipBonusGrapplerFalloffM4
+
+    Used by:
+    Ship: Naglfar Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Stasis Grappler', 'falloffEffectiveness',
+            ship.getModifiedItemAttr('shipBonusDreadnoughtM4'), skill='Minmatar Dreadnought', **kwargs)
