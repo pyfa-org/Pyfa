@@ -319,6 +319,8 @@ class Market:
             "Raiju"                       : self.les_grp,  # AT17 prize
             "Laelaps"                     : self.les_grp,  # AT17 prize
             "Boobook"                     : self.les_grp,  # 19th EVE anniversary gift
+            "Geri"                        : self.les_grp,  # AT18 prize
+            "Bestla"                      : self.les_grp,  # AT18 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
