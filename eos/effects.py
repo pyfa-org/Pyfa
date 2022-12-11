@@ -7430,7 +7430,6 @@ class Effect2647(BaseEffect):
     eliteBonusHeavyGunshipHeavyMissileLauncherRof2
 
     Used by:
-    Ship: Bestla
     Ship: Cerberus
     Ship: Muninn
     """
@@ -7449,7 +7448,6 @@ class Effect2648(BaseEffect):
     eliteBonusHeavyGunshipHeavyAssaultMissileLauncherRof2
 
     Used by:
-    Ship: Bestla
     Ship: Cerberus
     Ship: Muninn
     """
@@ -7468,7 +7466,6 @@ class Effect2649(BaseEffect):
     eliteBonusHeavyGunshipAssaultMissileLauncherRof2
 
     Used by:
-    Ship: Bestla
     Ship: Cerberus
     Ship: Muninn
     """
@@ -16361,7 +16358,7 @@ class Effect4902(BaseEffect):
     MWDSignatureRadiusRoleBonus
 
     Used by:
-    Ships from group: Assault Frigate (10 of 14)
+    Ships from group: Assault Frigate (9 of 14)
     Ships from group: Command Destroyer (5 of 5)
     """
 
@@ -17471,7 +17468,6 @@ class Effect5090(BaseEffect):
 
     Used by:
     Ship: Breacher
-    Ship: Geri
     Ship: Jaguar
     """
 
@@ -21827,7 +21823,6 @@ class Effect5778(BaseEffect):
 
     Used by:
     Ship: Breacher
-    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33648,7 +33643,6 @@ class Effect7013(BaseEffect):
     eliteBonusGunshipKineticMissileDamage1
 
     Used by:
-    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33665,7 +33659,6 @@ class Effect7014(BaseEffect):
     eliteBonusGunshipThermalMissileDamage1
 
     Used by:
-    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33682,7 +33675,6 @@ class Effect7015(BaseEffect):
     eliteBonusGunshipEMMissileDamage1
 
     Used by:
-    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33699,7 +33691,6 @@ class Effect7016(BaseEffect):
     eliteBonusGunshipExplosiveMissileDamage1
 
     Used by:
-    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33716,7 +33707,6 @@ class Effect7017(BaseEffect):
     eliteBonusGunshipExplosionVelocity2
 
     Used by:
-    Ship: Geri
     Ship: Jaguar
     """
 
@@ -39052,7 +39042,6 @@ class Effect11411(BaseEffect):
     shipMissileDmgMC2
 
     Used by:
-    Ship: Bestla
     Ship: Muninn
     """
 
@@ -39071,7 +39060,6 @@ class Effect11412(BaseEffect):
     shipBonusShieldArmorResonanceMC
 
     Used by:
-    Ship: Bestla
     Ship: Muninn
     """
 
@@ -39095,7 +39083,6 @@ class Effect11413(BaseEffect):
     eliteBonusHeavyGunshipMissileExplosionVelocity1
 
     Used by:
-    Ship: Bestla
     Ship: Muninn
     """
 
@@ -39487,3 +39474,266 @@ class Effect11454(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Stasis Grappler', 'falloffEffectiveness',
             ship.getModifiedItemAttr('shipBonusDreadnoughtM4'), skill='Minmatar Dreadnought', **kwargs)
+
+
+class Effect100100(BaseEffect):
+    """
+    pyfaCustomGeriAfExploVel
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'),
+            'aoeVelocity', 7.5, skill='Assault Frigates', **kwargs)
+
+
+
+class Effect100101(BaseEffect):
+    """
+    pyfaCustomGeriAfRof
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Missile Launcher Rocket', 'Missile Launcher Light'),
+            'speed', -7.5, skill='Assault Frigates', **kwargs)
+
+
+
+class Effect100102(BaseEffect):
+    """
+    pyfaCustomGeriMfDmg
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'),
+                f'{dmgType}Damage', 7.5, skill='Minmatar Frigate', **kwargs)
+
+
+class Effect100103(BaseEffect):
+    """
+    pyfaCustomGeriMfRep
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'),
+            'shieldBonus', 7.5, skill='Minmatar Frigate', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'),
+            'armorDamageAmount', 7.5, skill='Minmatar Frigate', **kwargs)
+
+
+class Effect100104(BaseEffect):
+    """
+    pyfaCustomGeriRoleWebDroneStr
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'), 'speedFactor', 500, **kwargs)
+
+
+class Effect100105(BaseEffect):
+    """
+    pyfaCustomGeriRoleWebDroneHP
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'), layer, 250, **kwargs)
+
+
+class Effect100106(BaseEffect):
+    """
+    pyfaCustomGeriRoleWebDroneSpeed
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'maxVelocity', 50, **kwargs)
+
+
+class Effect100107(BaseEffect):
+    """
+    pyfaCustomGeriRoleMWDSigBloom
+
+    Used by:
+    Ship: Geri
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
+            'signatureRadiusBonus', -50, **kwargs)
+
+
+class Effect100200(BaseEffect):
+    """
+    pyfaCustomBestlaHacExploVel
+
+    Used by:
+    Ship: Bestla
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles') or mod.charge.requiresSkill('Heavy Missiles'),
+            'aoeVelocity', 10, skill='Heavy Assault Cruisers', **kwargs)
+
+
+
+class Effect100201(BaseEffect):
+    """
+    pyfaCustomBestlaHacRof
+
+    Used by:
+    Ship: Bestla
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in (
+                'Missile Launcher Heavy Assault', 'Missile Launcher Heavy', 'Missile Launcher Rapid Heavy'),
+            'speed', -10, skill='Heavy Assault Cruisers', **kwargs)
+
+
+
+class Effect100202(BaseEffect):
+    """
+    pyfaCustomBestlaMcDmg
+
+    Used by:
+    Ship: Bestla
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: (
+                    mod.charge.requiresSkill('Light Missiles')
+                    or mod.charge.requiresSkill('Heavy Assault Missiles')
+                    or mod.charge.requiresSkill('Heavy Missiles')),
+                f'{dmgType}Damage', 10, skill='Minmatar Cruiser', **kwargs)
+
+
+class Effect100203(BaseEffect):
+    """
+    pyfaCustomBestlaMcRep
+
+    Used by:
+    Ship: Bestla
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'),
+            'shieldBonus', 10, skill='Minmatar Cruiser', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'),
+            'armorDamageAmount', 10, skill='Minmatar Cruiser', **kwargs)
+
+
+class Effect100204(BaseEffect):
+    """
+    pyfaCustomBestlaRoleWebDroneStr
+
+    Used by:
+    Ship: Bestla
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'), 'speedFactor', 500, **kwargs)
+
+
+class Effect100205(BaseEffect):
+    """
+    pyfaCustomBestlaRoleWebDroneHP
+
+    Used by:
+    Ship: Bestla
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for layer in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'), layer, 500, **kwargs)
+
+
+class Effect100206(BaseEffect):
+    """
+    pyfaCustomBestlaRoleWebDroneSpeed
+
+    Used by:
+    Ship: Bestla
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'maxVelocity', 50, **kwargs)
