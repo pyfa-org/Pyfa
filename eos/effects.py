@@ -1301,10 +1301,10 @@ class Effect446(BaseEffect):
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
+    Implants named like: Nirvana Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
-    Implant: AIR Nirvana Booster II
     Implant: Genolution Core Augmentation CA-3
     Implant: Sansha Modified 'Gnome' Implant
     Skill: Shield Management
@@ -1326,6 +1326,7 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
+    Implants named like: Wightstorm Rapture Booster (4 of 4)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
@@ -1850,7 +1851,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1008)
+    Items from category: Charge (608 of 1010)
     """
 
     type = 'passive'
@@ -1865,7 +1866,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (38 of 38)
+    Charges from group: Festival Charges (40 of 40)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -2425,7 +2426,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (538 of 1008)
+    Items from category: Charge (538 of 1010)
     """
 
     type = 'passive'
@@ -7429,6 +7430,7 @@ class Effect2647(BaseEffect):
     eliteBonusHeavyGunshipHeavyMissileLauncherRof2
 
     Used by:
+    Ship: Bestla
     Ship: Cerberus
     Ship: Muninn
     """
@@ -7447,6 +7449,7 @@ class Effect2648(BaseEffect):
     eliteBonusHeavyGunshipHeavyAssaultMissileLauncherRof2
 
     Used by:
+    Ship: Bestla
     Ship: Cerberus
     Ship: Muninn
     """
@@ -7465,6 +7468,7 @@ class Effect2649(BaseEffect):
     eliteBonusHeavyGunshipAssaultMissileLauncherRof2
 
     Used by:
+    Ship: Bestla
     Ship: Cerberus
     Ship: Muninn
     """
@@ -8376,6 +8380,7 @@ class Effect2803(BaseEffect):
 
     Used by:
     Implants named like: Harvest Damage Booster (4 of 4)
+    Implants named like: Wightstorm Vitarka Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     """
 
@@ -9650,6 +9655,7 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
+    Implants named like: Wightstorm Sunyata Booster (4 of 4)
     Skill: Thermodynamics
     """
 
@@ -16355,7 +16361,7 @@ class Effect4902(BaseEffect):
     MWDSignatureRadiusRoleBonus
 
     Used by:
-    Ships from group: Assault Frigate (9 of 13)
+    Ships from group: Assault Frigate (10 of 14)
     Ships from group: Command Destroyer (5 of 5)
     """
 
@@ -17465,6 +17471,7 @@ class Effect5090(BaseEffect):
 
     Used by:
     Ship: Breacher
+    Ship: Geri
     Ship: Jaguar
     """
 
@@ -18068,6 +18075,7 @@ class Effect5189(BaseEffect):
 
     Used by:
     Implants named like: Tetrimon Precision Booster (4 of 4)
+    Implants named like: Wightstorm Manasikara Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -21819,6 +21827,7 @@ class Effect5778(BaseEffect):
 
     Used by:
     Ship: Breacher
+    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33639,6 +33648,7 @@ class Effect7013(BaseEffect):
     eliteBonusGunshipKineticMissileDamage1
 
     Used by:
+    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33655,6 +33665,7 @@ class Effect7014(BaseEffect):
     eliteBonusGunshipThermalMissileDamage1
 
     Used by:
+    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33671,6 +33682,7 @@ class Effect7015(BaseEffect):
     eliteBonusGunshipEMMissileDamage1
 
     Used by:
+    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33687,6 +33699,7 @@ class Effect7016(BaseEffect):
     eliteBonusGunshipExplosiveMissileDamage1
 
     Used by:
+    Ship: Geri
     Ship: Jaguar
     """
 
@@ -33703,6 +33716,7 @@ class Effect7017(BaseEffect):
     eliteBonusGunshipExplosionVelocity2
 
     Used by:
+    Ship: Geri
     Ship: Jaguar
     """
 
@@ -37768,6 +37782,23 @@ class Effect8279(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
+class Effect8291(BaseEffect):
+    """
+    afterburnerSpeedBoostBonusPassive
+
+    Used by:
+    Implants named like: Wightstorm Cetana Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
+            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
+
+
 class Effect8294(BaseEffect):
     """
     industrialCommandBonusDroneOreMiningYield
@@ -39021,6 +39052,7 @@ class Effect11411(BaseEffect):
     shipMissileDmgMC2
 
     Used by:
+    Ship: Bestla
     Ship: Muninn
     """
 
@@ -39039,6 +39071,7 @@ class Effect11412(BaseEffect):
     shipBonusShieldArmorResonanceMC
 
     Used by:
+    Ship: Bestla
     Ship: Muninn
     """
 
@@ -39062,6 +39095,7 @@ class Effect11413(BaseEffect):
     eliteBonusHeavyGunshipMissileExplosionVelocity1
 
     Used by:
+    Ship: Bestla
     Ship: Muninn
     """
 
