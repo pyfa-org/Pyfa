@@ -39646,7 +39646,7 @@ class Effect100201(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name in (
-                'Missile Launcher Heavy Assault', 'Missile Launcher Heavy', 'Missile Launcher Rapid Heavy'),
+                'Missile Launcher Heavy Assault', 'Missile Launcher Heavy', 'Missile Launcher Rapid Light'),
             'speed', -10, skill='Heavy Assault Cruisers', **kwargs)
 
 
