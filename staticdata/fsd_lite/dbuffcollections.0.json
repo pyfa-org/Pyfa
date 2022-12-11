@@ -3452,5 +3452,87 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostAssignment", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2185": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Tethering Restricted By Security", 
+    "displayName_de": "Anbindung ist blockiert", 
+    "displayName_en-us": "Tether blocked", 
+    "displayName_es": "Amarre bloqueado", 
+    "displayName_fr": "Accostage verrouillé", 
+    "displayName_it": "Tether blocked", 
+    "displayName_ja": "テザリングブロック中", 
+    "displayName_ko": "테더링 차단", 
+    "displayName_ru": "Швартовка недоступна", 
+    "displayName_zh": "Tether blocked", 
+    "displayNameID": 639276, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2343
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2186": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Proving AB/MWD Speed Increase", 
+    "displayName_de": "Bonus auf die Geschwindigkeitserhöhung von Nachbrenner-/Mikrowarpantrieb-Modulen", 
+    "displayName_en-us": "AB/MWD module speed increase bonus", 
+    "displayName_es": "Bonificación de aumento de velocidad de módulo de PQ/MMW", 
+    "displayName_fr": "Bonus à la vitesse des SPC/PMW", 
+    "displayName_it": "AB/MWD module speed increase bonus", 
+    "displayName_ja": "AB/MWDモジュールのスピード増加量ボーナス", 
+    "displayName_ko": "애프터버너/마이크로 워프 드라이브 최대 속도 증가", 
+    "displayName_ru": "Увеличение скорости форсажных и микроварп-ускорителей", 
+    "displayName_zh": "AB/MWD module speed increase bonus", 
+    "displayNameID": 639612, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "skillID": 3450
+      }, 
+      {
+        "dogmaAttributeID": 20, 
+        "skillID": 3454
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2187": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Proving AB/MWD Cap Need Reduction", 
+    "displayName_de": "Bonus auf den Energiespeicherbedarf von Nachbrennern/Mikrowarpantrieben", 
+    "displayName_en-us": "AB/MWD capacitor consumption bonus", 
+    "displayName_es": "Bonificación de consumo del condensador de PQ/MMW", 
+    "displayName_fr": "Bonus à la consommation de capaciteur des SPC/PMW", 
+    "displayName_it": "AB/MWD capacitor consumption bonus", 
+    "displayName_ja": "AB/MWDのキャパシタ消費量ボーナス", 
+    "displayName_ko": "애프터버너/마이크로 워프 드라이브 캐패시터 사용량 감소", 
+    "displayName_ru": "Снижение расхода энергии форсажных и микроварп-ускорителей", 
+    "displayName_zh": "AB/MWD capacitor consumption bonus", 
+    "displayNameID": 639613, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3450
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3454
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

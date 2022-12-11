@@ -46126,9 +46126,10 @@
   }, 
   "3236": {
     "attributeID": 3236, 
-    "categoryID": 9, 
+    "categoryID": 51, 
     "dataType": 3, 
     "defaultValue": 0.0, 
+    "description": "If set to true, this results in no mining waste.", 
     "displayWhenZero": 0, 
     "highIsGood": 0, 
     "name": "ignoreMiningWaste", 
