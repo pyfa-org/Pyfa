@@ -32960,8 +32960,11 @@ class Effect6946(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems') or mod.item.requiresSkill('Shield Operation'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'overloadArmorDamageAmount', src.getModifiedItemAttr('subsystemBonusMinmatarDefensive3'),
+                                      skill='Minmatar Defensive Systems', **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
+                                      'overloadShieldBonus', src.getModifiedItemAttr('subsystemBonusMinmatarDefensive3'),
                                       skill='Minmatar Defensive Systems', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems') or mod.item.requiresSkill('Shield Operation'),
                                       'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusMinmatarDefensive3'),
