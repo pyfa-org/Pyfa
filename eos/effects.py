@@ -9714,7 +9714,7 @@ class Effect3212(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('FoF Missiles'),
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Auto-Targeting Missiles'),
                                         'aoeCloudSize', container.getModifiedItemAttr('aoeCloudSizeBonus') * level, **kwargs)
 
 
