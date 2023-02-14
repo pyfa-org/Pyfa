@@ -9275,7 +9275,7 @@
     "iconFile": "res:/UI/Texture/Icons/Inventory/AbyssalRandomFilament_L5Active.png"
   }, 
   "24328": {
-    "iconFile": "res:/ui/texture/classes/achievements/mouseBtnMiddle.png", 
+    "iconFile": "res:/UI/Texture/Shared/mouse_button_middle.png", 
     "iconType": "png"
   }, 
   "24329": {
@@ -11974,5 +11974,8 @@
   }, 
   "25475": {
     "iconFile": "res:/ui/texture/icons/evermarks.png"
+  }, 
+  "25547": {
+    "iconFile": "res:/ui/texture/WindowIcons/assets.png"
   }
 }

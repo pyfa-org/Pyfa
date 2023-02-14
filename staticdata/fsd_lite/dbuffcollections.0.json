@@ -2508,7 +2508,7 @@
     "displayName_ja": "ダメージレジスタンスボーナス", 
     "displayName_ko": "피해 저항력 보너스", 
     "displayName_ru": "Усиление сопротивляемости урону", 
-    "displayName_zh": "Damage Resistance Bonus", 
+    "displayName_zh": "伤害抗性加成", 
     "displayNameID": 587608, 
     "itemModifiers": [
       {
@@ -2565,7 +2565,7 @@
     "displayName_ja": "小型エネルギータレットダメージボーナス", 
     "displayName_ko": "소형 에너지 터렛 피해량 보너스", 
     "displayName_ru": "Бонус к урону от малых лазерных орудий", 
-    "displayName_zh": "Small Energy Turret Damage Bonus", 
+    "displayName_zh": "小型能量炮台伤害加成", 
     "displayNameID": 588970, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2590,7 +2590,7 @@
     "displayName_ja": "エネルギー戦強度ボーナス", 
     "displayName_ko": "에너지전 효과 보너스", 
     "displayName_ru": "Бонус к мощности средств воздействия на накопитель", 
-    "displayName_zh": "Energy Warfare Strength Bonus", 
+    "displayName_zh": "能量战强度加成", 
     "displayNameID": 588971, 
     "itemModifiers": [], 
     "locationGroupModifiers": [
@@ -2619,7 +2619,7 @@
     "displayName_ja": "タレットダメージボーナス", 
     "displayName_ko": "터렛 피해량 보너스", 
     "displayName_ru": "Увеличение урона от турелей", 
-    "displayName_zh": "Turret Damage Bonus", 
+    "displayName_zh": "炮台伤害加成", 
     "displayNameID": 589384, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2644,7 +2644,7 @@
     "displayName_ja": "ミサイルダメージボーナス", 
     "displayName_ko": "미사일 피해량 보너스", 
     "displayName_ru": "Увеличение урона от ракет", 
-    "displayName_zh": "Missile Damage Bonuus", 
+    "displayName_zh": "导弹伤害加成", 
     "displayNameID": 589393, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2681,7 +2681,7 @@
     "displayName_ja": "AB速度増加ボーナス", 
     "displayName_ko": "애프터버너 속도 증가 보너스", 
     "displayName_ru": "Бонус к увеличению скорости форсажного ускорителя", 
-    "displayName_zh": "AB speed increase bonus", 
+    "displayName_zh": "加力燃烧器速度增量加成", 
     "displayNameID": 591759, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2706,7 +2706,7 @@
     "displayName_ja": "航行速度", 
     "displayName_ko": "함선 속도", 
     "displayName_ru": "Скорость корабля", 
-    "displayName_zh": "Ship Velocity", 
+    "displayName_zh": "舰船最大速度", 
     "displayNameID": 592692, 
     "itemModifiers": [
       {
@@ -2730,7 +2730,7 @@
     "displayName_ja": "艦船の慣性", 
     "displayName_ko": "관성 계수", 
     "displayName_ru": "Инертность корабля", 
-    "displayName_zh": "Ship Inertia", 
+    "displayName_zh": "舰船惯性调整系数", 
     "displayNameID": 592693, 
     "itemModifiers": [
       {
@@ -2754,7 +2754,7 @@
     "displayName_ja": "シールドとキャパシタの充電速度", 
     "displayName_ko": "실드 및 캐패시터 충전 속도", 
     "displayName_ru": "Скорость перезарядки щита и накопителя", 
-    "displayName_zh": "Shield and Capacitor Recharge Rate", 
+    "displayName_zh": "护盾和电容回充速率", 
     "displayNameID": 592694, 
     "itemModifiers": [
       {
@@ -2781,7 +2781,7 @@
     "displayName_ja": "モジュールのサイクルとリロード速度", 
     "displayName_ko": "모듈 사이클 시간 및 재장전 속도", 
     "displayName_ru": "Время и скорость перезарядки модуля", 
-    "displayName_zh": "Module Cycle and Reload Speed", 
+    "displayName_zh": "装备循环时间和装填速度", 
     "displayNameID": 592695, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2811,7 +2811,7 @@
     "displayName_ja": "タレットの追跡速度とミサイルの爆発速度", 
     "displayName_ko": "터렛 트래킹 및 미사일 폭발 속도", 
     "displayName_ru": "Скорость наведения орудий и распространения взрыва ракет", 
-    "displayName_zh": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_zh": "炮台跟踪速度和导弹爆炸速度", 
     "displayNameID": 593084, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2840,7 +2840,7 @@
     "displayName_ja": "追加ベース船体HP", 
     "displayName_ko": "추가 선체 내구도", 
     "displayName_ru": "Увеличение основного запаса прочности корпуса", 
-    "displayName_zh": "Additional Base Hull Hitpoints", 
+    "displayName_zh": "额外的基础结构值", 
     "displayNameID": 594653, 
     "itemModifiers": [
       {
@@ -2864,7 +2864,7 @@
     "displayName_ja": "タレットのトラッキング", 
     "displayName_ko": "터렛 트래킹", 
     "displayName_ru": "Скорость наведения турелей", 
-    "displayName_zh": "Turret Tracking", 
+    "displayName_zh": "炮台跟踪速度", 
     "displayNameID": 594691, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2889,7 +2889,7 @@
     "displayName_ja": "タレットの精度低下範囲ボーナス", 
     "displayName_ko": "터렛 유효사거리 보너스", 
     "displayName_ru": "Увеличение остаточной дальности стрельбы турелей", 
-    "displayName_zh": "Turret Falloff Bonus", 
+    "displayName_zh": "炮台失准范围加成", 
     "displayNameID": 594692, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2929,7 +2929,7 @@
     "displayName_ja": "タレットの最適射程距離", 
     "displayName_ko": "터렛 최적사거리", 
     "displayName_ru": "Оптимальность турели", 
-    "displayName_zh": "Turret Optimal Bonus", 
+    "displayName_zh": "炮台最佳射程加成", 
     "displayNameID": 596685, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2954,7 +2954,7 @@
     "displayName_ja": "タレットのキャパシタ消費", 
     "displayName_ko": "터렛 캐패시터 소모", 
     "displayName_ru": "Расход энергии накопителя турелей", 
-    "displayName_zh": "Turret Cap Consumption", 
+    "displayName_zh": "炮台电容消耗", 
     "displayNameID": 596686, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -2979,7 +2979,7 @@
     "displayName_ja": "HPボーナス", 
     "displayName_ko": "내구도 보너스", 
     "displayName_ru": "Увеличение запаса прочности", 
-    "displayName_zh": "Hitpoint Bonus", 
+    "displayName_zh": "HP加成", 
     "displayNameID": 597492, 
     "itemModifiers": [
       {
@@ -3009,7 +3009,7 @@
     "displayName_ja": "速度ボーナス", 
     "displayName_ko": "속도 보너스", 
     "displayName_ru": "Повышение скорости", 
-    "displayName_zh": "Velocity Bonus", 
+    "displayName_zh": "速度加成", 
     "displayNameID": 597614, 
     "itemModifiers": [
       {
@@ -3033,7 +3033,7 @@
     "displayName_ja": "慣性ペナルティ", 
     "displayName_ko": "관성 계수 페널티", 
     "displayName_ru": "Снижение инертности", 
-    "displayName_zh": "Inertia Penalty", 
+    "displayName_zh": "惯性系数惩罚", 
     "displayNameID": 597615, 
     "itemModifiers": [
       {
@@ -3057,7 +3057,7 @@
     "displayName_ja": "キャパシタボーナス", 
     "displayName_ko": "캐패시터 보너스", 
     "displayName_ru": "Увеличение запаса энергии", 
-    "displayName_zh": "Capacitor Bonus", 
+    "displayName_zh": "电容加成", 
     "displayNameID": 597616, 
     "itemModifiers": [
       {
@@ -3081,7 +3081,7 @@
     "displayName_ja": "アーマーとシールドのHPボーナス", 
     "displayName_ko": "장갑 내구도 및 실드량 보너스", 
     "displayName_ru": "Повышение прочности щитов и брони", 
-    "displayName_zh": "Armor and Shield HP Bonus", 
+    "displayName_zh": "装甲值和护盾值加成", 
     "displayNameID": 597617, 
     "itemModifiers": [
       {
@@ -3108,7 +3108,7 @@
     "displayName_ja": "ミサイル飛行時間ボーナス", 
     "displayName_ko": "미사일 비행시간 보너스", 
     "displayName_ru": "Увеличение времени полёта ракет", 
-    "displayName_zh": "Missile Flight Time Bonus", 
+    "displayName_zh": "导弹飞行时间加成", 
     "displayNameID": 597618, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -3133,7 +3133,7 @@
     "displayName_ja": "質量増加", 
     "displayName_ko": "질량 증가", 
     "displayName_ru": "Увеличение массы", 
-    "displayName_zh": "Mass Increase", 
+    "displayName_zh": "质量增加", 
     "displayNameID": 597619, 
     "itemModifiers": [
       {
@@ -3157,7 +3157,7 @@
     "displayName_ja": "キャパシタ充電速度", 
     "displayName_ko": "캐패시터 충전 속도", 
     "displayName_ru": "Скорость перезарядки накопителя", 
-    "displayName_zh": "Capacitor Recharge Rate", 
+    "displayName_zh": "电容回充速率", 
     "displayNameID": 597771, 
     "itemModifiers": [
       {
@@ -3181,7 +3181,7 @@
     "displayName_ja": "シグネチャ半径", 
     "displayName_ko": "시그니처 반경", 
     "displayName_ru": "Радиус сигнатуры", 
-    "displayName_zh": "Signature Radius", 
+    "displayName_zh": "信号半径", 
     "displayNameID": 597772, 
     "itemModifiers": [
       {
@@ -3205,7 +3205,7 @@
     "displayName_ja": "タレットとミサイルのダメージ", 
     "displayName_ko": "터렛 및 미사일 피해량", 
     "displayName_ru": "Урон от турелей и ракет", 
-    "displayName_zh": "Turret and Missile Damage", 
+    "displayName_zh": "炮台和导弹伤害", 
     "displayNameID": 597773, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -3246,7 +3246,7 @@
     "displayName_ja": "センサー強度ボーナス", 
     "displayName_ko": "센서 강도 보너스", 
     "displayName_ru": "Увеличение мощности сенсоров", 
-    "displayName_zh": "Sensor Strength bonus", 
+    "displayName_zh": "感应强度加成", 
     "displayNameID": 600979, 
     "itemModifiers": [
       {
@@ -3279,7 +3279,7 @@
     "displayName_ja": "シグネチャ半径ボーナス", 
     "displayName_ko": "시그니처 반경 보너스", 
     "displayName_ru": "Уменьшение радиуса сигнатуры", 
-    "displayName_zh": "Signature Radius bonus", 
+    "displayName_zh": "信号半径加成", 
     "displayNameID": 600983, 
     "itemModifiers": [
       {
@@ -3327,7 +3327,7 @@
     "displayName_ja": "追加基本アーマーヒットポイント", 
     "displayName_ko": "추가 기본 장갑 내구도", 
     "displayName_ru": "Увеличение основного запаса прочности брони", 
-    "displayName_zh": "Additional Base Armor Hitpoints", 
+    "displayName_zh": "额外的基础装甲值", 
     "displayNameID": 629466, 
     "itemModifiers": [
       {
@@ -3351,7 +3351,7 @@
     "displayName_ja": "追加基本シールドヒットポイント", 
     "displayName_ko": "추가 기본 실드 내구도", 
     "displayName_ru": "Увеличение основного запаса прочности щитов", 
-    "displayName_zh": "Additional Base Shield Hitpoints", 
+    "displayName_zh": "额外的基础护盾值", 
     "displayNameID": 629467, 
     "itemModifiers": [
       {
@@ -3375,7 +3375,7 @@
     "displayName_ja": "キネティックミサイルダメージボーナス", 
     "displayName_ko": "키네틱 미사일 피해량 보너스", 
     "displayName_ru": "Увеличение урона от кинетических ракет", 
-    "displayName_zh": "Kinetic Missile Damage Bonus", 
+    "displayName_zh": "动能导弹伤害加成", 
     "displayNameID": 631461, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -3400,7 +3400,7 @@
     "displayName_ja": "小型ハイブリッドタレットダメージボーナス", 
     "displayName_ko": "소형 하이브리드 터렛 피해량 보너스", 
     "displayName_ru": "Увеличение урона от малых гибридных орудий", 
-    "displayName_zh": "Small Hybrid Turret Damage Bonus", 
+    "displayName_zh": "小型混合炮台伤害加成", 
     "displayNameID": 631462, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -3425,7 +3425,7 @@
     "displayName_ja": "小型ハイブリッドタレット最適射程距離ボーナス", 
     "displayName_ko": "소형 하이브리드 터렛 최적사거리 보너스", 
     "displayName_ru": "Бонус к оптимальной дальности малых гибридных орудий", 
-    "displayName_zh": "Small Hybrid Turret Optimal Range Bonus", 
+    "displayName_zh": "小型混合炮台最佳射程加成", 
     "displayNameID": 631463, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -3464,7 +3464,7 @@
     "displayName_ja": "テザリングブロック中", 
     "displayName_ko": "테더링 차단", 
     "displayName_ru": "Швартовка недоступна", 
-    "displayName_zh": "Tether blocked", 
+    "displayName_zh": "驻留被阻止", 
     "displayNameID": 639276, 
     "itemModifiers": [
       {
@@ -3488,7 +3488,7 @@
     "displayName_ja": "AB/MWDモジュールのスピード増加量ボーナス", 
     "displayName_ko": "애프터버너/마이크로 워프 드라이브 최대 속도 증가", 
     "displayName_ru": "Увеличение скорости форсажных и микроварп-ускорителей", 
-    "displayName_zh": "AB/MWD module speed increase bonus", 
+    "displayName_zh": "加力燃烧器/微型跃迁推进器速度增量加成", 
     "displayNameID": 639612, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -3517,7 +3517,7 @@
     "displayName_ja": "AB/MWDのキャパシタ消費量ボーナス", 
     "displayName_ko": "애프터버너/마이크로 워프 드라이브 캐패시터 사용량 감소", 
     "displayName_ru": "Снижение расхода энергии форсажных и микроварп-ускорителей", 
-    "displayName_zh": "AB/MWD capacitor consumption bonus", 
+    "displayName_zh": "加力燃烧器/微型跃迁推进器电容消耗加成", 
     "displayNameID": 639613, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
