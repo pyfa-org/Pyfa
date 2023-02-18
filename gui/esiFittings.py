@@ -5,6 +5,7 @@ import requests
 import wx
 from logbook import Logger
 
+import time
 import config
 import gui.globalEvents as GE
 from eos.db import getItem
@@ -65,18 +66,21 @@ class EveFittings(AuxiliaryFrame):
         self.importBtn = wx.Button(self, wx.ID_ANY, _t("Import to pyfa"), wx.DefaultPosition, wx.DefaultSize, 5)
         self.deleteBtn = wx.Button(self, wx.ID_ANY, _t("Delete from EVE"), wx.DefaultPosition, wx.DefaultSize, 5)
         self.deleteAllBtn = wx.Button(self, wx.ID_ANY, _t("Delete all from Eve"), wx.DefaultPosition, wx.DefaultSize, 5)
+        self.syncBtn = wx.Button(self, wx.ID_ANY, _t("Sync Fits"), wx.DefaultPosition, wx.DefaultSize, 5)
         btnSizer.Add(self.importBtn, 1, wx.ALL, 5)
         btnSizer.Add(self.deleteBtn, 1, wx.ALL, 5)
         btnSizer.Add(self.deleteAllBtn, 1, wx.ALL, 5)
-        fitSizer.Add(btnSizer, 0, wx.EXPAND)
+        btnSizer.Add(self.syncBtn, 1, wx.ALL, 5)
 
         contentSizer.Add(fitSizer, 1, wx.EXPAND, 0)
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
+        mainSizer.Add(btnSizer, 0, wx.EXPAND)
 
         self.fetchBtn.Bind(wx.EVT_BUTTON, self.fetchFittings)
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
         self.deleteAllBtn.Bind(wx.EVT_BUTTON, self.deleteAllFittings)
+        self.syncBtn.Bind(wx.EVT_BUTTON, self.syncFittings)
 
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
@@ -87,8 +91,17 @@ class EveFittings(AuxiliaryFrame):
         self.SetSizer(mainSizer)
         self.Layout()
         self.SetMinSize(self.GetSize())
+        
+        self.exportChargesCb = wx.CheckBox(self, wx.ID_ANY, _t('Export Loaded Charges'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportChargesCb.SetValue(EsiSettings.getInstance().get('exportCharges'))
+        self.exportChargesCb.Bind(wx.EVT_CHECKBOX, self.OnChargeExportChange)
+        btnSizer.Add(self.exportChargesCb, 1, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.Centre(wx.BOTH)
+
+    def OnChargeExportChange(self, event):
+        EsiSettings.getInstance().set('exportCharges', self.exportChargesCb.GetValue())
+        event.Skip()
 
     def updateCharList(self):
         sEsi = Esi.getInstance()
@@ -185,6 +198,8 @@ class EveFittings(AuxiliaryFrame):
                     self.statusbar.SetStatusText(msg)
 
     def deleteAllFittings(self, event):
+        # fetch fittings before tying to delete to avoid fittings error
+        self.fetchFittings(event)
         self.statusbar.SetStatusText("")
         sEsi = Esi.getInstance()
         activeChar = self.getActiveCharacter()
@@ -226,6 +241,70 @@ class EveFittings(AuxiliaryFrame):
         self.fitTree.populateSkillTree(self.fittings)
         self.fitView.update([])
 
+    def syncFittings(self, event):
+        self.fetchFittings(event)
+        self.deleteAllFittings(event)
+        sPort = Port.getInstance()
+        sFit = Fit.getInstance()
+        countFits = Fit.countAllFits()
+        i = 1
+
+        for f in sFit.getAllFitsLite():
+            fitID = f.ID
+
+            if fitID is None:
+                self.statusbar.SetStatusText(_t("Please select an active fitting in the main window"))
+                return
+
+            self.statusbar.SetStatusText(_t("Syncing fit " + str(i) + " of " + str(countFits)))
+            sEsi = Esi.getInstance()
+
+            exportCharges = self.exportChargesCb.GetValue()
+            try:
+                data = sPort.exportESI(sFit.getFit(fitID), exportCharges)
+            except ESIExportException as e:
+                msg = str(e)
+                if not msg:
+                    msg = _t("Failed to generate export data")
+                pyfalog.warning(msg)
+                self.statusbar.SetStatusText(msg)
+                return
+            activeChar = self.getActiveCharacter()
+            if activeChar is None:
+                msg = _t("Need at least one ESI character to export")
+                pyfalog.warning(msg)
+                self.statusbar.SetStatusText(msg)
+                return
+
+            try:
+                res = sEsi.postFitting(activeChar, data)
+                res.raise_for_status()
+                self.statusbar.SetStatusText("", 0)
+                self.statusbar.SetStatusText(res.reason)
+            except requests.exceptions.ConnectionError:
+                msg = _t("Connection error, please check your internet connection")
+                pyfalog.error(msg)
+                self.statusbar.SetStatusText(_t("ERROR"))
+                self.statusbar.SetStatusText(msg)
+            except APIException as ex:
+                pyfalog.error(ex)
+                self.statusbar.SetStatusText(_t("ERROR"))
+                self.statusbar.SetStatusText("HTTP {} - {}".format(ex.status_code, ex.response["error"]))
+                try:
+                    ESIExceptionHandler(ex)
+                except:
+                    # don't need to do anything - we should already get the error in ex.response
+                    pass
+            except Exception as ex:
+                self.statusbar.SetStatusText(_t("ERROR"))
+                self.statusbar.SetStatusText("Unknown error")
+                pyfalog.error(ex)
+            
+            i+=1
+            # respect limit of 20 per 10 seconds
+            time.sleep(1)
+
+        self.statusbar.SetStatusText(_t("Sync completed"))
 
 class ESIServerExceptionHandler:
     def __init__(self, parentWindow, ex):
