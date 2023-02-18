@@ -63,6 +63,7 @@ class EveFittings(AuxiliaryFrame):
         fitSizer.Add(self.fitView, 1, wx.ALL | wx.EXPAND, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.progressBar = wx.Gauge(self, wx.ID_ANY, range = 100, size = (250, 25), style =  wx.GA_HORIZONTAL)
         self.importBtn = wx.Button(self, wx.ID_ANY, _t("Import to pyfa"), wx.DefaultPosition, wx.DefaultSize, 5)
         self.deleteBtn = wx.Button(self, wx.ID_ANY, _t("Delete from EVE"), wx.DefaultPosition, wx.DefaultSize, 5)
         self.deleteAllBtn = wx.Button(self, wx.ID_ANY, _t("Delete all from Eve"), wx.DefaultPosition, wx.DefaultSize, 5)
@@ -75,6 +76,7 @@ class EveFittings(AuxiliaryFrame):
         contentSizer.Add(fitSizer, 1, wx.EXPAND, 0)
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
         mainSizer.Add(btnSizer, 0, wx.EXPAND)
+        mainSizer.Add(self.progressBar, 0, wx.EXPAND)
 
         self.fetchBtn.Bind(wx.EVT_BUTTON, self.fetchFittings)
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
@@ -257,6 +259,7 @@ class EveFittings(AuxiliaryFrame):
                 return
 
             self.statusbar.SetStatusText(_t("Syncing fit " + str(i) + " of " + str(countFits)))
+            self.progressBar.SetValue(i/countFits*100)
             sEsi = Esi.getInstance()
 
             exportCharges = self.exportChargesCb.GetValue()
