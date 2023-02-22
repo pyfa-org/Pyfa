@@ -47093,5 +47093,29 @@
     "name": "flagAllAsSuspectOnLootWreck", 
     "published": 0, 
     "stackable": 1
+  }, 
+  "5318": {
+    "attributeID": 5318, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "description": "Ship Bonus used for Alliance Tournament Ships", 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "shipBonusAT2", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "5319": {
+    "attributeID": 5319, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "description": "Ship Bonus used for Alliance Tournament Ships", 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "shipBonusAT3", 
+    "published": 0, 
+    "stackable": 1
   }
 }
