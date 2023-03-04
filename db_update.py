@@ -771,9 +771,8 @@ def update_db():
         _hardcodeAttribs(74316, attrMap)
         _hardcodeEffects(74316, effectMap)
 
-    hardcodeGeri()
-    hardcodeBestla()
-
+    # hardcodeGeri()
+    # hardcodeBestla()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')
