@@ -245,11 +245,11 @@ class EveFittings(AuxiliaryFrame):
 
     def syncFittings(self, event):
         self.fetchFittings(event)
-        self.deleteAllFittings(event)
         sPort = Port.getInstance()
         sFit = Fit.getInstance()
         countFits = Fit.countAllFits()
         i = 1
+        skip = False
 
         for f in sFit.getAllFitsLite():
             fitID = f.ID
@@ -257,55 +257,65 @@ class EveFittings(AuxiliaryFrame):
             if fitID is None:
                 self.statusbar.SetStatusText(_t("Please select an active fitting in the main window"))
                 return
-
-            self.statusbar.SetStatusText(_t("Syncing fit " + str(i) + " of " + str(countFits)))
-            self.progressBar.SetValue(i/countFits*100)
-            sEsi = Esi.getInstance()
-
-            exportCharges = self.exportChargesCb.GetValue()
-            try:
-                data = sPort.exportESI(sFit.getFit(fitID), exportCharges)
-            except ESIExportException as e:
-                msg = str(e)
-                if not msg:
-                    msg = _t("Failed to generate export data")
-                pyfalog.warning(msg)
-                self.statusbar.SetStatusText(msg)
-                return
-            activeChar = self.getActiveCharacter()
-            if activeChar is None:
-                msg = _t("Need at least one ESI character to export")
-                pyfalog.warning(msg)
-                self.statusbar.SetStatusText(msg)
-                return
-
-            try:
-                res = sEsi.postFitting(activeChar, data)
-                res.raise_for_status()
-                self.statusbar.SetStatusText("", 0)
-                self.statusbar.SetStatusText(res.reason)
-            except requests.exceptions.ConnectionError:
-                msg = _t("Connection error, please check your internet connection")
-                pyfalog.error(msg)
-                self.statusbar.SetStatusText(_t("ERROR"))
-                self.statusbar.SetStatusText(msg)
-            except APIException as ex:
-                pyfalog.error(ex)
-                self.statusbar.SetStatusText(_t("ERROR"))
-                self.statusbar.SetStatusText("HTTP {} - {}".format(ex.status_code, ex.response["error"]))
-                try:
-                    ESIExceptionHandler(ex)
-                except:
-                    # don't need to do anything - we should already get the error in ex.response
-                    pass
-            except Exception as ex:
-                self.statusbar.SetStatusText(_t("ERROR"))
-                self.statusbar.SetStatusText("Unknown error")
-                pyfalog.error(ex)
             
+            # skip existing fits
+            for fit in self.fittings:
+                if sFit.getFit(fitID).name == fit['name']:
+                    self.statusbar.SetStatusText(_t("Fit already exists, skipping "))
+                    skip = True
+                    break
+                else:
+                    skip = False
+
+            if not skip:
+                self.statusbar.SetStatusText(_t("Syncing fit " + str(i) + " of " + str(countFits)))
+                
+                sEsi = Esi.getInstance()
+
+                exportCharges = self.exportChargesCb.GetValue()
+                try:
+                    data = sPort.exportESI(sFit.getFit(fitID), exportCharges)
+                except ESIExportException as e:
+                    msg = str(e)
+                    if not msg:
+                        msg = _t("Failed to generate export data")
+                    pyfalog.warning(msg)
+                    self.statusbar.SetStatusText(msg)
+                    return
+                activeChar = self.getActiveCharacter()
+                if activeChar is None:
+                    msg = _t("Need at least one ESI character to export")
+                    pyfalog.warning(msg)
+                    self.statusbar.SetStatusText(msg)
+                    return
+
+                try:
+                    res = sEsi.postFitting(activeChar, data)
+                    res.raise_for_status()
+                    self.statusbar.SetStatusText("", 0)
+                    self.statusbar.SetStatusText(res.reason)
+                except requests.exceptions.ConnectionError:
+                    msg = _t("Connection error, please check your internet connection")
+                    pyfalog.error(msg)
+                    self.statusbar.SetStatusText(_t("ERROR"))
+                    self.statusbar.SetStatusText(msg)
+                except APIException as ex:
+                    pyfalog.error(ex)
+                    self.statusbar.SetStatusText(_t("ERROR"))
+                    self.statusbar.SetStatusText("HTTP {} - {}".format(ex.status_code, ex.response["error"]))
+                    try:
+                        ESIExceptionHandler(ex)
+                    except:
+                        # don't need to do anything - we should already get the error in ex.response
+                        pass
+                except Exception as ex:
+                    self.statusbar.SetStatusText(_t("ERROR"))
+                    self.statusbar.SetStatusText("Unknown error")
+                    pyfalog.error(ex)
+                # respect limit of 20 per 10 seconds
+                time.sleep(2) 
+            self.progressBar.SetValue(i/countFits*100)
             i+=1
-            # respect limit of 20 per 10 seconds
-            time.sleep(1)
 
         self.statusbar.SetStatusText(_t("Sync completed"))
 
