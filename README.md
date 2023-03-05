@@ -1,6 +1,6 @@
 # pyfa
 
-[![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/) [![Build Status](https://ci.appveyor.com/api/projects/status/pyfa-org/Pyfa?branch=master)](https://ci.appveyor.com/api/projects/status/pyfa-org/Pyfa?branch=master)
+[![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/) [![Build Status](https://travis-ci.org/pyfa-org/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-org/Pyfa)
 
 ![pyfa](https://user-images.githubusercontent.com/275209/66119992-864be080-e5e2-11e9-994a-3a4368c9fad7.png)
 
