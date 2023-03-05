@@ -263,28 +263,35 @@ class EveFittings(AuxiliaryFrame):
             
             if delete:
                 sEsi = Esi.getInstance()
-                activeChar = self.getActiveCharacter()
-                if activeChar is None:
-                    return
-                try:
-                    try:
-                        sEsi.delFitting(activeChar, fit['fitting_id'])
-                        # repopulate the fitting list
-                        self.fitTree.populateSkillTree(self.fittings)
-                        self.fitView.update([])
-                    except APIException as ex:
-                        pyfalog.error(ex)
-                        self.statusbar.SetStatusText("Failed to delete fit: ESI error {} received - {}".format(ex.status_code, ex.response["error"]))
+
+                with wx.MessageDialog(
+                    self, _t("Do you really want to delete {} ({}) from EVE?").format(fit['name'], getItem(fit['ship_type_id']).name),
+                    _t("Confirm Delete"), wx.YES | wx.NO | wx.ICON_QUESTION
+                ) as dlg:
+                    if dlg.ShowModal() == wx.ID_YES:
+                        activeChar = self.getActiveCharacter()
+                        if activeChar is None:
+                            return
                         try:
-                            ESIExceptionHandler(ex)
-                        except:
-                            # don't need to do anything - we should already have error code in the status
-                            pass
-                except requests.exceptions.ConnectionError:
-                    msg = _t("Connection error, please check your internet connection")
-                    pyfalog.error(msg)
-                    self.statusbar.SetStatusText(msg)
-                k += 1
+                            try:
+                                sEsi.delFitting(activeChar, fit['fitting_id'])
+                                # repopulate the fitting list
+                                self.fitTree.populateSkillTree(self.fittings)
+                                self.fitView.update([])
+                                k += 1
+                            except APIException as ex:
+                                pyfalog.error(ex)
+                                self.statusbar.SetStatusText("Failed to delete fit: ESI error {} received - {}".format(ex.status_code, ex.response["error"]))
+                                try:
+                                    ESIExceptionHandler(ex)
+                                except:
+                                    # don't need to do anything - we should already have error code in the status
+                                    pass
+                        except requests.exceptions.ConnectionError:
+                            msg = _t("Connection error, please check your internet connection")
+                            pyfalog.error(msg)
+                            self.statusbar.SetStatusText(msg)
+                
             i+=1
             self.progressBar.SetValue(i/(2*countFits)*100)
 
