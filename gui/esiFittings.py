@@ -247,10 +247,13 @@ class EveFittings(AuxiliaryFrame):
         self.fetchFittings(event)
         sPort = Port.getInstance()
         sFit = Fit.getInstance()
-        countFits = Fit.countAllFits()
+        countPyfaFits = Fit.countAllFits()
+        countEsiFits = len(self.fittings)
         i = 0
         j = 0
         k = 0
+        l = 0
+        m = 0
         skip = False
 
         for fit in self.fittings:
@@ -268,7 +271,8 @@ class EveFittings(AuxiliaryFrame):
                     self, _t("Do you really want to delete {} ({}) from EVE?").format(fit['name'], getItem(fit['ship_type_id']).name),
                     _t("Confirm Delete"), wx.YES | wx.NO | wx.ICON_QUESTION
                 ) as dlg:
-                    if dlg.ShowModal() == wx.ID_YES:
+                    result = dlg.ShowModal()
+                    if result == wx.ID_YES:
                         activeChar = self.getActiveCharacter()
                         if activeChar is None:
                             return
@@ -291,9 +295,14 @@ class EveFittings(AuxiliaryFrame):
                             msg = _t("Connection error, please check your internet connection")
                             pyfalog.error(msg)
                             self.statusbar.SetStatusText(msg)
+                    if result == wx.ID_NO:
+                        l += 1
+                        sPort = Port.getInstance()
+                        import_type, fits = sPort.importFitFromBuffer(json.dumps(fit))
+                        self.mainFrame._openAfterImport(fits)
                 
             i+=1
-            self.progressBar.SetValue(i/(2*countFits)*100)
+            self.progressBar.SetValue(i/(countEsiFits+countPyfaFits)*100)
 
 
         for f in sFit.getAllFitsLite():
@@ -314,7 +323,7 @@ class EveFittings(AuxiliaryFrame):
                     skip = False
 
             if not skip:
-                self.statusbar.SetStatusText(_t("Syncing fit " + str(i) + " of " + str(countFits)))
+                self.statusbar.SetStatusText(_t("Syncing fit " + str(i) + " of " + str(countPyfaFits)))
                 
                 sEsi = Esi.getInstance()
 
@@ -359,11 +368,12 @@ class EveFittings(AuxiliaryFrame):
                     self.statusbar.SetStatusText("Unknown error")
                     pyfalog.error(ex)
                 # respect limit of 20 per 10 seconds
+                m+=1
                 time.sleep(2) 
             i+=1
-            self.progressBar.SetValue(i/(2*countFits)*100)
+            self.progressBar.SetValue(i/(countEsiFits+countPyfaFits)*100)
 
-        self.statusbar.SetStatusText(_t("Sync completed, " + str(j)+ " existing fits were skipped, " + str(countFits - j) + " new fits were added, " + str(k) + " fits were deleted"))
+        self.statusbar.SetStatusText(_t("Sync fits completed, " + str(j)+ "  skipped, " + str(m) + "  exported, " + str(l) + " imported, " + str(k) + " deleted"))
 
 class ESIServerExceptionHandler:
     def __init__(self, parentWindow, ex):
