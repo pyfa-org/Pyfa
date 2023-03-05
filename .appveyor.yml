@@ -76,7 +76,7 @@ for:
       description: 'Release description'
       provider: GitHub
       auth_token:
-        secure: M94o0xMtzxrvlKpqMcXU2KfbJdd3aYJ3UxWzePUz/pkT1/Ojiis052CiLsLVyzJg
+        secure: c9F0c0nwFiOBR36+kMUIaWuAcrURWA2lsX86F/+/ufrf4uASo0WuGzx3LGu7LStB
       draft: true
       force_update: false
       # deploy on tag push only
@@ -168,7 +168,7 @@ for:
       description: 'Release description'
       provider: GitHub
       auth_token:
-        secure: M94o0xMtzxrvlKpqMcXU2KfbJdd3aYJ3UxWzePUz/pkT1/Ojiis052CiLsLVyzJg
+        secure: c9F0c0nwFiOBR36+kMUIaWuAcrURWA2lsX86F/+/ufrf4uASo0WuGzx3LGu7LStB
       draft: true
       force_update: false
       # deploy on tag push only
@@ -210,7 +210,7 @@ for:
       description: 'Release description'
       provider: GitHub
       auth_token:
-        secure: M94o0xMtzxrvlKpqMcXU2KfbJdd3aYJ3UxWzePUz/pkT1/Ojiis052CiLsLVyzJg
+        secure: c9F0c0nwFiOBR36+kMUIaWuAcrURWA2lsX86F/+/ufrf4uASo0WuGzx3LGu7LStB
       draft: true
       force_update: false
       # deploy on tag push only
