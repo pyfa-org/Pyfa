@@ -248,8 +248,46 @@ class EveFittings(AuxiliaryFrame):
         sPort = Port.getInstance()
         sFit = Fit.getInstance()
         countFits = Fit.countAllFits()
-        i = 1
+        i = 0
+        j = 0
+        k = 0
         skip = False
+
+        for fit in self.fittings:
+            for f in sFit.getAllFitsLite():
+                if sFit.getFit(f.ID).name == fit['name']:
+                    delete = False
+                    break
+                else:
+                    delete = True
+            
+            if delete:
+                sEsi = Esi.getInstance()
+                activeChar = self.getActiveCharacter()
+                if activeChar is None:
+                    return
+                try:
+                    try:
+                        sEsi.delFitting(activeChar, fit['fitting_id'])
+                        # repopulate the fitting list
+                        self.fitTree.populateSkillTree(self.fittings)
+                        self.fitView.update([])
+                    except APIException as ex:
+                        pyfalog.error(ex)
+                        self.statusbar.SetStatusText("Failed to delete fit: ESI error {} received - {}".format(ex.status_code, ex.response["error"]))
+                        try:
+                            ESIExceptionHandler(ex)
+                        except:
+                            # don't need to do anything - we should already have error code in the status
+                            pass
+                except requests.exceptions.ConnectionError:
+                    msg = _t("Connection error, please check your internet connection")
+                    pyfalog.error(msg)
+                    self.statusbar.SetStatusText(msg)
+                k += 1
+            i+=1
+            self.progressBar.SetValue(i/(2*countFits)*100)
+
 
         for f in sFit.getAllFitsLite():
             fitID = f.ID
@@ -261,8 +299,9 @@ class EveFittings(AuxiliaryFrame):
             # skip existing fits
             for fit in self.fittings:
                 if sFit.getFit(fitID).name == fit['name']:
-                    self.statusbar.SetStatusText(_t("Fit already exists, skipping "))
+                    self.statusbar.SetStatusText(_t("Fit already exists, skipping " + fit['name']))
                     skip = True
+                    j += 1
                     break
                 else:
                     skip = False
@@ -314,10 +353,10 @@ class EveFittings(AuxiliaryFrame):
                     pyfalog.error(ex)
                 # respect limit of 20 per 10 seconds
                 time.sleep(2) 
-            self.progressBar.SetValue(i/countFits*100)
             i+=1
+            self.progressBar.SetValue(i/(2*countFits)*100)
 
-        self.statusbar.SetStatusText(_t("Sync completed"))
+        self.statusbar.SetStatusText(_t("Sync completed, " + str(j)+ " existing fits were skipped, " + str(countFits - j) + " new fits were added, " + str(k) + " fits were deleted"))
 
 class ESIServerExceptionHandler:
     def __init__(self, parentWindow, ex):
