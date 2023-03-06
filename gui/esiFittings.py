@@ -258,7 +258,7 @@ class EveFittings(AuxiliaryFrame):
 
         for fit in self.fittings:
             for f in sFit.getAllFitsLite():
-                if sFit.getFit(f.ID).name == fit['name']:
+                if (sFit.getFit(f.ID).name == fit['name']) & (sFit.getFit(f.ID).shipID == fit['ship_type_id']):
                     delete = False
                     break
                 else:
@@ -314,7 +314,7 @@ class EveFittings(AuxiliaryFrame):
             
             # skip existing fits
             for fit in self.fittings:
-                if sFit.getFit(fitID).name == fit['name']:
+                if (sFit.getFit(f.ID).name == fit['name']) & (sFit.getFit(f.ID).shipID == fit['ship_type_id']):
                     self.statusbar.SetStatusText(_t("Fit already exists, skipping " + fit['name']))
                     skip = True
                     j += 1
