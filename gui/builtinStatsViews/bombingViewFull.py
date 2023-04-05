@@ -55,8 +55,11 @@ class BombingViewFull(StatsView):
             sizerBombing.AddGrowableCol(i + 1)
         contentSizer.Add(sizerBombing, 0, wx.EXPAND, 0)
 
-        # Add an empty label, then the rest.
-        sizerBombing.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
+        # first row is for icons
+        bitmap = BitmapLoader.getStaticBitmap("skill_big", contentPanel, "gui")
+        tooltip = wx.ToolTip(_t("Covert Ops level"))
+        bitmap.SetToolTip(tooltip)
+        sizerBombing.Add(bitmap, 0, wx.ALIGN_CENTER)
         toolTipText = {
             "em": _t("Electron Bomb"),
             "thermal": _t("Scorch Bomb"),
@@ -69,6 +72,7 @@ class BombingViewFull(StatsView):
             bitmap.SetToolTip(tooltip)
             sizerBombing.Add(bitmap, 0, wx.ALIGN_CENTER)
 
+        # the other rows are for each possible level of Covert Ops skill
         for covertLevel in ("0", "1", "2", "3", "4", "5"):
             label = wx.StaticText(contentPanel, wx.ID_ANY, "%s" % covertLevel)
             tooltip = wx.ToolTip(_t("Covert Ops level"))
@@ -111,13 +115,18 @@ class BombingViewFull(StatsView):
         # updates the labels for each combination of covert op level and damage type
         for covertLevel in ("0", "1", "2", "3", "4", "5"):
             modBombDamage = bombDamage * (1 + 0.05 * int(covertLevel))
-            for damageType, ehp in (("em", emEhp), ("thermal", thermalEhp),
-                                    ("kinetic", kineticEhp), ("explosive", explosiveEhp)):
+            for damageType, ehp, bomber in (("em", emEhp, "Purifier"), ("thermal", thermalEhp, "Nemesis"),
+                                    ("kinetic", kineticEhp, "Manticore"), ("explosive", explosiveEhp, "Hound")):
                 effectiveBombDamage = modBombDamage * min(bombSigRadius, sigRadius) / bombSigRadius
                 label = getattr(self, "labelDamagetypeCovertlevel%s%s" % (damageType.capitalize(), covertLevel))
                 label.SetLabel("{:.1f}".format(ehp / effectiveBombDamage))
-                label.SetToolTip("Number of %s bombs to kill a %s using the respective "
-                                 "bomber type with Covert Ops level %s" % (damageType, fit.name, covertLevel))
+                if covertLevel is not "0":
+                    label.SetToolTip("Number of %s bombs to kill a %s using a %s "
+                                 "with Covert Ops level %s" % (damageType, fit.name, bomber, covertLevel))
+                else:
+                    label.SetToolTip("Number of %s bombs to kill a %s with Covert Ops level %s" %
+                                     (damageType, fit.name, covertLevel))
+
 
         self.panel.Layout()
         self.headerPanel.Layout()
