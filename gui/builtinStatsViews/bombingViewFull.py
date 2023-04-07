@@ -23,6 +23,8 @@ import wx
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.statsView import StatsView
+from eos.const import FittingModuleState
+from service.market import Market
 
 _t = wx.GetTranslation
 
@@ -89,9 +91,30 @@ class BombingViewFull(StatsView):
         if fit is None:
             return
 
-        bombDamage = 5800
-        bombSigRadius = 400
-        sigRadius = fit.ship.getModifiedItemAttr('signatureRadius')
+        mkt = Market.getInstance()
+        emBomb = mkt.getItem(27920)
+        thermalBomb = mkt.getItem(27916)
+        kineticBomb = mkt.getItem(27912)
+        explosiveBomb = mkt.getItem(27918)
+        environementBombDamageModifier = 1.0
+
+        # list all environmental effects affecting bomb damage
+        relevantEffects = [
+            'Class 6 Red Giant Effects',
+            'Class 5 Red Giant Effects',
+            'Class 4 Red Giant Effects',
+            'Class 3 Red Giant Effects',
+            'Class 2 Red Giant Effects',
+            'Class 1 Red Giant Effects',
+        ]
+        for effect in fit.projectedModules:
+            if effect.state == FittingModuleState.ONLINE and effect.fullName in relevantEffects:
+                # note: despite the name, smartbombDamageMultiplier applies to the damage of launched bombs
+                environementBombDamageModifier = environementBombDamageModifier *\
+                                                 effect.item.attributes['smartbombDamageMultiplier'].value
+
+        # signature radius of the current fit to calculate the application of bombs
+        shipSigRadius = fit.ship.getModifiedItemAttr('signatureRadius')
 
         # get the raw values for all hp layers
         hullHP = fit.ship.getModifiedItemAttr('hp')
@@ -114,18 +137,24 @@ class BombingViewFull(StatsView):
 
         # updates the labels for each combination of covert op level and damage type
         for covertLevel in ("0", "1", "2", "3", "4", "5"):
-            modBombDamage = bombDamage * (1 + 0.05 * int(covertLevel))
-            for damageType, ehp, bomber in (("em", emEhp, "Purifier"), ("thermal", thermalEhp, "Nemesis"),
-                                    ("kinetic", kineticEhp, "Manticore"), ("explosive", explosiveEhp, "Hound")):
-                effectiveBombDamage = modBombDamage * min(bombSigRadius, sigRadius) / bombSigRadius
+            covertOpsBombDamageModifier = 1 + 0.05 * int(covertLevel)
+            for damageType, ehp, bomber, bomb in (("em", emEhp, "Purifier", emBomb),
+                                                  ("thermal", thermalEhp, "Nemesis", thermalBomb),
+                                                  ("kinetic", kineticEhp, "Manticore", kineticBomb),
+                                                  ("explosive", explosiveEhp, "Hound", explosiveBomb)):
+                baseBombDamage = (bomb.attributes['emDamage'].value + bomb.attributes['thermalDamage'].value +
+                                  bomb.attributes['kineticDamage'].value + bomb.attributes['explosiveDamage'].value)
+                appliedBombDamage = baseBombDamage * covertOpsBombDamageModifier * environementBombDamageModifier * \
+                                    (min(bomb.attributes['signatureRadius'].value, shipSigRadius) /
+                                     bomb.attributes['signatureRadius'].value)
                 label = getattr(self, "labelDamagetypeCovertlevel%s%s" % (damageType.capitalize(), covertLevel))
-                label.SetLabel("{:.1f}".format(ehp / effectiveBombDamage))
+                label.SetLabel("{:.1f}".format(ehp / appliedBombDamage))
                 if covertLevel is not "0":
-                    label.SetToolTip("Number of %s bombs to kill a %s using a %s "
-                                 "with Covert Ops level %s" % (damageType, fit.name, bomber, covertLevel))
+                    label.SetToolTip("Number of %s to kill a %s using a %s "
+                                 "with Covert Ops level %s" % (bomb.customName, fit.name, bomber, covertLevel))
                 else:
-                    label.SetToolTip("Number of %s bombs to kill a %s with Covert Ops level %s" %
-                                     (damageType, fit.name, covertLevel))
+                    label.SetToolTip("Number of %s to kill a %s with Covert Ops level %s" %
+                                     (bomb.customName, fit.name, covertLevel))
 
 
         self.panel.Layout()
