@@ -927,6 +927,8 @@ class Effect244(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' High Speed Maneuvering HS (6 of 6)
+    Implants named like: Federation Mobility Booster (4 of 4)
+    Implants named like: Republic Mobility Booster (4 of 4)
     Skill: High Speed Maneuvering
     """
 
@@ -1163,6 +1165,8 @@ class Effect394(BaseEffect):
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
     Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Imperial Mobility Booster (4 of 4)
+    Implants named like: Republic Mobility Booster (4 of 4)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: AIR Overclocker Booster II
@@ -1189,9 +1193,11 @@ class Effect395(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
+    Implants named like: Federation Mobility Booster (4 of 4)
     Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: State Mobility Booster (4 of 4)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
     Implant: AIR Agility Booster II
@@ -2403,6 +2409,7 @@ class Effect784(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: Republic Projection Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
     Modules named like: Rocket Fuel Cache Partition (8 of 8)
     Implant: Antipharmakon Toxot
@@ -2497,6 +2504,7 @@ class Effect856(BaseEffect):
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
     Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: Mobility Booster (16 of 16)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
@@ -4191,6 +4199,7 @@ class Effect1395(BaseEffect):
     shieldBoostAmplifierPassive
 
     Used by:
+    Implants named like: Republic Defense Booster (4 of 4)
     Implants named like: grade Crystal (15 of 18)
     """
 
@@ -4352,6 +4361,7 @@ class Effect1445(BaseEffect):
     ewSkillRsdMaxRangeBonus
 
     Used by:
+    Implants named like: Federation Electronics Booster (4 of 4)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4361,9 +4371,10 @@ class Effect1445(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
+        penalize = False if 'skill' in context or 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Sensor Linking'),
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
-                                      stackingPenalties='skill' not in context, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect1446(BaseEffect):
@@ -4371,6 +4382,7 @@ class Effect1446(BaseEffect):
     ewSkillTpMaxRangeBonus
 
     Used by:
+    Implants named like: Republic Electronics Booster (4 of 4)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4391,6 +4403,7 @@ class Effect1448(BaseEffect):
     ewSkillTdMaxRangeBonus
 
     Used by:
+    Implants named like: Imperial Electronics Booster (4 of 4)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4400,9 +4413,10 @@ class Effect1448(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
+        penalize = False if 'skill' in context or 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Weapon Disruptor',
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level,
-                                      stackingPenalties='skill' not in context, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect1449(BaseEffect):
@@ -4410,15 +4424,18 @@ class Effect1449(BaseEffect):
     ewSkillRsdFallOffBonus
 
     Used by:
+    Implants named like: Federation Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Sensor Linking'),
-                                      'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Sensor Linking'),
+            'falloffEffectiveness', container.getModifiedItemAttr('falloffBonus') * level, **kwargs)
 
 
 class Effect1450(BaseEffect):
@@ -4426,15 +4443,17 @@ class Effect1450(BaseEffect):
     ewSkillTpFallOffBonus
 
     Used by:
+    Implants named like: Republic Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Target Painter',
-                                      'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
+                                      'falloffEffectiveness', container.getModifiedItemAttr('falloffBonus') * level, **kwargs)
 
 
 class Effect1451(BaseEffect):
@@ -4442,15 +4461,17 @@ class Effect1451(BaseEffect):
     ewSkillTdFallOffBonus
 
     Used by:
+    Implants named like: Imperial Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Weapon Disruptor',
-                                      'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
+                                      'falloffEffectiveness', container.getModifiedItemAttr('falloffBonus') * level, **kwargs)
 
 
 class Effect1452(BaseEffect):
@@ -4458,6 +4479,7 @@ class Effect1452(BaseEffect):
     ewSkillEwMaxRangeBonus
 
     Used by:
+    Implants named like: State Electronics Booster (4 of 4)
     Implants named like: grade Centurion (10 of 12)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Implant: Serenity YC122.9 Season Booster - EW Range
@@ -4479,15 +4501,17 @@ class Effect1453(BaseEffect):
     ewSkillEwFallOffBonus
 
     Used by:
+    Implants named like: State Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM',
-                                      'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level, **kwargs)
+                                      'falloffEffectiveness', container.getModifiedItemAttr('falloffBonus') * level, **kwargs)
 
 
 class Effect1472(BaseEffect):
@@ -4495,6 +4519,7 @@ class Effect1472(BaseEffect):
     missileSkillAoeCloudSizeBonus
 
     Used by:
+    Implants named like: State Application Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Guided Missile Precision GP (6 of 6)
     Modules named like: Warhead Rigor Catalyst (8 of 8)
     Skill: Guided Missile Precision
@@ -4505,7 +4530,7 @@ class Effect1472(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalize = False if 'skill' in context or 'implant' in context else True
+        penalize = False if 'skill' in context or 'implant' in context or 'booster' in context else True
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
                                         'aoeCloudSize', container.getModifiedItemAttr('aoeCloudSizeBonus') * level,
                                         stackingPenalties=penalize, **kwargs)
@@ -4688,6 +4713,7 @@ class Effect1590(BaseEffect):
 
     Used by:
     Implants named like: Halcyon G Booster (5 of 5)
+    Implants named like: Republic Application Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
     Skill: Target Navigation Prediction
@@ -5277,6 +5303,7 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
+    Implants named like: State Projection Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -6801,6 +6828,7 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Imperial Defense Booster (4 of 4)
     """
 
     type = 'passive'
@@ -6823,6 +6851,7 @@ class Effect2297(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: State Defense Booster (4 of 4)
     """
 
     type = 'passive'
@@ -7569,6 +7598,7 @@ class Effect2693(BaseEffect):
     falloffBonusEffectLasers
 
     Used by:
+    Implants named like: Imperial Projection Booster (4 of 4)
     Modules named like: Energy Ambit Extension (8 of 8)
     """
 
@@ -7576,9 +7606,10 @@ class Effect2693(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
+        penalize = False if 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'falloff', module.getModifiedItemAttr('falloffBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect2694(BaseEffect):
@@ -7586,6 +7617,8 @@ class Effect2694(BaseEffect):
     falloffBonusEffectHybrids
 
     Used by:
+    Implants named like: Federation Projection Booster (4 of 4)
+    Implants named like: State Projection Booster (4 of 4)
     Modules named like: Hybrid Ambit Extension (8 of 8)
     """
 
@@ -7604,6 +7637,7 @@ class Effect2695(BaseEffect):
     falloffBonusEffectProjectiles
 
     Used by:
+    Implants named like: Republic Projection Booster (4 of 4)
     Modules named like: Projectile Ambit Extension (8 of 8)
     """
 
@@ -7622,6 +7656,7 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
+    Implants named like: Imperial Projection Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -7640,6 +7675,8 @@ class Effect2697(BaseEffect):
     maxRangeBonusEffectHybrids
 
     Used by:
+    Implants named like: Federation Projection Booster (4 of 4)
+    Implants named like: State Projection Booster (4 of 4)
     Modules named like: Hybrid Locus Coordinator (8 of 8)
     """
 
@@ -7658,6 +7695,7 @@ class Effect2698(BaseEffect):
     maxRangeBonusEffectProjectiles
 
     Used by:
+    Implants named like: Republic Projection Booster (4 of 4)
     Modules named like: Projectile Locus Coordinator (8 of 8)
     """
 
@@ -8302,6 +8340,7 @@ class Effect2798(BaseEffect):
     projectileWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Republic Damage Booster (4 of 4)
     Modules named like: Projectile Collision Accelerator (8 of 8)
     """
 
@@ -8354,6 +8393,8 @@ class Effect2802(BaseEffect):
     hybridWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Federation Damage Booster (4 of 4)
+    Implants named like: State Damage Booster (4 of 4)
     Modules named like: Hybrid Collision Accelerator (8 of 8)
     """
 
@@ -8372,8 +8413,8 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Imperial Damage Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
-    Items from market group: Implants & Boosters > Booster > Booster Slot 17 (96 of 96)
     """
 
     type = 'passive'
@@ -8553,6 +8594,8 @@ class Effect2851(BaseEffect):
     missileDMGBonusPassive
 
     Used by:
+    Implants named like: Republic Damage Booster (4 of 4)
+    Implants named like: State Damage Booster (4 of 4)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     """
 
@@ -10203,6 +10246,8 @@ class Effect3379(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Fuel Conservation FC (6 of 6)
+    Implants named like: Imperial Mobility Booster (4 of 4)
+    Implants named like: State Mobility Booster (4 of 4)
     """
 
     type = 'passive'
@@ -13495,6 +13540,7 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (4 of 7)
+    Implants named like: Electronics Booster (16 of 16)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
@@ -16024,6 +16070,7 @@ class Effect4817(BaseEffect):
     salvagerModuleDurationReduction
 
     Used by:
+    Implants named like: Electronics Booster (16 of 16)
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
     """
 
@@ -18000,6 +18047,8 @@ class Effect5188(BaseEffect):
     trackingSpeedBonusEffectHybrids
 
     Used by:
+    Implants named like: Federation Application Booster (4 of 4)
+    Implants named like: State Application Booster (4 of 4)
     Modules named like: Hybrid Metastasis Adjuster (8 of 8)
     """
 
@@ -18018,6 +18067,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
+    Implants named like: Imperial Application Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -18036,6 +18086,7 @@ class Effect5190(BaseEffect):
     trackingSpeedBonusEffectProjectiles
 
     Used by:
+    Implants named like: Republic Application Booster (4 of 4)
     Modules named like: Projectile Metastasis Adjuster (8 of 8)
     """
 
@@ -30097,6 +30148,8 @@ class Effect6667(BaseEffect):
 
     Used by:
     Implants named like: Black Market 'Valdimar' Drone Navigation DN (3 of 3)
+    Implants named like: Federation Application Booster (4 of 4)
+    Implants named like: Imperial Application Booster (4 of 4)
     Skill: Drone Navigation
     """
 
@@ -30790,6 +30843,8 @@ class Effect6708(BaseEffect):
     armorRepairAmountBonusSubcap
 
     Used by:
+    Implants named like: Federation Defense Booster (4 of 4)
+    Implants named like: Republic Defense Booster (4 of 4)
     Implants named like: grade Asklepian (15 of 18)
     """
 
@@ -35123,7 +35178,9 @@ class Effect7176(BaseEffect):
     skillBonusDroneInterfacingNotFighters
 
     Used by:
+    Implants named like: Federation Damage Booster (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
+    Implants named like: Imperial Damage Booster (4 of 4)
     Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
     Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
     """
@@ -35142,6 +35199,8 @@ class Effect7177(BaseEffect):
 
     Used by:
     Implants named like: Drone Tuner (4 of 4)
+    Implants named like: Federation Projection Booster (4 of 4)
+    Implants named like: Imperial Projection Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38004,6 +38063,24 @@ class Effect8364(BaseEffect):
     type = 'active'
 
 
+class Effect8366(BaseEffect):
+    """
+    modifyHullResonancePostPercentpassive
+
+    Used by:
+    Implants named like: Federation Defense Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                f'{dmgType}DamageResonance', src.getModifiedItemAttr('hullDamageResistanceBonus'), **kwargs)
+
+
+
 class Effect8372(BaseEffect):
     """
     fleetCompressionLogisticsRangeBonus
@@ -38125,7 +38202,9 @@ class Effect8477(BaseEffect):
     droneTrackingBonusPassive
 
     Used by:
+    Implants named like: Federation Application Booster (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Imperial Application Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38160,7 +38239,9 @@ class Effect8479(BaseEffect):
     droneOptimalFalloffBonusPassive
 
     Used by:
+    Implants named like: Federation Projection Booster (4 of 4)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Imperial Projection Booster (4 of 4)
     """
 
     type = 'passive'
