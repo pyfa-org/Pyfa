@@ -976,6 +976,9 @@ cdfe:
 cp:
   - 'cp'
   - 'command processor'
+ats:
+  - 'ats'
+  - 'auto targeting system'
 
 # Implants
 lg:
