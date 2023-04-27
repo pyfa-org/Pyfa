@@ -186,7 +186,7 @@ class Miscellanea(ViewColumn):
             duration = stuff.getModifiedItemAttr("duration")
             if not duration:
                 return "", None
-            text = "{0}s".format(formatAmount(duration, 3, 0, 0))
+            text = "{0}s".format(formatAmount(duration / 1000, 3, 0, 0))
             tooltip = "Assault ability duration"
             return text, tooltip
         elif itemGroup in ("Warp Scrambler", "Warp Core Stabilizer", "Structure Warp Scrambler"):
