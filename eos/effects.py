@@ -1060,6 +1060,7 @@ class Effect290(BaseEffect):
 
     Used by:
     Implants named like: Frentix Booster (4 of 4)
+    Implants named like: Guri Malakim Turret Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
     Skill: Sharpshooter
@@ -1197,6 +1198,7 @@ class Effect395(BaseEffect):
     Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: SoCT Agility Booster (4 of 4)
     Implants named like: State Mobility Booster (4 of 4)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
@@ -1772,6 +1774,7 @@ class Effect584(BaseEffect):
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
+    Implants named like: Guri Malakim Turret Booster (4 of 4)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
     Implant: Standard Cerebral Accelerator
@@ -1856,7 +1859,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1010)
+    Items from category: Charge (608 of 1011)
     """
 
     type = 'passive'
@@ -1871,7 +1874,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (40 of 40)
+    Charges from group: Festival Charges (41 of 41)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -2155,6 +2158,7 @@ class Effect699(BaseEffect):
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: SoCT Scan Booster (4 of 4)
     Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
     Modules named like: Targeting System Subcontroller (8 of 8)
     Implant: Quafe Zero Classic
@@ -2432,7 +2436,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (538 of 1010)
+    Items from category: Charge (538 of 1011)
     """
 
     type = 'passive'
@@ -2506,6 +2510,7 @@ class Effect856(BaseEffect):
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Mobility Booster (16 of 16)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
+    Implants named like: SoCT Agility Booster (4 of 4)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
     Implant: Serenity YC122.9 Season Booster - Warp Speed
@@ -3690,6 +3695,7 @@ class Effect1185(BaseEffect):
     structureStealthEmitterArraySigDecrease
 
     Used by:
+    Implants named like: Guri Malakim Observability Booster (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
@@ -3794,6 +3800,7 @@ class Effect1218(BaseEffect):
     Used by:
     Ship: Daredevil
     Ship: Hecate
+    Ship: Metamorphosis
     Ship: Sunesis
     """
 
@@ -6677,6 +6684,7 @@ class Effect2215(BaseEffect):
     Used by:
     Ship: Chremoas
     Ship: Dramiel
+    Ship: Metamorphosis
     Ship: Sunesis
     Ship: Svipul
     """
@@ -6873,6 +6881,7 @@ class Effect2298(BaseEffect):
     scanStrengthBonusPercentPassive
 
     Used by:
+    Implants named like: Guri Malakim Observability Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: High grade Grail (5 of 6)
@@ -10583,6 +10592,7 @@ class Effect3487(BaseEffect):
     Ship: Confessor
     Ship: Cruor
     Ship: Imp
+    Ship: Metamorphosis
     Ship: Succubus
     Ship: Sunesis
     """
@@ -13545,6 +13555,7 @@ class Effect4162(BaseEffect):
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
+    Implants named like: SoCT Scan Booster (4 of 4)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
     Implant: AIR Astro-Rangefinding II Booster
@@ -16647,6 +16658,7 @@ class Effect4951(BaseEffect):
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
     Implants named like: Blue Pill Booster (5 of 5)
+    Implants named like: Guri Malakim Shield Booster (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
     Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Thureo
@@ -20359,6 +20371,7 @@ class Effect5460(BaseEffect):
     Variations of ship: Magnate (3 of 5)
     Variations of ship: Probe (3 of 3)
     Ship: Astero
+    Ship: Metamorphosis
     Ship: Nestor
     """
 
@@ -24053,6 +24066,7 @@ class Effect6083(BaseEffect):
 
     Used by:
     Ship: Jackdaw
+    Ship: Metamorphosis
     Ship: Sunesis
     """
 
@@ -28315,6 +28329,7 @@ class Effect6565(BaseEffect):
 
     Used by:
     Structures from group: Citadel (9 of 9)
+    Celestial: Fortizar (DO NOT TRANSLATE)
     """
 
     runTime = 'early'
@@ -33591,6 +33606,7 @@ class Effect7008(BaseEffect):
 
     Used by:
     Items from category: Structure (17 of 17)
+    Celestial: Fortizar (DO NOT TRANSLATE)
     """
 
     type = 'passive'
@@ -33843,6 +33859,7 @@ class Effect7030(BaseEffect):
     Used by:
     Items from category: Structure (11 of 17)
     Structures from group: Citadel (8 of 9)
+    Celestial: Fortizar (DO NOT TRANSLATE)
     """
 
     type = 'passive'
@@ -33991,6 +34008,7 @@ class Effect7039(BaseEffect):
 
     Used by:
     Items from category: Structure (14 of 17)
+    Celestial: Fortizar (DO NOT TRANSLATE)
     """
 
     type = 'passive'
@@ -34010,6 +34028,7 @@ class Effect7040(BaseEffect):
 
     Used by:
     Items from category: Structure (17 of 17)
+    Celestial: Fortizar (DO NOT TRANSLATE)
     """
 
     type = 'passive'
@@ -37408,6 +37427,7 @@ class Effect8226(BaseEffect):
 
     Used by:
     Variations of ship: Procurer (2 of 2)
+    Ship: Metamorphosis
     """
 
     type = 'passive'
@@ -38254,6 +38274,23 @@ class Effect8479(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'), 'falloff',
             container.getModifiedItemAttr('falloffBonus'), **kwargs)
+
+
+class Effect8594(BaseEffect):
+    """
+    modifyArmorDamageResistanceBonusPostPercentPassive
+
+    Used by:
+    Implants named like: SoCT Armor Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
+            fit.ship.boostItemAttr(f'armor{type}DamageResonance',
+                                   booster.getModifiedItemAttr('armorDamageResistanceBonus'), **kwargs)
 
 
 class Effect11055(BaseEffect):
@@ -39578,3 +39615,88 @@ class Effect11519(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'),
             'speedFactor', ship.getModifiedItemAttr('shipBonusAT3'), **kwargs)
+
+
+class Effect11528(BaseEffect):
+    """
+    covopsCloakCPURole1Bonus
+
+    Used by:
+    Ship: Metamorphosis
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Cloaking'),
+            'cpu', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+
+
+class Effect11529(BaseEffect):
+    """
+    shipRole8BonusCoreProbeStrength
+
+    Used by:
+    Ship: Metamorphosis
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Science'),
+            'baseSensorStrength', ship.getModifiedItemAttr('shipBonusRole8'), **kwargs)
+
+
+class Effect11530(BaseEffect):
+    """
+    shipRole6BonusCoreProbeDeviation
+
+    Used by:
+    Ship: Metamorphosis
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Science'),
+            'baseMaxScanDeviation', ship.getModifiedItemAttr('shipBonusRole6'), **kwargs)
+
+
+class Effect11531(BaseEffect):
+    """
+    probeLauncherCPURole1Bonus
+
+    Used by:
+    Ship: Metamorphosis
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Scan Probe Launcher', 'cpu',
+            ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+
+
+class Effect11532(BaseEffect):
+    """
+    dataMinerCPURole1Bonus
+
+    Used by:
+    Ship: Metamorphosis
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Data Miners', 'cpu',
+            ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
