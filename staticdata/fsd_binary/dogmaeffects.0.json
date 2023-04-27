@@ -93158,5 +93158,120 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "11528": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11528, 
+    "effectName": "covopsCloakCPURole1Bonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6, 
+        "skillTypeID": 11579
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11529": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11529, 
+    "effectName": "shipRole8BonusCoreProbeStrength", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1371, 
+        "modifyingAttributeID": 1688, 
+        "operation": 6, 
+        "skillTypeID": 3402
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11530": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11530, 
+    "effectName": "shipRole6BonusCoreProbeDeviation", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1372, 
+        "modifyingAttributeID": 2303, 
+        "operation": 6, 
+        "skillTypeID": 3402
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11531": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11531, 
+    "effectName": "probeLauncherCPURole1Bonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 481, 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11532": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11532, 
+    "effectName": "dataMinerCPURole1Bonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 538, 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 2298, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }
