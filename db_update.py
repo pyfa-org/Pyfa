@@ -117,8 +117,7 @@ def update_db():
         for k, v in compiled_data.items():
             row = {}
             row.update(v)
-            if keyIdName not in row:
-                row[keyIdName] = int(k)
+            row[keyIdName] = int(k)
             data.append(row)
         return data
 
@@ -641,6 +640,139 @@ def update_db():
             effect.effectID = effectID
             effect.effectName = effectName
             item.effects[effectName] = effect
+
+    def hardcodeGeri():
+        attrMap = {
+            # Fitting
+            'powerOutput': 50,
+            'cpuOutput': 200,
+            'capacitorCapacity': 325,
+            'rechargeRate': 130000,
+            # Slots
+            'hiSlots': 5,
+            'medSlots': 4,
+            'lowSlots': 4,
+            'launcherSlotsLeft': 3,
+            'turretSlotsLeft': 2,
+            # Rigs
+            'rigSlots': 2,
+            'rigSize': 1,
+            'upgradeCapacity': 400,
+            # Shield
+            'shieldCapacity': 1000,
+            'shieldEmDamageResonance': 1 - 0.75,
+            'shieldThermalDamageResonance': 1 - 0.6,
+            'shieldKineticDamageResonance': 1 - 0.4,
+            'shieldExplosiveDamageResonance': 1 - 0.5,
+            # Armor
+            'armorHP': 1000,
+            'armorEmDamageResonance': 1 - 0.9,
+            'armorThermalDamageResonance': 1 - 0.675,
+            'armorKineticDamageResonance': 1 - 0.25,
+            'armorExplosiveDamageResonance': 1 - 0.1,
+            # Structure
+            'hp': 700,
+            'emDamageResonance': 1 - 0.33,
+            'thermalDamageResonance': 1 - 0.33,
+            'kineticDamageResonance': 1 - 0.33,
+            'explosiveDamageResonance': 1 - 0.33,
+            'mass': 1309000,
+            'volume': 27289,
+            'capacity': 260,
+            # Navigation
+            'maxVelocity': 440,
+            'agility': 2.5,
+            'warpSpeedMultiplier': 5.5,
+            # Drones
+            'droneCapacity': 50,
+            'droneBandwidth': 10,
+            # Targeting
+            'maxTargetRange': 42000,
+            'maxLockedTargets': 6,
+            'scanRadarStrength': 0,
+            'scanLadarStrength': 12,
+            'scanMagnetometricStrength': 0,
+            'scanGravimetricStrength': 0,
+            'signatureRadius': 33,
+            'scanResolution': 770}
+        effectMap = {
+            100100: 'pyfaCustomGeriAfExploVel',
+            100101: 'pyfaCustomGeriAfRof',
+            100102: 'pyfaCustomGeriMfDmg',
+            100103: 'pyfaCustomGeriMfRep',
+            100104: 'pyfaCustomGeriRoleWebDroneStr',
+            100105: 'pyfaCustomGeriRoleWebDroneHP',
+            100106: 'pyfaCustomGeriRoleWebDroneSpeed',
+            100107: 'pyfaCustomGeriRoleMWDSigBloom'}
+        _hardcodeAttribs(74141, attrMap)
+        _hardcodeEffects(74141, effectMap)
+
+    def hardcodeBestla():
+        attrMap = {
+            # Fitting
+            'powerOutput': 1300,
+            'cpuOutput': 500,
+            'capacitorCapacity': 1500,
+            'rechargeRate': 200000,
+            'hiSlots': 6,
+            'medSlots': 5,
+            'lowSlots': 5,
+            'launcherSlotsLeft': 4,
+            'turretSlotsLeft': 2,
+            # Rigs
+            'rigSlots': 2,
+            'rigSize': 2,
+            'upgradeCapacity': 400,
+            # Shield
+            'shieldCapacity': 3000,
+            'shieldEmDamageResonance': 1 - 0.75,
+            'shieldThermalDamageResonance': 1 - 0.6,
+            'shieldKineticDamageResonance': 1 - 0.4,
+            'shieldExplosiveDamageResonance': 1 - 0.5,
+            # Armor
+            'armorHP': 3000,
+            'armorEmDamageResonance': 1 - 0.9,
+            'armorThermalDamageResonance': 1 - 0.675,
+            'armorKineticDamageResonance': 1 - 0.25,
+            'armorExplosiveDamageResonance': 1 - 0.1,
+            # Structure
+            'hp': 1600,
+            'emDamageResonance': 1 - 0.33,
+            'thermalDamageResonance': 1 - 0.33,
+            'kineticDamageResonance': 1 - 0.33,
+            'explosiveDamageResonance': 1 - 0.33,
+            'mass': 11650000,
+            'volume': 96000,
+            'capacity': 660,
+            # Navigation
+            'maxVelocity': 300,
+            'agility': 0.47,
+            'warpSpeedMultiplier': 4.5,
+            # Drones
+            'droneCapacity': 125,
+            'droneBandwidth': 20,
+            # Targeting
+            'maxTargetRange': 80000,
+            'maxLockedTargets': 7,
+            'scanRadarStrength': 0,
+            'scanLadarStrength': 22,
+            'scanMagnetometricStrength': 0,
+            'scanGravimetricStrength': 0,
+            'signatureRadius': 120,
+            'scanResolution': 340}
+        effectMap = {
+            100200: 'pyfaCustomBestlaHacExploVel',
+            100201: 'pyfaCustomBestlaHacRof',
+            100202: 'pyfaCustomBestlaMcDmg',
+            100203: 'pyfaCustomBestlaMcRep',
+            100204: 'pyfaCustomBestlaRoleWebDroneStr',
+            100205: 'pyfaCustomBestlaRoleWebDroneHP',
+            100206: 'pyfaCustomBestlaRoleWebDroneSpeed'}
+        _hardcodeAttribs(74316, attrMap)
+        _hardcodeEffects(74316, effectMap)
+
+    # hardcodeGeri()
+    # hardcodeBestla()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')

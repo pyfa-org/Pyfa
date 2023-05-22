@@ -204,7 +204,7 @@ def exportFighters(fighters):
 
     def fighterSorter(fighter):
         groupName = Market.getInstance().getGroupByItem(fighter.item).name
-        return (FIGHTER_ORDER.index(groupName), fighter.fullName)
+        return (FIGHTER_ORDER.index(groupName), fighter.item.typeName)
 
     fighterLines = []
     for fighter in sorted(fighters, key=fighterSorter):

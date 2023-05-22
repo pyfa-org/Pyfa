@@ -44,7 +44,6 @@ class AddCommandFit(ContextMenuUnconditional):
     def display(self, callingWindow, srcContext):
         if self.mainFrame.getActiveFit() is None or len(self.__class__.commandFits) == 0 or srcContext != "commandView":
             return False
-
         return True
 
     def getText(self, callingWindow, itmContext):
@@ -52,6 +51,8 @@ class AddCommandFit(ContextMenuUnconditional):
 
     def addFit(self, menu, fit, includeShip=False):
         label = fit.name if not includeShip else "({}) {}".format(fit.ship.item.name, fit.name)
+        if not label:
+            label = ' '
         id = ContextMenuUnconditional.nextID()
         self.fitMenuItemIds[id] = fit
         menuItem = wx.MenuItem(menu, id, label)

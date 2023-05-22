@@ -182,6 +182,13 @@ class Miscellanea(ViewColumn):
             text = "{0} | {1}".format(formatAmount(strength, 3, 0, 3), formatAmount(coherence, 3, 0, 3))
             tooltip = "Virus strength and coherence"
             return text, tooltip
+        elif itemGroup == "Damage Control":
+            duration = stuff.getModifiedItemAttr("duration")
+            if not duration:
+                return "", None
+            text = "{0}s".format(formatAmount(duration / 1000, 3, 0, 0))
+            tooltip = "Assault ability duration"
+            return text, tooltip
         elif itemGroup in ("Warp Scrambler", "Warp Core Stabilizer", "Structure Warp Scrambler"):
             scramStr = stuff.getModifiedItemAttr("warpScrambleStrength")
             if not scramStr:
