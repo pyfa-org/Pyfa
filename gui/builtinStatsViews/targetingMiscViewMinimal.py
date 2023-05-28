@@ -127,7 +127,9 @@ class TargetingMiscViewMinimal(StatsView):
             ("specialSalvageHoldCapacity", _t("Salvage hold")),
             ("specialCommandCenterHoldCapacity", _t("Command center hold")),
             ("specialPlanetaryCommoditiesHoldCapacity", _t("Planetary goods hold")),
-            ("specialQuafeHoldCapacity", _t("Quafe hold"))))
+            ("specialQuafeHoldCapacity", _t("Quafe hold")),
+            ("specialMobileDepotHoldCapacity", _t("Mobile depot hold")),
+        ))
 
         cargoValues = {
             "main": lambda: fit.ship.getModifiedItemAttr("capacity"),
@@ -148,7 +150,8 @@ class TargetingMiscViewMinimal(StatsView):
             "specialSalvageHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSalvageHoldCapacity"),
             "specialCommandCenterHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialCommandCenterHoldCapacity"),
             "specialPlanetaryCommoditiesHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialPlanetaryCommoditiesHoldCapacity"),
-            "specialQuafeHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity")
+            "specialQuafeHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity"),
+            "specialMobileDepotHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialMobileDepotHoldCapacity"),
         }
 
         stats = (("labelTargets", {"main": lambda: fit.maxTargets}, 3, 0, 0, ""),
