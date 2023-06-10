@@ -477,7 +477,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             # Some delay attributes have non-0 default value, so we have to pick according to effects
             if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar', 'lightningWeapon'}.intersection(self.item.effects):
                 dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0)
-            elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT'}.intersection(self.item.effects):
+            elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT', 'debuffLance'}.intersection(self.item.effects):
                 dmgDelay = self.getModifiedItemAttr("doomsdayWarningDuration", 0)
             else:
                 dmgDelay = 0
