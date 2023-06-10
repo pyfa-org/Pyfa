@@ -3534,5 +3534,29 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2201": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Remote Repair Impedance", 
+    "displayName_de": "Fernreparatur-Impedanz", 
+    "displayName_en-us": "Remote Repair Impedance", 
+    "displayName_es": "Impedancia de reparación remota", 
+    "displayName_fr": "Impédance de la réparation à distance", 
+    "displayName_it": "Remote Repair Impedance", 
+    "displayName_ja": "リモートリペアインピーダンス", 
+    "displayName_ko": "원격 수리 임피던스", 
+    "displayName_ru": "Ослабление дистанционного ремонта", 
+    "displayName_zh": "远程维修阻抗", 
+    "displayNameID": 662014, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2116
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
