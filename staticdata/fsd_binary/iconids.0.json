@@ -11977,5 +11977,32 @@
   }, 
   "25547": {
     "iconFile": "res:/ui/texture/WindowIcons/assets.png"
+  }, 
+  "25621": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/amarrLance.png"
+  }, 
+  "25622": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/caldariLance.png"
+  }, 
+  "25624": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/gallenteLance.png"
+  }, 
+  "25625": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/minmatarLance.png"
+  }, 
+  "25629": {
+    "iconFile": "res:/ui/texture/icons/35_64_13.png"
+  }, 
+  "25631": {
+    "iconFile": "res:/ui/texture/icons/35_64_11.png"
+  }, 
+  "25632": {
+    "iconFile": "res:/ui/texture/icons/36_64_6.png"
+  }, 
+  "25633": {
+    "iconFile": "res:/ui/texture/icons/36_64_7.png"
+  }, 
+  "25634": {
+    "iconFile": "res:/ui/texture/icons/35_64_16.png"
   }
 }

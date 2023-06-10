@@ -93273,5 +93273,542 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "11691": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 11691, 
+    "effectName": "debuffLance", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 1, 
+    "isWarpSafe": 1, 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11695": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11695, 
+    "effectName": "skillMultiplierShipBonusLancerDreadnought", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5417, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5418, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11696": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11696, 
+    "effectName": "shipBonusDreadnoughtC1HybridTracking", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 2286, 
+        "operation": 6, 
+        "skillTypeID": 21666
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11697": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11697, 
+    "effectName": "shipBonusDreadnoughtC2HybridOptimalRange", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 2287, 
+        "operation": 6, 
+        "skillTypeID": 21666
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11698": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11698, 
+    "effectName": "shipBonusDisruptionLanceDamage", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 5417, 
+        "operation": 6, 
+        "skillTypeID": 77739
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 5417, 
+        "operation": 6, 
+        "skillTypeID": 77739
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 5417, 
+        "operation": 6, 
+        "skillTypeID": 77739
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 5417, 
+        "operation": 6, 
+        "skillTypeID": 77739
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11699": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11699, 
+    "effectName": "skillDisruptionLanceCapacitorUsePremultiplier", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5419, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11700": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11700, 
+    "effectName": "skillDisruptionLanceCapacitorUseBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5419, 
+        "operation": 6, 
+        "skillTypeID": 77739
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11701": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11701, 
+    "effectName": "shipBonusDisruptionLanceRange", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 5418, 
+        "operation": 6, 
+        "skillTypeID": 77739
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11702": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11702, 
+    "effectName": "eliteBonusMarauderArmourBonus2a", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 84, 
+        "modifyingAttributeID": 1266, 
+        "operation": 6, 
+        "skillTypeID": 3393
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11704": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11704, 
+    "effectName": "shipBonusDreadnoughtM2CapitalProjectileFalloff", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 158, 
+        "modifyingAttributeID": 2293, 
+        "operation": 6, 
+        "skillTypeID": 21667
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11705": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11705, 
+    "effectName": "shipBonusDreadnoughtA1MissileDamage", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 32435
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 32435
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 32435
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 32435
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 21668
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 21668
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 21668
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 21668
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 2283, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11706": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11706, 
+    "effectName": "shipBonusDreadnoughtA2MissileExplosionRadius", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 654, 
+        "modifyingAttributeID": 2284, 
+        "operation": 6, 
+        "skillTypeID": 32435
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 654, 
+        "modifyingAttributeID": 2284, 
+        "operation": 6, 
+        "skillTypeID": 21668
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 654, 
+        "modifyingAttributeID": 2284, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11707": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11707, 
+    "effectName": "shipBonusDreadnoughtG1HullResonance", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 113, 
+        "modifyingAttributeID": 2289, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 111, 
+        "modifyingAttributeID": 2289, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 109, 
+        "modifyingAttributeID": 2289, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 110, 
+        "modifyingAttributeID": 2289, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "11714": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 11714, 
+    "effectName": "disruptionLanceDisallowCloaking", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2454, 
+        "modifyingAttributeID": 5425, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "11716": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 2009, 
+    "effectCategory": 2, 
+    "effectID": 11716, 
+    "effectName": "entitySuperWeaponLanceAmarr", 
+    "electronicChance": 0, 
+    "guid": "effects.SuperWeaponLanceAmarr", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 1, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "11717": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 2009, 
+    "effectCategory": 2, 
+    "effectID": 11717, 
+    "effectName": "entitySuperWeaponLanceCaldari", 
+    "electronicChance": 0, 
+    "guid": "effects.SuperWeaponLanceCaldari", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 1, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "11718": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 2009, 
+    "effectCategory": 2, 
+    "effectID": 11718, 
+    "effectName": "entitySuperWeaponLanceGallente", 
+    "electronicChance": 0, 
+    "guid": "effects.SuperWeaponLanceGallente", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 1, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "11719": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 2009, 
+    "effectCategory": 2, 
+    "effectID": 11719, 
+    "effectName": "entitySuperWeaponLanceMinmatar", 
+    "electronicChance": 0, 
+    "guid": "effects.SuperWeaponLanceMinmatar", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 1, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
   }
 }
