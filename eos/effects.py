@@ -979,8 +979,11 @@ class Effect272(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
-                                      'duration', container.getModifiedItemAttr('durationSkillBonus') * level, **kwargs)
+        penalize = False if 'skill' in context or 'booster' in context or 'implant' in context else True
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'), 'duration',
+            container.getModifiedItemAttr('durationSkillBonus') * level,
+            stackingPenalties=penalize, **kwargs)
 
 
 class Effect273(BaseEffect):
@@ -4934,9 +4937,10 @@ class Effect1635(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
+        penalize = False if 'skill' in context or 'booster' in context else True
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Repair Systems'),
                                       'duration', container.getModifiedItemAttr('durationSkillBonus') * level,
-                                      stackingPenalties='skill' not in context, **kwargs)
+                                      stackingPenalties=penalize, **kwargs)
 
 
 class Effect1638(BaseEffect):
