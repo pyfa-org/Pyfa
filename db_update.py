@@ -617,6 +617,16 @@ def update_db():
         eos.db.gamedata_session.delete(cat)
 
     # Unused normally, can be useful for customizing items
+    def _copyItem(srcName, tgtTypeID, tgtName):
+        eveType = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.name == srcName).one()
+        eos.db.gamedata_session.expunge(eveType)
+        sqlalchemy.orm.make_transient(eveType)
+        eveType.ID = tgtTypeID
+        for suffix in eos.config.translation_mapping.values():
+            setattr(eveType, f'typeName{suffix}', tgtName)
+        eos.db.gamedata_session.add(eveType)
+        eos.db.gamedata_session.flush()
+
     def _hardcodeAttribs(typeID, attrMap):
         for attrName, value in attrMap.items():
             try:
@@ -625,7 +635,7 @@ def update_db():
             except sqlalchemy.orm.exc.NoResultFound:
                 attrInfo = eos.db.gamedata_session.query(eos.gamedata.AttributeInfo).filter(eos.gamedata.AttributeInfo.name == attrName).one()
                 attr = eos.gamedata.Attribute()
-                attr.ID = attrInfo.ID
+                attr.attributeID = attrInfo.ID
                 attr.typeID = typeID
                 attr.value = value
                 eos.db.gamedata_session.add(attr)
@@ -641,138 +651,151 @@ def update_db():
             effect.effectName = effectName
             item.effects[effectName] = effect
 
-    def hardcodeGeri():
+    def hardcodeShapash():
+        shapashTypeID = 1000000
+        _copyItem(srcName='Utu', tgtTypeID=shapashTypeID, tgtName='Shapash')
         attrMap = {
             # Fitting
             'powerOutput': 50,
-            'cpuOutput': 200,
-            'capacitorCapacity': 325,
-            'rechargeRate': 130000,
+            'cpuOutput': 225,
+            'capacitorCapacity': 420,
+            'rechargeRate': 187500,
             # Slots
-            'hiSlots': 5,
+            'hiSlots': 3,
             'medSlots': 4,
             'lowSlots': 4,
-            'launcherSlotsLeft': 3,
-            'turretSlotsLeft': 2,
+            'launcherSlotsLeft': 0,
+            'turretSlotsLeft': 3,
             # Rigs
             'rigSlots': 2,
             'rigSize': 1,
             'upgradeCapacity': 400,
             # Shield
-            'shieldCapacity': 1000,
-            'shieldEmDamageResonance': 1 - 0.75,
+            'shieldCapacity': 575,
+            'shieldRechargeRate': 625000,
+            'shieldEmDamageResonance': 1 - 0.0,
             'shieldThermalDamageResonance': 1 - 0.6,
-            'shieldKineticDamageResonance': 1 - 0.4,
+            'shieldKineticDamageResonance': 1 - 0.85,
             'shieldExplosiveDamageResonance': 1 - 0.5,
             # Armor
-            'armorHP': 1000,
-            'armorEmDamageResonance': 1 - 0.9,
+            'armorHP': 1015,
+            'armorEmDamageResonance': 1 - 0.5,
             'armorThermalDamageResonance': 1 - 0.675,
-            'armorKineticDamageResonance': 1 - 0.25,
+            'armorKineticDamageResonance': 1 - 0.8375,
             'armorExplosiveDamageResonance': 1 - 0.1,
             # Structure
-            'hp': 700,
+            'hp': 1274,
             'emDamageResonance': 1 - 0.33,
             'thermalDamageResonance': 1 - 0.33,
             'kineticDamageResonance': 1 - 0.33,
             'explosiveDamageResonance': 1 - 0.33,
-            'mass': 1309000,
-            'volume': 27289,
-            'capacity': 260,
+            'mass': 1215000,
+            'volume': 29500,
+            'capacity': 165,
             # Navigation
-            'maxVelocity': 440,
-            'agility': 2.5,
+            'maxVelocity': 325,
+            'agility': 3.467,
             'warpSpeedMultiplier': 5.5,
             # Drones
-            'droneCapacity': 50,
-            'droneBandwidth': 10,
+            'droneCapacity': 75,
+            'droneBandwidth': 25,
             # Targeting
-            'maxTargetRange': 42000,
+            'maxTargetRange': 49000,
             'maxLockedTargets': 6,
             'scanRadarStrength': 0,
-            'scanLadarStrength': 12,
-            'scanMagnetometricStrength': 0,
+            'scanLadarStrength': 0,
+            'scanMagnetometricStrength': 9,
             'scanGravimetricStrength': 0,
-            'signatureRadius': 33,
-            'scanResolution': 770}
+            'signatureRadius': 39,
+            'scanResolution': 550,
+            # Misc
+            'energyWarfareResistance': 0,
+            'stasisWebifierResistance': 0,
+            'weaponDisruptionResistance': 0}
         effectMap = {
-            100100: 'pyfaCustomGeriAfExploVel',
-            100101: 'pyfaCustomGeriAfRof',
-            100102: 'pyfaCustomGeriMfDmg',
-            100103: 'pyfaCustomGeriMfRep',
-            100104: 'pyfaCustomGeriRoleWebDroneStr',
-            100105: 'pyfaCustomGeriRoleWebDroneHP',
-            100106: 'pyfaCustomGeriRoleWebDroneSpeed',
-            100107: 'pyfaCustomGeriRoleMWDSigBloom'}
-        _hardcodeAttribs(74141, attrMap)
-        _hardcodeEffects(74141, effectMap)
+            100100: 'pyfaCustomShapashAfArAmount',
+            100101: 'pyfaCustomShapashAfShtTrackingOptimal',
+            100102: 'pyfaCustomShapashGfShtDamage',
+            100103: 'pyfaCustomShapashGfPointRange',
+            100104: 'pyfaCustomShapashGfPropOverheat',
+            100105: 'pyfaCustomShapashRolePlateMass',
+            100106: 'pyfaCustomShapashRoleHeat'}
+        _hardcodeAttribs(shapashTypeID, attrMap)
+        _hardcodeEffects(shapashTypeID, effectMap)
 
-    def hardcodeBestla():
+    def hardcodeCybele():
+        cybeleTypeID = 1000001
+        _copyItem(srcName='Adrestia', tgtTypeID=cybeleTypeID, tgtName='Cybele')
         attrMap = {
             # Fitting
-            'powerOutput': 1300,
-            'cpuOutput': 500,
-            'capacitorCapacity': 1500,
-            'rechargeRate': 200000,
-            'hiSlots': 6,
-            'medSlots': 5,
-            'lowSlots': 5,
-            'launcherSlotsLeft': 4,
-            'turretSlotsLeft': 2,
+            'powerOutput': 1284,
+            'cpuOutput': 400,
+            'capacitorCapacity': 2400,
+            'rechargeRate': 334000,
+            'hiSlots': 5,
+            'medSlots': 4,
+            'lowSlots': 6,
+            'launcherSlotsLeft': 0,
+            'turretSlotsLeft': 5,
             # Rigs
             'rigSlots': 2,
             'rigSize': 2,
             'upgradeCapacity': 400,
             # Shield
-            'shieldCapacity': 3000,
-            'shieldEmDamageResonance': 1 - 0.75,
-            'shieldThermalDamageResonance': 1 - 0.6,
-            'shieldKineticDamageResonance': 1 - 0.4,
+            'shieldCapacity': 1200,
+            'shieldRechargeRate': 1250000,
+            'shieldEmDamageResonance': 1 - 0.0,
+            'shieldThermalDamageResonance': 1 - 0.5,
+            'shieldKineticDamageResonance': 1 - 0.9,
             'shieldExplosiveDamageResonance': 1 - 0.5,
             # Armor
-            'armorHP': 3000,
-            'armorEmDamageResonance': 1 - 0.9,
-            'armorThermalDamageResonance': 1 - 0.675,
-            'armorKineticDamageResonance': 1 - 0.25,
+            'armorHP': 1900,
+            'armorEmDamageResonance': 1 - 0.5,
+            'armorThermalDamageResonance': 1 - 0.69,
+            'armorKineticDamageResonance': 1 - 0.85,
             'armorExplosiveDamageResonance': 1 - 0.1,
             # Structure
-            'hp': 1600,
+            'hp': 2300,
             'emDamageResonance': 1 - 0.33,
             'thermalDamageResonance': 1 - 0.33,
             'kineticDamageResonance': 1 - 0.33,
             'explosiveDamageResonance': 1 - 0.33,
-            'mass': 11650000,
-            'volume': 96000,
-            'capacity': 660,
+            'mass': 11100000,
+            'volume': 112000,
+            'capacity': 450,
             # Navigation
-            'maxVelocity': 300,
-            'agility': 0.47,
+            'maxVelocity': 235,
+            'agility': 0.457,
             'warpSpeedMultiplier': 4.5,
             # Drones
-            'droneCapacity': 125,
-            'droneBandwidth': 20,
+            'droneCapacity': 100,
+            'droneBandwidth': 50,
             # Targeting
-            'maxTargetRange': 80000,
-            'maxLockedTargets': 7,
+            'maxTargetRange': 60000,
+            'maxLockedTargets': 6,
             'scanRadarStrength': 0,
-            'scanLadarStrength': 22,
-            'scanMagnetometricStrength': 0,
+            'scanLadarStrength': 0,
+            'scanMagnetometricStrength': 15,
             'scanGravimetricStrength': 0,
-            'signatureRadius': 120,
-            'scanResolution': 340}
+            'signatureRadius': 115,
+            'scanResolution': 330,
+            # Misc
+            'energyWarfareResistance': 0,
+            'stasisWebifierResistance': 0,
+            'weaponDisruptionResistance': 0}
         effectMap = {
-            100200: 'pyfaCustomBestlaHacExploVel',
-            100201: 'pyfaCustomBestlaHacRof',
-            100202: 'pyfaCustomBestlaMcDmg',
-            100203: 'pyfaCustomBestlaMcRep',
-            100204: 'pyfaCustomBestlaRoleWebDroneStr',
-            100205: 'pyfaCustomBestlaRoleWebDroneHP',
-            100206: 'pyfaCustomBestlaRoleWebDroneSpeed'}
-        _hardcodeAttribs(74316, attrMap)
-        _hardcodeEffects(74316, effectMap)
+            100200: 'pyfaCustomCybeleHacMhtFalloff',
+            100201: 'pyfaCustomCybeleHacMhtTracking',
+            100202: 'pyfaCustomCybeleGcMhtDamage',
+            100203: 'pyfaCustomCybeleGcArAmount',
+            100204: 'pyfaCustomCybeleGcPointRange',
+            100205: 'pyfaCustomCybeleRoleVelocity',
+            100206: 'pyfaCustomCybeleRolePlateMass'}
+        _hardcodeAttribs(cybeleTypeID, attrMap)
+        _hardcodeEffects(cybeleTypeID, effectMap)
 
-    # hardcodeGeri()
-    # hardcodeBestla()
+    hardcodeShapash()
+    hardcodeCybele()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')

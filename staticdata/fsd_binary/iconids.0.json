@@ -12004,5 +12004,98 @@
   }, 
   "25634": {
     "iconFile": "res:/ui/texture/icons/35_64_16.png"
+  }, 
+  "25666": {
+    "iconFile": "res:/ui/texture/icons/43_64_12_d.png"
+  }, 
+  "25668": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_1.png"
+  }, 
+  "25669": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_2.png"
+  }, 
+  "25670": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_3.png"
+  }, 
+  "25671": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_4.png"
+  }, 
+  "25672": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_5.png"
+  }, 
+  "25673": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_6.png"
+  }, 
+  "25674": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_7.png"
+  }, 
+  "25675": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_17.png"
+  }, 
+  "25676": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_8.png"
+  }, 
+  "25677": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_9.png"
+  }, 
+  "25678": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_10.png"
+  }, 
+  "25679": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_11.png"
+  }, 
+  "25680": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_12.png"
+  }, 
+  "25681": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_13.png"
+  }, 
+  "25682": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_14.png"
+  }, 
+  "25683": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_15.png"
+  }, 
+  "25684": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_16.png"
+  }, 
+  "25685": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_18.png"
+  }, 
+  "25686": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_19.png"
+  }, 
+  "25687": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_20.png"
+  }, 
+  "25688": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_21.png"
+  }, 
+  "25689": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_22.png"
+  }, 
+  "25690": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_23.png"
+  }, 
+  "25691": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_24.png"
+  }, 
+  "25692": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_25.png"
+  }, 
+  "25693": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_26.png"
+  }, 
+  "25694": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_27.png"
+  }, 
+  "25695": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_28.png"
+  }, 
+  "25696": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_29.png"
+  }, 
+  "25697": {
+    "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_30.png"
   }
 }

@@ -46760,7 +46760,7 @@
     "stackable": 1
   }, 
   "5214": {
-    "attributeID": 2285, 
+    "attributeID": 5214, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46772,7 +46772,7 @@
     "stackable": 1
   }, 
   "5215": {
-    "attributeID": 2291, 
+    "attributeID": 5215, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46784,7 +46784,7 @@
     "stackable": 1
   }, 
   "5216": {
-    "attributeID": 2291, 
+    "attributeID": 5216, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46796,7 +46796,7 @@
     "stackable": 1
   }, 
   "5218": {
-    "attributeID": 1986, 
+    "attributeID": 5218, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46808,7 +46808,7 @@
     "stackable": 1
   }, 
   "5219": {
-    "attributeID": 1986, 
+    "attributeID": 5219, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46820,7 +46820,7 @@
     "stackable": 1
   }, 
   "5220": {
-    "attributeID": 1986, 
+    "attributeID": 5220, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46832,7 +46832,7 @@
     "stackable": 1
   }, 
   "5221": {
-    "attributeID": 1986, 
+    "attributeID": 5221, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46844,7 +46844,7 @@
     "stackable": 1
   }, 
   "5222": {
-    "attributeID": 1986, 
+    "attributeID": 5222, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46856,7 +46856,7 @@
     "stackable": 1
   }, 
   "5223": {
-    "attributeID": 1986, 
+    "attributeID": 5223, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46868,7 +46868,7 @@
     "stackable": 1
   }, 
   "5224": {
-    "attributeID": 1986, 
+    "attributeID": 5224, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46880,7 +46880,7 @@
     "stackable": 1
   }, 
   "5225": {
-    "attributeID": 2015, 
+    "attributeID": 5225, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46892,7 +46892,7 @@
     "stackable": 1
   }, 
   "5226": {
-    "attributeID": 2015, 
+    "attributeID": 5226, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46904,7 +46904,7 @@
     "stackable": 1
   }, 
   "5227": {
-    "attributeID": 2015, 
+    "attributeID": 5227, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46916,7 +46916,7 @@
     "stackable": 1
   }, 
   "5228": {
-    "attributeID": 2015, 
+    "attributeID": 5228, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46928,7 +46928,7 @@
     "stackable": 1
   }, 
   "5229": {
-    "attributeID": 2015, 
+    "attributeID": 5229, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46940,7 +46940,7 @@
     "stackable": 1
   }, 
   "5230": {
-    "attributeID": 2027, 
+    "attributeID": 5230, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46952,7 +46952,7 @@
     "stackable": 1
   }, 
   "5231": {
-    "attributeID": 2027, 
+    "attributeID": 5231, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46964,7 +46964,7 @@
     "stackable": 1
   }, 
   "5232": {
-    "attributeID": 2027, 
+    "attributeID": 5232, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46976,7 +46976,7 @@
     "stackable": 1
   }, 
   "5233": {
-    "attributeID": 2027, 
+    "attributeID": 5233, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -46988,7 +46988,7 @@
     "stackable": 1
   }, 
   "5234": {
-    "attributeID": 2027, 
+    "attributeID": 5234, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -47000,7 +47000,7 @@
     "stackable": 1
   }, 
   "5235": {
-    "attributeID": 2004, 
+    "attributeID": 5235, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -47012,7 +47012,7 @@
     "stackable": 1
   }, 
   "5236": {
-    "attributeID": 2004, 
+    "attributeID": 5236, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -47024,7 +47024,7 @@
     "stackable": 1
   }, 
   "5237": {
-    "attributeID": 2004, 
+    "attributeID": 5237, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -47036,7 +47036,7 @@
     "stackable": 1
   }, 
   "5238": {
-    "attributeID": 2004, 
+    "attributeID": 5238, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -47048,7 +47048,7 @@
     "stackable": 1
   }, 
   "5239": {
-    "attributeID": 2004, 
+    "attributeID": 5239, 
     "categoryID": 37, 
     "dataType": 5, 
     "defaultValue": 0.0, 
@@ -47216,15 +47216,15 @@
     "categoryID": 39, 
     "dataType": 0, 
     "defaultValue": 0.0, 
-    "displayName_de": "Disallow Cloaking While Fit", 
+    "displayName_de": "Verweigert Tarnung, solange ausgerüstet", 
     "displayName_en-us": "Disallow Cloaking While Fit", 
-    "displayName_es": "Disallow Cloaking While Fit", 
-    "displayName_fr": "Disallow Cloaking While Fit", 
+    "displayName_es": "Desautorizar camuflaje mientras esté equipado", 
+    "displayName_fr": "Désactive le camouflage si équipé", 
     "displayName_it": "Disallow Cloaking While Fit", 
-    "displayName_ja": "Disallow Cloaking While Fit", 
-    "displayName_ko": "Disallow Cloaking While Fit", 
-    "displayName_ru": "Disallow Cloaking While Fit", 
-    "displayName_zh": "Disallow Cloaking While Fit", 
+    "displayName_ja": "装備中は遮蔽使用不可", 
+    "displayName_ko": "해당 모듈 피팅 시 클로킹 불가", 
+    "displayName_ru": "Маскировка не работает, если модуль установлен", 
+    "displayName_zh": "装配时不允许隐形", 
     "displayNameID": 662925, 
     "displayWhenZero": 0, 
     "highIsGood": 1, 
@@ -47240,15 +47240,15 @@
     "dataType": 3, 
     "defaultValue": 0.0, 
     "description": "An effect can check this to indicate that module activation requires ship to have an active Industrial Core module.", 
-    "displayName_de": "Requires Active Siege Module", 
+    "displayName_de": "Erfordert aktives Belagerungsmodul", 
     "displayName_en-us": "Requires Active Siege Module", 
-    "displayName_es": "Requires Active Siege Module", 
-    "displayName_fr": "Requires Active Siege Module", 
+    "displayName_es": "Requiere módulo de asedio activo", 
+    "displayName_fr": "Nécessite un module de siège actif", 
     "displayName_it": "Requires Active Siege Module", 
-    "displayName_ja": "Requires Active Siege Module", 
-    "displayName_ko": "Requires Active Siege Module", 
-    "displayName_ru": "Requires Active Siege Module", 
-    "displayName_zh": "Requires Active Siege Module", 
+    "displayName_ja": "起動状態のシージモジュールが必要", 
+    "displayName_ko": "시즈 모듈 활성화 필요", 
+    "displayName_ru": "Требуется активный осадный модуль", 
+    "displayName_zh": "需要主动会战装备", 
     "displayNameID": 662927, 
     "displayWhenZero": 0, 
     "highIsGood": 0, 
@@ -47257,5 +47257,45 @@
     "published": 1, 
     "stackable": 0, 
     "unitID": 137
+  }, 
+  "5429": {
+    "attributeID": 5429, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "warpDistanceXAxis", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "5430": {
+    "attributeID": 5430, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "warpDistanceYAxis", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "5431": {
+    "attributeID": 5431, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "warpDistanceZAxis", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "5432": {
+    "attributeID": 5432, 
+    "dataType": 5, 
+    "defaultValue": 149599993856.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "warpItemActivationLimit", 
+    "published": 0, 
+    "stackable": 0
   }
 }

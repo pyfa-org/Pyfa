@@ -11,7 +11,7 @@ for:
     environment:
       APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJDW/+oYNGOiPvwuwAL9tc/LQgg58aosIVpMYfepQZ20V+VZnHpZh8IRDA8Jo5xht19p2PksA+hFgqA0kpKtrSkuiWdE8rATQItfk4gf7yB0yGasJGGQZYazy9k/9XtmYkq2HHOOeEqdxvrICddJQ88MLCLT9lJENSUP/YS/yGcjZFXVxE11pTeIcqlCRU+3eYa1v7BeNvXIKNhZoK5orXWrtuH3cy8jrSns/u70aYfJ6B2jA8CnWnDbuvpeQtEY61SQqlKUsSArNa8NAsXj41wr3Ar9gAG9330w7EMTqlutk8HZO35uHI0q5qinUhaQYufPPrVkb2L/N+ZCfu0fnh appveyor"
       APPIMAGE_TOOL: appimagetool-x86_64.AppImage
-      PYTHON_APPIMAGE: python3.7.16-cp37-cp37m-manylinux2014_x86_64.AppImage
+      PYTHON_APPIMAGE: python3.7.17-cp37-cp37m-manylinux2014_x86_64.AppImage
       DEPLOY_DIR: AppDir/opt/pyfa
 #      APPVEYOR_SSH_BLOCK: true
     cache:
