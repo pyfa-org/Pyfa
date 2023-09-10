@@ -322,6 +322,8 @@ class Market:
             "Geri"                        : self.les_grp,  # AT18 prize
             "Bestla"                      : self.les_grp,  # AT18 prize
             "Metamorphosis"               : self.les_grp,  # Seems to be anniversary gift
+            "Shapash"                     : self.les_grp,  # AT19 prize
+            "Cybele"                      : self.les_grp,  # AT19 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
