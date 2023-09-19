@@ -28681,6 +28681,25 @@
     "published": 1, 
     "useBasePrice": 1
   }, 
+  "4636": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 4636, 
+    "groupName_de": "Pirate Entities", 
+    "groupName_en-us": "Pirate Entities", 
+    "groupName_es": "Pirate Entities", 
+    "groupName_fr": "Pirate Entities", 
+    "groupName_it": "Pirate Entities", 
+    "groupName_ja": "Pirate Entities", 
+    "groupName_ko": "Pirate Entities", 
+    "groupName_ru": "Pirate Entities", 
+    "groupName_zh": "Pirate Entities", 
+    "groupNameID": 671872, 
+    "published": 0, 
+    "useBasePrice": 0
+  }, 
   "350858": {
     "anchorable": 0, 
     "anchored": 0, 

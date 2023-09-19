@@ -6656,6 +6656,7 @@ class Effect2215(BaseEffect):
     Used by:
     Ship: Chremoas
     Ship: Dramiel
+    Ship: Mekubal
     Ship: Metamorphosis
     Ship: Sunesis
     Ship: Svipul
@@ -11078,7 +11079,7 @@ class Effect3600(BaseEffect):
 
 class Effect3601(BaseEffect):
     """
-    scriptWarpDisruptionFieldGeneratorSetDisallowInEmpireSpace
+    scriptWarpDisruptionFieldGeneratorSetDisallowInEmpireandHazardSpace
 
     Used by:
     Charges from group: Warp Disruption Script (2 of 2)
@@ -11089,6 +11090,7 @@ class Effect3601(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         module.forceItemAttr('disallowInEmpireSpace', module.getModifiedChargeAttr('disallowInEmpireSpace'), **kwargs)
+        module.forceItemAttr('disallowInHazardSystem', module.getModifiedChargeAttr('disallowInHazardSystem'), **kwargs)
 
 
 class Effect3602(BaseEffect):
@@ -22061,6 +22063,7 @@ class Effect5816(BaseEffect):
     shipBonusLightDroneDamageMultiplierPirateFaction
 
     Used by:
+    Ship: Mamba
     Ship: Whiptail
     Ship: Worm
     """
@@ -22078,6 +22081,7 @@ class Effect5817(BaseEffect):
     shipBonusLightDroneHPPirateFaction
 
     Used by:
+    Ship: Mamba
     Ship: Whiptail
     Ship: Worm
     """
@@ -22095,6 +22099,7 @@ class Effect5818(BaseEffect):
     shipBonusLightDroneArmorHPPirateFaction
 
     Used by:
+    Ship: Mamba
     Ship: Whiptail
     Ship: Worm
     """
@@ -22112,6 +22117,7 @@ class Effect5819(BaseEffect):
     shipBonusLightDroneShieldHPPirateFaction
 
     Used by:
+    Ship: Mamba
     Ship: Whiptail
     Ship: Worm
     """
@@ -34777,6 +34783,7 @@ class Effect7117(BaseEffect):
     Ship: Dramiel
     Ship: Leopard
     Ship: Machariel
+    Ship: Mekubal
     Ship: Victorieux Luxury Yacht
     """
 
@@ -39812,6 +39819,142 @@ class Effect11714(BaseEffect):
         fit.modules.filteredItemIncrease(
             lambda mod: mod.item.requiresSkill('Cloaking'), 'activationBlocked',
             module.getModifiedItemAttr('disruptionLanceDisallowCloaking'), **kwargs)
+
+
+class Effect11743(BaseEffect):
+    """
+    shipProjectileTrackingGD
+
+    Used by:
+    Ship: Mekubal
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'trackingSpeed',
+            ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
+
+
+class Effect11919(BaseEffect):
+    """
+    shipBonusDestroyerMD1Falloff
+
+    Used by:
+    Ship: Mekubal
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer', **kwargs)
+
+
+class Effect11938(BaseEffect):
+    """
+    shipShieldEMResistanceCD2
+
+    Used by:
+    Ship: Mamba
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'shieldEmDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
+            skill='Caldari Destroyer', **kwargs)
+
+
+class Effect11939(BaseEffect):
+    """
+    shipShieldThermalResistanceCD2
+
+    Used by:
+    Ship: Mamba
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'shieldThermalDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
+            skill='Caldari Destroyer', **kwargs)
+
+
+class Effect11940(BaseEffect):
+    """
+    shipShieldKineticResistanceCD2
+
+    Used by:
+    Ship: Mamba
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'shieldKineticDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
+            skill='Caldari Destroyer', **kwargs)
+
+
+class Effect11941(BaseEffect):
+    """
+    shipShieldExplosiveResistanceCD2
+
+    Used by:
+    Ship: Mamba
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'shieldExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusCD2'),
+            skill='Caldari Destroyer', **kwargs)
+
+
+class Effect11942(BaseEffect):
+    """
+    shipBonusKineticMissileDamageGD
+
+    Used by:
+    Ship: Mamba
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'kineticDamage',
+            ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
+
+
+class Effect11943(BaseEffect):
+    """
+    shipBonusThermalMissileDamageGD
+
+    Used by:
+    Ship: Mamba
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'thermalDamage',
+            ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
 
 
 class Effect100100(BaseEffect):

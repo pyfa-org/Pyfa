@@ -12097,5 +12097,14 @@
   }, 
   "25697": {
     "iconFile": "res:/ui/texture/icons/Inventory/WVItems/64/wv_64_30.png"
+  }, 
+  "25801": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/safeZone.png"
+  }, 
+  "25802": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/deathZoneGracePeriod.png"
+  }, 
+  "25803": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/deathZone.png"
   }
 }
