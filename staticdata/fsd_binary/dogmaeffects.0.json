@@ -93970,5 +93970,20 @@
     "published": 0, 
     "rangeAttributeID": 54, 
     "rangeChance": 0
+  }, 
+  "11986": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 2, 
+    "effectID": 11986, 
+    "effectName": "behaviorTargetRepairImpedance", 
+    "electronicChance": 0, 
+    "guid": "effects.TargetPaint", 
+    "isAssistance": 0, 
+    "isOffensive": 1, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
   }
 }

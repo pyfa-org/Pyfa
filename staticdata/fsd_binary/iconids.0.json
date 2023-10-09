@@ -12106,5 +12106,8 @@
   }, 
   "25803": {
     "iconFile": "res:/UI/Texture/Icons/StatusEffects/deathZone.png"
+  }, 
+  "25833": {
+    "iconFile": "res:/UI/Texture/Corps/deathlessCircleBase.png"
   }
 }

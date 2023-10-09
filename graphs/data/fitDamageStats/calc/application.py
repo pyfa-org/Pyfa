@@ -211,7 +211,7 @@ def getDoomsdayMult(mod, tgt, distance, tgtSigRadius):
         # Disallow only against subcaps, allow against caps and tgt profiles
         if tgt.isFit and not tgt.item.ship.item.requiresSkill('Capital Ships'):
             return 0
-    damageSig = mod.getModifiedItemAttr('doomsdayDamageRadius') or mod.getModifiedItemAttr('signatureRadius')
+    damageSig = mod.getModifiedItemAttr('signatureRadius')
     if not damageSig:
         return 1
     return min(1, tgtSigRadius / damageSig)
