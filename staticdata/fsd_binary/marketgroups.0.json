@@ -44698,5 +44698,35 @@
     "name_zh": "加达里", 
     "nameID": 666925, 
     "parentGroupID": 3520
+  }, 
+  "3548": {
+    "hasTypes": 0, 
+    "iconID": 21420, 
+    "name_de": "Sonderfregatten", 
+    "name_en-us": "Special Frigates", 
+    "name_es": "Fragatas especiales", 
+    "name_fr": "Frégates spéciales", 
+    "name_it": "Special Frigates", 
+    "name_ja": "特別仕様フリゲート", 
+    "name_ko": "특수 프리깃", 
+    "name_ru": "Особые фрегаты", 
+    "name_zh": "特殊护卫舰", 
+    "nameID": 681124, 
+    "parentGroupID": 1998
+  }, 
+  "3549": {
+    "hasTypes": 1, 
+    "iconID": 21420, 
+    "name_de": "Sonderfregatten", 
+    "name_en-us": "Special Frigates", 
+    "name_es": "Fragatas especiales", 
+    "name_fr": "Frégates spéciales", 
+    "name_it": "Special Frigates", 
+    "name_ja": "特別仕様フリゲート", 
+    "name_ko": "특수 프리깃", 
+    "name_ru": "Особые фрегаты", 
+    "name_zh": "特殊护卫舰", 
+    "nameID": 681138, 
+    "parentGroupID": 3548
   }
 }
