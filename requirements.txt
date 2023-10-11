@@ -1,4 +1,4 @@
-wxPython == 4.0.6
+wxPython == 4.1.1
 logbook >= 1.0.0
 numpy == 1.19.2
 matplotlib == 3.2.2
@@ -12,4 +12,4 @@ roman >= 2.0.0
 beautifulsoup4 >= 4.6.0
 pyyaml >= 5.1
 python-jose==3.0.1
-requests-cache==0.8.1
+requests-cache

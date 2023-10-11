@@ -1,5 +1,6 @@
 #Python specific
-*.pyc
+eve.db
+.DS_Store
 
 #Kwrite/Gedit/Other crapapps making backups
 *~
@@ -89,7 +90,6 @@ target/
 .ipynb_checkpoints
 
 # pyenv
-.python-version
 PyfaEnv/
 
 # celery beat schedule file
@@ -118,8 +118,6 @@ ENV/
 .idea
 eos.iml
 gitversion
-.version
-/.version
 *.swp
 
 *.fsdbinary
