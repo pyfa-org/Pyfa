@@ -47362,5 +47362,39 @@
     "published": 0, 
     "stackable": 1, 
     "unitID": 101
+  }, 
+  "5599": {
+    "attributeID": 5599, 
+    "dataType": 0, 
+    "defaultValue": 0.0, 
+    "description": "if the module is disallowed in low sec (empire space), if it also have this attribute, it will allow that module to be used in low sec system if the systems is fully corrupted", 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "allowInFullyCorruptedLowSec", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "5600": {
+    "attributeID": 5600, 
+    "dataType": 0, 
+    "defaultValue": 0.0, 
+    "description": "if the module is disallowed in high sec (by disallowInEmpireSpace or disallowInHighSec), if it also have this attribute, the module can be used in high sec system ONLY WHEN the systems is fully corrupted", 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "allowInFullyCorruptedHighSec", 
+    "published": 1, 
+    "stackable": 0
+  }, 
+  "5602": {
+    "attributeID": 5602, 
+    "categoryID": 9, 
+    "dataType": 0, 
+    "defaultValue": 1.0, 
+    "description": "to allow capture point proximity sensors to also detect non-interactives (like NPCs/entities) ", 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "captureProximityInteractivesOnly", 
+    "published": 0, 
+    "stackable": 0
   }
 }
