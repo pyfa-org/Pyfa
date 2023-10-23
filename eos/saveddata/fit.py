@@ -621,7 +621,7 @@ class Fit:
                             "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
-                    self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("shieldCapacity", value)
 
                 if warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
                     for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
@@ -640,7 +640,7 @@ class Fit:
                             "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
-                    self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("armorHP", value)
 
                 if warfareBuffID == 16:  # Information Burst: Sensor Optimization: Scan Resolution
                     self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
@@ -734,7 +734,7 @@ class Fit:
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
                 if warfareBuffID == 42:  # Erebus Effect Generator : Armor HP bonus
-                    self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("armorHP", value)
 
                 if warfareBuffID == 43:  # Erebus Effect Generator : Explosive resistance bonus
                     for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
@@ -756,7 +756,7 @@ class Fit:
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
                 if warfareBuffID == 48:  # Leviathan Effect Generator : Shield HP bonus
-                    self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("shieldCapacity", value)
 
                 if warfareBuffID == 49:  # Leviathan Effect Generator : EM resistance bonus
                     for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
