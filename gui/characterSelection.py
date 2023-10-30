@@ -260,7 +260,7 @@ class CharacterSelection(wx.Panel):
         self.toggleRefreshButton()
 
     def exportSkills(self, evt):
-        skillsMap = self._buildSkillsTooltipSuperCondensed(self.reqs, skillsMap={})
+        skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
 
         list = ""
         for key in sorted(skillsMap):
