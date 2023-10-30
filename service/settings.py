@@ -376,6 +376,8 @@ class EsiSettings:
             "timeout": 60,
             "server": "Tranquility",
             "exportCharges": True,
+            "exportImplants": True,
+            "exportBoosters": True,
             "enforceJwtExpiration": True
         }
 
