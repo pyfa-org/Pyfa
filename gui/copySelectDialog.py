@@ -193,7 +193,7 @@ class CopySelectDialog(wx.Dialog):
 
     def exportEsi(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())
-        Port.exportESI(fit, True, callback)
+        Port.exportESI(fit, False, False, False, callback)
 
     def exportXml(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())
