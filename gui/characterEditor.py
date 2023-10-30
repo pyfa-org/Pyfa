@@ -516,7 +516,10 @@ class SkillTreeView(wx.Panel):
     def populateSkillTreeSkillSearch(self, event=None):
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
-        search = self.searchInput.GetLineText(0)
+        try:
+            search = self.searchInput.GetLineText(0)
+        except AttributeError:
+            search = self.searchInput.GetValue()
 
         root = self.root
         tree = self.skillTreeListCtrl
