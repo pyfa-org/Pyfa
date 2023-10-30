@@ -335,11 +335,11 @@ class ExportToEve(AuxiliaryFrame):
         event.Skip()
 
     def OnImplantsExportChange(self, event):
-        EsiSettings.getInstance().set('exportImplants', self.exportChargesCb.GetValue())
+        EsiSettings.getInstance().set('exportImplants', self.exportImplantsCb.GetValue())
         event.Skip()
 
     def OnBoostersExportChange(self, event):
-        EsiSettings.getInstance().set('exportBoosters', self.exportChargesCb.GetValue())
+        EsiSettings.getInstance().set('exportBoosters', self.exportBoostersCb.GetValue())
         event.Skip()
 
     def updateCharList(self):
