@@ -24749,7 +24749,7 @@ class Effect6185(BaseEffect):
             srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
         duration = module.getModifiedItemAttr('duration') / 1000.0
-        fit.extraAttributes.increase('hullRepair', bonus / duration, **kwargs)
+        fit._hullRr.append((bonus, duration))
 
 
 class Effect6186(BaseEffect):
@@ -24774,7 +24774,7 @@ class Effect6186(BaseEffect):
             srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
         duration = container.getModifiedItemAttr('duration') / 1000.0
-        fit.extraAttributes.increase('shieldRepair', bonus / duration, **kwargs)
+        fit._shieldRr.append((bonus, duration))
 
 
 class Effect6187(BaseEffect):
@@ -24828,10 +24828,9 @@ class Effect6188(BaseEffect):
             srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
         duration = container.getModifiedItemAttr('duration') / 1000.0
-        rps = bonus / duration
-        fit.extraAttributes.increase('armorRepair', rps, **kwargs)
-        fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
-        fit.extraAttributes.increase('armorRepairFullSpool', rps, **kwargs)
+        fit._armorRr.append((bonus, duration))
+        fit._armorRrPreSpool.append((bonus, duration))
+        fit._armorRrFullSpool.append((bonus, duration))
 
 
 class Effect6195(BaseEffect):
@@ -29788,10 +29787,9 @@ class Effect6651(BaseEffect):
             srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
         speed = module.getModifiedItemAttr('duration') / 1000.0
-        rps = amount / speed
-        fit.extraAttributes.increase('armorRepair', rps, **kwargs)
-        fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
-        fit.extraAttributes.increase('armorRepairFullSpool', rps, **kwargs)
+        fit._armorRr.append((amount, speed))
+        fit._armorRrPreSpool.append((amount, speed))
+        fit._armorRrFullSpool.append((amount, speed))
 
 
 class Effect6652(BaseEffect):
@@ -29817,7 +29815,7 @@ class Effect6652(BaseEffect):
             srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
         speed = module.getModifiedItemAttr('duration') / 1000.0
-        fit.extraAttributes.increase('shieldRepair', amount / speed, **kwargs)
+        fit._shieldRr.append((amount, speed))
 
 
 class Effect6653(BaseEffect):
@@ -30446,10 +30444,9 @@ class Effect6687(BaseEffect):
             return
         bonus = container.getModifiedItemAttr('armorDamageAmount')
         duration = container.getModifiedItemAttr('duration') / 1000.0
-        rps = bonus / duration
-        fit.extraAttributes.increase('armorRepair', rps, **kwargs)
-        fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
-        fit.extraAttributes.increase('armorRepairFullSpool', rps, **kwargs)
+        fit._armorRr.append((bonus, duration))
+        fit._armorRrPreSpool.append((bonus, duration))
+        fit._armorRrFullSpool.append((bonus, duration))
 
 
 class Effect6688(BaseEffect):
@@ -30472,7 +30469,7 @@ class Effect6688(BaseEffect):
             return
         bonus = container.getModifiedItemAttr('shieldBonus')
         duration = container.getModifiedItemAttr('duration') / 1000.0
-        fit.extraAttributes.increase('shieldRepair', bonus / duration, **kwargs)
+        fit._shieldRr.append((bonus, duration))
 
 
 class Effect6689(BaseEffect):
@@ -30496,7 +30493,7 @@ class Effect6689(BaseEffect):
             return
         bonus = module.getModifiedItemAttr('structureDamageAmount')
         duration = module.getModifiedItemAttr('duration') / 1000.0
-        fit.extraAttributes.increase('hullRepair', bonus / duration, **kwargs)
+        fit._hullRr.append((bonus, duration))
 
 
 class Effect6690(BaseEffect):
@@ -35047,12 +35044,12 @@ class Effect7166(BaseEffect):
         repSpoolPerCycle = container.getModifiedItemAttr('repairMultiplierBonusPerCycle')
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         spoolType, spoolAmount = resolveSpoolOptions(SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False), container)
-        rps = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, spoolType, spoolAmount)[0]) / cycleTime
-        rpsPreSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 0)[0]) / cycleTime
-        rpsFullSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 1)[0]) / cycleTime
-        fit.extraAttributes.increase('armorRepair', rps, **kwargs)
-        fit.extraAttributes.increase('armorRepairPreSpool', rpsPreSpool, **kwargs)
-        fit.extraAttributes.increase('armorRepairFullSpool', rpsFullSpool, **kwargs)
+        amount = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, spoolType, spoolAmount)[0])
+        amountPreSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 0)[0])
+        amountFullSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 1)[0])
+        fit._armorRr.append((amount, cycleTime))
+        fit._armorRrPreSpool.append((amountPreSpool, cycleTime))
+        fit._armorRrFullSpool.append((amountFullSpool, cycleTime))
 
 
 class Effect7167(BaseEffect):
