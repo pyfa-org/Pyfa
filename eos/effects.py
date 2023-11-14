@@ -5630,8 +5630,8 @@ class Effect1882(BaseEffect):
     miningYieldMultiplyPercent
 
     Used by:
+    Modules from group: Mining Upgrade (7 of 12)
     Variations of module: Mining Laser Upgrade I (5 of 5)
-    Module: Frostline 'Omnivore' Harvester Upgrade
     """
 
     type = 'passive'
@@ -7034,8 +7034,8 @@ class Effect2444(BaseEffect):
     minerCpuUsageMultiplyPercent2
 
     Used by:
+    Modules from group: Mining Upgrade (7 of 12)
     Variations of module: Mining Laser Upgrade I (5 of 5)
-    Module: Frostline 'Omnivore' Harvester Upgrade
     """
 
     type = 'passive'
@@ -36006,6 +36006,7 @@ class Effect8039(BaseEffect):
     upwellSkillaoeVelocityaoeCloudSizeBonus
 
     Used by:
+    Implants named like: Halcyon G Booster (5 of 5)
     Skill: Vorton Arc Guidance
     """
 
@@ -36255,12 +36256,30 @@ class Effect8065(BaseEffect):
                                       'maxRange', skill.getModifiedItemAttr('rangeSkillBonus') * skill.level, **kwargs)
 
 
+class Effect8064(BaseEffect):
+    """
+    vortonProjectorOptimalRangeBonus
+
+    Used by:
+    Implants named like: Halcyon B Booster (5 of 5)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Vorton Projector Operation'), 'maxRange',
+            booster.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
+
+
 class Effect8066(BaseEffect):
     """
     vortonProjectorDamageBonus
 
     Used by:
     Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
     """
 
@@ -40321,6 +40340,23 @@ class Effect11953(BaseEffect):
             lambda mod: mod.item.requiresSkill('Vorton Projector Operation'),
             'aoeVelocity', beacon.getModifiedItemAttr('aoeVelocityMultiplier'),
             stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+
+
+class Effect12003(BaseEffect):
+    """
+    vortonTurretSpeeBonusPostPercentSpeedLocationShipModulesRequiringVortonProjectorOperation
+
+    Used by:
+    Implants named like: Halcyon R Booster (5 of 5)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Vorton Projector Operation'), 'speed',
+            booster.getModifiedItemAttr('turretSpeeBonus'), **kwargs)
 
 
 class Effect100100(BaseEffect):
