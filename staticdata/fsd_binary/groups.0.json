@@ -28966,6 +28966,25 @@
     "published": 1, 
     "useBasePrice": 0
   }, 
+  "4673": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 4673, 
+    "groupName_de": "Insurgency Mining Ship", 
+    "groupName_en-us": "Insurgency Mining Ship", 
+    "groupName_es": "Nave minera de insurgencia", 
+    "groupName_fr": "Vaisseau d'extraction minière d'insurrection", 
+    "groupName_it": "Insurgency Mining Ship", 
+    "groupName_ja": "反乱採掘船", 
+    "groupName_ko": "반란 채굴선", 
+    "groupName_ru": "Insurgency Mining Ship", 
+    "groupName_zh": "叛乱采矿船", 
+    "groupNameID": 697213, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
   "350858": {
     "anchorable": 0, 
     "anchored": 0, 

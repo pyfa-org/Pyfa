@@ -94461,5 +94461,138 @@
     "published": 0, 
     "rangeAttributeID": 54, 
     "rangeChance": 0
+  }, 
+  "12002": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 2637, 
+    "durationAttributeID": 2636, 
+    "effectCategory": 1, 
+    "effectID": 12002, 
+    "effectName": "npcBehaviorIndustrialCore", 
+    "electronicChance": 0, 
+    "guid": "effects.SiegeMode", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 2643, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 104, 
+        "modifyingAttributeID": 2644, 
+        "operation": 2
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 4, 
+        "modifyingAttributeID": 2646, 
+        "operation": 4
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2116, 
+        "modifyingAttributeID": 2638, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2135, 
+        "modifyingAttributeID": 2639, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2112, 
+        "modifyingAttributeID": 2640, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2253, 
+        "modifyingAttributeID": 2642, 
+        "operation": 7
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2723, 
+        "modifyingAttributeID": 2647, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2725, 
+        "modifyingAttributeID": 2648, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2495, 
+        "modifyingAttributeID": 2605, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2498, 
+        "modifyingAttributeID": 2605, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2496, 
+        "modifyingAttributeID": 2604, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2497, 
+        "modifyingAttributeID": 2604, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12003": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12003, 
+    "effectName": "vortonTurretSpeeBonusPostPercentSpeedLocationShipModulesRequiringVortonProjectorOperation", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 51, 
+        "modifyingAttributeID": 441, 
+        "operation": 6, 
+        "skillTypeID": 55033
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }

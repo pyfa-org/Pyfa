@@ -12109,5 +12109,8 @@
   }, 
   "25833": {
     "iconFile": "res:/UI/Texture/Corps/deathlessCircleBase.png"
+  }, 
+  "25849": {
+    "iconFile": "res:/ui/texture/icons/84_64_15.png"
   }
 }
