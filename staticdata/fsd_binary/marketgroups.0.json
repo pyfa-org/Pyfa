@@ -44877,5 +44877,35 @@
     "name_zh": "特殊护卫舰", 
     "nameID": 681138, 
     "parentGroupID": 3548
+  }, 
+  "3567": {
+    "hasTypes": 1, 
+    "iconID": 21420, 
+    "name_de": "Pirate Faction", 
+    "name_en-us": "Pirate Faction", 
+    "name_es": "Pirate Faction", 
+    "name_fr": "Pirate Faction", 
+    "name_it": "Pirate Faction", 
+    "name_ja": "Pirate Faction", 
+    "name_ko": "Pirate Faction", 
+    "name_ru": "Pirate Faction", 
+    "name_zh": "Pirate Faction", 
+    "nameID": 697888, 
+    "parentGroupID": 2100
+  }, 
+  "3568": {
+    "hasTypes": 1, 
+    "iconID": 21420, 
+    "name_de": "Pirate Faction", 
+    "name_en-us": "Pirate Faction", 
+    "name_es": "Pirate Faction", 
+    "name_fr": "Pirate Faction", 
+    "name_it": "Pirate Faction", 
+    "name_ja": "Pirate Faction", 
+    "name_ko": "Pirate Faction", 
+    "name_ru": "Pirate Faction", 
+    "name_zh": "Pirate Faction", 
+    "nameID": 697889, 
+    "parentGroupID": 3496
   }
 }
