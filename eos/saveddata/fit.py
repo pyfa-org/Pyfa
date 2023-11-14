@@ -159,6 +159,12 @@ class Fit:
         self.gangBoosts = None
         self.__ecmProjectedList = []
         self.commandBonuses = {}
+        # Reps received, as a list of (amount, cycle time in seconds)
+        self._hullRr = []
+        self._armorRr = []
+        self._armorRrPreSpool = []
+        self._armorRrFullSpool = []
+        self._shieldRr = []
 
     def clearFactorReloadDependentData(self):
         # Here we clear all data known to rely on cycle parameters
@@ -550,6 +556,12 @@ class Fit:
             if stuff is not None and stuff != self:
                 stuff.clear()
 
+        self._hullRr.clear()
+        self._armorRr.clear()
+        self._armorRrPreSpool.clear()
+        self._armorRrFullSpool.clear()
+        self._shieldRr.clear()
+
         # If this is the active fit that we are clearing, not a projected fit,
         # then this will run and clear the projected ships and flag the next
         # iteration to skip this part to prevent recursion.
@@ -621,7 +633,7 @@ class Fit:
                             "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
-                    self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("shieldCapacity", value)
 
                 if warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
                     for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
@@ -640,7 +652,7 @@ class Fit:
                             "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
-                    self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("armorHP", value)
 
                 if warfareBuffID == 16:  # Information Burst: Sensor Optimization: Scan Resolution
                     self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
@@ -734,7 +746,7 @@ class Fit:
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
                 if warfareBuffID == 42:  # Erebus Effect Generator : Armor HP bonus
-                    self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("armorHP", value)
 
                 if warfareBuffID == 43:  # Erebus Effect Generator : Explosive resistance bonus
                     for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
@@ -756,7 +768,7 @@ class Fit:
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
                 if warfareBuffID == 48:  # Leviathan Effect Generator : Shield HP bonus
-                    self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("shieldCapacity", value)
 
                 if warfareBuffID == 49:  # Leviathan Effect Generator : EM resistance bonus
                     for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
@@ -1478,11 +1490,11 @@ class Fit:
     def tank(self):
         reps = {
             "passiveShield": self.calculateShieldRecharge(),
-            "shieldRepair": self.extraAttributes["shieldRepair"],
-            "armorRepair": self.extraAttributes["armorRepair"],
-            "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
-            "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
-            "hullRepair": self.extraAttributes["hullRepair"]
+            "shieldRepair": self.extraAttributes["shieldRepair"] + self._getAppliedShieldRr(),
+            "armorRepair": self.extraAttributes["armorRepair"] + self._getAppliedArmorRr(),
+            "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"] + self._getAppliedArmorPreSpoolRr(),
+            "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"] + self._getAppliedArmorFullSpoolRr(),
+            "hullRepair": self.extraAttributes["hullRepair"] + self._getAppliedHullRr()
         }
         return reps
 
@@ -1519,11 +1531,11 @@ class Fit:
         if self.__sustainableTank is None:
             sustainable = {
                 "passiveShield": self.calculateShieldRecharge(),
-                "shieldRepair": self.extraAttributes["shieldRepair"],
-                "armorRepair": self.extraAttributes["armorRepair"],
-                "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
-                "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
-                "hullRepair": self.extraAttributes["hullRepair"]
+                "shieldRepair": self.extraAttributes["shieldRepair"] + self._getAppliedShieldRr(),
+                "armorRepair": self.extraAttributes["armorRepair"] + self._getAppliedArmorRr(),
+                "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"] + self._getAppliedArmorPreSpoolRr(),
+                "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"] + self._getAppliedArmorFullSpoolRr(),
+                "hullRepair": self.extraAttributes["hullRepair"] + self._getAppliedHullRr()
             }
             if not self.capStable or self.factorReload:
                 # Map a local repairer type to the attribute it uses
@@ -1759,6 +1771,38 @@ class Fit:
         for strength, stackingGroup in damps:
             mults.setdefault(stackingGroup, []).append((1 + strength / 100, None))
         return calculateMultiplier(mults)
+
+    def _getAppliedHullRr(self):
+        return self.__getAppliedRr(self._hullRr)
+
+    def _getAppliedArmorRr(self):
+        return self.__getAppliedRr(self._armorRr)
+
+    def _getAppliedArmorPreSpoolRr(self):
+        return self.__getAppliedRr(self._armorRrPreSpool)
+
+    def _getAppliedArmorFullSpoolRr(self):
+        return self.__getAppliedRr(self._armorRrFullSpool)
+
+    def _getAppliedShieldRr(self):
+        return self.__getAppliedRr(self._shieldRr)
+
+    @staticmethod
+    def __getAppliedRr(rrList):
+        totalRaw = 0
+        for amount, cycleTime in rrList:
+            # That's right, for considerations of RR diminishing returns cycle time is rounded this way
+            totalRaw += amount / int(cycleTime)
+        RR_ADDITION = 7000
+        RR_MULTIPLIER = 10
+        appliedRr = 0
+        for amount, cycleTime in rrList:
+            rrps = amount / int(cycleTime)
+            modified_rrps = RR_ADDITION + (rrps * RR_MULTIPLIER)
+            rrps_mult = 1 - (((rrps + modified_rrps) / (totalRaw + modified_rrps)) - 1) ** 2
+            appliedRr += rrps_mult * amount / cycleTime
+        return appliedRr
+
 
     def __deepcopy__(self, memo=None):
         fitCopy = Fit()
