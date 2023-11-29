@@ -37,9 +37,9 @@ for:
       - sh: mkdir -p $DEPLOY_DIR
       # run install pyfa packages and any other requirements
       - sh: AppDir/usr/bin/python -s -m pip install -U pip setuptools wheel
-      - sh: AppDir/usr/bin/python -s -m pip install -r ../requirements.txt
+      # - sh: AppDir/usr/bin/python -s -m pip install -r ../requirements.txt
       # Speedup, but causes runtime incompatiblities
-      #- sh: AppDir/usr/bin/python -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r ../requirements.txt
+      - sh: AppDir/usr/bin/python -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r ../requirements.txt
 
       # Run scripts to prep pyfa data and build database
       - sh: cd ../
