@@ -533,7 +533,7 @@ class SkillTreeView(wx.Panel):
                 iconId = self.skillBookDirtyImageId
 
             childId = tree.AppendItem(root, name, iconId, data=('skill', id))
-            tree.SetItemText(childId, 1, _t("Level {}d").format(int(level)) if isinstance(level, float) else level)
+            tree.SetItemText(childId, 1, _t("Level {}").format(int(level)) if isinstance(level, float) else level)
 
     def populateSkillTree(self, event=None):
         sChar = Character.getInstance()
@@ -591,7 +591,6 @@ class SkillTreeView(wx.Panel):
                     iconId = self.skillBookDirtyImageId
 
                 childId = tree.AppendItem(root, name, iconId, data=('skill', id))
-
                 tree.SetItemText(childId, 1, _t("Level {}").format(int(level)) if isinstance(level, float) else level)
 
     def spawnMenu(self, event):
