@@ -4,7 +4,7 @@ echo "${PYFA_VERSION}"
 echo "Pyfa version (YAML):"
 cat version.yml
 echo "Building distributive..."
-python3 -m PyInstaller -y --clean --windowed dist_assets/mac/pyfa.spec
+python3 -m PyInstaller -y --clean dist_assets/mac/pyfa.spec
 echo "Compressing distributive..."
 cd dist
 /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string ${PYFA_VERSION}" "pyfa.app/Contents/Info.plist" # Add missing
