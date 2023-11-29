@@ -93,7 +93,7 @@ exe = EXE(
     icon= icon,
     # version='win-version-info.txt',
     console=False,
-    contents-directory='app',
+    contents_directory='app',
 )
 
 coll = COLLECT(
