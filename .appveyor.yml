@@ -149,7 +149,7 @@ for:
         # Build gamedata DB
       - cmd: "python db_update.py"
       # Build command for PyInstaller
-      - cmd: "python -m PyInstaller --clean -y pyfa.spec"
+      - cmd: "python -m PyInstaller --contents-directory app --clean -y pyfa.spec"
       # Copy over manifest (See pyfa-org/pyfa#1622)
       - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
       # InnoScript EXE building. This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...

@@ -42,10 +42,10 @@ CloseApplications=yes
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile={#MyAppDir}\LICENSE
+LicenseFile={#MyAppDir}\app\LICENSE
 OutputDir={#MyOutputDir}
 OutputBaseFilename={#MyOutputFile}
-SetupIconFile={#MyAppDir}\pyfa.ico
+SetupIconFile={#MyAppDir}\app\pyfa.ico
 SolidCompression=yes
 
 [Languages]
