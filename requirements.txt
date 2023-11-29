@@ -4,7 +4,7 @@ numpy
 matplotlib
 python-dateutil
 requests
-sqlalchemy
+sqlalchemy == 1.4.50
 cryptography
 markdown2
 packaging
