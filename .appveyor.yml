@@ -68,8 +68,7 @@ for:
       # Package it all up
       - sh: mkdir dist
       # - sh: ./build/$APPIMAGE_TOOL build/AppDir dist/pyfa-$PYFA_VERSION-linux.AppImage
-      - sh: ./build/$APPIMAGE_TOOL --generate
-      - sh: cat AppImageBuilder.yml
+      - sh: sleep 60m
     after_build:
       - sh: ls -la build
     artifacts:
