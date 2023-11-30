@@ -9,7 +9,7 @@ for:
       only:
         - image: Ubuntu2204
     environment:
-      APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJDW/+oYNGOiPvwuwAL9tc/LQgg58aosIVpMYfepQZ20V+VZnHpZh8IRDA8Jo5xht19p2PksA+hFgqA0kpKtrSkuiWdE8rATQItfk4gf7yB0yGasJGGQZYazy9k/9XtmYkq2HHOOeEqdxvrICddJQ88MLCLT9lJENSUP/YS/yGcjZFXVxE11pTeIcqlCRU+3eYa1v7BeNvXIKNhZoK5orXWrtuH3cy8jrSns/u70aYfJ6B2jA8CnWnDbuvpeQtEY61SQqlKUsSArNa8NAsXj41wr3Ar9gAG9330w7EMTqlutk8HZO35uHI0q5qinUhaQYufPPrVkb2L/N+ZCfu0fnh appveyor"
+      APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDhb96UEXy8yOy/f+riX/8kKbNx/lOfIZ4pP4Cw3Gj3DmnTwEnxtRtyc+xtaxOsKbt+7+EAXFpCzYX+jHMhtd0QtWB7dbey8DBg31g0f8C5EPquqROibVbhzr/F3f6/d52FFfq6Y/CWaAvLjezvipr+zOOsIFcVusqtXdPJQ/LtUJ0LS5d4lFiw5ELHSxHIpqwGwyb7PbR3ufEFoqbr8eYiCH+vlBob72ArPfo2f3u0sMvpGYmjVVu2jj4FEY2h89sLrGyFdNWBoyumRhkb38+WSAuyPa/Y21+g+S8sRzIlkwbxicGNMtrMIi6zHEIGAgA06Sw2psP807h730PPOVaWjUcU3ojNW8hH3nPizF74pT82+iP7/fFC4PXLP+tBa+8OoHC5yiO7QKUKprMSqVa1qOm8fHbrzglplKJXfzSfUtSE+AQ+HtHhuUWKI+0LBLDrsOJwI5hbsPOAuiZ5I3VfqfAOck6SH9TcmlapVmQEypc7d7oeeUtZSOuIWKXp068= dfx@aw"
       APPIMAGE_TOOL: appimage-builder-x86_64.AppImage
       PYTHON_APPIMAGE: python3.11.6-cp311-cp311-manylinux_2_28_x86_64.AppImage
       DEPLOY_DIR: AppDir/opt/pyfa
