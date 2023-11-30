@@ -6,11 +6,11 @@ AppDir:
     id: io.pyfa
     name: pyfa
     icon: /home/appveyor/projects/pyfa/build/AppDir/imgs/gui/pyfa64.png
-    version: v2.55.0
+    version: v2.56.0
     exec: opt/pyfa
     exec_args: $@
   apt:
-    arch: []
+    arch: amd64
     allow_unauthenticated: true
     sources:
     - sourceline: deb http://us.archive.ubuntu.com/ubuntu jammy main restricted
