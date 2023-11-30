@@ -1,9 +1,9 @@
 # appimage-builder recipe see https://appimage-builder.readthedocs.io for details
 version: 1
 AppDir:
-  path: /home/appveyor/projects/pyfa/build/AppDir
+  path: ./build/AppDir
   app_info:
-    id: pyfa
+    id: io.pyfa
     name: pyfa
     icon: /home/appveyor/projects/pyfa/build/AppDir/imgs/gui/pyfa64.png
     version: v2.55.0
@@ -23,23 +23,6 @@ AppDir:
     - sourceline: deb http://us.archive.ubuntu.com/ubuntu jammy-security main restricted
     - sourceline: deb http://us.archive.ubuntu.com/ubuntu jammy-security universe
     - sourceline: deb http://us.archive.ubuntu.com/ubuntu jammy-security multiverse
-    - sourceline: deb http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main
-    - sourceline: deb [arch=amd64] http://ppa.launchpad.net/ubuntu-mozilla-security/ppa/ubuntu jammy main
-    - sourceline: deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ jammy main
-    - sourceline: deb http://apt.postgresql.org/pub/repos/apt/ jammy-pgdg main
-    - sourceline: deb https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/ jammy main
-    - sourceline: deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/ubuntu/22.04/prod jammy main
-    - sourceline: deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse
-    - sourceline: deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ jammy main
-    - sourceline: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
-    - sourceline: deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-13 main
-    - sourceline: deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main
-    - sourceline: deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main
-    - sourceline: deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main
-    - sourceline: deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main
-    - sourceline: deb http://download.virtualbox.org/virtualbox/debian jammy contrib
-    - sourceline: deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ jammy main
-    - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
     include: []
   files:
     include: []
@@ -51,4 +34,4 @@ AppDir:
     - usr/share/doc/*/TODO.*
 AppImage:
   arch: x86_64
-  update-information: guess
+  update-information: None

@@ -67,7 +67,7 @@ for:
 
       # Package it all up
       - sh: mkdir dist
-      # - sh: ./build/$APPIMAGE_TOOL build/AppDir dist/pyfa-$PYFA_VERSION-linux.AppImage
+      - sh: ./build/$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml dist/pyfa-$PYFA_VERSION-linux.AppImage
     after_build:
       - sh: ls -la build
     artifacts:
