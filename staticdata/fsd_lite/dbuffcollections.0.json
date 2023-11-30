@@ -3558,5 +3558,35 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2405": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Insurgency Suppression Bonus: Interdiction Range", 
+    "displayName_de": "Reichweitenbonus auf Stasisnetz und Warpunterbrecher für Anti-Piraten", 
+    "displayName_en-us": "Webifier and scrambler range bonus for anti-pirates", 
+    "displayName_es": "Bonificación al alcance de la red ralentizadora y el distorsionador para antipiratas", 
+    "displayName_fr": "Bonus de portée de générateur de stase et d'inhibiteur pour les antipirates", 
+    "displayName_it": "Webifier and scrambler range bonus for anti-pirates", 
+    "displayName_ja": "対海賊勢力のウェビファイヤーとスクランブラーの射程ボーナス", 
+    "displayName_ko": "진압군 스테이시스 웹 생성기 및 워프 스크램블러 사거리 증가", 
+    "displayName_ru": "Бонус к дальности стазис-индуктора и варп-глушителя для борцов с пиратами", 
+    "displayName_zh": "反海盗势力的停滞缠绕光束和跃迁扰频器距离加成", 
+    "displayNameID": 698669, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 65
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3449
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

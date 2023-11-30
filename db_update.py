@@ -794,8 +794,8 @@ def update_db():
         _hardcodeAttribs(cybeleTypeID, attrMap)
         _hardcodeEffects(cybeleTypeID, effectMap)
 
-    hardcodeShapash()
-    hardcodeCybele()
+    # hardcodeShapash()
+    # hardcodeCybele()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')
