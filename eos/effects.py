@@ -1511,6 +1511,7 @@ class Effect512(BaseEffect):
     Ship: Atron
     Ship: Federation Navy Comet
     Ship: Pacifier
+    Ship: Shapash
     Ship: Taranis
     """
 
@@ -1712,6 +1713,7 @@ class Effect562(BaseEffect):
     Variations of ship: Vexor (3 of 4)
     Ship: Adrestia
     Ship: Arazu
+    Ship: Cybele
     Ship: Deimos
     Ship: Enforcer
     Ship: Exequror Navy Issue
@@ -14883,6 +14885,7 @@ class Effect4473(BaseEffect):
 
     Used by:
     Ship: Adrestia
+    Ship: Cybele
     Ship: Mimir
     """
 
@@ -15443,6 +15446,7 @@ class Effect4620(BaseEffect):
 
     Used by:
     Ship: Garmur
+    Ship: Shapash
     Ship: Utu
     """
 
@@ -15461,6 +15465,7 @@ class Effect4621(BaseEffect):
     Used by:
     Ship: Cambion
     Ship: Etana
+    Ship: Shapash
     Ship: Utu
     """
 
@@ -15542,6 +15547,7 @@ class Effect4626(BaseEffect):
 
     Used by:
     Ship: Adrestia
+    Ship: Cybele
     Ship: Orthrus
     """
 
@@ -40117,6 +40123,23 @@ class Effect11764(BaseEffect):
             'speed', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
 
 
+class Effect11767(BaseEffect):
+    """
+    shipBonusHybridTrackingATC3
+
+    Used by:
+    Ship: Cybele
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'trackingSpeed',
+            src.getModifiedItemAttr('eliteBonusHeavyGunship1'), skill='Heavy Assault Cruisers', **kwargs)
+
+
 class Effect11919(BaseEffect):
     """
     shipBonusDestroyerMD1Falloff
@@ -40342,6 +40365,143 @@ class Effect11953(BaseEffect):
             stackingPenalties=True, penaltyGroup='postMul', **kwargs)
 
 
+class Effect11992(BaseEffect):
+    """
+    shipBonusArmorPlateMassAT
+
+    Used by:
+    Ship: Cybele
+    Ship: Shapash
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
+            ship.getModifiedItemAttr('shipBonusATF3'), **kwargs)
+
+
+class Effect11993(BaseEffect):
+    """
+    shipBonusRepairSystemsBonusATC3
+
+    Used by:
+    Ship: Cybele
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
+            src.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser', **kwargs)
+
+
+class Effect11994(BaseEffect):
+    """
+    shipBonusHybridFalloffATC3
+
+    Used by:
+    Ship: Cybele
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'falloff',
+            src.getModifiedItemAttr('eliteBonusHeavyGunship2'), skill='Heavy Assault Cruisers', **kwargs)
+
+
+class Effect11995(BaseEffect):
+    """
+    shipBonusHeatAfterburnerATGF
+
+    Used by:
+    Ship: Shapash
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Afterburner'), 'overloadSpeedFactorBonus',
+            src.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
+
+
+class Effect11996(BaseEffect):
+    """
+    shipBonusMWDHeatATGF
+
+    Used by:
+    Ship: Shapash
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering'), 'overloadSpeedFactorBonus',
+            src.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
+
+
+class Effect11997(BaseEffect):
+    """
+    shipBonusArmorRepATGF
+
+    Used by:
+    Ship: Shapash
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'), 'armorDamageAmount',
+            src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
+
+
+class Effect11998(BaseEffect):
+    """
+    shipBonusSmallHybridMaxRangeATF3
+
+    Used by:
+    Ship: Shapash
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'maxRange',
+            src.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates', **kwargs)
+
+
+class Effect11999(BaseEffect):
+    """
+    shipBonusSmallHybridTrackingSpeedATF3
+
+    Used by:
+    Ship: Shapash
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'trackingSpeed',
+            src.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates', **kwargs)
+
+
 class Effect12003(BaseEffect):
     """
     vortonTurretSpeeBonusPostPercentSpeedLocationShipModulesRequiringVortonProjectorOperation
@@ -40357,236 +40517,3 @@ class Effect12003(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Vorton Projector Operation'), 'speed',
             booster.getModifiedItemAttr('turretSpeeBonus'), **kwargs)
-
-
-class Effect100100(BaseEffect):
-    """
-    pyfaCustomShapashAfArAmount
-
-    Used by:
-    Ship: Shapash
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Repair Systems'),
-            'armorDamageAmount', 10, skill='Assault Frigates', **kwargs)
-
-
-class Effect100101(BaseEffect):
-    """
-    pyfaCustomShapashAfShtTrackingOptimal
-
-    Used by:
-    Ship: Shapash
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
-            'maxRange', 10, skill='Assault Frigates', **kwargs)
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
-            'trackingSpeed', 10, skill='Assault Frigates', **kwargs)
-
-
-class Effect100102(BaseEffect):
-    """
-    pyfaCustomShapashGfShtDamage
-
-    Used by:
-    Ship: Shapash
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'),
-            'damageMultiplier', 10, skill='Gallente Frigate', **kwargs)
-
-
-class Effect100103(BaseEffect):
-    """
-    pyfaCustomShapashGfPointRange
-
-    Used by:
-    Ship: Shapash
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Warp Scrambler',
-            'maxRange', 10, skill='Gallente Frigate', **kwargs)
-
-
-class Effect100104(BaseEffect):
-    """
-    pyfaCustomShapashGfPropOverheat
-
-    Used by:
-    Ship: Shapash
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Afterburner') or mod.item.requiresSkill('High Speed Maneuvering'),
-            'overloadSpeedFactorBonus', 10, skill='Gallente Frigate', **kwargs)
-
-
-class Effect100105(BaseEffect):
-    """
-    pyfaCustomShapashRolePlateMass
-
-    Used by:
-    Ship: Shapash
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition', -100, **kwargs)
-
-
-class Effect100106(BaseEffect):
-    """
-    pyfaCustomShapashRoleHeat
-
-    Used by:
-    Ship: Shapash
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: True, 'heatDamage', -50, **kwargs)
-
-
-class Effect100200(BaseEffect):
-    """
-    pyfaCustomCybeleHacMhtFalloff
-
-    Used by:
-    Ship: Cybele
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
-            'falloff', 10, skill='Heavy Assault Cruisers', **kwargs)
-
-
-class Effect100201(BaseEffect):
-    """
-    pyfaCustomCybeleHacMhtTracking
-
-    Used by:
-    Ship: Cybele
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
-            'trackingSpeed', 7.5, skill='Heavy Assault Cruisers', **kwargs)
-
-
-class Effect100202(BaseEffect):
-    """
-    pyfaCustomCybeleGcMhtDamage
-
-    Used by:
-    Ship: Cybele
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
-            'damageMultiplier', 20, skill='Gallente Cruiser', **kwargs)
-
-
-class Effect100203(BaseEffect):
-    """
-    pyfaCustomCybeleGcArAmount
-
-    Used by:
-    Ship: Cybele
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Repair Systems'),
-            'armorDamageAmount', 10, skill='Gallente Cruiser', **kwargs)
-
-
-class Effect100204(BaseEffect):
-    """
-    pyfaCustomCybeleGcPointRange
-
-    Used by:
-    Ship: Cybele
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Warp Scrambler',
-            'maxRange', 25, skill='Gallente Cruiser', **kwargs)
-
-
-class Effect100205(BaseEffect):
-    """
-    pyfaCustomCybeleRoleVelocity
-
-    Used by:
-    Ship: Cybele
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('maxVelocity', 30, **kwargs)
-
-
-class Effect100206(BaseEffect):
-    """
-    pyfaCustomCybeleRolePlateMass
-
-    Used by:
-    Ship: Cybele
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition', -100, **kwargs)
