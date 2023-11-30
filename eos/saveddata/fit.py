@@ -882,6 +882,14 @@ class Fit:
                 if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
                     self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
 
+                if warfareBuffID == 2405:  # Insurgency Suppression Bonus: Interdiction Range
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Navigation"),
+                        "maxRange", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.group.name == "Stasis Web",
+                        "maxRange", value, stackingPenalties=True)
+
             del self.commandBonuses[warfareBuffID]
 
     def __resetDependentCalcs(self):
