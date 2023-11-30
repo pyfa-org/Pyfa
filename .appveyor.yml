@@ -28,7 +28,7 @@ for:
       - sh: mkdir build && cd build
       - sh: curl -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
       - sh: chmod +x $APPIMAGE_TOOL
-      - sh: curl -L https://github.com/niess/python-appimage/releases/download/python3.11/$PYTHON_APPIMAGE && chmod +x $PYTHON_APPIMAGE
+      - sh: curl -LO https://github.com/niess/python-appimage/releases/download/python3.11/$PYTHON_APPIMAGE && chmod +x $PYTHON_APPIMAGE
     build_script:
       # Prepare Python base AppImage, stripping Python metadata
       - sh: ./$PYTHON_APPIMAGE --appimage-extract
