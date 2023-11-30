@@ -67,7 +67,7 @@ for:
 
       # Package it all up
       - sh: mkdir dist
-      - sh: ./build/$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml
+      - sh: ARCH=x86_64 ./build/$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml
     after_build:
       - sh: ls -la build
     artifacts:
