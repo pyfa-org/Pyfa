@@ -17,7 +17,7 @@ for:
     cache:
       - /home/appveyor/.cache/pip -> requirements.txt
     init:
-      # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+      - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
       - sh: git fetch --prune --unshallow # to fix the version dump issues
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
@@ -30,6 +30,7 @@ for:
       - sh: chmod +x $APPIMAGE_TOOL
       - sh: curl -LO https://github.com/niess/python-appimage/releases/download/python3.11/$PYTHON_APPIMAGE && chmod +x $PYTHON_APPIMAGE
     build_script:
+      - sh: sleep 60m
       # Prepare Python base AppImage, stripping Python metadata
       - sh: ./$PYTHON_APPIMAGE --appimage-extract
       - sh: mv squashfs-root AppDir
