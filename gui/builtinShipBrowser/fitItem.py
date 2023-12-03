@@ -418,10 +418,11 @@ class FitItem(SFItem.SFBrowserItem):
                 if self.dragMotionTrigger < 0:
                     if not self.dragTLFBmp:
                         tdc = wx.MemoryDC()
-                        self.dragTLFBmp = wx.Bitmap(200, self.GetRect().height)    
+                        bmpWidth = self.toolbarx if self.toolbarx < 200 else 200
+                        self.dragTLFBmp = wx.Bitmap(bmpWidth, self.GetRect().height)    
                         tdc.SelectObject(self.dragTLFBmp)
                         tdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
-                        tdc.DrawRectangle(0, 0, 200, self.GetRect().height)
+                        tdc.DrawRectangle(0, 0, bmpWidth, self.GetRect().height)
                         self.DrawItem(tdc)
                     if not self.HasCapture():
                         self.CaptureMouse()
