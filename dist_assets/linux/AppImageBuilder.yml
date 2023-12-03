@@ -29,10 +29,15 @@ AppDir:
       - python3.11
     exclude: []
 
-  after_bundle:
+  runtime:
+    env:
+      PYTHONHOME: '${APPDIR}/usr'
+      PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
+
+  after_runtime:
     # Install python dependencies
-    - python3.11 -s -m pip install --system --prefix=/usr --root=AppDir -U pip setuptools wheel
-    - python3.11 -s -m pip install --system --prefix=/usr --root=AppDir -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+    - python3.11 -s -m pip install --prefix=/usr --root=AppDir -U pip setuptools wheel
+    - python3.11 -s -m pip install --prefix=/usr --root=AppDir -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
     # Compile app data
     - find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
     - python3.11 scripts/compile_lang.py
@@ -41,14 +46,9 @@ AppDir:
     # Calculate app version
     - export PYFA_VERSION="$(python3.11 scripts/dump_version.py)"
     # Copy app and clean it up
-    - mkdir -p $AppDir/usr/src
+    - mkdir -p AppDir/usr/src
     - cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/usr/src
     - find AppDir/usr/src | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
-
-  runtime:
-    env:
-      PYTHONHOME: '${APPDIR}/usr'
-      PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
 
 AppImage:
   sign-key: None
