@@ -424,6 +424,7 @@ class FitItem(SFItem.SFBrowserItem):
                         tdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
                         tdc.DrawRectangle(0, 0, bmpWidth, self.GetRect().height)
                         self.DrawItem(tdc)
+                        tdc.SelectObject(wx.NullBitmap)
                     if not self.HasCapture():
                         self.CaptureMouse()
                     self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)  
