@@ -20,6 +20,8 @@ for:
       - sh: sudo add-apt-repository -y ppa:deadsnakes/ppa
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3.11
+      # Needed for AppImage builder
+      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
       # Needed to build binary distribution of wx
       # - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libnotify4 libsdl2-2.0-0 libfuse2
     before_build:

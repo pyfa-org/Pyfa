@@ -15,11 +15,15 @@ AppDir:
     arch: [ amd64 ]
     sources:
     - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy main restricted universe multiverse'
-#    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-updates main restricted universe multiverse'
-#    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-backports main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-updates main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-backports main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
     - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-security main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
     - sourceline: 'deb https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy main'
-      key_url: 'keyserver.ubuntu.com/pks/lookup?op=get&search=0xf23c5a6cf475977595c89f51ba6932366a755776'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf23c5a6cf475977595c89f51ba6932366a755776'
 
     include:
       - python3.11
