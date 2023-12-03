@@ -11,9 +11,6 @@ AppDir:
     exec: ${APPDIR}/bin/python3.11
     exec_args: "-s ${APPDIR}/opt/pyfa/pyfa.py $@"
 
-  before_bundle:
-
-
   apt:
     arch: [ amd64 ]
     sources:
