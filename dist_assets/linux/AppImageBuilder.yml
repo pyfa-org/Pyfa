@@ -1,5 +1,19 @@
 version: 1
 
+script:
+  - rm -rf AppDir  | true
+  - mkdir -p AppDir/usr/src
+  # Install wx (needed by crowdin script) and sqlalchemy (needed by db update script)
+  - grep -iE 'wxpython|sqlalchemy' requirements.txt | xargs python3 -B -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04
+  # Compile app data
+  - find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
+  - python3 -B scripts/compile_lang.py
+  - python3 -B scripts/dump_crowdin_progress.py
+  - python3 -B db_update.py
+  - export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
+  # Copy data over to app dir
+  - cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/usr/src
+
 AppDir:
   path: ./AppDir
 
@@ -8,7 +22,7 @@ AppDir:
     name: pyfa
     icon: pyfa
     version: $PYFA_VERSION
-    exec: $APPDIR/bin/python3.11
+    exec: usr/bin/python3.11
     exec_args: "-s $APPDIR/opt/pyfa/pyfa.py $@"
 
   apt:
@@ -29,26 +43,15 @@ AppDir:
       - python3.11
     exclude: []
 
+  after_bundle:
+    # Install python dependencies to bundled interpreter
+    - python3.11 -s -m pip install --prefix=/usr --root=AppDir -U pip setuptools wheel
+    - python3.11 -s -m pip install --prefix=/usr --root=AppDir -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+
   runtime:
     env:
       PYTHONHOME: '${APPDIR}/usr'
       PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
-
-  after_runtime:
-    # Install python dependencies
-    - python3.11 -s -m pip install --prefix=/usr --root=${APPDIR} -U pip setuptools wheel
-    - python3.11 -s -m pip install --prefix=/usr --root=${APPDIR} -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
-    # Compile app data
-    - find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
-    - python3.11 scripts/compile_lang.py
-    - python3.11 scripts/dump_crowdin_progress.py
-    - python3.11 db_update.py
-    # Calculate app version
-    - export PYFA_VERSION="$(python3.11 scripts/dump_version.py)"
-    # Copy app and clean it up
-    - mkdir -p ${APPDIR}/usr/src
-    - cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml ${APPDIR}/usr/src
-    - find ${APPDIR}/usr/src | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
 AppImage:
   sign-key: None
