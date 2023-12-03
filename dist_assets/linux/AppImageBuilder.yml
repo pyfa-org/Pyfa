@@ -8,32 +8,37 @@ AppDir:
     name: pyfa
     icon: pyfa
     version: $PYFA_VERSION
-    exec: ${APPDIR}/bin/python3
+    exec: ${APPDIR}/bin/python3.11
     exec_args: "-s ${APPDIR}/opt/pyfa/pyfa.py $@"
+
+  before_bundle:
+
 
   apt:
     arch: [ amd64 ]
     sources:
-      - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse'
-        key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3b4fe6acc0b21f32'
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy main restricted universe multiverse'
+#    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-updates main restricted universe multiverse'
+#    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-backports main restricted universe multiverse'
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-security main restricted universe multiverse'
+    - sourceline: 'deb https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy main'
+      key_url: 'keyserver.ubuntu.com/pks/lookup?op=get&search=0xf23c5a6cf475977595c89f51ba6932366a755776'
 
     include:
-      - libc6
+      - python3.11
     exclude: []
 
   after_bundle:
-    # Detect location of python using venv config and copy it over to our app directory
-    - cp -r `~/venv3.11/bin/python scripts/getConfigVal.py ~/venv3.11/pyvenv.cfg base-prefix`/* $AppDir
     # Install python dependencies
-    - $AppDir/bin/python3 -s -m pip install -U pip setuptools wheel
-    - $AppDir/bin/python3 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+    - python3.11 -s -m pip install -U pip setuptools wheel
+    - python3.11 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
     # Compile app data
     - find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
-    - $AppDir/bin/python3 scripts/compile_lang.py
-    - $AppDir/bin/python3 scripts/dump_crowdin_progress.py
-    - $AppDir/bin/python3 db_update.py
+    - python3.11 scripts/compile_lang.py
+    - python3.11 scripts/dump_crowdin_progress.py
+    - python3.11 db_update.py
     # Calculate app version
-    - export PYFA_VERSION="$($AppDir/bin/python3 scripts/dump_version.py)"
+    - export PYFA_VERSION="$(python3.11 scripts/dump_version.py)"
     # Copy app and clean it up
     - mkdir -p $AppDir/usr/src
     - cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml $AppDir/usr/src
