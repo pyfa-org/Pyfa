@@ -4,7 +4,7 @@ script:
   - rm -rf AppDir  | true
   - mkdir -p AppDir/usr/src
   # wxpython dependencies to host
-  - sudo apt install libnotify4 libsdl2-2.0-0
+  - sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libnotify4 libsdl2-2.0-0
   # Install wx (needed by crowdin script) and sqlalchemy/logbook (needed by db update script)
   - grep -iE 'wxpython|sqlalchemy|logbook' requirements.txt | xargs python3 -B -s -m pip install --user -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04
   # Compile app data
@@ -15,6 +15,7 @@ script:
   - export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
   # Copy data over to app dir
   - cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/usr/src
+  - mkdir -p AppDir/usr/share/icons
   - cp imgs/gui/pyfa64.png AppDir/usr/share/icons
 
 AppDir:
@@ -51,6 +52,8 @@ AppDir:
     # Install python dependencies to bundled interpreter
     - export PYTHONHOME="AppDir/usr"
     - export PYTHONPATH="AppDir/usr/lib/python3.11/site-packages"
+    - curl -L https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    - python3.11 get-pip.py
     - python3.11 -s -m pip install -U pip setuptools wheel
     - python3.11 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
 
