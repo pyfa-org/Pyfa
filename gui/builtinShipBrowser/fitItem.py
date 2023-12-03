@@ -195,8 +195,9 @@ class FitItem(SFItem.SFBrowserItem):
             self.dragged = False
             if self.HasCapture():
                 self.ReleaseMouse()
-            self.dragWindow.Show(False)
-            self.dragWindow = None
+            # TODO: re-enable this once rendring of drag window is fixed
+            #self.dragWindow.Show(False)
+            #self.dragWindow = None
 
     def OnContextMenu(self, event):
         """ Handles context menu for fit. Dragging is handled by MouseLeftUp() """
@@ -418,9 +419,10 @@ class FitItem(SFItem.SFBrowserItem):
                 if self.dragMotionTrigger < 0:
                     if not self.HasCapture():
                         self.CaptureMouse()
-                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
-                    self.dragWindow.Show()
-                    self.dragged = True
+                    # self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                    # TODO: re-enable this once rendring of drag window is fixed    
+                    #self.dragWindow.Show()
+                    #self.dragged = True
                     self.dragMotionTrigger = self.dragMotionTrail
                 else:
                     self.dragMotionTrigger -= 1
@@ -519,11 +521,12 @@ class FitItem(SFItem.SFBrowserItem):
         if self.tcFitName.IsShown():
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
-        tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
-        tdc.SelectObject(self.dragTLFBmp)
-        tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
-        tdc.SelectObject(wx.NullBitmap)
+        # TODO: migrate this away from a bitmap
+        #tdc = wx.MemoryDC()
+        #self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
+        #tdc.SelectObject(self.dragTLFBmp)
+        #tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
+        #tdc.SelectObject(wx.NullBitmap)
 
     def AdjustControlSizePos(self, editCtl, start, end):
         fnEditSize = editCtl.GetSize()
