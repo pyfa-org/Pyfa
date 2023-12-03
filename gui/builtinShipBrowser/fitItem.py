@@ -416,9 +416,18 @@ class FitItem(SFItem.SFBrowserItem):
         if self.dragging:
             if not self.dragged:
                 if self.dragMotionTrigger < 0:
+                    if not self.dragTLFBmp:
+                        tdc = wx.MemoryDC()
+                        bmpWidth = self.toolbarx if self.toolbarx < 200 else 200
+                        self.dragTLFBmp = wx.Bitmap(bmpWidth, self.GetRect().height)    
+                        tdc.SelectObject(self.dragTLFBmp)
+                        tdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
+                        tdc.DrawRectangle(0, 0, bmpWidth, self.GetRect().height)
+                        self.DrawItem(tdc)
+                        tdc.SelectObject(wx.NullBitmap)
                     if not self.HasCapture():
                         self.CaptureMouse()
-                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)  
                     self.dragWindow.Show()
                     self.dragged = True
                     self.dragMotionTrigger = self.dragMotionTrail
@@ -519,11 +528,6 @@ class FitItem(SFItem.SFBrowserItem):
         if self.tcFitName.IsShown():
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
-        tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
-        tdc.SelectObject(self.dragTLFBmp)
-        tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
-        tdc.SelectObject(wx.NullBitmap)
 
     def AdjustControlSizePos(self, editCtl, start, end):
         fnEditSize = editCtl.GetSize()
