@@ -29,6 +29,7 @@ AppDir:
       - python3.11
       # wx dependencies
       - libgtk-3-0
+      - libwebkit2gtk-4.0-37  # Needed for wx's HTML lib
     exclude: []
 
   after_bundle:
