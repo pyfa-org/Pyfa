@@ -34,8 +34,8 @@ AppDir:
     - export PYTHONHOME="AppDir/usr"
     - export PYTHONPATH="AppDir/usr/lib/python3.11/site-packages"
     - curl -L https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    - python3.11 get-pip.py
-    - python3.11 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+    - AppDir/usr/bin/python3.11 get-pip.py
+    - AppDir/usr/bin/python3.11 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
 
   runtime:
     env:
