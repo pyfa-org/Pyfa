@@ -28,7 +28,7 @@ for:
       - sh: python3 -B scripts/compile_lang.py
       - sh: python3 -B scripts/dump_crowdin_progress.py
       - sh: python3 -B db_update.py
-      - sh: export APP_VERSION="$(python3 -B scripts/dump_version.py)"
+      - sh: export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
       - sh: mkdir build
       # Download packaging tool
       - sh: curl -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage

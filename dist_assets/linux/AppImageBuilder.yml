@@ -7,7 +7,7 @@ AppDir:
     id: pyfa
     name: pyfa
     icon: pyfa
-    version: {{APP_VERSION}}
+    version: {{PYFA_VERSION}}
     exec: usr/bin/python3.11
     exec_args: "-s $APPDIR/opt/pyfa/pyfa.py $@"
 
