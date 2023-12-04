@@ -34,8 +34,8 @@ for:
       - sh: curl -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
       - sh: chmod +x $APPIMAGE_TOOL
     build_script:
-      - sh: mkdir -p AppDir/usr/src
-      - sh: cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/usr/src
+      - sh: mkdir -p AppDir/opt/pyfa
+      - sh: cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/opt/pyfa/
       - sh: mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps/
       - sh: cp imgs/gui/pyfa64.png AppDir/usr/share/icons/hicolor/64x64/apps/pyfa.png
       - sh: ./$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml
