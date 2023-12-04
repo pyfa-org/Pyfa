@@ -38,12 +38,15 @@ AppDir:
     - export PYTHONPATH="AppDir/usr/lib/python3.11/site-packages"
     - curl -L https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     - AppDir/usr/bin/python3.11 get-pip.py
+    # Just to bundle certificates with AppImage
+    - AppDir/usr/bin/python3.11 -s -m pip install certifi
     - AppDir/usr/bin/python3.11 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
 
   runtime:
     env:
       PYTHONHOME: '${APPDIR}/usr'
       PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
+      SSL_CERT_FILE: '${APPDIR}/usr/lib/python3.11/site-packages/certifi/cacert.pem'
 
 AppImage:
   sign-key: None
