@@ -29,8 +29,8 @@ AppDir:
       - python3.11
       # wx dependencies
       - libgtk-3-0
+      - librsvg2-common  # GTK3 recommendation; without it, search in char editor crashes
       - libwebkit2gtk-4.0-37  # Needed for wx's HTML lib
-      - librsvg2-common  # Without it, search in char editor crashes due to inability to load some images
     exclude: []
 
   after_bundle:
@@ -47,7 +47,7 @@ AppDir:
     env:
       PYTHONHOME: '${APPDIR}/usr'
       PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
-      SSL_CERT_FILE: '${APPDIR}/usr/lib/python3.11/site-packages/certifi/cacert.pem'
+      SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.11/dist-packages/certifi/cacert.pem'
 
 AppImage:
   sign-key: None
