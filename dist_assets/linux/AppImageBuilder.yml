@@ -7,7 +7,7 @@ AppDir:
     id: pyfa
     name: pyfa
     icon: pyfa
-    version: {{PYFA_VERSION}}
+    version: '{{PYFA_VERSION}}'
     exec: usr/bin/python3.11
     exec_args: "-s $APPDIR/opt/pyfa/pyfa.py $@"
 
@@ -27,7 +27,6 @@ AppDir:
 
     include:
       - python3.11
-      - libnotify4
     exclude: []
 
   after_bundle:
@@ -46,4 +45,4 @@ AppDir:
 AppImage:
   sign-key: None
   arch: x86_64
-  file_name: 'pyfa-{{APP_VERSION}}-linux'
+  file_name: 'pyfa-{{PYFA_VERSION}}-linux'
