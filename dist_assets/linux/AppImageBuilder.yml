@@ -45,4 +45,4 @@ AppDir:
 AppImage:
   sign-key: None
   arch: x86_64
-  file_name: 'pyfa-{{PYFA_VERSION}}-linux'
+  file_name: 'pyfa-{{PYFA_VERSION}}-linux.AppImage'
