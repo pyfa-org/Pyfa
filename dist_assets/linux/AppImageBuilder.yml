@@ -30,6 +30,7 @@ AppDir:
       # wx dependencies
       - libgtk-3-0
       - libwebkit2gtk-4.0-37  # Needed for wx's HTML lib
+      - librsvg2-common  # Without it, search in char editor crashes due to inability to load some images
     exclude: []
 
   after_bundle:
