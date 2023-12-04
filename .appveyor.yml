@@ -17,31 +17,31 @@ for:
     init:
       - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
-      - sh: sudo add-apt-repository -y ppa:deadsnakes/ppa
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3.11
-      # Needed for AppImage builder
+      # AppImage dependencies
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
-      # Needed to build binary distribution of wx
-      # - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libnotify4 libsdl2-2.0-0 libfuse2
+      # Preparation script dependencies
+      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0 python3-sqlalchemy
     before_build:
+      # Prepare pyfa data
+      - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
+      - sh: python3 -B scripts/compile_lang.py
+      - sh: python3 -B scripts/dump_crowdin_progress.py
+      - sh: python3 -B db_update.py
+      - sh: export APP_VERSION="$(python3 -B scripts/dump_version.py)"
       - sh: mkdir build
-      - sh: curl -o build/$APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
-      - sh: chmod +x build/$APPIMAGE_TOOL
+      # Download packaging tool
+      - sh: curl -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+      - sh: chmod +x $APPIMAGE_TOOL
     build_script:
+      - sh: mkdir -p AppDir/usr/src
+      - sh: cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/usr/src
+      - sh: mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps/
+      - sh: cp imgs/gui/pyfa64.png AppDir/usr/share/icons/hicolor/64x64/apps/pyfa.png
       - sh: sleep 60m
-      - sh: build/$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml
-
-      # Copy static AppImage files
-      # - sh: cd dist_assets/linux
-      # - sh: chmod +x AppRun
-      # - sh: cp AppRun pyfa.desktop ../../build/AppDir/
-      # - sh: cp pyfa.desktop ../../build/AppDir/usr/share/applications/
-      # - sh: cp pyfa.appdata.xml ../../build/AppDir/usr/share/metainfo/
-      # - sh: chmod +x pyfa && cp pyfa ../../build/AppDir/usr/bin
-      # - sh: cd ../../
+      - sh: ./$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml
     after_build:
-      - sh: ls -la build
+      - sh: ls -la
     artifacts:
       - path: dist/pyfa-$PYFA_VERSION-linux.AppImage
     deploy:
