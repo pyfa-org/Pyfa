@@ -29,6 +29,7 @@ AppDir:
       - python3.11
       # wx dependencies
       - libjpeg-turbo8
+      - libtiff5
     exclude: []
 
   after_bundle:
