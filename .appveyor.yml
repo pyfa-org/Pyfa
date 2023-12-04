@@ -42,7 +42,7 @@ for:
     after_build:
       - sh: ls -la
     artifacts:
-      - path: dist/pyfa-$PYFA_VERSION-linux.AppImage
+      - path: pyfa-$PYFA_VERSION-linux.AppImage
     deploy:
       tag: $PYFA_VERSION
       release: pyfa $PYFA_VERSION
