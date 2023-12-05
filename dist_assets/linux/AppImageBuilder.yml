@@ -43,6 +43,16 @@ AppDir:
     - AppDir/usr/bin/python3.11 -s -m pip install certifi
     - AppDir/usr/bin/python3.11 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
 
+  files:
+    exclude:
+      - usr/lib/x86_64-linux-gnu/gconv
+      - usr/share/man
+      - usr/share/doc/*/README.*
+      - usr/share/doc/*/changelog.*
+      - usr/share/doc/*/NEWS.*
+      - usr/share/doc/*/TODO.*
+      - usr/include
+
   runtime:
     env:
       PYTHONHOME: '${APPDIR}/usr'
