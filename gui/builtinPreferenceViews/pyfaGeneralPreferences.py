@@ -40,7 +40,7 @@ class PFGeneralPref(PreferenceView):
 
         langSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.langChoices = sorted([langInfo for lang, langInfo in LocaleSettings.supported_langauges().items()], key=lambda x: x.Description)
+        self.langChoices = sorted([langInfo for lang, langInfo in LocaleSettings.supported_languages().items()], key=lambda x: x.Description)
         pyfaLangsEnabled = bool(self.langChoices)
 
         if pyfaLangsEnabled:
