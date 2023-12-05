@@ -55,7 +55,7 @@ class PFBitmapFrame(wx.Frame):
         # todo: evaluate wx.DragImage, might make this class obsolete, however might also lose our customizations
         # (like the sexy fade-in animation)
         rect = self.GetRect()
-        canvas = wx.Bitmap(rect.width, rect.height)
+        canvas = wx.Bitmap(round(rect.width), round(rect.height))
         # todo: convert to context manager after updating to wxPython >v4.0.1 (4.0.1 has a bug, see #1421)
         # See #1418 for discussion
         mdc = wx.BufferedPaintDC(self)

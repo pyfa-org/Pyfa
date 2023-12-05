@@ -21,7 +21,7 @@ def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor=None
 
 
 def DrawFilledBitmap(width, height, color):
-    canvas = wx.Bitmap(width, height)
+    canvas = wx.Bitmap(round(width), round(height))
 
     mdc = wx.MemoryDC()
     mdc.SelectObject(canvas)
@@ -37,7 +37,7 @@ def DrawFilledBitmap(width, height, color):
 def DrawGradientBar(width, height, gStart, gEnd, gMid=None, fillRatio=4):
     if width == 0 or height == 0:
         return None
-    canvas = wx.Bitmap(width, height)
+    canvas = wx.Bitmap(round(width), round(height))
 
     mdc = wx.MemoryDC()
     mdc.SelectObject(canvas)

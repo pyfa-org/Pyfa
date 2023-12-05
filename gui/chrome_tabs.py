@@ -514,7 +514,7 @@ class _TabRenderer:
         Creates the tab background bitmap based upon calculated dimension values
         and modified bitmaps via InitBitmaps()
         """
-        bk_bmp = wx.Bitmap(self.tab_width, self.tab_height)
+        bk_bmp = wx.Bitmap(round(self.tab_width), round(self.tab_height))
 
         mdc = wx.MemoryDC()
         mdc.SelectObject(bk_bmp)
@@ -573,7 +573,7 @@ class _TabRenderer:
 
         height = self.tab_height
 
-        canvas = wx.Bitmap(self.tab_width, self.tab_height, 24)
+        canvas = wx.Bitmap(round(self.tab_width), round(self.tab_height), 24)
 
         mdc = wx.MemoryDC()
 
@@ -1501,7 +1501,7 @@ class PFNotebookPagePreview(wx.Frame):
 
     def OnWindowPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.Bitmap(rect.width, rect.height)
+        canvas = wx.Bitmap(round(rect.width), round(rect.height))
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
