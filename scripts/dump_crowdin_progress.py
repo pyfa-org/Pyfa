@@ -20,7 +20,7 @@ resp = requests.get('https://api.crowdin.com/api/project/pyfa/status', params=pa
 data = resp.json()
 
 if resp.status_code != 200:
-    print("Error fetching Crowdin progress. Error: {}; {}".format(data['error']['message']))
+    print("Error fetching Crowdin progress. Error: {}".format(data['error']['message']))
     sys.exit()
 
 for x in data:
