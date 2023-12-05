@@ -31,7 +31,10 @@ AppDir:
       - libgtk-3-0
       - librsvg2-common  # GTK3 recommendation; without it, search in char editor crashes
       - libwebkit2gtk-4.0-37  # Needed for wx's HTML lib
-    exclude: []
+    exclude:
+      - hicolor-icon-theme
+      - humanity-icon-theme
+      - ubuntu-mono
 
   after_bundle:
     # Install python dependencies to bundled interpreter
