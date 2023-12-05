@@ -222,9 +222,9 @@ class NetworkSettings:
             if prefix not in proxydict:
                 continue
             proxyline = proxydict[prefix]
-            proto = "{0}://".format(prefix)
-            if proxyline[:len(proto)] == proto:
-                proxyline = proxyline[len(proto):]
+            proto_pos = proxyline.find('://')
+            if proto_pos != -1:
+                proxyline = proxyline[proto_pos+3:]
             # sometimes proxyline contains "user:password@" section before proxy address
             # remove it if present, so later split by ":" works
             if '@' in proxyline:
