@@ -60,7 +60,7 @@ AppDir:
       SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.11/dist-packages/certifi/cacert.pem'
       # Sets variable to default value in case system doesn't provide any
       # Seems like ubuntu GTK doesn't use defaults and relies just on the variable
-      XDG_DATA_DIRS: '${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}'
+      XDG_DATA_DIRS: '${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}:${APPDIR}/usr/share/'
 
 AppImage:
   sign-key: None
