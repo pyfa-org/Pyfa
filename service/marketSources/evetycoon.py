@@ -17,9 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-
-from xml.dom import minidom
-
 from logbook import Logger
 
 from eos.saveddata.price import PriceStatus
