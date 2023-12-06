@@ -1213,7 +1213,7 @@ class _TabsContainer(wx.Panel):
                 bmp = wx.Bitmap(img)
                 mdc.DrawBitmap(bmp, round(posx), (posy), True)
 
-                mdc.SetDeviceOrigin(posx, posy)
+                mdc.SetDeviceOrigin(round(posx), round(posy))
                 tab.DrawText(mdc)
                 mdc.SetDeviceOrigin(0, 0)
             else:
@@ -1235,7 +1235,7 @@ class _TabsContainer(wx.Panel):
 
             mdc.DrawBitmap(bmp, round(posx), round(posy), True)
 
-            mdc.SetDeviceOrigin(posx, posy)
+            mdc.SetDeviceOrigin(round(posx), round(posy))
             selected.DrawText(mdc)
             mdc.SetDeviceOrigin(0, 0)
 
