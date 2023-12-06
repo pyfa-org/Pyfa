@@ -68,7 +68,7 @@ class RaceSelector(wx.Window):
             img = img.Rotate90(False)
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
         if layout == wx.VERTICAL:
-            img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
+            img = img.Scale(round(self.minWidth), 8, wx.IMAGE_QUALITY_HIGH)
 
         self.bmpArrow = wx.Bitmap(img)
 

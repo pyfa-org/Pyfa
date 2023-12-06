@@ -525,7 +525,7 @@ class _TabRenderer:
 
         # convert middle bitmap and scale to tab width
         cm = self.ctab_middle_bmp.ConvertToImage()
-        mimg = cm.Scale(self.content_width, self.ctab_middle.GetHeight(),
+        mimg = cm.Scale(round(self.content_width), round(self.ctab_middle.GetHeight()),
                         wx.IMAGE_QUALITY_NORMAL)
         mbmp = wx.Bitmap(mimg)
 

@@ -104,7 +104,7 @@ class BitmapLoader:
             return None
 
         if scale > 1:
-            return img.Scale(img.GetWidth() // scale, img.GetHeight() // scale).ConvertToBitmap()
+            return img.Scale(round(img.GetWidth() // scale), round(img.GetHeight() // scale)).ConvertToBitmap()
         return img.ConvertToBitmap()
 
     @classmethod
