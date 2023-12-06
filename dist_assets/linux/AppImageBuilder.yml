@@ -61,6 +61,8 @@ AppDir:
       PYTHONHOME: '${APPDIR}/usr'
       PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
       SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.11/dist-packages/certifi/cacert.pem'
+      # Workaround for https://github.com/AppImageCrafters/appimage-builder/issues/336
+      XDG_DATA_DIRS: '${APPDIR}/usr/local/share:${APPDIR}/usr/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS'
 
 AppImage:
   sign-key: None
