@@ -78,7 +78,6 @@ parser.add_option("-i", "--language", action="store", dest="language", help="Set
 (options, args) = parser.parse_args()
 
 if __name__ == "__main__":
-    print(os.getenv('XDG_DATA_DIRS'))
 
     try:
         # first and foremost - check required libraries
