@@ -103,7 +103,7 @@ for:
       # target Python version and architecture
       - ps: echo("Install pip requirements:")
       - cmd: "python -m pip install -r requirements.txt"
-      - cmd: "python -m pip install PyInstaller==6.1.0"
+      - cmd: "python -m pip install PyInstaller==6.0.0"
     before_build:
         # directory that will contain the built files
       - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
