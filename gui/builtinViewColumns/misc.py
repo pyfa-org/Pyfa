@@ -167,7 +167,7 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
             return text, tooltip
-        elif itemGroup == "Salvager":
+        elif itemGroup in ("Salvager", "Salvage Drone"):
             chance = stuff.getModifiedItemAttr("accessDifficultyBonus")
             if not chance:
                 return "", None
