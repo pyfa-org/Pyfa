@@ -28,15 +28,28 @@ jobs:
         bash scripts/osx-translations.sh
         python3 scripts/compile_lang.py
 #        python3 scripts/dump_crowdin_progress.py
+    - name: Read version
+      uses: pietrobolcato/action-read-yaml@1.0.0
+      id: version
+      with:
+        config: ${{ github.workspace }}/version.yml
     - name: Build application
       run: |
         python3 db_update.py
         bash scripts/osx-package.sh
       env:
-        PYFA_VERSION: ${{ env.GITHUB_REF_NAME }}
+        PYFA_VERSION: ${{ steps.version.outputs['version'] }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: pyfa-mac-x64
         path: dist/*.zip
-        
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      if: github.ref == 'refs/heads/master'
+      with:
+        tag: ${{ steps.version.outputs['version'] }}
+        commit: ${{ env.GITHUB_REF_NAME }}
+        artifacts: "dist/*.zip"
+        artifactErrorsFailBuild: true       
