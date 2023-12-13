@@ -47,7 +47,7 @@ if os_name == 'Darwin':
     added_files.extend([
         ('dist_assets/win/pyfa.ico', '.'),  # osx only
     ])
-
+    pathex.extend([r'build/py'])
     icon = 'dist_assets/mac/pyfa.icns'
 
 import_these = [

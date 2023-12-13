@@ -1,0 +1,42 @@
+name: Build and publish artifacts
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  release:
+    types: [ published ]
+    
+permissions:
+  contents: read
+
+jobs:
+  build-mac-x64:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: Environment setup
+      run: |
+        bash scripts/osx-setup.sh
+    - name: Generate localization
+      run: |
+        bash scripts/osx-translations.sh
+        python3 scripts/compile_lang.py
+#        python3 scripts/dump_crowdin_progress.py
+    - name: Build application
+      run: |
+        python3 db_update.py
+        bash scripts/osx-package.sh
+      env:
+        PYFA_VERSION: ${{ env.GITHUB_REF_NAME }}
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: pyfa-mac-x64
+        path: dist/*.zip
+        

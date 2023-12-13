@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+while getopts a: flag
+do
+  case "${flag}" in
+    a) arch=${OPTARG};;
+  esac
+done
+
 echo "Pyfa version (ENV):"
 echo "${PYFA_VERSION}"
 echo "Pyfa version (YAML):"
