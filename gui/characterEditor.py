@@ -371,7 +371,7 @@ class SkillTreeView(wx.Panel):
         bSizerButtons.AddStretchSpacer()
 
         importExport = ((_t("Import skills from clipboard"), wx.ART_FILE_OPEN, "import"),
-                        (_t("Export skills from clipboard"), wx.ART_FILE_SAVE_AS, "export"))
+                        (_t("Export skills to clipboard"), wx.ART_FILE_SAVE_AS, "export"))
 
         for tooltip, art, attr in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
