@@ -446,6 +446,7 @@ class SkillTreeView(wx.Panel):
 
         text = fromClipboard().strip()
         if text:
+            sCharacter = Character.getInstance()
             char = self.charEditor.entityEditor.getActiveEntity()
             try:
                 lines = text.splitlines()
@@ -455,7 +456,7 @@ class SkillTreeView(wx.Panel):
                     skill, level = s.rsplit(None, 1)[0], arabicOrRomanToInt(s.rsplit(None, 1)[1])
                     skill = char.getSkill(skill)
                     if skill:
-                        skill.setLevel(level, ignoreRestrict=True)
+                        sCharacter.changeLevel(char.ID, skill.item.ID, level)
 
             except (KeyboardInterrupt, SystemExit):
                 raise
