@@ -257,19 +257,49 @@ def getDroneMult(drone, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
     ):
         return 0
     droneSpeed = drone.getModifiedItemAttr('maxVelocity')
-    # Hard to simulate drone behavior, so assume chance to hit is 1 for mobile drones
-    # which catch up with target
+    # A drone chasing a target will always try to get within `entityFlyRange` before
+    # stopping its MWD, and will always reactive its MWD when outside of its optimal
+    # range. In cases where the MWD is almost always active, we assume the drone is
+    # constantly approaching the target from behind.
+    # If the drone orbits at a speed faster than or as fast as the target is moving,
+    # we can treat it as though it never uses its MWD and we can average the angle
+    # based on the fact that the drone will always try to move perpendicular to the
+    # target, but the closer the target's speed it to the drone's speed, the lower
+    # the average effective angle.
+    # In both cases, distance doesn't matter because the drone is within its
+    # optimal, but we can use the `entityFlyRange` value as a sane and reliable
+    # default.
+    # For the sake of keeping the math simple, we can use the minimum of the
+    # target's velocity and the drone's orbit velocity to adjust the amount that
+    # the attack angle is offset from perpendicular.
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
+    droneRadius = drone.getModifiedItemAttr('radius')
     if (
         droneSpeed > 1 and (
             (droneOpt == GraphDpsDroneMode.auto and droneSpeed >= tgtSpeed) or
             droneOpt == GraphDpsDroneMode.followTarget)
     ):
-        cth = 1
+        droneOrbitSpeed = drone.item.getAttribute('entityCruiseSpeed')
+        droneDistance = drone.item.getAttribute('entityFlyRange')
+        cthSpeed = min(tgtSpeed, droneOrbitSpeed)
+        droneAngle = 90 * (1 - cthSpeed / droneOrbitSpeed)
+        cth = _calcTurretChanceToHit(
+            atkSpeed=droneOrbitSpeed,
+            atkAngle=droneAngle,
+            atkRadius=droneRadius,
+            atkOptimalRange=drone.maxRange or 0,
+            atkFalloffRange=drone.falloff or 0,
+            atkTracking=drone.getModifiedItemAttr('trackingSpeed'),
+            atkOptimalSigRadius=drone.getModifiedItemAttr('optimalSigRadius'),
+            distance=droneDistance,
+            tgtSpeed=tgtSpeed,
+            tgtAngle=0,
+            tgtRadius=tgt.getRadius(),
+            tgtSigRadius=tgtSigRadius)
+            
     # Otherwise put the drone into center of the ship, move it at its max speed or ship's speed
     # (whichever is lower) towards direction of attacking ship and see how well it projects
     else:
-        droneRadius = drone.getModifiedItemAttr('radius')
         if distance is None:
             cthDistance = None
         else:
