@@ -514,7 +514,7 @@ class _TabRenderer:
         Creates the tab background bitmap based upon calculated dimension values
         and modified bitmaps via InitBitmaps()
         """
-        bk_bmp = wx.Bitmap(self.tab_width, self.tab_height)
+        bk_bmp = wx.Bitmap(round(self.tab_width), round(self.tab_height))
 
         mdc = wx.MemoryDC()
         mdc.SelectObject(bk_bmp)
@@ -525,16 +525,16 @@ class _TabRenderer:
 
         # convert middle bitmap and scale to tab width
         cm = self.ctab_middle_bmp.ConvertToImage()
-        mimg = cm.Scale(self.content_width, self.ctab_middle.GetHeight(),
+        mimg = cm.Scale(round(self.content_width), round(self.ctab_middle.GetHeight()),
                         wx.IMAGE_QUALITY_NORMAL)
         mbmp = wx.Bitmap(mimg)
 
         # draw middle bitmap, offset by left
-        mdc.DrawBitmap(mbmp, self.left_width, 0)
+        mdc.DrawBitmap(mbmp, round(self.left_width), 0)
 
         # draw right bitmap offset by left + middle
         mdc.DrawBitmap(self.ctab_right_bmp,
-                       self.content_width + self.left_width, 0)
+                       round(self.content_width + self.left_width), 0)
 
         mdc.SelectObject(wx.NullBitmap)
 
@@ -555,7 +555,7 @@ class _TabRenderer:
             + self.left_width \
             - self.ctab_close_bmp.GetWidth() / 2
         y_offset = (self.tab_height - self.ctab_close_bmp.GetHeight()) / 2
-        self.close_region.Offset(x_offset, y_offset)
+        self.close_region.Offset(round(x_offset), round(y_offset))
 
     def InitColors(self):
         """Determines colors used for tab, based on system settings"""
@@ -573,7 +573,7 @@ class _TabRenderer:
 
         height = self.tab_height
 
-        canvas = wx.Bitmap(self.tab_width, self.tab_height, 24)
+        canvas = wx.Bitmap(round(self.tab_width), round(self.tab_height), 24)
 
         mdc = wx.MemoryDC()
 
@@ -590,8 +590,8 @@ class _TabRenderer:
                 # Draw tab icon
                 mdc.DrawBitmap(
                     bmp,
-                    self.left_width + self.padding - bmp.GetWidth() / 2,
-                    (height - bmp.GetHeight()) / 2)
+                    round(self.left_width + self.padding - bmp.GetWidth() / 2),
+                    round((height - bmp.GetHeight()) / 2))
 
         # draw close button
         if self.closeable:
@@ -604,8 +604,8 @@ class _TabRenderer:
 
             mdc.DrawBitmap(
                 cbmp,
-                self.content_width + self.left_width - cbmp.GetWidth() / 2,
-                (height - cbmp.GetHeight()) / 2)
+                round(self.content_width + self.left_width - cbmp.GetWidth() / 2),
+                round((height - cbmp.GetHeight()) / 2))
 
         mdc.SelectObject(wx.NullBitmap)
 
@@ -640,7 +640,7 @@ class _TabRenderer:
         # draw text (with no ellipses)
         text = draw.GetPartialText(dc, self.text, maxsize, "")
         tx, ty = dc.GetTextExtent(text)
-        dc.DrawText(text, text_start + self.padding, height / 2 - ty / 2)
+        dc.DrawText(text, round(text_start + self.padding), round(height / 2 - ty / 2))
 
     def __repr__(self):
         return "_TabRenderer(text={}, disabled={}) at {}".format(
@@ -1005,7 +1005,7 @@ class _TabsContainer(wx.Panel):
 
         region = tab.GetCloseButtonRegion()
         posx, posy = tab.GetPosition()
-        region.Offset(posx, posy)
+        region.Offset(round(posx), round(posy))
 
         if region.Contains(x, y):
             index = self.tabs.index(tab)
@@ -1036,7 +1036,7 @@ class _TabsContainer(wx.Panel):
 
         region = self.add_button.GetRegion()
         ax, ay = self.add_button.GetPosition()
-        region.Offset(ax, ay)
+        region.Offset(round(ax), round(ay))
 
         if region.Contains(x, y):
             ev = PageAdding()
@@ -1058,7 +1058,7 @@ class _TabsContainer(wx.Panel):
         for tab in self.tabs:
             region = tab.GetCloseButtonRegion()
             posx, posy = tab.GetPosition()
-            region.Offset(posx, posy)
+            region.Offset(round(posx), round(posy))
 
             if region.Contains(x, y):
                 if not tab.GetCloseButtonHoverStatus():
@@ -1093,7 +1093,7 @@ class _TabsContainer(wx.Panel):
         tabRegion = tab.GetTabRegion()
         tabPos = tab.GetPosition()
         tabPosX, tabPosY = tabPos
-        tabRegion.Offset(tabPosX, tabPosY)
+        tabRegion.Offset(round(tabPosX), round(tabPosY))
 
         if tabRegion.Contains(x, y):
             return True
@@ -1166,7 +1166,7 @@ class _TabsContainer(wx.Panel):
 
         region = self.add_button.GetRegion()
         ax, ay = self.add_button.GetPosition()
-        region.Offset(ax, ay)
+        region.Offset(round(ax), round(ay))
 
         if region.Contains(x, y):
             if not self.add_button.IsHighlighted():
@@ -1198,7 +1198,7 @@ class _TabsContainer(wx.Panel):
 
         if self.show_add_button:
             ax, ay = self.add_button.GetPosition()
-            mdc.DrawBitmap(self.add_button.Render(), ax, ay, True)
+            mdc.DrawBitmap(self.add_button.Render(), round(ax), round(ay), True)
 
         for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
@@ -1206,14 +1206,14 @@ class _TabsContainer(wx.Panel):
 
             if not tab.IsSelected():
                 # drop shadow first
-                mdc.DrawBitmap(self.fxBmps[tab], posx, posy, True)
+                mdc.DrawBitmap(self.fxBmps[tab], round(posx), (posy), True)
                 bmp = tab.Render()
                 img = bmp.ConvertToImage()
                 img = img.AdjustChannels(1, 1, 1, 0.85)
                 bmp = wx.Bitmap(img)
-                mdc.DrawBitmap(bmp, posx, posy, True)
+                mdc.DrawBitmap(bmp, round(posx), (posy), True)
 
-                mdc.SetDeviceOrigin(posx, posy)
+                mdc.SetDeviceOrigin(round(posx), round(posy))
                 tab.DrawText(mdc)
                 mdc.SetDeviceOrigin(0, 0)
             else:
@@ -1224,7 +1224,7 @@ class _TabsContainer(wx.Panel):
         if selected:
             posx, posy = selected.GetPosition()
             # drop shadow first
-            mdc.DrawBitmap(self.fxBmps[selected], posx, posy, True)
+            mdc.DrawBitmap(self.fxBmps[selected], round(posx), round(posy), True)
 
             bmp = selected.Render()
 
@@ -1233,9 +1233,9 @@ class _TabsContainer(wx.Panel):
                 img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
                 bmp = wx.Bitmap(img)
 
-            mdc.DrawBitmap(bmp, posx, posy, True)
+            mdc.DrawBitmap(bmp, round(posx), round(posy), True)
 
-            mdc.SetDeviceOrigin(posx, posy)
+            mdc.SetDeviceOrigin(round(posx), round(posy))
             selected.DrawText(mdc)
             mdc.SetDeviceOrigin(0, 0)
 
@@ -1501,7 +1501,7 @@ class PFNotebookPagePreview(wx.Frame):
 
     def OnWindowPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.Bitmap(rect.width, rect.height)
+        canvas = wx.Bitmap(round(rect.width), round(rect.height))
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
@@ -1514,7 +1514,7 @@ class PFNotebookPagePreview(wx.Frame):
         x, y = mdc.GetTextExtent(self.title)
 
         mdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
-        mdc.DrawRectangle(0, 0, rect.width, 16)
+        mdc.DrawRectangle(0, 0, round(rect.width), 16)
 
         mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
@@ -1523,4 +1523,4 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetPen(wx.Pen("#000000", width=1))
         mdc.SetBrush(wx.TRANSPARENT_BRUSH)
 
-        mdc.DrawRectangle(0, 16, rect.width, rect.height - 16)
+        mdc.DrawRectangle(0, 16, round(rect.width), round(rect.height - 16))

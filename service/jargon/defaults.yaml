@@ -263,6 +263,9 @@ bcs:
 bcu:
   - 'bcu'
   - 'ballistic control system'
+vts:
+  - 'vts'
+  - 'vorton tuning system'
 tc:
   - 'tc'
   - '(?<!remote )tracking computer'
@@ -976,6 +979,9 @@ cdfe:
 cp:
   - 'cp'
   - 'command processor'
+ats:
+  - 'ats'
+  - 'auto targeting system'
 
 # Implants
 lg:

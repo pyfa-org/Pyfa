@@ -895,7 +895,7 @@ class FittingView(d.Display):
                 opts.m_labelText = name
 
             if imgId != -1:
-                opts.m_labelBitmap = wx.Bitmap(isize, isize)
+                opts.m_labelBitmap = wx.Bitmap(round(isize), round(isize))
 
             width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16), sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
@@ -911,7 +911,7 @@ class FittingView(d.Display):
             maxWidth += columnsWidths[i]
 
         mdc = wx.MemoryDC()
-        mbmp = wx.Bitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
+        mbmp = wx.Bitmap(round(maxWidth), round(maxRowHeight * rows + padding * 4 + headerSize))
 
         mdc.SelectObject(mbmp)
 
@@ -956,7 +956,7 @@ class FittingView(d.Display):
             cx = padding
 
             if slotMap[st.slot]:
-                mdc.DrawRectangle(cx, cy, maxWidth - cx, maxRowHeight)
+                mdc.DrawRectangle(round(cx), round(cy), round(maxWidth - cx), round(maxRowHeight))
 
             for i, col in enumerate(self.activeColumns):
                 if i > maxColumns:

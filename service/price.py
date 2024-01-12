@@ -276,4 +276,4 @@ class PriceWorkerThread(threading.Thread):
 
 
 # Import market sources only to initialize price source modules, they register on their own
-from service.marketSources import evemarketer, evemarketdata, evepraisal, fuzzwork, cevemarket  # noqa: E402
+from service.marketSources import evemarketdata, fuzzwork, cevemarket, evetycoon  # noqa: E402

@@ -268,7 +268,7 @@ class ExportToEve(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title=_t("Export fit to EVE"), pos=wx.DefaultPosition,
-            size=wx.Size(400, 140) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 115), resizeable=True)
+            size=wx.Size(400, 175) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 145), resizeable=True)
 
         self.mainFrame = parent
 
@@ -290,6 +290,16 @@ class ExportToEve(AuxiliaryFrame):
         self.exportChargesCb.Bind(wx.EVT_CHECKBOX, self.OnChargeExportChange)
         mainSizer.Add(self.exportChargesCb, 0, 0, 5)
 
+        self.exportImplantsCb = wx.CheckBox(self, wx.ID_ANY, _t('Export Implants'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportImplantsCb.SetValue(EsiSettings.getInstance().get('exportImplants'))
+        self.exportImplantsCb.Bind(wx.EVT_CHECKBOX, self.OnImplantsExportChange)
+        mainSizer.Add(self.exportImplantsCb, 0, 0, 5)
+
+        self.exportBoostersCb = wx.CheckBox(self, wx.ID_ANY, _t('Export Boosters'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportBoostersCb.SetValue(EsiSettings.getInstance().get('exportBoosters'))
+        self.exportBoostersCb.Bind(wx.EVT_CHECKBOX, self.OnBoostersExportChange)
+        mainSizer.Add(self.exportBoostersCb, 0, 0, 5)
+
         self.exportBtn.Bind(wx.EVT_BUTTON, self.exportFitting)
 
         self.statusbar = wx.StatusBar(self)
@@ -307,6 +317,14 @@ class ExportToEve(AuxiliaryFrame):
 
     def OnChargeExportChange(self, event):
         EsiSettings.getInstance().set('exportCharges', self.exportChargesCb.GetValue())
+        event.Skip()
+
+    def OnImplantsExportChange(self, event):
+        EsiSettings.getInstance().set('exportImplants', self.exportImplantsCb.GetValue())
+        event.Skip()
+
+    def OnBoostersExportChange(self, event):
+        EsiSettings.getInstance().set('exportBoosters', self.exportBoostersCb.GetValue())
         event.Skip()
 
     def updateCharList(self):
@@ -345,8 +363,10 @@ class ExportToEve(AuxiliaryFrame):
 
         sFit = Fit.getInstance()
         exportCharges = self.exportChargesCb.GetValue()
+        exportImplants = self.exportImplantsCb.GetValue()
+        exportBoosters = self.exportBoostersCb.GetValue()
         try:
-            data = sPort.exportESI(sFit.getFit(fitID), exportCharges)
+            data = sPort.exportESI(sFit.getFit(fitID), exportCharges, exportImplants, exportBoosters)
         except ESIExportException as e:
             msg = str(e)
             if not msg:

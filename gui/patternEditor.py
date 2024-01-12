@@ -42,7 +42,7 @@ class DmgPatternNameValidator(BaseValidator):
         return DmgPatternNameValidator()
 
     def Validate(self, win):
-        entityEditor = win.parent
+        entityEditor = win.Parent.parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
 

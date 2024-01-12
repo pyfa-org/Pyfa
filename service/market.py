@@ -35,6 +35,7 @@ from eos.gamedata import Category as types_Category, Group as types_Group, Item 
 from service import conversions
 from service.jargon import JargonLoader
 from service.settings import SettingsProvider
+from utils.cjk import isStringCjk
 
 pyfalog = Logger(__name__)
 _t = wx.GetTranslation
@@ -152,7 +153,11 @@ class SearchWorkerThread(threading.Thread):
             requestTokens = self.jargonLoader.get_jargon().apply(requestTokens)
 
             all_results = set()
-            if len(' '.join(requestTokens)) >= config.minItemSearchLength:
+            joinedTokens = ' '.join(requestTokens)
+            if (
+                (isStringCjk(joinedTokens) and len(joinedTokens) >= config.minItemSearchLengthCjk)
+                or len(joinedTokens) >= config.minItemSearchLength
+            ):
                 for filter_ in filters:
                     filtered_results = eos.db.searchItemsRegex(
                         requestTokens, where=filter_,
@@ -314,6 +319,11 @@ class Market:
             "Raiju"                       : self.les_grp,  # AT17 prize
             "Laelaps"                     : self.les_grp,  # AT17 prize
             "Boobook"                     : self.les_grp,  # 19th EVE anniversary gift
+            "Geri"                        : self.les_grp,  # AT18 prize
+            "Bestla"                      : self.les_grp,  # AT18 prize
+            "Metamorphosis"               : self.les_grp,  # Seems to be anniversary gift
+            "Shapash"                     : self.les_grp,  # AT19 prize
+            "Cybele"                      : self.les_grp,  # AT19 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)

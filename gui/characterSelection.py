@@ -22,6 +22,7 @@ import traceback
 
 # noinspection PyPackageRequirements
 import wx
+import roman
 from logbook import Logger
 
 import config
@@ -104,6 +105,9 @@ class CharacterSelection(wx.Panel):
 
         exportItem = menu.Append(wx.ID_ANY, _t("Copy Missing Skills"))
         self.Bind(wx.EVT_MENU, self.exportSkills, exportItem)
+
+        exportItem = menu.Append(wx.ID_ANY, _t("Copy Missing Skills (EVEMon)"))
+        self.Bind(wx.EVT_MENU, self.exportSkillsEveMon, exportItem)
 
         self.PopupMenu(menu, pos)
 
@@ -261,6 +265,15 @@ class CharacterSelection(wx.Panel):
         list = ""
         for key in sorted(skillsMap):
             list += "%s %d\n" % (key, skillsMap[key][0])
+
+        toClipboard(list)
+
+    def exportSkillsEveMon(self, evt):
+        skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
+
+        list = ""
+        for key in sorted(skillsMap):
+            list += "%s %s\n" % (key, roman.toRoman(skillsMap[key][0]))
 
         toClipboard(list)
 

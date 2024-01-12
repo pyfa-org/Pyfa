@@ -123,9 +123,9 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
             _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion'))
-        data.groups[_t('Triglavian Invasion')] = self.getEffectBeacons(
-            _t('ContextMenu|ProjectedEffectManipulation|Triglavian Invasion'))
-        data.groups[_t('Triglavian Invasion')].groups[_t('Destructible Beacons')] = self.getDestructibleBeacons()
+        data.groups[_t('Triglavian Invasion')] = self.getInvasionBeacons()
+        # data.groups[_t('Pirate Insurgency')] = self.getEffectBeacons(
+        #     _t('ContextMenu|ProjectedEffectManipulation|Insurgency'))
         return data
 
     def getEffectBeacons(self, *groups, extra_garbage=()):
@@ -231,6 +231,20 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                 continue
             data.items.append(Entry(item.ID, item.name, item.name))
         data.sort()
+        return data
+
+    def getInvasionBeacons(self):
+        data = self.getDestructibleBeacons()
+        # Turnur weather
+        item = Market.getInstance().getItem(74002)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        return data
+
+    def getInsurgencyBeacons(self):
+        data = self.getDestructibleBeacons()
+        # Suppression Interdiction Range Beacon
+        item = Market.getInstance().getItem(79839)
+        data.items.append(Entry(item.ID, item.name, item.name))
         return data
 
 

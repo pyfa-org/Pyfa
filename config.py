@@ -29,6 +29,7 @@ saveInRoot = False
 evemonMinVersion = "4081"
 
 minItemSearchLength = 3
+minItemSearchLengthCjk = 1
 
 pyfaPath = None
 savePath = None

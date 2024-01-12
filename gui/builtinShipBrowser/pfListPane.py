@@ -57,7 +57,7 @@ class PFListPane(wx.ScrolledWindow):
 
         posy = self.GetScrollPos(wx.VERTICAL)
         posy -= self.itemsHeight
-        self.Scroll(0, posy)
+        self.Scroll(0, round(posy))
 
         event.Skip()
 
@@ -65,7 +65,7 @@ class PFListPane(wx.ScrolledWindow):
 
         posy = self.GetScrollPos(wx.VERTICAL)
         posy += self.itemsHeight
-        self.Scroll(0, posy)
+        self.Scroll(0, round(posy))
 
         event.Skip()
 
@@ -109,7 +109,7 @@ class PFListPane(wx.ScrolledWindow):
 
         # if we need to adjust
         if new_vs_x != -1 or new_vs_y != -1:
-            self.Scroll(new_vs_x, new_vs_y)
+            self.Scroll(round(new_vs_x), round(new_vs_y))
 
     def AddWidget(self, widget):
         widget.Reparent(self)

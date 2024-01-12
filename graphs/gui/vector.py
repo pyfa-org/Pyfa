@@ -39,7 +39,7 @@ class VectorPicker(wx.Window):
         self._directionOnly = kwargs.pop('directionOnly', False)
         super().__init__(*args, **kwargs)
         self._fontsize = max(1, float(kwargs.pop('fontsize', 8 / self.GetContentScaleFactor())))
-        self._font = wx.Font(self._fontsize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
+        self._font = wx.Font(round(self._fontsize), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self._angle = 0
         self.__length = 1
         self._left = False
@@ -76,7 +76,7 @@ class VectorPicker(wx.Window):
         self.__length = newLength
 
     def DoGetBestSize(self):
-        return wx.Size(self._size, self._size)
+        return wx.Size(round(self._size), round(self._size))
 
     def AcceptsFocusFromKeyboard(self):
         return False
@@ -121,35 +121,37 @@ class VectorPicker(wx.Window):
 
         radius = min(width, height) / 2 - 2
         dc.SetBrush(wx.WHITE_BRUSH)
-        dc.DrawCircle(radius + 2, radius + 2, radius)
+        dc.DrawCircle(round(radius + 2), round(radius + 2), round(radius))
         a = math.radians(self._angle + self._offset)
         x = math.cos(a) * radius
         y = math.sin(a) * radius
         # See PR #2260 on why this is needed
         pointRadius = 2 / self.GetContentScaleFactor() if 'wxGTK' in wx.PlatformInfo else 2
-        dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * self._length, radius + 2 - y * self._length)
+        dc.DrawLine(
+            round(radius + 2), round(radius + 2),
+            round(radius + 2 + x * self._length), round(radius + 2 - y * self._length))
         dc.SetBrush(wx.BLACK_BRUSH)
-        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, pointRadius)
+        dc.DrawCircle(round(radius + 2 + x * self._length), round(radius + 2 - y * self._length), round(pointRadius))
 
         if self._label:
             labelText = self._label
             labelTextW, labelTextH = dc.GetTextExtent(labelText)
             labelTextX = (radius * 2 + 4 - labelTextW) if (self._labelpos & 1) else 0
             labelTextY = (radius * 2 + 4 - labelTextH) if (self._labelpos & 2) else 0
-            dc.DrawText(labelText, labelTextX, labelTextY)
+            dc.DrawText(labelText, round(labelTextX), round(labelTextY))
 
         if not self._directionOnly:
             lengthText = '%d%%' % (100 * self._length,)
             lengthTextW, lengthTextH = dc.GetTextExtent(lengthText)
             lengthTextX = radius + 2 + x / 2 - y / 3 - lengthTextW / 2
             lengthTextY = radius + 2 - y / 2 - x / 3 - lengthTextH / 2
-            dc.DrawText(lengthText, lengthTextX, lengthTextY)
+            dc.DrawText(lengthText, round(lengthTextX), round(lengthTextY))
 
         angleText = '%d\u00B0' % (self._angle,)
         angleTextW, angleTextH = dc.GetTextExtent(angleText)
         angleTextX = radius + 2 - x / 2 - angleTextW / 2
         angleTextY = radius + 2 + y / 2 - angleTextH / 2
-        dc.DrawText(angleText, angleTextX, angleTextY)
+        dc.DrawText(angleText, round(angleTextX), round(angleTextY))
 
     def OnEraseBackground(self, event):
         pass

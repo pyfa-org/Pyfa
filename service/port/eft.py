@@ -165,16 +165,25 @@ def exportModules(modules, options, mutaData=None):
 
 def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
 
+    # Same as in drone additions panel
+    DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
+                   'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
+                   'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
+
     def getDroneName(drone):
         if drone.isMutated:
             return drone.baseItem.typeName
         return drone.item.typeName
 
+    def droneSorter(drone):
+        groupName = Market.getInstance().getMarketGroupByItem(drone.item).marketGroupName
+        return (DRONE_ORDER.index(groupName), drone.isMutated, drone.fullName)
+
     if mutaData is None:
         mutaData = MutationExportData()
     sections = []
     droneLines = []
-    for drone in sorted(drones, key=getDroneName):
+    for drone in sorted(drones, key=droneSorter):
         if drone.isMutated and exportMutants:
             mutaData.mutants[mutaData.reference] = drone
             mutationSuffix = ' [{}]'.format(mutaData.reference)
@@ -190,8 +199,15 @@ def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
 
 
 def exportFighters(fighters):
+    # Same as in drone additions panel
+    FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
+
+    def fighterSorter(fighter):
+        groupName = Market.getInstance().getGroupByItem(fighter.item).name
+        return (FIGHTER_ORDER.index(groupName), fighter.item.typeName)
+
     fighterLines = []
-    for fighter in sorted(fighters, key=lambda f: f.item.typeName):
+    for fighter in sorted(fighters, key=fighterSorter):
         fighterLines.append('{} x{}'.format(fighter.item.typeName, fighter.amount))
     return '\n'.join(fighterLines)
 

@@ -477,7 +477,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             # Some delay attributes have non-0 default value, so we have to pick according to effects
             if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar', 'lightningWeapon'}.intersection(self.item.effects):
                 dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0)
-            elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT'}.intersection(self.item.effects):
+            elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT', 'debuffLance'}.intersection(self.item.effects):
                 dmgDelay = self.getModifiedItemAttr("doomsdayWarningDuration", 0)
             else:
                 dmgDelay = 0
@@ -696,16 +696,22 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 return False
 
         # Check max group fitted
-        max = self.getModifiedItemAttr("maxGroupFitted")
-        if max:
-            current = 0  # if self.owner != fit else -1  # Disabled, see #1278
-            for mod in fit.modules:
-                if (mod.item and mod.item.groupID == self.item.groupID and
-                        self.getModPosition(fit) != mod.getModPosition(fit)):
-                    current += 1
+        # use raw value, since it seems what EVE uses. Example is FAXes with their capacitor boosters,
+        # which have unmodified value of 10, and modified of 1, and you can actually fit multiples
+        try:
+            max = self.item.attributes.get('maxGroupFitted').value
+        except AttributeError:
+            pass
+        else:
+            if max:
+                current = 0  # if self.owner != fit else -1  # Disabled, see #1278
+                for mod in fit.modules:
+                    if (mod.item and mod.item.groupID == self.item.groupID and
+                            self.getModPosition(fit) != mod.getModPosition(fit)):
+                        current += 1
 
-            if current >= max:
-                return False
+                if current >= max:
+                    return False
 
         # Check this only if we're told to do so
         if hardpointLimit:

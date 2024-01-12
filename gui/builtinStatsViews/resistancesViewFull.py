@@ -146,8 +146,8 @@ class ResistancesViewFull(StatsView):
 
                 lbl = PyGauge(contentPanel, font, 100)
                 lbl.SetMinSize((48, 16))
-                lbl.SetBackgroundColour(wx.Colour(bc[0], bc[1], bc[2]))
-                lbl.SetBarColour(wx.Colour(fc[0], fc[1], fc[2]))
+                lbl.SetBackgroundColour(wx.Colour(round(bc[0]), round(bc[1]), round(bc[2])))
+                lbl.SetBarColour(wx.Colour(round(fc[0]), round(fc[1]), round(fc[2])))
                 lbl.SetBarGradient()
                 lbl.SetFractionDigits(1)
 

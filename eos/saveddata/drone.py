@@ -82,6 +82,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         self.__baseRRAmount = None
         self.__miningYield = None
         self.__miningWaste = None
+        self.__ehp = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self._item.attributes
         self.__itemModifiedAttributes.overrides = self._item.overrides
@@ -287,6 +288,29 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
             if delay is not None and speed is not None:
                 return delay / 1000.0 * speed
 
+    @property
+    def hp(self):
+        hp = {}
+        for (type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
+            hp[type] = self.getModifiedItemAttr(attr)
+
+        return hp
+
+    @property
+    def ehp(self):
+        if self.__ehp is None:
+            if self.owner is None or self.owner.damagePattern is None:
+                ehp = self.hp
+            else:
+                ehp = self.owner.damagePattern.calculateEhp(self)
+            self.__ehp = ehp
+        return self.__ehp
+
+    def calculateShieldRecharge(self):
+        capacity = self.getModifiedItemAttr("shieldCapacity")
+        rechargeRate = self.getModifiedItemAttr("shieldRechargeRate") / 1000.0
+        return 10 / rechargeRate * math.sqrt(0.25) * (1 - math.sqrt(0.25)) * capacity
+
     # Had to add this to match the falloff property in modules.py
     # Fscking ship scanners. If you find any other falloff attributes,
     # Put them in the attrs tuple.
@@ -318,6 +342,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         self.__baseRRAmount = None
         self.__miningYield = None
         self.__miningWaste = None
+        self.__ehp = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 

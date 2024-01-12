@@ -117,8 +117,7 @@ def update_db():
         for k, v in compiled_data.items():
             row = {}
             row.update(v)
-            if keyIdName not in row:
-                row[keyIdName] = int(k)
+            row[keyIdName] = int(k)
             data.append(row)
         return data
 
@@ -139,16 +138,18 @@ def update_db():
         for row in data:
             if (
                 # Apparently people really want Civilian modules available
-                (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us']) or
-                row['typeName_en-us'] == 'Capsule' or
-                row['groupID'] == 4033  # destructible effect beacons
+                (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us'])
+                or row['typeName_en-us'] == 'Capsule'
+                or row['groupID'] == 4033  # destructible effect beacons
+                or re.match('AIR .+Booster.*', row['typeName_en-us'])
             ):
                 row['published'] = True
             # Nearly useless and clutter search results too much
             elif (
-                row['typeName_en-us'].startswith('Limited Synth ') or
-                row['typeName_en-us'].startswith('Expired ') or
-                row['typeName_en-us'].endswith(' Filament') and (
+                row['typeName_en-us'].startswith('Limited Synth ')
+                or row['typeName_en-us'].startswith('Expired ')
+                or re.match('Mining Blitz .+ Booster Dose .+', row['typeName_en-us'])
+                or row['typeName_en-us'].endswith(' Filament') and (
                     "'Needlejack'" not in row['typeName_en-us'] and
                     "'Devana'" not in row['typeName_en-us'] and
                     "'Pochven'" not in row['typeName_en-us'] and
@@ -616,6 +617,16 @@ def update_db():
         eos.db.gamedata_session.delete(cat)
 
     # Unused normally, can be useful for customizing items
+    def _copyItem(srcName, tgtTypeID, tgtName):
+        eveType = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.name == srcName).one()
+        eos.db.gamedata_session.expunge(eveType)
+        sqlalchemy.orm.make_transient(eveType)
+        eveType.ID = tgtTypeID
+        for suffix in eos.config.translation_mapping.values():
+            setattr(eveType, f'typeName{suffix}', tgtName)
+        eos.db.gamedata_session.add(eveType)
+        eos.db.gamedata_session.flush()
+
     def _hardcodeAttribs(typeID, attrMap):
         for attrName, value in attrMap.items():
             try:
@@ -624,7 +635,7 @@ def update_db():
             except sqlalchemy.orm.exc.NoResultFound:
                 attrInfo = eos.db.gamedata_session.query(eos.gamedata.AttributeInfo).filter(eos.gamedata.AttributeInfo.name == attrName).one()
                 attr = eos.gamedata.Attribute()
-                attr.ID = attrInfo.ID
+                attr.attributeID = attrInfo.ID
                 attr.typeID = typeID
                 attr.value = value
                 eos.db.gamedata_session.add(attr)
@@ -639,6 +650,152 @@ def update_db():
             effect.effectID = effectID
             effect.effectName = effectName
             item.effects[effectName] = effect
+
+    def hardcodeShapash():
+        shapashTypeID = 1000000
+        _copyItem(srcName='Utu', tgtTypeID=shapashTypeID, tgtName='Shapash')
+        attrMap = {
+            # Fitting
+            'powerOutput': 50,
+            'cpuOutput': 225,
+            'capacitorCapacity': 420,
+            'rechargeRate': 187500,
+            # Slots
+            'hiSlots': 3,
+            'medSlots': 4,
+            'lowSlots': 4,
+            'launcherSlotsLeft': 0,
+            'turretSlotsLeft': 3,
+            # Rigs
+            'rigSlots': 2,
+            'rigSize': 1,
+            'upgradeCapacity': 400,
+            # Shield
+            'shieldCapacity': 575,
+            'shieldRechargeRate': 625000,
+            'shieldEmDamageResonance': 1 - 0.0,
+            'shieldThermalDamageResonance': 1 - 0.6,
+            'shieldKineticDamageResonance': 1 - 0.85,
+            'shieldExplosiveDamageResonance': 1 - 0.5,
+            # Armor
+            'armorHP': 1015,
+            'armorEmDamageResonance': 1 - 0.5,
+            'armorThermalDamageResonance': 1 - 0.675,
+            'armorKineticDamageResonance': 1 - 0.8375,
+            'armorExplosiveDamageResonance': 1 - 0.1,
+            # Structure
+            'hp': 1274,
+            'emDamageResonance': 1 - 0.33,
+            'thermalDamageResonance': 1 - 0.33,
+            'kineticDamageResonance': 1 - 0.33,
+            'explosiveDamageResonance': 1 - 0.33,
+            'mass': 1215000,
+            'volume': 29500,
+            'capacity': 165,
+            # Navigation
+            'maxVelocity': 325,
+            'agility': 3.467,
+            'warpSpeedMultiplier': 5.5,
+            # Drones
+            'droneCapacity': 75,
+            'droneBandwidth': 25,
+            # Targeting
+            'maxTargetRange': 49000,
+            'maxLockedTargets': 6,
+            'scanRadarStrength': 0,
+            'scanLadarStrength': 0,
+            'scanMagnetometricStrength': 9,
+            'scanGravimetricStrength': 0,
+            'signatureRadius': 39,
+            'scanResolution': 550,
+            # Misc
+            'energyWarfareResistance': 0,
+            'stasisWebifierResistance': 0,
+            'weaponDisruptionResistance': 0}
+        effectMap = {
+            100100: 'pyfaCustomShapashAfArAmount',
+            100101: 'pyfaCustomShapashAfShtTrackingOptimal',
+            100102: 'pyfaCustomShapashGfShtDamage',
+            100103: 'pyfaCustomShapashGfPointRange',
+            100104: 'pyfaCustomShapashGfPropOverheat',
+            100105: 'pyfaCustomShapashRolePlateMass',
+            100106: 'pyfaCustomShapashRoleHeat'}
+        _hardcodeAttribs(shapashTypeID, attrMap)
+        _hardcodeEffects(shapashTypeID, effectMap)
+
+    def hardcodeCybele():
+        cybeleTypeID = 1000001
+        _copyItem(srcName='Adrestia', tgtTypeID=cybeleTypeID, tgtName='Cybele')
+        attrMap = {
+            # Fitting
+            'powerOutput': 1284,
+            'cpuOutput': 400,
+            'capacitorCapacity': 2400,
+            'rechargeRate': 334000,
+            'hiSlots': 5,
+            'medSlots': 4,
+            'lowSlots': 6,
+            'launcherSlotsLeft': 0,
+            'turretSlotsLeft': 5,
+            # Rigs
+            'rigSlots': 2,
+            'rigSize': 2,
+            'upgradeCapacity': 400,
+            # Shield
+            'shieldCapacity': 1200,
+            'shieldRechargeRate': 1250000,
+            'shieldEmDamageResonance': 1 - 0.0,
+            'shieldThermalDamageResonance': 1 - 0.5,
+            'shieldKineticDamageResonance': 1 - 0.9,
+            'shieldExplosiveDamageResonance': 1 - 0.5,
+            # Armor
+            'armorHP': 1900,
+            'armorEmDamageResonance': 1 - 0.5,
+            'armorThermalDamageResonance': 1 - 0.69,
+            'armorKineticDamageResonance': 1 - 0.85,
+            'armorExplosiveDamageResonance': 1 - 0.1,
+            # Structure
+            'hp': 2300,
+            'emDamageResonance': 1 - 0.33,
+            'thermalDamageResonance': 1 - 0.33,
+            'kineticDamageResonance': 1 - 0.33,
+            'explosiveDamageResonance': 1 - 0.33,
+            'mass': 11100000,
+            'volume': 112000,
+            'capacity': 450,
+            # Navigation
+            'maxVelocity': 235,
+            'agility': 0.457,
+            'warpSpeedMultiplier': 4.5,
+            # Drones
+            'droneCapacity': 100,
+            'droneBandwidth': 50,
+            # Targeting
+            'maxTargetRange': 60000,
+            'maxLockedTargets': 6,
+            'scanRadarStrength': 0,
+            'scanLadarStrength': 0,
+            'scanMagnetometricStrength': 15,
+            'scanGravimetricStrength': 0,
+            'signatureRadius': 115,
+            'scanResolution': 330,
+            # Misc
+            'energyWarfareResistance': 0,
+            'stasisWebifierResistance': 0,
+            'weaponDisruptionResistance': 0}
+        effectMap = {
+            100200: 'pyfaCustomCybeleHacMhtFalloff',
+            100201: 'pyfaCustomCybeleHacMhtTracking',
+            100202: 'pyfaCustomCybeleGcMhtDamage',
+            100203: 'pyfaCustomCybeleGcArAmount',
+            100204: 'pyfaCustomCybeleGcPointRange',
+            100205: 'pyfaCustomCybeleRoleVelocity',
+            100206: 'pyfaCustomCybeleRolePlateMass'}
+        _hardcodeAttribs(cybeleTypeID, attrMap)
+        _hardcodeEffects(cybeleTypeID, effectMap)
+
+    # hardcodeShapash()
+    # hardcodeCybele()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')

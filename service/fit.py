@@ -88,7 +88,7 @@ class Fit:
             "enableGaugeAnimation": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
-            "priceSource": "evemarketer",
+            "priceSource": "fuzzwork market",
             "showShipBrowserTooltip": True,
             "marketSearchDelay": 250,
             "ammoChangeAll": False,

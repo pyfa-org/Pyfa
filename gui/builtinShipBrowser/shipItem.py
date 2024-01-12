@@ -247,12 +247,12 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             shipEffBk = self.shipEffBk
 
-        mdc.DrawBitmap(shipEffBk, self.shipEffx, self.shipEffy, 0)
+        mdc.DrawBitmap(shipEffBk, round(self.shipEffx), round(self.shipEffy), 0)
 
-        mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
+        mdc.DrawBitmap(self.shipBmp, round(self.shipBmpx), round(self.shipBmpy), 0)
 
-        mdc.DrawBitmap(self.raceDropShadowBmp, self.raceBmpx + 1, self.raceBmpy + 1)
-        mdc.DrawBitmap(self.raceBmp, self.raceBmpx, self.raceBmpy)
+        mdc.DrawBitmap(self.raceDropShadowBmp, round(self.raceBmpx + 1), round(self.raceBmpy + 1))
+        mdc.DrawBitmap(self.raceBmp, round(self.raceBmpx), round(self.raceBmpy))
 
         shipName, shipTrait, fittings = self.shipFittingInfo
 
@@ -264,17 +264,17 @@ class ShipItem(SFItem.SFBrowserItem):
             fformat = "%d fits"
 
         mdc.SetFont(self.fontNormal)
-        mdc.DrawText(fformat % fittings if fittings > 0 else fformat, self.textStartx, self.fittingsy)
+        mdc.DrawText(fformat % fittings if fittings > 0 else fformat, round(self.textStartx), round(self.fittingsy))
 
         mdc.SetFont(self.fontSmall)
-        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+        mdc.DrawText(self.toolbar.hoverLabel, round(self.thoverx), round(self.thovery))
 
         mdc.SetFont(self.fontBig)
 
         psname = drawUtils.GetPartialText(mdc, shipName,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(psname, self.textStartx, self.shipNamey)
+        mdc.DrawText(psname, round(self.textStartx), round(self.shipNamey))
 
         if self.tcFitName.IsShown():
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)

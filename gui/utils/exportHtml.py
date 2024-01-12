@@ -244,7 +244,7 @@ class exportHtmlThread(threading.Thread):
                 # Market group header
                 HTML += (
                     '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                    '      <h2>' + group.groupName + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n'
+                    '      <h2>' + group.name + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n'
                     '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n' +
                     HTMLgroup +
                     '      </ul>\n'

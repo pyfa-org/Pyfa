@@ -17,7 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-
 from logbook import Logger
 
 from eos.saveddata.price import PriceStatus
@@ -26,58 +25,41 @@ from service.price import Price
 
 pyfalog = Logger(__name__)
 
-systemAliases = {
-    None: 'universe',
-    30000142: 'jita',
-    30002187: 'amarr',
-    30002659: 'dodixie',
-    30002510: 'rens',
-    30002053: 'hek'}
+locations = {
+    30000142: (10000002, 60003760),  # Jita 4-4 CNAP
+    30002187: (10000043, 60008494),  # Amarr VIII
+    30002659: (10000032, 60011866),  # Dodixie
+    30002510: (10000030, 60004588),  # Rens
+    30002053: (10000042, 60005686)}  # Hek
 
 
-class EvePraisal:
+class EveTycoon:
 
-    name = 'evepraisal'
+    name = 'evetycoon'
     group = 'tranquility'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first
         self.fetchPrices(priceMap, max(2 * fetchTimeout / 3, 2), system)
-        # If price was not available - try globally
-        if priceMap:
-            self.fetchPrices(priceMap, max(fetchTimeout / 3, 2))
 
     @staticmethod
     def fetchPrices(priceMap, fetchTimeout, system=None):
-        if system not in systemAliases:
-            return
-        jsonData = {
-            'market_name': systemAliases[system],
-            'items': [{'type_id': typeID} for typeID in priceMap]}
-        baseurl = 'https://evepraisal.com/appraisal/structured.json'
+        # Default to jita when system is not found
+        regionID, stationID = locations.get(system, locations[30000142])
+        baseurl = 'https://evetycoon.com/api/v1/market/stats'
         network = Network.getInstance()
-        resp = network.post(baseurl, network.PRICES, jsonData=jsonData, timeout=fetchTimeout)
-        data = resp.json()
-        try:
-            itemsData = data['appraisal']['items']
-        except (KeyError, TypeError):
-            return
         # Cycle through all types we've got from request
-        for itemData in itemsData:
-            try:
-                typeID = int(itemData['typeID'])
-                price = itemData['prices']['sell']['min']
-                orderCount = itemData['prices']['sell']['order_count']
-            except (KeyError, TypeError):
+        for typeID in tuple(priceMap):
+            url = f'{baseurl}/{regionID}/{typeID}'
+            resp = network.get(url=url, params={'locationId': stationID}, type=network.PRICES, timeout=fetchTimeout)
+            if resp.status_code != 200:
                 continue
-            # evepraisal returns 0 if price data doesn't even exist for the item
+            price = resp.json()['sellAvgFivePercent']
+            # Price is 0 - no data
             if price == 0:
-                continue
-            # evepraisal seems to provide price for some items despite having no orders up
-            if orderCount < 1:
                 continue
             priceMap[typeID].update(PriceStatus.fetchSuccess, price)
             del priceMap[typeID]
 
 
-Price.register(EvePraisal)
+Price.register(EveTycoon)

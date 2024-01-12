@@ -56,7 +56,7 @@ INV_FLAG_DRONEBAY = 87
 INV_FLAG_FIGHTER = 158
 
 
-def exportESI(ofit, exportCharges, callback):
+def exportESI(ofit, exportCharges, exportImplants, exportBoosters, callback):
     # A few notes:
     # max fit name length is 50 characters
     # Most keys are created simply because they are required, but bogus data is okay
@@ -132,6 +132,22 @@ def exportESI(ofit, exportCharges, callback):
         item['quantity'] = fighter.amount
         item['type_id'] = fighter.item.ID
         fit['items'].append(item)
+
+    if exportImplants:
+        for implant in ofit.implants:
+            item = nested_dict()
+            item['flag'] = INV_FLAG_CARGOBAY
+            item['quantity'] = 1
+            item['type_id'] = implant.item.ID
+            fit['items'].append(item)
+
+    if exportBoosters:
+        for booster in ofit.boosters:
+            item = nested_dict()
+            item['flag'] = INV_FLAG_CARGOBAY
+            item['quantity'] = 1
+            item['type_id'] = booster.item.ID
+            fit['items'].append(item)
 
     if len(fit['items']) == 0:
         raise ESIExportException("Cannot export fitting: module list cannot be empty.")

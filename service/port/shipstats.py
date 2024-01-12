@@ -36,7 +36,7 @@ def tankSection(fit):
     ehp.append(sum(ehp))
     ehpStr = [formatAmount(ehpVal, 3, 0, 9) for ehpVal in ehp]
     resists = {tankType: [1 - fit.ship.getModifiedItemAttr(s) for s in resonanceNames[tankType]] for tankType in tankTypes}
-    ehpAgainstDamageType = [sum(pattern.calculateEhp(fit).values()) for pattern in damagePatterns]
+    ehpAgainstDamageType = [sum(pattern.calculateEhp(fit.ship).values()) for pattern in damagePatterns]
     ehpAgainstDamageTypeStr = [formatAmount(ehpVal, 3, 0, 9) for ehpVal in ehpAgainstDamageType]
 
     # not used for now.  maybe will be improved later
