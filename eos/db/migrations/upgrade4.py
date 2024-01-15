@@ -6,7 +6,7 @@ Migration 4
     from database), which causes pyfa to crash. We therefore replace these
     modules with their new replacements
 
-    Based on http://community.eveonline.com/news/patch-notes/patch-notes-for-proteus/
+    Based on https://www.eveonline.com/news/view/patch-notes-for-proteus
     and output of itemDiff.py
 """
 
