@@ -17322,9 +17322,10 @@ class Effect5069(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Mercoxit Processing'),
-                                        'specializationAsteroidYieldMultiplier',
-                                        module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Mercoxit Ore Processing'),
+            'specializationAsteroidYieldMultiplier',
+            module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
 
 
 class Effect5079(BaseEffect):
