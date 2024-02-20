@@ -13,6 +13,14 @@ from shutil import copyfile
 
 from PIL import Image
 
+
+def get_full_alias(short_alias):
+    full_aliases = {
+        'tq': 'tranquility',
+        'sisi': 'singularity'}
+    return full_aliases.get(short_alias, short_alias)
+
+
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s shared cache folder')
 parser.add_argument('-s', '--server', required=False, default='tq', type=str, help='which server to use (defaults to tq)')
@@ -34,7 +42,7 @@ RENDER_SIZE = (32, 32)
 with open(args.icons, 'r') as f:
     icon_json = json.load(f)
 
-eve_path = os.path.join(args.eve, 'index_{}.txt'.format(args.server))
+eve_path = os.path.join(args.eve, 'index_{}.txt'.format(get_full_alias(args.server)))
 with open(eve_path, 'r') as f:
     lines = f.readlines()
     file_index = {x.split(',')[0]: x.split(',') for x in lines}
