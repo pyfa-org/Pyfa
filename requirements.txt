@@ -5,7 +5,7 @@ matplotlib==3.8.2
 python-dateutil==2.8.2
 requests==2.31.0
 sqlalchemy==1.4.50
-cryptography==41.0.7
+cryptography==42.0.2
 markdown2==2.4.11
 packaging==23.2
 roman==4.1
