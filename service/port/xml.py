@@ -24,6 +24,7 @@ import xml.parsers.expat
 from logbook import Logger
 
 from eos.const import FittingModuleState, FittingSlot
+from eos.db import getDynamicItem
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
@@ -34,7 +35,8 @@ from eos.saveddata.ship import Ship
 from gui.fitCommands.helpers import activeStateLimit
 from service.fit import Fit as svcFit
 from service.market import Market
-from service.port.shared import IPortUser, processing_notify
+from service.port.muta import renderMutantAttrs, parseMutantAttrs
+from service.port.shared import IPortUser, processing_notify, fetchItem
 from utils.strfunctions import replace_ltgt, sequential_rep
 
 
@@ -115,7 +117,7 @@ def _resolve_ship(fitting, sMkt, b_localized):
 
 def _resolve_module(hardware, sMkt, b_localized):
     # type: (xml.dom.minidom.Element, service.market.Market, bool) -> eos.saveddata.module.Module
-    moduleName = hardware.getAttribute("type")
+    moduleName = hardware.getAttribute("base_type") or hardware.getAttribute("type")
     emergency = None
     if b_localized:
         try:
@@ -142,7 +144,14 @@ def _resolve_module(hardware, sMkt, b_localized):
             must_retry = True
         if not must_retry:
             break
-    return item
+
+    mutaplasmidName = hardware.getAttribute("mutaplasmid")
+    mutaplasmidItem = fetchItem(mutaplasmidName) if mutaplasmidName else None
+
+    mutatedAttrsText = hardware.getAttribute("mutated_attrs")
+    mutatedAttrs = parseMutantAttrs(mutatedAttrsText) if mutatedAttrsText else None
+
+    return item, mutaplasmidItem, mutatedAttrs
 
 
 def importXml(text, iportuser):
@@ -185,12 +194,25 @@ def importXml(text, iportuser):
         moduleList = []
         for hardware in hardwares:
             try:
-                item = _resolve_module(hardware, sMkt, b_localized)
+                item, mutaItem, mutaAttrs = _resolve_module(hardware, sMkt, b_localized)
                 if not item or not item.published:
                     continue
 
                 if item.category.name == "Drone":
-                    d = Drone(item)
+                    d = None
+                    if mutaItem:
+                        mutaplasmid = getDynamicItem(mutaItem.ID)
+                        if mutaplasmid:
+                            try:
+                                d = Drone(mutaplasmid.resultingItem, item, mutaplasmid)
+                            except ValueError:
+                                pass
+                            else:
+                                for attrID, mutator in d.mutators.items():
+                                    if attrID in mutaAttrs:
+                                        mutator.value = mutaAttrs[attrID]
+                    if d is None:
+                        d = Drone(item)
                     d.amount = int(hardware.getAttribute("qty"))
                     fitobj.drones.append(d)
                 elif item.category.name == "Fighter":
@@ -205,8 +227,21 @@ def importXml(text, iportuser):
                     c.amount = int(hardware.getAttribute("qty"))
                     fitobj.cargo.append(c)
                 else:
+                    m = None
                     try:
-                        m = Module(item)
+                        if mutaItem:
+                            mutaplasmid = getDynamicItem(mutaItem.ID)
+                            if mutaplasmid:
+                                try:
+                                    m = Module(mutaplasmid.resultingItem, item, mutaplasmid)
+                                except ValueError:
+                                    pass
+                                else:
+                                    for attrID, mutator in m.mutators.items():
+                                        if attrID in mutaAttrs:
+                                            mutator.value = mutaAttrs[attrID]
+                        if m is None:
+                            m = Module(item)
                     # When item can't be added to any slot (unknown item or just charge), ignore it
                     except ValueError:
                         pyfalog.warning("item can't be added to any slot (unknown item or just charge), ignore it")
@@ -253,6 +288,11 @@ def exportXml(fits, iportuser, callback):
     fit_count = len(fits)
     fittings.setAttribute("count", "%s" % fit_count)
     doc.appendChild(fittings)
+
+    def addMutantAttributes(node, mutant):
+        node.setAttribute("base_type", mutant.baseItem.name)
+        node.setAttribute("mutaplasmid", mutant.mutaplasmid.item.name)
+        node.setAttribute("mutated_attrs", renderMutantAttrs(mutant))
 
     for i, fit in enumerate(fits):
         try:
@@ -303,6 +343,9 @@ def exportXml(fits, iportuser, callback):
                 slotName = FittingSlot(slot).name.lower()
                 slotName = slotName if slotName != "high" else "hi"
                 hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
+                if module.isMutated:
+                    addMutantAttributes(hardware, module)
+
                 fitting.appendChild(hardware)
 
                 if module.charge:
@@ -316,6 +359,9 @@ def exportXml(fits, iportuser, callback):
                 hardware.setAttribute("qty", "%d" % drone.amount)
                 hardware.setAttribute("slot", "drone bay")
                 hardware.setAttribute("type", drone.item.name)
+                if drone.isMutated:
+                    addMutantAttributes(hardware, drone)
+
                 fitting.appendChild(hardware)
 
             for fighter in fit.fighters:
