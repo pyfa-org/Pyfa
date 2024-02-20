@@ -7,7 +7,7 @@ Migration 1
     loaded as they no longer exist in the database. We therefore replace these
     modules with their new replacements
 
-    Based on http://community.eveonline.com/news/patch-notes/patch-notes-for-oceanus/
+    Based on https://www.eveonline.com/news/view/patch-notes-for-oceanus
     and output of itemDiff.py
 """
 
