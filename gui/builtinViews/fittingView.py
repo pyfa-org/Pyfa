@@ -41,7 +41,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-from config import slotColourMap
+from config import slotColourMap, errColor
 from gui.fitCommands.helpers import getSimilarModPositions
 
 pyfalog = Logger(__name__)
@@ -774,7 +774,7 @@ class FittingView(d.Display):
 
 
                 if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
-                    self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+                    self.SetItemBackgroundColour(i, errColor)
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
