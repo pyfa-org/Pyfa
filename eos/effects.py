@@ -40425,3 +40425,20 @@ class Effect12003(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Vorton Projector Operation'), 'speed',
             booster.getModifiedItemAttr('turretSpeeBonus'), **kwargs)
+
+
+class Effect12038(BaseEffect):
+    """
+    shipBonusSPTFalloffMF3
+
+    Used by:
+    Ship: Republic Fleet Firetail
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonus3MF'), skill='Minmatar Frigate', **kwargs)
