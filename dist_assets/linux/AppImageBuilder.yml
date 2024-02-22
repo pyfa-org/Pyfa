@@ -31,6 +31,8 @@ AppDir:
       - libgtk-3-0
       - librsvg2-common  # GTK3 recommendation; without it, search in char editor crashes
       - libwebkit2gtk-4.0-37  # Needed for wx's HTML lib
+      # Unknown
+      - libpcre2-32-0  # https://github.com/pyfa-org/Pyfa/issues/2572
     exclude:
       - hicolor-icon-theme
       - humanity-icon-theme

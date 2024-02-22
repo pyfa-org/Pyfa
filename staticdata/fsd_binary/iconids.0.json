@@ -11019,13 +11019,13 @@
     "iconFile": "res:/UI/Texture/Icons/Ammo/a_1_green.png"
   }, 
   "24970": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/a_1_orange.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/a_1_red.png"
   }, 
   "24971": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/a_1_purple.png"
   }, 
   "24972": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/a_1_red.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/a_1_orange.png"
   }, 
   "24973": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/a_1_white.png"
@@ -11037,13 +11037,13 @@
     "iconFile": "res:/UI/Texture/Icons/Ammo/a_2_green.png"
   }, 
   "24976": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/a_2_orange.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/a_2_red.png"
   }, 
   "24977": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/a_2_purple.png"
   }, 
   "24978": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/a_2_red.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/a_2_orange.png"
   }, 
   "24979": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/a_2_white.png"
@@ -11055,13 +11055,13 @@
     "iconFile": "res:/UI/Texture/Icons/Ammo/b_1_green.png"
   }, 
   "24982": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/b_1_orange.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/b_1_red.png"
   }, 
   "24983": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/b_1_purple.png"
   }, 
   "24984": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/b_1_red.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/b_1_orange.png"
   }, 
   "24985": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/b_1_white.png"
@@ -11073,13 +11073,13 @@
     "iconFile": "res:/UI/Texture/Icons/Ammo/b_2_green.png"
   }, 
   "24988": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/b_2_orange.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/b_2_red.png"
   }, 
   "24989": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/b_2_purple.png"
   }, 
   "24990": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/b_2_red.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/b_2_orange.png"
   }, 
   "24991": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/b_2_white.png"
@@ -11091,13 +11091,13 @@
     "iconFile": "res:/UI/Texture/Icons/Ammo/c_1_green.png"
   }, 
   "24994": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/c_1_orange.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/c_1_red.png"
   }, 
   "24995": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/c_1_purple.png"
   }, 
   "24996": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/c_1_red.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/c_1_orange.png"
   }, 
   "24997": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/c_1_white.png"
@@ -11109,13 +11109,13 @@
     "iconFile": "res:/UI/Texture/Icons/Ammo/c_2_green.png"
   }, 
   "25000": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/c_2_orange.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/c_2_red.png"
   }, 
   "25001": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/c_2_purple.png"
   }, 
   "25002": {
-    "iconFile": "res:/UI/Texture/Icons/Ammo/c_2_red.png"
+    "iconFile": "res:/UI/Texture/Icons/Ammo/c_2_orange.png"
   }, 
   "25003": {
     "iconFile": "res:/UI/Texture/Icons/Ammo/c_2_white.png"
@@ -12115,5 +12115,8 @@
   }, 
   "25862": {
     "iconFile": "res:/ui/texture/icons/26_64_5.png"
+  }, 
+  "25870": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/towed_status_icon.png"
   }
 }

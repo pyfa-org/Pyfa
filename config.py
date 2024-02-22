@@ -66,13 +66,22 @@ LOGLEVEL_MAP = {
 
 CATALOG = 'lang'
 
+
+slotColourMapDark = {
+    FittingSlot.LOW: wx.Colour(44, 36, 19),  # yellow = low slots 24/13
+    FittingSlot.MED: wx.Colour(28, 39, 51),  # blue   = mid slots 8.1/9.5
+    FittingSlot.HIGH: wx.Colour(53, 31, 34),  # red    = high slots 6.5/11.5
+    FittingSlot.RIG: '',
+    FittingSlot.SUBSYSTEM: ''}
+errColorDark = wx.Colour(70, 20, 20)
 slotColourMap = {
     FittingSlot.LOW: wx.Colour(250, 235, 204),  # yellow = low slots
     FittingSlot.MED: wx.Colour(188, 215, 241),  # blue   = mid slots
     FittingSlot.HIGH: wx.Colour(235, 204, 209),  # red    = high slots
     FittingSlot.RIG: '',
-    FittingSlot.SUBSYSTEM: ''
-}
+    FittingSlot.SUBSYSTEM: ''}
+errColor = wx.Colour(204, 51, 51)
+
 
 def getClientSecret():
     return clientHash

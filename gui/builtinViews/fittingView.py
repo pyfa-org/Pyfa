@@ -39,9 +39,10 @@ from gui.builtinViewColumns.state import State
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
+from gui.utils.dark import isDark
 from service.fit import Fit
 from service.market import Market
-from config import slotColourMap
+from config import slotColourMap, slotColourMapDark, errColor, errColorDark
 from gui.fitCommands.helpers import getSimilarModPositions
 
 pyfalog = Logger(__name__)
@@ -729,7 +730,10 @@ class FittingView(d.Display):
             event.Skip()
 
     def slotColour(self, slot):
-        return slotColourMap.get(slot) or self.GetBackgroundColour()
+        if isDark():
+            return slotColourMapDark.get(slot) or self.GetBackgroundColour()
+        else:
+            return slotColourMap.get(slot) or self.GetBackgroundColour()
 
     def refresh(self, stuff):
         """
@@ -774,7 +778,7 @@ class FittingView(d.Display):
 
 
                 if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
-                    self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+                    self.SetItemBackgroundColour(i, errColorDark if isDark() else errColor)
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 

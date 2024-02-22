@@ -1304,7 +1304,6 @@ class Effect446(BaseEffect):
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
-    Implants named like: Wightstorm Nirvana Booster (4 of 4)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: AIR Nirvana Booster II
@@ -1329,7 +1328,6 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
-    Implants named like: Wightstorm Rapture Booster (4 of 4)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
@@ -3267,24 +3265,6 @@ class Effect1024(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
-                                        'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'),
-                                        skill='Caldari Cruiser', **kwargs)
-
-
-class Effect1025(BaseEffect):
-    """
-    shipMissileLightVelocityBonusCC2
-
-    Used by:
-    Ship: Caracal
-    Ship: Osprey Navy Issue
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'),
                                         skill='Caldari Cruiser', **kwargs)
 
@@ -6819,7 +6799,6 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Tetrimon Resistance Booster (4 of 4)
     """
 
     type = 'passive'
@@ -7017,7 +6996,6 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
-    Implants named like: Tetrimon Capacitor Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -7642,7 +7620,6 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -8393,8 +8370,6 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Harvest Damage Booster (4 of 4)
-    Implants named like: Wightstorm Vitarka Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
     """
@@ -9670,7 +9645,6 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
-    Implants named like: Wightstorm Sunyata Booster (4 of 4)
     Skill: Thermodynamics
     """
 
@@ -10096,23 +10070,6 @@ class Effect3356(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'),
-                                        'maxVelocity', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
-                                        skill='Heavy Interdiction Cruisers', **kwargs)
-
-
-class Effect3357(BaseEffect):
-    """
-    eliteBonusHeavyInterdictorLightMissileVelocityBonus
-
-    Used by:
-    Ship: Onyx
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
                                         'maxVelocity', ship.getModifiedItemAttr('eliteBonusHeavyInterdictors1'),
                                         skill='Heavy Interdiction Cruisers', **kwargs)
 
@@ -17365,9 +17322,10 @@ class Effect5069(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Mercoxit Processing'),
-                                        'specializationAsteroidYieldMultiplier',
-                                        module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Mercoxit Ore Processing'),
+            'specializationAsteroidYieldMultiplier',
+            module.getModifiedItemAttr('miningAmountBonus'), **kwargs)
 
 
 class Effect5079(BaseEffect):
@@ -18050,8 +18008,6 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (4 of 4)
-    Implants named like: Wightstorm Manasikara Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -31615,7 +31571,7 @@ class Effect6783(BaseEffect):
     Used by:
     Ships from group: Carrier (4 of 4)
     Ships from group: Combat Battlecruiser (20 of 20)
-    Ships from group: Command Ship (4 of 8)
+    Ships from group: Command Ship (8 of 8)
     Ships from group: Force Auxiliary (6 of 6)
     Ships from group: Supercarrier (6 of 6)
     Ships from group: Titan (8 of 8)
@@ -37692,64 +37648,12 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
-class Effect8267(BaseEffect):
-    """
-    weaponDisruptorResistanceBonusPassive
-
-    Used by:
-    Implants named like: Harvest Anti Disruptor Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'weaponDisruptionResistance',
-            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
-
-
-class Effect8268(BaseEffect):
-    """
-    nosferatuDurationBonusPassive
-
-    Used by:
-    Implants named like: Harvest Nosferatu Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
-            module.getModifiedItemAttr('durationBonus'), **kwargs)
-
-
-class Effect8269(BaseEffect):
-    """
-    stasisWebifierMaxRangeAddPassive
-
-    Used by:
-    Implants named like: Harvest Webifier Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
-            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
-
-
 class Effect8270(BaseEffect):
     """
     capacitorWarfareResistanceBonusPassive
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Tetrimon Anti Drain Booster (4 of 4)
     """
 
     type = 'passive'
@@ -37810,23 +37714,6 @@ class Effect8279(BaseEffect):
         fit.ship.boostItemAttr(
             'capacity', ship.getModifiedItemAttr('industrialCommandBonusShipCargoCapacity'),
             skill='Industrial Command Ships', **kwargs)
-
-
-class Effect8291(BaseEffect):
-    """
-    afterburnerSpeedBoostBonusPassive
-
-    Used by:
-    Implants named like: Wightstorm Cetana Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, booster, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
-            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
 
 
 class Effect8294(BaseEffect):
@@ -40539,3 +40426,20 @@ class Effect12003(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Vorton Projector Operation'), 'speed',
             booster.getModifiedItemAttr('turretSpeeBonus'), **kwargs)
+
+
+class Effect12038(BaseEffect):
+    """
+    shipBonusSPTFalloffMF3
+
+    Used by:
+    Ship: Republic Fleet Firetail
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonus3MF'), skill='Minmatar Frigate', **kwargs)
