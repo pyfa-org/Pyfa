@@ -57,7 +57,7 @@ class PFEsiPref(PreferenceView):
         mainSizer.Add(rbSizer, 0, wx.ALL | wx.EXPAND, 0)
 
         esiSizer = wx.BoxSizer(wx.HORIZONTAL)
-
+        
         self.esiServer = wx.StaticText(panel, wx.ID_ANY, _t("Default SSO Server:"), wx.DefaultPosition, wx.DefaultSize, 0)
 
         self.esiServer.Wrap(-1)
@@ -78,8 +78,6 @@ class PFEsiPref(PreferenceView):
         self.enforceJwtExpiration.Bind(wx.EVT_CHECKBOX, self.OnEnforceChange)
         self.ssoServer.Bind(wx.EVT_CHECKBOX, self.OnModeChange)
 
-        mainSizer.Add(rbSizer, 1, wx.ALL | wx.EXPAND, 0)
-
         panel.SetSizer(mainSizer)
 
         panel.Layout()
@@ -97,12 +95,13 @@ class PFEsiPref(PreferenceView):
         event.Skip()
 
     def OnServerChange(self, event):
-        pass
-        # source = self.chESIserver.GetString(self.chESIserver.GetSelection())
-        # esiService = Esi.getInstance()
-        # # esiService.init(config.supported_servers[source])
-        # self.settings.set("server", source)
-        # event.Skip()
+        # pass
+        source = self.chESIserver.GetString(self.chESIserver.GetSelection())
+        esiService = Esi.getInstance()
+        # init servers
+        esiService.init(config.supported_servers[source])
+        self.settings.set("server", source)
+        event.Skip()
 
     def getImage(self):
         return BitmapLoader.getBitmap("eve", "gui")
