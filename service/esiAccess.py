@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 from collections import namedtuple
 
+import requests
 from logbook import Logger
 import uuid
 import time
@@ -72,6 +73,8 @@ class EsiAccess:
         self._session.headers.update(self._basicHeaders)
         self._session.proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
 
+        self.mem_cached_session = {}
+
         # Set up cached session. This is only used for SSO meta data for now, but can be expanded to actually handle
         # various ESI caching (using ETag, for example) in the future
         self.cached_session = CachedSession(
@@ -88,11 +91,20 @@ class EsiAccess:
     def init(self, server_base):
         self.server_base: config.ApiServer = server_base
         self.server_name = self.server_base.name
-        meta_call = self.cached_session.get("https://%s/.well-known/oauth-authorization-server" % self.server_base.sso)
+        try:
+            meta_call = self.cached_session.get("https://%s/.well-known/oauth-authorization-server" % self.server_base.sso)
+        except:
+            # The http data of expire_after in evepc.163.com is -1
+            meta_call = requests.get("https://%s/.well-known/oauth-authorization-server" % self.server_base.sso)
+
         meta_call.raise_for_status()
         self.server_meta = meta_call.json()
 
-        jwks_call = self.cached_session.get(self.server_meta["jwks_uri"])
+        try:
+            jwks_call = self.cached_session.get(self.server_meta["jwks_uri"])
+        except:
+            jwks_call = requests.get(self.server_meta["jwks_uri"])
+
         jwks_call.raise_for_status()
         self.jwks = jwks_call.json()
 
