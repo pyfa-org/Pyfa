@@ -112,7 +112,7 @@ class Esi(EsiAccess):
                         s = re.search(r'(?<=code=)[a-zA-Z0-9\-_]*', dlg.ssoInfoCtrl.Value.strip())
                         if s:
                             # skip state verification and go directly through the auth code processing
-                            self.handleLogin(s.group)
+                            self.handleLogin(s.group(0))
                         else:
                             pass
                             # todo: throw error
