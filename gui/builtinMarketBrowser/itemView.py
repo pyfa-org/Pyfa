@@ -2,12 +2,13 @@ import wx
 from logbook import Logger
 
 import gui.builtinMarketBrowser.pfSearchBox as SBox
-from config import slotColourMap
+from config import slotColourMap, slotColourMapDark
 from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
+from gui.utils.dark import isDark
 from service.fit import Fit
 from service.market import Market
 
@@ -243,6 +244,7 @@ class ItemView(Display):
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
-            return slotColourMap.get(Module.calculateSlot(item)) or self.GetBackgroundColour()
+            colorMap = slotColourMapDark if isDark() else slotColourMap
+            return colorMap.get(Module.calculateSlot(item)) or self.GetBackgroundColour()
         else:
             return self.GetBackgroundColour()
