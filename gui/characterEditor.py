@@ -807,7 +807,12 @@ class APIView(wx.Panel):
 
         self.SetSizer(pmainSizer)
         self.Layout()
-        self.ssoListChanged(None)
+        try:
+            self.ssoListChanged(None)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            pass
 
     def ssoCharChanged(self, event):
         sChar = Character.getInstance()
