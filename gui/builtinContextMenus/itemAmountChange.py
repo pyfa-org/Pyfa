@@ -118,10 +118,10 @@ class AmountChanger(wx.Dialog):
         bSizer1.Add(bSizer3, 0, wx.ALL | wx.EXPAND, 10)
 
         self.input.SetFocus()
-        self.input.SelectAll()
         self.input.Bind(wx.EVT_CHAR, self.onChar)
         self.input.Bind(wx.EVT_TEXT_ENTER, self.processEnter)
         self.SetSizer(bSizer1)
+        self.input.SelectAll()
         self.CenterOnParent()
         self.Fit()
 
