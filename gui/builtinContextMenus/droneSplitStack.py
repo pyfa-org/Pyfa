@@ -65,7 +65,6 @@ class DroneStackSplit(wx.Dialog):
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.input.SetValue(str(value))
-        self.input.SelectAll()
 
         bSizer1.Add(self.input, 0, wx.LEFT | wx.RIGHT | wx.EXPAND, 15)
 
@@ -76,6 +75,7 @@ class DroneStackSplit(wx.Dialog):
         bSizer1.Add(bSizer3, 0, wx.ALL | wx.EXPAND, 10)
 
         self.input.SetFocus()
+        self.input.SelectAll()
         self.input.Bind(wx.EVT_CHAR, self.onChar)
         self.input.Bind(wx.EVT_TEXT_ENTER, self.processEnter)
         self.SetSizer(bSizer1)
