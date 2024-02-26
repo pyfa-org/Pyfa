@@ -58,6 +58,9 @@ class InputValidator(metaclass=ABCMeta):
 class FloatBox(wx.TextCtrl):
 
     def __init__(self, parent, value, id=wx.ID_ANY, style=0, validator=None, **kwargs):
+        # Workaround for #2591
+        if 'wxMac' in wx.PlatformInfo and 'size' not in kwargs:
+            kwargs['size'] = wx.Size(97, 26)
         super().__init__(parent=parent, id=id, style=style, **kwargs)
         self.Bind(wx.EVT_TEXT, self.OnText)
         self._storedValue = ''
@@ -107,6 +110,9 @@ class FloatBox(wx.TextCtrl):
 class FloatRangeBox(wx.TextCtrl):
 
     def __init__(self, parent, value, id=wx.ID_ANY, style=0, **kwargs):
+        # Workaround for #2591
+        if 'wxMac' in wx.PlatformInfo and 'size' not in kwargs:
+            kwargs['size'] = wx.Size(97, 26)
         super().__init__(parent=parent, id=id, style=style, **kwargs)
         self.Bind(wx.EVT_TEXT, self.OnText)
         self._storedValue = ''
