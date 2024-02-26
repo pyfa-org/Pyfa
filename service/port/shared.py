@@ -18,63 +18,12 @@
 # =============================================================================
 
 
-from abc import ABCMeta, abstractmethod
-
 from logbook import Logger
 
 from service.market import Market
 
 
 pyfalog = Logger(__name__)
-
-
-class UserCancelException(Exception):
-    """when user cancel on port processing."""
-    pass
-
-
-class IPortUser(metaclass=ABCMeta):
-
-    ID_PULSE = 1
-    # Pulse the progress bar
-    ID_UPDATE = ID_PULSE << 1
-    # Replace message with data: update messate
-    ID_DONE = ID_PULSE << 2
-    # open fits: import process done
-    ID_ERROR = ID_PULSE << 3
-    # display error: raise some error
-
-    PROCESS_IMPORT = ID_PULSE << 4
-    # means import process.
-    PROCESS_EXPORT = ID_PULSE << 5
-    # means import process.
-
-    @abstractmethod
-    def on_port_processing(self, action, data=None):
-        """
-        While importing fits from file, the logic calls back to this function to
-        update progress bar to show activity. XML files can contain multiple
-        ships with multiple fits, whereas EFT cfg files contain many fits of
-        a single ship. When iterating through the files, we update the message
-        when we start a new file, and then Pulse the progress bar with every fit
-        that is processed.
-
-        action : a flag that lets us know how to deal with :data
-                None: Pulse the progress bar
-                1: Replace message with data
-                other: Close dialog and handle based on :action (-1 open fits, -2 display error)
-        """
-
-        """return: True is continue process, False is cancel."""
-        pass
-
-    def on_port_process_start(self):
-        pass
-
-
-def processing_notify(iportuser, flag, data):
-    if not iportuser.on_port_processing(flag, data):
-        raise UserCancelException
 
 
 def fetchItem(typeName, eagerCat=False):

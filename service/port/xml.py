@@ -36,7 +36,7 @@ from gui.fitCommands.helpers import activeStateLimit
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import renderMutantAttrs, parseMutantAttrs
-from service.port.shared import IPortUser, processing_notify, fetchItem
+from service.port.shared import fetchItem
 from utils.strfunctions import replace_ltgt, sequential_rep
 
 
@@ -154,9 +154,8 @@ def _resolve_module(hardware, sMkt, b_localized):
     return item, mutaplasmidItem, mutatedAttrs
 
 
-def importXml(text, iportuser):
+def importXml(text, progress):
     from .port import Port
-    # type: (str, IPortUser) -> list[eos.saveddata.fit.Fit]
     sMkt = Market.getInstance()
     doc = xml.dom.minidom.parseString(text)
     # NOTE:
@@ -169,6 +168,9 @@ def importXml(text, iportuser):
     failed = 0
 
     for fitting in fittings:
+        if progress and progress.userCancelled:
+            return []
+
         try:
             fitobj = _resolve_ship(fitting, sMkt, b_localized)
         except (KeyboardInterrupt, SystemExit):
@@ -272,16 +274,13 @@ def importXml(text, iportuser):
                 fitobj.modules.append(module)
 
         fit_list.append(fitobj)
-        if iportuser:  # NOTE: Send current processing status
-            processing_notify(
-                iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
-                "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
-            )
+        if progress:
+            progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
 
     return fit_list
 
 
-def exportXml(fits, iportuser, callback):
+def exportXml(fits, progress, callback):
     doc = xml.dom.minidom.Document()
     fittings = doc.createElement("fittings")
     # fit count
@@ -295,6 +294,12 @@ def exportXml(fits, iportuser, callback):
         node.setAttribute("mutated_attrs", renderMutantAttrs(mutant))
 
     for i, fit in enumerate(fits):
+        if progress:
+            if progress.userCancelled:
+                return None
+            processedFits = i + 1
+            progress.current = processedFits
+            progress.message = "converting to xml (%s/%s) %s" % (processedFits, fit_count, fit.ship.name)
         try:
             fitting = doc.createElement("fitting")
             fitting.setAttribute("name", fit.name)
@@ -387,12 +392,6 @@ def exportXml(fits, iportuser, callback):
         except Exception as e:
             pyfalog.error("Failed on fitID: %d, message: %s" % e.message)
             continue
-        finally:
-            if iportuser:
-                processing_notify(
-                    iportuser, IPortUser.PROCESS_EXPORT | IPortUser.ID_UPDATE,
-                    (i, "convert to xml (%s/%s) %s" % (i + 1, fit_count, fit.ship.name))
-                )
     text = doc.toprettyxml()
 
     if callback:

@@ -26,20 +26,20 @@ class exportHtml:
     def __init__(self):
         self.thread = exportHtmlThread()
 
-    def refreshFittingHtml(self, force=False, callback=False):
+    def refreshFittingHtml(self, force=False, progress=None):
         settings = HTMLExportSettings.getInstance()
 
         if force or settings.getEnabled():
             self.thread.stop()
-            self.thread = exportHtmlThread(callback)
+            self.thread = exportHtmlThread(progress)
             self.thread.start()
 
 
 class exportHtmlThread(threading.Thread):
-    def __init__(self, callback=False):
+    def __init__(self, progress=False):
         threading.Thread.__init__(self)
         self.name = "HTMLExport"
-        self.callback = callback
+        self.progress = progress
         self.stopRunning = False
 
     def stop(self):
@@ -72,11 +72,13 @@ class exportHtmlThread(threading.Thread):
             pass
         except (KeyboardInterrupt, SystemExit):
             raise
-        except Exception as ex:
-            pass
-
-        if self.callback:
-            wx.CallAfter(self.callback, -1)
+        except Exception as e:
+            if self.progress:
+                self.progress.error = f'{e}'
+        finally:
+            if self.progress:
+                self.progress.current += 1
+                self.progress.workerWorking = False
 
     def generateFullHTML(self, sMkt, sFit, dnaUrl):
         """ Generate the complete HTML with styling and javascript """
@@ -234,8 +236,8 @@ class exportHtmlThread(threading.Thread):
                             pyfalog.warning("Failed to export line")
                             continue
                         finally:
-                            if self.callback:
-                                wx.CallAfter(self.callback, count)
+                            if self.progress:
+                                self.progress.current = count
                             count += 1
                     HTMLgroup += HTMLship + ('          </ul>\n'
                                              '        </li>\n')
@@ -291,7 +293,7 @@ class exportHtmlThread(threading.Thread):
                         pyfalog.error("Failed to export line")
                         continue
                     finally:
-                        if self.callback:
-                            wx.CallAfter(self.callback, count)
+                        if self.progress:
+                            self.progress.current = count
                         count += 1
         return HTML

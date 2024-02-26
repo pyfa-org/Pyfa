@@ -38,7 +38,6 @@ from service.port.eft import (
     isValidImplantImport, isValidBoosterImport)
 from service.port.esi import exportESI, importESI
 from service.port.multibuy import exportMultiBuy
-from service.port.shared import IPortUser, UserCancelException, processing_notify
 from service.port.shipstats import exportFitStats
 from service.port.xml import importXml, exportXml
 from service.port.muta import parseMutant, parseDynamicItemString, fetchDynamicItem
@@ -73,53 +72,48 @@ class Port:
         return cls.__tag_replace_flag
 
     @staticmethod
-    def backupFits(path, iportuser):
+    def backupFits(path, progress):
         pyfalog.debug("Starting backup fits thread.")
 
-        def backupFitsWorkerFunc(path, iportuser):
-            success = True
+        def backupFitsWorkerFunc(path, progress):
             try:
-                iportuser.on_port_process_start()
-                backedUpFits = Port.exportXml(svcFit.getInstance().getAllFits(), iportuser)
-                backupFile = open(path, "w", encoding="utf-8")
-                backupFile.write(backedUpFits)
-                backupFile.close()
-            except UserCancelException:
-                success = False
-            # Send done signal to GUI
-            #         wx.CallAfter(callback, -1, "Done.")
-            flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
-            iportuser.on_port_processing(IPortUser.PROCESS_EXPORT | flag,
-                                         "User canceled or some error occurrence." if not success else "Done.")
+                backedUpFits = Port.exportXml(svcFit.getInstance().getAllFits(), progress)
+                if backedUpFits:
+                    progress.message = f'writing {path}'
+                    backupFile = open(path, "w", encoding="utf-8")
+                    backupFile.write(backedUpFits)
+                    backupFile.close()
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except Exception as e:
+                progress.error = f'{e}'
+            finally:
+                progress.current += 1
+                progress.workerWorking = False
 
         threading.Thread(
             target=backupFitsWorkerFunc,
-            args=(path, iportuser)
+            args=(path, progress)
         ).start()
 
     @staticmethod
-    def importFitsThreaded(paths, iportuser):
-        # type: (tuple, IPortUser) -> None
+    def importFitsThreaded(paths, progress):
         """
         :param paths: fits data file path list.
-        :param iportuser:  IPortUser implemented class.
         :rtype: None
         """
         pyfalog.debug("Starting import fits thread.")
 
-        def importFitsFromFileWorkerFunc(paths, iportuser):
-            iportuser.on_port_process_start()
-            success, result = Port.importFitFromFiles(paths, iportuser)
-            flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
-            iportuser.on_port_processing(IPortUser.PROCESS_IMPORT | flag, result)
+        def importFitsFromFileWorkerFunc(paths, progress):
+            Port.importFitFromFiles(paths, progress)
 
         threading.Thread(
             target=importFitsFromFileWorkerFunc,
-            args=(paths, iportuser)
+            args=(paths, progress)
         ).start()
 
     @staticmethod
-    def importFitFromFiles(paths, iportuser=None):
+    def importFitFromFiles(paths, progress=None):
         """
         Imports fits from file(s). First processes all provided paths and stores
         assembled fits into a list. This allows us to call back to the GUI as
@@ -132,11 +126,13 @@ class Port:
         fit_list = []
         try:
             for path in paths:
-                if iportuser:  # Pulse
+                if progress:
+                    if progress and progress.userCancelled:
+                        progress.workerWorking = False
+                        return False, "Cancelled by user"
                     msg = "Processing file:\n%s" % path
+                    progress.message = msg
                     pyfalog.debug(msg)
-                    processing_notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
-                    # wx.CallAfter(callback, 1, msg)
 
                 with open(path, "rb") as file_:
                     srcString = file_.read()
@@ -148,15 +144,21 @@ class Port:
                     continue
 
                 try:
-                    importType, makesNewFits, fitsImport = Port.importAuto(srcString, path, iportuser=iportuser)
+                    importType, makesNewFits, fitsImport = Port.importAuto(srcString, path, progress=progress)
                     fit_list += fitsImport
                 except xml.parsers.expat.ExpatError:
                     pyfalog.warning("Malformed XML in:\n{0}", path)
-                    return False, "Malformed XML in %s" % path
+                    msg = "Malformed XML in %s" % path
+                    if progress:
+                        progress.error = msg
+                        progress.workerWorking = False
+                    return False, msg
 
-            # IDs = []  # NOTE: what use for IDs?
             numFits = len(fit_list)
             for idx, fit in enumerate(fit_list):
+                if progress and progress.userCancelled:
+                    progress.workerWorking = False
+                    return False, "Cancelled by user"
                 # Set some more fit attributes and save
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
@@ -168,25 +170,23 @@ class Port:
                     fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
                 db.save(fit)
                 # IDs.append(fit.ID)
-                if iportuser:  # Pulse
+                if progress:
                     pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", idx + 1, numFits)
-                    processing_notify(
-                        iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
-                        "Processing complete, saving fits to database\n(%d/%d) %s" % (idx + 1, numFits, fit.ship.name)
-                    )
-
-        except UserCancelException:
-            return False, "Processing has been canceled.\n"
+                    progress.message = "Processing complete, saving fits to database\n(%d/%d) %s" % (idx + 1, numFits, fit.ship.name)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
-            pyfalog.critical("Unknown exception processing: {0}", path)
+            pyfalog.critical("Unknown exception processing: {0}", paths)
             pyfalog.critical(e)
-            # TypeError: not all arguments converted during string formatting
-#                 return False, "Unknown Error while processing {0}" % path
+            if progress:
+                progress.error = f'{e}'
+                progress.workerWorking = False
             return False, "Unknown error while processing {}\n\n Error: {} {}".format(
-                path, type(e).__name__, getattr(e, 'message', ''))
+                paths, type(e).__name__, getattr(e, 'message', ''))
 
+        if progress:
+            progress.cbArgs.append(fit_list[:])
+            progress.workerWorking = False
         return True, fit_list
 
     @staticmethod
@@ -211,8 +211,7 @@ class Port:
         return importType, importData
 
     @classmethod
-    def importAuto(cls, string, path=None, activeFit=None, iportuser=None):
-        # type: (Port, str, str, object, IPortUser) -> object
+    def importAuto(cls, string, path=None, activeFit=None, progress=None):
         lines = string.splitlines()
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = ''
@@ -224,7 +223,7 @@ class Port:
 
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
-            return "XML", True, cls.importXml(string, iportuser)
+            return "XML", True, cls.importXml(string, progress)
 
         # If JSON-style start, parse as CREST/JSON
         if firstLine[0] == '{':
@@ -235,7 +234,7 @@ class Port:
         if re.match("^\s*\[.*\]", firstLine) and path is not None:
             filename = os.path.split(path)[1]
             shipName = filename.rsplit('.')[0]
-            return "EFT Config", True, cls.importEftCfg(shipName, lines, iportuser)
+            return "EFT Config", True, cls.importEftCfg(shipName, lines, progress)
 
         # If no file is specified and there's comma between brackets,
         # consider that we have [ship, setup name] and detect like eft export format
@@ -297,8 +296,8 @@ class Port:
         return importEft(lines)
 
     @staticmethod
-    def importEftCfg(shipname, lines, iportuser=None):
-        return importEftCfg(shipname, lines, iportuser)
+    def importEftCfg(shipname, lines, progress=None):
+        return importEftCfg(shipname, lines, progress)
 
     @classmethod
     def exportEft(cls, fit, options, callback=None):
@@ -328,12 +327,12 @@ class Port:
 
     # XML-related methods
     @staticmethod
-    def importXml(text, iportuser=None):
-        return importXml(text, iportuser)
+    def importXml(text, progress=None):
+        return importXml(text, progress)
 
     @staticmethod
-    def exportXml(fits, iportuser=None, callback=None):
-        return exportXml(fits, iportuser, callback=callback)
+    def exportXml(fits, progress=None, callback=None):
+        return exportXml(fits, progress, callback=callback)
 
     # Multibuy-related methods
     @staticmethod

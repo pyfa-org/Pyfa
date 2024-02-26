@@ -38,7 +38,7 @@ from service.const import PortEftOptions
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
-from service.port.shared import IPortUser, fetchItem, processing_notify
+from service.port.shared import fetchItem
 
 
 pyfalog = Logger(__name__)
@@ -365,7 +365,7 @@ def importEft(lines):
     return fit
 
 
-def importEftCfg(shipname, lines, iportuser):
+def importEftCfg(shipname, lines, progress):
     """Handle import from EFT config store file"""
 
     # Check if we have such ship in database, bail if we don't
@@ -388,6 +388,8 @@ def importEftCfg(shipname, lines, iportuser):
             fitIndices.append(startPos)
 
     for i, startPos in enumerate(fitIndices):
+        if progress and progress.userCancelled:
+            return []
         # End position is last file line if we're trying to get it for last fit,
         # or start position of next fit minus 1
         endPos = len(lines) if i == len(fitIndices) - 1 else fitIndices[i + 1]
@@ -558,11 +560,8 @@ def importEftCfg(shipname, lines, iportuser):
             # Append fit to list of fits
             fits.append(fitobj)
 
-            if iportuser:  # NOTE: Send current processing status
-                processing_notify(
-                    iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
-                    "%s:\n%s" % (fitobj.ship.name, fitobj.name)
-                )
+            if progress:
+                progress.message = "%s:\n%s" % (fitobj.ship.name, fitobj.name)
 
         except (KeyboardInterrupt, SystemExit):
             raise
