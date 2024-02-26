@@ -392,6 +392,9 @@ class EsiSettings:
     def set(self, type, value):
         self.settings[type] = value
 
+    def keys(self):
+        return config.supported_servers.keys()
+
 
 class StatViewSettings:
     _instance = None

@@ -9,6 +9,7 @@ import hashlib
 from eos.const import FittingSlot
 
 from cryptography.fernet import Fernet
+from collections import namedtuple
 
 pyfalog = Logger(__name__)
 
@@ -44,9 +45,16 @@ experimentalFeatures = None
 version = None
 language = None
 
-API_CLIENT_ID = '095d8cd841ac40b581330919b49fe746'
+ApiServer = namedtuple('ApiBase', ['name', 'sso', 'esi', 'client_id', 'callback', 'supports_auto_login'])
+supported_servers = {
+    "Tranquility": ApiServer("Tranquility", "login.eveonline.com", "esi.evetech.net", '095d8cd841ac40b581330919b49fe746', 'https://pyfa-org.github.io/Pyfa/callback', True),
+    # No point having SISI: https://developers.eveonline.com/blog/article/removing-datasource-singularity
+    # "Singularity": ApiServer("Singularity", "sisilogin.testeveonline.com", "esi.evetech.net", 'b9c3cc79448f449ab17f3aebd018842e', 'https://pyfa-org.github.io/Pyfa/callback'),
+    "Serenity": ApiServer("Serenity", "login.evepc.163.com", "ali-esi.evepc.163.com", 'bc90aa496a404724a93f41b4f4e97761', 'https://ali-esi.evepc.163.com/ui/oauth2-redirect.html', False)
+}
+
+SSO_LOGOFF_SERENITY='https://login.evepc.163.com/account/logoff'
 ESI_CACHE = 'esi_cache'
-SSO_CALLBACK = 'https://pyfa-org.github.io/Pyfa/callback'
 
 LOGLEVEL_MAP = {
     "critical": CRITICAL,

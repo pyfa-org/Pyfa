@@ -493,8 +493,11 @@ def getSsoCharacters(clientHash, eager=None):
 
 
 @cachedQuery(SsoCharacter, 1, "lookfor", "clientHash")
-def getSsoCharacter(lookfor, clientHash, eager=None):
+def getSsoCharacter(lookfor, clientHash, server=None, eager=None):
     filter = SsoCharacter.client == clientHash
+
+    if server is not None:
+        filter = and_(filter, SsoCharacter.server == server)
 
     if isinstance(lookfor, int):
         filter = and_(filter, SsoCharacter.ID == lookfor)
