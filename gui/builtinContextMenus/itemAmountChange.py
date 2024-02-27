@@ -122,8 +122,8 @@ class AmountChanger(wx.Dialog):
         self.input.Bind(wx.EVT_TEXT_ENTER, self.processEnter)
         self.SetSizer(bSizer1)
         self.CenterOnParent()
-        self.Fit()
         self.input.SelectAll()
+        self.Fit()
 
     def processEnter(self, evt):
         self.EndModal(wx.ID_OK)
