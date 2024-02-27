@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-05 19:16+0600\n"
+"POT-Creation-Date: 2024-02-27 16:27+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,12 +272,8 @@ msgstr ""
 msgid "Active shield boost"
 msgstr ""
 
-#: gui/esiFittings.py:444
+#: gui/esiFittings.py:430
 msgid "Add Character"
-msgstr ""
-
-#: gui/esiFittings.py:239
-msgid "Add Character Error"
 msgstr ""
 
 #: gui/builtinShipBrowser/fitItem.py:233
@@ -366,7 +362,7 @@ msgstr ""
 msgid "All EVE-Online related materials are property of CCP hf."
 msgstr ""
 
-#: gui/mainFrame.py:843 gui/mainFrame.py:1018
+#: gui/mainFrame.py:843 gui/mainFrame.py:972
 msgid "All Files"
 msgstr ""
 
@@ -552,6 +548,10 @@ msgstr ""
 msgid "Auto-detected: "
 msgstr ""
 
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
+msgid "Auto-login (starts local server)"
+msgstr ""
+
 #: graphs/gui/ctrlPanel.py:64
 msgid "Axis X:"
 msgstr ""
@@ -564,7 +564,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: gui/mainFrame.py:878
+#: gui/mainFrame.py:875
 msgid "Backing up {} fits to: {}"
 msgstr ""
 
@@ -572,7 +572,7 @@ msgstr ""
 msgid "Backup all fittings to a XML file"
 msgstr ""
 
-#: gui/mainFrame.py:877 gui/mainFrame.py:908
+#: gui/mainFrame.py:879 gui/mainFrame.py:910
 msgid "Backup fits"
 msgstr ""
 
@@ -596,7 +596,7 @@ msgstr ""
 msgid "Battleship"
 msgstr ""
 
-#: gui/mainFrame.py:956
+#: gui/mainFrame.py:937
 msgid "Be aware that already processed fits were not saved"
 msgstr ""
 
@@ -810,7 +810,7 @@ msgstr ""
 msgid "Changes require restart of pyfa to take effect."
 msgstr ""
 
-#: gui/esiFittings.py:435 gui/characterEditor.py:91
+#: gui/esiFittings.py:420 gui/characterEditor.py:91
 #: gui/builtinStatsViews/priceViewFull.py:57
 msgid "Character"
 msgstr ""
@@ -819,7 +819,7 @@ msgstr ""
 msgid "Character Editor"
 msgstr ""
 
-#: gui/esiFittings.py:436
+#: gui/esiFittings.py:421
 msgid "Character ID"
 msgstr ""
 
@@ -827,7 +827,7 @@ msgstr ""
 msgid "Character name already in use, please choose another."
 msgstr ""
 
-#: gui/characterEditor.py:774
+#: gui/characterEditor.py:775
 msgid "Character:"
 msgstr ""
 
@@ -839,7 +839,7 @@ msgstr ""
 msgid "Charge"
 msgstr ""
 
-#: gui/builtinViews/fittingView.py:664
+#: gui/builtinViews/fittingView.py:665
 msgid "Citadel"
 msgstr ""
 
@@ -931,7 +931,7 @@ msgstr ""
 msgid "Confirm Delete"
 msgstr ""
 
-#: gui/esiFittings.py:130 gui/esiFittings.py:183 gui/esiFittings.py:405
+#: gui/esiFittings.py:130 gui/esiFittings.py:183 gui/esiFittings.py:390
 msgid "Connection error, please check your internet connection"
 msgstr ""
 
@@ -1035,10 +1035,6 @@ msgstr ""
 
 #: gui/builtinContextMenus/additionsExportSelection.py:39
 msgid "Copy Selected {}"
-msgstr ""
-
-#: gui/ssoLogin.py:20
-msgid "Copy and paste the block of text provided by pyfa.io"
 msgstr ""
 
 #: gui/patternEditor.py:290 gui/setEditor.py:222 gui/targetProfileEditor.py:366
@@ -1145,6 +1141,10 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaMarketPreferences.py:58
 msgid "Default Market Prices:"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:61
+msgid "Default SSO Server:"
 msgstr ""
 
 #: gui/propertyEditor.py:271
@@ -1262,7 +1262,7 @@ msgstr ""
 msgid "Don't remind me again for this release"
 msgstr ""
 
-#: gui/characterEditor.py:792
+#: gui/characterEditor.py:793
 msgid "Don't see your EVE character in the list?"
 msgstr ""
 
@@ -1397,11 +1397,11 @@ msgstr ""
 msgid "EMP"
 msgstr ""
 
-#: gui/esiFittings.py:407 gui/esiFittings.py:411 gui/esiFittings.py:419
+#: gui/esiFittings.py:392 gui/esiFittings.py:396 gui/esiFittings.py:404
 msgid "ERROR"
 msgstr ""
 
-#: gui/mainFrame.py:1017
+#: gui/mainFrame.py:971
 msgid "EVE API XML character files"
 msgstr ""
 
@@ -1413,7 +1413,7 @@ msgstr ""
 msgid "EVE IGB HTML fitting file"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:16
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:18
 #: gui/characterEditor.py:163
 msgid "EVE SSO"
 msgstr ""
@@ -1422,7 +1422,7 @@ msgstr ""
 msgid "EVE Servers (API && CREST import)"
 msgstr ""
 
-#: gui/mainFrame.py:864
+#: gui/mainFrame.py:865
 msgid "EVE XML fitting file"
 msgstr ""
 
@@ -1572,7 +1572,7 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:37
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:39
 msgid "Enforce Token Expiration"
 msgstr ""
 
@@ -1592,13 +1592,13 @@ msgstr ""
 msgid "Enyo"
 msgstr ""
 
-#: gui/mainFrame.py:901 gui/patternEditor.py:58 gui/characterEditor.py:84
-#: gui/characterEditor.py:464 gui/characterEditor.py:945 gui/setEditor.py:55
+#: gui/mainFrame.py:900 gui/patternEditor.py:58 gui/characterEditor.py:84
+#: gui/characterEditor.py:465 gui/characterEditor.py:951 gui/setEditor.py:55
 #: gui/targetProfileEditor.py:78
 msgid "Error"
 msgstr ""
 
-#: gui/characterEditor.py:944
+#: gui/characterEditor.py:950
 msgid "Error fetching skill information"
 msgstr ""
 
@@ -1658,15 +1658,15 @@ msgstr ""
 msgid "Export All Fittings to &HTML"
 msgstr ""
 
-#: gui/esiFittings.py:313
+#: gui/esiFittings.py:298
 msgid "Export Boosters"
 msgstr ""
 
-#: gui/mainFrame.py:951
+#: gui/mainFrame.py:883
 msgid "Export Error"
 msgstr ""
 
-#: gui/esiFittings.py:298
+#: gui/esiFittings.py:283
 msgid "Export Fit"
 msgstr ""
 
@@ -1676,7 +1676,7 @@ msgid ""
 "links without any visual styling"
 msgstr ""
 
-#: gui/esiFittings.py:308
+#: gui/esiFittings.py:293
 msgid "Export Implants"
 msgstr ""
 
@@ -1684,7 +1684,7 @@ msgstr ""
 msgid "Export Item Stats"
 msgstr ""
 
-#: gui/esiFittings.py:303
+#: gui/esiFittings.py:288
 msgid "Export Loaded Charges"
 msgstr ""
 
@@ -1712,7 +1712,7 @@ msgstr ""
 msgid "Export charges loaded into modules"
 msgstr ""
 
-#: gui/esiFittings.py:285
+#: gui/esiFittings.py:270
 msgid "Export fit to EVE"
 msgstr ""
 
@@ -1744,12 +1744,12 @@ msgstr ""
 msgid "Export profiles to clipboard"
 msgstr ""
 
-#: gui/characterEditor.py:374
-msgid "Export skills from clipboard"
-msgstr ""
-
 #: gui/mainMenuBar.py:119
 msgid "Export skills needed for this fitting"
+msgstr ""
+
+#: gui/characterEditor.py:374
+msgid "Export skills to clipboard"
 msgstr ""
 
 #: gui/mainFrame.py:832
@@ -1773,7 +1773,7 @@ msgid ""
 "Factor in reload time when calculating capacitor usage, damage, and tank."
 msgstr ""
 
-#: gui/esiFittings.py:388
+#: gui/esiFittings.py:373
 msgid "Failed to generate export data"
 msgstr ""
 
@@ -1974,7 +1974,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: gui/mainFrame.py:909
+#: gui/mainFrame.py:906
 msgid "Generating HTML file at: {}"
 msgstr ""
 
@@ -1983,7 +1983,7 @@ msgstr ""
 msgid "Generic"
 msgstr ""
 
-#: gui/characterEditor.py:781
+#: gui/characterEditor.py:782
 msgid "Get Skills"
 msgstr ""
 
@@ -2108,6 +2108,10 @@ msgstr ""
 msgid "Ideal Target"
 msgstr ""
 
+#: gui/ssoLogin.py:28
+msgid "If auto-login fails, copy and paste the token provided by pyfa.io"
+msgstr ""
+
 #: gui/builtinContextMenus/graphDroneControlRange.py:23
 msgid "Ignore Drone Control Range"
 msgstr ""
@@ -2152,7 +2156,7 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: gui/mainFrame.py:951
+#: gui/mainFrame.py:856
 msgid "Import Error"
 msgstr ""
 
@@ -2200,11 +2204,11 @@ msgstr ""
 msgid "Import to pyfa"
 msgstr ""
 
-#: gui/mainFrame.py:1024
+#: gui/mainFrame.py:978
 msgid "Importing Character..."
 msgstr ""
 
-#: gui/mainFrame.py:849
+#: gui/mainFrame.py:852
 msgid "Importing fits"
 msgstr ""
 
@@ -2264,11 +2268,11 @@ msgstr ""
 msgid "Interested in helping with translations?"
 msgstr ""
 
-#: gui/mainFrame.py:897
+#: gui/mainFrame.py:896
 msgid "Invalid Path"
 msgstr ""
 
-#: gui/esiFittings.py:257
+#: gui/esiFittings.py:242
 msgid "Invalid Token"
 msgstr ""
 
@@ -2367,8 +2371,8 @@ msgstr ""
 msgid "Level %s"
 msgstr ""
 
-#: gui/characterEditor.py:536 gui/characterEditor.py:594
-#: gui/characterEditor.py:619 gui/characterEditor.py:652
+#: gui/characterEditor.py:537 gui/characterEditor.py:595
+#: gui/characterEditor.py:620 gui/characterEditor.py:653
 #: gui/builtinItemStatsViews/itemDependants.py:46
 msgid "Level {}"
 msgstr ""
@@ -2387,10 +2391,6 @@ msgstr ""
 
 #: gui/mainFrame.py:271
 msgid "Loading previous fits..."
-msgstr ""
-
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
-msgid "Local Server"
 msgstr ""
 
 #: gui/builtinContextMenus/envEffectAdd.py:205
@@ -2413,7 +2413,7 @@ msgstr ""
 msgid "Lock time"
 msgstr ""
 
-#: gui/characterEditor.py:797
+#: gui/characterEditor.py:798
 msgid "Log In with EVE SSO"
 msgstr ""
 
@@ -2423,10 +2423,6 @@ msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaLoggingPreferences.py:19
 msgid "Logging"
-msgstr ""
-
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:45
-msgid "Login Authentication Method"
 msgstr ""
 
 #: gui/builtinContextMenus/moduleAmmoChange.py:95
@@ -2459,10 +2455,6 @@ msgstr ""
 
 #: eos/saveddata/targetProfile.py:100
 msgid "Mantis"
-msgstr ""
-
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:46
-msgid "Manual"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaNetworkPreferences.py:87
@@ -2807,7 +2799,7 @@ msgstr ""
 msgid "Navitas"
 msgstr ""
 
-#: gui/esiFittings.py:394
+#: gui/esiFittings.py:379
 msgid "Need at least one ESI character to export"
 msgstr ""
 
@@ -2875,7 +2867,7 @@ msgstr ""
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:99
 #: gui/builtinPreferenceViews/pyfaStatViewPreferences.py:104
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:161
-#: gui/characterEditor.py:858
+#: gui/characterEditor.py:864
 msgid "None"
 msgstr ""
 
@@ -2923,7 +2915,7 @@ msgstr ""
 msgid "Open Fit in New Tab"
 msgstr ""
 
-#: gui/mainFrame.py:1015
+#: gui/mainFrame.py:969
 msgid "Open One Or More Character Files"
 msgstr ""
 
@@ -3005,20 +2997,28 @@ msgstr ""
 msgid "Please Wait..."
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:32
+#: gui/ssoLogin.py:35
+msgid "Please copy and paste the token provided by pyfa.io"
+msgstr ""
+
+#: gui/ssoLogin.py:31
+msgid "Please copy and paste the url when your authorization is completed"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:34
 msgid ""
 "Please see the pyfa wiki on GitHub for information regarding these options."
 msgstr ""
 
-#: gui/esiFittings.py:373
+#: gui/esiFittings.py:358
 msgid "Please select an active fitting in the main window"
 msgstr ""
 
-#: gui/characterEditor.py:761
+#: gui/characterEditor.py:762
 msgid "Please select another character or make a new one."
 msgstr ""
 
-#: gui/mainFrame.py:900
+#: gui/mainFrame.py:899
 msgid "Please verify path location pyfa's preferences."
 msgstr ""
 
@@ -3257,7 +3257,7 @@ msgstr ""
 msgid "Remote Reps"
 msgstr ""
 
-#: gui/esiFittings.py:447
+#: gui/esiFittings.py:433
 msgid "Remove Character"
 msgstr ""
 
@@ -3348,11 +3348,15 @@ msgstr ""
 msgid "Run Time"
 msgstr ""
 
-#: gui/esiFittings.py:428
+#: gui/esiFittings.py:413
 msgid "SSO Character Management"
 msgstr ""
 
-#: gui/ssoLogin.py:15 gui/ssoLogin.py:49
+#: service/esi.py:126
+msgid "SSO Error"
+msgstr ""
+
+#: gui/ssoLogin.py:19
 msgid "SSO Login"
 msgstr ""
 
@@ -3384,7 +3388,7 @@ msgstr ""
 msgid "Sanshas Nation"
 msgstr ""
 
-#: gui/mainFrame.py:863
+#: gui/mainFrame.py:864
 msgid "Save Backup As..."
 msgstr ""
 
@@ -3434,7 +3438,7 @@ msgstr ""
 msgid "Sec Status: {0:.2f}"
 msgstr ""
 
-#: gui/characterEditor.py:910
+#: gui/characterEditor.py:916
 msgid "Security Status is used in some CONCORD hull calculations"
 msgstr ""
 
@@ -3452,7 +3456,7 @@ msgstr ""
 msgid "Select a format"
 msgstr ""
 
-#: gui/esiFittings.py:376
+#: gui/esiFittings.py:361
 msgid "Sending request and awaiting response"
 msgstr ""
 
@@ -3473,11 +3477,15 @@ msgstr ""
 msgid "Serpentis"
 msgstr ""
 
+#: gui/esiFittings.py:422
+msgid "Server"
+msgstr ""
+
 #: gui/builtinViewColumns/baseName.py:64
 msgid "Service"
 msgstr ""
 
-#: gui/characterEditor.py:903
+#: gui/characterEditor.py:909
 msgid "Set Security Status"
 msgstr ""
 
@@ -3548,7 +3556,7 @@ msgstr ""
 msgid "Shield: "
 msgstr ""
 
-#: gui/builtinViews/fittingView.py:664
+#: gui/builtinViews/fittingView.py:665
 #: gui/builtinStatsViews/priceViewFull.py:57
 #: gui/builtinStatsViews/priceViewMinimal.py:57
 msgid "Ship"
@@ -3621,7 +3629,7 @@ msgid ""
 "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License"
 msgstr ""
 
-#: gui/characterEditor.py:343 gui/characterEditor.py:611
+#: gui/characterEditor.py:343 gui/characterEditor.py:612
 msgid "Skill"
 msgstr ""
 
@@ -3740,11 +3748,11 @@ msgstr ""
 msgid "Subsystem"
 msgstr ""
 
-#: gui/characterEditor.py:897
+#: gui/characterEditor.py:903
 msgid "Success"
 msgstr ""
 
-#: gui/characterEditor.py:897
+#: gui/characterEditor.py:903
 msgid "Successfully fetched skills"
 msgstr ""
 
@@ -3790,7 +3798,7 @@ msgstr ""
 msgid "Tachyon"
 msgstr ""
 
-#: gui/builtinViewColumns/baseName.py:105 gui/builtinViews/fittingView.py:660
+#: gui/builtinViewColumns/baseName.py:105 gui/builtinViews/fittingView.py:661
 #: gui/builtinContextMenus/shipModeChange.py:37
 msgid "Tactical Mode"
 msgstr ""
@@ -3887,15 +3895,15 @@ msgid ""
 "when typing fast in the market search box."
 msgstr ""
 
-#: gui/mainFrame.py:954
+#: gui/mainFrame.py:935
 msgid "The following error was generated"
 msgstr ""
 
-#: gui/mainFrame.py:898
+#: gui/mainFrame.py:897
 msgid "The following path is invalid or does not exist:"
 msgstr ""
 
-#: gui/esiFittings.py:271
+#: gui/esiFittings.py:256
 msgid "The server took too long to response. Please try again in a moment."
 msgstr ""
 
@@ -3906,6 +3914,10 @@ msgid ""
 "first, and if no data is available, global price will be used."
 msgstr ""
 
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:67
+msgid "The source you choose will be used on connection."
+msgstr ""
+
 #: gui/builtinPreferenceViews/pyfaUpdatePreferences.py:53
 msgid ""
 "There is a release available which you have chosen to suppress. You can "
@@ -3913,22 +3925,14 @@ msgid ""
 "new release from GitHub."
 msgstr ""
 
-#: gui/characterEditor.py:464
+#: gui/characterEditor.py:465
 msgid "There was an error importing skills, please see log file"
 msgstr ""
 
-#: gui/esiFittings.py:255
+#: gui/esiFittings.py:240
 msgid ""
 "There was an error validating characters' SSO token. Please try logging into "
 "the character again to reset the token."
-msgstr ""
-
-#: gui/esiFittings.py:235
-msgid ""
-"There was an issue starting up the localized server, try setting Login "
-"Authentication Method to Manual by going to Preferences -> EVE SS0 -> Login "
-"Authentication Method. If this doesn't fix the problem please file an issue "
-"on Github."
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:40
@@ -3939,6 +3943,12 @@ msgstr ""
 #: gui/builtinStatsViews/resistancesViewFull.py:86
 #: gui/targetProfileEditor.py:120
 msgid "Thermal resistance"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
+msgid ""
+"This allows the EVE SSO to callback to your local pyfa instance and complete "
+"the authentication process without manual intervention."
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaDatabasePreferences.py:107
@@ -3960,22 +3970,10 @@ msgid ""
 "Are you sure you want to do this?"
 msgstr ""
 
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:40
+#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:42
 msgid ""
 "This option is a workaround in case you cannot log into EVE SSO due to "
 "'Signature has expired' error"
-msgstr ""
-
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:49
-msgid ""
-"This option prompts users to copy and paste information to allow for "
-"character login. Use this if having issues with the local server."
-msgstr ""
-
-#: gui/builtinPreferenceViews/pyfaEsiPreferences.py:47
-msgid ""
-"This option starts a local webserver that EVE SSO Server will call back to "
-"with information about the character login."
 msgstr ""
 
 #: eos/saveddata/damagePattern.py:77
@@ -3995,7 +3993,7 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: gui/esiFittings.py:272
+#: gui/esiFittings.py:257
 msgid "Timeout"
 msgstr ""
 
@@ -4110,7 +4108,7 @@ msgstr ""
 msgid "Uniform (90%)"
 msgstr ""
 
-#: gui/characterEditor.py:617
+#: gui/characterEditor.py:618
 msgid "Unlearn"
 msgstr ""
 
@@ -4185,7 +4183,7 @@ msgstr ""
 msgid "W-Space"
 msgstr ""
 
-#: gui/ssoLogin.py:62
+#: gui/ssoLogin.py:25
 msgid "Waiting for character login through EVE Single Sign-On."
 msgstr ""
 
@@ -4265,7 +4263,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: gui/characterEditor.py:760
+#: gui/characterEditor.py:761
 msgid "You cannot link All 0 or All 5 characters to an EVE character."
 msgstr ""
 
