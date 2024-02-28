@@ -216,7 +216,9 @@ class exportHtmlThread(threading.Thread):
                             eftFit = Port.exportEft(getFit(fit[0]), options={
                                 PortEftOptions.IMPLANTS: True,
                                 PortEftOptions.MUTATIONS: True,
-                                PortEftOptions.LOADED_CHARGES: True})
+                                PortEftOptions.LOADED_CHARGES: True,
+                                PortEftOptions.BOOSTERS: True,
+                                PortEftOptions.CARGO: True})
 
                             HTMLfit = (
                                     '           <li data-role="collapsible" data-iconpos="right" data-shadow="false" '
