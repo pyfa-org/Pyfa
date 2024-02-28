@@ -298,7 +298,7 @@ class exportHtmlThread(threading.Thread):
                             HTMLfit = (
                                     '           <li data-role="collapsible" data-iconpos="right" data-shadow="false" '
                                     'data-corners="false">\n'
-                                    '           <h2>' + ship.name + " " + fit[1] + '</h2>\n'
+                                    '           <h2>' + ship.name + " - " + fit[1] + '</h2>\n'
                                     '               <ul data-role="listview" data-shadow="false" data-inset="true" '
                                                                  'data-corners="false">\n'
                             )
