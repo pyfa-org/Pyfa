@@ -173,13 +173,13 @@ class exportHtmlThread(threading.Thread):
 </head>
 <body>
 <div  id="canvas" data-role="page">
+<div style="text-align: center;"><strong>Last updated:</strong> %s <small>(<span class="timer"></span>)</small></div>
   <div data-role="header">
-    <h1>Pyfa fits</h1>
+    <h1>Pyfa fits by Group</h1>
   </div>
   <div data-role="content">
-  <div style="text-align: center;"><strong>Last updated:</strong> %s <small>(<span class="timer"></span>)</small></div>
-
 """ % (time.time(), dnaUrl, localDate)
+        
         HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
         categoryList = list(sMkt.getShipRoot())
         categoryList.sort(key=lambda _ship: _ship.name)
@@ -254,6 +254,68 @@ class exportHtmlThread(threading.Thread):
                     '      </ul>\n'
                     '    </li>'
                 )
+
+        HTML += """
+  </ul>
+ </div>
+  <div data-role="header">
+    <h1>Pyfa fits by Name</h1>
+  </div>
+  <div data-role="content">
+""" 
+        HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
+        categoryList = list(sMkt.getShipRoot())
+        categoryList.sort(key=lambda _ship: _ship.name)
+
+        count = 0
+
+        for group in categoryList:
+            # init market group string to give ships something to attach to
+            HTMLgroup = ''
+
+            ships = list(sMkt.getShipList(group.ID))
+            ships.sort(key=lambda _ship: _ship.name)
+
+            # Keep track of how many ships per group
+            groupFits = 0
+            for ship in ships:
+                fits = sFit.getFitsWithShip(ship.ID)
+
+                if len(fits) > 0:
+                    groupFits += len(fits)
+
+                    for fit in fits:
+                        if self.stopRunning:
+                            return
+                        try:
+                            eftFit = Port.exportEft(getFit(fit[0]), options={
+                                PortEftOptions.IMPLANTS: True,
+                                PortEftOptions.MUTATIONS: True,
+                                PortEftOptions.LOADED_CHARGES: True,
+                                PortEftOptions.BOOSTERS: True,
+                                PortEftOptions.CARGO: True})
+
+                            HTMLfit = (
+                                    '           <li data-role="collapsible" data-iconpos="right" data-shadow="false" '
+                                    'data-corners="false">\n'
+                                    '           <h2>' + ship.name + " " + fit[1] + '</h2>\n'
+                                    '               <ul data-role="listview" data-shadow="false" data-inset="true" '
+                                                                 'data-corners="false">\n'
+                            )
+
+                            HTMLfit += '                   <li><pre>' + eftFit + '\n                   </pre></li>\n'
+
+                            HTMLfit += '              </ul>\n          </li>\n'
+                            HTML += HTMLfit
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
+                        except:
+                            pyfalog.warning("Failed to export line")
+                            continue
+                        finally:
+                            if self.progress:
+                                self.progress.current = count
+                            count += 1
 
         HTML += """
   </ul>
