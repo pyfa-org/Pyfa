@@ -29,6 +29,10 @@ The following is a list of pyfa packages available for certain distributions.
 * Arch: https://aur.archlinux.org/packages/pyfa/
 * Gentoo: https://github.com/ZeroPointEnergy/gentoo-pyfa-overlay
 
+#### Flatpak distribution
+Also Pyfa is available at Flathub:
+https://flathub.org/apps/io.github.pyfa_org.Pyfa
+
 ## Contribution
 If you wish to help with development or you need to run pyfa through a Python interpreter, check out [the instructions](https://github.com/pyfa-org/Pyfa/blob/master/CONTRIBUTING.md).
 
