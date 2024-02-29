@@ -106,6 +106,14 @@ class PFStatViewPref(PreferenceView):
         rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
         self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)
 
+        self.rbBombing = wx.RadioBox(panel, -1, _t("Bombing"), wx.DefaultPosition, wx.DefaultSize, [_t('None'), _t('Minimal'), _t('Full')], 1,
+                                     wx.RA_SPECIFY_COLS)
+        # Disable minimal as we don't have a view for this yet
+        self.rbBombing.EnableItem(1, False)
+        self.rbBombing.SetSelection(self.settings.get('bombing'))
+        rbSizerRow3.Add(self.rbBombing, 1, wx.TOP | wx.RIGHT, 5)
+        self.rbBombing.Bind(wx.EVT_RADIOBOX, self.OnBombingChange)
+
         mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 
         panel.SetSizer(mainSizer)
@@ -144,5 +152,7 @@ class PFStatViewPref(PreferenceView):
     def getImage(self):
         return BitmapLoader.getBitmap("settings_stats", "gui")
 
+    def OnBombingChange(self, event):
+        self.settings.set('bombing', event.GetInt())
 
 PFStatViewPref.register()
