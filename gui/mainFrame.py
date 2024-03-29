@@ -1005,6 +1005,7 @@ class MainFrame(wx.Frame):
         Triggered by a FIT_CHANGED event (which is posted when the active fit changes)
         This method updates the windows's title via `_updateTitle()`.
         """
+        event.Skip()
         activeFitID = self.getActiveFit()
         if activeFitID is not None and activeFitID not in event.fitIDs:
             return
@@ -1015,6 +1016,7 @@ class MainFrame(wx.Frame):
         Triggered by a FIT_RENAMED event.
         This method updates the windows's title via `_updateTitle()` if the current fit is renamed.
         """
+        event.Skip()
         if self.getActiveFit() != event.fitID:
             return
         self._updateTitle(fitID=event.fitID)
