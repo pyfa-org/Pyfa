@@ -34,6 +34,7 @@ AppDir:
       # Unknown
       - libpcre2-32-0  # https://github.com/pyfa-org/Pyfa/issues/2572
       - libnotify4  # https://github.com/pyfa-org/Pyfa/issues/2598
+      - libwayland-client0  # https://github.com/pyfa-org/Pyfa/issues/2600
     exclude:
       - hicolor-icon-theme
       - humanity-icon-theme
