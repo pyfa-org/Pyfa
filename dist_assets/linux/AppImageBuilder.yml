@@ -33,6 +33,7 @@ AppDir:
       - libwebkit2gtk-4.0-37  # Needed for wx's HTML lib
       # Unknown
       - libpcre2-32-0  # https://github.com/pyfa-org/Pyfa/issues/2572
+      - libnotify4  # https://github.com/pyfa-org/Pyfa/issues/2598
     exclude:
       - hicolor-icon-theme
       - humanity-icon-theme
