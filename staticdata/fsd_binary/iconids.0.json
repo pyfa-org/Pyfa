@@ -12118,5 +12118,22 @@
   }, 
   "25870": {
     "iconFile": "res:/UI/Texture/Icons/StatusEffects/towed_status_icon.png"
+  }, 
+  "25994": {
+    "iconFile": "res:/ui/texture/icons/10_64_17.png"
+  }, 
+  "25998": {
+    "iconFile": "res:/ui/texture/icons/43_64_12_n.png"
+  }, 
+  "26002": {
+    "iconFile": "res:/ui/texture/icons/10_64_18.png"
+  }, 
+  "26025": {
+    "iconFile": "res:/UI/Asset/mannequin/bottomouter/82040_Female_bottomOuter_PantsALF_01_Types_PantsALF_01_jeansblue.png", 
+    "iconType": "png"
+  }, 
+  "26026": {
+    "iconFile": "res:/UI/Asset/mannequin/bottomouter/82041_Male_bottomOuter_PantsMilM01_Types_PantsMilM01_jeansblue.png", 
+    "iconType": "png"
   }
 }
