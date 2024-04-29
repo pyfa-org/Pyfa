@@ -966,8 +966,8 @@ class Effect272(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
+    Implants named like: Repairer Booster (4 of 4)
     Modules named like: Nanobot Accelerator (8 of 8)
-    Implant: AIR Repairer Booster III
     Implant: Numon Family Heirloom
     Skill: Repair Systems
     """
@@ -1060,6 +1060,7 @@ class Effect290(BaseEffect):
     Used by:
     Implants named like: Frentix Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: SoCT Turret Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
     Skill: Sharpshooter
     """
@@ -1169,6 +1170,7 @@ class Effect394(BaseEffect):
     Implant: AIR Overclocker Booster II
     Implant: Quafe Zero Classic
     Implant: Serenity YC122.9 Season Booster - Max Velocity
+    Implant: Starsi Blast! Classic
     Implant: Wisdom of Gheinok
     Skill: Navigation
     """
@@ -1190,17 +1192,18 @@ class Effect395(BaseEffect):
 
     Used by:
     Modules from group: Rig Anchor (4 of 4)
+    Implants named like: Agility Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
     Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
-    Implant: AIR Agility Booster II
     Implant: AIR Overclocker Booster III
     Implant: Genolution Core Augmentation CA-4
     Implant: Quafe Zero Green Apple
     Implant: Serenity YC122.9 Season Booster - Agility
+    Implant: Starsi Blast! Classic
     Skill: Evasive Maneuvering
     Skill: Spaceship Command
     """
@@ -1335,6 +1338,7 @@ class Effect485(BaseEffect):
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Implant: Quafe Zero Green Apple
+    Implant: Starsi Blast! Orange
     Skill: Capacitor Systems Operation
     """
 
@@ -1771,6 +1775,7 @@ class Effect584(BaseEffect):
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: SoCT Turret Booster (3 of 3)
     Implant: AIR Pyrolancea Booster II
     Implant: Standard Cerebral Accelerator
     """
@@ -2153,9 +2158,11 @@ class Effect699(BaseEffect):
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: SoCT Scan Booster (3 of 3)
     Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
     Modules named like: Targeting System Subcontroller (8 of 8)
     Implant: Quafe Zero Classic
+    Implant: Starsi Blast! Orange
     Skill: Signature Analysis
     """
 
@@ -2502,6 +2509,7 @@ class Effect856(BaseEffect):
     Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
+    Implants named like: SoCT Agility Booster (3 of 3)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
     Implant: Serenity YC122.9 Season Booster - Warp Speed
@@ -4890,8 +4898,8 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
+    Implants named like: Repairer Booster (4 of 4)
     Modules named like: Nanobot Accelerator (8 of 8)
-    Implant: AIR Repairer Booster III
     Skill: Capital Repair Systems
     """
 
@@ -6786,8 +6794,8 @@ class Effect2255(BaseEffect):
     tractorBeamCan
 
     Used by:
-    Deployables from group: Mobile Tractor Unit (4 of 4)
-    Modules from group: Tractor Beam (4 of 4)
+    Deployables from group: Mobile Tractor Unit (5 of 5)
+    Modules from group: Tractor Beam (6 of 6)
     """
 
     type = 'active'
@@ -6996,6 +7004,7 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
+    Implants named like: SoCT Capacitor Booster (3 of 3)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -13484,6 +13493,7 @@ class Effect4162(BaseEffect):
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
+    Implants named like: SoCT Scan Booster (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
     Implant: AIR Astro-Rangefinding II Booster
@@ -16627,8 +16637,8 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
+    Implants named like: Repairer Booster (4 of 4)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
-    Implant: AIR Repairer Booster III
     """
 
     type = 'passive'
@@ -20175,6 +20185,7 @@ class Effect5437(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: SoCT Relic Coherence Booster (3 of 3)
     Modules named like: Emission Scope Sharpener (8 of 8)
     Implant: Poteque 'Prospector' Archaeology AC-905
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
@@ -38004,6 +38015,40 @@ class Effect8323(BaseEffect):
             skill='Gallente Hauler', **kwargs)
 
 
+class Effect8327(BaseEffect):
+    """
+    relicAnalyzerRangeBonusPassive
+
+    Used by:
+    Implants named like: SoCT Relic Range Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Archaeology'), 'maxRange',
+            container.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
+
+
+class Effect8328(BaseEffect):
+    """
+    relicVirusStrengthBonusPassive
+
+    Used by:
+    Implants named like: SoCT Relic Strength Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('Archaeology'), 'virusStrength',
+            container.getModifiedItemAttr('virusStrengthBonus'), **kwargs)
+
+
 class Effect8360(BaseEffect):
     """
     shipBonusMissileReloadTimeGC2
@@ -38220,6 +38265,23 @@ class Effect8479(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'), 'falloff',
             container.getModifiedItemAttr('falloffBonus'), **kwargs)
+
+
+class Effect8594(BaseEffect):
+    """
+    modifyArmorDamageResistanceBonusPostPercentPassive
+
+    Used by:
+    Implants named like: SoCT Armor Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
+            fit.ship.boostItemAttr(f'armor{type}DamageResonance',
+                                   booster.getModifiedItemAttr('armorDamageResistanceBonus'), **kwargs)
 
 
 class Effect11055(BaseEffect):
