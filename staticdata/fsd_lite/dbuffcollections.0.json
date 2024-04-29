@@ -3588,5 +3588,211 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2414": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "CDCloudVelocity", 
+    "displayName_de": "Schiffsgeschwindigkeit", 
+    "displayName_en-us": "Ship Velocity", 
+    "displayName_es": "Velocidad de nave", 
+    "displayName_fr": "Vitesse du vaisseau", 
+    "displayName_it": "Ship Velocity", 
+    "displayName_ja": "航行速度", 
+    "displayName_ko": "함선 속도", 
+    "displayName_ru": "Скорость корабля", 
+    "displayName_zh": "舰船最大速度", 
+    "displayNameID": 708733, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2415": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "CDCloudInertia", 
+    "displayName_de": "Ship Inertia", 
+    "displayName_en-us": "Ship Inertia", 
+    "displayName_es": "Inercia de la nave", 
+    "displayName_fr": "Ship Inertia", 
+    "displayName_it": "Ship Inertia", 
+    "displayName_ja": "艦船の慣性", 
+    "displayName_ko": "관성 계수", 
+    "displayName_ru": "Ship Inertia", 
+    "displayName_zh": "舰船惯性调整系数", 
+    "displayNameID": 708734, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2416": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "CDCloudCapShieldRecharge", 
+    "displayName_de": "Schild- und Energiespeicherladezeit", 
+    "displayName_en-us": "Shield and Capacitor Recharge Rate", 
+    "displayName_es": "Índice de carga del condensador y del escudo", 
+    "displayName_fr": "Vitesse de recharge du bouclier et du capaciteur", 
+    "displayName_it": "Shield and Capacitor Recharge Rate", 
+    "displayName_ja": "シールドとキャパシタの充電速度", 
+    "displayName_ko": "실드 및 캐패시터 충전 속도", 
+    "displayName_ru": "Скорость перезарядки щита и накопителя", 
+    "displayName_zh": "护盾和电容回充速率", 
+    "displayNameID": 708735, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }, 
+      {
+        "dogmaAttributeID": 479
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2417": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "CDCloudModuleCycle", 
+    "displayName_de": "Modulzyklus und Nachladegeschwindigkeit", 
+    "displayName_en-us": "Module Cycle and Reload Speed", 
+    "displayName_es": "Velocidad de carga y ciclo de módulo", 
+    "displayName_fr": "Cycle des modules et vitesse de rechargement", 
+    "displayName_it": "Module Cycle and Reload Speed", 
+    "displayName_ja": "モジュールのサイクルとリロード速度", 
+    "displayName_ko": "모듈 사이클 시간 및 재장전 속도", 
+    "displayName_ru": "Время и скорость перезарядки модуля", 
+    "displayName_zh": "装备循环时间和装填速度", 
+    "displayNameID": 708736, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 51
+      }, 
+      {
+        "dogmaAttributeID": 73
+      }, 
+      {
+        "dogmaAttributeID": 1795
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2418": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "CDCloudTracking", 
+    "displayName_de": "Geschützturm-Nachführung und Lenkwaffen-Explosionsgeschwindigkeit", 
+    "displayName_en-us": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_es": "Velocidad de rastreo de torretas y explosión de misiles", 
+    "displayName_fr": "Poursuite des tourelles et vitesse d'explosion de missile", 
+    "displayName_it": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_ja": "タレットの追跡速度とミサイルの爆発速度", 
+    "displayName_ko": "터렛 트래킹 및 미사일 폭발 속도", 
+    "displayName_ru": "Скорость наведения орудий и распространения взрыва ракет", 
+    "displayName_zh": "炮台跟踪速度和导弹爆炸速度", 
+    "displayNameID": 708737, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 653, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2419": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Anti-Tachyon Cloud Velocity Penalty", 
+    "displayName_de": "Schiffsgeschwindigkeit", 
+    "displayName_en-us": "Ship Velocity", 
+    "displayName_es": "Velocidad de nave", 
+    "displayName_fr": "Vitesse du vaisseau", 
+    "displayName_it": "Ship Velocity", 
+    "displayName_ja": "航行速度", 
+    "displayName_ko": "함선 속도", 
+    "displayName_ru": "Скорость корабля", 
+    "displayName_zh": "舰船最大速度", 
+    "displayNameID": 709266, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2420": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Anti-Tachyon Cloud Inertia Penalty", 
+    "displayName_de": "Schiffsträgheit", 
+    "displayName_en-us": "Ship Inertia", 
+    "displayName_es": "Inercia de la nave", 
+    "displayName_fr": "Inertie du vaisseau", 
+    "displayName_it": "Ship Inertia", 
+    "displayName_ja": "艦船の慣性", 
+    "displayName_ko": "관성 계수", 
+    "displayName_ru": "Инертность корабля", 
+    "displayName_zh": "舰船惯性调整系数", 
+    "displayNameID": 709267, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2421": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Anti-Tachyon Cloud Signature Radius  Bonus", 
+    "displayName_de": "Signaturradius", 
+    "displayName_en-us": "Signature Radius", 
+    "displayName_es": "Radio de la señal", 
+    "displayName_fr": "Rayon de signature", 
+    "displayName_it": "Signature Radius", 
+    "displayName_ja": "シグネチャ半径", 
+    "displayName_ko": "시그니처 반경", 
+    "displayName_ru": "Радиус сигнатуры", 
+    "displayName_zh": "信号半径", 
+    "displayNameID": 709278, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
