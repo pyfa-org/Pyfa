@@ -21,8 +21,17 @@
               url = "https://github.com/pyfa-org/Pyfa/releases/download/${version}/pyfa-${version}-linux.AppImage";
               sha256 = "opzZSiVWfJv//KONocL9byZKqX/hWkPU+ssdceUDXh0=";
             };
+            appimageContents = pkgs.appimageTools.extractType2 {inherit name src;};
           in
-          pkgs.appimageTools.wrapType2 { inherit name version src; };
+        pkgs.appimageTools.wrapType2 {
+          inherit name version src;
+          extraInstallCommands = ''
+            install -m 444 -D ${appimageContents}/pyfa.desktop $out/share/applications/pyfa.desktop
+            install -m 444 -D ${appimageContents}/pyfa.png $out/share/icons/hicolor/512x512/apps/pyfa.png
+            substituteInPlace $out/share/applications/pyfa.desktop \
+            --replace 'Exec=AppRun --no-sandbox %U' 'Exec=${name} %U'
+          '';
+        };
 
         default = self.packages.x86_64-linux.pyfa;
       };
