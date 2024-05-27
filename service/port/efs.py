@@ -637,7 +637,7 @@ class EfsPort:
         bsGroupNames = ["Battleship", "Elite Battleship", "Black Ops", "Marauder"]
         capitalGroupNames = ["Titan", "Dreadnought", "Freighter", "Carrier", "Supercarrier",
                              "Capital Industrial Ship", "Jump Freighter", "Force Auxiliary"]
-        indyGroupNames = ["Industrial", "Deep Space Transport", "Blockade Runner",
+        indyGroupNames = ["Hauler", "Deep Space Transport", "Blockade Runner",
                           "Mining Barge", "Exhumer", "Industrial Command Ship"]
         miscGroupNames = ["Capsule", "Prototype Exploration Ship"]
         shipSizes = [
