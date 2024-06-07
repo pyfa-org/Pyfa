@@ -3794,5 +3794,78 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2426": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disable MJDs", 
+    "displayName_de": "Mikrosprungantrieb blockiert", 
+    "displayName_en-us": "Micro Jump Drive Blocked", 
+    "displayName_es": "Motor de microsalto bloqueado", 
+    "displayName_fr": "Propulseur de microsaut bloqué", 
+    "displayName_it": "Micro Jump Drive Blocked", 
+    "displayName_ja": "マイクロジャンプドライブの妨害", 
+    "displayName_ko": "마이크로 점프 드라이브 차단됨", 
+    "displayName_ru": "Маневровый гипердвигатель выведен из строя", 
+    "displayName_zh": "已阻止微型跳跃引擎", 
+    "displayNameID": 722294, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 4385
+      }
+    ], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2427": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Set Speed Limit", 
+    "displayName_de": "Geschwindigkeitsbegrenzung angewendet", 
+    "displayName_en-us": "Speed Limit Applied", 
+    "displayName_es": "Límite de velocidad aplicada", 
+    "displayName_fr": "Limite de vitesse appliquée", 
+    "displayName_it": "Speed Limit Applied", 
+    "displayName_ja": "速度制限の適用", 
+    "displayName_ko": "속도 제한 적용됨", 
+    "displayName_ru": "Установлено ограничение скорости", 
+    "displayName_zh": "已应用速度限制", 
+    "displayNameID": 722295, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2033
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2428": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "MJFG Blocked", 
+    "displayName_de": "Micro Jump Field Generator Blocked", 
+    "displayName_en-us": "Micro Jump Field Generator Blocked", 
+    "displayName_es": "Micro Jump Field Generator Blocked", 
+    "displayName_fr": "Micro Jump Field Generator Blocked", 
+    "displayName_it": "Micro Jump Field Generator Blocked", 
+    "displayName_ja": "Micro Jump Field Generator Blocked", 
+    "displayName_ko": "Micro Jump Field Generator Blocked", 
+    "displayName_ru": "Micro Jump Field Generator Blocked", 
+    "displayName_zh": "Micro Jump Field Generator Blocked", 
+    "displayNameID": 721861, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 5694
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
   }
 }

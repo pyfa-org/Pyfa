@@ -642,6 +642,21 @@
     "categoryNameID": 631766, 
     "published": 1
   }, 
+  "2143": {
+    "categoryID": 2143, 
+    "categoryName_de": "Colony Resources", 
+    "categoryName_en-us": "Colony Resources", 
+    "categoryName_es": "Colony Resources", 
+    "categoryName_fr": "Colony Resources", 
+    "categoryName_it": "Colony Resources", 
+    "categoryName_ja": "Colony Resources", 
+    "categoryName_ko": "Colony Resources", 
+    "categoryName_ru": "Colony Resources", 
+    "categoryName_zh": "Colony Resources", 
+    "categoryNameID": 709447, 
+    "iconID": 24296, 
+    "published": 1
+  }, 
   "350001": {
     "categoryID": 350001, 
     "categoryName_de": "Infanterie", 
