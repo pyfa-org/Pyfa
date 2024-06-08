@@ -377,7 +377,8 @@ class Item(EqBase):
                     16 : "jove",
                     32 : "sansha",  # Incrusion Sansha
                     128: "ore",
-                    135: "triglavian"
+                    135: "triglavian",
+                    168: "upwell",
                 }
                 # Race is None by default
                 race = None

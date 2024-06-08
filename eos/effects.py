@@ -396,7 +396,7 @@ class Effect59(BaseEffect):
     cargoCapacityMultiply
 
     Used by:
-    Modules from group: Expanded Cargohold (7 of 7)
+    Modules from group: Expanded Cargohold (8 of 8)
     Modules from group: Overdrive Injector System (7 of 7)
     Modules from group: Reinforced Bulkhead (8 of 8)
     """
@@ -4825,7 +4825,7 @@ class Effect1615(BaseEffect):
     shipAdvancedSpaceshipCommandAgilityBonus
 
     Used by:
-    Items from market group: Ships > Capital Ships (50 of 50)
+    Items from market group: Ships > Capital Ships (51 of 51)
     """
 
     type = 'passive'
@@ -4963,9 +4963,7 @@ class Effect1644(BaseEffect):
     skirmishCommandMindlink
 
     Used by:
-    Implant: Federation Navy Command Mindlink
-    Implant: Republic Fleet Command Mindlink
-    Implant: Skirmish Command Mindlink
+    Implants from group: Cyber Leadership (4 of 11)
     """
 
     type = 'passive'
@@ -4989,7 +4987,7 @@ class Effect1645(BaseEffect):
     shieldCommandMindlink
 
     Used by:
-    Implants from group: Cyber Leadership (4 of 10)
+    Implants from group: Cyber Leadership (4 of 11)
     """
 
     type = 'passive'
@@ -5013,9 +5011,7 @@ class Effect1646(BaseEffect):
     informationCommandMindlink
 
     Used by:
-    Implant: Caldari Navy Command Mindlink
-    Implant: Imperial Navy Command Mindlink
-    Implant: Information Command Mindlink
+    Implants from group: Cyber Leadership (4 of 11)
     """
 
     type = 'passive'
@@ -6745,7 +6741,7 @@ class Effect2252(BaseEffect):
 
     Used by:
     Ships from group: Black Ops (5 of 5)
-    Ships from group: Blockade Runner (4 of 4)
+    Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (8 of 8)
     Ships from group: Expedition Frigate (2 of 2)
     Ships from group: Force Recon Ship (9 of 9)
@@ -9499,7 +9495,7 @@ class Effect3046(BaseEffect):
     modifyMaxVelocityOfShipPassive
 
     Used by:
-    Modules from group: Expanded Cargohold (7 of 7)
+    Modules from group: Expanded Cargohold (8 of 8)
     """
 
     type = 'offline'
@@ -9514,7 +9510,7 @@ class Effect3047(BaseEffect):
     structureHPMultiplyPassive
 
     Used by:
-    Modules from group: Expanded Cargohold (7 of 7)
+    Modules from group: Expanded Cargohold (8 of 8)
     """
 
     type = 'passive'
@@ -16354,7 +16350,7 @@ class Effect4921(BaseEffect):
     microJumpDrive
 
     Used by:
-    Modules from group: Micro Jump Drive (2 of 2)
+    Modules named like: Micro Jump Drive (3 of 3)
     """
 
     type = 'active'
@@ -18667,7 +18663,7 @@ class Effect5266(BaseEffect):
     blockadeRunnerCloakCpuPercentBonus
 
     Used by:
-    Ships from group: Blockade Runner (4 of 4)
+    Ships from group: Blockade Runner (5 of 5)
     """
 
     runTime = 'early'
@@ -22434,7 +22430,7 @@ class Effect5869(BaseEffect):
     eliteIndustrialWarpSpeedBonus1
 
     Used by:
-    Ships from group: Blockade Runner (4 of 4)
+    Ships from group: Blockade Runner (5 of 5)
     """
 
     type = 'passive'
@@ -22516,7 +22512,7 @@ class Effect5874(BaseEffect):
     eliteIndustrialFleetCapacity1
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     """
 
     type = 'passive'
@@ -22532,8 +22528,7 @@ class Effect5881(BaseEffect):
     eliteIndustrialShieldResists2
 
     Used by:
-    Ship: Bustard
-    Ship: Mastodon
+    Ships from group: Deep Space Transport (3 of 5)
     """
 
     type = 'passive'
@@ -22568,7 +22563,7 @@ class Effect5889(BaseEffect):
     eliteIndustrialABHeatBonus
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     Ships from group: Interceptor (4 of 10)
     """
 
@@ -22585,7 +22580,7 @@ class Effect5890(BaseEffect):
     eliteIndustrialMWDHeatBonus
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     Ships from group: Interceptor (4 of 10)
     """
 
@@ -22602,7 +22597,7 @@ class Effect5891(BaseEffect):
     eliteIndustrialArmorHardenerHeatBonus
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     """
 
     type = 'passive'
@@ -22618,7 +22613,7 @@ class Effect5892(BaseEffect):
     eliteIndustrialReactiveArmorHardenerHeatBonus
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     """
 
     type = 'passive'
@@ -22634,7 +22629,7 @@ class Effect5893(BaseEffect):
     eliteIndustrialShieldHardenerHeatBonus
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     """
 
     type = 'passive'
@@ -22650,7 +22645,7 @@ class Effect5896(BaseEffect):
     eliteIndustrialShieldBoosterHeatBonus
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     """
 
     type = 'passive'
@@ -22668,7 +22663,7 @@ class Effect5899(BaseEffect):
     eliteIndustrialArmorRepairHeatBonus
 
     Used by:
-    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Deep Space Transport (5 of 5)
     """
 
     type = 'passive'
@@ -22701,7 +22696,7 @@ class Effect5901(BaseEffect):
     roleBonusBulkheadCPU
 
     Used by:
-    Ships from group: Freighter (4 of 5)
+    Ships from group: Freighter (4 of 6)
     Ships from group: Jump Freighter (4 of 4)
     """
 
@@ -24878,7 +24873,7 @@ class Effect6208(BaseEffect):
     microJumpPortalDrive
 
     Used by:
-    Module: Micro Jump Field Generator
+    Modules named like: Micro Jump Field Generator (2 of 2)
     """
 
     type = 'active'
@@ -26923,8 +26918,8 @@ class Effect6431(BaseEffect):
     fighterAbilityMissiles
 
     Used by:
-    Items from category: Fighter (48 of 82)
-    Fighters from group: Light Fighter (32 of 32)
+    Items from category: Fighter (56 of 94)
+    Fighters from group: Light Fighter (40 of 40)
     """
 
     dealsDamage = True
@@ -26939,7 +26934,7 @@ class Effect6434(BaseEffect):
     fighterAbilityEnergyNeutralizer
 
     Used by:
-    Fighters named like: Cenobite (4 of 4)
+    Fighters named like: Cenobite (5 of 5)
     """
 
     displayName = 'Energy Neutralizer'
@@ -26968,7 +26963,7 @@ class Effect6435(BaseEffect):
     fighterAbilityStasisWebifier
 
     Used by:
-    Fighters named like: Dromi (4 of 4)
+    Fighters named like: Dromi (5 of 5)
     """
 
     displayName = 'Stasis Webifier'
@@ -26995,7 +26990,7 @@ class Effect6436(BaseEffect):
     fighterAbilityWarpDisruption
 
     Used by:
-    Fighters named like: Siren (4 of 4)
+    Fighters named like: Siren (5 of 5)
     """
 
     displayName = 'Warp Disruption'
@@ -27022,7 +27017,7 @@ class Effect6437(BaseEffect):
     fighterAbilityECM
 
     Used by:
-    Fighters named like: Scarab (4 of 4)
+    Fighters named like: Scarab (5 of 5)
     """
 
     displayName = 'ECM'
@@ -27052,7 +27047,7 @@ class Effect6439(BaseEffect):
     fighterAbilityEvasiveManeuvers
 
     Used by:
-    Fighters from group: Light Fighter (16 of 32)
+    Fighters from group: Light Fighter (20 of 40)
     """
 
     displayName = 'Evasive Maneuvers'
@@ -27090,7 +27085,7 @@ class Effect6440(BaseEffect):
 
     Used by:
     Fighters named like: Shadow (2 of 2)
-    Fighters named like: Siren (4 of 4)
+    Fighters named like: Siren (5 of 5)
     """
 
     displayName = 'Afterburner'
@@ -27109,7 +27104,7 @@ class Effect6441(BaseEffect):
     fighterAbilityMicroWarpDrive
 
     Used by:
-    Items from category: Fighter (44 of 82)
+    Items from category: Fighter (51 of 94)
     """
 
     displayName = 'Microwarpdrive'
@@ -27203,7 +27198,7 @@ class Effect6465(BaseEffect):
     fighterAbilityAttackM
 
     Used by:
-    Items from category: Fighter (50 of 82)
+    Items from category: Fighter (54 of 94)
     Fighters from group: Heavy Fighter (34 of 34)
     """
 
@@ -28363,6 +28358,9 @@ class Effect6567(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups or
                                                   mod.item.requiresSkill('Propulsion Jamming'),
                                       'capacitorNeed', src.getModifiedItemAttr('ewCapacitorNeedBonus'), **kwargs)
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('Capital Micro Jump Drive Operation'), 'activationBlocked',
+            src.getModifiedItemAttr('networkedSensorArrayDisallowCapitalMicroJump'), **kwargs)
 
 
 class Effect6570(BaseEffect):
@@ -31628,9 +31626,9 @@ class Effect6789(BaseEffect):
     industrialBonusDroneDamage
 
     Used by:
-    Ships from group: Blockade Runner (4 of 4)
-    Ships from group: Deep Space Transport (4 of 4)
-    Ships from group: Hauler (17 of 17)
+    Ships from group: Blockade Runner (5 of 5)
+    Ships from group: Deep Space Transport (5 of 5)
+    Ships from group: Hauler (18 of 18)
     Ships from group: Industrial Command Ship (2 of 2)
     Ship: Hulk
     Ship: Mackinaw
@@ -33567,7 +33565,7 @@ class Effect7009(BaseEffect):
     Used by:
     Structure Modules from group: Structure Citadel Service Module (2 of 2)
     Structure Modules from group: Structure Engineering Service Module (6 of 6)
-    Structure Modules from group: Structure Navigation Service Module (3 of 3)
+    Structure Modules from group: Structure FLEX Service Module (3 of 3)
     Structure Modules from group: Structure Resource Processing Service Module (4 of 4)
     Structure Module: Standup Moon Drill I
     """
@@ -36679,7 +36677,7 @@ class Effect8108(BaseEffect):
     signatureRadiusBonusOnline
 
     Used by:
-    Module: Signature Radius Suppressor I
+    Modules from group: Signature Suppressor (5 of 5)
     """
 
     type = 'passive'
@@ -36695,7 +36693,7 @@ class Effect8109(BaseEffect):
     targetSpectrumBreakerBonus
 
     Used by:
-    Module: Signature Radius Suppressor I
+    Modules from group: Signature Suppressor (5 of 5)
     """
 
     type = 'active'
@@ -40505,3 +40503,289 @@ class Effect12038(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'falloff',
             ship.getModifiedItemAttr('shipBonus3MF'), skill='Minmatar Frigate', **kwargs)
+
+
+class Effect12050(BaseEffect):
+    """
+    shipBonusColonyResourcesHoldCapacityUH1
+
+    Used by:
+    Variations of ship: Squall (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialColonyResourcesHoldCapacity', src.getModifiedItemAttr('shipBonusUH1'),
+            skill='Upwell Hauler', **kwargs)
+
+
+class Effect12051(BaseEffect):
+    """
+    shipMissileEMDamageUH2
+
+    Used by:
+    Variations of ship: Squall (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'emDamage', container.getModifiedItemAttr('shipBonusUH2'),
+            skill='Upwell Hauler', **kwargs)
+
+
+class Effect12052(BaseEffect):
+    """
+    shipMissileThermalDamageUH2
+
+    Used by:
+    Variations of ship: Squall (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'thermalDamage', container.getModifiedItemAttr('shipBonusUH2'),
+            skill='Upwell Hauler', **kwargs)
+
+
+class Effect12053(BaseEffect):
+    """
+    shipMissileExplosiveDamageUH2
+
+    Used by:
+    Variations of ship: Squall (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosiveDamage', container.getModifiedItemAttr('shipBonusUH2'),
+            skill='Upwell Hauler', **kwargs)
+
+
+class Effect12054(BaseEffect):
+    """
+    shipMissileKineticDamageUH2
+
+    Used by:
+    Variations of ship: Squall (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'kineticDamage', container.getModifiedItemAttr('shipBonusUH2'),
+            skill='Upwell Hauler', **kwargs)
+
+
+class Effect12057(BaseEffect):
+    """
+    shipBonusColonyResourcesHoldCapacityUFreighter1
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'specialColonyResourcesHoldCapacity', src.getModifiedItemAttr('shipBonusUFreighter1'),
+            skill='Upwell Freighter', **kwargs)
+
+
+class Effect12058(BaseEffect):
+    """
+    shipMissileEMDamageUFreighter2
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'emDamage', container.getModifiedItemAttr('shipBonusUFreighter2'),
+            skill='Upwell Freighter', **kwargs)
+
+
+class Effect12060(BaseEffect):
+    """
+    shipMissileThermalDamageUFreighter2
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'thermalDamage', container.getModifiedItemAttr('shipBonusUFreighter2'),
+            skill='Upwell Freighter', **kwargs)
+
+
+class Effect12061(BaseEffect):
+    """
+    shipMissileExplosiveDamageUFreighter2
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosiveDamage', container.getModifiedItemAttr('shipBonusUFreighter2'),
+            skill='Upwell Freighter', **kwargs)
+
+
+class Effect12062(BaseEffect):
+    """
+    shipMissileKineticDamageUFreighter2
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'kineticDamage', container.getModifiedItemAttr('shipBonusUFreighter2'),
+            skill='Upwell Freighter', **kwargs)
+
+
+class Effect12063(BaseEffect):
+    """
+    shipRoleBonusUpwellFreighterCloakCPUPenalty
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Cloaking Device',
+            'cpu', ship.getModifiedItemAttr('upwellFreightercloakCPUPenalty'), **kwargs)
+
+
+class Effect12069(BaseEffect):
+    """
+    shipBonusAutoTargetingMissilesUFreighter3
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        damageTypes = ('em', 'explosive', 'kinetic', 'thermal')
+        for dmgType in damageTypes:
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Auto-Targeting Missiles'),
+                f'{dmgType}Damage', container.getModifiedItemAttr('shipBonusUFreighter3'),
+                skill='Upwell Freighter', **kwargs)
+
+
+class Effect12071(BaseEffect):
+    """
+    shipRoleBonusUpwellFreighterCapitalFlexHardenerFittingCapBonus
+
+    Used by:
+    Ship: Avalanche
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name == 'Flex Shield Hardener',
+            'power', ship.getModifiedItemAttr('upwellFreighterCapitalFlexHardenerFittingCapBonus'), **kwargs)
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name == 'Flex Shield Hardener',
+            'capacitorNeed', ship.getModifiedItemAttr('upwellFreighterCapitalFlexHardenerFittingCapBonus'), **kwargs)
+
+
+class Effect12072(BaseEffect):
+    """
+    eliteIndustrialUpwellNeutNosHeatBonus
+
+    Used by:
+    Ship: Torrent
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Energy Neutralizer', 'Energy Nosferatu'),
+            'overloadSelfDurationBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'), **kwargs)
+
+
+class Effect12098(BaseEffect):
+    """
+    jumpPortalPassengerBonusPercentSkill
+
+    Used by:
+    Skill: Capital Jump Portal Generation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'conduitJumpPassengerCount',
+            skill.getModifiedItemAttr('conduitPassengerBonusPercent') * skill.level, **kwargs)
+
+
+class Effect12102(BaseEffect):
+    """
+    capitalMJDSkillCapReductionBonus
+
+    Used by:
+    Skill: Capital Micro Jump Drive Operation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Micro Jump Drive Operation'), 'capacitorNeed',
+            skill.getModifiedItemAttr('capitalMJDCapReductionBonus') * skill.level, **kwargs)
