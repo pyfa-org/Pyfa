@@ -95693,5 +95693,79 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "12127": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 723567, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12127, 
+    "effectName": "shipRoleBonusUpwellHaulersMediumMissileFittingBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 771, 
+        "modifiedAttributeID": 30, 
+        "modifyingAttributeID": 5705, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 510, 
+        "modifiedAttributeID": 30, 
+        "modifyingAttributeID": 5705, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 511, 
+        "modifiedAttributeID": 30, 
+        "modifyingAttributeID": 5705, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 771, 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 5705, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 510, 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 5705, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 511, 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 5705, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
   }
 }
