@@ -145,6 +145,8 @@ def get_icon_file(res_path, size):
     icon for it. Return as PIL image object down-
     scaled for use in pyfa.
     """
+    res_path = res_path.lower()
+    res_path = res_path.replace('\\', '/')
     res_path = res_path.replace('//', '/')  #1703
     if res_path not in res_index:
         return None
