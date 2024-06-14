@@ -45213,7 +45213,7 @@
     "parentGroupID": 3628
   }, 
   "3631": {
-    "hasTypes": 1, 
+    "hasTypes": 0, 
     "iconID": 26053, 
     "name_de": "Grundlegende Nanobeschichtungen", 
     "name_en-us": "Basic Nanocoatings", 
@@ -45481,5 +45481,50 @@
     "name_zh": "Orbital Skyhooks", 
     "nameID": 722540, 
     "parentGroupID": 2015
+  }, 
+  "3653": {
+    "hasTypes": 1, 
+    "iconID": 26053, 
+    "name_de": "Matte", 
+    "name_en-us": "Matte", 
+    "name_es": "Matte", 
+    "name_fr": "Matte", 
+    "name_it": "Matte", 
+    "name_ja": "Matte", 
+    "name_ko": "Matte", 
+    "name_ru": "Matte", 
+    "name_zh": "Matte", 
+    "nameID": 723578, 
+    "parentGroupID": 3631
+  }, 
+  "3654": {
+    "hasTypes": 1, 
+    "iconID": 26053, 
+    "name_de": "Satin", 
+    "name_en-us": "Satin", 
+    "name_es": "Satin", 
+    "name_fr": "Satin", 
+    "name_it": "Satin", 
+    "name_ja": "Satin", 
+    "name_ko": "Satin", 
+    "name_ru": "Satin", 
+    "name_zh": "Satin", 
+    "nameID": 723579, 
+    "parentGroupID": 3631
+  }, 
+  "3655": {
+    "hasTypes": 1, 
+    "iconID": 26053, 
+    "name_de": "Gloss", 
+    "name_en-us": "Gloss", 
+    "name_es": "Gloss", 
+    "name_fr": "Gloss", 
+    "name_it": "Gloss", 
+    "name_ja": "Gloss", 
+    "name_ko": "Gloss", 
+    "name_ru": "Gloss", 
+    "name_zh": "Gloss", 
+    "nameID": 723580, 
+    "parentGroupID": 3631
   }
 }

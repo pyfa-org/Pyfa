@@ -26919,7 +26919,6 @@ class Effect6431(BaseEffect):
 
     Used by:
     Items from category: Fighter (56 of 94)
-    Fighters from group: Light Fighter (40 of 40)
     """
 
     dealsDamage = True
@@ -27047,7 +27046,8 @@ class Effect6439(BaseEffect):
     fighterAbilityEvasiveManeuvers
 
     Used by:
-    Fighters from group: Light Fighter (20 of 40)
+    Fighters from group: Light Fighter (12 of 24)
+    Fighters from group: Structure Light Fighter (8 of 16)
     """
 
     displayName = 'Evasive Maneuvers'
@@ -27199,7 +27199,6 @@ class Effect6465(BaseEffect):
 
     Used by:
     Items from category: Fighter (54 of 94)
-    Fighters from group: Heavy Fighter (34 of 34)
     """
 
     dealsDamage = True
@@ -27472,7 +27471,8 @@ class Effect6485(BaseEffect):
     fighterAbilityLaunchBomb
 
     Used by:
-    Fighters from group: Heavy Fighter (16 of 34)
+    Fighters from group: Heavy Fighter (8 of 17)
+    Fighters from group: Structure Heavy Fighter (8 of 17)
     """
 
     dealsDamage = True
@@ -40789,3 +40789,24 @@ class Effect12102(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Capital Micro Jump Drive Operation'), 'capacitorNeed',
             skill.getModifiedItemAttr('capitalMJDCapReductionBonus') * skill.level, **kwargs)
+
+
+class Effect12127(BaseEffect):
+    """
+    shipRoleBonusUpwellHaulersMediumMissileFittingBonus
+
+    Used by:
+    Variations of ship: Squall (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in ('cpu', 'power'):
+            fit.modules.filteredItemMultiply(
+                lambda mod: mod.item.group.name in (
+                    'Missile Launcher Heavy Assault',
+                    'Missile Launcher Heavy',
+                    'Missile Launcher Rapid Light'),
+                attr, ship.getModifiedItemAttr('upwellHaulersMediumMissileFittingBonus'), **kwargs)
