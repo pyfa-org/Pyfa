@@ -3847,15 +3847,15 @@
   "2428": {
     "aggregateMode": "Maximum", 
     "developerDescription": "MJFG Blocked", 
-    "displayName_de": "Micro Jump Field Generator Blocked", 
+    "displayName_de": "Mikrosprungfeldgenerator blockiert", 
     "displayName_en-us": "Micro Jump Field Generator Blocked", 
-    "displayName_es": "Micro Jump Field Generator Blocked", 
-    "displayName_fr": "Micro Jump Field Generator Blocked", 
+    "displayName_es": "Generador de campo de microsalto bloqueado", 
+    "displayName_fr": "Générateur de champ de microsaut bloqué", 
     "displayName_it": "Micro Jump Field Generator Blocked", 
-    "displayName_ja": "Micro Jump Field Generator Blocked", 
-    "displayName_ko": "Micro Jump Field Generator Blocked", 
+    "displayName_ja": "マイクロジャンプフィールドジェネレーター使用不可", 
+    "displayName_ko": "마이크로 점프 필드 생성기 차단됨", 
     "displayName_ru": "Micro Jump Field Generator Blocked", 
-    "displayName_zh": "Micro Jump Field Generator Blocked", 
+    "displayName_zh": "已阻止微型跳跃力场发生器", 
     "displayNameID": 721861, 
     "itemModifiers": [
       {

@@ -24873,7 +24873,7 @@ class Effect6208(BaseEffect):
     microJumpPortalDrive
 
     Used by:
-    Modules named like: Micro Jump Field Generator (2 of 2)
+    Module: Micro Jump Field Generator
     """
 
     type = 'active'
@@ -33547,7 +33547,7 @@ class Effect7008(BaseEffect):
     structureFullPowerStateHitpointModifier
 
     Used by:
-    Items from category: Structure (17 of 17)
+    Items from category: Structure (18 of 18)
     """
 
     type = 'passive'
@@ -33798,7 +33798,7 @@ class Effect7030(BaseEffect):
     structureAoERoFRoleBonus
 
     Used by:
-    Items from category: Structure (11 of 17)
+    Items from category: Structure (11 of 18)
     Structures from group: Citadel (8 of 9)
     """
 
@@ -33947,7 +33947,7 @@ class Effect7039(BaseEffect):
     structureHiddenMissileDamageMultiplier
 
     Used by:
-    Items from category: Structure (14 of 17)
+    Items from category: Structure (14 of 18)
     """
 
     type = 'passive'
@@ -33966,7 +33966,7 @@ class Effect7040(BaseEffect):
     structureHiddenArmorHPMultiplier
 
     Used by:
-    Items from category: Structure (17 of 17)
+    Items from category: Structure (18 of 18)
     """
 
     type = 'passive'
@@ -40789,6 +40789,22 @@ class Effect12102(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Capital Micro Jump Drive Operation'), 'capacitorNeed',
             skill.getModifiedItemAttr('capitalMJDCapReductionBonus') * skill.level, **kwargs)
+
+
+class Effect12126(BaseEffect):
+    """
+    microJumpPortalDriveCapital
+
+    Used by:
+    Module: Capital Micro Jump Field Generator
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonusPercent'),
+                               stackingPenalties=True, **kwargs)
 
 
 class Effect12127(BaseEffect):
