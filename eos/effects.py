@@ -32213,7 +32213,7 @@ class Effect6879(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
-                                      src.getModifiedItemAttr('eliteBonusBlackOps3'), stackingPenalties=True, skill='Black Ops', **kwargs)
+                                      src.getModifiedItemAttr('eliteBonusBlackOps3'), skill='Black Ops', **kwargs)
 
 
 class Effect6880(BaseEffect):
