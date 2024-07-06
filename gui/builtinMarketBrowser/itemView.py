@@ -4,13 +4,14 @@ from logbook import Logger
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 from config import slotColourMap, slotColourMapDark
 from eos.saveddata.module import Module
-from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
+from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES, CHARGES_FOR_FIT
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
 from gui.utils.dark import isDark
 from service.fit import Fit
 from service.market import Market
+from service.ammo import Ammo
 
 
 pyfalog = Logger(__name__)
@@ -91,7 +92,19 @@ class ItemView(Display):
         if sel.IsOk():
             # Get data field of the selected item (which is a marketGroup ID if anything was selected)
             seldata = self.marketView.GetItemData(sel)
-            if seldata is not None and seldata != RECENTLY_USED_MODULES:
+            if seldata == RECENTLY_USED_MODULES:
+                items = self.sMkt.getRecentlyUsed()
+            elif seldata == CHARGES_FOR_FIT:
+                fitId = self.mainFrame.getActiveFit()
+                items = set()
+                if fitId is not None:
+                    fit = self.sFit.getFit(fitId)
+                    items = set()
+                    for mod in fit.modules:
+                        charges = Ammo.getInstance().getModuleFlatAmmo(mod)
+                        for charge in charges:
+                            items.add(charge)
+            elif seldata is not None:
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them
                 if self.marketView.ItemHasChildren(sel) is False:
@@ -103,11 +116,7 @@ class ItemView(Display):
                 else:
                     items = set()
             else:
-                # If method was called but selection wasn't actually made or we have a hit on recently used modules
-                if seldata == RECENTLY_USED_MODULES:
-                    items = self.sMkt.getRecentlyUsed()
-                else:
-                    items = set()
+                items = set()
 
             # Fill store
             self.updateItemStore(items)
