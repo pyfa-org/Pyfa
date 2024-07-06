@@ -35,7 +35,8 @@ class MarketTree(wx.TreeCtrl):
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
         self.AppendItem(self.root, _t("Recently Used Items"), rumIconId, data=RECENTLY_USED_MODULES)
-        self.AppendItem(self.root, "Charges For Active Fit", rumIconId, data=CHARGES_FOR_FIT)
+        cffIconId = self.addImage("damagePattern_small", "gui")
+        self.AppendItem(self.root, _t("Charges For Active Fit"), cffIconId, data=CHARGES_FOR_FIT)
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)

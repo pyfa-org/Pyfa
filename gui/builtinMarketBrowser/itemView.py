@@ -2,6 +2,7 @@ import wx
 from logbook import Logger
 
 import gui.builtinMarketBrowser.pfSearchBox as SBox
+import gui.globalEvents as GE
 from config import slotColourMap, slotColourMapDark
 from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES, CHARGES_FOR_FIT
@@ -52,6 +53,8 @@ class ItemView(Display):
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.selectedFittingChanged)
+
         self.active = []
 
     def delaySearch(self, evt):
@@ -95,15 +98,7 @@ class ItemView(Display):
             if seldata == RECENTLY_USED_MODULES:
                 items = self.sMkt.getRecentlyUsed()
             elif seldata == CHARGES_FOR_FIT:
-                fitId = self.mainFrame.getActiveFit()
-                items = set()
-                if fitId is not None:
-                    fit = self.sFit.getFit(fitId)
-                    items = set()
-                    for mod in fit.modules:
-                        charges = Ammo.getInstance().getModuleFlatAmmo(mod)
-                        for charge in charges:
-                            items.add(charge)
+                items = self.getChargesForActiveFit()
             elif seldata is not None:
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them
@@ -131,6 +126,32 @@ class ItemView(Display):
                     if not btn.GetValue():
                         btn.setUserSelection(True)
             self.filterItemStore()
+
+    def getChargesForActiveFit(self): 
+        fitId = self.mainFrame.getActiveFit()
+
+        # no active fit => no charges
+        if fitId is None:
+            return set()
+
+        sAmmo = Ammo.getInstance()
+        fit = self.sFit.getFit(fitId)
+        items = set()
+        for mod in fit.modules:
+            charges = sAmmo.getModuleFlatAmmo(mod)
+            for charge in charges:
+                items.add(charge)
+        return items
+
+    def selectedFittingChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and activeFitID not in event.fitIDs:
+            return
+
+        items = self.getChargesForActiveFit()
+        self.updateItemStore(items)
+        self.filterItemStore()
 
     def updateItemStore(self, items):
         self.unfilteredStore = items
