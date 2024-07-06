@@ -34,6 +34,7 @@ class ItemView(Display):
         self.filteredStore = set()
         self.sMkt = marketBrowser.sMkt
         self.sFit = Fit.getInstance()
+        self.sAmmo = Ammo.getInstance()
 
         self.marketBrowser = marketBrowser
         self.marketView = marketBrowser.marketView
@@ -53,6 +54,7 @@ class ItemView(Display):
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
+        # the "charges for active fitting" needs to listen to fitting changes
         self.mainFrame.Bind(GE.FIT_CHANGED, self.selectedFittingChanged)
 
         self.active = []
@@ -134,22 +136,28 @@ class ItemView(Display):
         if fitId is None:
             return set()
 
-        sAmmo = Ammo.getInstance()
         fit = self.sFit.getFit(fitId)
+
+        # use a set so we only add one entry for each charge
         items = set()
         for mod in fit.modules:
-            charges = sAmmo.getModuleFlatAmmo(mod)
+            charges = self.sAmmo.getModuleFlatAmmo(mod)
             for charge in charges:
                 items.add(charge)
         return items
 
     def selectedFittingChanged(self, event):
+        # skip the event so the other handlers also get called
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
+
+        # if it was not the active fitting that was changed, do not do anything
         if activeFitID is not None and activeFitID not in event.fitIDs:
             return
 
         items = self.getChargesForActiveFit()
+
+        # update the UI
         self.updateItemStore(items)
         self.filterItemStore()
 

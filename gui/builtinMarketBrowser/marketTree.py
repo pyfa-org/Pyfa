@@ -35,6 +35,7 @@ class MarketTree(wx.TreeCtrl):
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
         self.AppendItem(self.root, _t("Recently Used Items"), rumIconId, data=RECENTLY_USED_MODULES)
+        # Add charges for active fitting node
         cffIconId = self.addImage("damagePattern_small", "gui")
         self.AppendItem(self.root, _t("Charges For Active Fit"), cffIconId, data=CHARGES_FOR_FIT)
 
