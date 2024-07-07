@@ -55,7 +55,7 @@ class ItemView(Display):
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
         # the "charges for active fitting" needs to listen to fitting changes
-        self.mainFrame.Bind(GE.FIT_CHANGED, self.selectedFittingChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
         self.active = []
 
@@ -121,6 +121,9 @@ class ItemView(Display):
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
             if seldata == RECENTLY_USED_MODULES:
                 self.marketBrowser.mode = 'recent'
+            
+            if seldata == CHARGES_FOR_FIT:
+                self.marketBrowser.mode = 'charges'
 
             self.setToggles()
             if context == 'tree' and self.marketBrowser.settings.get('marketMGMarketSelectMode') == 1:
@@ -146,11 +149,14 @@ class ItemView(Display):
                 items.add(charge)
         return items
 
-    def selectedFittingChanged(self, event):
+    def fitChanged(self, event):
         # skip the event so the other handlers also get called
         event.Skip()
-        activeFitID = self.mainFrame.getActiveFit()
 
+        if self.marketBrowser.mode != 'charges':
+            return
+
+        activeFitID = self.mainFrame.getActiveFit()
         # if it was not the active fitting that was changed, do not do anything
         if activeFitID is not None and activeFitID not in event.fitIDs:
             return
