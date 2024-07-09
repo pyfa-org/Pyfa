@@ -2,15 +2,17 @@ import wx
 from logbook import Logger
 
 import gui.builtinMarketBrowser.pfSearchBox as SBox
+import gui.globalEvents as GE
 from config import slotColourMap, slotColourMapDark
 from eos.saveddata.module import Module
-from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
+from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES, CHARGES_FOR_FIT
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
 from gui.utils.dark import isDark
 from service.fit import Fit
 from service.market import Market
+from service.ammo import Ammo
 
 
 pyfalog = Logger(__name__)
@@ -32,6 +34,7 @@ class ItemView(Display):
         self.filteredStore = set()
         self.sMkt = marketBrowser.sMkt
         self.sFit = Fit.getInstance()
+        self.sAmmo = Ammo.getInstance()
 
         self.marketBrowser = marketBrowser
         self.marketView = marketBrowser.marketView
@@ -50,6 +53,9 @@ class ItemView(Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
+
+        # the "charges for active fitting" needs to listen to fitting changes
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
         self.active = []
 
@@ -91,7 +97,11 @@ class ItemView(Display):
         if sel.IsOk():
             # Get data field of the selected item (which is a marketGroup ID if anything was selected)
             seldata = self.marketView.GetItemData(sel)
-            if seldata is not None and seldata != RECENTLY_USED_MODULES:
+            if seldata == RECENTLY_USED_MODULES:
+                items = self.sMkt.getRecentlyUsed()
+            elif seldata == CHARGES_FOR_FIT:
+                items = self.getChargesForActiveFit()
+            elif seldata is not None:
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them
                 if self.marketView.ItemHasChildren(sel) is False:
@@ -103,11 +113,7 @@ class ItemView(Display):
                 else:
                     items = set()
             else:
-                # If method was called but selection wasn't actually made or we have a hit on recently used modules
-                if seldata == RECENTLY_USED_MODULES:
-                    items = self.sMkt.getRecentlyUsed()
-                else:
-                    items = set()
+                items = set()
 
             # Fill store
             self.updateItemStore(items)
@@ -115,6 +121,9 @@ class ItemView(Display):
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
             if seldata == RECENTLY_USED_MODULES:
                 self.marketBrowser.mode = 'recent'
+            
+            if seldata == CHARGES_FOR_FIT:
+                self.marketBrowser.mode = 'charges'
 
             self.setToggles()
             if context == 'tree' and self.marketBrowser.settings.get('marketMGMarketSelectMode') == 1:
@@ -122,6 +131,41 @@ class ItemView(Display):
                     if not btn.GetValue():
                         btn.setUserSelection(True)
             self.filterItemStore()
+
+    def getChargesForActiveFit(self): 
+        fitId = self.mainFrame.getActiveFit()
+
+        # no active fit => no charges
+        if fitId is None:
+            return set()
+
+        fit = self.sFit.getFit(fitId)
+
+        # use a set so we only add one entry for each charge
+        items = set()
+        for mod in fit.modules:
+            charges = self.sAmmo.getModuleFlatAmmo(mod)
+            for charge in charges:
+                items.add(charge)
+        return items
+
+    def fitChanged(self, event):
+        # skip the event so the other handlers also get called
+        event.Skip()
+
+        if self.marketBrowser.mode != 'charges':
+            return
+
+        activeFitID = self.mainFrame.getActiveFit()
+        # if it was not the active fitting that was changed, do not do anything
+        if activeFitID is not None and activeFitID not in event.fitIDs:
+            return
+
+        items = self.getChargesForActiveFit()
+
+        # update the UI
+        self.updateItemStore(items)
+        self.filterItemStore()
 
     def updateItemStore(self, items):
         self.unfilteredStore = items
