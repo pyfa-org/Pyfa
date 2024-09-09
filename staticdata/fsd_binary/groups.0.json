@@ -29080,6 +29080,25 @@
     "published": 1, 
     "useBasePrice": 0
   }, 
+  "4719": {
+    "anchorable": 0, 
+    "anchored": 1, 
+    "categoryID": 2, 
+    "fittableNonSingleton": 0, 
+    "groupID": 4719, 
+    "groupName_de": "Spalte", 
+    "groupName_en-us": "Rift", 
+    "groupName_es": "Grieta", 
+    "groupName_fr": "Faille", 
+    "groupName_it": "Rift", 
+    "groupName_ja": "リフト", 
+    "groupName_ko": "균열", 
+    "groupName_ru": "Разлом", 
+    "groupName_zh": "裂隙", 
+    "groupNameID": 706696, 
+    "published": 0, 
+    "useBasePrice": 0
+  }, 
   "4725": {
     "anchorable": 0, 
     "anchored": 0, 
