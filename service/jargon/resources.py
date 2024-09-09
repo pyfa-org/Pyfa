@@ -19,6 +19,7 @@
 
 from importlib.resources import files
 
-DEFAULT_DATA = files(__name__).joinpath('defaults.yaml').open('r', encoding='utf8').read()
-DEFAULT_HEADER = files(__name__).joinpath('header.yaml').open('r', encoding='utf8').read()
+PACKAGE_NAME = __name__.rsplit(".", maxsplit=1)[0]
 
+DEFAULT_DATA = files(PACKAGE_NAME).joinpath('defaults.yaml').open('r', encoding='utf8').read()
+DEFAULT_HEADER = files(PACKAGE_NAME).joinpath('header.yaml').open('r', encoding='utf8').read()
