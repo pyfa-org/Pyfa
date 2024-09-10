@@ -573,7 +573,7 @@ class DynamicItem(EqBase):
         for kw in keywords:
             if name.startswith(f'{kw} '):
                 name = kw
-        m = re.match('(?P<mutagrade>\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', name)
+        m = re.match(r'(?P<mutagrade>\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', name)
         if m:
             name = '{} {}'.format(m.group('mutagrade'), m.group('mutatype'))
         return name

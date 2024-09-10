@@ -273,7 +273,7 @@ class GraphCanvasPanel(wx.Panel):
         legendLines = []
         for i, iData in enumerate(legendData):
             color, lineStyle, label = iData
-            legendLines.append(Line2D([0], [0], color=color, linestyle=lineStyle, label=label.replace('$', '\$')))
+            legendLines.append(Line2D([0], [0], color=color, linestyle=lineStyle, label=label.replace('$', r'\$')))
 
         if len(legendLines) > 0 and self.graphFrame.ctrlPanel.showLegend:
             legend = self.subplot.legend(handles=legendLines)
