@@ -94,7 +94,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             print('\nRenamed ' + title + ':')
             for id in sorted(ren_dict):
                 couple = ren_dict[id]
-                print(("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8'))))
+                print(("    \"{0}\": \"{1}\",".format(couple[0], couple[1])))
 
     groupcats = {}
     def getgroupcat(grp):
