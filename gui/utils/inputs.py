@@ -96,7 +96,7 @@ class FloatBox(wx.TextCtrl):
         if currentValue == self._storedValue:
             event.Skip()
             return
-        if currentValue == '' or re.match('^\d*\.?\d*$', currentValue):
+        if currentValue == '' or re.match(r'^\d*\.?\d*$', currentValue):
             self._storedValue = currentValue
             self.updateColor()
             event.Skip()
@@ -131,7 +131,7 @@ class FloatRangeBox(wx.TextCtrl):
         if currentValue == self._storedValue:
             event.Skip()
             return
-        if currentValue == '' or re.match('^\d*\.?\d*-?\d*\.?\d*$', currentValue):
+        if currentValue == '' or re.match(r'^\d*\.?\d*-?\d*\.?\d*$', currentValue):
             self._storedValue = currentValue
             event.Skip()
         else:

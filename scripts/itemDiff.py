@@ -57,7 +57,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
     with open(effectspath) as f:
         for line in f:
-            for m in re.finditer('class Effect(?P<eid>\d+)\(BaseEffect\):', line):
+            for m in re.finditer(r'class Effect(?P<eid>\d+)\(BaseEffect\):', line):
                 effectid = int(m.group('eid'))
                 implemented.add(effectid)
 

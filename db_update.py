@@ -141,14 +141,14 @@ def update_db():
                 (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us'])
                 or row['typeName_en-us'] == 'Capsule'
                 or row['groupID'] == 4033  # destructible effect beacons
-                or re.match('AIR .+Booster.*', row['typeName_en-us'])
+                or re.match(r'AIR .+Booster.*', row['typeName_en-us'])
             ):
                 row['published'] = True
             # Nearly useless and clutter search results too much
             elif (
                 row['typeName_en-us'].startswith('Limited Synth ')
                 or row['typeName_en-us'].startswith('Expired ')
-                or re.match('Mining Blitz .+ Booster Dose .+', row['typeName_en-us'])
+                or re.match(r'Mining Blitz .+ Booster Dose .+', row['typeName_en-us'])
                 or row['typeName_en-us'].endswith(' Filament') and (
                     "'Needlejack'" not in row['typeName_en-us'] and
                     "'Devana'" not in row['typeName_en-us'] and
@@ -544,7 +544,7 @@ def update_db():
                 continue
             typeName = row.get('typeName_en-us', '')
             # Regular sets matching
-            m = re.match('(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName, re.IGNORECASE)
+            m = re.match(r'(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName, re.IGNORECASE)
             if m:
                 implantSets.setdefault((m.group('grade'), m.group('set')), set()).add(row['typeID'])
             # Special set matching
