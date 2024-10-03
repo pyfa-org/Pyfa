@@ -42,7 +42,7 @@ class Effect4(BaseEffect):
     shieldBoosting
 
     Used by:
-    Modules from group: Shield Booster (90 of 90)
+    Modules from group: Shield Booster (94 of 94)
     """
 
     runTime = 'late'
@@ -62,7 +62,7 @@ class Effect10(BaseEffect):
     Used by:
     Celestials from group: Destructible Effect Beacon (6 of 6)
     Drones from group: Combat Drone (80 of 80)
-    Modules from group: Energy Weapon (212 of 214)
+    Modules from group: Energy Weapon (216 of 218)
     Celestial: BH Sentry Gun
     Celestial: EDENCOM Stockpile Non-Interactable (Do not translate)
     Celestial: Liberation Games Firework Sentry ( DO NOT TRANSLATE)
@@ -152,7 +152,7 @@ class Effect27(BaseEffect):
     armorRepair
 
     Used by:
-    Modules from group: Armor Repair Unit (101 of 101)
+    Modules from group: Armor Repair Unit (105 of 105)
     """
 
     runTime = 'late'
@@ -173,8 +173,8 @@ class Effect34(BaseEffect):
     projectileFired
 
     Used by:
-    Modules from group: Hybrid Weapon (221 of 221)
-    Modules from group: Projectile Weapon (165 of 165)
+    Modules from group: Hybrid Weapon (223 of 223)
+    Modules from group: Projectile Weapon (167 of 167)
     """
 
     dealsDamage = True
@@ -195,7 +195,7 @@ class Effect38(BaseEffect):
     empWave
 
     Used by:
-    Modules from group: Smart Bomb (118 of 118)
+    Modules from group: Smart Bomb (137 of 137)
     """
 
     dealsDamage = True
@@ -250,7 +250,7 @@ class Effect48(BaseEffect):
     powerBooster
 
     Used by:
-    Modules from group: Capacitor Booster (41 of 41)
+    Modules from group: Capacitor Booster (43 of 43)
     """
 
     type = 'active'
@@ -378,7 +378,7 @@ class Effect58(BaseEffect):
     Modules from group: Capacitor Flux Coil (6 of 6)
     Modules from group: Capacitor Power Relay (20 of 20)
     Modules from group: Power Diagnostic System (23 of 23)
-    Modules from group: Propulsion Module (69 of 135)
+    Modules from group: Propulsion Module (73 of 147)
     Modules from group: Reactor Control Unit (22 of 22)
     """
 
@@ -396,7 +396,7 @@ class Effect59(BaseEffect):
     cargoCapacityMultiply
 
     Used by:
-    Modules from group: Expanded Cargohold (8 of 8)
+    Modules from group: Expanded Cargohold (7 of 7)
     Modules from group: Overdrive Injector System (7 of 7)
     Modules from group: Reinforced Bulkhead (8 of 8)
     """
@@ -593,8 +593,8 @@ class Effect101(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Heavy (12 of 12)
-    Modules from group: Missile Launcher Rocket (15 of 15)
-    Modules named like: Launcher (154 of 154)
+    Modules from group: Missile Launcher Rocket (16 of 16)
+    Modules named like: Launcher (156 of 156)
     Structure Modules named like: Standup Launcher (7 of 7)
     """
 
@@ -966,8 +966,8 @@ class Effect272(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
-    Implants named like: Repairer Booster (4 of 4)
     Modules named like: Nanobot Accelerator (8 of 8)
+    Implant: AIR Repairer Booster III
     Implant: Numon Family Heirloom
     Skill: Repair Systems
     """
@@ -1060,7 +1060,6 @@ class Effect290(BaseEffect):
     Used by:
     Implants named like: Frentix Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: SoCT Turret Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
     Skill: Sharpshooter
     """
@@ -1192,13 +1191,13 @@ class Effect395(BaseEffect):
 
     Used by:
     Modules from group: Rig Anchor (4 of 4)
-    Implants named like: Agility Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
     Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
+    Implant: AIR Agility Booster II
     Implant: AIR Overclocker Booster III
     Implant: Genolution Core Augmentation CA-4
     Implant: Quafe Zero Green Apple
@@ -1775,7 +1774,6 @@ class Effect584(BaseEffect):
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: SoCT Turret Booster (3 of 3)
     Implant: AIR Pyrolancea Booster II
     Implant: Standard Cerebral Accelerator
     """
@@ -2016,7 +2014,7 @@ class Effect627(BaseEffect):
     powerIncrease
 
     Used by:
-    Modules from group: Auxiliary Power Core (5 of 5)
+    Modules from group: Auxiliary Power Core (6 of 6)
     """
 
     type = 'passive'
@@ -2158,7 +2156,6 @@ class Effect699(BaseEffect):
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: SoCT Scan Booster (3 of 3)
     Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
     Modules named like: Targeting System Subcontroller (8 of 8)
     Implant: Quafe Zero Classic
@@ -2509,7 +2506,6 @@ class Effect856(BaseEffect):
     Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
-    Implants named like: SoCT Agility Booster (3 of 3)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
     Implant: Serenity YC122.9 Season Booster - Warp Speed
@@ -4898,8 +4894,8 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
-    Implants named like: Repairer Booster (4 of 4)
     Modules named like: Nanobot Accelerator (8 of 8)
+    Implant: AIR Repairer Booster III
     Skill: Capital Repair Systems
     """
 
@@ -6803,6 +6799,7 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Tetrimon Resistance Booster (4 of 4)
     """
 
     type = 'passive'
@@ -6870,7 +6867,7 @@ class Effect2302(BaseEffect):
     damageControl
 
     Used by:
-    Modules from group: Damage Control (24 of 29)
+    Modules from group: Damage Control (25 of 30)
     """
 
     type = 'passive'
@@ -7000,7 +6997,7 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
-    Implants named like: SoCT Capacitor Booster (3 of 3)
+    Implants named like: Tetrimon Capacitor Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -7625,6 +7622,7 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -8375,6 +8373,7 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Harvest Damage Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
     """
@@ -9262,7 +9261,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (444 of 916)
+    Items from market group: Ship Equipment > Turrets & Launchers (446 of 926)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9280,16 +9279,16 @@ class Effect3002(BaseEffect):
 
     Used by:
     Modules from group: Ancillary Remote Shield Booster (4 of 4)
-    Modules from group: Capacitor Booster (41 of 41)
-    Modules from group: Energy Neutralizer (55 of 55)
-    Modules from group: Energy Nosferatu (55 of 55)
+    Modules from group: Capacitor Booster (43 of 43)
+    Modules from group: Energy Neutralizer (57 of 57)
+    Modules from group: Energy Nosferatu (58 of 58)
     Modules from group: Hull Repair Unit (25 of 25)
-    Modules from group: Remote Armor Repairer (39 of 39)
-    Modules from group: Remote Capacitor Transmitter (35 of 35)
-    Modules from group: Remote Shield Booster (38 of 38)
-    Modules from group: Smart Bomb (118 of 118)
-    Modules from group: Warp Disrupt Field Generator (7 of 7)
-    Modules named like: Remote Repairer (56 of 56)
+    Modules from group: Remote Armor Repairer (43 of 43)
+    Modules from group: Remote Capacitor Transmitter (37 of 37)
+    Modules from group: Remote Shield Booster (42 of 42)
+    Modules from group: Smart Bomb (137 of 137)
+    Modules from group: Warp Disrupt Field Generator (8 of 8)
+    Modules named like: Remote Repairer (60 of 60)
     Module: Reactive Armor Hardener
     """
 
@@ -9323,10 +9322,10 @@ class Effect3025(BaseEffect):
     overloadSelfDamageBonus
 
     Used by:
-    Modules from group: Energy Weapon (101 of 214)
-    Modules from group: Hybrid Weapon (105 of 221)
+    Modules from group: Energy Weapon (105 of 218)
+    Modules from group: Hybrid Weapon (107 of 223)
     Modules from group: Precursor Weapon (19 of 19)
-    Modules from group: Projectile Weapon (99 of 165)
+    Modules from group: Projectile Weapon (101 of 167)
     """
 
     type = 'overheat'
@@ -9495,7 +9494,7 @@ class Effect3046(BaseEffect):
     modifyMaxVelocityOfShipPassive
 
     Used by:
-    Modules from group: Expanded Cargohold (8 of 8)
+    Modules from group: Expanded Cargohold (7 of 7)
     """
 
     type = 'offline'
@@ -9510,7 +9509,7 @@ class Effect3047(BaseEffect):
     structureHPMultiplyPassive
 
     Used by:
-    Modules from group: Expanded Cargohold (8 of 8)
+    Modules from group: Expanded Cargohold (7 of 7)
     """
 
     type = 'passive'
@@ -9597,7 +9596,7 @@ class Effect3174(BaseEffect):
     overloadSelfRangeBonus
 
     Used by:
-    Modules from group: Stasis Grappler (7 of 7)
+    Modules from group: Stasis Grappler (8 of 8)
     Modules from group: Stasis Web (19 of 19)
     Modules from group: Warp Scrambler (56 of 57)
     """
@@ -9615,7 +9614,7 @@ class Effect3175(BaseEffect):
     overloadSelfSpeedBonus
 
     Used by:
-    Modules from group: Propulsion Module (135 of 135)
+    Modules from group: Propulsion Module (147 of 147)
     """
 
     type = 'overheat'
@@ -9632,7 +9631,7 @@ class Effect3182(BaseEffect):
 
     Used by:
     Modules from group: Burst Jammer (11 of 11)
-    Modules from group: ECM (39 of 39)
+    Modules from group: ECM (43 of 43)
     """
 
     type = 'overheat'
@@ -9669,7 +9668,7 @@ class Effect3200(BaseEffect):
 
     Used by:
     Modules from group: Ancillary Armor Repairer (8 of 8)
-    Modules from group: Armor Repair Unit (101 of 101)
+    Modules from group: Armor Repair Unit (105 of 105)
     """
 
     type = 'overheat'
@@ -9687,7 +9686,7 @@ class Effect3201(BaseEffect):
 
     Used by:
     Modules from group: Ancillary Shield Booster (9 of 9)
-    Modules from group: Shield Booster (90 of 90)
+    Modules from group: Shield Booster (94 of 94)
     """
 
     type = 'overheat'
@@ -10204,7 +10203,7 @@ class Effect3380(BaseEffect):
     warpDisruptSphere
 
     Used by:
-    Modules from group: Warp Disrupt Field Generator (7 of 7)
+    Modules from group: Warp Disrupt Field Generator (8 of 8)
     """
 
     runTime = 'early'
@@ -13489,7 +13488,6 @@ class Effect4162(BaseEffect):
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
-    Implants named like: SoCT Scan Booster (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
     Implant: AIR Astro-Rangefinding II Booster
@@ -14221,7 +14219,7 @@ class Effect4358(BaseEffect):
     ecmRangeBonusModuleEffect
 
     Used by:
-    Modules from group: ECM Stabilizer (3 of 3)
+    Modules from group: ECM Stabilizer (5 of 5)
     """
 
     type = 'passive'
@@ -15934,7 +15932,7 @@ class Effect4809(BaseEffect):
     ecmGravimetricStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (3 of 3)
+    Modules from group: ECM Stabilizer (5 of 5)
     """
 
     type = 'passive'
@@ -15951,7 +15949,7 @@ class Effect4810(BaseEffect):
     ecmLadarStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (3 of 3)
+    Modules from group: ECM Stabilizer (5 of 5)
     """
 
     type = 'passive'
@@ -15968,7 +15966,7 @@ class Effect4811(BaseEffect):
     ecmMagnetometricStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (3 of 3)
+    Modules from group: ECM Stabilizer (5 of 5)
     """
 
     type = 'passive'
@@ -15986,7 +15984,7 @@ class Effect4812(BaseEffect):
     ecmRadarStrengthBonusPercent
 
     Used by:
-    Modules from group: ECM Stabilizer (3 of 3)
+    Modules from group: ECM Stabilizer (5 of 5)
     """
 
     type = 'passive'
@@ -16633,8 +16631,8 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
-    Implants named like: Repairer Booster (4 of 4)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
+    Implant: AIR Repairer Booster III
     """
 
     type = 'passive'
@@ -18014,6 +18012,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -20181,7 +20180,6 @@ class Effect5437(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: SoCT Relic Coherence Booster (3 of 3)
     Modules named like: Emission Scope Sharpener (8 of 8)
     Implant: Poteque 'Prospector' Archaeology AC-905
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
@@ -21734,7 +21732,7 @@ class Effect5758(BaseEffect):
     overloadSelfPainterBonus
 
     Used by:
-    Modules from group: Target Painter (8 of 8)
+    Modules from group: Target Painter (9 of 9)
     """
 
     type = 'overheat'
@@ -24677,7 +24675,7 @@ class Effect6184(BaseEffect):
     shipModuleRemoteCapacitorTransmitter
 
     Used by:
-    Modules from group: Remote Capacitor Transmitter (35 of 35)
+    Modules from group: Remote Capacitor Transmitter (37 of 37)
     """
 
     runTime = 'late'
@@ -24730,7 +24728,7 @@ class Effect6186(BaseEffect):
     shipModuleRemoteShieldBooster
 
     Used by:
-    Modules from group: Remote Shield Booster (38 of 38)
+    Modules from group: Remote Shield Booster (42 of 42)
     """
 
     type = 'projected', 'active'
@@ -24755,7 +24753,7 @@ class Effect6187(BaseEffect):
     energyNeutralizerFalloff
 
     Used by:
-    Modules from group: Energy Neutralizer (55 of 55)
+    Modules from group: Energy Neutralizer (57 of 57)
     """
 
     type = 'active', 'projected'
@@ -24783,7 +24781,7 @@ class Effect6188(BaseEffect):
     shipModuleRemoteArmorRepairer
 
     Used by:
-    Modules from group: Remote Armor Repairer (39 of 39)
+    Modules from group: Remote Armor Repairer (43 of 43)
     """
 
     runTime = 'late'
@@ -24829,7 +24827,7 @@ class Effect6197(BaseEffect):
     energyNosferatuFalloff
 
     Used by:
-    Modules from group: Energy Nosferatu (55 of 55)
+    Modules from group: Energy Nosferatu (58 of 58)
     """
 
     runTime = 'late'
@@ -26808,7 +26806,7 @@ class Effect6425(BaseEffect):
     remoteTargetPaintFalloff
 
     Used by:
-    Modules from group: Target Painter (8 of 8)
+    Modules from group: Target Painter (9 of 9)
     """
 
     type = 'projected', 'active'
@@ -26831,7 +26829,7 @@ class Effect6426(BaseEffect):
     remoteWebifierFalloff
 
     Used by:
-    Modules from group: Stasis Grappler (7 of 7)
+    Modules from group: Stasis Grappler (8 of 8)
     Modules from group: Stasis Web (19 of 19)
     Starbases from group: Stasis Webification Battery (3 of 3)
     """
@@ -27212,7 +27210,7 @@ class Effect6470(BaseEffect):
     remoteECMFalloff
 
     Used by:
-    Modules from group: ECM (39 of 39)
+    Modules from group: ECM (43 of 43)
     Starbases from group: Electronic Warfare Battery (12 of 12)
     """
 
@@ -31067,7 +31065,7 @@ class Effect6730(BaseEffect):
     moduleBonusMicrowarpdrive
 
     Used by:
-    Modules from group: Propulsion Module (69 of 135)
+    Modules from group: Propulsion Module (73 of 147)
     """
 
     runTime = 'late'
@@ -31091,7 +31089,7 @@ class Effect6731(BaseEffect):
     moduleBonusAfterburner
 
     Used by:
-    Modules from group: Propulsion Module (66 of 135)
+    Modules from group: Propulsion Module (74 of 147)
     """
 
     runTime = 'late'
@@ -32983,8 +32981,8 @@ class Effect6953(BaseEffect):
     mediumRemoteRepFittingAdjustment
 
     Used by:
-    Variations of module: Medium Remote Armor Repairer I (12 of 12)
-    Variations of module: Medium Remote Shield Booster I (11 of 11)
+    Variations of module: Medium Remote Armor Repairer I (14 of 14)
+    Variations of module: Medium Remote Shield Booster I (13 of 13)
     Module: Medium Ancillary Remote Armor Repairer
     Module: Medium Ancillary Remote Shield Booster
     """
@@ -33583,7 +33581,7 @@ class Effect7012(BaseEffect):
     moduleBonusAssaultDamageControl
 
     Used by:
-    Variations of module: Assault Damage Control I (5 of 5)
+    Variations of module: Assault Damage Control I (6 of 6)
     Module: Abyssal Assault Damage Control
     """
 
@@ -37657,12 +37655,64 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
+class Effect8267(BaseEffect):
+    """
+    weaponDisruptorResistanceBonusPassive
+
+    Used by:
+    Implants named like: Harvest Anti Disruptor Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'weaponDisruptionResistance',
+            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
+
+
+class Effect8268(BaseEffect):
+    """
+    nosferatuDurationBonusPassive
+
+    Used by:
+    Implants named like: Harvest Nosferatu Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
+            module.getModifiedItemAttr('durationBonus'), **kwargs)
+
+
+class Effect8269(BaseEffect):
+    """
+    stasisWebifierMaxRangeAddPassive
+
+    Used by:
+    Implants named like: Harvest Webifier Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
+            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
+
+
 class Effect8270(BaseEffect):
     """
     capacitorWarfareResistanceBonusPassive
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Tetrimon Anti Drain Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38015,10 +38065,7 @@ class Effect8323(BaseEffect):
 
 class Effect8327(BaseEffect):
     """
-    relicAnalyzerRangeBonusPassive
-
-    Used by:
-    Implants named like: SoCT Relic Range Booster (3 of 3)
+    Not used by any item
     """
 
     type = 'passive'
@@ -38032,10 +38079,7 @@ class Effect8327(BaseEffect):
 
 class Effect8328(BaseEffect):
     """
-    relicVirusStrengthBonusPassive
-
-    Used by:
-    Implants named like: SoCT Relic Strength Booster (3 of 3)
+    Not used by any item
     """
 
     type = 'passive'
@@ -38267,10 +38311,7 @@ class Effect8479(BaseEffect):
 
 class Effect8594(BaseEffect):
     """
-    modifyArmorDamageResistanceBonusPostPercentPassive
-
-    Used by:
-    Implants named like: SoCT Armor Booster (3 of 3)
+    Not used by any item
     """
 
     type = 'passive'
