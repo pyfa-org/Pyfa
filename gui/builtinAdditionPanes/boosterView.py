@@ -43,6 +43,10 @@ class BoosterViewDrop(wx.DropTarget):
         if self.GetData():
             dragged_data = DragDropHelper.data
             data = dragged_data.split(':')
+
+            if dragged_data is None:
+                return t
+
             self.dropFn(x, y, data)
         return t
 
