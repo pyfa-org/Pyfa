@@ -163,6 +163,10 @@ class PFListPane(wx.ScrolledWindow):
     def RemoveAllChildren(self):
         for widget in self._wList:
             widget.Destroy()
+            # this forces the garbage collector to work properly by removing dangling references to objects which are still alive, otherwise widget cannot be gc-ed eventually causing GDI id exhaustion and crash
+            for i in widget.__dict__.keys():
+                widget.__dict__[i] =None
+            del widget
 
         self.Scroll(0, 0)
         self._wList = []
