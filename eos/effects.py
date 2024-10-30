@@ -32221,7 +32221,7 @@ class Effect6878(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler', 'maxRange',
-                                      src.getModifiedItemAttr('eliteBonusBlackOps4'), stackingPenalties=True, skill='Black Ops', **kwargs)
+                                      src.getModifiedItemAttr('eliteBonusBlackOps4'), skill='Black Ops', **kwargs)
 
 
 class Effect6879(BaseEffect):
@@ -40966,6 +40966,66 @@ class Effect12181(BaseEffect):
             return
         bonus = ship.getModifiedItemAttr('ATcruiserStasisWebifierBonus') * sec_status
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange', bonus, **kwargs)
+
+
+class Effect12183(BaseEffect):
+    """
+    shipBonusATpropDuration
+
+    Used by:
+    Ship: Python
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Propulsion Module', 'Microwarpdrive'),
+            'duration', ship.getModifiedItemAttr('shipBonusATprobDuration'), **kwargs)
+
+
+class Effect12184(BaseEffect):
+    """
+    shipBonusATAllShieldResistCB3
+
+    Used by:
+    Ship: Python
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                'shield{}DamageResonance'.format(dmgType.capitalize()),
+                ship.getModifiedItemAttr('shipBonusCB3'),
+                skill='Caldari Battleship', **kwargs)
+
+
+class Effect12185(BaseEffect):
+    """
+    shipBonusBurstJammer ATB
+
+    Used by:
+    Ship: Python
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        # Get pilot sec status bonus directly here, instead of going through the intermediary effects
+        try:
+            sec_status = ship.owner.getPilotSecurity(low_limit=-10, high_limit=0)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            return
+        bonus = ship.getModifiedItemAttr('ATBurstJammerStrengthBonus') * sec_status
+        for attr in ('ecmBurstRange', 'scanRadarStrengthBonus', 'scanGravimetricStrengthBonus', 'scanLadarStrengthBonus', 'scanMagnetometricStrengthBonus'):
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Jammer', attr, bonus, **kwargs)
 
 
 class Effect12202(BaseEffect):
