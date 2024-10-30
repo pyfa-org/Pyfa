@@ -95,7 +95,7 @@ def get_children(parent):
     return children
 
 
-query_items = 'select distinct iconID from invtypes'
+query_items = 'select distinct it.iconID from invtypes as it inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID != 2118'
 query_groups = 'select distinct iconID from invgroups'
 query_cats = 'select distinct iconID from invcategories'
 query_market = 'select distinct iconID from invmarketgroups'
