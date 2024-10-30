@@ -32121,22 +32121,24 @@ class Effect6871(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
+    def handler(fit, ship, context, projectionRange, **kwargs):
 
         # Get pilot sec status bonus directly here, instead of going through the intermediary effects
         # via https://forums.eveonline.com/default.aspx?g=posts&t=515826
         try:
-            bonus = max(0, min(50.0, (src.owner.character.secStatus * 10)))
+            sec_status = ship.owner.getPilotSecurity(low_limit=0, high_limit=5)
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
-            bonus = None
+            return
 
-        if bonus is not None:
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
-                                      'armorDamageAmount', bonus, **kwargs)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
-                                      'shieldBonus', bonus, **kwargs)
+        bonus = sec_status * 10
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Repair Systems'),
+            'armorDamageAmount', bonus, **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'),
+            'shieldBonus', bonus, **kwargs)
 
 
 class Effect6872(BaseEffect):
@@ -40869,12 +40871,12 @@ class Effect12165(BaseEffect):
 
         # Get pilot sec status bonus directly here, instead of going through the intermediary effects
         try:
-            capped_ss = max(-10, min(0, (ship.owner.character.secStatus)))
+            sec_status = ship.owner.getPilotSecurity(low_limit=-10, high_limit=0)
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
             return
-        bonus = ship.getModifiedItemAttr('ATFrigDmgBonus') * capped_ss
+        bonus = ship.getModifiedItemAttr('ATFrigDmgBonus') * sec_status
         fit.modules.filteredItemBoost(
             lambda mod: (mod.item.requiresSkill('Small Energy Turret')
                          or mod.item.requiresSkill('Small Hybrid Turret')

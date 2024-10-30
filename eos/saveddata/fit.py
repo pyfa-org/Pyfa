@@ -1743,6 +1743,18 @@ class Fit:
             secstatus = FitSystemSecurity.NULLSEC
         return secstatus
 
+    def getPilotSecurity(self, low_limit=-10, high_limit=5):
+        secstatus = self.pilotSecurity
+        # Not defined -> use character SS, with 0.0 fallback if it fails
+        if secstatus is None:
+            try:
+                secstatus = self.character.secStatus
+            except (SystemExit, KeyboardInterrupt):
+                raise
+            except:
+                secstatus = 0
+        return max(low_limit, min(high_limit, secstatus))
+
     def activeModulesIter(self):
         for mod in self.modules:
             if mod.state >= FittingModuleState.ACTIVE:
@@ -1824,6 +1836,7 @@ class Fit:
         fitCopy.targetProfile = self.targetProfile
         fitCopy.implantLocation = self.implantLocation
         fitCopy.systemSecurity = self.systemSecurity
+        fitCopy.pilotSecurity = self.pilotSecurity
         fitCopy.notes = self.notes
 
         for i in self.modules:
