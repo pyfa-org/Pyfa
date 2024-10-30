@@ -40868,7 +40868,6 @@ class Effect12165(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-
         # Get pilot sec status bonus directly here, instead of going through the intermediary effects
         try:
             sec_status = ship.owner.getPilotSecurity(low_limit=-10, high_limit=0)
@@ -40886,6 +40885,25 @@ class Effect12165(BaseEffect):
             fit.modules.filteredChargeBoost(
                 lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
                 f'{dmgType}Damage', bonus, **kwargs)
+
+
+class Effect12176(BaseEffect):
+    """
+    shipBonusAllShieldresistATCC1
+
+    Used by:
+    Ship: Cobra
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                'shield{}DamageResonance'.format(dmgType.capitalize()),
+                ship.getModifiedItemAttr('shipBonusCC3'),
+                skill='Caldari Cruiser', **kwargs)
 
 
 class Effect12179(BaseEffect):
@@ -40907,6 +40925,72 @@ class Effect12179(BaseEffect):
                 skill='Caldari Frigate', **kwargs)
 
 
+class Effect12180(BaseEffect):
+    """
+    roleBonusATCruiserMJDFittingReduction
+
+    Used by:
+    Ship: Cobra
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Micro Jump Drive',
+            'cpu', ship.getModifiedItemAttr('flagCruiserFittingBonusPropMods'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Micro Jump Drive',
+            'power', ship.getModifiedItemAttr('flagCruiserFittingBonusPropMods'), **kwargs)
+
+
+class Effect12181(BaseEffect):
+    """
+    ATcruiserTackleBonus1
+
+    Used by:
+    Ship: Cobra
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        # Get pilot sec status bonus directly here, instead of going through the intermediary effects
+        try:
+            sec_status = ship.owner.getPilotSecurity(low_limit=-10, high_limit=0)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            return
+        bonus = ship.getModifiedItemAttr('ATcruiserStasisWebifierBonus') * sec_status
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange', bonus, **kwargs)
+
+
+class Effect12202(BaseEffect):
+    """
+    ATcruiserTackleBonus2
+
+    Used by:
+    Ship: Cobra
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        # Get pilot sec status bonus directly here, instead of going through the intermediary effects
+        try:
+            sec_status = ship.owner.getPilotSecurity(low_limit=-10, high_limit=0)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            return
+        bonus = ship.getModifiedItemAttr('ATcruiserScramblerDisruptorBonus') * sec_status
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler', 'maxRange', bonus, **kwargs)
+
+
 class Effect12203(BaseEffect):
     """
     ATfrigDroneBonus
@@ -40923,3 +41007,21 @@ class Effect12203(BaseEffect):
             fit.drones.filteredItemBoost(
                 lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                 attr, ship.getModifiedItemAttr('ATfrigDroneBonus'), **kwargs)
+
+
+class Effect12214(BaseEffect):
+    """
+    AtcruiserDroneBonus
+
+    Used by:
+    Ship: Cobra
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in ('shieldCapacity', 'armorHP', 'hp', 'damageMultiplier'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
+                attr, ship.getModifiedItemAttr('ATcruiserDroneBonus'), **kwargs)
