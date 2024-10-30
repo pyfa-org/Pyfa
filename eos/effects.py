@@ -1674,12 +1674,11 @@ class Effect550(BaseEffect):
     shipHTDmgBonusGB
 
     Used by:
+    Ships from group: Black Ops (3 of 6)
     Ship: Dominix Navy Issue
     Ship: Hyperion
     Ship: Kronos
-    Ship: Marshal
     Ship: Megathron Federate Issue
-    Ship: Sin
     """
 
     type = 'passive'
@@ -1716,6 +1715,7 @@ class Effect562(BaseEffect):
     Variations of ship: Vexor (3 of 4)
     Ship: Adrestia
     Ship: Arazu
+    Ship: Cobra
     Ship: Cybele
     Ship: Deimos
     Ship: Enforcer
@@ -1857,7 +1857,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1010)
+    Items from category: Charge (608 of 1011)
     """
 
     type = 'passive'
@@ -1935,6 +1935,7 @@ class Effect602(BaseEffect):
     Used by:
     Variations of ship: Stabber (3 of 3)
     Ship: Broadsword
+    Ship: Cobra
     Ship: Enforcer
     Ship: Huginn
     Ship: Rupture
@@ -1954,10 +1955,9 @@ class Effect604(BaseEffect):
     shipPTspeedBonusMB2
 
     Used by:
+    Ships from group: Black Ops (3 of 6)
     Variations of ship: Tempest (3 of 4)
     Ship: Maelstrom
-    Ship: Marshal
-    Ship: Panther
     Ship: Typhoon Fleet Issue
     """
 
@@ -2178,7 +2178,7 @@ class Effect706(BaseEffect):
     covertOpsWarpResistance
 
     Used by:
-    Ships from group: Covert Ops (5 of 8)
+    Ships from group: Covert Ops (5 of 9)
     """
 
     type = 'passive'
@@ -2433,7 +2433,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (538 of 1010)
+    Items from category: Charge (538 of 1011)
     """
 
     type = 'passive'
@@ -2733,6 +2733,7 @@ class Effect919(BaseEffect):
     shipHybridTrackingGC2
 
     Used by:
+    Ship: Cobra
     Ship: Enforcer
     Ship: Thorax
     """
@@ -5239,7 +5240,7 @@ class Effect1738(BaseEffect):
     doHacking
 
     Used by:
-    Modules from group: Data Miners (10 of 10)
+    Modules from group: Data Miners (11 of 11)
     """
 
     type = 'active'
@@ -5881,8 +5882,8 @@ class Effect2008(BaseEffect):
     cynosuralDurationBonus
 
     Used by:
-    Ships from group: Black Ops (5 of 5)
-    Ships from group: Force Recon Ship (8 of 9)
+    Ships from group: Black Ops (6 of 6)
+    Ships from group: Force Recon Ship (9 of 10)
     """
 
     type = 'passive'
@@ -6736,11 +6737,11 @@ class Effect2252(BaseEffect):
     covertOpsAndReconOpsCloakModuleDelayBonus
 
     Used by:
-    Ships from group: Black Ops (5 of 5)
+    Ships from group: Black Ops (6 of 6)
     Ships from group: Blockade Runner (5 of 5)
-    Ships from group: Covert Ops (8 of 8)
+    Ships from group: Covert Ops (9 of 9)
     Ships from group: Expedition Frigate (2 of 2)
-    Ships from group: Force Recon Ship (9 of 9)
+    Ships from group: Force Recon Ship (10 of 10)
     Ships from group: Stealth Bomber (5 of 5)
     Ships named like: Stratios (2 of 2)
     Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
@@ -6763,13 +6764,14 @@ class Effect2253(BaseEffect):
     covertOpsStealthBomberTargettingDelayBonus
 
     Used by:
-    Ships from group: Black Ops (5 of 5)
+    Ships from group: Black Ops (6 of 6)
     Ships from group: Stealth Bomber (5 of 5)
     Ship: Caedes
     Ship: Chremoas
     Ship: Endurance
     Ship: Etana
     Ship: Rabisu
+    Ship: Sidewinder
     """
 
     type = 'passive'
@@ -7214,6 +7216,7 @@ class Effect2503(BaseEffect):
     Used by:
     Ships named like: Megathron (3 of 3)
     Ship: Marshal
+    Ship: Python
     """
 
     type = 'passive'
@@ -7233,6 +7236,7 @@ class Effect2504(BaseEffect):
     Ship: Ares
     Ship: Federation Navy Comet
     Ship: Pacifier
+    Ship: Sidewinder
     Ship: Tristan
     """
 
@@ -8412,6 +8416,7 @@ class Effect2805(BaseEffect):
     Used by:
     Ship: Abaddon
     Ship: Marshal
+    Ship: Python
     """
 
     type = 'passive'
@@ -8521,6 +8526,7 @@ class Effect2849(BaseEffect):
     Used by:
     Modules named like: Memetic Algorithm Bank (8 of 8)
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
+    Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
     Implant: Poteque 'Prospector' Hacking HC-905
     """
@@ -10369,6 +10375,7 @@ class Effect3447(BaseEffect):
 
     Used by:
     Ship: Marshal
+    Ship: Python
     Ship: Vargur
     """
 
@@ -10728,7 +10735,7 @@ class Effect3526(BaseEffect):
     cynosuralTheoryConsumptionBonus
 
     Used by:
-    Ships from group: Force Recon Ship (8 of 9)
+    Ships from group: Force Recon Ship (9 of 10)
     Ship: Venture
     Skill: Cynosural Field Theory
     """
@@ -13563,7 +13570,7 @@ class Effect4168(BaseEffect):
     eliteBonusCoverOpsScanProbeStrength2
 
     Used by:
-    Ships from group: Covert Ops (8 of 8)
+    Ships from group: Covert Ops (9 of 9)
     """
 
     type = 'passive'
@@ -14946,7 +14953,7 @@ class Effect4479(BaseEffect):
     shipBonusSurveyProbeExplosionDelaySkillSurveyCovertOps3
 
     Used by:
-    Ships from group: Covert Ops (5 of 8)
+    Ships from group: Covert Ops (6 of 9)
     """
 
     type = 'passive'
@@ -14965,6 +14972,7 @@ class Effect4482(BaseEffect):
     Used by:
     Ship: Imperial Navy Slicer
     Ship: Pacifier
+    Ship: Sidewinder
     """
 
     type = 'passive'
@@ -17742,6 +17750,7 @@ class Effect5131(BaseEffect):
 
     Used by:
     Ships named like: Caracal (2 of 2)
+    Ship: Cobra
     Ship: Enforcer
     """
 
@@ -17759,6 +17768,7 @@ class Effect5132(BaseEffect):
     shipPTurretFalloffBonusMC2
 
     Used by:
+    Ship: Cobra
     Ship: Enforcer
     Ship: Stabber
     """
@@ -17793,6 +17803,7 @@ class Effect5136(BaseEffect):
 
     Used by:
     Ship: Augoror Navy Issue
+    Ship: Cobra
     Ship: Enforcer
     Ship: Maller
     Ship: Omen Navy Issue
@@ -18548,7 +18559,7 @@ class Effect5259(BaseEffect):
     reconShipCloakCpuBonus1
 
     Used by:
-    Ships from group: Force Recon Ship (7 of 9)
+    Ships from group: Force Recon Ship (7 of 10)
     """
 
     runTime = 'early'
@@ -18565,7 +18576,7 @@ class Effect5260(BaseEffect):
     covertOpsCloakCpuPercentBonus1
 
     Used by:
-    Ships from group: Covert Ops (6 of 8)
+    Ships from group: Covert Ops (6 of 9)
     """
 
     runTime = 'early'
@@ -19756,6 +19767,7 @@ class Effect5382(BaseEffect):
     shipBonusMETOptimalAC2
 
     Used by:
+    Ship: Cobra
     Ship: Enforcer
     Ship: Omen Navy Issue
     """
@@ -20160,6 +20172,7 @@ class Effect5433(BaseEffect):
     Implants named like: Halcyon B Booster (5 of 5)
     Modules named like: Memetic Algorithm Bank (8 of 8)
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
+    Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
     Implant: Poteque 'Prospector' Hacking HC-905
     Skill: Hacking
@@ -20283,6 +20296,7 @@ class Effect5459(BaseEffect):
 
     Used by:
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
+    Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     """
 
     type = 'passive'
@@ -20297,7 +20311,7 @@ class Effect5460(BaseEffect):
     minigameVirusStrengthBonus
 
     Used by:
-    Ships from group: Covert Ops (7 of 8)
+    Ships from group: Covert Ops (8 of 9)
     Ships named like: Stratios (2 of 2)
     Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
     Variations of ship: Heron (3 of 3)
@@ -21070,6 +21084,7 @@ class Effect5610(BaseEffect):
     Used by:
     Ship: Marshal
     Ship: Paladin
+    Ship: Python
     """
 
     type = 'passive'
@@ -21402,8 +21417,10 @@ class Effect5647(BaseEffect):
     Used by:
     Ships from group: Expedition Frigate (2 of 2)
     Ship: Astero
+    Ship: Cobra
     Ship: Enforcer
     Ship: Pacifier
+    Ship: Sidewinder
     Ship: Victor
     Ship: Victorieux Luxury Yacht
     Ship: Virtuoso
@@ -21785,6 +21802,7 @@ class Effect5779(BaseEffect):
     Used by:
     Ship: Pacifier
     Ship: Rifter
+    Ship: Sidewinder
     """
 
     type = 'passive'
@@ -32045,6 +32063,7 @@ class Effect6865(BaseEffect):
 
     Used by:
     Ship: Pacifier
+    Ship: Sidewinder
     """
 
     type = 'passive'
@@ -32060,6 +32079,7 @@ class Effect6866(BaseEffect):
 
     Used by:
     Ship: Pacifier
+    Ship: Sidewinder
     """
 
     type = 'passive'
@@ -32114,9 +32134,9 @@ class Effect6871(BaseEffect):
 
         if bonus is not None:
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
-                                      'armorDamageAmount', bonus, stackingPenalties=True, **kwargs)
+                                      'armorDamageAmount', bonus, **kwargs)
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
-                                      'shieldBonus', bonus, stackingPenalties=True, **kwargs)
+                                      'shieldBonus', bonus, **kwargs)
 
 
 class Effect6872(BaseEffect):
@@ -32139,6 +32159,7 @@ class Effect6873(BaseEffect):
     eliteBonusReconWarpVelocity3
 
     Used by:
+    Ship: Cobra
     Ship: Enforcer
     """
 
@@ -32154,6 +32175,7 @@ class Effect6874(BaseEffect):
     shipBonusMedMissileFlightTimeCC2
 
     Used by:
+    Ship: Cobra
     Ship: Enforcer
     """
 
@@ -32173,6 +32195,7 @@ class Effect6877(BaseEffect):
 
     Used by:
     Ship: Marshal
+    Ship: Python
     """
 
     type = 'passive'
@@ -32188,6 +32211,7 @@ class Effect6878(BaseEffect):
 
     Used by:
     Ship: Marshal
+    Ship: Python
     """
 
     type = 'passive'
@@ -32204,6 +32228,7 @@ class Effect6879(BaseEffect):
 
     Used by:
     Ship: Marshal
+    Ship: Python
     """
 
     type = 'passive'
@@ -32220,6 +32245,7 @@ class Effect6880(BaseEffect):
 
     Used by:
     Ship: Marshal
+    Ship: Python
     """
 
     type = 'passive'
@@ -32240,6 +32266,7 @@ class Effect6881(BaseEffect):
 
     Used by:
     Ship: Marshal
+    Ship: Python
     """
 
     type = 'passive'
@@ -37150,7 +37177,7 @@ class Effect8151(BaseEffect):
     shipBonusCloakedVelocityRole1
 
     Used by:
-    Ships from group: Black Ops (5 of 5)
+    Ships from group: Black Ops (6 of 6)
     """
 
     type = 'passive'
@@ -38063,34 +38090,6 @@ class Effect8323(BaseEffect):
             skill='Gallente Hauler', **kwargs)
 
 
-class Effect8327(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Archaeology'), 'maxRange',
-            container.getModifiedItemAttr('rangeSkillBonus'), **kwargs)
-
-
-class Effect8328(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.requiresSkill('Archaeology'), 'virusStrength',
-            container.getModifiedItemAttr('virusStrengthBonus'), **kwargs)
-
-
 class Effect8360(BaseEffect):
     """
     shipBonusMissileReloadTimeGC2
@@ -38162,7 +38161,7 @@ class Effect8377(BaseEffect):
 
     Used by:
     Ships from group: Battleship (34 of 35)
-    Ships from group: Black Ops (5 of 5)
+    Ships from group: Black Ops (6 of 6)
     Ships from group: Marauder (4 of 4)
     """
 
@@ -38307,20 +38306,6 @@ class Effect8479(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'), 'falloff',
             container.getModifiedItemAttr('falloffBonus'), **kwargs)
-
-
-class Effect8594(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, booster, context, projectionRange, **kwargs):
-        for type in ('Em', 'Explosive', 'Kinetic', 'Thermal'):
-            fit.ship.boostItemAttr(f'armor{type}DamageResonance',
-                                   booster.getModifiedItemAttr('armorDamageResistanceBonus'), **kwargs)
 
 
 class Effect11055(BaseEffect):
@@ -40867,3 +40852,72 @@ class Effect12127(BaseEffect):
                     'Missile Launcher Heavy',
                     'Missile Launcher Rapid Light'),
                 attr, ship.getModifiedItemAttr('upwellHaulersMediumMissileFittingBonus'), **kwargs)
+
+
+class Effect12165(BaseEffect):
+    """
+    ATFrigDmgBonus
+
+    Used by:
+    Ship: Sidewinder
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+
+        # Get pilot sec status bonus directly here, instead of going through the intermediary effects
+        try:
+            capped_ss = max(-10, min(0, (ship.owner.character.secStatus)))
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            return
+        bonus = ship.getModifiedItemAttr('ATFrigDmgBonus') * capped_ss
+        fit.modules.filteredItemBoost(
+            lambda mod: (mod.item.requiresSkill('Small Energy Turret')
+                         or mod.item.requiresSkill('Small Hybrid Turret')
+                         or mod.item.requiresSkill('Small Projectile Turret')),
+            'damageMultiplier', bonus, **kwargs)
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
+                f'{dmgType}Damage', bonus, **kwargs)
+
+
+class Effect12179(BaseEffect):
+    """
+    ShipBonusAllShieldResistATCF1
+
+    Used by:
+    Ship: Sidewinder
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                'shield{}DamageResonance'.format(dmgType.capitalize()),
+                ship.getModifiedItemAttr('shipBonus3CF'),
+                skill='Caldari Frigate', **kwargs)
+
+
+class Effect12203(BaseEffect):
+    """
+    ATfrigDroneBonus
+
+    Used by:
+    Ship: Sidewinder
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in ('shieldCapacity', 'armorHP', 'hp', 'damageMultiplier'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Light Drone Operation'),
+                attr, ship.getModifiedItemAttr('ATfrigDroneBonus'), **kwargs)
