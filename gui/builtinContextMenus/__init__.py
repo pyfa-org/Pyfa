@@ -20,6 +20,7 @@ from gui.builtinContextMenus.targetProfile import editor
 from gui.builtinContextMenus import itemStats
 from gui.builtinContextMenus import itemMarketJump
 from gui.builtinContextMenus import fitSystemSecurity  # Not really an item info but want to keep it here
+from gui.builtinContextMenus import fitPilotSecurity  # Not really an item info but want to keep it here
 from gui.builtinContextMenus import shipJump
 # Generic item manipulations
 from gui.builtinContextMenus import itemRemove
