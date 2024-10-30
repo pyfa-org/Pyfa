@@ -324,6 +324,9 @@ class Market:
             "Metamorphosis"               : self.les_grp,  # Seems to be anniversary gift
             "Shapash"                     : self.les_grp,  # AT19 prize
             "Cybele"                      : self.les_grp,  # AT19 prize
+            "Sidewinder"                  : self.les_grp,  # AT20 prize
+            "Cobra"                       : self.les_grp,  # AT20 prize
+            "Python"                      : self.les_grp,  # AT20 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
