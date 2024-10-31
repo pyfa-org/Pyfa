@@ -41,6 +41,10 @@ class CargoViewDrop(wx.DropTarget):
     def OnData(self, x, y, t):
         if self.GetData():
             dragged_data = DragDropHelper.data
+
+            if dragged_data is None:
+                return t
+
             data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
