@@ -21,7 +21,7 @@ for modName in iterNamespace(__name__, __path__):
     # loop through python files, extracting update number and function, and
     # adding it to a list
     modname_tail = modName.rsplit('.', 1)[-1]
-    m = re.match("^upgrade(?P<index>\d+)$", modname_tail)
+    m = re.match(r"^upgrade(?P<index>\d+)$", modname_tail)
     if not m:
         continue
     index = int(m.group("index"))

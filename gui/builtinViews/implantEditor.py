@@ -13,8 +13,8 @@ from service.market import Market
 
 
 def stripHtml(text):
-    text = re.sub('<\s*br\s*/?\s*>', '\n', text)
-    text = re.sub('</?[^/]+?(/\s*)?>', '', text)
+    text = re.sub(r'<\s*br\s*/?\s*>', '\n', text)
+    text = re.sub(r'</?[^/]+?(/\s*)?>', '', text)
     return text
 
 

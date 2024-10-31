@@ -55,7 +55,7 @@ def version_precheck():
 
     try:
         import sqlalchemy
-        saMatch = re.match("([0-9]+).([0-9]+).([0-9]+)(([b\.])([0-9]+))?", sqlalchemy.__version__)
+        saMatch = re.match(r"([0-9]+).([0-9]+).([0-9]+)(([b\.])([0-9]+))?", sqlalchemy.__version__)
         version_block += "\nSQLAlchemy version: {}".format(sqlalchemy.__version__)
 
         if (int(saMatch.group(1)), int(saMatch.group(2)), int(saMatch.group(3))) < (1, 0, 5):

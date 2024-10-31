@@ -395,7 +395,7 @@ effectids_eos = set()
 
 with open(effects_path) as f:
     for line in f:
-        m = re.match("class Effect(\d+)\(", line)
+        m = re.match(r"class Effect(\d+)\(", line)
         if m:
             effectid = int(m.group(1))
             effectids_eos.add(effectid)
