@@ -594,7 +594,7 @@ class Effect101(BaseEffect):
     Used by:
     Modules from group: Missile Launcher Heavy (12 of 12)
     Modules from group: Missile Launcher Rocket (16 of 16)
-    Modules named like: Launcher (156 of 156)
+    Modules named like: Launcher (158 of 158)
     Structure Modules named like: Standup Launcher (7 of 7)
     """
 
@@ -1857,7 +1857,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1011)
+    Items from category: Charge (608 of 1013)
     """
 
     type = 'passive'
@@ -2433,7 +2433,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (538 of 1011)
+    Items from category: Charge (538 of 1013)
     """
 
     type = 'passive'
@@ -6477,23 +6477,6 @@ class Effect2157(BaseEffect):
                                       skill='Command Ships', **kwargs)
 
 
-class Effect2158(BaseEffect):
-    """
-    eliteBonusCommandShipLaserROFCS2
-
-    Used by:
-    Ship: Absolution
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Energy Turret'),
-                                      'speed', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
-                                      skill='Command Ships', **kwargs)
-
-
 class Effect2160(BaseEffect):
     """
     eliteBonusCommandShipHybridFalloffCS2
@@ -6746,8 +6729,10 @@ class Effect2252(BaseEffect):
     Ships named like: Stratios (2 of 2)
     Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
     Ship: Astero
+    Ship: Cenotaph
     Ship: Metamorphosis
     Ship: Rabisu
+    Ship: Tholos
     """
 
     type = 'passive'
@@ -9267,7 +9252,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (446 of 926)
+    Items from market group: Ship Equipment > Turrets & Launchers (446 of 928)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -21417,10 +21402,12 @@ class Effect5647(BaseEffect):
     Used by:
     Ships from group: Expedition Frigate (2 of 2)
     Ship: Astero
+    Ship: Cenotaph
     Ship: Cobra
     Ship: Enforcer
     Ship: Pacifier
     Ship: Sidewinder
+    Ship: Tholos
     Ship: Victor
     Ship: Victorieux Luxury Yacht
     Ship: Virtuoso
@@ -24606,6 +24593,7 @@ class Effect6174(BaseEffect):
 
     Used by:
     Ships named like: Hurricane (2 of 2)
+    Ship: Cenotaph
     Ship: Khizriel
     """
 
@@ -24626,6 +24614,7 @@ class Effect6175(BaseEffect):
     Used by:
     Ships named like: Cyclone (2 of 2)
     Ships named like: Drake (2 of 2)
+    Ship: Cenotaph
     """
 
     type = 'passive'
@@ -31595,7 +31584,7 @@ class Effect6783(BaseEffect):
 
     Used by:
     Ships from group: Carrier (4 of 4)
-    Ships from group: Combat Battlecruiser (20 of 20)
+    Ships from group: Combat Battlecruiser (21 of 21)
     Ships from group: Command Ship (8 of 8)
     Ships from group: Force Auxiliary (6 of 6)
     Ships from group: Supercarrier (6 of 6)
@@ -38164,7 +38153,6 @@ class Effect8377(BaseEffect):
     Used by:
     Ships from group: Battleship (34 of 35)
     Ships from group: Black Ops (6 of 6)
-    Ships from group: Marauder (4 of 4)
     """
 
     runTime = 'early'
@@ -40790,16 +40778,16 @@ class Effect12098(BaseEffect):
     jumpPortalPassengerBonusPercentSkill
 
     Used by:
-    Skill: Capital Jump Portal Generation
+    Ships from group: Carrier (4 of 4)
     """
 
     type = 'passive'
 
     @staticmethod
-    def handler(fit, skill, context, projectionRange, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr(
-            'conduitJumpPassengerCount',
-            skill.getModifiedItemAttr('conduitPassengerBonusPercent') * skill.level, **kwargs)
+            'conduitJumpPassengerCount', src.getModifiedItemAttr('conduitPassengerBonusPercent'),
+            skill='Capital Jump Portal Generation', **kwargs)
 
 
 class Effect12102(BaseEffect):
@@ -41067,6 +41055,23 @@ class Effect12203(BaseEffect):
             fit.drones.filteredItemBoost(
                 lambda drone: drone.item.requiresSkill('Light Drone Operation'),
                 attr, ship.getModifiedItemAttr('ATfrigDroneBonus'), **kwargs)
+
+
+class Effect12213(BaseEffect):
+    """
+    shipBonusMPTFalloffMC3
+
+    Used by:
+    Ship: Stabber Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Projectile Turret'), 'falloff',
+            ship.getModifiedItemAttr('ShipBonusMC3'), skill='Minmatar Cruiser', **kwargs)
 
 
 class Effect12214(BaseEffect):
