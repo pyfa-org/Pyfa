@@ -13,6 +13,16 @@ from service.fit import Fit
 _t = wx.GetTranslation
 
 
+GLORIFIED_PREFIX = 'Gl. '
+
+
+def nameSorter(mutaplasmid):
+    name = mutaplasmid.shortName
+    if name.startswith(GLORIFIED_PREFIX):
+        return name[len(GLORIFIED_PREFIX):], True
+    return name, False
+
+
 class ChangeItemMutation(ContextMenuSingle):
 
     def __init__(self):
@@ -45,7 +55,7 @@ class ChangeItemMutation(ContextMenuSingle):
 
         menu = rootMenu if msw else sub
 
-        for mutaplasmid in mainItem.item.mutaplasmids:
+        for mutaplasmid in sorted(mainItem.item.mutaplasmids, key=nameSorter):
             id = ContextMenuSingle.nextID()
             self.eventIDs[id] = (mutaplasmid, mainItem)
             mItem = wx.MenuItem(menu, id, mutaplasmid.shortName)
