@@ -41016,6 +41016,144 @@ class Effect12185(BaseEffect):
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Burst Jammer', attr, bonus, **kwargs)
 
 
+class Effect12188(BaseEffect):
+    """
+    shipRoleBonusSPTDamage
+
+    Used by:
+    Ship: Tholos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'damageMultiplier',
+            container.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+
+
+class Effect12189(BaseEffect):
+    """
+    shipRoleBonusMPTDamage
+
+    Used by:
+    Ship: Cenotaph
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Projectile Turret'), 'damageMultiplier',
+            container.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+
+
+class Effect12190(BaseEffect):
+    """
+    shipRoleBonusRocketDamage
+
+    Used by:
+    Ship: Tholos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for damageType in ('em', 'explosive', 'kinetic', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Rockets'), f'{damageType}Damage',
+                ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
+
+
+class Effect12191(BaseEffect):
+    """
+    shipRoleBonusHAMDamage
+
+    Used by:
+    Ship: Cenotaph
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for damageType in ('em', 'explosive', 'kinetic', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'), f'{damageType}Damage',
+                ship.getModifiedItemAttr('shipBonusRole2'), **kwargs)
+
+
+class Effect12192(BaseEffect):
+    """
+    stasisWebifierResistanceBonusMD1
+
+    Used by:
+    Ship: Tholos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'stasisWebifierResistance', ship.getModifiedItemAttr('shipBonusMD1'),
+            skill='Minmatar Destroyer', **kwargs)
+
+
+class Effect12193(BaseEffect):
+    """
+    stasisWebifierResistanceBonusMBC1
+
+    Used by:
+    Ship: Cenotaph
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'stasisWebifierResistance', ship.getModifiedItemAttr('shipBonusMBC1'),
+            skill='Minmatar Battlecruiser', **kwargs)
+
+
+class Effect12194(BaseEffect):
+    """
+    shipBonusShieldBoostCD1
+
+    Used by:
+    Ship: Tholos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer', **kwargs)
+
+
+class Effect12195(BaseEffect):
+    """
+    shipBonusShieldBoostCBC1
+
+    Used by:
+    Ship: Cenotaph
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('roleBonusCBC'), **kwargs)
+
+
 class Effect12202(BaseEffect):
     """
     ATcruiserTackleBonus2
