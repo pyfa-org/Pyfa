@@ -41228,3 +41228,88 @@ class Effect12214(BaseEffect):
             fit.drones.filteredItemBoost(
                 lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                 attr, ship.getModifiedItemAttr('ATcruiserDroneBonus'), **kwargs)
+
+
+class Effect12217(BaseEffect):
+    """
+    skillDotMaxHPPercentagePerTickBonus
+
+    Used by:
+    Skill: Breacher Pod Launcher Operation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Breacher Pod Launcher Operation'), 'dotMaxHPPercentagePerTick',
+            skill.getModifiedItemAttr('dotMaxHPPercentagePerTickBonus') * skill.level, **kwargs)
+
+
+class Effect12218(BaseEffect):
+    """
+    skillDotMaxDamagePerTickBonus
+
+    Used by:
+    Skill: Breacher Pod Clone Efficacity
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Breacher Pod Launcher Operation'), 'dotMaxDamagePerTick',
+            skill.getModifiedItemAttr('dotMaxDamagePerTickBonus') * skill.level, **kwargs)
+
+
+class Effect12219(BaseEffect):
+    """
+    skillDotPodVelocityBonus
+
+    Used by:
+    Skill: Breacher Pod Projection
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Breacher Pod Launcher Operation'), 'maxVelocity',
+            skill.getModifiedItemAttr('speedFactor') * skill.level, **kwargs)
+
+
+class Effect12220(BaseEffect):
+    """
+    skillDotLauncherRoFBonus
+
+    Used by:
+    Skill: Breacher Pod Rapid Firing
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Breacher Pod Launcher Operation'),
+            'speed', skill.getModifiedItemAttr('rofBonus') * skill.level, **kwargs)
+
+
+class Effect12221(BaseEffect):
+    """
+    skillDotDurationBonus
+
+    Used by:
+    Skill: Breacher Pod Clone Longevity
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Breacher Pod Launcher Operation'), 'dotDuration',
+            skill.getModifiedItemAttr('durationBonus') * skill.level, **kwargs)
