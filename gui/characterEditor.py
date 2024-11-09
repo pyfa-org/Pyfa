@@ -115,7 +115,7 @@ class CharacterEntityEditor(EntityEditor):
         sChar = Character.getInstance()
 
         if entity.alphaCloneID:
-            trimmed_name = re.sub('[ \(\u03B1\)]+$', '', name)
+            trimmed_name = re.sub('[ \\(\u03B1\\)]+$', '', name)
             sChar.rename(entity, trimmed_name)
         else:
             sChar.rename(entity, name)
