@@ -93,8 +93,6 @@ class Miscellanea(ViewColumn):
                 text = "{} dmg".format(formatAmount(dmg, 3, 0, 6))
                 tooltip = "Raw damage done"
             return text, tooltip
-
-            pass
         elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
@@ -809,6 +807,16 @@ class Miscellanea(ViewColumn):
                     return "", None
                 text = "{}".format(formatAmount(scanStr, 4, 0, 3))
                 tooltip = "Scan strength at {} AU scan range".format(formatAmount(baseRange, 3, 0, 0))
+                return text, tooltip
+            elif chargeGroup in ("SCARAB Breacher Pods",):
+                duration = stuff.getModifiedChargeAttr("dotDuration") / 1000
+                dmgAbs = stuff.getModifiedChargeAttr("dotMaxDamagePerTick") * duration
+                dmgRel = stuff.getModifiedChargeAttr("dotMaxHPPercentagePerTick") * duration
+                text = "{}/{}% over {}s".format(
+                    formatAmount(dmgAbs, 3, 0, 6),
+                    formatAmount(dmgRel, 3, 0, 6),
+                    formatAmount(duration, 0, 0, 0))
+                tooltip = "Pure damage done over time, minimum of absolute / relative"
                 return text, tooltip
             else:
                 return "", None
