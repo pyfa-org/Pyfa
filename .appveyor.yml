@@ -17,7 +17,7 @@ for:
     # init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update --allow-releaseinfo-change
       # AppImage dependencies
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
       # Preparation script dependencies
