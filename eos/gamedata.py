@@ -345,6 +345,7 @@ class Item(EqBase):
         500020: "serpentis",
         500026: "triglavian",
         500027: "upwell",
+        500029: "deathless",
     }
 
     @property
