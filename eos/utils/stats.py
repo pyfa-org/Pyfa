@@ -18,6 +18,8 @@
 # ===============================================================================
 
 
+from typing import NamedTuple
+
 from eos.utils.float import floatUnerr
 from utils.repr import makeReprStr
 
@@ -26,14 +28,20 @@ def _t(x):
     return x
 
 
+class BreacherInfo(NamedTuple):
+    absolute: float
+    relative: float
+
+
 class DmgTypes:
     """Container for damage data stats."""
 
-    def __init__(self, em, thermal, kinetic, explosive):
+    def __init__(self, em, thermal, kinetic, explosive, breacher=None):
         self.em = em
         self.thermal = thermal
         self.kinetic = kinetic
         self.explosive = explosive
+        self.breacher = [] if breacher is None else breacher
         self._calcTotal()
 
     # Iterator is needed to support tuple-style unpacking
