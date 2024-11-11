@@ -472,9 +472,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             return {0: DmgTypes(0, 0, 0, 0)}
         if self.__baseVolley is None:
             self.__baseVolley = {}
-            if self.charge and 'dotMissileLaunching' in self.charge.item.effects:
+            if self.charge and 'dotMissileLaunching' in self.charge.effects:
                 dmgDelay = 1
-                subcycles = math.floor(self.getModifiedChargeAttr("dotDuration", 0))
+                subcycles = math.floor(self.getModifiedChargeAttr("dotDuration", 0) / 1000)
                 breacher_info = BreacherInfo(
                     absolute=self.getModifiedChargeAttr("dotMaxDamagePerTick", 0),
                     relative=self.getModifiedChargeAttr("dotMaxHPPercentagePerTick", 0))
