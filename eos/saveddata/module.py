@@ -479,7 +479,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                     absolute=self.getModifiedChargeAttr("dotMaxDamagePerTick", 0),
                     relative=self.getModifiedChargeAttr("dotMaxHPPercentagePerTick", 0))
                 for i in range(subcycles):
-                    self.__baseVolley[dmgDelay + i] = DmgTypes(0, 0, 0, 0, breacher=breacher_info)
+                    self.__baseVolley[dmgDelay + i] = DmgTypes(0, 0, 0, 0, breachers=[breacher_info])
             else:
                 dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
                 dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
@@ -516,7 +516,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 thermal=volleyValue.thermal * spoolMultiplier * (1 - getattr(targetProfile, "thermalAmount", 0)),
                 kinetic=volleyValue.kinetic * spoolMultiplier * (1 - getattr(targetProfile, "kineticAmount", 0)),
                 explosive=volleyValue.explosive * spoolMultiplier * (1 - getattr(targetProfile, "explosiveAmount", 0)),
-                breacher=volleyValue.breacher)
+                breachers=volleyValue.breachers)
         return adjustedVolley
 
     def getVolley(self, spoolOptions=None, targetProfile=None, ignoreState=False):
