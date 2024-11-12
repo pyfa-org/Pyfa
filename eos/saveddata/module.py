@@ -527,11 +527,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
 
     def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False, getSpreadDPS=False):
         dmgDuringCycle = DmgTypes.default()
-        # Special hack for breachers, since those are DoT and work independently of gun cycle
-        if self.isBreacher:
-            cycleParams = CycleInfo(activeTime=1000, inactiveTime=0, quantity=math.inf, isInactivityReload=False)
-        else:
-            cycleParams = self.getCycleParameters()
+        cycleParams = self.getCycleParametersForDps()
         if cycleParams is None:
             return dmgDuringCycle
         volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
@@ -964,6 +960,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                         and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
                     effect.handler(fit, self, context, projectionRange, effect=effect)
+
+    def getCycleParametersForDps(self, reloadOverride=None):
+        # Special hack for breachers, since those are DoT and work independently of gun cycle
+        if self.isBreacher:
+            return CycleInfo(activeTime=1000, inactiveTime=0, quantity=math.inf, isInactivityReload=False)
+        else:
+            return self.getCycleParameters(reloadOverride=reloadOverride)
 
     def getCycleParameters(self, reloadOverride=None):
         """Copied from new eos as well"""

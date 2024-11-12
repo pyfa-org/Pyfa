@@ -98,6 +98,8 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                     tgt=tgt,
                     distance=distance,
                     tgtSigRadius=tgtSigRadius)
+        elif mod.isBreacher:
+            applicationMap[mod] = 1 if inLockRange else 0
     for drone in src.item.activeDronesIter():
         if not drone.isDealingDamage():
             continue

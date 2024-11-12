@@ -22,7 +22,7 @@ from copy import copy
 
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
-from eos.utils.stats import DmgTypes
+from eos.utils.stats import DmgTypes, DmgInflicted
 from graphs.data.base import FitDataCache
 
 
@@ -170,13 +170,13 @@ class TimeCache(FitDataCache):
         def addDmg(ddKey, addedTime, addedDmg):
             if addedDmg.total == 0:
                 return
-            intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
+            intCacheDmg.setdefault(ddKey, {})[addedTime] = DmgInflicted.from_dmg_types(addedDmg)
 
         # Modules
         for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
-            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            cycleParams = mod.getCycleParametersForDps(reloadOverride=True)
             if cycleParams is None:
                 continue
             currentTime = 0
@@ -184,9 +184,12 @@ class TimeCache(FitDataCache):
             for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleVolleys = []
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+
                 for volleyTimeMs, volley in volleyParams.items():
                     cycleVolleys.append(volley)
                     addDmg(mod, currentTime + volleyTimeMs / 1000, volley)
+                    if mod.isBreacher:
+                        break
                 addDpsVolley(mod, currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
                 if inactiveTimeMs > 0:
                     nonstopCycles = 0

@@ -205,6 +205,30 @@ class DmgTypes:
         return value
 
 
+class DmgInflicted(DmgTypes):
+
+    @classmethod
+    def from_dmg_types(cls, dmg_types):
+        return cls(em=dmg_types.em, thermal=dmg_types.thermal, kinetic=dmg_types.kinetic, explosive=dmg_types.explosive, breacher=dmg_types.breacher)
+
+    def __add__(self, other):
+        return type(self)(
+            em=self.em + other.em,
+            thermal=self.thermal + other.thermal,
+            kinetic=self.kinetic + other.kinetic,
+            explosive=self.explosive + other.explosive,
+            breacher=self.breacher + other.breacher)
+
+    def __iadd__(self, other):
+        self.em += other.em
+        self.thermal += other.thermal
+        self.kinetic += other.kinetic
+        self.explosive += other.explosive
+        self.breacher += other.breacher
+        self._calcTotal()
+        return self
+
+
 class RRTypes:
     """Container for tank data stats."""
 
