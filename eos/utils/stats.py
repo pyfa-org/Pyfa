@@ -106,8 +106,12 @@ class DmgTypes:
         yield self.thermal
         yield self.kinetic
         yield self.explosive
-        yield self.breacher
+        yield self.pure
         yield self.total
+
+    @property
+    def pure(self):
+        return self.breacher
 
     def __eq__(self, other):
         if not isinstance(other, DmgTypes):
@@ -189,8 +193,11 @@ class DmgTypes:
         return makeReprStr(self, spec=['em', 'thermal', 'kinetic', 'explosive', 'breacher', 'total'])
 
     @staticmethod
-    def names(short=None, postProcessor=None):
-        value = [_t('em'), _t('th'), _t('kin'), _t('exp'), _t('breacher')] if short else [_t('em'), _t('thermal'), _t('kinetic'), _t('explosive'), _t('breacher')]
+    def names(short=None, postProcessor=None, includePure=False):
+
+        value = [_t('em'), _t('th'), _t('kin'), _t('exp')] if short else [_t('em'), _t('thermal'), _t('kinetic'), _t('explosive')]
+        if includePure:
+            value += [_t('pure')]
 
         if postProcessor:
             value = [postProcessor(x) for x in value]
