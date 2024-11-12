@@ -176,6 +176,7 @@ class FirepowerViewFull(StatsView):
                 for dmgType in normal.names():
                     val = getattr(normal, dmgType, None)
                     if val:
+                        dmgType = {'breacher': 'pure'}.get(dmgType, dmgType)
                         lines.append("{}{}: {}%".format(
                                 "  " if hasSpool else "",
                                 _t(dmgType).capitalize(),

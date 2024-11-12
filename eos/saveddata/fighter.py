@@ -206,7 +206,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     em=volleyValue.em * (1 - getattr(targetProfile, "emAmount", 0)),
                     thermal=volleyValue.thermal * (1 - getattr(targetProfile, "thermalAmount", 0)),
                     kinetic=volleyValue.kinetic * (1 - getattr(targetProfile, "kineticAmount", 0)),
-                    explosive=volleyValue.explosive * (1 - getattr(targetProfile, "explosiveAmount", 0)))
+                    explosive=volleyValue.explosive * (1 - getattr(targetProfile, "explosiveAmount", 0)),
+                    breacher=volleyValue.breacher)
         return adjustedVolley
 
     def getVolleyPerEffect(self, targetProfile=None):
@@ -218,28 +219,16 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def getVolley(self, targetProfile=None):
         volleyParams = self.getVolleyParametersPerEffect(targetProfile=targetProfile)
-        em = 0
-        therm = 0
-        kin = 0
-        exp = 0
+        volley = DmgTypes.default()
         for volleyData in volleyParams.values():
-            em += volleyData[0].em
-            therm += volleyData[0].thermal
-            kin += volleyData[0].kinetic
-            exp += volleyData[0].explosive
-        return DmgTypes(em, therm, kin, exp)
+            volley += volleyData[0]
+        return volley
 
     def getDps(self, targetProfile=None):
-        em = 0
-        thermal = 0
-        kinetic = 0
-        explosive = 0
-        for dps in self.getDpsPerEffect(targetProfile=targetProfile).values():
-            em += dps.em
-            thermal += dps.thermal
-            kinetic += dps.kinetic
-            explosive += dps.explosive
-        return DmgTypes(em=em, thermal=thermal, kinetic=kinetic, explosive=explosive)
+        dps = DmgTypes.default()
+        for subdps in self.getDpsPerEffect(targetProfile=targetProfile).values():
+            dps += subdps
+        return dps
 
     def getDpsPerEffect(self, targetProfile=None):
         if not self.active or self.amount <= 0:

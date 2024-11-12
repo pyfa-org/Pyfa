@@ -29,7 +29,7 @@ from eos.saveddata.mutatedMixin import MutatedMixin, MutaError
 from eos.saveddata.mutator import MutatorDrone
 from eos.utils.cycles import CycleInfo
 from eos.utils.default import DEFAULT
-from eos.utils.stats import DmgTypes, RRTypes
+from eos.utils.stats import BaseVolleyStats, DmgTypes, RRTypes
 
 
 pyfalog = Logger(__name__)
@@ -161,20 +161,16 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
 
     def getVolleyParameters(self, targetProfile=None):
         if not self.dealsDamage or self.amountActive <= 0:
-            return {0: DmgTypes(0, 0, 0, 0)}
+            return {0: DmgTypes.default()}
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.hasAmmo else self.getModifiedItemAttr
             dmgMult = self.amountActive * (self.getModifiedItemAttr("damageMultiplier", 1))
-            self.__baseVolley = DmgTypes(
+            self.__baseVolley = BaseVolleyStats(
                 em=(dmgGetter("emDamage", 0)) * dmgMult,
                 thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                 kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
                 explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
-        volley = DmgTypes(
-            em=self.__baseVolley.em * (1 - getattr(targetProfile, "emAmount", 0)),
-            thermal=self.__baseVolley.thermal * (1 - getattr(targetProfile, "thermalAmount", 0)),
-            kinetic=self.__baseVolley.kinetic * (1 - getattr(targetProfile, "kineticAmount", 0)),
-            explosive=self.__baseVolley.explosive * (1 - getattr(targetProfile, "explosiveAmount", 0)))
+        volley = DmgTypes.from_base_and_profile(base=self.__baseVolley, tgtProfile=targetProfile)
         return {0: volley}
 
     def getVolley(self, targetProfile=None):
@@ -183,16 +179,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
     def getDps(self, targetProfile=None):
         volley = self.getVolley(targetProfile=targetProfile)
         if not volley:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes.default()
         cycleParams = self.getCycleParameters()
         if cycleParams is None:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes.default()
         dpsFactor = 1 / (cycleParams.averageTime / 1000)
         dps = DmgTypes(
             em=volley.em * dpsFactor,
             thermal=volley.thermal * dpsFactor,
             kinetic=volley.kinetic * dpsFactor,
-            explosive=volley.explosive * dpsFactor)
+            explosive=volley.explosive * dpsFactor,
+            breacher=volley.breacher * dpsFactor)
         return dps
 
     def isRemoteRepping(self, ignoreState=False):

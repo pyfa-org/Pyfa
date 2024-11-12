@@ -18,6 +18,7 @@
 # ===============================================================================
 
 
+import math
 from typing import NamedTuple
 
 from eos.utils.float import floatUnerr
@@ -32,29 +33,12 @@ class BreacherInfo(NamedTuple):
     absolute: float
     relative: float
 
-    def __mul__(self, mul):
-        return type(self)(absolute=self.absolute * mul, relative=self.relative * mul)
 
-    def __imul__(self, mul):
-        if mul == 1:
-            return
-        self.absolute *= mul
-        self.relative *= mul
-        return self
-
-    def __truediv__(self, div):
-        return type(self)(absolute=self.absolute / div, relative=self.relative / div)
-
-    def __itruediv__(self, div):
-        if div == 1:
-            return
-        self.absolute /= div
-        self.relative /= div
-        return self
-
-
-class DmgTypes:
-    """Container for damage data stats."""
+class BaseVolleyStats:
+    """
+    Container for volley stats, which stores breacher pod data
+    in raw form, before application of it to target profile.
+    """
 
     def __init__(self, em, thermal, kinetic, explosive, breachers=None):
         self.em = em
@@ -62,7 +46,59 @@ class DmgTypes:
         self.kinetic = kinetic
         self.explosive = explosive
         self.breachers = [] if breachers is None else breachers
+
+    @classmethod
+    def default(cls):
+        return cls(0, 0, 0, 0)
+
+    def __eq__(self, other):
+        if not isinstance(other, BaseVolleyStats):
+            return NotImplemented
+        # Round for comparison's sake because often damage profiles are
+        # generated from data which includes float errors
+        return (
+                floatUnerr(self.em) == floatUnerr(other.em) and
+                floatUnerr(self.thermal) == floatUnerr(other.thermal) and
+                floatUnerr(self.kinetic) == floatUnerr(other.kinetic) and
+                floatUnerr(self.explosive) == floatUnerr(other.explosive) and
+                sorted(self.breachers) == sorted(other.breachers))
+
+    def __bool__(self):
+        return any((
+            self.em, self.thermal, self.kinetic, self.explosive,
+            any(b.absolute or b.relative for b in self.breachers)))
+
+    def __repr__(self):
+        class_name = type(self).__name__
+        return (f'<{class_name}(em={self.em}, thermal={self.thermal}, kinetic={self.kinetic}, '
+                f'explosive={self.explosive}, breachers={len(self.breachers)})>')
+
+
+class DmgTypes:
+    """Container for damage data stats."""
+
+    def __init__(self, em, thermal, kinetic, explosive, breacher):
+        self.em = em
+        self.thermal = thermal
+        self.kinetic = kinetic
+        self.explosive = explosive
+        self.breacher = breacher
         self._calcTotal()
+
+    @classmethod
+    def default(cls):
+        return cls(0, 0, 0, 0, 0)
+
+    @classmethod
+    def from_base_and_profile(cls, base, tgtProfile, mult=1):
+        return cls(
+            em=base.em * mult * (1 - getattr(tgtProfile, "emAmount", 0)),
+            thermal=base.thermal * mult * (1 - getattr(tgtProfile, "thermalAmount", 0)),
+            kinetic=base.kinetic * mult * (1 - getattr(tgtProfile, "kineticAmount", 0)),
+            explosive=base.explosive * mult * (1 - getattr(tgtProfile, "explosiveAmount", 0)),
+            breacher=max(
+                (min(b.absolute, b.relative * getattr(tgtProfile, "hp", math.inf)) for b in base.breachers),
+                default=0) * mult)
 
     # Iterator is needed to support tuple-style unpacking
     def __iter__(self):
@@ -70,6 +106,7 @@ class DmgTypes:
         yield self.thermal
         yield self.kinetic
         yield self.explosive
+        yield self.breacher
         yield self.total
 
     def __eq__(self, other):
@@ -82,15 +119,16 @@ class DmgTypes:
                 floatUnerr(self.thermal) == floatUnerr(other.thermal) and
                 floatUnerr(self.kinetic) == floatUnerr(other.kinetic) and
                 floatUnerr(self.explosive) == floatUnerr(other.explosive) and
+                floatUnerr(self.breacher) == floatUnerr(other.breacher) and
                 floatUnerr(self.total) == floatUnerr(other.total))
 
     def __bool__(self):
         return any((
-            self.em, self.thermal, self.kinetic,
-            self.explosive, self.total))
+            self.em, self.thermal, self.kinetic, self.explosive,
+            self.breacher, self.total))
 
     def _calcTotal(self):
-        self.total = self.em + self.thermal + self.kinetic + self.explosive
+        self.total = self.em + self.thermal + self.kinetic + self.explosive + self.breacher
 
     def __add__(self, other):
         return type(self)(
@@ -98,14 +136,14 @@ class DmgTypes:
             thermal=self.thermal + other.thermal,
             kinetic=self.kinetic + other.kinetic,
             explosive=self.explosive + other.explosive,
-            breachers=self.breachers + other.breachers)
+            breacher=max(self.breacher, other.breacher))
 
     def __iadd__(self, other):
         self.em += other.em
         self.thermal += other.thermal
         self.kinetic += other.kinetic
         self.explosive += other.explosive
-        self.breachers += other.breachers
+        self.breacher = max(self.breacher, other.breacher)
         self._calcTotal()
         return self
 
@@ -115,7 +153,7 @@ class DmgTypes:
             thermal=self.thermal * mul,
             kinetic=self.kinetic * mul,
             explosive=self.explosive * mul,
-            breachers=[b * mul for b in self.breachers])
+            breacher=self.breacher * mul)
 
     def __imul__(self, mul):
         if mul == 1:
@@ -124,7 +162,7 @@ class DmgTypes:
         self.thermal *= mul
         self.kinetic *= mul
         self.explosive *= mul
-        self.breachers = [b * mul for b in self.breachers]
+        self.breacher *= mul
         self._calcTotal()
         return self
 
@@ -134,7 +172,7 @@ class DmgTypes:
             thermal=self.thermal / div,
             kinetic=self.kinetic / div,
             explosive=self.explosive / div,
-            breachers=[b / div for b in self.breachers])
+            breacher=self.breacher / div)
 
     def __itruediv__(self, div):
         if div == 1:
@@ -143,18 +181,16 @@ class DmgTypes:
         self.thermal /= div
         self.kinetic /= div
         self.explosive /= div
-        self.breachers = [b / div for b in self.breachers]
+        self.breacher /= div
         self._calcTotal()
         return self
 
     def __repr__(self):
-        class_name = type(self).__name__
-        return (f'<{class_name}(em={self.em}, thermal={self.thermal}, kinetic={self.kinetic}, '
-                f'explosive={self.explosive}, breachers={len(self.breachers)}, total={self.total})>')
+        return makeReprStr(self, spec=['em', 'thermal', 'kinetic', 'explosive', 'breacher', 'total'])
 
     @staticmethod
     def names(short=None, postProcessor=None):
-        value = [_t('em'), _t('th'), _t('kin'), _t('exp')] if short else [_t('em'), _t('thermal'), _t('kinetic'), _t('explosive')]
+        value = [_t('em'), _t('th'), _t('kin'), _t('exp'), _t('breacher')] if short else [_t('em'), _t('thermal'), _t('kinetic'), _t('explosive'), _t('breacher')]
 
         if postProcessor:
             value = [postProcessor(x) for x in value]

@@ -1688,8 +1688,8 @@ class Fit:
         self.__droneWaste = droneWaste
 
     def calculateWeaponDmgStats(self, spoolOptions):
-        weaponVolley = DmgTypes(0, 0, 0, 0)
-        weaponDps = DmgTypes(0, 0, 0, 0)
+        weaponVolley = DmgTypes.default()
+        weaponDps = DmgTypes.default()
 
         for mod in self.modules:
             weaponVolley += mod.getVolley(spoolOptions=spoolOptions, targetProfile=self.targetProfile)
@@ -1699,8 +1699,8 @@ class Fit:
         self.__weaponDpsMap[spoolOptions] = weaponDps
 
     def calculateDroneDmgStats(self):
-        droneVolley = DmgTypes(0, 0, 0, 0)
-        droneDps = DmgTypes(0, 0, 0, 0)
+        droneVolley = DmgTypes.default()
+        droneDps = DmgTypes.default()
 
         for drone in self.drones:
             droneVolley += drone.getVolley(targetProfile=self.targetProfile)

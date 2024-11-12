@@ -116,7 +116,7 @@ class FighterAbility:
 
     def getVolley(self, targetProfile=None):
         if not self.dealsDamage or not self.active:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes.default()
         if self.attrPrefix == "fighterAbilityLaunchBomb":
             em = self.fighter.getModifiedChargeAttr("emDamage", 0)
             therm = self.fighter.getModifiedChargeAttr("thermalDamage", 0)
@@ -132,20 +132,22 @@ class FighterAbility:
             em=em * dmgMult * (1 - getattr(targetProfile, "emAmount", 0)),
             thermal=therm * dmgMult * (1 - getattr(targetProfile, "thermalAmount", 0)),
             kinetic=kin * dmgMult * (1 - getattr(targetProfile, "kineticAmount", 0)),
-            explosive=exp * dmgMult * (1 - getattr(targetProfile, "explosiveAmount", 0)))
+            explosive=exp * dmgMult * (1 - getattr(targetProfile, "explosiveAmount", 0)),
+            breacher=0)
         return volley
 
     def getDps(self, targetProfile=None, cycleTimeOverride=None):
         volley = self.getVolley(targetProfile=targetProfile)
         if not volley:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes.default()
         cycleTime = cycleTimeOverride if cycleTimeOverride is not None else self.cycleTime
         dpsFactor = 1 / (cycleTime / 1000)
         dps = DmgTypes(
             em=volley.em * dpsFactor,
             thermal=volley.thermal * dpsFactor,
             kinetic=volley.kinetic * dpsFactor,
-            explosive=volley.explosive * dpsFactor)
+            explosive=volley.explosive * dpsFactor,
+            breacher=volley.breacher * dpsFactor)
         return dps
 
     def clear(self):
