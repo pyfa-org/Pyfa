@@ -117,7 +117,7 @@ class TimeCache(FitDataCache):
                     pointData[timeStart] = (dps, volley)
                 # Gap between items
                 elif floatUnerr(prevTimeEnd) < floatUnerr(timeStart):
-                    pointData[prevTimeEnd] = (DmgTypes(0, 0, 0, 0), DmgTypes(0, 0, 0, 0))
+                    pointData[prevTimeEnd] = (DmgTypes.default(), DmgTypes.default())
                     pointData[timeStart] = (dps, volley)
                 # Changed value
                 elif dps != prevDps or volley != prevVolley:
@@ -157,7 +157,7 @@ class TimeCache(FitDataCache):
         def addDpsVolley(ddKey, addedTimeStart, addedTimeFinish, addedVolleys):
             if not addedVolleys:
                 return
-            volleySum = sum(addedVolleys, DmgTypes(0, 0, 0, 0))
+            volleySum = sum(addedVolleys, DmgTypes.default())
             if volleySum.total > 0:
                 addedDps = volleySum / (addedTimeFinish - addedTimeStart)
                 # We can take "just best" volley, no matter target resistances, because all

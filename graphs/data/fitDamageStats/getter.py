@@ -28,7 +28,7 @@ from .calc.projected import getScramRange, getScrammables, getTackledSpeed, getS
 
 
 def applyDamage(dmgMap, applicationMap, tgtResists):
-    total = DmgTypes(em=0, thermal=0, kinetic=0, explosive=0)
+    total = DmgTypes.default()
     for key, dmg in dmgMap.items():
         total += dmg * applicationMap.get(key, 0)
     if not GraphSettings.getInstance().get('ignoreResists'):
@@ -37,7 +37,8 @@ def applyDamage(dmgMap, applicationMap, tgtResists):
             em=total.em * (1 - emRes),
             thermal=total.thermal * (1 - thermRes),
             kinetic=total.kinetic * (1 - kinRes),
-            explosive=total.explosive * (1 - exploRes))
+            explosive=total.explosive * (1 - exploRes),
+            breacher=total.breacher)
     return total
 
 
