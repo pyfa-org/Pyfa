@@ -27,7 +27,7 @@ from .calc.application import getApplicationPerKey
 from .calc.projected import getScramRange, getScrammables, getTackledSpeed, getSigRadiusMult
 
 
-def applyDamage(dmgMap, applicationMap, tgtResists):
+def applyDamage(dmgMap, applicationMap, tgtResists, tgtFullHp):
     total = DmgTypes.default()
     for key, dmg in dmgMap.items():
         total += dmg * applicationMap.get(key, 0)
@@ -145,7 +145,8 @@ class XDistanceMixin(SmoothPointGetter):
             'srcScramRange': getScramRange(src=src) if applyProjected else None,
             'tgtScrammables': getScrammables(tgt=tgt) if applyProjected else (),
             'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
-            'tgtResists': tgt.getResists()}
+            'tgtResists': tgt.getResists(),
+            'tgtFullHp': tgt.getFullHp()}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         distance = x
@@ -187,7 +188,8 @@ class XDistanceMixin(SmoothPointGetter):
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
             applicationMap=applicationMap,
-            tgtResists=commonData['tgtResists']).total
+            tgtResists=commonData['tgtResists'],
+            tgtFullHp=commonData['tgtFullHp']).total
         return y
 
 
@@ -242,14 +244,17 @@ class XTimeMixin(PointGetter):
         self._prepareTimeCache(src=src, maxTime=maxTime)
         timeCache = self._getTimeCacheData(src=src)
         applicationMap = self._prepareApplicationMap(miscParams=miscParams, src=src, tgt=tgt)
-        tgtResists = tgt.getResists()
         # Custom iteration for time graph to show all data points
         currentDmg = None
         currentTime = None
         for currentTime in sorted(timeCache):
             prevDmg = currentDmg
             currentDmgData = timeCache[currentTime]
-            currentDmg = applyDamage(dmgMap=currentDmgData, applicationMap=applicationMap, tgtResists=tgtResists).total
+            currentDmg = applyDamage(
+                dmgMap=currentDmgData,
+                applicationMap=applicationMap,
+                tgtResists=tgt.getResists(),
+                tgtFullHp=tgt.getFullHp()).total
             if currentTime < minTime:
                 continue
             # First set of data points
@@ -295,7 +300,11 @@ class XTimeMixin(PointGetter):
         self._prepareTimeCache(src=src, maxTime=time)
         dmgData = self._getTimeCacheDataPoint(src=src, time=time)
         applicationMap = self._prepareApplicationMap(miscParams=miscParams, src=src, tgt=tgt)
-        y = applyDamage(dmgMap=dmgData, applicationMap=applicationMap, tgtResists=tgt.getResists()).total
+        y = applyDamage(
+            dmgMap=dmgData,
+            applicationMap=applicationMap,
+            tgtResists=tgt.getResists(),
+            tgtFullHp=tgt.getFullHp()).total
         return y
 
 
@@ -311,7 +320,8 @@ class XTgtSpeedMixin(SmoothPointGetter):
         return {
             'applyProjected': GraphSettings.getInstance().get('applyProjected'),
             'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
-            'tgtResists': tgt.getResists()}
+            'tgtResists': tgt.getResists(),
+            'tgtFullHp': tgt.getFullHp()}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         tgtSpeed = x
@@ -354,7 +364,8 @@ class XTgtSpeedMixin(SmoothPointGetter):
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
             applicationMap=applicationMap,
-            tgtResists=commonData['tgtResists']).total
+            tgtResists=commonData['tgtResists'],
+            tgtFullHp=commonData['tgtFullHp']).total
         return y
 
 
@@ -399,7 +410,8 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
             'tgtSpeed': tgtSpeed,
             'tgtSigMult': tgtSigMult,
             'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
-            'tgtResists': tgt.getResists()}
+            'tgtResists': tgt.getResists(),
+            'tgtFullHp': tgt.getFullHp()}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         tgtSigRadius = x
@@ -415,7 +427,8 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
             applicationMap=applicationMap,
-            tgtResists=commonData['tgtResists']).total
+            tgtResists=commonData['tgtResists'],
+            tgtFullHp=commonData['tgtFullHp']).total
         return y
 
 
