@@ -41151,7 +41151,7 @@ class Effect12195(BaseEffect):
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
-            src.getModifiedItemAttr('roleBonusCBC'), **kwargs)
+            src.getModifiedItemAttr('shipBonusCBC1'), skill='Caldari Battlecruiser', **kwargs)
 
 
 class Effect12202(BaseEffect):
