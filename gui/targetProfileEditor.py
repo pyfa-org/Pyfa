@@ -123,7 +123,7 @@ class TargetProfileEditor(AuxiliaryFrame):
     ATTRIBUTES = OrderedDict([
         ('maxVelocity', (_t('Maximum speed'), 'm/s')),
         ('signatureRadius', (_t('Signature radius\nLeave blank for infinitely big value'), 'm')),
-        ('radius', (_t('Radius'), 'm')),
+        ('radius', (_t('Radius\nThe radius of the sphere that represents a ship/drone in space. Affects range calculations.'), 'm')),
         ('hp', (_t('Total HP\nLeave blank for infinitely big value'), 'hp'))])
 
     def __init__(self, parent):
