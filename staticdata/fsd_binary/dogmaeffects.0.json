@@ -96607,7 +96607,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 68, 
-        "modifyingAttributeID": 2043, 
+        "modifyingAttributeID": 743, 
         "operation": 6, 
         "skillTypeID": 3416
       }
