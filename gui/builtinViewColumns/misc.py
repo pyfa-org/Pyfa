@@ -810,13 +810,16 @@ class Miscellanea(ViewColumn):
                 return text, tooltip
             elif chargeGroup in ("SCARAB Breacher Pods",):
                 duration = stuff.getModifiedChargeAttr("dotDuration") / 1000
-                dmgAbs = stuff.getModifiedChargeAttr("dotMaxDamagePerTick") * duration
-                dmgRel = stuff.getModifiedChargeAttr("dotMaxHPPercentagePerTick") * duration
+                dmgAbs = stuff.getModifiedChargeAttr("dotMaxDamagePerTick")
+                dmgRel = stuff.getModifiedChargeAttr("dotMaxHPPercentagePerTick")
                 text = "{}/{}% over {}s".format(
-                    formatAmount(dmgAbs, 3, 0, 6),
-                    formatAmount(dmgRel, 3, 0, 6),
+                    formatAmount(dmgAbs * duration, 3, 0, 6),
+                    formatAmount(dmgRel * duration, 3, 0, 6),
                     formatAmount(duration, 0, 0, 0))
-                tooltip = "Pure damage done over time, minimum of absolute / relative"
+                fullDmgHp = dmgAbs / (dmgRel / 100)
+                tooltip = (
+                    'Pure damage inflicted over time, minimum of absolute / relative\n'
+                    'Full DPS from {} target HP').format(formatAmount(fullDmgHp, 3, 0, 6))
                 return text, tooltip
             else:
                 return "", None
