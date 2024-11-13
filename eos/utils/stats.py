@@ -61,56 +61,101 @@ class DmgTypes:
         self._kinetic = kinetic
         self._explosive = explosive
         self._breachers = defaultdict(lambda: [])
-        self.profile = None
-
-    def add_breacher(self, key, data):
-        self._breachers[key].append(data)
+        self.__profile = None
+        # Cached data
+        self.__cached_em = None
+        self.__cached_thermal = None
+        self.__cached_kinetic = None
+        self.__cached_explosive = None
+        self.__cached_pure = None
+        self.__cached_total = None
 
     @classmethod
     def default(cls):
         return cls(0, 0, 0, 0)
 
+    def _clear_cached(self):
+        self.__cached_em = None
+        self.__cached_thermal = None
+        self.__cached_kinetic = None
+        self.__cached_explosive = None
+        self.__cached_pure = None
+        self.__cached_total = None
+
+    def add_breacher(self, key, data):
+        self._breachers[key].append(data)
+
+    @property
+    def profile(self):
+        return self.__profile
+
+    @profile.setter
+    def profile(self, profile):
+        self.__profile = profile
+        self._clear_cached()
+
     @property
     def em(self):
+        if self.__cached_em is not None:
+            return self.__cached_em
         dmg = self._em
         if self.profile is not None:
             dmg *= 1 - getattr(self.profile, "emAmount", 0)
+        self.__cached_em = dmg
         return dmg
 
     @property
     def thermal(self):
+        if self.__cached_thermal is not None:
+            return self.__cached_thermal
         dmg = self._thermal
         if self.profile is not None:
             dmg *= 1 - getattr(self.profile, "thermalAmount", 0)
+        self.__cached_thermal = dmg
         return dmg
 
     @property
     def kinetic(self):
+        if self.__cached_kinetic is not None:
+            return self.__cached_kinetic
         dmg = self._kinetic
         if self.profile is not None:
             dmg *= 1 - getattr(self.profile, "kineticAmount", 0)
+        self.__cached_kinetic = dmg
         return dmg
 
     @property
     def explosive(self):
+        if self.__cached_explosive is not None:
+            return self.__cached_explosive
         dmg = self._explosive
         if self.profile is not None:
             dmg *= 1 - getattr(self.profile, "explosiveAmount", 0)
+        self.__cached_explosive = dmg
         return dmg
 
     @property
     def pure(self):
+        if self.__cached_pure is not None:
+            return self.__cached_pure
         if self.profile is None:
-            return sum(
+            dmg = sum(
                 max((b.absolute for b in bs), default=0)
                 for bs in self._breachers.values())
-        return sum(
-            max((min(b.absolute, b.relative * getattr(self.profile, "hp", math.inf)) for b in bs), default=0)
-            for bs in self._breachers.values())
+        else:
+            dmg = sum(
+                max((min(b.absolute, b.relative * getattr(self.profile, "hp", math.inf)) for b in bs), default=0)
+                for bs in self._breachers.values())
+        self.__cached_pure = dmg
+        return dmg
 
     @property
     def total(self):
-        return self.em + self.thermal + self.kinetic + self.explosive + self.pure
+        if self.__cached_total is not None:
+            return self.__cached_total
+        dmg = self.em + self.thermal + self.kinetic + self.explosive + self.pure
+        self.__cached_total = dmg
+        return dmg
 
     # Iterator is needed to support tuple-style unpacking
     def __iter__(self):
@@ -154,6 +199,7 @@ class DmgTypes:
         self._explosive += other._explosive
         for k, v in other._breachers.items():
             self._breachers[k].extend(v)
+        self._clear_cached()
         return self
 
     def __mul__(self, mul):
@@ -177,6 +223,7 @@ class DmgTypes:
         for v in self._breachers.values():
             for b in v:
                 b *= mul
+        self._clear_cached()
         return self
 
     def __truediv__(self, div):

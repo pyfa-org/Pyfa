@@ -171,6 +171,7 @@ class TimeCache(FitDataCache):
             if addedDmg.total == 0:
                 return
             addedDmg._breachers = {addedTime + k: v for k, v in addedDmg._breachers.items()}
+            addedDmg._clear_cached()
             intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
 
         # Modules
