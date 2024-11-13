@@ -1692,8 +1692,11 @@ class Fit:
         weaponDps = DmgTypes.default()
 
         for mod in self.modules:
-            weaponVolley += mod.getVolley(spoolOptions=spoolOptions, targetProfile=self.targetProfile)
-            weaponDps += mod.getDps(spoolOptions=spoolOptions, targetProfile=self.targetProfile)
+            weaponVolley += mod.getVolley(spoolOptions=spoolOptions)
+            weaponDps += mod.getDps(spoolOptions=spoolOptions)
+
+        weaponVolley.profile = self.targetProfile
+        weaponDps.profile = self.targetProfile
 
         self.__weaponVolleyMap[spoolOptions] = weaponVolley
         self.__weaponDpsMap[spoolOptions] = weaponDps
@@ -1703,12 +1706,15 @@ class Fit:
         droneDps = DmgTypes.default()
 
         for drone in self.drones:
-            droneVolley += drone.getVolley(targetProfile=self.targetProfile)
-            droneDps += drone.getDps(targetProfile=self.targetProfile)
+            droneVolley += drone.getVolley()
+            droneDps += drone.getDps()
 
         for fighter in self.fighters:
-            droneVolley += fighter.getVolley(targetProfile=self.targetProfile)
-            droneDps += fighter.getDps(targetProfile=self.targetProfile)
+            droneVolley += fighter.getVolley()
+            droneDps += fighter.getDps()
+
+        droneVolley.profile = self.targetProfile
+        droneDps.profile = self.targetProfile
 
         self.__droneDps = droneDps
         self.__droneVolley = droneVolley

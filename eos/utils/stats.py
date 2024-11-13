@@ -19,7 +19,7 @@
 
 
 import math
-from typing import NamedTuple
+from collections import defaultdict
 
 from eos.utils.float import floatUnerr
 from utils.repr import makeReprStr
@@ -29,76 +29,85 @@ def _t(x):
     return x
 
 
-class BreacherInfo(NamedTuple):
-    absolute: float
-    relative: float
+class BreacherInfo:
+
+    def __init__(self, absolute, relative):
+        self.absolute = absolute
+        self.relative = relative
+
+    def __mul__(self, mul):
+        return type(self)(absolute=self.absolute * mul, relative=self.relative * mul)
+
+    def __imul__(self, mul):
+        if mul == 1:
+            return self
+        self.absolute *= mul
+        self.relative *= mul
+        return self
 
 
-class BaseVolleyStats:
+class DmgTypes:
     """
     Container for volley stats, which stores breacher pod data
     in raw form, before application of it to target profile.
     """
 
-    def __init__(self, em, thermal, kinetic, explosive, breachers=None):
-        self.em = em
-        self.thermal = thermal
-        self.kinetic = kinetic
-        self.explosive = explosive
-        self.breachers = [] if breachers is None else breachers
+    def __init__(self, em, thermal, kinetic, explosive):
+        self._em = em
+        self._thermal = thermal
+        self._kinetic = kinetic
+        self._explosive = explosive
+        self._breachers = defaultdict(lambda: [])
+        self.profile = None
+
+    def add_breacher(self, key, data):
+        self._breachers[key].append(data)
 
     @classmethod
     def default(cls):
         return cls(0, 0, 0, 0)
 
-    def __eq__(self, other):
-        if not isinstance(other, BaseVolleyStats):
-            return NotImplemented
-        # Round for comparison's sake because often damage profiles are
-        # generated from data which includes float errors
-        return (
-                floatUnerr(self.em) == floatUnerr(other.em) and
-                floatUnerr(self.thermal) == floatUnerr(other.thermal) and
-                floatUnerr(self.kinetic) == floatUnerr(other.kinetic) and
-                floatUnerr(self.explosive) == floatUnerr(other.explosive) and
-                sorted(self.breachers) == sorted(other.breachers))
+    @property
+    def em(self):
+        dmg = self._em
+        if self.profile is not None:
+            dmg *= 1 - getattr(self.profile, "emAmount", 0)
+        return dmg
 
-    def __bool__(self):
-        return any((
-            self.em, self.thermal, self.kinetic, self.explosive,
-            any(b.absolute or b.relative for b in self.breachers)))
+    @property
+    def thermal(self):
+        dmg = self._thermal
+        if self.profile is not None:
+            dmg *= 1 - getattr(self.profile, "thermalAmount", 0)
+        return dmg
 
-    def __repr__(self):
-        class_name = type(self).__name__
-        return (f'<{class_name}(em={self.em}, thermal={self.thermal}, kinetic={self.kinetic}, '
-                f'explosive={self.explosive}, breachers={len(self.breachers)})>')
+    @property
+    def kinetic(self):
+        dmg = self._kinetic
+        if self.profile is not None:
+            dmg *= 1 - getattr(self.profile, "kineticAmount", 0)
+        return dmg
 
+    @property
+    def explosive(self):
+        dmg = self._explosive
+        if self.profile is not None:
+            dmg *= 1 - getattr(self.profile, "explosiveAmount", 0)
+        return dmg
 
-class DmgTypes:
-    """Container for damage data stats."""
+    @property
+    def pure(self):
+        if self.profile is None:
+            return sum(
+                max((b.absolute for b in bs), default=0)
+                for bs in self._breachers.values())
+        return sum(
+            max((min(b.absolute, b.relative * getattr(self.profile, "hp", math.inf)) for b in bs), default=0)
+            for bs in self._breachers.values())
 
-    def __init__(self, em, thermal, kinetic, explosive, breacher):
-        self.em = em
-        self.thermal = thermal
-        self.kinetic = kinetic
-        self.explosive = explosive
-        self.breacher = breacher
-        self._calcTotal()
-
-    @classmethod
-    def default(cls):
-        return cls(0, 0, 0, 0, 0)
-
-    @classmethod
-    def from_base_and_profile(cls, base, tgtProfile, mult=1):
-        return cls(
-            em=base.em * mult * (1 - getattr(tgtProfile, "emAmount", 0)),
-            thermal=base.thermal * mult * (1 - getattr(tgtProfile, "thermalAmount", 0)),
-            kinetic=base.kinetic * mult * (1 - getattr(tgtProfile, "kineticAmount", 0)),
-            explosive=base.explosive * mult * (1 - getattr(tgtProfile, "explosiveAmount", 0)),
-            breacher=max(
-                (min(b.absolute, b.relative * getattr(tgtProfile, "hp", math.inf)) for b in base.breachers),
-                default=0) * mult)
+    @property
+    def total(self):
+        return self.em + self.thermal + self.kinetic + self.explosive + self.pure
 
     # Iterator is needed to support tuple-style unpacking
     def __iter__(self):
@@ -109,88 +118,73 @@ class DmgTypes:
         yield self.pure
         yield self.total
 
-    @property
-    def pure(self):
-        return self.breacher
-
     def __eq__(self, other):
         if not isinstance(other, DmgTypes):
             return NotImplemented
         # Round for comparison's sake because often damage profiles are
         # generated from data which includes float errors
         return (
-                floatUnerr(self.em) == floatUnerr(other.em) and
-                floatUnerr(self.thermal) == floatUnerr(other.thermal) and
-                floatUnerr(self.kinetic) == floatUnerr(other.kinetic) and
-                floatUnerr(self.explosive) == floatUnerr(other.explosive) and
-                floatUnerr(self.breacher) == floatUnerr(other.breacher) and
-                floatUnerr(self.total) == floatUnerr(other.total))
-
-    def __bool__(self):
-        return any((
-            self.em, self.thermal, self.kinetic, self.explosive,
-            self.breacher, self.total))
-
-    def _calcTotal(self):
-        self.total = self.em + self.thermal + self.kinetic + self.explosive + self.breacher
+                floatUnerr(self._em) == floatUnerr(other._em) and
+                floatUnerr(self._thermal) == floatUnerr(other._thermal) and
+                floatUnerr(self._kinetic) == floatUnerr(other._kinetic) and
+                floatUnerr(self._explosive) == floatUnerr(other._explosive) and
+                sorted(self._breachers) == sorted(other._breachers),
+                self.profile == other.profile)
 
     def __add__(self, other):
-        return type(self)(
-            em=self.em + other.em,
-            thermal=self.thermal + other.thermal,
-            kinetic=self.kinetic + other.kinetic,
-            explosive=self.explosive + other.explosive,
-            breacher=max(self.breacher, other.breacher))
+        new = type(self)(
+            em=self._em + other._em,
+            thermal=self._thermal + other._thermal,
+            kinetic=self._kinetic + other._kinetic,
+            explosive=self._explosive + other._explosive)
+        new.profile = self.profile
+        for k, v in self._breachers.items():
+            new._breachers[k].extend(v)
+        for k, v in other._breachers.items():
+            new._breachers[k].extend(v)
+        return new
 
     def __iadd__(self, other):
-        self.em += other.em
-        self.thermal += other.thermal
-        self.kinetic += other.kinetic
-        self.explosive += other.explosive
-        self.breacher = max(self.breacher, other.breacher)
-        self._calcTotal()
+        self._em += other._em
+        self._thermal += other._thermal
+        self._kinetic += other._kinetic
+        self._explosive += other._explosive
+        for k, v in other._breachers.items():
+            self._breachers[k].extend(v)
         return self
 
     def __mul__(self, mul):
-        return type(self)(
-            em=self.em * mul,
-            thermal=self.thermal * mul,
-            kinetic=self.kinetic * mul,
-            explosive=self.explosive * mul,
-            breacher=self.breacher * mul)
+        new = type(self)(
+            em=self._em * mul,
+            thermal=self._thermal * mul,
+            kinetic=self._kinetic * mul,
+            explosive=self._explosive * mul)
+        new.profile = self.profile
+        for k, v in self._breachers.items():
+            new._breachers[k] = [b * mul for b in v]
+        return new
 
     def __imul__(self, mul):
         if mul == 1:
-            return
-        self.em *= mul
-        self.thermal *= mul
-        self.kinetic *= mul
-        self.explosive *= mul
-        self.breacher *= mul
-        self._calcTotal()
+            return self
+        self._em *= mul
+        self._thermal *= mul
+        self._kinetic *= mul
+        self._explosive *= mul
+        for v in self._breachers.values():
+            for b in v:
+                b *= mul
         return self
 
-    def __truediv__(self, div):
-        return type(self)(
-            em=self.em / div,
-            thermal=self.thermal / div,
-            kinetic=self.kinetic / div,
-            explosive=self.explosive / div,
-            breacher=self.breacher / div)
-
-    def __itruediv__(self, div):
-        if div == 1:
-            return
-        self.em /= div
-        self.thermal /= div
-        self.kinetic /= div
-        self.explosive /= div
-        self.breacher /= div
-        self._calcTotal()
-        return self
+    def __bool__(self):
+        return any((
+            self._em, self._thermal, self._kinetic, self._explosive,
+            any(b.absolute or b.relative for b in self._breachers)))
 
     def __repr__(self):
-        return makeReprStr(self, spec=['em', 'thermal', 'kinetic', 'explosive', 'breacher', 'total'])
+        class_name = type(self).__name__
+        return (f'<{class_name}(em={self._em}, thermal={self._thermal}, kinetic={self._kinetic}, '
+                f'explosive={self._explosive}, breachers={len(self._breachers)})>')
 
     @staticmethod
     def names(short=None, postProcessor=None, includePure=False):

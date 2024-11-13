@@ -215,13 +215,13 @@ class FirepowerViewFull(StatsView):
             val = val() if fit is not None else None
             preSpoolVal = preSpoolVal() if fit is not None else None
             fullSpoolVal = fullSpoolVal() if fit is not None else None
-            if self._cachedValues[counter] != val:
+            if self._cachedValues[counter] != getattr(val, 'total', None):
                 tooltipText = dpsToolTip(val, preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetLabel(valueFormat.format(
                         formatAmount(0 if val is None else val.total, prec, lowest, highest),
                         "\u02e2" if hasSpoolUp(preSpoolVal, fullSpoolVal) else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
-                self._cachedValues[counter] = val
+                self._cachedValues[counter] = getattr(val, 'total', None)
             counter += 1
 
         self.panel.Layout()

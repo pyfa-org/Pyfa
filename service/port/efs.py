@@ -423,7 +423,8 @@ class EfsPort:
             else:
                 maxRange = stats.maxRange
 
-            dps_spread_dict = stats.getDps(spoolOptions=spoolOptions, getSpreadDPS=True)
+            dps = stats.getDps(spoolOptions=spoolOptions)
+            dps_spread_dict = {'em': dps.em, 'therm': dps.thermal, 'kin': dps.kinetic, 'exp': dps.explosive, 'pure': dps.pure}
             dps_spread_dict.update((x, y*n) for x, y in dps_spread_dict.items())
 
             statDict = {

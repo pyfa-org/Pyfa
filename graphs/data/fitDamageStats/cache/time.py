@@ -176,7 +176,7 @@ class TimeCache(FitDataCache):
         for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
-            cycleParams = mod.getCycleParametersForDps(reloadOverride=True)
+            cycleParams = mod.getCycleParameters(reloadOverride=True)
             if cycleParams is None:
                 continue
             currentTime = 0

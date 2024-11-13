@@ -19,6 +19,7 @@
 
 import math
 
+from copy import deepcopy
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
@@ -29,7 +30,7 @@ from eos.saveddata.mutatedMixin import MutatedMixin, MutaError
 from eos.saveddata.mutator import MutatorDrone
 from eos.utils.cycles import CycleInfo
 from eos.utils.default import DEFAULT
-from eos.utils.stats import BaseVolleyStats, DmgTypes, RRTypes
+from eos.utils.stats import DmgTypes, RRTypes
 
 
 pyfalog = Logger(__name__)
@@ -165,12 +166,13 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.hasAmmo else self.getModifiedItemAttr
             dmgMult = self.amountActive * (self.getModifiedItemAttr("damageMultiplier", 1))
-            self.__baseVolley = BaseVolleyStats(
+            self.__baseVolley = DmgTypes(
                 em=(dmgGetter("emDamage", 0)) * dmgMult,
                 thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                 kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
                 explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
-        volley = DmgTypes.from_base_and_profile(base=self.__baseVolley, tgtProfile=targetProfile)
+        volley = deepcopy(self.__baseVolley)
+        volley.profile = targetProfile
         return {0: volley}
 
     def getVolley(self, targetProfile=None):
@@ -184,12 +186,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         if cycleParams is None:
             return DmgTypes.default()
         dpsFactor = 1 / (cycleParams.averageTime / 1000)
-        dps = DmgTypes(
-            em=volley.em * dpsFactor,
-            thermal=volley.thermal * dpsFactor,
-            kinetic=volley.kinetic * dpsFactor,
-            explosive=volley.explosive * dpsFactor,
-            breacher=volley.breacher * dpsFactor)
+        dps = volley * dpsFactor
         return dps
 
     def isRemoteRepping(self, ignoreState=False):

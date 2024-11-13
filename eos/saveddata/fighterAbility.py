@@ -128,12 +128,8 @@ class FighterAbility:
             kin = self.fighter.getModifiedItemAttr("{}DamageKin".format(self.attrPrefix), 0)
             exp = self.fighter.getModifiedItemAttr("{}DamageExp".format(self.attrPrefix), 0)
         dmgMult = self.fighter.amount * self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix), 1)
-        volley = DmgTypes(
-            em=em * dmgMult * (1 - getattr(targetProfile, "emAmount", 0)),
-            thermal=therm * dmgMult * (1 - getattr(targetProfile, "thermalAmount", 0)),
-            kinetic=kin * dmgMult * (1 - getattr(targetProfile, "kineticAmount", 0)),
-            explosive=exp * dmgMult * (1 - getattr(targetProfile, "explosiveAmount", 0)),
-            breacher=0)
+        volley = DmgTypes(em=em * dmgMult, thermal=therm * dmgMult, kinetic=kin * dmgMult, explosive=exp * dmgMult)
+        volley.profile = targetProfile
         return volley
 
     def getDps(self, targetProfile=None, cycleTimeOverride=None):
@@ -142,12 +138,7 @@ class FighterAbility:
             return DmgTypes.default()
         cycleTime = cycleTimeOverride if cycleTimeOverride is not None else self.cycleTime
         dpsFactor = 1 / (cycleTime / 1000)
-        dps = DmgTypes(
-            em=volley.em * dpsFactor,
-            thermal=volley.thermal * dpsFactor,
-            kinetic=volley.kinetic * dpsFactor,
-            explosive=volley.explosive * dpsFactor,
-            breacher=volley.breacher * dpsFactor)
+        dps = volley * dpsFactor
         return dps
 
     def clear(self):

@@ -33,7 +33,7 @@ from eos.utils.cycles import CycleInfo, CycleSequence
 from eos.utils.default import DEFAULT
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
-from eos.utils.stats import BaseVolleyStats, BreacherInfo, DmgTypes, RRTypes
+from eos.utils.stats import BreacherInfo, DmgTypes, RRTypes
 
 
 pyfalog = Logger(__name__)
@@ -483,7 +483,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                     absolute=self.getModifiedChargeAttr("dotMaxDamagePerTick", 0),
                     relative=self.getModifiedChargeAttr("dotMaxHPPercentagePerTick", 0) / 100)
                 for i in range(subcycles):
-                    self.__baseVolley[dmgDelay + i] = BaseVolleyStats(0, 0, 0, 0, breachers=[breacher_info])
+                    volley = DmgTypes.default()
+                    volley.add_breacher(dmgDelay + i, breacher_info)
+                    self.__baseVolley[dmgDelay + i] = volley
             else:
                 dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
                 dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
@@ -502,7 +504,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 else:
                     subcycles = 1
                 for i in range(subcycles):
-                    self.__baseVolley[dmgDelay + dmgSubcycle * i] = BaseVolleyStats(
+                    self.__baseVolley[dmgDelay + dmgSubcycle * i] = DmgTypes(
                         em=(dmgGetter("emDamage", 0)) * dmgMult,
                         thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                         kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
@@ -513,11 +515,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
             self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
         spoolMultiplier = 1 + spoolBoost
-        adjustedVolley = {}
-        for volleyTime, baseValue in self.__baseVolley.items():
-            adjustedVolley[volleyTime] = DmgTypes.from_base_and_profile(
-                base=baseValue, tgtProfile=targetProfile, mult=spoolMultiplier)
-        return adjustedVolley
+        adjustedVolleys = {}
+        for volleyTime, baseVolley in self.__baseVolley.items():
+            adjustedVolley = baseVolley * spoolMultiplier
+            adjustedVolley.profile = targetProfile
+            adjustedVolleys[volleyTime] = adjustedVolley
+        return adjustedVolleys
 
     def getVolley(self, spoolOptions=None, targetProfile=None, ignoreState=False):
         volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
@@ -525,31 +528,22 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             return DmgTypes.default()
         return volleyParams[min(volleyParams)]
 
-    def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False, getSpreadDPS=False):
-        dmgDuringCycle = DmgTypes.default()
-        cycleParams = self.getCycleParametersForDps()
+    def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False):
+        dps = DmgTypes.default()
+        cycleParams = self.getCycleParameters()
         if cycleParams is None:
-            return dmgDuringCycle
+            return dps
         volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
         avgCycleTime = cycleParams.averageTime
         if len(volleyParams) == 0 or avgCycleTime == 0:
-            return dmgDuringCycle
-        for volleyValue in volleyParams.values():
-            dmgDuringCycle += volleyValue
-        dpsFactor = 1 / (avgCycleTime / 1000)
-        dps = DmgTypes(
-            em=dmgDuringCycle.em * dpsFactor,
-            thermal=dmgDuringCycle.thermal * dpsFactor,
-            kinetic=dmgDuringCycle.kinetic * dpsFactor,
-            explosive=dmgDuringCycle.explosive * dpsFactor,
-            breacher=dmgDuringCycle.breacher * dpsFactor)
-        if not getSpreadDPS:
             return dps
-        return {'em': dmgDuringCycle.em * dpsFactor,
-                'therm': dmgDuringCycle.thermal * dpsFactor,
-                'kin': dmgDuringCycle.kinetic * dpsFactor,
-                'exp': dmgDuringCycle.explosive * dpsFactor,
-                'breach': dmgDuringCycle.breach * dpsFactor}
+        if self.isBreacher:
+            return volleyParams[min(volleyParams)]
+        for volleyValue in volleyParams.values():
+            dps += volleyValue
+        dpsFactor = 1 / (avgCycleTime / 1000)
+        dps *= dpsFactor
+        return dps
 
     def isRemoteRepping(self, ignoreState=False):
         repParams = self.getRepAmountParameters(ignoreState=ignoreState)
@@ -960,13 +954,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                         and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
                     effect.handler(fit, self, context, projectionRange, effect=effect)
-
-    def getCycleParametersForDps(self, reloadOverride=None):
-        # Special hack for breachers, since those are DoT and work independently of gun cycle
-        if self.isBreacher:
-            return CycleInfo(activeTime=1000, inactiveTime=0, quantity=math.inf, isInactivityReload=False)
-        else:
-            return self.getCycleParameters(reloadOverride=reloadOverride)
 
     def getCycleParameters(self, reloadOverride=None):
         """Copied from new eos as well"""
