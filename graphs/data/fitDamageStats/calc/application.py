@@ -99,7 +99,7 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                     distance=distance,
                     tgtSigRadius=tgtSigRadius)
         elif mod.isBreacher:
-            applicationMap[mod] = 1 if inLockRange else 0
+            applicationMap[mod] = getBreacherMult(mod=mod, distance=distance) if inLockRange else 0
     for drone in src.item.activeDronesIter():
         if not drone.isDealingDamage():
             continue
@@ -192,6 +192,21 @@ def getLauncherMult(mod, distance, tgtSpeed, tgtSigRadius):
         tgtSpeed=tgtSpeed,
         tgtSigRadius=tgtSigRadius)
     return distanceFactor * applicationFactor
+
+
+def getBreacherMult(mod, distance):
+    missileMaxRangeData = mod.missileMaxRangeData
+    if missileMaxRangeData is None:
+        return 0
+    # The ranges already consider ship radius
+    lowerRange, higherRange, higherChance = missileMaxRangeData
+    if distance is None or distance <= lowerRange:
+        distanceFactor = 1
+    elif lowerRange < distance <= higherRange:
+        distanceFactor = higherChance
+    else:
+        distanceFactor = 0
+    return distanceFactor
 
 
 def getSmartbombMult(mod, distance):

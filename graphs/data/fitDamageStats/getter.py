@@ -19,6 +19,7 @@
 
 
 import eos.config
+from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
 from eos.utils.stats import DmgTypes
 from graphs.data.base import PointGetter, SmoothPointGetter
@@ -33,12 +34,10 @@ def applyDamage(dmgMap, applicationMap, tgtResists, tgtFullHp):
         total += dmg * applicationMap.get(key, 0)
     if not GraphSettings.getInstance().get('ignoreResists'):
         emRes, thermRes, kinRes, exploRes = tgtResists
-        total = DmgTypes(
-            em=total.em * (1 - emRes),
-            thermal=total.thermal * (1 - thermRes),
-            kinetic=total.kinetic * (1 - kinRes),
-            explosive=total.explosive * (1 - exploRes),
-            breacher=total.breacher)
+    else:
+        emRes = thermRes = kinRes = exploRes = 0
+    total.profile = TargetProfile(
+        emAmount=emRes, thermalAmount=thermRes, kineticAmount=kinRes, explosiveAmount=exploRes, hp=tgtFullHp)
     return total
 
 
