@@ -130,7 +130,7 @@ class TargetProfileEditor(AuxiliaryFrame):
         super().__init__(
             parent, id=wx.ID_ANY, title=_t("Target Profile Editor"), resizeable=True,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
-            size=wx.Size(550, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(380, 240))
+            size=wx.Size(630, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(450, 240))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.block = False
@@ -149,7 +149,7 @@ class TargetProfileEditor(AuxiliaryFrame):
         resistEditSizer = wx.BoxSizer(wx.HORIZONTAL)
         resistEditSizer.AddStretchSpacer()
 
-        defSize = wx.Size(50, -1)
+        defSize = wx.Size(70, -1)
 
         for type_ in self.DAMAGE_TYPES:
             leftPad = 25 if type_ != list(self.DAMAGE_TYPES)[0] else 0
