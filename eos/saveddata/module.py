@@ -955,6 +955,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                         and ((gang and effect.isType("gang")) or not gang):
                     effect.handler(fit, self, context, projectionRange, effect=effect)
 
+    def getCycleParametersForDps(self, reloadOverride=None):
+        # Special hack for breachers, since those are DoT and work independently of gun cycle
+        if self.isBreacher:
+            return CycleInfo(activeTime=1000, inactiveTime=0, quantity=math.inf, isInactivityReload=False)
+        else:
+            return self.getCycleParameters(reloadOverride=reloadOverride)
+
     def getCycleParameters(self, reloadOverride=None):
         """Copied from new eos as well"""
         # Determine if we'll take into account reload time or not

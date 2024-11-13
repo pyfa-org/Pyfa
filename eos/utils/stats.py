@@ -45,6 +45,9 @@ class BreacherInfo:
         self.relative *= mul
         return self
 
+    def __truediv__(self, div):
+        return type(self)(absolute=self.absolute / div, relative=self.relative / div)
+
 
 class DmgTypes:
     """
@@ -176,6 +179,17 @@ class DmgTypes:
                 b *= mul
         return self
 
+    def __truediv__(self, div):
+        new = type(self)(
+            em=self._em / div,
+            thermal=self._thermal / div,
+            kinetic=self._kinetic / div,
+            explosive=self._explosive / div)
+        new.profile = self.profile
+        for k, v in self._breachers.items():
+            new._breachers[k] = [b / div for b in v]
+        return new
+
     def __bool__(self):
         return any((
             self._em, self._thermal, self._kinetic, self._explosive,
@@ -197,30 +211,6 @@ class DmgTypes:
             value = [postProcessor(x) for x in value]
 
         return value
-
-
-class DmgInflicted(DmgTypes):
-
-    @classmethod
-    def from_dmg_types(cls, dmg_types):
-        return cls(em=dmg_types.em, thermal=dmg_types.thermal, kinetic=dmg_types.kinetic, explosive=dmg_types.explosive, breacher=dmg_types.breacher)
-
-    def __add__(self, other):
-        return type(self)(
-            em=self.em + other.em,
-            thermal=self.thermal + other.thermal,
-            kinetic=self.kinetic + other.kinetic,
-            explosive=self.explosive + other.explosive,
-            breacher=self.breacher + other.breacher)
-
-    def __iadd__(self, other):
-        self.em += other.em
-        self.thermal += other.thermal
-        self.kinetic += other.kinetic
-        self.explosive += other.explosive
-        self.breacher += other.breacher
-        self._calcTotal()
-        return self
 
 
 class RRTypes:

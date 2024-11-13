@@ -22,7 +22,7 @@ from copy import copy
 
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
-from eos.utils.stats import DmgTypes, DmgInflicted
+from eos.utils.stats import DmgTypes
 from graphs.data.base import FitDataCache
 
 
@@ -170,27 +170,37 @@ class TimeCache(FitDataCache):
         def addDmg(ddKey, addedTime, addedDmg):
             if addedDmg.total == 0:
                 return
-            intCacheDmg.setdefault(ddKey, {})[addedTime] = DmgInflicted.from_dmg_types(addedDmg)
+            addedDmg._breachers = {addedTime + k: v for k, v in addedDmg._breachers.items()}
+            intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
 
         # Modules
         for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
-            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            cycleParams = mod.getCycleParametersForDps(reloadOverride=True)
             if cycleParams is None:
                 continue
             currentTime = 0
             nonstopCycles = 0
+            isBreacher = mod.isBreacher
             for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleVolleys = []
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
 
                 for volleyTimeMs, volley in volleyParams.items():
                     cycleVolleys.append(volley)
-                    addDmg(mod, currentTime + volleyTimeMs / 1000, volley)
-                    if mod.isBreacher:
+                    time = currentTime + volleyTimeMs / 1000
+                    if isBreacher:
+                        time += 1
+                    addDmg(mod, time, volley)
+                    if isBreacher:
                         break
-                addDpsVolley(mod, currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
+                timeStart = currentTime
+                timeFinish = currentTime + cycleTimeMs / 1000
+                if isBreacher:
+                    timeStart += 1
+                    timeFinish += 1
+                addDpsVolley(mod, timeStart, timeFinish, cycleVolleys)
                 if inactiveTimeMs > 0:
                     nonstopCycles = 0
                 else:
