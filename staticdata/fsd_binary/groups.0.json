@@ -29827,6 +29827,25 @@
     "published": 1, 
     "useBasePrice": 1
   }, 
+  "4824": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 17, 
+    "fittableNonSingleton": 0, 
+    "groupID": 4824, 
+    "groupName_de": "Infomorphs", 
+    "groupName_en-us": "Infomorph Systems", 
+    "groupName_es": "Infomorfos", 
+    "groupName_fr": "Infomorphes", 
+    "groupName_it": "Infomorph Systems", 
+    "groupName_ja": "インフォモーフ", 
+    "groupName_ko": "정신체", 
+    "groupName_ru": "Инфоморфы", 
+    "groupName_zh": "电子意识", 
+    "groupNameID": 896315, 
+    "published": 1, 
+    "useBasePrice": 1
+  }, 
   "350858": {
     "anchorable": 0, 
     "anchored": 0, 

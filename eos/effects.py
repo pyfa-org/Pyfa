@@ -1775,7 +1775,6 @@ class Effect584(BaseEffect):
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
-    Implant: Standard Cerebral Accelerator
     """
 
     type = 'passive'
@@ -5253,7 +5252,6 @@ class Effect1763(BaseEffect):
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Zainou 'Deadeye' Rapid Launch RL (6 of 6)
-    Implant: Standard Cerebral Accelerator
     Implant: Whelan Machorin's Ballistic Smartlink
     Skill: Missile Launcher Operation
     Skill: Rapid Launch
@@ -16293,6 +16291,7 @@ class Effect4902(BaseEffect):
     Used by:
     Ships from group: Assault Frigate (10 of 15)
     Ships from group: Command Destroyer (5 of 5)
+    Ships from group: Heavy Assault Cruiser (9 of 14)
     """
 
     type = 'passive'

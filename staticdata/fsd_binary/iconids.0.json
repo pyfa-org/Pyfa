@@ -12683,6 +12683,26 @@
     "iconFile": "res:/UI/Texture/Icons/Inventory/Abyssal_Salvage_Crate_64.png", 
     "iconType": "png"
   }, 
+  "26274": {
+    "iconFile": "res:/UI/Texture/Classes/HelpPointer/agencyCardFlat.png", 
+    "iconType": "png"
+  }, 
+  "26275": {
+    "iconFile": "res:/UI/Texture/Classes/HelpPointer/buttonFlat.png", 
+    "iconType": "png"
+  }, 
+  "26276": {
+    "iconFile": "res:/UI/Texture/Classes/HelpPointer/genericCardFlat.png", 
+    "iconType": "png"
+  }, 
+  "26277": {
+    "iconFile": "res:/UI/Texture/Classes/HelpPointer/skillCardFlat.png", 
+    "iconType": "png"
+  }, 
+  "26278": {
+    "iconFile": "res:/UI/Texture/Classes/HelpPointer/tabFlat.png", 
+    "iconType": "png"
+  }, 
   "26279": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_gloss_000_100_010.png"
   }, 
