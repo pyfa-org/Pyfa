@@ -89,7 +89,7 @@ class FitDamageStatsGraph(FitGraph):
         cols = []
         if not GraphSettings.getInstance().get('ignoreResists'):
             cols.append('Target Resists')
-        cols.extend(('Speed', 'SigRadius', 'Radius'))
+        cols.extend(('Speed', 'SigRadius', 'Radius', 'FullHP'))
         return cols
 
     # Calculation stuff

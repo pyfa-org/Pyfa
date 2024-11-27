@@ -123,13 +123,14 @@ class TargetProfileEditor(AuxiliaryFrame):
     ATTRIBUTES = OrderedDict([
         ('maxVelocity', (_t('Maximum speed'), 'm/s')),
         ('signatureRadius', (_t('Signature radius\nLeave blank for infinitely big value'), 'm')),
-        ('radius', (_t('Radius'), 'm'))])
+        ('radius', (_t('Radius\nThe radius of the sphere that represents a ship/drone in space. Affects range calculations.'), 'm')),
+        ('hp', (_t('Total HP\nAffects how much damage breacher pods can do. Leave blank for infinitely big value'), 'hp'))])
 
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title=_t("Target Profile Editor"), resizeable=True,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
-            size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
+            size=wx.Size(630, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(450, 240))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.block = False
@@ -145,36 +146,29 @@ class TargetProfileEditor(AuxiliaryFrame):
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
-        resistEditSizer = wx.FlexGridSizer(2, 6, 0, 2)
-        resistEditSizer.AddGrowableCol(0)
-        resistEditSizer.AddGrowableCol(5)
-        resistEditSizer.SetFlexibleDirection(wx.BOTH)
-        resistEditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+        resistEditSizer = wx.BoxSizer(wx.HORIZONTAL)
+        resistEditSizer.AddStretchSpacer()
 
-        defSize = wx.Size(50, -1)
+        defSize = wx.Size(70, -1)
 
-        for i, type_ in enumerate(self.DAMAGE_TYPES):
-            if i % 2:
-                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
-                border = 25
-            else:
-                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
-                border = 5
+        for type_ in self.DAMAGE_TYPES:
+            leftPad = 25 if type_ != list(self.DAMAGE_TYPES)[0] else 0
             ttText = self.DAMAGE_TYPES[type_]
             bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big" % type_, "gui"))
             bmp.SetToolTip(wx.ToolTip(ttText))
-            resistEditSizer.Add(bmp, 0, style, border)
+            resistEditSizer.Add(bmp, 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, leftPad)
             # set text edit
-            editBox = FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize, validator=ResistValidator())
+            editBox = FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize)
             editBox.SetToolTip(wx.ToolTip(ttText))
             self.Bind(event=wx.EVT_TEXT, handler=self.OnFieldChanged, source=editBox)
             setattr(self, '{}Edit'.format(type_), editBox)
-            resistEditSizer.Add(editBox, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            resistEditSizer.Add(editBox, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0)
             unit.SetToolTip(wx.ToolTip(ttText))
             resistEditSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        contentSizer.Add(resistEditSizer, 0, wx.EXPAND | wx.ALL, 5)
+        resistEditSizer.AddStretchSpacer()
+        contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
 
         miscAttrSizer = wx.BoxSizer(wx.HORIZONTAL)
         miscAttrSizer.AddStretchSpacer()

@@ -345,6 +345,7 @@ class Item(EqBase):
         500020: "serpentis",
         500026: "triglavian",
         500027: "upwell",
+        500029: "deathless",
     }
 
     @property
@@ -569,13 +570,18 @@ class DynamicItem(EqBase):
     @property
     def shortName(self):
         name = self.item.customName
-        keywords = ('Decayed', 'Gravid', 'Unstable', 'Radical')
+        keywords = (
+            'Decayed', 'Glorified Decayed',
+            'Gravid', 'Glorified Gravid',
+            'Unstable', 'Glorified Unstable',
+            'Radical', 'Glorified Radical')
         for kw in keywords:
             if name.startswith(f'{kw} '):
                 name = kw
-        m = re.match(r'(?P<mutagrade>\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', name)
+        m = re.match(r'(?P<mutagrade>(Glorified )?\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', name)
         if m:
             name = '{} {}'.format(m.group('mutagrade'), m.group('mutatype'))
+        name = name.replace('Glorified ', 'Gl. ')
         return name
 
 

@@ -69,7 +69,7 @@ class Ammo:
                 falloff = (mod.item.getAttribute('falloff') or 0) * \
                           (charge.getAttribute('fallofMultiplier') or 1)
                 for type_ in DmgTypes.names():
-                    d = charge.getAttribute('%sDamage' % type_)
+                    d = charge.getAttribute('%sDamage' % type_, default=0)
                     if d > 0:
                         damage += d
                 # Take optimal and falloff as range factor

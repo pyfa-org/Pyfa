@@ -176,7 +176,11 @@ def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
         return drone.item.typeName
 
     def droneSorter(drone):
-        groupName = Market.getInstance().getMarketGroupByItem(drone.item).marketGroupName
+        if drone.isMutated:
+            item = drone.baseItem
+        else:
+            item = drone.item
+        groupName = Market.getInstance().getMarketGroupByItem(item).marketGroupName
         return (DRONE_ORDER.index(groupName), drone.isMutated, drone.fullName)
 
     if mutaData is None:

@@ -63,7 +63,8 @@ fits_table = Table("fits", saveddata_meta,
                    Column("ignoreRestrictions", Boolean, default=0),
                    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
                    Column("modified", DateTime, nullable=True, default=datetime.datetime.now, onupdate=datetime.datetime.now),
-                   Column("systemSecurity", Integer, nullable=True)
+                   Column("systemSecurity", Integer, nullable=True),
+                   Column("pilotSecurity", Float, nullable=True),
                    )
 
 projectedFits_table = Table("projectedFits", saveddata_meta,

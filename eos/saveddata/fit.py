@@ -1688,27 +1688,33 @@ class Fit:
         self.__droneWaste = droneWaste
 
     def calculateWeaponDmgStats(self, spoolOptions):
-        weaponVolley = DmgTypes(0, 0, 0, 0)
-        weaponDps = DmgTypes(0, 0, 0, 0)
+        weaponVolley = DmgTypes.default()
+        weaponDps = DmgTypes.default()
 
         for mod in self.modules:
-            weaponVolley += mod.getVolley(spoolOptions=spoolOptions, targetProfile=self.targetProfile)
-            weaponDps += mod.getDps(spoolOptions=spoolOptions, targetProfile=self.targetProfile)
+            weaponVolley += mod.getVolley(spoolOptions=spoolOptions)
+            weaponDps += mod.getDps(spoolOptions=spoolOptions)
+
+        weaponVolley.profile = self.targetProfile
+        weaponDps.profile = self.targetProfile
 
         self.__weaponVolleyMap[spoolOptions] = weaponVolley
         self.__weaponDpsMap[spoolOptions] = weaponDps
 
     def calculateDroneDmgStats(self):
-        droneVolley = DmgTypes(0, 0, 0, 0)
-        droneDps = DmgTypes(0, 0, 0, 0)
+        droneVolley = DmgTypes.default()
+        droneDps = DmgTypes.default()
 
         for drone in self.drones:
-            droneVolley += drone.getVolley(targetProfile=self.targetProfile)
-            droneDps += drone.getDps(targetProfile=self.targetProfile)
+            droneVolley += drone.getVolley()
+            droneDps += drone.getDps()
 
         for fighter in self.fighters:
-            droneVolley += fighter.getVolley(targetProfile=self.targetProfile)
-            droneDps += fighter.getDps(targetProfile=self.targetProfile)
+            droneVolley += fighter.getVolley()
+            droneDps += fighter.getDps()
+
+        droneVolley.profile = self.targetProfile
+        droneDps.profile = self.targetProfile
 
         self.__droneDps = droneDps
         self.__droneVolley = droneVolley
@@ -1742,6 +1748,18 @@ class Fit:
         if secstatus is None:
             secstatus = FitSystemSecurity.NULLSEC
         return secstatus
+
+    def getPilotSecurity(self, low_limit=-10, high_limit=5):
+        secstatus = self.pilotSecurity
+        # Not defined -> use character SS, with 0.0 fallback if it fails
+        if secstatus is None:
+            try:
+                secstatus = self.character.secStatus
+            except (SystemExit, KeyboardInterrupt):
+                raise
+            except:
+                secstatus = 0
+        return max(low_limit, min(high_limit, secstatus))
 
     def activeModulesIter(self):
         for mod in self.modules:
@@ -1824,6 +1842,7 @@ class Fit:
         fitCopy.targetProfile = self.targetProfile
         fitCopy.implantLocation = self.implantLocation
         fitCopy.systemSecurity = self.systemSecurity
+        fitCopy.pilotSecurity = self.pilotSecurity
         fitCopy.notes = self.notes
 
         for i in self.modules:

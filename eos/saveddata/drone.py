@@ -19,6 +19,7 @@
 
 import math
 
+from copy import deepcopy
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
@@ -161,7 +162,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
 
     def getVolleyParameters(self, targetProfile=None):
         if not self.dealsDamage or self.amountActive <= 0:
-            return {0: DmgTypes(0, 0, 0, 0)}
+            return {0: DmgTypes.default()}
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.hasAmmo else self.getModifiedItemAttr
             dmgMult = self.amountActive * (self.getModifiedItemAttr("damageMultiplier", 1))
@@ -170,11 +171,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
                 thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                 kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
                 explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
-        volley = DmgTypes(
-            em=self.__baseVolley.em * (1 - getattr(targetProfile, "emAmount", 0)),
-            thermal=self.__baseVolley.thermal * (1 - getattr(targetProfile, "thermalAmount", 0)),
-            kinetic=self.__baseVolley.kinetic * (1 - getattr(targetProfile, "kineticAmount", 0)),
-            explosive=self.__baseVolley.explosive * (1 - getattr(targetProfile, "explosiveAmount", 0)))
+        volley = deepcopy(self.__baseVolley)
+        volley.profile = targetProfile
         return {0: volley}
 
     def getVolley(self, targetProfile=None):
@@ -183,16 +181,12 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
     def getDps(self, targetProfile=None):
         volley = self.getVolley(targetProfile=targetProfile)
         if not volley:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes.default()
         cycleParams = self.getCycleParameters()
         if cycleParams is None:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes.default()
         dpsFactor = 1 / (cycleParams.averageTime / 1000)
-        dps = DmgTypes(
-            em=volley.em * dpsFactor,
-            thermal=volley.thermal * dpsFactor,
-            kinetic=volley.kinetic * dpsFactor,
-            explosive=volley.explosive * dpsFactor)
+        dps = volley * dpsFactor
         return dps
 
     def isRemoteRepping(self, ignoreState=False):
