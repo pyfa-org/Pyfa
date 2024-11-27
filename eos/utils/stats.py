@@ -176,7 +176,7 @@ class DmgTypes:
                 floatUnerr(self._thermal) == floatUnerr(other._thermal) and
                 floatUnerr(self._kinetic) == floatUnerr(other._kinetic) and
                 floatUnerr(self._explosive) == floatUnerr(other._explosive) and
-                sorted(self._breachers) == sorted(other._breachers),
+                sorted(self._breachers) == sorted(other._breachers) and
                 self.profile == other.profile)
 
     def __add__(self, other):
