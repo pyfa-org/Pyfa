@@ -72,7 +72,7 @@ def test_import_xml(print_db_info):
     usr = PortUser()
 # for path in XML_FILES:
     xml_file = "jeffy_ja-en[99].xml"
-    fit_count = int(re.search(r"\[(\d+)\]", xml_file).group(1))
+    fit_count = int(re.search(r"\[(\d+)]", xml_file).group(1))
     fits = None
     with open(os.path.join(script_dir, xml_file), "r") as file_:
         srcString = file_.read()

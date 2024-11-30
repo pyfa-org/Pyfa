@@ -5,7 +5,7 @@ import re
 
 
 def sequential_rep(text_, *args):
-    # type: (basestring, tuple) -> basestring
+    # type: (str, list[str]) -> str
     """
     :param text_: string content
     :param args: like <pattern>, <replacement>, <pattern>, <replacement>, ...
@@ -22,9 +22,9 @@ def sequential_rep(text_, *args):
 
 
 def replace_ltgt(text_):
-    # type: (basestring) -> basestring
+    # type: (str) -> str
     """if fit name contained "<" or ">" then reprace to named html entity by EVE client.
     :param text_: string content of fit name from exported by EVE client.
-    :return: if text_ is not instance of basestring then no manipulation to text_.
+    :return: if text_ is not instance of str then no manipulation to text_.
     """
     return text_.replace("&lt;", "<").replace("&gt;", ">") if isinstance(text_, str) else text_

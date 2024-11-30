@@ -495,6 +495,7 @@ class Market:
 
     @staticmethod
     def getItem(identity, *args, **kwargs):
+        # type: (str|int|types_Item, list[str], dict[str]) -> types_Item|None
         """Get item by its ID or name"""
         try:
             if isinstance(identity, types_Item):

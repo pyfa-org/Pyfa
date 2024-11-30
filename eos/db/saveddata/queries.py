@@ -205,6 +205,7 @@ def getCharactersForUser(lookfor, eager=None):
 
 @cachedQuery(Fit, 1, "lookfor")
 def getFit(lookfor, eager=None):
+    # type: (int, bool) -> Fit
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
@@ -319,6 +320,7 @@ def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
 
 
 def getFitList(eager=None):
+    # type: (list[str]) -> list[Fit]
     eager = processEager(eager)
     with sd_lock:
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())

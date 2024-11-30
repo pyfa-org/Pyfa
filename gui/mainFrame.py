@@ -363,6 +363,7 @@ class MainFrame(wx.Frame):
         self.statsWnds.remove(wnd)
 
     def getActiveFit(self):
+        # type: () -> int
         p = self.fitMultiSwitch.GetSelectedPage()
         m = getattr(p, "getActiveFit", None)
         return m() if m is not None else None
@@ -845,7 +846,7 @@ class MainFrame(wx.Frame):
                 style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
-                    # set some arbitrary spacing to create width in window
+                # set some arbitrary spacing to create width in window
                 progress = ProgressHelper(message=" " * 100, callback=self._openAfterImport)
                 call = (Port.importFitsThreaded, [dlg.GetPaths(), progress], {})
                 self.handleProgress(

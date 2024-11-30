@@ -73,9 +73,11 @@ class Port:
 
     @staticmethod
     def backupFits(path, progress):
+        # type: (str, object) -> None
         pyfalog.debug("Starting backup fits thread.")
 
         def backupFitsWorkerFunc(path, progress):
+            # type: (str, object) -> None
             try:
                 backedUpFits = Port.exportXml(svcFit.getInstance().getAllFits(), progress)
                 if backedUpFits:
@@ -98,17 +100,14 @@ class Port:
 
     @staticmethod
     def importFitsThreaded(paths, progress):
+        # type: (list[str], object) -> None
         """
         :param paths: fits data file path list.
         :rtype: None
         """
         pyfalog.debug("Starting import fits thread.")
-
-        def importFitsFromFileWorkerFunc(paths, progress):
-            Port.importFitFromFiles(paths, progress)
-
         threading.Thread(
-            target=importFitsFromFileWorkerFunc,
+            target=Port.importFitFromFiles,
             args=(paths, progress)
         ).start()
 
@@ -127,7 +126,7 @@ class Port:
         try:
             for path in paths:
                 if progress:
-                    if progress and progress.userCancelled:
+                    if progress.userCancelled:
                         progress.workerWorking = False
                         return False, "Cancelled by user"
                     msg = "Processing file:\n%s" % path
@@ -212,6 +211,7 @@ class Port:
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, progress=None):
+        # type: (str, str, svcFit, object) -> None
         lines = string.splitlines()
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = ''
@@ -231,21 +231,21 @@ class Port:
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
-        if re.match(r"^\s*\[.*\]", firstLine) and path is not None:
+        if re.match(r"^\s*\[.*]", firstLine) and path is not None:
             filename = os.path.split(path)[1]
             shipName = filename.rsplit('.')[0]
             return "EFT Config", True, cls.importEftCfg(shipName, lines, progress)
 
         # If no file is specified and there's comma between brackets,
         # consider that we have [ship, setup name] and detect like eft export format
-        if re.match(r"^\s*\[.*,.*\]", firstLine):
+        if re.match(r"^\s*\[.*,.*]", firstLine):
             return "EFT", True, (cls.importEft(lines),)
 
         # Check if string is in DNA format
         dnaPattern = r"\d+(:\d+(;\d+))*::"
         if re.match(dnaPattern, firstLine):
             return "DNA", True, (cls.importDna(string),)
-        dnaChatPattern = r"<url=fitting:(?P<dna>{})>(?P<fitName>[^<>]+)</url>".format(dnaPattern)
+        dnaChatPattern = "<url=fitting:(?P<dna>{})>(?P<fitName>[^<>]+)</url>".format(dnaPattern)
         m = re.search(dnaChatPattern, firstLine)
         if m:
             return "DNA", True, (cls.importDna(m.group("dna"), fitName=m.group("fitName")),)
@@ -332,6 +332,7 @@ class Port:
 
     @staticmethod
     def exportXml(fits, progress=None, callback=None):
+        # type: (list[svcFit], object, object) -> str
         return exportXml(fits, progress, callback=callback)
 
     # Multibuy-related methods

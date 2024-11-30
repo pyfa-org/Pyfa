@@ -18,8 +18,8 @@
 # =============================================================================
 
 import re
-import xml.dom
-import xml.parsers.expat
+from xml.dom import minidom
+# import xml.parsers.expat
 
 from logbook import Logger
 
@@ -38,6 +38,7 @@ from service.market import Market
 from service.port.muta import renderMutantAttrs, parseMutantAttrs
 from service.port.shared import fetchItem
 from utils.strfunctions import replace_ltgt, sequential_rep
+from config import EVE_FIT_NOTE_MAX
 
 
 pyfalog = Logger(__name__)
@@ -46,14 +47,12 @@ pyfalog = Logger(__name__)
 RE_LTGT = "&(lt|gt);"
 L_MARK = "&lt;localized hint=&quot;"
 # &lt;localized hint=&quot;([^"]+)&quot;&gt;([^\*]+)\*&lt;\/localized&gt;
-LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"]+)">([^\*]+)\*</localized>')
-
-
+LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"*]+)\*?">([^*]+)\*?</localized>')
 class ExtractingError(Exception):
     pass
 
-
 def _extract_match(t):
+    # type: (str) -> tuple[str, str]
     m = LOCALIZED_PATTERN.match(t)
     if m is None:
         raise ExtractingError
@@ -61,14 +60,14 @@ def _extract_match(t):
     return m.group(1), m.group(2)
 
 
-def _resolve_ship(fitting, sMkt, b_localized):
-    # type: (xml.dom.minidom.Element, service.market.Market, bool) -> eos.saveddata.fit.Fit
+def _solve_ship(fitting, sMkt, b_localized):
+    # type: (minidom.Element, Market, bool) -> Fit
     """ NOTE: Since it is meaningless unless a correct ship object can be constructed,
         process flow changed
     """
     # ------ Confirm ship
     # <localized hint="Maelstrom">Maelstrom</localized>
-    shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
+    shipType = fitting.getElementsByTagName("shipType")[0].getAttribute("value")
     anything = None
     if b_localized:
         try:
@@ -89,7 +88,7 @@ def _resolve_ship(fitting, sMkt, b_localized):
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
-            pyfalog.warning("Caught exception on _resolve_ship")
+            pyfalog.warning("Caught exception on _solve_ship")
             pyfalog.error(e)
             limit -= 1
             if limit == 0:
@@ -115,8 +114,8 @@ def _resolve_ship(fitting, sMkt, b_localized):
     return fitobj
 
 
-def _resolve_module(hardware, sMkt, b_localized):
-    # type: (xml.dom.minidom.Element, service.market.Market, bool) -> eos.saveddata.module.Module
+def _solve_module(hardware, sMkt, b_localized):
+    # type: (minidom.Element, Market, bool) -> Module
     moduleName = hardware.getAttribute("base_type") or hardware.getAttribute("type")
     emergency = None
     if b_localized:
@@ -132,18 +131,24 @@ def _resolve_module(hardware, sMkt, b_localized):
         must_retry = False
         try:
             item = sMkt.getItem(moduleName, eager="group.category")
+            if not item:
+                raise ValueError(f"{moduleName} is not valid")
+            pyfalog.info('_solve_module - sMkt.getItem: {}', item)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
-            pyfalog.warning("Caught exception on _resolve_module")
+            pyfalog.warning("Caught exception on _solve_module, name:{}", moduleName)
             pyfalog.error(e)
             limit -= 1
             if limit == 0:
                 break
             moduleName = emergency
             must_retry = True
-        if not must_retry:
+        if not must_retry and item:
             break
+
+    if item is None:
+        raise Exception("cannot resolve module or item.")
 
     mutaplasmidName = hardware.getAttribute("mutaplasmid")
     mutaplasmidItem = fetchItem(mutaplasmidName) if mutaplasmidName else None
@@ -155,15 +160,16 @@ def _resolve_module(hardware, sMkt, b_localized):
 
 
 def importXml(text, progress):
+    # type: (str, object) -> list[Fit]
     from .port import Port
     sMkt = Market.getInstance()
-    doc = xml.dom.minidom.parseString(text)
+    doc = minidom.parseString(text)
+
     # NOTE:
     #   When L_MARK is included at this point,
     #   Decided to be localized data
     b_localized = L_MARK in text
-    fittings = doc.getElementsByTagName("fittings").item(0)
-    fittings = fittings.getElementsByTagName("fitting")
+    fittings = doc.getElementsByTagName("fitting")
     fit_list = []
     failed = 0
 
@@ -172,7 +178,7 @@ def importXml(text, progress):
             return []
 
         try:
-            fitobj = _resolve_ship(fitting, sMkt, b_localized)
+            fitobj = _solve_ship(fitting, sMkt, b_localized)
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
@@ -181,7 +187,7 @@ def importXml(text, progress):
 
         # -- 170327 Ignored description --
         # read description from exported xml. (EVE client, EFT)
-        description = fitting.getElementsByTagName("description").item(0).getAttribute("value")
+        description = fitting.getElementsByTagName("description")[0].getAttribute("value")
         if description is None:
             description = ""
         elif len(description):
@@ -193,10 +199,12 @@ def importXml(text, progress):
         fitobj.notes = description
 
         hardwares = fitting.getElementsByTagName("hardware")
+        # Sorting by "slot" attr is cool
+        hardwares.sort(key=lambda e: e.getAttribute("slot"))
         moduleList = []
         for hardware in hardwares:
             try:
-                item, mutaItem, mutaAttrs = _resolve_module(hardware, sMkt, b_localized)
+                item, mutaItem, mutaAttrs = _solve_module(hardware, sMkt, b_localized)
                 if not item or not item.published:
                     continue
 
@@ -279,9 +287,9 @@ def importXml(text, progress):
 
     return fit_list
 
-
 def exportXml(fits, progress, callback):
-    doc = xml.dom.minidom.Document()
+    # type: (list[Fit], object, any) -> str|None
+    doc = minidom.Document()
     fittings = doc.createElement("fittings")
     # fit count
     fit_count = len(fits)
@@ -310,11 +318,11 @@ def exportXml(fits, progress, callback):
                 notes = fit.notes  # unicode
 
                 if notes:
-                    notes = notes[:397] + '...' if len(notes) > 400 else notes
+                    notes = re.sub(r"(\r|\n|\r\n)", "<br>", notes)
+                    if len(notes) > EVE_FIT_NOTE_MAX:
+                        notes = notes[:EVE_FIT_NOTE_MAX - 3] + '...'
 
-                description.setAttribute(
-                    "value", re.sub("(\r|\n|\r\n)+", "<br>", notes) if notes is not None else ""
-                )
+                description.setAttribute("value", notes)
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
