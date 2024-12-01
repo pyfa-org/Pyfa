@@ -59,47 +59,64 @@ def _extract_match(t):
     # hint attribute, text content
     return m.group(1), m.group(2)
 
+def doIt(text, b_localized):
+    # type: (str, bool) -> tuple[str, str|None]
+    altText = None
+    if b_localized:
+        try:
+            # expect an official name, emergency cache
+            text, altText = _extract_match(text)
+        except ExtractingError:
+            pass
+
+    return text, altText
+
+def _solve(name, altName, handler):
+    # type: (str, str|None, function) -> object|None
+    limit = 2
+    subject = None
+    while True:
+        must_retry = False
+        try:
+            subject = handler(name)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as e:
+            # pyfalog.warning("Caught exception on _solve")
+            pyfalog.error("Caught exception on _solve:: {}", e)
+            limit -= 1
+            if limit == 0:
+                break
+            name = altName
+            must_retry = True
+        if not must_retry:
+            break
+
+    return subject
 
 def _solve_ship(fitting, sMkt, b_localized):
     # type: (minidom.Element, Market, bool) -> Fit
     """ NOTE: Since it is meaningless unless a correct ship object can be constructed,
         process flow changed
     """
+    def handler(name):
+        # type: (str) -> Ship
+        try:
+            return Ship(sMkt.getItem(name))
+        except ValueError:
+            return Citadel(sMkt.getItem(name))
+
     # ------ Confirm ship
     # <localized hint="Maelstrom">Maelstrom</localized>
-    shipType = fitting.getElementsByTagName("shipType")[0].getAttribute("value")
-    anything = None
-    if b_localized:
-        try:
-            # expect an official name, emergency cache
-            shipType, anything = _extract_match(shipType)
-        except ExtractingError:
-            pass
-
-    limit = 2
-    ship = None
-    while True:
-        must_retry = False
-        try:
-            try:
-                ship = Ship(sMkt.getItem(shipType))
-            except ValueError:
-                ship = Citadel(sMkt.getItem(shipType))
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except Exception as e:
-            pyfalog.warning("Caught exception on _solve_ship")
-            pyfalog.error(e)
-            limit -= 1
-            if limit == 0:
-                break
-            shipType = anything
-            must_retry = True
-        if not must_retry:
-            break
+    shipType, anything = doIt(
+        fitting.getElementsByTagName("shipType")[0].getAttribute("value"), b_localized
+    )
+    ship = _solve(shipType, anything, handler)
 
     if ship is None:
-        raise Exception("cannot resolve ship type.")
+        raise Exception(
+            f"cannot solve ship type, name: '{shipType}', altName: '{anything}'"
+        )
 
     fitobj = Fit(ship=ship)
     # ------ Confirm fit name
@@ -116,39 +133,22 @@ def _solve_ship(fitting, sMkt, b_localized):
 
 def _solve_module(hardware, sMkt, b_localized):
     # type: (minidom.Element, Market, bool) -> Item
-    moduleName = hardware.getAttribute("base_type") or hardware.getAttribute("type")
-    emergency = None
-    if b_localized:
-        try:
-            # expect an official name, emergency cache
-            moduleName, emergency = _extract_match(moduleName)
-        except ExtractingError:
-            pass
+    def handler(name):
+        # type: (str) -> Item
+        item = sMkt.getItem(name, eager="group.category")
+        if not item:
+            raise ValueError(f'"{name}" is not valid')
+        pyfalog.info('_solve_module - sMkt.getItem: {}', item)
+        return item
 
-    item = None
-    limit = 2
-    while True:
-        must_retry = False
-        try:
-            item = sMkt.getItem(moduleName, eager="group.category")
-            if not item:
-                raise ValueError(f"{moduleName} is not valid")
-            pyfalog.info('_solve_module - sMkt.getItem: {}', item)
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except Exception as e:
-            pyfalog.warning("Caught exception on _solve_module, name:{}", moduleName)
-            pyfalog.error(e)
-            limit -= 1
-            if limit == 0:
-                break
-            moduleName = emergency
-            must_retry = True
-        if not must_retry and item:
-            break
-
+    moduleName, emergency = doIt(
+        hardware.getAttribute("base_type") or hardware.getAttribute("type"), b_localized
+    )
+    item = _solve(moduleName, emergency, handler)
     if item is None:
-        raise Exception("cannot resolve module or item.")
+        raise Exception(
+            f"cannot solve module, name: '{moduleName}', altName: '{emergency}'"
+        )
 
     mutaplasmidName = hardware.getAttribute("mutaplasmid")
     mutaplasmidItem = fetchItem(mutaplasmidName) if mutaplasmidName else None
@@ -174,7 +174,7 @@ def importXml(text, progress):
     failed = 0
 
     pyfalog.info(
-        f"importXml - localized fitting {'detected' if b_localized else 'is normaly'}"
+        f"importXml - fitting is {'localized' if b_localized else 'normally'}"
     )
     for fitting in fittings:
         if progress and progress.userCancelled:
