@@ -211,7 +211,7 @@ class Port:
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, progress=None):
-        # type: (str, str, svcFit, object) -> None
+        # type: (str, str, svcFit, object) -> tuple[str, bool, list[svcFit]]
         lines = string.splitlines()
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = ''

@@ -132,7 +132,7 @@ def _solve_ship(fitting, sMkt, b_localized):
 
 
 def _solve_module(hardware, sMkt, b_localized):
-    # type: (minidom.Element, Market, bool) -> Item
+    # type: (minidom.Element, Market, bool) -> tuple[Item, Item|None, dict[int, float]|None]
     def handler(name):
         # type: (str) -> Item
         item = sMkt.getItem(name, eager="group.category")
