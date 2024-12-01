@@ -296,7 +296,7 @@ def exportXml(fits, progress, callback):
     fittings = doc.createElement("fittings")
     # fit count
     fit_count = len(fits)
-    fittings.setAttribute("count", "%s" % fit_count)
+    fittings.setAttribute("count", str(fit_count))
     doc.appendChild(fittings)
 
     def addMutantAttributes(node, mutant):
@@ -310,7 +310,8 @@ def exportXml(fits, progress, callback):
                 return None
             processedFits = i + 1
             progress.current = processedFits
-            progress.message = "converting to xml (%s/%s) %s" % (processedFits, fit_count, fit.ship.name)
+            progress.message = f"converting to xml ({processedFits}/{fit_count}) {fit.ship.name}"
+        
         try:
             fitting = doc.createElement("fitting")
             fitting.setAttribute("name", fit.name)
@@ -318,13 +319,9 @@ def exportXml(fits, progress, callback):
             description = doc.createElement("description")
             # -- 170327 Ignored description --
             try:
-                notes = fit.notes  # unicode
-
-                if notes:
-                    notes = re.sub(r"(\r|\n|\r\n)", "<br>", notes)
-                    if len(notes) > EVE_FIT_NOTE_MAX:
-                        notes = notes[:EVE_FIT_NOTE_MAX - 3] + '...'
-
+                notes = re.sub(r"(\r|\n|\r\n)", "<br>", fit.notes or "")
+                if len(notes) > EVE_FIT_NOTE_MAX:
+                    notes = notes[:EVE_FIT_NOTE_MAX - 3] + '...'
                 description.setAttribute("value", notes)
             except (KeyboardInterrupt, SystemExit):
                 raise
@@ -358,7 +355,7 @@ def exportXml(fits, progress, callback):
                 hardware.setAttribute("type", module.item.name)
                 slotName = FittingSlot(slot).name.lower()
                 slotName = slotName if slotName != "high" else "hi"
-                hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
+                hardware.setAttribute("slot", f"{slotName} slot {slotId}")
                 if module.isMutated:
                     addMutantAttributes(hardware, module)
 
@@ -392,16 +389,16 @@ def exportXml(fits, progress, callback):
                     charges[cargo.item.name] = 0
                 charges[cargo.item.name] += cargo.amount
 
-            for name, qty in list(charges.items()):
+            for name, qty in charges.items():
                 hardware = doc.createElement("hardware")
-                hardware.setAttribute("qty", "%d" % qty)
+                hardware.setAttribute("qty", str(qty))
                 hardware.setAttribute("slot", "cargo")
                 hardware.setAttribute("type", name)
                 fitting.appendChild(hardware)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
-            pyfalog.error("Failed on fitID: %d, message: %s" % e.message)
+            pyfalog.error(f"Failed on fitID: {fit.ship.ID}, message: {e}")
             continue
     text = doc.toprettyxml()
 
