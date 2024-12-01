@@ -40,6 +40,11 @@ from service.port.shared import fetchItem
 from utils.strfunctions import replace_ltgt, sequential_rep
 from config import EVE_FIT_NOTE_MAX
 
+from eos.gamedata import Item # for type annotation
+# NOTE: I want to define an interface in the utils package and reference it (IProgress)
+# gui.utils.progressHelper.ProgressHelper inherits utils.IProgress
+from gui.utils.progressHelper import ProgressHelper # for type annotation
+
 
 pyfalog = Logger(__name__)
 
@@ -72,7 +77,7 @@ def doIt(text, b_localized):
     return text, altText
 
 def _solve(name, altName, handler):
-    # type: (str, str|None, function) -> object|None
+    # type: (str, str|None, function) -> any # enable inferer
     limit = 2
     subject = None
     while True:
@@ -101,17 +106,18 @@ def _solve_ship(fitting, sMkt, b_localized):
     """
     def handler(name):
         # type: (str) -> Ship
+        item = sMkt.getItem(name)
         try:
-            return Ship(sMkt.getItem(name))
+            return Ship(item)
         except ValueError:
-            return Citadel(sMkt.getItem(name))
+            return Citadel(item)
 
     # ------ Confirm ship
     # <localized hint="Maelstrom">Maelstrom</localized>
     shipType, anything = doIt(
         fitting.getElementsByTagName("shipType")[0].getAttribute("value"), b_localized
     )
-    ship = _solve(shipType, anything, handler)
+    ship = _solve(shipType, anything, handler) # type: Ship
 
     if ship is None:
         raise Exception(
@@ -122,7 +128,7 @@ def _solve_ship(fitting, sMkt, b_localized):
     # ------ Confirm fit name
     anything = fitting.getAttribute("name")
     # 2017/03/29 NOTE:
-    #    if fit name contained "<" or ">" then reprace to named html entity by EVE client
+    #    if fit name contained "<" or ">" then replace to named html entity by EVE client
     # if re.search(RE_LTGT, anything):
     if "&lt;" in anything or "&gt;" in anything:
         anything = replace_ltgt(anything)
@@ -135,11 +141,11 @@ def _solve_module(hardware, sMkt, b_localized):
     # type: (minidom.Element, Market, bool) -> tuple[Item, Item|None, dict[int, float]|None]
     def handler(name):
         # type: (str) -> Item
-        item = sMkt.getItem(name, eager="group.category")
-        if not item:
+        mod = sMkt.getItem(name, eager="group.category")
+        if not mod:
             raise ValueError(f'"{name}" is not valid')
-        pyfalog.info('_solve_module - sMkt.getItem: {}', item)
-        return item
+        pyfalog.info('_solve_module - sMkt.getItem: {}', mod)
+        return mod
 
     moduleName, emergency = doIt(
         hardware.getAttribute("base_type") or hardware.getAttribute("type"), b_localized
@@ -160,17 +166,16 @@ def _solve_module(hardware, sMkt, b_localized):
 
 
 def importXml(text, progress):
-    # type: (str, object) -> list[Fit]
+    # type: (str, ProgressHelper) -> list[Fit]
     from .port import Port
     sMkt = Market.getInstance()
-    doc = minidom.parseString(text)
 
     # NOTE:
     #   When L_MARK is included at this point,
     #   Decided to be localized data
     b_localized = L_MARK in text
-    fittings = doc.getElementsByTagName("fitting")
-    fit_list = []
+    fittings = minidom.parseString(text).getElementsByTagName("fitting")
+    fit_list = [] # type: list[Fit]
     failed = 0
 
     pyfalog.info(
@@ -204,7 +209,7 @@ def importXml(text, progress):
         hardwares = fitting.getElementsByTagName("hardware")
         # Sorting by "slot" attr is cool
         hardwares.sort(key=lambda e: e.getAttribute("slot"))
-        moduleList = []
+        moduleList = [] # type: list[Module]
         for hardware in hardwares:
             try:
                 item, mutaItem, mutaAttrs = _solve_module(hardware, sMkt, b_localized)
@@ -240,7 +245,7 @@ def importXml(text, progress):
                     c.amount = int(hardware.getAttribute("qty"))
                     fitobj.cargo.append(c)
                 else:
-                    m = None
+                    m = None # type: Module
                     try:
                         if mutaItem:
                             mutaplasmid = getDynamicItem(mutaItem.ID)
@@ -287,6 +292,8 @@ def importXml(text, progress):
         fit_list.append(fitobj)
         if progress:
             progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
+
+    pyfalog.info(f"importXml - stats of parse, succeeded: {fittings.length - failed}, failed: {failed}")
 
     return fit_list
 

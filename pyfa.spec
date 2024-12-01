@@ -1,7 +1,5 @@
 # -*- mode: python -*-
 
-# If you get a cp65001 error during build, set the environment variable PYTHONIOENCODING="utf8"
-
 import os
 from itertools import chain
 import subprocess
