@@ -115,7 +115,7 @@ def _solve_ship(fitting, sMkt, b_localized):
 
 
 def _solve_module(hardware, sMkt, b_localized):
-    # type: (minidom.Element, Market, bool) -> Module
+    # type: (minidom.Element, Market, bool) -> Item
     moduleName = hardware.getAttribute("base_type") or hardware.getAttribute("type")
     emergency = None
     if b_localized:
@@ -173,6 +173,9 @@ def importXml(text, progress):
     fit_list = []
     failed = 0
 
+    pyfalog.info(
+        f"importXml - localized fitting {'detected' if b_localized else 'is normaly'}"
+    )
     for fitting in fittings:
         if progress and progress.userCancelled:
             return []
