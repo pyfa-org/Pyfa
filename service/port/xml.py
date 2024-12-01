@@ -37,7 +37,8 @@ from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import renderMutantAttrs, parseMutantAttrs
 from service.port.shared import fetchItem
-from utils.strfunctions import replace_ltgt, sequential_rep
+from html import unescape
+from utils.strfunctions import sequential_rep
 from config import EVE_FIT_NOTE_MAX
 
 from eos.gamedata import Item # for type annotation
@@ -131,7 +132,7 @@ def _solve_ship(fitting, sMkt, b_localized):
     #    if fit name contained "<" or ">" then replace to named html entity by EVE client
     # if re.search(RE_LTGT, anything):
     if "&lt;" in anything or "&gt;" in anything:
-        anything = replace_ltgt(anything)
+        anything = unescape(anything)
     fitobj.name = anything
 
     return fitobj
@@ -201,7 +202,7 @@ def importXml(text, progress):
         elif len(description):
             # convert <br> to "\n" and remove html tags.
             if Port.is_tag_replace():
-                description = replace_ltgt(
+                description = unescape(
                     sequential_rep(description, r"<(br|BR)>", "\n", r"<[^<>]+>", "")
                 )
         fitobj.notes = description
