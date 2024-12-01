@@ -110,7 +110,7 @@ if __name__ == "__main__":
     config.defPaths(options.savepath)
     config.defLogging()
 
-    with config.logging_setup.threadbound():
+    with config.logging_setup.applicationbound():
 
         pyfalog.info("Starting Pyfa")
         pyfalog.info(version_block)
