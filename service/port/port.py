@@ -42,6 +42,7 @@ from service.port.shipstats import exportFitStats
 from service.port.xml import importXml, exportXml
 from service.port.muta import parseMutant, parseDynamicItemString, fetchDynamicItem
 
+from gui.utils.progressHelper import ProgressHelper # for type annotation
 
 pyfalog = Logger(__name__)
 
@@ -100,7 +101,7 @@ class Port:
 
     @staticmethod
     def importFitsThreaded(paths, progress):
-        # type: (list[str], object) -> None
+        # type: (list[str], ProgressHelper) -> None
         """
         :param paths: fits data file path list.
         :rtype: None
@@ -113,6 +114,7 @@ class Port:
 
     @staticmethod
     def importFitFromFiles(paths, progress=None):
+        # type: (list[str], ProgressHelper) -> tuple[bool, list[svcFit]]
         """
         Imports fits from file(s). First processes all provided paths and stores
         assembled fits into a list. This allows us to call back to the GUI as
@@ -122,7 +124,7 @@ class Port:
 
         sFit = svcFit.getInstance()
 
-        fit_list = []
+        fit_list = [] # type: list[svcFit]
         try:
             for path in paths:
                 if progress:
@@ -130,7 +132,7 @@ class Port:
                         progress.workerWorking = False
                         return False, "Cancelled by user"
                     msg = "Processing file:\n%s" % path
-                    progress.message = msg
+                    progress.pulse(msg)
                     pyfalog.debug(msg)
 
                 with open(path, "rb") as file_:
@@ -171,7 +173,8 @@ class Port:
                 # IDs.append(fit.ID)
                 if progress:
                     pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", idx + 1, numFits)
-                    progress.message = "Processing complete, saving fits to database\n(%d/%d) %s" % (idx + 1, numFits, fit.ship.name)
+                    # progress.message = "Processing complete, saving fits to database\n(%d/%d) %s" % (idx + 1, numFits, fit.ship.name)
+                    progress.pulse(f"Processing complete, saving fits to database\n({idx + 1}/{numFits}) {fit.ship.name}")
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
@@ -211,7 +214,7 @@ class Port:
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, progress=None):
-        # type: (str, str, svcFit, object) -> tuple[str, bool, list[svcFit]]
+        # type: (str, str, svcFit, ProgressHelper) -> tuple[str, bool, list[svcFit]]
         lines = string.splitlines()
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = ''

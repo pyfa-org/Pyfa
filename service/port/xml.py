@@ -292,7 +292,8 @@ def importXml(text, progress):
 
         fit_list.append(fitobj)
         if progress:
-            progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
+            progress.pulse(f"Processing {fitobj.ship.name}\n{fitobj.name}")
+            # progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
 
     pyfalog.info(f"importXml - stats of parse, succeeded: {fittings.length - failed}, failed: {failed}")
 

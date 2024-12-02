@@ -851,7 +851,8 @@ class MainFrame(wx.Frame):
                 call = (Port.importFitsThreaded, [dlg.GetPaths(), progress], {})
                 self.handleProgress(
                     title=_t("Importing fits"),
-                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE,
+                    # style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE,
+                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL, # old style at 2017
                     call=call,
                     progress=progress,
                     errMsgLbl=_t("Import Error"))
@@ -914,7 +915,8 @@ class MainFrame(wx.Frame):
             progress=progress)
 
     def handleProgress(self, title, style, call, progress, errMsgLbl=None):
-        extraArgs = {}
+        # type: (str, int, tuple[function, list[str], dict[str, str]], ProgressHelper, str) -> None
+        extraArgs = {} # type: dict[str, any]
         if progress.maximum is not None:
             extraArgs['maximum'] = progress.maximum
         with wx.ProgressDialog(
@@ -925,11 +927,16 @@ class MainFrame(wx.Frame):
                 **extraArgs
         ) as dlg:
             func, args, kwargs = call
+            # IMPORTANT
+            progress.dlg = dlg
             func(*args, **kwargs)
             while progress.working:
-                wx.MilliSleep(1)
-                # wx.Yield()
-                (progress.dlgWorking, skip) = dlg.Update(progress.current, progress.message)
+                wx.MilliSleep(20)
+                wx.Yield()
+                # (progress.dlgWorking, skip) = dlg.Pulse(
+                #     # progress.current,
+                #     progress.message
+                # )
         if progress.error and errMsgLbl:
             with wx.MessageDialog(
                     self,
