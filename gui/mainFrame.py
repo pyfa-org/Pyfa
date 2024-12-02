@@ -927,8 +927,8 @@ class MainFrame(wx.Frame):
             func, args, kwargs = call
             func(*args, **kwargs)
             while progress.working:
-                wx.MilliSleep(250)
-                wx.Yield()
+                wx.MilliSleep(1)
+                # wx.Yield()
                 (progress.dlgWorking, skip) = dlg.Update(progress.current, progress.message)
         if progress.error and errMsgLbl:
             with wx.MessageDialog(
