@@ -50,7 +50,6 @@ from gui.utils.progressHelper import ProgressHelper # for type annotation
 pyfalog = Logger(__name__)
 
 # -- 170327 Ignored description --
-RE_LTGT = "&(lt|gt);"
 L_MARK = "&lt;localized hint=&quot;"
 # &lt;localized hint=&quot;([^"]+)&quot;&gt;([^\*]+)\*&lt;\/localized&gt;
 LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"*]+)\*?">([^*]+)\*?</localized>')
@@ -130,8 +129,7 @@ def _solve_ship(fitting, sMkt, b_localized):
     anything = fitting.getAttribute("name")
     # 2017/03/29 NOTE:
     #    if fit name contained "<" or ">" then replace to named html entity by EVE client
-    # if re.search(RE_LTGT, anything):
-    if "&lt;" in anything or "&gt;" in anything:
+    if re.search(f"&(lt|gt);", anything):
         anything = unescape(anything)
     fitobj.name = anything
 
@@ -166,9 +164,10 @@ def _solve_module(hardware, sMkt, b_localized):
     return item, mutaplasmidItem, mutatedAttrs
 
 
-def importXml(text, progress):
-    # type: (str, ProgressHelper) -> list[Fit]
+def importXml(text, progress, path="---"):
+    # type: (str, ProgressHelper, str) -> list[Fit]
     from .port import Port
+    import os.path
     sMkt = Market.getInstance()
 
     # NOTE:
@@ -182,9 +181,15 @@ def importXml(text, progress):
     pyfalog.info(
         f"importXml - fitting is {'localized' if b_localized else 'normally'}"
     )
-    for fitting in fittings:
-        if progress and progress.userCancelled:
-            return []
+
+    progress.maximum = fittings.length
+    progress.setRange(fittings.length)
+    progress.current = 0
+    path = os.path.basename(path)
+    for idx, fitting in enumerate(fittings):
+        if progress:
+            if (progress.userCancelled):
+                return []
 
         try:
             fitobj = _solve_ship(fitting, sMkt, b_localized)
@@ -194,6 +199,16 @@ def importXml(text, progress):
             failed += 1
             continue
 
+        if progress:
+            currentIdx = idx + 1
+            if (currentIdx < fittings.length):
+                progress.current = currentIdx
+            # progress.pulse(f"Processing {fitobj.ship.name}\n{fitobj.name}")
+            progress.message = f"""Processing file: {path}
+  current  - {fitobj.ship.name}
+  fit name - {fitobj.name}
+"""
+            # progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
         # -- 170327 Ignored description --
         # read description from exported xml. (EVE client, EFT)
         description = fitting.getElementsByTagName("description")[0].getAttribute("value")
@@ -291,16 +306,13 @@ def importXml(text, progress):
                 fitobj.modules.append(module)
 
         fit_list.append(fitobj)
-        if progress:
-            progress.pulse(f"Processing {fitobj.ship.name}\n{fitobj.name}")
-            # progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
 
     pyfalog.info(f"importXml - stats of parse, succeeded: {fittings.length - failed}, failed: {failed}")
 
     return fit_list
 
 def exportXml(fits, progress, callback):
-    # type: (list[Fit], object, any) -> str|None
+    # type: (list[Fit], ProgressHelper, function) -> str|None
     doc = minidom.Document()
     fittings = doc.createElement("fittings")
     # fit count

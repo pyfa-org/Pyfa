@@ -74,11 +74,11 @@ class Port:
 
     @staticmethod
     def backupFits(path, progress):
-        # type: (str, object) -> None
+        # type: (str, ProgressHelper) -> None
         pyfalog.debug("Starting backup fits thread.")
 
         def backupFitsWorkerFunc(path, progress):
-            # type: (str, object) -> None
+            # type: (str, ProgressHelper) -> None
             try:
                 backedUpFits = Port.exportXml(svcFit.getInstance().getAllFits(), progress)
                 if backedUpFits:
@@ -131,8 +131,8 @@ class Port:
                     if progress.userCancelled:
                         progress.workerWorking = False
                         return False, "Cancelled by user"
-                    msg = "Processing file:\n%s" % path
-                    progress.pulse(msg)
+                    msg = f"Processing file: {path}"
+                    progress.message = msg
                     pyfalog.debug(msg)
 
                 with open(path, "rb") as file_:
@@ -156,10 +156,14 @@ class Port:
                     return False, msg
 
             numFits = len(fit_list)
+            progress.setRange(numFits)
             for idx, fit in enumerate(fit_list):
-                if progress and progress.userCancelled:
-                    progress.workerWorking = False
-                    return False, "Cancelled by user"
+                if progress:
+                    if (progress.userCancelled):
+                        progress.workerWorking = False
+                        return False, "Cancelled by user"
+
+                    progress.current = idx + 1
                 # Set some more fit attributes and save
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
@@ -172,9 +176,9 @@ class Port:
                 db.save(fit)
                 # IDs.append(fit.ID)
                 if progress:
-                    pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", idx + 1, numFits)
-                    # progress.message = "Processing complete, saving fits to database\n(%d/%d) %s" % (idx + 1, numFits, fit.ship.name)
-                    progress.pulse(f"Processing complete, saving fits to database\n({idx + 1}/{numFits}) {fit.ship.name}")
+                    msg = "Processing complete, saving fits to database"
+                    pyfalog.debug(f"{msg}: {idx + 1}/{numFits}")
+                    progress.message = f"{msg}\n({idx + 1}/{numFits}) {fit.ship.name}"
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
@@ -226,7 +230,7 @@ class Port:
 
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
-            return "XML", True, cls.importXml(string, progress)
+            return "XML", True, importXml(string, progress, path)
 
         # If JSON-style start, parse as CREST/JSON
         if firstLine[0] == '{':

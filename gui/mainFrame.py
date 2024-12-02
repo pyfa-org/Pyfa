@@ -852,7 +852,7 @@ class MainFrame(wx.Frame):
                 self.handleProgress(
                     title=_t("Importing fits"),
                     # style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE,
-                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL, # old style at 2017
+                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE, # old style at 2017  | wx.RESIZE_BORDER
                     call=call,
                     progress=progress,
                     errMsgLbl=_t("Import Error"))
@@ -868,7 +868,7 @@ class MainFrame(wx.Frame):
                 style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
                 defaultFile=defaultFile) as fileDlg:
             if fileDlg.ShowModal() == wx.ID_OK:
-                filePath = fileDlg.GetPath()
+                filePath = fileDlg.GetPath() # type: str
                 if '.' not in os.path.basename(filePath):
                     filePath += ".xml"
 
@@ -927,16 +927,13 @@ class MainFrame(wx.Frame):
                 **extraArgs
         ) as dlg:
             func, args, kwargs = call
-            # IMPORTANT
+            # important
             progress.dlg = dlg
             func(*args, **kwargs)
             while progress.working:
-                wx.MilliSleep(20)
+                wx.MilliSleep(33)
                 wx.Yield()
-                # (progress.dlgWorking, skip) = dlg.Pulse(
-                #     # progress.current,
-                #     progress.message
-                # )
+                (progress.dlgWorking, skip) = dlg.Update(progress.current, progress.message)
         if progress.error and errMsgLbl:
             with wx.MessageDialog(
                     self,

@@ -280,6 +280,7 @@ def getFitsWithModules(typeIDs, eager=None):
 
 
 def countAllFits():
+    # type: () -> int
     with sd_lock:
         count = saveddata_session.query(Fit).count()
     return count

@@ -10,18 +10,26 @@ class ProgressHelper:
         self.dlgWorking = True # type: bool
         self.error = None # type: str
         self.callback = callback
-        self.cbArgs = []
+        self.cbArgs = [] # type: list[str]
         self.dlg = None # type: ProgressDialog
 
-    def pulse(self, msg):
-        # type: (str) -> None
+    def setRange(self, max):
+        # type: (int) -> None
+        """
+        call ProgressDialog.SetRange(max)
+        """
         if (self.dlg):
-            self.dlgWorking, skip = self.dlg.Pulse(msg)
+            self.dlg.SetRange(max)
 
-    def update(self, value, msg):
-        # type: (int, str) -> None
-        if (self.dlg):
-            self.dlgWorking, skip = self.dlg.Update(value, msg)
+    # def pulse(self, msg):
+    #     # type: (str) -> None
+    #     if (self.dlg):
+    #         self.dlgWorking, skip = self.dlg.Pulse(msg)
+
+    # def update(self, value, msg):
+    #     # type: (int, str) -> None
+    #     if (self.dlg):
+    #         self.dlgWorking, skip = self.dlg.Update(value, msg)
 
     @property
     def working(self):
