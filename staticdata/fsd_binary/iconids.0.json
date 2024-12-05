@@ -12946,6 +12946,51 @@
   "26378": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_eclipse_01_128.png"
   }, 
+  "26380": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_matt_000_030_100.png"
+  }, 
+  "26381": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_matt_000_100_010.png"
+  }, 
+  "26382": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_matt_000_100_100.png"
+  }, 
+  "26383": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_satin_000_060_100.png"
+  }, 
+  "26384": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_satin_000_100_010.png"
+  }, 
+  "26385": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_satin_000_100_100.png"
+  }, 
+  "26386": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_gloss_000_030_100.png"
+  }, 
+  "26387": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_gloss_000_060_100.png"
+  }, 
+  "26388": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_gloss_000_100_100.png"
+  }, 
+  "26389": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_gloss_000_080_100.png"
+  }, 
+  "26390": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_metallic_000_100_010.png"
+  }, 
+  "26391": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_malachite_metallic_000_080_100.png"
+  }, 
+  "26392": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_metallic_000_060_100.png"
+  }, 
+  "26393": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/Pattern_WN2024_02_128.png"
+  }, 
+  "26394": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/Pattern_WN2024_03_128.png"
+  }, 
   "26395": {
     "iconFile": "res:/ui/texture/icons/modules/breacher_launcher_S_64.png"
   }, 
@@ -13191,5 +13236,20 @@
   }, 
   "26521": {
     "iconFile": "res:/ui/texture/icons/modules/EntropicRadiationSink_64.png"
+  }, 
+  "26525": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_vanguard_black.png"
+  }, 
+  "26526": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_vanguard_red.png"
+  }, 
+  "26527": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_vanguard_white.png"
+  }, 
+  "26529": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/vanguard_pattern_128.png"
+  }, 
+  "26531": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/Pattern_WN2024_04_128.png"
   }
 }

@@ -15063,6 +15063,7 @@
     "groupName_ru": "Оборонительная подсистема", 
     "groupName_zh": "防御子系统", 
     "groupNameID": 64324, 
+    "iconID": 3631, 
     "published": 1, 
     "useBasePrice": 0
   }, 
@@ -15101,6 +15102,7 @@
     "groupName_ru": "Наступательная подсистема", 
     "groupName_zh": "攻击子系统", 
     "groupNameID": 64327, 
+    "iconID": 3641, 
     "published": 1, 
     "useBasePrice": 0
   }, 
@@ -15120,6 +15122,7 @@
     "groupName_ru": "Двигательная подсистема", 
     "groupName_zh": "推进子系统", 
     "groupNameID": 64328, 
+    "iconID": 3646, 
     "published": 1, 
     "useBasePrice": 0
   }, 
@@ -15139,6 +15142,7 @@
     "groupName_ru": "Подсистема ядра", 
     "groupName_zh": "核心子系统", 
     "groupNameID": 64326, 
+    "iconID": 3636, 
     "published": 1, 
     "useBasePrice": 0
   }, 
