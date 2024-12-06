@@ -18,6 +18,7 @@ class ProgressHelper:
         """
         call ProgressDialog.SetRange(max)
         """
+        self.maximum = max
         if (self.dlg):
             self.dlg.SetRange(max)
 

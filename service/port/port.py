@@ -156,7 +156,8 @@ class Port:
                     return False, msg
 
             numFits = len(fit_list)
-            progress.setRange(numFits)
+            if progress:
+                progress.setRange(numFits)
             for idx, fit in enumerate(fit_list):
                 if progress:
                     if (progress.userCancelled):

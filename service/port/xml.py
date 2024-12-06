@@ -182,14 +182,13 @@ def importXml(text, progress, path="---"):
         f"importXml - fitting is {'localized' if b_localized else 'normally'}"
     )
 
-    progress.maximum = fittings.length
-    progress.setRange(fittings.length)
-    progress.current = 0
-    path = os.path.basename(path)
+    if progress:
+        progress.setRange(fittings.length)
+        progress.current = 0
+        path = os.path.basename(path)
     for idx, fitting in enumerate(fittings):
-        if progress:
-            if (progress.userCancelled):
-                return []
+        if progress and progress.userCancelled:
+            return []
 
         try:
             fitobj = _solve_ship(fitting, sMkt, b_localized)
@@ -203,12 +202,11 @@ def importXml(text, progress, path="---"):
             currentIdx = idx + 1
             if (currentIdx < fittings.length):
                 progress.current = currentIdx
-            # progress.pulse(f"Processing {fitobj.ship.name}\n{fitobj.name}")
+            # progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
             progress.message = f"""Processing file: {path}
   current  - {fitobj.ship.name}
   fit name - {fitobj.name}
 """
-            # progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
         # -- 170327 Ignored description --
         # read description from exported xml. (EVE client, EFT)
         description = fitting.getElementsByTagName("description")[0].getAttribute("value")
