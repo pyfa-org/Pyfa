@@ -204,7 +204,10 @@ def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
 
 def exportFighters(fighters):
     # Same as in drone additions panel
-    FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
+    FIGHTER_ORDER = (
+        'Light Fighter', 'Structure Light Fighter',
+        'Heavy Fighter', 'Structure Heavy Fighter',
+        'Support Fighter', 'Structure Support Fighter')
 
     def fighterSorter(fighter):
         groupName = Market.getInstance().getGroupByItem(fighter.item).name
