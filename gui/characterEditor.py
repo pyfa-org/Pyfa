@@ -481,6 +481,35 @@ class SkillTreeView(wx.Panel):
 
         toClipboard(list)
 
+    def exportSkillsSuperCondensed(self, evt):
+        char = self.charEditor.entityEditor.getActiveEntity()
+
+        skills = {}
+        explicit_levels = {}
+        implicit_levels = {}
+        for s in char.__class__.getSkillNameMap().keys():
+            skill = char.getSkill(s)
+            if skill.level < 1:
+                continue
+            skills[skill.item.ID] = skill
+            explicit_levels[skill.item.ID] = skill.level
+
+        for skill in skills.values():
+            for req_skill, level in skill.item.requiredSkills.items():
+                if req_skill.ID not in implicit_levels or implicit_levels[req_skill.ID] < level:
+                    implicit_levels[req_skill.ID] = level
+
+        condensed = {}
+        for typeID, level in explicit_levels.items():
+            if typeID not in implicit_levels or implicit_levels[typeID] < level:
+                condensed[skills[typeID].item.name] = level
+
+        lines = []
+        for skill in sorted(condensed):
+            lines.append(f'{skill}\t{condensed[skill]}')
+
+        toClipboard('\n'.join(lines))
+
     def onSecStatus(self, event):
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()

@@ -988,3 +988,21 @@ class Market:
         metatab = self.META_MAP_REVERSE_GROUPED.get(metagrpid)
         metalvl = item.metaLevel or 0
         return catname, mktgrpid, parentname, metatab, metalvl, item.name
+
+    def printAllItems(self):
+        items = set()
+
+        def handleMg(marketGroup, path=()):
+            marketGroup = self.getMarketGroup(marketGroup, eager=("items", "items.metaGroup", "children"))
+            path = path + (marketGroup.name,)
+            print(' > '.join(path))
+            for item in self.getItemsByMarketGroup(marketGroup):
+                items.add(item.ID)
+            for mgc in self.getMarketGroupChildren(marketGroup):
+                handleMg(mgc, path=path)
+
+        for mg in self.ROOT_MARKET_GROUPS:
+            handleMg(mg)
+        print(sorted(items))
+
+
