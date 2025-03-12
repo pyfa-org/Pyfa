@@ -97022,5 +97022,294 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "12249": {
+    "description_de": "Automatisch erzeugter Effekt", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
+    "descriptionID": 1009573, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12249, 
+    "effectName": "shipBonusDroneDamageHeavyMediumLightMultiplierGBC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 3441
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 33699
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 24241
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12250": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12250, 
+    "effectName": "shipBonusSentryDroneDamageAndSentryHPMultiplierGBC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 5046, 
+        "operation": 6, 
+        "skillTypeID": 23594
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 5046, 
+        "operation": 6, 
+        "skillTypeID": 23594
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 5046, 
+        "operation": 6, 
+        "skillTypeID": 23594
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 5046, 
+        "operation": 6, 
+        "skillTypeID": 23594
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12251": {
+    "description_de": "Automatisch erzeugter Effekt", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
+    "descriptionID": 1009574, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12251, 
+    "effectName": "shipBonusDroneHPHeavyMediumLightGBC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 3441
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 33699
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 24241
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 3441
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 33699
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 24241
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 3441
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 33699
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 24241
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12252": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12252, 
+    "effectName": "eliteBonusCommandShipDroneTrackingHeavyMediumLightCS2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 999, 
+        "operation": 6, 
+        "skillTypeID": 3441
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 999, 
+        "operation": 6, 
+        "skillTypeID": 33699
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 999, 
+        "operation": 6, 
+        "skillTypeID": 24241
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12253": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12253, 
+    "effectName": "eliteBonusCommandShipDroneTrackingSentryCS4", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 5772, 
+        "operation": 6, 
+        "skillTypeID": 23594
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12254": {
+    "description_de": "Automatisch erzeugter Effekt", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
+    "descriptionID": 1009575, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12254, 
+    "effectName": "commandShipSkillMultiplier4", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5772, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }

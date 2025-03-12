@@ -13251,5 +13251,308 @@
   }, 
   "26531": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/Pattern_WN2024_04_128.png"
+  }, 
+  "26534": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyDamage_64_1.png"
+  }, 
+  "26535": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyDamage_64_2.png"
+  }, 
+  "26536": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyDamage_64_3.png"
+  }, 
+  "26537": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyDamage_64_4.png"
+  }, 
+  "26538": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencySpeed_64_1.png"
+  }, 
+  "26539": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencySpeed_64_2.png"
+  }, 
+  "26540": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencySpeed_64_3.png"
+  }, 
+  "26541": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencySpeed_64_4.png"
+  }, 
+  "26542": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyTank_64_1.png"
+  }, 
+  "26543": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyTank_64_2.png"
+  }, 
+  "26544": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyTank_64_3.png"
+  }, 
+  "26545": {
+    "iconFile": "res:/ui/texture/icons/AgencyBoosters/BoosterAgencyTank_64_4.png"
+  }, 
+  "26546": {
+    "iconFile": "res:/ui/texture/icons/PowerDiagnosticSystem_64.png"
+  }, 
+  "26547": {
+    "iconFile": "res:/ui/texture/icons/ReactorControlUnit_64.png"
+  }, 
+  "26548": {
+    "iconFile": "res:/ui/texture/icons/boosters/BluePill_64_1.png"
+  }, 
+  "26549": {
+    "iconFile": "res:/ui/texture/icons/boosters/BluePill_64_2.png"
+  }, 
+  "26550": {
+    "iconFile": "res:/ui/texture/icons/boosters/BluePill_64_3.png"
+  }, 
+  "26551": {
+    "iconFile": "res:/ui/texture/icons/boosters/BluePill_64_4.png"
+  }, 
+  "26552": {
+    "iconFile": "res:/ui/texture/icons/boosters/Frentix_64_1.png"
+  }, 
+  "26553": {
+    "iconFile": "res:/ui/texture/icons/boosters/Frentix_64_2.png"
+  }, 
+  "26554": {
+    "iconFile": "res:/ui/texture/icons/boosters/Frentix_64_3.png"
+  }, 
+  "26555": {
+    "iconFile": "res:/ui/texture/icons/boosters/Frentix_64_4.png"
+  }, 
+  "26556": {
+    "iconFile": "res:/ui/texture/icons/boosters/Mindflood_64_1.png"
+  }, 
+  "26557": {
+    "iconFile": "res:/ui/texture/icons/boosters/Mindflood_64_2.png"
+  }, 
+  "26558": {
+    "iconFile": "res:/ui/texture/icons/boosters/Mindflood_64_3.png"
+  }, 
+  "26559": {
+    "iconFile": "res:/ui/texture/icons/boosters/Mindflood_64_4.png"
+  }, 
+  "26584": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Drifter_loot_crate64.png", 
+    "iconType": "png"
+  }, 
+  "26585": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_green_satin_000_100_100.png"
+  }, 
+  "26586": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_blue_metallic_000_100_001.png"
+  }, 
+  "26587": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_snakescales_01_128.png"
+  }, 
+  "26589": {
+    "iconFile": "res:/ui/texture/icons/spectral_vision_capture.png"
+  }, 
+  "26597": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/87572_Female_Outer_CostumeJF01_Types_CostumeJF01_Drifter.png", 
+    "iconType": "png"
+  }, 
+  "26598": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/87573_Male_outer_CostumeJM01_Types_CostumeJM01_Drifter.png", 
+    "iconType": "png"
+  }, 
+  "26604": {
+    "iconFile": "res:/ui/texture/icons/boosters/Crash_64_1.png"
+  }, 
+  "26605": {
+    "iconFile": "res:/ui/texture/icons/boosters/Crash_64_2.png"
+  }, 
+  "26606": {
+    "iconFile": "res:/ui/texture/icons/boosters/Crash_64_3.png"
+  }, 
+  "26607": {
+    "iconFile": "res:/ui/texture/icons/boosters/Crash_64_4.png"
+  }, 
+  "26608": {
+    "iconFile": "res:/ui/texture/icons/boosters/Drop_64_1.png"
+  }, 
+  "26609": {
+    "iconFile": "res:/ui/texture/icons/boosters/Drop_64_2.png"
+  }, 
+  "26610": {
+    "iconFile": "res:/ui/texture/icons/boosters/Drop_64_3.png"
+  }, 
+  "26611": {
+    "iconFile": "res:/ui/texture/icons/boosters/Drop_64_4.png"
+  }, 
+  "26612": {
+    "iconFile": "res:/ui/texture/icons/boosters/Exile_64_1.png"
+  }, 
+  "26613": {
+    "iconFile": "res:/ui/texture/icons/boosters/Exile_64_2.png"
+  }, 
+  "26614": {
+    "iconFile": "res:/ui/texture/icons/boosters/Exile_64_3.png"
+  }, 
+  "26615": {
+    "iconFile": "res:/ui/texture/icons/boosters/Exile_64_4.png"
+  }, 
+  "26616": {
+    "iconFile": "res:/ui/texture/icons/boosters/SoothSayer_64_1.png"
+  }, 
+  "26617": {
+    "iconFile": "res:/ui/texture/icons/boosters/SoothSayer_64_2.png"
+  }, 
+  "26618": {
+    "iconFile": "res:/ui/texture/icons/boosters/SoothSayer_64_3.png"
+  }, 
+  "26619": {
+    "iconFile": "res:/ui/texture/icons/boosters/SoothSayer_64_4.png"
+  }, 
+  "26620": {
+    "iconFile": "res:/ui/texture/icons/boosters/X-Instinct_64_1.png"
+  }, 
+  "26621": {
+    "iconFile": "res:/ui/texture/icons/boosters/X-Instinct_64_2.png"
+  }, 
+  "26622": {
+    "iconFile": "res:/ui/texture/icons/boosters/X-Instinct_64_3.png"
+  }, 
+  "26623": {
+    "iconFile": "res:/ui/texture/icons/boosters/X-Instinct_64_4.png"
+  }, 
+  "26672": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_dark_blue.png"
+  }, 
+  "26673": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_dark_blue_metallic.png"
+  }, 
+  "26674": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_dark_green.png"
+  }, 
+  "26675": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_dark_green_metallic.png"
+  }, 
+  "26676": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_mint.png"
+  }, 
+  "26677": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_mint_metallic.png"
+  }, 
+  "26678": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_white.png"
+  }, 
+  "26679": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_white_metallic.png"
+  }, 
+  "26680": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_circletwirl_t1_04_128.png"
+  }, 
+  "26681": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_geo_t1_03_128.png"
+  }, 
+  "26682": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_geo_t3_04_128.png"
+  }, 
+  "26683": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_spikes_t1_01_128.png"
+  }, 
+  "26684": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/linkedToTrace.png"
+  }, 
+  "26721": {
+    "iconFile": "res:/ui/texture/icons/modules/AutoTargetingSystem_64.png"
+  }, 
+  "26722": {
+    "iconFile": "res:/ui/texture/icons/modules/NetworkedSensorArray_64.png"
+  }, 
+  "26723": {
+    "iconFile": "res:/ui/texture/icons/modules/PassiveTargetingArray_64.png"
+  }, 
+  "26724": {
+    "iconFile": "res:/ui/texture/icons/modules/PassiveTargetingSystem_64.png"
+  }, 
+  "26725": {
+    "iconFile": "res:/ui/texture/icons/modules/RemoteSensorBooster_64.png"
+  }, 
+  "26726": {
+    "iconFile": "res:/ui/texture/icons/modules/SensorBooster_64.png"
+  }, 
+  "26727": {
+    "iconFile": "res:/ui/texture/icons/modules/SignalAmplifier_64.png"
+  }, 
+  "26729": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/MajorThreatDetectionArray_I.png"
+  }, 
+  "26730": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/MajorThreatDetectionArray_II.png"
+  }, 
+  "26731": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/MajorThreatDetectionArray_III.png"
+  }, 
+  "26732": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/MinorThreatDetectionArray_I.png"
+  }, 
+  "26733": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/MinorThreatDetectionArray_II.png"
+  }, 
+  "26734": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/MinorThreatDetectionArray_III.png"
+  }, 
+  "26735": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Tritanium_I.png"
+  }, 
+  "26736": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Tritanium_II.png"
+  }, 
+  "26737": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Tritanium_III.png"
+  }, 
+  "26738": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Pyerite_I.png"
+  }, 
+  "26739": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Pyerite_II.png"
+  }, 
+  "26740": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Pyerite_III.png"
+  }, 
+  "26741": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Mexallon_I.png"
+  }, 
+  "26742": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Mexallon_II.png"
+  }, 
+  "26743": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Mexallon_III.png"
+  }, 
+  "26744": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Isogen_I.png"
+  }, 
+  "26745": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Isogen_II.png"
+  }, 
+  "26746": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Isogen_III.png"
+  }, 
+  "26747": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Nocxium_I.png"
+  }, 
+  "26748": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Nocxium_II.png"
+  }, 
+  "26749": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Nocxium_III.png"
+  }, 
+  "26750": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Zydrine_I.png"
+  }, 
+  "26751": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Zydrine_II.png"
+  }, 
+  "26752": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Zydrine_III.png"
+  }, 
+  "26753": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Megacyte_I.png"
+  }, 
+  "26754": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Megacyte_II.png"
+  }, 
+  "26755": {
+    "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Megacyte_III.png"
   }
 }
