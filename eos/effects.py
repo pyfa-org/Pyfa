@@ -41259,3 +41259,103 @@ class Effect12221(BaseEffect):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Breacher Pod Launcher Operation'), 'dotDuration',
             skill.getModifiedItemAttr('durationBonus') * skill.level, **kwargs)
+
+
+class Effect12249(BaseEffect):
+    """
+    shipBonusDroneDamageHeavyMediumLightMultiplierGBC1
+
+    Used by:
+    Ship: Eos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: (
+                drone.item.requiresSkill('Light Drone Operation')
+                or drone.item.requiresSkill('Medium Drone Operation')
+                or drone.item.requiresSkill('Heavy Drone Operation')),
+            'damageMultiplier', ship.getModifiedItemAttr('shipBonusGBC1'),
+            skill='Gallente Battlecruiser', **kwargs)
+
+
+class Effect12250(BaseEffect):
+    """
+    shipBonusSentryDroneDamageAndSentryHPMultiplierGBC3
+
+    Used by:
+    Ship: Eos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attrName in ('damageMultiplier', 'shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'), attrName,
+                ship.getModifiedItemAttr('shipBonusGBC3'), skill='Gallente Battlecruiser', **kwargs)
+
+
+class Effect12251(BaseEffect):
+    """
+    shipBonusDroneHPHeavyMediumLightGBC1
+
+    Used by:
+    Ship: Eos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attrName in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: (
+                    drone.item.requiresSkill('Light Drone Operation')
+                    or drone.item.requiresSkill('Medium Drone Operation')
+                    or drone.item.requiresSkill('Heavy Drone Operation')),
+                attrName, ship.getModifiedItemAttr('shipBonusGBC1'),
+                skill='Gallente Battlecruiser', **kwargs)
+
+
+class Effect12252(BaseEffect):
+    """
+    eliteBonusCommandShipDroneTrackingHeavyMediumLightCS2
+
+    Used by:
+    Ship: Eos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: (
+                drone.item.requiresSkill('Light Drone Operation')
+                or drone.item.requiresSkill('Medium Drone Operation')
+                or drone.item.requiresSkill('Heavy Drone Operation')),
+            'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
+            skill='Command Ships', **kwargs)
+
+
+class Effect12253(BaseEffect):
+    """
+    eliteBonusCommandShipDroneTrackingSentryCS4
+
+    Used by:
+    Ship: Eos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
+            'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips4'),
+            skill='Command Ships', **kwargs)
