@@ -25,6 +25,7 @@ for:
     before_build:
       # Prepare pyfa data
       - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
+      - sh: pyenv global system
       - sh: python3.11 -B scripts/compile_lang.py
       - sh: python3.11 -B scripts/dump_crowdin_progress.py
       - sh: python3.11 -B db_update.py
