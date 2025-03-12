@@ -462,7 +462,7 @@ class Effect67(BaseEffect):
     Used by:
     Modules from group: Frequency Mining Laser (3 of 3)
     Modules from group: Mining Laser (15 of 15)
-    Modules from group: Strip Miner (5 of 5)
+    Modules from group: Strip Miner (6 of 6)
     Module: Citizen Miner
     """
 
@@ -1306,7 +1306,6 @@ class Effect446(BaseEffect):
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
-    Implants named like: Wightstorm Nirvana Booster (4 of 4)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: AIR Nirvana Booster II
@@ -1331,7 +1330,6 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
-    Implants named like: Wightstorm Rapture Booster (4 of 4)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
@@ -2415,6 +2413,7 @@ class Effect784(BaseEffect):
     Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
     Modules named like: Rocket Fuel Cache Partition (8 of 8)
     Implant: Antipharmakon Toxot
+    Implant: Mithridate Volatile Booster
     Skill: Missile Bombardment
     """
 
@@ -6786,7 +6785,6 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Tetrimon Resistance Booster (4 of 4)
     """
 
     type = 'passive'
@@ -6984,8 +6982,8 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
-    Implants named like: Tetrimon Capacitor Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
+    Implant: Aegytica Volatile Booster
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-1
@@ -7611,7 +7609,6 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -8362,8 +8359,6 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Harvest Damage Booster (4 of 4)
-    Implants named like: Wightstorm Vitarka Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
     """
@@ -8474,6 +8469,7 @@ class Effect2847(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
+    Implant: Theriac Volatile Booster
     Skill: Motion Prediction
     """
 
@@ -9641,7 +9637,6 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
-    Implants named like: Wightstorm Sunyata Booster (4 of 4)
     Skill: Thermodynamics
     """
 
@@ -13106,7 +13101,8 @@ class Effect4088(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
-    Celestial: Dazh Liminality Locus
+    Celestial: Final Liminality
+    Celestial: Triglavian Minor Victory
     """
 
     runTime = 'early'
@@ -13127,7 +13123,8 @@ class Effect4089(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
-    Celestial: Dazh Liminality Locus
+    Celestial: Final Liminality
+    Celestial: Triglavian Minor Victory
     """
 
     runTime = 'early'
@@ -13283,6 +13280,7 @@ class Effect4135(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Drifter Crisis
     """
 
     runTime = 'early'
@@ -13300,6 +13298,7 @@ class Effect4136(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Drifter Crisis
     """
 
     runTime = 'early'
@@ -13318,6 +13317,7 @@ class Effect4137(BaseEffect):
 
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
+    Celestial: Drifter Crisis
     """
 
     runTime = 'early'
@@ -13337,6 +13337,7 @@ class Effect4138(BaseEffect):
     Used by:
     Celestials named like: Class Wolf Rayet Effects (6 of 6)
     Celestials named like: Volatile Ice Storm (2 of 2)
+    Celestial: Drifter Crisis
     """
 
     runTime = 'early'
@@ -16592,6 +16593,7 @@ class Effect4951(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Thureo
+    Implant: Balneum Volatile Booster
     """
 
     type = 'passive'
@@ -18011,8 +18013,6 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (4 of 4)
-    Implants named like: Wightstorm Manasikara Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -19364,7 +19364,7 @@ class Effect5343(BaseEffect):
     shipBonusDroneDamageMultiplierGBC1
 
     Used by:
-    Variations of ship: Myrmidon (3 of 3)
+    Ships named like: Myrmidon (2 of 2)
     """
 
     type = 'passive'
@@ -19381,7 +19381,7 @@ class Effect5348(BaseEffect):
     shipBonusDroneHitpointsGBC1
 
     Used by:
-    Variations of ship: Myrmidon (3 of 3)
+    Ships named like: Myrmidon (2 of 2)
     """
 
     type = 'passive'
@@ -19620,6 +19620,7 @@ class Effect5364(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Kosybo
+    Implant: Vis Vitalis Volatile Booster
     Implant: Wisdom of Gheinok
     """
 
@@ -19876,7 +19877,7 @@ class Effect5397(BaseEffect):
     baseMaxScanDeviationModifierModuleOnline2None
 
     Used by:
-    Variations of module: Scan Pinpointing Array I (2 of 2)
+    Variations of module: Scan Pinpointing Array I (3 of 3)
     """
 
     type = 'passive'
@@ -19894,7 +19895,7 @@ class Effect5398(BaseEffect):
     systemScanDurationModuleModifier
 
     Used by:
-    Modules from group: Scanning Upgrade Time (2 of 2)
+    Modules from group: Scanning Upgrade Time (3 of 3)
     """
 
     type = 'passive'
@@ -19910,7 +19911,7 @@ class Effect5399(BaseEffect):
     baseSensorStrengthModifierModule
 
     Used by:
-    Variations of module: Scan Rangefinding Array I (2 of 2)
+    Modules named like: Scan Rangefinding Array (3 of 3)
     """
 
     type = 'passive'
@@ -20629,23 +20630,6 @@ class Effect5501(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
                                       skill='Command Ships', **kwargs)
-
-
-class Effect5503(BaseEffect):
-    """
-    eliteBonusCommandShipDroneTrackingCS2
-
-    Used by:
-    Ship: Eos
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips2'),
-                                     skill='Command Ships', **kwargs)
 
 
 class Effect5505(BaseEffect):
@@ -24492,6 +24476,7 @@ class Effect6164(BaseEffect):
 
     Used by:
     Celestials named like: Drifter Incursion (6 of 6)
+    Celestial: Drifter Crisis
     """
 
     runTime = 'early'
@@ -34794,6 +34779,11 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
+    Ships from group: Blockade Runner (5 of 5)
+    Ships from group: Covert Ops (9 of 9)
+    Ships from group: Hauler (5 of 18)
+    Ships from group: Interceptor (10 of 10)
+    Ships from group: Interdictor (4 of 4)
     Ship: Azariel
     Ship: Cynabal
     Ship: Dramiel
@@ -35283,6 +35273,7 @@ class Effect7202(BaseEffect):
 
     Used by:
     Celestials named like: Triglavian Invasion System Effects (3 of 3)
+    Celestial: Drifter Crisis
     """
 
     runTime = 'early'
@@ -35301,6 +35292,7 @@ class Effect7203(BaseEffect):
 
     Used by:
     Celestials named like: Triglavian Invasion System Effects (3 of 3)
+    Celestial: Drifter Crisis
     """
 
     runTime = 'early'
@@ -35583,7 +35575,8 @@ class Effect7237(BaseEffect):
     systemWarpSpeedBonus
 
     Used by:
-    Celestial: Dazh Liminality Locus
+    Celestial: Drifter Crisis
+    Celestial: Final Liminality
     Celestial: Turnur Aftermath
     """
 
@@ -35891,7 +35884,8 @@ class Effect8031(BaseEffect):
     systemMaxTargets
 
     Used by:
-    Celestial: Dazh Liminality Locus
+    Celestial: Final Liminality
+    Celestial: Triglavian Minor Victory
     """
 
     runTime = 'early'
@@ -37677,64 +37671,12 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
-class Effect8267(BaseEffect):
-    """
-    weaponDisruptorResistanceBonusPassive
-
-    Used by:
-    Implants named like: Harvest Anti Disruptor Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'weaponDisruptionResistance',
-            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
-
-
-class Effect8268(BaseEffect):
-    """
-    nosferatuDurationBonusPassive
-
-    Used by:
-    Implants named like: Harvest Nosferatu Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
-            module.getModifiedItemAttr('durationBonus'), **kwargs)
-
-
-class Effect8269(BaseEffect):
-    """
-    stasisWebifierMaxRangeAddPassive
-
-    Used by:
-    Implants named like: Harvest Webifier Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
-            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
-
-
 class Effect8270(BaseEffect):
     """
     capacitorWarfareResistanceBonusPassive
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Tetrimon Anti Drain Booster (4 of 4)
     """
 
     type = 'passive'
@@ -37795,23 +37737,6 @@ class Effect8279(BaseEffect):
         fit.ship.boostItemAttr(
             'capacity', ship.getModifiedItemAttr('industrialCommandBonusShipCargoCapacity'),
             skill='Industrial Command Ships', **kwargs)
-
-
-class Effect8291(BaseEffect):
-    """
-    afterburnerSpeedBoostBonusPassive
-
-    Used by:
-    Implants named like: Wightstorm Cetana Booster (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, booster, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
-            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
 
 
 class Effect8294(BaseEffect):
