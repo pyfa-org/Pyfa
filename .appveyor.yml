@@ -26,9 +26,10 @@ for:
       # Prepare pyfa data
       - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
       - sh: pyenv global system
-      - sh: python3.11 -B scripts/compile_lang.py
-      - sh: python3.11 -B scripts/dump_crowdin_progress.py
-      - sh: python3.11 -B db_update.py
+      - sh: python3 --version
+      - sh: python3 -B scripts/compile_lang.py
+      - sh: python3 -B scripts/dump_crowdin_progress.py
+      - sh: python3 -B db_update.py
       - sh: export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
       - sh: mkdir build
       # Download packaging tool
