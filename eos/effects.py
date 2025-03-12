@@ -7861,6 +7861,7 @@ class Effect2735(BaseEffect):
     Implants named like: X Instinct Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterArmorHPPenalty'
     displayName = 'Armor Capacity'
     type = 'boosterSideEffect'
@@ -7880,6 +7881,7 @@ class Effect2736(BaseEffect):
     Implants named like: Sooth Sayer Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterArmorRepairAmountPenalty'
     displayName = 'Armor Repair Amount'
     type = 'boosterSideEffect'
@@ -7901,6 +7903,7 @@ class Effect2737(BaseEffect):
     Implants named like: X Instinct Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterShieldCapacityPenalty'
     displayName = 'Shield Capacity'
     type = 'boosterSideEffect'
@@ -7920,6 +7923,7 @@ class Effect2739(BaseEffect):
     Implants named like: Sooth Sayer Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterTurretOptimalRangePenalty'
     displayName = 'Turret Optimal Range'
     type = 'boosterSideEffect'
@@ -7939,6 +7943,7 @@ class Effect2741(BaseEffect):
     Implants named like: X Instinct Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterTurretFalloffPenalty'
     displayName = 'Turret Falloff'
     type = 'boosterSideEffect'
@@ -7958,6 +7963,7 @@ class Effect2745(BaseEffect):
     Implants named like: Exile Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterCapacitorCapacityPenalty'
     displayName = 'Cap Capacity'
     type = 'boosterSideEffect'
@@ -7976,6 +7982,7 @@ class Effect2746(BaseEffect):
     Items from market group: Implants & Boosters > Booster > Booster Slot 02 (9 of 13)
     """
 
+    runTime = 'late'
     attr = 'boosterMaxVelocityPenalty'
     displayName = 'Velocity'
     type = 'boosterSideEffect'
@@ -7994,6 +8001,7 @@ class Effect2747(BaseEffect):
     Implants named like: Frentix Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterTurretTrackingPenalty'
     displayName = 'Turret Tracking'
     type = 'boosterSideEffect'
@@ -8013,6 +8021,7 @@ class Effect2748(BaseEffect):
     Implants named like: X Instinct Booster (3 of 4)
     """
 
+    runTime = 'late'
     attr = 'boosterMissileVelocityPenalty'
     displayName = 'Missile Velocity'
     type = 'boosterSideEffect'
@@ -8031,6 +8040,7 @@ class Effect2749(BaseEffect):
     Implants named like: Blue Pill Booster (3 of 5)
     """
 
+    runTime = 'late'
     attr = 'boosterAOEVelocityPenalty'
     displayName = 'Missile Explosion Velocity'
     type = 'boosterSideEffect'
