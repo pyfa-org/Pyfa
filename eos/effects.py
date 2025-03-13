@@ -24508,7 +24508,7 @@ class Effect6164(BaseEffect):
 
     @staticmethod
     def handler(fit, beacon, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('maxVelocity', beacon.getModifiedItemAttr('maxVelocityMultiplier'), stackingPenalties=True, **kwargs)
+        fit.ship.boostItemAttr('maxVelocity', beacon.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
 
 
 class Effect6166(BaseEffect):

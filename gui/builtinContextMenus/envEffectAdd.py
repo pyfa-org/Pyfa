@@ -123,6 +123,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
             _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion'))
+        data.groups[_t('Drifter Incursion')] = self.getDrifterIncursion()
         data.groups[_t('Triglavian Invasion')] = self.getInvasionBeacons()
         data.groups[_t('Pirate Insurgency')] = self.getEffectBeacons(
             _t('ContextMenu|ProjectedEffectManipulation|Insurgency'),
@@ -233,6 +234,13 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.sort()
         return data
 
+    def getDrifterIncursion(self):
+        data = self.getEffectBeacons(_t('ContextMenu|ProjectedEffectManipulation|Drifter Incursion'))
+        # Drifter Crisis
+        item = Market.getInstance().getItem(87294)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        return data
+
     def getInvasionBeacons(self):
         data = self.getDestructibleBeacons()
         # Trig Minor Victory
@@ -252,6 +260,5 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         item = Market.getInstance().getItem(79839)
         data.items.append(Entry(item.ID, item.name, item.name))
         return data
-
 
 AddEnvironmentEffect.register()
