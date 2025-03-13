@@ -651,6 +651,16 @@ def update_db():
             effect.effectName = effectName
             item.effects[effectName] = effect
 
+    def hardcodeSuppressionTackleRange():
+        beaconTypeID = 79839
+        attrMap = {
+            'warfareBuff1ID': 2405,
+            'warfareBuff1Value': 10}
+        effectMap = {100000: 'pyfaCustomSuppressionTackleRange'}
+        _hardcodeAttribs(beaconTypeID, attrMap)
+        _hardcodeEffects(beaconTypeID, effectMap)
+
+
     def hardcodeShapash():
         shapashTypeID = 1000000
         _copyItem(srcName='Utu', tgtTypeID=shapashTypeID, tgtName='Shapash')
@@ -794,8 +804,7 @@ def update_db():
         _hardcodeAttribs(cybeleTypeID, attrMap)
         _hardcodeEffects(cybeleTypeID, effectMap)
 
-    # hardcodeShapash()
-    # hardcodeCybele()
+    hardcodeSuppressionTackleRange()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')

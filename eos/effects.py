@@ -37,6 +37,20 @@ class DummyEffect(BaseEffect):
     pass
 
 
+class Effect100000(BaseEffect):
+
+    runTime = 'early'
+    type = ('projected', 'passive', 'gang')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        if beacon.getModifiedItemAttr('warfareBuff1ID'):
+            value = beacon.getModifiedItemAttr('warfareBuff1Value')
+            id = beacon.getModifiedItemAttr('warfareBuff1ID')
+            if id:
+                fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
+
+
 class Effect4(BaseEffect):
     """
     shieldBoosting
