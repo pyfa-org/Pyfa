@@ -66,6 +66,14 @@ LOGLEVEL_MAP = {
 
 CATALOG = 'lang'
 
+EVE_FIT_NOTE_MAX = 500
+'''
+eve fit (xml) "description" limit
+
+Description can contain html tags like <font size="14" color="#ff000000">
+
+If it contains html tags, they will be converted to html entities
+'''
 
 slotColourMapDark = {
     FittingSlot.LOW: wx.Colour(44, 36, 19),  # yellow = low slots 24/13
