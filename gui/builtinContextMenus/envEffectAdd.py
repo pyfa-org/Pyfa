@@ -235,6 +235,12 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def getInvasionBeacons(self):
         data = self.getDestructibleBeacons()
+        # Trig Minor Victory
+        item = Market.getInstance().getItem(87177)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        # Trig Final Liminality
+        item = Market.getInstance().getItem(87164)
+        data.items.append(Entry(item.ID, item.name, item.name))
         # Turnur weather
         item = Market.getInstance().getItem(74002)
         data.items.append(Entry(item.ID, item.name, item.name))
