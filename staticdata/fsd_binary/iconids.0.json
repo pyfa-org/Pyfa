@@ -13414,6 +13414,54 @@
   "26623": {
     "iconFile": "res:/ui/texture/icons/boosters/X-Instinct_64_4.png"
   }, 
+  "26631": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cyan_matt_000_100_010.png"
+  }, 
+  "26632": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_matt_000_100_001.png"
+  }, 
+  "26633": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_satin_000_100_001.png"
+  }, 
+  "26634": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_emerald_satin_000_060_100.png"
+  }, 
+  "26635": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_clover_gloss_000_060_100.png"
+  }, 
+  "26636": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_matt_000_060_100.png"
+  }, 
+  "26637": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_matt_000_080_100.png"
+  }, 
+  "26638": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_turquoise_satin_000_100_010.png"
+  }, 
+  "26639": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_satin_000_080_100.png"
+  }, 
+  "26640": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cyan_gloss_000_060_100.png"
+  }, 
+  "26641": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_emerald_polished_000_080_100.png"
+  }, 
+  "26642": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_clover_polished_000_030_100.png"
+  }, 
+  "26643": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_polished_000_080_100.png"
+  }, 
+  "26644": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_geo_t3_03_128.png"
+  }, 
+  "26645": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_geo_t3_01_128.png"
+  }, 
+  "26646": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_geo_t3_02_128.png"
+  }, 
   "26672": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_drifter_dark_blue.png"
   }, 
@@ -13452,6 +13500,48 @@
   }, 
   "26684": {
     "iconFile": "res:/UI/Texture/Icons/StatusEffects/linkedToTrace.png"
+  }, 
+  "26707": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_yellow_satin_000_100_100.png"
+  }, 
+  "26708": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_clover_matt_000_100_050.png"
+  }, 
+  "26709": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_coincamo_t2_01_128.png"
+  }, 
+  "26710": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_pea_satin_000_080_100.png"
+  }, 
+  "26711": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_guristas_camo_t1_01_128.png"
+  }, 
+  "26712": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_gloss_000_100_100.png"
+  }, 
+  "26713": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_satin_000_060_100.png"
+  }, 
+  "26714": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_metallic_000_030_100.png"
+  }, 
+  "26715": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_XXII_t1_01_128.png"
+  }, 
+  "26716": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_clover_satin_000_100_050.png"
+  }, 
+  "26717": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_satin_000_100_100.png"
+  }, 
+  "26718": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_green_gloss_000_080_100.png"
+  }, 
+  "26719": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_malachite_polished_000_060_100.png"
+  }, 
+  "26720": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_geo_t2_01_128.png"
   }, 
   "26721": {
     "iconFile": "res:/ui/texture/icons/modules/AutoTargetingSystem_64.png"
