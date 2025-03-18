@@ -141,6 +141,7 @@ def update_db():
                 (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us'])
                 or row['typeName_en-us'] == 'Capsule'
                 or row['groupID'] == 4033  # destructible effect beacons
+                or row['typeID'] == 82941  # Metenox service
                 or re.match(r'AIR .+Booster.*', row['typeName_en-us'])
             ):
                 row['published'] = True
