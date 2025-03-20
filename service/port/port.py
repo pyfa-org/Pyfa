@@ -42,6 +42,7 @@ from service.port.shipstats import exportFitStats
 from service.port.xml import importXml, exportXml
 from service.port.muta import parseMutant, parseDynamicItemString, fetchDynamicItem
 
+from gui.utils.progressHelper import ProgressHelper # for type annotation
 
 pyfalog = Logger(__name__)
 
@@ -73,9 +74,11 @@ class Port:
 
     @staticmethod
     def backupFits(path, progress):
+        # type: (str, ProgressHelper) -> None
         pyfalog.debug("Starting backup fits thread.")
 
         def backupFitsWorkerFunc(path, progress):
+            # type: (str, ProgressHelper) -> None
             try:
                 backedUpFits = Port.exportXml(svcFit.getInstance().getAllFits(), progress)
                 if backedUpFits:
@@ -98,22 +101,20 @@ class Port:
 
     @staticmethod
     def importFitsThreaded(paths, progress):
+        # type: (list[str], ProgressHelper) -> None
         """
         :param paths: fits data file path list.
         :rtype: None
         """
         pyfalog.debug("Starting import fits thread.")
-
-        def importFitsFromFileWorkerFunc(paths, progress):
-            Port.importFitFromFiles(paths, progress)
-
         threading.Thread(
-            target=importFitsFromFileWorkerFunc,
+            target=Port.importFitFromFiles,
             args=(paths, progress)
         ).start()
 
     @staticmethod
     def importFitFromFiles(paths, progress=None):
+        # type: (list[str], ProgressHelper) -> tuple[bool, list[svcFit]]
         """
         Imports fits from file(s). First processes all provided paths and stores
         assembled fits into a list. This allows us to call back to the GUI as
@@ -123,14 +124,14 @@ class Port:
 
         sFit = svcFit.getInstance()
 
-        fit_list = []
+        fit_list = [] # type: list[svcFit]
         try:
             for path in paths:
                 if progress:
-                    if progress and progress.userCancelled:
+                    if progress.userCancelled:
                         progress.workerWorking = False
                         return False, "Cancelled by user"
-                    msg = "Processing file:\n%s" % path
+                    msg = f"Processing file: {path}"
                     progress.message = msg
                     pyfalog.debug(msg)
 
@@ -155,10 +156,15 @@ class Port:
                     return False, msg
 
             numFits = len(fit_list)
+            if progress:
+                progress.setRange(numFits)
             for idx, fit in enumerate(fit_list):
-                if progress and progress.userCancelled:
-                    progress.workerWorking = False
-                    return False, "Cancelled by user"
+                if progress:
+                    if (progress.userCancelled):
+                        progress.workerWorking = False
+                        return False, "Cancelled by user"
+
+                    progress.current = idx + 1
                 # Set some more fit attributes and save
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
@@ -171,8 +177,9 @@ class Port:
                 db.save(fit)
                 # IDs.append(fit.ID)
                 if progress:
-                    pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", idx + 1, numFits)
-                    progress.message = "Processing complete, saving fits to database\n(%d/%d) %s" % (idx + 1, numFits, fit.ship.name)
+                    msg = "Processing complete, saving fits to database"
+                    pyfalog.debug(f"{msg}: {idx + 1}/{numFits}")
+                    progress.message = f"{msg}\n({idx + 1}/{numFits}) {fit.ship.name}"
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
@@ -212,6 +219,7 @@ class Port:
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, progress=None):
+        # type: (str, str, svcFit, ProgressHelper) -> tuple[str, bool, list[svcFit]]
         lines = string.splitlines()
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = ''
@@ -223,7 +231,7 @@ class Port:
 
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
-            return "XML", True, cls.importXml(string, progress)
+            return "XML", True, importXml(string, progress, path)
 
         # If JSON-style start, parse as CREST/JSON
         if firstLine[0] == '{':
@@ -231,21 +239,21 @@ class Port:
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
-        if re.match(r"^\s*\[.*\]", firstLine) and path is not None:
+        if re.match(r"^\s*\[.*]", firstLine) and path is not None:
             filename = os.path.split(path)[1]
             shipName = filename.rsplit('.')[0]
             return "EFT Config", True, cls.importEftCfg(shipName, lines, progress)
 
         # If no file is specified and there's comma between brackets,
         # consider that we have [ship, setup name] and detect like eft export format
-        if re.match(r"^\s*\[.*,.*\]", firstLine):
+        if re.match(r"^\s*\[.*,.*]", firstLine):
             return "EFT", True, (cls.importEft(lines),)
 
         # Check if string is in DNA format
         dnaPattern = r"\d+(:\d+(;\d+))*::"
         if re.match(dnaPattern, firstLine):
             return "DNA", True, (cls.importDna(string),)
-        dnaChatPattern = r"<url=fitting:(?P<dna>{})>(?P<fitName>[^<>]+)</url>".format(dnaPattern)
+        dnaChatPattern = "<url=fitting:(?P<dna>{})>(?P<fitName>[^<>]+)</url>".format(dnaPattern)
         m = re.search(dnaChatPattern, firstLine)
         if m:
             return "DNA", True, (cls.importDna(m.group("dna"), fitName=m.group("fitName")),)
@@ -332,6 +340,7 @@ class Port:
 
     @staticmethod
     def exportXml(fits, progress=None, callback=None):
+        # type: (list[svcFit], object, object) -> str
         return exportXml(fits, progress, callback=callback)
 
     # Multibuy-related methods
