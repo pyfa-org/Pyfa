@@ -13644,5 +13644,14 @@
   }, 
   "26755": {
     "iconFile": "res:/ui/texture/icons/Inventory/SovHubUpgrades/Upgrade_Megacyte_III.png"
+  }, 
+  "26781": {
+    "iconFile": "res:/ui/texture/icons/modules/SensorBooster_Script01_64.png"
+  }, 
+  "26782": {
+    "iconFile": "res:/ui/texture/icons/modules/SensorBooster_Script02_64.png"
+  }, 
+  "26783": {
+    "iconFile": "res:/ui/texture/icons/modules/SensorBooster_Script03_64.png"
   }
 }

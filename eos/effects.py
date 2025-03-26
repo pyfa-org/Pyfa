@@ -38,6 +38,12 @@ class DummyEffect(BaseEffect):
 
 
 class Effect100000(BaseEffect):
+    """
+    pyfaCustomSuppressionTackleRange
+
+    Used by:
+    Celestial: Insurgency Suppression Interdiction Range Beacon
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -17337,10 +17343,10 @@ class Effect5068(BaseEffect):
 
 class Effect5069(BaseEffect):
     """
-    mercoxitCrystalBonus
+    deepcoreMiningBonus
 
     Used by:
-    Module: Medium Mercoxit Mining Crystal Optimization I
+    Module: Medium Deep Core Mining Optimization I
     """
 
     runTime = 'early'
@@ -19935,7 +19941,7 @@ class Effect5399(BaseEffect):
     baseSensorStrengthModifierModule
 
     Used by:
-    Modules named like: Scan Rangefinding Array (3 of 3)
+    Variations of module: Scan Rangefinding Array I (3 of 3)
     """
 
     type = 'passive'
@@ -33594,7 +33600,7 @@ class Effect7009(BaseEffect):
     Used by:
     Structure Modules from group: Structure Citadel Service Module (2 of 2)
     Structure Modules from group: Structure Engineering Service Module (6 of 6)
-    Structure Modules from group: Structure FLEX Service Module (3 of 3)
+    Structure Modules from group: Structure FLEX Service Module (4 of 4)
     Structure Modules from group: Structure Resource Processing Service Module (4 of 4)
     Structure Module: Standup Moon Drill I
     """

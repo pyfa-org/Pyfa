@@ -40517,7 +40517,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 5069, 
-    "effectName": "mercoxitCrystalBonus", 
+    "effectName": "deepcoreMiningBonus", 
     "electronicChance": 0, 
     "isAssistance": 1, 
     "isOffensive": 1, 
@@ -40526,14 +40526,15 @@
       {
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 782, 
+        "modifiedAttributeID": 77, 
         "modifyingAttributeID": 434, 
         "operation": 6, 
-        "skillTypeID": 12189
+        "skillTypeID": 11395
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "5079": {
