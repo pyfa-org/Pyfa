@@ -63,7 +63,7 @@ def exportESI(ofit, exportCharges, exportImplants, exportBoosters, callback):
 
     nested_dict = lambda: defaultdict(nested_dict)
     fit = nested_dict()
-    sFit = svcFit.getInstance()
+    # sFit = svcFit.getInstance()
 
     # max length is 50 characters
     name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
