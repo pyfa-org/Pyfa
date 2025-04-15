@@ -13653,5 +13653,49 @@
   }, 
   "26783": {
     "iconFile": "res:/ui/texture/icons/modules/SensorBooster_Script03_64.png"
+  }, 
+  "26784": {
+    "iconFile": "res:/ui/texture/icons/Tyranite_E_Mineral_64.png"
+  }, 
+  "26785": {
+    "iconFile": "res:/ui/texture/icons/Tyranite_Ore_64.png"
+  }, 
+  "26796": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/88186_Male_outer_AugmentationSuitM01_Types_AugmentationSuitM01_Black.png", 
+    "iconType": "png"
+  }, 
+  "26797": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/88187_Female_Outer_AugmentationSuitF01_Types_AugmentationSuitF01_Black.png", 
+    "iconType": "png"
+  }, 
+  "26798": {
+    "iconFile": "res:/ui/texture/icons/Inventory/Drifter_Filament_64.png"
+  }, 
+  "26799": {
+    "iconFile": "res:/UI/Texture/Icons/expert_system_64.png"
+  }, 
+  "26801": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_satin_000_100_050.png"
+  }, 
+  "26802": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_satin_000_100_050.png"
+  }, 
+  "26808": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_orange_metallic_000_100_010.png"
+  }, 
+  "26809": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_orange_metallic_000_100_010.png"
+  }, 
+  "26819": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_cosm_stripe_01_128.png"
+  }, 
+  "26820": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_cosm_stripe_01_128.png"
+  }, 
+  "26821": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_cosm_lines_gradient_01_128.png"
+  }, 
+  "26822": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_cosm_lines_gradient_01_128.png"
   }
 }
