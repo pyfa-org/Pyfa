@@ -602,7 +602,7 @@ def update_db():
         eos.gamedata.Item.name.like('%mutated%'),
         eos.gamedata.Item.name.like('%_PLACEHOLDER%'),
         # Drifter weapons are published for some reason
-        eos.gamedata.Item.name.in_(('Lux Kontos', 'Lux Xiphos'))
+        eos.gamedata.Item.name.in_(('Lux Kontos', 'Lux Xiphos', 'Lux Ballistra', 'Lux Kopis'))
     )).all():
         if 'Asteroid Mining Crystal' in item.name:
             continue
