@@ -85,6 +85,8 @@ class StatsPane(wx.Panel):
 
         if "__WXMAC__" in wx.PlatformInfo:
             self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
+        elif "__WXGTK__" in wx.PlatformInfo:
+            self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
         else:
             standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
             standardFont.SetPointSize(8)
