@@ -4,6 +4,7 @@ import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
+from eos.saveddata.cargo import Cargo
 
 _t = wx.GetTranslation
 
@@ -13,7 +14,7 @@ class FillCargoWithItem(ContextMenuSingle):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, callingWindow, srcContext, mainItem):
-        if srcContext not in ("marketItemGroup", "marketItemMisc"):
+        if srcContext not in ("marketItemGroup", "marketItemMisc", "cargoItem"):
             return False
 
         if mainItem is None:
@@ -22,9 +23,9 @@ class FillCargoWithItem(ContextMenuSingle):
         if self.mainFrame.getActiveFit() is None:
             return False
 
-        # Only allow items that can be stored in cargo
-        if not (mainItem.isCharge or mainItem.isCommodity):
-            return False
+        if srcContext in ("marketItemGroup", "marketItemMisc"):
+            if not (mainItem.isCharge or mainItem.isCommodity):
+                return False
 
         return True
 
@@ -35,8 +36,13 @@ class FillCargoWithItem(ContextMenuSingle):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         
-        # Get the item's volume
-        itemVolume = mainItem.attributes['volume'].value
+        if isinstance(mainItem, Cargo):
+            itemVolume = mainItem.item.attributes['volume'].value
+            itemID = mainItem.itemID
+        else:
+            itemVolume = mainItem.attributes['volume'].value
+            itemID = int(mainItem.ID)
+            
         if itemVolume is None or itemVolume <= 0:
             return
             
@@ -54,7 +60,7 @@ class FillCargoWithItem(ContextMenuSingle):
             return
             
         # Add the items to cargo
-        command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=int(mainItem.ID), amount=maxAmount)
+        command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=itemID, amount=maxAmount)
         if self.mainFrame.command.Submit(command):
             self.mainFrame.additionsPane.select("Cargo", focus=False)
 
