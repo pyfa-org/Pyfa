@@ -36,6 +36,7 @@ from gui.builtinContextMenus import skillAffectors
 from gui.builtinContextMenus import itemFill
 from gui.builtinContextMenus import droneAddStack
 from gui.builtinContextMenus import cargoAdd
+from gui.builtinContextMenus import cargoFill
 from gui.builtinContextMenus import cargoAddAmmo
 from gui.builtinContextMenus import itemProject
 from gui.builtinContextMenus import ammoToDmgPattern
