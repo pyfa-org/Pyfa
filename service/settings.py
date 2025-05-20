@@ -417,7 +417,7 @@ class StatViewSettings:
             "miningyield"  : 2,
             "drones"       : 2,
             "outgoing"     : 2,
-            "bombing"      : 2,
+            "bombing"      : 0,
         }
 
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
