@@ -117,7 +117,7 @@ class PyfaJsonWriter(BaseWriter):
         # Prefer safe way - replace any characters besides
         # alphanumeric and few special characters with
         # underscore
-        writer_safe_name = re.sub('[^\w\-.,() ]', '_', name, flags=re.UNICODE)
+        writer_safe_name = re.sub(r'[^\w\-.,() ]', '_', name, flags=re.UNICODE)
         return writer_safe_name
 
 

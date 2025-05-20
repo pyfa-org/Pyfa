@@ -93,8 +93,6 @@ class Miscellanea(ViewColumn):
                 text = "{} dmg".format(formatAmount(dmg, 3, 0, 6))
                 tooltip = "Raw damage done"
             return text, tooltip
-
-            pass
         elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
@@ -167,7 +165,7 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
             return text, tooltip
-        elif itemGroup == "Salvager":
+        elif itemGroup in ("Salvager", "Salvage Drone"):
             chance = stuff.getModifiedItemAttr("accessDifficultyBonus")
             if not chance:
                 return "", None
@@ -590,7 +588,7 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
             return text, tooltip
-        elif itemGroup in ("Micro Jump Drive", "Micro Jump Field Generators"):
+        elif itemGroup in ("Micro Jump Drive", "Micro Jump Field Generators", "Capital Mobility Modules"):
             cycleTime = stuff.getModifiedItemAttr("duration") / 1000
             text = "{0}s".format(formatAmount(cycleTime, 3, 0, 3))
             tooltip = "Spoolup time"
@@ -809,6 +807,19 @@ class Miscellanea(ViewColumn):
                     return "", None
                 text = "{}".format(formatAmount(scanStr, 4, 0, 3))
                 tooltip = "Scan strength at {} AU scan range".format(formatAmount(baseRange, 3, 0, 0))
+                return text, tooltip
+            elif chargeGroup in ("SCARAB Breacher Pods",):
+                duration = stuff.getModifiedChargeAttr("dotDuration") / 1000
+                dmgAbs = stuff.getModifiedChargeAttr("dotMaxDamagePerTick")
+                dmgRel = stuff.getModifiedChargeAttr("dotMaxHPPercentagePerTick")
+                text = "{}/{}% over {}s".format(
+                    formatAmount(dmgAbs * duration, 3, 0, 6),
+                    formatAmount(dmgRel * duration, 3, 0, 6),
+                    formatAmount(duration, 0, 0, 0))
+                fullDmgHp = dmgAbs / (dmgRel / 100)
+                tooltip = (
+                    'Pure damage inflicted over time, minimum of absolute / relative\n'
+                    'Full DPS from {} target HP').format(formatAmount(fullDmgHp, 3, 0, 6))
                 return text, tooltip
             else:
                 return "", None

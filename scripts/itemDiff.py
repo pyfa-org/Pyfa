@@ -57,7 +57,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
     with open(effectspath) as f:
         for line in f:
-            for m in re.finditer('class Effect(?P<eid>\d+)\(BaseEffect\):', line):
+            for m in re.finditer(r'class Effect(?P<eid>\d+)\(BaseEffect\):', line):
                 effectid = int(m.group('eid'))
                 implemented.add(effectid)
 
@@ -94,7 +94,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             print('\nRenamed ' + title + ':')
             for id in sorted(ren_dict):
                 couple = ren_dict[id]
-                print(("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8'))))
+                print(("    \"{0}\": \"{1}\",".format(couple[0], couple[1])))
 
     groupcats = {}
     def getgroupcat(grp):

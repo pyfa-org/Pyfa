@@ -263,6 +263,9 @@ bcs:
 bcu:
   - 'bcu'
   - 'ballistic control system'
+vts:
+  - 'vts'
+  - 'vorton tuning system'
 tc:
   - 'tc'
   - '(?<!remote )tracking computer'

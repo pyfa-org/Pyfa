@@ -37,6 +37,7 @@ targetProfiles_table = Table(
     Column('maxVelocity', Float, nullable=True),
     Column('signatureRadius', Float, nullable=True),
     Column('radius', Float, nullable=True),
+    Column('hp', Float, nullable=True),
     Column('ownerID', ForeignKey('users.ID'), nullable=True),
     Column('created', DateTime, nullable=True, default=datetime.datetime.now),
     Column('modified', DateTime, nullable=True, onupdate=datetime.datetime.now))
@@ -48,4 +49,5 @@ mapper(
         'rawName': targetProfiles_table.c.name,
         '_maxVelocity': targetProfiles_table.c.maxVelocity,
         '_signatureRadius': targetProfiles_table.c.signatureRadius,
-        '_radius': targetProfiles_table.c.radius})
+        '_radius': targetProfiles_table.c.radius,
+        '_hp': targetProfiles_table.c.hp})

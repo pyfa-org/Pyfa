@@ -17,7 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import pkg_resources
+from importlib.resources import files
 
-DEFAULT_DATA = pkg_resources.resource_string(__name__, 'defaults.yaml').decode()
-DEFAULT_HEADER = pkg_resources.resource_string(__name__, 'header.yaml').decode()
+PACKAGE_NAME = __name__.rsplit(".", maxsplit=1)[0]
+
+DEFAULT_DATA = files(PACKAGE_NAME).joinpath('defaults.yaml').open('r', encoding='utf8').read()
+DEFAULT_HEADER = files(PACKAGE_NAME).joinpath('header.yaml').open('r', encoding='utf8').read()

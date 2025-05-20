@@ -416,9 +416,18 @@ class FitItem(SFItem.SFBrowserItem):
         if self.dragging:
             if not self.dragged:
                 if self.dragMotionTrigger < 0:
+                    if not self.dragTLFBmp:
+                        tdc = wx.MemoryDC()
+                        bmpWidth = self.toolbarx if self.toolbarx < 200 else 200
+                        self.dragTLFBmp = wx.Bitmap(round(bmpWidth), round(self.GetRect().height))
+                        tdc.SelectObject(self.dragTLFBmp)
+                        tdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
+                        tdc.DrawRectangle(0, 0, bmpWidth, self.GetRect().height)
+                        self.DrawItem(tdc)
+                        tdc.SelectObject(wx.NullBitmap)
                     if not self.HasCapture():
                         self.CaptureMouse()
-                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)  
                     self.dragWindow.Show()
                     self.dragged = True
                     self.dragMotionTrigger = self.dragMotionTrail
@@ -493,9 +502,9 @@ class FitItem(SFItem.SFBrowserItem):
         else:
             shipEffBk = self.shipEffBk
 
-        mdc.DrawBitmap(shipEffBk, self.shipEffx, self.shipEffy, 0)
+        mdc.DrawBitmap(shipEffBk, round(self.shipEffx), round(self.shipEffy), 0)
 
-        mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
+        mdc.DrawBitmap(self.shipBmp, round(self.shipBmpx), round(self.shipBmpy), 0)
 
         mdc.SetFont(self.fontNormal)
 
@@ -504,26 +513,21 @@ class FitItem(SFItem.SFBrowserItem):
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(pfdate, self.textStartx, self.timestampy)
+        mdc.DrawText(pfdate, round(self.textStartx), round(self.timestampy))
 
         mdc.SetFont(self.fontSmall)
-        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+        mdc.DrawText(self.toolbar.hoverLabel, round(self.thoverx), round(self.thovery))
 
         mdc.SetFont(self.fontBig)
 
         psname = drawUtils.GetPartialText(mdc, self.fitName,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(psname, self.textStartx, self.fitNamey)
+        mdc.DrawText(psname, round(self.textStartx), round(self.fitNamey))
 
         if self.tcFitName.IsShown():
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
-        tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
-        tdc.SelectObject(self.dragTLFBmp)
-        tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
-        tdc.SelectObject(wx.NullBitmap)
 
     def AdjustControlSizePos(self, editCtl, start, end):
         fnEditSize = editCtl.GetSize()

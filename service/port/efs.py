@@ -423,7 +423,8 @@ class EfsPort:
             else:
                 maxRange = stats.maxRange
 
-            dps_spread_dict = stats.getDps(spoolOptions=spoolOptions, getSpreadDPS=True)
+            dps = stats.getDps(spoolOptions=spoolOptions)
+            dps_spread_dict = {'em': dps.em, 'therm': dps.thermal, 'kin': dps.kinetic, 'exp': dps.explosive, 'pure': dps.pure}
             dps_spread_dict.update((x, y*n) for x, y in dps_spread_dict.items())
 
             statDict = {
@@ -637,7 +638,7 @@ class EfsPort:
         bsGroupNames = ["Battleship", "Elite Battleship", "Black Ops", "Marauder"]
         capitalGroupNames = ["Titan", "Dreadnought", "Freighter", "Carrier", "Supercarrier",
                              "Capital Industrial Ship", "Jump Freighter", "Force Auxiliary"]
-        indyGroupNames = ["Industrial", "Deep Space Transport", "Blockade Runner",
+        indyGroupNames = ["Hauler", "Deep Space Transport", "Blockade Runner",
                           "Mining Barge", "Exhumer", "Industrial Command Ship"]
         miscGroupNames = ["Capsule", "Prototype Exploration Ship"]
         shipSizes = [

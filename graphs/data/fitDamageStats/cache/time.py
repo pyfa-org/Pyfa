@@ -117,7 +117,7 @@ class TimeCache(FitDataCache):
                     pointData[timeStart] = (dps, volley)
                 # Gap between items
                 elif floatUnerr(prevTimeEnd) < floatUnerr(timeStart):
-                    pointData[prevTimeEnd] = (DmgTypes(0, 0, 0, 0), DmgTypes(0, 0, 0, 0))
+                    pointData[prevTimeEnd] = (DmgTypes.default(), DmgTypes.default())
                     pointData[timeStart] = (dps, volley)
                 # Changed value
                 elif dps != prevDps or volley != prevVolley:
@@ -157,7 +157,7 @@ class TimeCache(FitDataCache):
         def addDpsVolley(ddKey, addedTimeStart, addedTimeFinish, addedVolleys):
             if not addedVolleys:
                 return
-            volleySum = sum(addedVolleys, DmgTypes(0, 0, 0, 0))
+            volleySum = sum(addedVolleys, DmgTypes.default())
             if volleySum.total > 0:
                 addedDps = volleySum / (addedTimeFinish - addedTimeStart)
                 # We can take "just best" volley, no matter target resistances, because all
@@ -170,24 +170,38 @@ class TimeCache(FitDataCache):
         def addDmg(ddKey, addedTime, addedDmg):
             if addedDmg.total == 0:
                 return
+            addedDmg._breachers = {addedTime + k: v for k, v in addedDmg._breachers.items()}
+            addedDmg._clear_cached()
             intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
 
         # Modules
         for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
-            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            cycleParams = mod.getCycleParametersForDps(reloadOverride=True)
             if cycleParams is None:
                 continue
             currentTime = 0
             nonstopCycles = 0
+            isBreacher = mod.isBreacher
             for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleVolleys = []
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+
                 for volleyTimeMs, volley in volleyParams.items():
                     cycleVolleys.append(volley)
-                    addDmg(mod, currentTime + volleyTimeMs / 1000, volley)
-                addDpsVolley(mod, currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
+                    time = currentTime + volleyTimeMs / 1000
+                    if isBreacher:
+                        time += 1
+                    addDmg(mod, time, volley)
+                    if isBreacher:
+                        break
+                timeStart = currentTime
+                timeFinish = currentTime + cycleTimeMs / 1000
+                if isBreacher:
+                    timeStart += 1
+                    timeFinish += 1
+                addDpsVolley(mod, timeStart, timeFinish, cycleVolleys)
                 if inactiveTimeMs > 0:
                     nonstopCycles = 0
                 else:

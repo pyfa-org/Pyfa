@@ -1,2 +1,2 @@
 from .efs import EfsPort
-from .port import Port, IPortUser
+from .port import Port

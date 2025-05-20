@@ -19,6 +19,7 @@
 
 import math
 
+from copy import deepcopy
 from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
@@ -198,16 +199,14 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             for ability in self.abilities:
                 # Not passing resists here as we want to calculate and store base volley
                 self.__baseVolley[ability.effectID] = {0: ability.getVolley()}
-        adjustedVolley = {}
+        adjustedVolleys = {}
         for effectID, effectData in self.__baseVolley.items():
-            adjustedVolley[effectID] = {}
-            for volleyTime, volleyValue in effectData.items():
-                adjustedVolley[effectID][volleyTime] = DmgTypes(
-                    em=volleyValue.em * (1 - getattr(targetProfile, "emAmount", 0)),
-                    thermal=volleyValue.thermal * (1 - getattr(targetProfile, "thermalAmount", 0)),
-                    kinetic=volleyValue.kinetic * (1 - getattr(targetProfile, "kineticAmount", 0)),
-                    explosive=volleyValue.explosive * (1 - getattr(targetProfile, "explosiveAmount", 0)))
-        return adjustedVolley
+            adjustedVolleys[effectID] = {}
+            for volleyTime, baseVolley in effectData.items():
+                adjustedVolley = deepcopy(baseVolley)
+                adjustedVolley.profile = targetProfile
+                adjustedVolleys[effectID][volleyTime] = adjustedVolley
+        return adjustedVolleys
 
     def getVolleyPerEffect(self, targetProfile=None):
         volleyParams = self.getVolleyParametersPerEffect(targetProfile=targetProfile)
@@ -218,28 +217,16 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def getVolley(self, targetProfile=None):
         volleyParams = self.getVolleyParametersPerEffect(targetProfile=targetProfile)
-        em = 0
-        therm = 0
-        kin = 0
-        exp = 0
+        volley = DmgTypes.default()
         for volleyData in volleyParams.values():
-            em += volleyData[0].em
-            therm += volleyData[0].thermal
-            kin += volleyData[0].kinetic
-            exp += volleyData[0].explosive
-        return DmgTypes(em, therm, kin, exp)
+            volley += volleyData[0]
+        return volley
 
     def getDps(self, targetProfile=None):
-        em = 0
-        thermal = 0
-        kinetic = 0
-        explosive = 0
-        for dps in self.getDpsPerEffect(targetProfile=targetProfile).values():
-            em += dps.em
-            thermal += dps.thermal
-            kinetic += dps.kinetic
-            explosive += dps.explosive
-        return DmgTypes(em=em, thermal=thermal, kinetic=kinetic, explosive=explosive)
+        dps = DmgTypes.default()
+        for subdps in self.getDpsPerEffect(targetProfile=targetProfile).values():
+            dps += subdps
+        return dps
 
     def getDpsPerEffect(self, targetProfile=None):
         if not self.active or self.amount <= 0:

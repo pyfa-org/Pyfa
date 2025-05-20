@@ -1,5 +1,11 @@
 {
   "1": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.04313725605607033, 
+      "g": 0.6666666865348816, 
+      "r": 0.7803921699523926
+    }, 
     "name_de": "Tech I", 
     "name_en-us": "Tech I", 
     "name_es": "T1", 
@@ -12,6 +18,12 @@
     "nameID": 66672
   }, 
   "2": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.003921568859368563, 
+      "g": 0.3803921639919281, 
+      "r": 0.6196078658103943
+    }, 
     "iconID": 24150, 
     "iconSuffix": "t2", 
     "name_de": "Tech II", 
@@ -26,6 +38,12 @@
     "nameID": 66673
   }, 
   "3": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.11764705926179886, 
+      "g": 0.4313725531101227, 
+      "r": 0.2666666805744171
+    }, 
     "iconID": 24147, 
     "iconSuffix": "storyline", 
     "name_de": "Geschichte", 
@@ -40,6 +58,12 @@
     "nameID": 66674
   }, 
   "4": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.05098039284348488, 
+      "g": 0.27843138575553894, 
+      "r": 0.06666667014360428
+    }, 
     "iconID": 24146, 
     "iconSuffix": "faction", 
     "name_de": "Fraktion", 
@@ -54,6 +78,12 @@
     "nameID": 66675
   }, 
   "5": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.45098039507865906, 
+      "g": 0.054901961237192154, 
+      "r": 0.20392157137393951
+    }, 
     "iconID": 24149, 
     "iconSuffix": "officer", 
     "name_de": "Offizier", 
@@ -68,6 +98,12 @@
     "nameID": 66676
   }, 
   "6": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.545098066329956, 
+      "g": 0.27843138575553894, 
+      "r": 0.16078431904315948
+    }, 
     "description_de": "Module, die man in Raumverwerfungen findet.", 
     "description_en-us": "Modules found in deadspace.", 
     "description_es": "Módulos encontrados en el espacio muerto.", 
@@ -92,6 +128,12 @@
     "nameID": 66677
   }, 
   "14": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.0117647061124444, 
+      "g": 0.22745098173618317, 
+      "r": 0.6235294342041016
+    }, 
     "iconID": 24151, 
     "iconSuffix": "t3", 
     "name_de": "Tech III", 
@@ -106,6 +148,12 @@
     "nameID": 66685
   }, 
   "15": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.125490203499794, 
+      "g": 0.125490203499794, 
+      "r": 0.529411792755127
+    }, 
     "iconID": 24152, 
     "iconSuffix": "abyssal", 
     "name_de": "Abgrund", 
@@ -120,6 +168,12 @@
     "nameID": 317771
   }, 
   "17": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.8549019694328308, 
+      "g": 0.34117648005485535, 
+      "r": 0.6196078658103943
+    }, 
     "description_de": "Dieser Gegenstand ist nur über den New Eden Store oder exklusive Angebote verfügbar.", 
     "description_en-us": "This item is only available through the New Eden Store or exclusive offers.", 
     "description_es": "Este objeto solo está disponible a través de la tienda de Nuevo Edén u ofertas exclusivas.", 
@@ -144,6 +198,12 @@
     "nameID": 317893
   }, 
   "19": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.8745098114013672, 
+      "g": 0.7058823704719543, 
+      "r": 0.18039216101169586
+    }, 
     "description_de": "Dieser Gegenstand ist nur für eine begrenzte Zeit verfügbar.", 
     "description_en-us": "This item is only available for a limited time.", 
     "description_es": "Este objeto solo está disponible durante un tiempo limitado.", 

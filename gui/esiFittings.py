@@ -96,7 +96,7 @@ class EveFittings(AuxiliaryFrame):
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.characterName, char.ID)
+            self.charChoice.Append(char.characterDisplay, char.ID)
         if len(chars) > 0:
             self.charChoice.SetSelection(0)
 
@@ -227,21 +227,6 @@ class EveFittings(AuxiliaryFrame):
         self.fitView.update([])
 
 
-class ESIServerExceptionHandler:
-    def __init__(self, parentWindow, ex):
-        pyfalog.error(ex)
-        with wx.MessageDialog(
-            parentWindow,
-            _t("There was an issue starting up the localized server, try setting "
-            "Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> "
-            "Login Authentication Method. If this doesn't fix the problem please file an "
-            "issue on Github."),
-            _t("Add Character Error"),
-            wx.OK | wx.ICON_ERROR
-        ) as dlg:
-            dlg.ShowModal()
-
-
 class ESIExceptionHandler:
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, ex):
@@ -283,7 +268,7 @@ class ExportToEve(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title=_t("Export fit to EVE"), pos=wx.DefaultPosition,
-            size=wx.Size(400, 140) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 115), resizeable=True)
+            size=wx.Size(400, 175) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 145), resizeable=True)
 
         self.mainFrame = parent
 
@@ -305,6 +290,16 @@ class ExportToEve(AuxiliaryFrame):
         self.exportChargesCb.Bind(wx.EVT_CHECKBOX, self.OnChargeExportChange)
         mainSizer.Add(self.exportChargesCb, 0, 0, 5)
 
+        self.exportImplantsCb = wx.CheckBox(self, wx.ID_ANY, _t('Export Implants'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportImplantsCb.SetValue(EsiSettings.getInstance().get('exportImplants'))
+        self.exportImplantsCb.Bind(wx.EVT_CHECKBOX, self.OnImplantsExportChange)
+        mainSizer.Add(self.exportImplantsCb, 0, 0, 5)
+
+        self.exportBoostersCb = wx.CheckBox(self, wx.ID_ANY, _t('Export Boosters'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportBoostersCb.SetValue(EsiSettings.getInstance().get('exportBoosters'))
+        self.exportBoostersCb.Bind(wx.EVT_CHECKBOX, self.OnBoostersExportChange)
+        mainSizer.Add(self.exportBoostersCb, 0, 0, 5)
+
         self.exportBtn.Bind(wx.EVT_BUTTON, self.exportFitting)
 
         self.statusbar = wx.StatusBar(self)
@@ -324,13 +319,21 @@ class ExportToEve(AuxiliaryFrame):
         EsiSettings.getInstance().set('exportCharges', self.exportChargesCb.GetValue())
         event.Skip()
 
+    def OnImplantsExportChange(self, event):
+        EsiSettings.getInstance().set('exportImplants', self.exportImplantsCb.GetValue())
+        event.Skip()
+
+    def OnBoostersExportChange(self, event):
+        EsiSettings.getInstance().set('exportBoosters', self.exportBoostersCb.GetValue())
+        event.Skip()
+
     def updateCharList(self):
         sEsi = Esi.getInstance()
         chars = sEsi.getSsoCharacters()
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.characterName, char.ID)
+            self.charChoice.Append(char.characterDisplay, char.ID)
 
         if len(chars) > 0:
             self.charChoice.SetSelection(0)
@@ -360,8 +363,10 @@ class ExportToEve(AuxiliaryFrame):
 
         sFit = Fit.getInstance()
         exportCharges = self.exportChargesCb.GetValue()
+        exportImplants = self.exportImplantsCb.GetValue()
+        exportBoosters = self.exportBoostersCb.GetValue()
         try:
-            data = sPort.exportESI(sFit.getFit(fitID), exportCharges)
+            data = sPort.exportESI(sFit.getFit(fitID), exportCharges, exportImplants, exportBoosters)
         except ESIExportException as e:
             msg = str(e)
             if not msg:
@@ -414,6 +419,7 @@ class SsoCharacterMgmt(AuxiliaryFrame):
 
         self.lcCharacters.InsertColumn(0, heading=_t('Character'))
         self.lcCharacters.InsertColumn(1, heading=_t('Character ID'))
+        self.lcCharacters.InsertColumn(2, heading=_t('Server'))
 
         self.popCharList()
 
@@ -476,9 +482,11 @@ class SsoCharacterMgmt(AuxiliaryFrame):
             self.lcCharacters.InsertItem(index, char.characterName)
             self.lcCharacters.SetItem(index, 1, str(char.characterID))
             self.lcCharacters.SetItemData(index, char.ID)
+            self.lcCharacters.SetItem(index, 2, char.server or "<unknown>")
 
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
+        self.lcCharacters.SetColumnWidth(2, wx.LIST_AUTOSIZE)
 
     def addChar(self, event):
         try:
@@ -486,8 +494,6 @@ class SsoCharacterMgmt(AuxiliaryFrame):
             sEsi.login()
         except (KeyboardInterrupt, SystemExit):
             raise
-        except Exception as ex:
-            ESIServerExceptionHandler(self, ex)
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()

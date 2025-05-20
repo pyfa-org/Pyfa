@@ -13,6 +13,14 @@ from shutil import copyfile
 
 from PIL import Image
 
+
+def get_full_alias(short_alias):
+    full_aliases = {
+        'tq': 'tranquility',
+        'sisi': 'singularity'}
+    return full_aliases.get(short_alias, short_alias)
+
+
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s shared cache folder')
 parser.add_argument('-s', '--server', required=False, default='tq', type=str, help='which server to use (defaults to tq)')
@@ -34,7 +42,7 @@ RENDER_SIZE = (32, 32)
 with open(args.icons, 'r') as f:
     icon_json = json.load(f)
 
-eve_path = os.path.join(args.eve, 'index_{}.txt'.format(args.server))
+eve_path = os.path.join(args.eve, 'index_{}.txt'.format(get_full_alias(args.server)))
 with open(eve_path, 'r') as f:
     lines = f.readlines()
     file_index = {x.split(',')[0]: x.split(',') for x in lines}
@@ -87,7 +95,7 @@ def get_children(parent):
     return children
 
 
-query_items = 'select distinct iconID from invtypes'
+query_items = 'select distinct it.iconID from invtypes as it inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID != 2118'
 query_groups = 'select distinct iconID from invgroups'
 query_cats = 'select distinct iconID from invcategories'
 query_market = 'select distinct iconID from invmarketgroups'
@@ -137,6 +145,8 @@ def get_icon_file(res_path, size):
     icon for it. Return as PIL image object down-
     scaled for use in pyfa.
     """
+    res_path = res_path.lower()
+    res_path = res_path.replace('\\', '/')
     res_path = res_path.replace('//', '/')  #1703
     if res_path not in res_index:
         return None

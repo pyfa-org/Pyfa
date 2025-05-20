@@ -123,7 +123,11 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
             _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion'))
+        data.groups[_t('Drifter Incursion')] = self.getDrifterIncursion()
         data.groups[_t('Triglavian Invasion')] = self.getInvasionBeacons()
+        data.groups[_t('Pirate Insurgency')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Insurgency'),
+            extra_garbage=(_t('ContextMenu|ProjectedEffectManipulation|Beacon'),))
         return data
 
     def getEffectBeacons(self, *groups, extra_garbage=()):
@@ -174,7 +178,6 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                     container.append(Entry(beacon.ID, beaconname, shortname))
                     # Break loop on 1st result
                     break
-        data.sort()
         return data
 
     def getAbyssalWeather(self):
@@ -231,12 +234,31 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.sort()
         return data
 
+    def getDrifterIncursion(self):
+        data = self.getEffectBeacons(_t('ContextMenu|ProjectedEffectManipulation|Drifter Incursion'))
+        # Drifter Crisis
+        item = Market.getInstance().getItem(87294)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        return data
+
     def getInvasionBeacons(self):
         data = self.getDestructibleBeacons()
+        # Trig Minor Victory
+        item = Market.getInstance().getItem(87177)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        # Trig Final Liminality
+        item = Market.getInstance().getItem(87164)
+        data.items.append(Entry(item.ID, item.name, item.name))
         # Turnur weather
         item = Market.getInstance().getItem(74002)
         data.items.append(Entry(item.ID, item.name, item.name))
         return data
 
+    def getInsurgencyBeacons(self):
+        data = self.getDestructibleBeacons()
+        # Suppression Interdiction Range Beacon
+        item = Market.getInstance().getItem(79839)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        return data
 
 AddEnvironmentEffect.register()

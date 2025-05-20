@@ -197,6 +197,30 @@ class SignatureRadiusColumn(GraphColumn):
 SignatureRadiusColumn.register()
 
 
+class FullHpColumn(GraphColumn):
+
+    name = 'FullHP'
+    stickPrefixToValue = True
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 68)
+
+    def _getValue(self, stuff):
+        if isinstance(stuff, Fit):
+            full_hp = stuff.hp.get('shield', 0) + stuff.hp.get('armor', 0) + stuff.hp.get('hull', 0)
+        elif isinstance(stuff, TargetProfile):
+            full_hp = stuff.hp
+        else:
+            full_hp = 0
+        return full_hp, 'hp'
+
+    def _getFitTooltip(self):
+        return 'Total raw HP'
+
+
+FullHpColumn.register()
+
+
 class ShieldAmountColumn(GraphColumn):
 
     name = 'ShieldAmount'

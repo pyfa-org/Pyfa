@@ -1,9 +1,11 @@
 # noinspection PyPackageRequirements
 import wx
 
+import config
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
+from service.esi import Esi
 from service.settings import EsiSettings
 
 # noinspection PyPackageRequirements
@@ -41,34 +43,64 @@ class PFEsiPref(PreferenceView):
                                                        "due to 'Signature has expired' error")))
         mainSizer.Add(self.enforceJwtExpiration, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.ssoServer = wx.CheckBox(panel, wx.ID_ANY, _t("Auto-login (starts local server)"), wx.DefaultPosition,
+                                        wx.DefaultSize,
+                                        0)
+        self.ssoServer.SetToolTip(wx.ToolTip(_t("This allows the EVE SSO to callback to your local pyfa instance and complete the authentication process without manual intervention.")))
+        mainSizer.Add(self.ssoServer, 0, wx.ALL | wx.EXPAND, 5)
+
         rbSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.rbMode = wx.RadioBox(panel, -1, _t("Login Authentication Method"), wx.DefaultPosition, wx.DefaultSize,
-                                  [_t('Local Server'), _t('Manual')], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetItemToolTip(0, _t("This option starts a local webserver that EVE SSO Server will call back to"
-                                         " with information about the character login."))
-        self.rbMode.SetItemToolTip(1, _t("This option prompts users to copy and paste information to allow for"
-                                         " character login. Use this if having issues with the local server."))
 
-        self.rbMode.SetSelection(self.settings.get('loginMode'))
-        self.enforceJwtExpiration.SetValue(self.settings.get("enforceJwtExpiration" or True))
+        self.enforceJwtExpiration.SetValue(self.settings.get("enforceJwtExpiration") or True)
+        self.ssoServer.SetValue(True if self.settings.get("loginMode") == 0 else False)
 
-        rbSizer.Add(self.rbMode, 1, wx.TOP | wx.RIGHT, 5)
+        mainSizer.Add(rbSizer, 0, wx.ALL | wx.EXPAND, 0)
 
-        self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
+        esiSizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        self.esiServer = wx.StaticText(panel, wx.ID_ANY, _t("Default SSO Server:"), wx.DefaultPosition, wx.DefaultSize, 0)
+
+        self.esiServer.Wrap(-1)
+
+        esiSizer.Add(self.esiServer, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.esiServer.SetToolTip(wx.ToolTip(_t('The source you choose will be used on connection.')))
+
+        self.chESIserver = wx.Choice(panel, choices=list(self.settings.keys()))
+
+        self.chESIserver.SetStringSelection(self.settings.get("server"))
+
+        esiSizer.Add(self.chESIserver, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 10)
+
+        mainSizer.Add(esiSizer, 0, wx.TOP | wx.RIGHT, 10)
+
+        self.chESIserver.Bind(wx.EVT_CHOICE, self.OnServerChange)
         self.enforceJwtExpiration.Bind(wx.EVT_CHECKBOX, self.OnEnforceChange)
-        mainSizer.Add(rbSizer, 1, wx.ALL | wx.EXPAND, 0)
+        self.ssoServer.Bind(wx.EVT_CHECKBOX, self.OnModeChange)
 
         panel.SetSizer(mainSizer)
+
         panel.Layout()
 
     def OnTimeoutChange(self, event):
         self.settings.set('timeout', event.GetEventObject().GetValue())
+        event.Skip()
 
     def OnModeChange(self, event):
-        self.settings.set('loginMode', event.GetInt())
+        self.settings.set('loginMode', 0 if self.ssoServer.GetValue() else 1)
+        event.Skip()
 
     def OnEnforceChange(self, event):
         self.settings.set('enforceJwtExpiration', self.enforceJwtExpiration.GetValue())
+        event.Skip()
+
+    def OnServerChange(self, event):
+        # pass
+        source = self.chESIserver.GetString(self.chESIserver.GetSelection())
+        esiService = Esi.getInstance()
+        # init servers
+        esiService.init(config.supported_servers[source])
+        self.settings.set("server", source)
         event.Skip()
 
     def getImage(self):

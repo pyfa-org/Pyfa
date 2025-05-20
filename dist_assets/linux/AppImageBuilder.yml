@@ -1,0 +1,74 @@
+version: 1
+
+AppDir:
+  path: ./AppDir
+
+  app_info:
+    id: pyfa
+    name: pyfa
+    icon: pyfa
+    version: '{{PYFA_VERSION}}'
+    exec: usr/bin/python3.11
+    exec_args: "-s $APPDIR/opt/pyfa/pyfa.py $@"
+
+  apt:
+    arch: [ amd64 ]
+    sources:
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-updates main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-backports main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
+    - sourceline: 'deb http://us.archive.ubuntu.com/ubuntu jammy-security main restricted universe multiverse'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c'
+    - sourceline: 'deb https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy main'
+      key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf23c5a6cf475977595c89f51ba6932366a755776'
+
+    include:
+      - python3.11
+      # wx dependencies
+      - libgtk-3-0
+      - librsvg2-common  # GTK3 recommendation; without it, search in char editor crashes
+      - libwebkit2gtk-4.0-37  # Needed for wx's HTML lib
+      # Unknown
+      - libpcre2-32-0  # https://github.com/pyfa-org/Pyfa/issues/2572
+      - libnotify4  # https://github.com/pyfa-org/Pyfa/issues/2598
+      - libwayland-client0  # https://github.com/pyfa-org/Pyfa/issues/2600
+    exclude:
+      - hicolor-icon-theme
+      - humanity-icon-theme
+      - ubuntu-mono
+
+  after_bundle:
+    # Install python dependencies to bundled interpreter
+    - export PYTHONHOME="AppDir/usr"
+    - export PYTHONPATH="AppDir/usr/lib/python3.11/site-packages"
+    - curl -L https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    - AppDir/usr/bin/python3.11 get-pip.py
+    # Just to bundle certificates with AppImage
+    - AppDir/usr/bin/python3.11 -s -m pip install certifi
+    - AppDir/usr/bin/python3.11 -s -m pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+
+  files:
+    exclude:
+      - usr/lib/x86_64-linux-gnu/gconv
+      - usr/share/man
+      - usr/share/doc/*/README.*
+      - usr/share/doc/*/changelog.*
+      - usr/share/doc/*/NEWS.*
+      - usr/share/doc/*/TODO.*
+      - usr/include
+
+  runtime:
+    env:
+      PYTHONHOME: '${APPDIR}/usr'
+      PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
+      SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.11/dist-packages/certifi/cacert.pem'
+      # Workaround for https://github.com/AppImageCrafters/appimage-builder/issues/336
+      XDG_DATA_DIRS: '${APPDIR}/usr/local/share:${APPDIR}/usr/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS'
+
+AppImage:
+  sign-key: None
+  arch: x86_64
+  file_name: 'pyfa-{{PYFA_VERSION}}-linux.AppImage'

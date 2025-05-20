@@ -66,8 +66,8 @@ class UpdateDialog(wx.Dialog):
         self.browser.Bind(wx.html2.EVT_WEBVIEW_NEWWINDOW, self.OnNewWindow)
 
         link_patterns = [
-            (re.compile("#(\d+)", re.I), r"https://github.com/pyfa-org/Pyfa/issues/\1"),
-            (re.compile("@(\w+)", re.I), r"https://github.com/\1")
+            (re.compile(r"#(\d+)", re.I), r"https://github.com/pyfa-org/Pyfa/issues/\1"),
+            (re.compile(r"@(\w+)", re.I), r"https://github.com/\1")
         ]
 
         markdowner = markdown2.Markdown(

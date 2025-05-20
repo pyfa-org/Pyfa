@@ -40,18 +40,18 @@ characters_table = Table("characters", saveddata_meta,
                          Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
 
 sso_table = Table("ssoCharacter", saveddata_meta,
-                    Column("ID", Integer, primary_key=True),
-                    Column("client", String, nullable=False),
-                    Column("characterID", Integer, nullable=False),
-                    Column("characterName", String, nullable=False),
-                    Column("refreshToken", String, nullable=False),
-                    Column("accessToken", String, nullable=False),
-                    Column("accessTokenExpires", DateTime, nullable=False),
-                    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
-                    UniqueConstraint('client', 'characterID', name='uix_client_characterID'),
-                    UniqueConstraint('client', 'characterName', name='uix_client_characterName')
-                  )
+    Column("ID", Integer, primary_key=True),
+    Column("client", String, nullable=False),
+    Column("characterID", Integer, nullable=False),
+    Column("characterName", String, nullable=False),
+    Column("server", String, nullable=False),
+    Column("refreshToken", String, nullable=False),
+    Column("accessToken", String, nullable=False),
+    Column("accessTokenExpires", DateTime, nullable=False),
+    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+    UniqueConstraint('client', 'server', 'characterID', name='uix_client_server_characterID'),
+    UniqueConstraint('client', 'server', 'characterName', name='uix_client_server_characterName'))
 
 sso_character_map_table = Table("ssoCharacterMap", saveddata_meta,
                     Column("characterID", ForeignKey("characters.ID"), primary_key=True),

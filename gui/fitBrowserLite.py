@@ -112,7 +112,7 @@ class FitBrowserLiteDialog(wx.Dialog):
                 return True
 
             matches = []
-            searchTokens = [t.lower() for t in re.split('\s+', searchPattern)]
+            searchTokens = [t.lower() for t in re.split(r'\s+', searchPattern)]
             for fit in self.allFits:
                 if isMatch(fit, searchTokens):
                     matches.append(fit)

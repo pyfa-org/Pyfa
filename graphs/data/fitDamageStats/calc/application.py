@@ -98,6 +98,8 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                     tgt=tgt,
                     distance=distance,
                     tgtSigRadius=tgtSigRadius)
+        elif mod.isBreacher:
+            applicationMap[mod] = getBreacherMult(mod=mod, distance=distance) if inLockRange else 0
     for drone in src.item.activeDronesIter():
         if not drone.isDealingDamage():
             continue
@@ -192,6 +194,21 @@ def getLauncherMult(mod, distance, tgtSpeed, tgtSigRadius):
     return distanceFactor * applicationFactor
 
 
+def getBreacherMult(mod, distance):
+    missileMaxRangeData = mod.missileMaxRangeData
+    if missileMaxRangeData is None:
+        return 0
+    # The ranges already consider ship radius
+    lowerRange, higherRange, higherChance = missileMaxRangeData
+    if distance is None or distance <= lowerRange:
+        distanceFactor = 1
+    elif lowerRange < distance <= higherRange:
+        distanceFactor = higherChance
+    else:
+        distanceFactor = 0
+    return distanceFactor
+
+
 def getSmartbombMult(mod, distance):
     modRange = mod.maxRange
     if modRange is None:
@@ -211,7 +228,7 @@ def getDoomsdayMult(mod, tgt, distance, tgtSigRadius):
         # Disallow only against subcaps, allow against caps and tgt profiles
         if tgt.isFit and not tgt.item.ship.item.requiresSkill('Capital Ships'):
             return 0
-    damageSig = mod.getModifiedItemAttr('doomsdayDamageRadius') or mod.getModifiedItemAttr('signatureRadius')
+    damageSig = mod.getModifiedItemAttr('signatureRadius')
     if not damageSig:
         return 1
     return min(1, tgtSigRadius / damageSig)

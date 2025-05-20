@@ -80,7 +80,7 @@ class LoadAnimation(wx.Window):
                 bh = rect.height
                 y = 0
 
-            dc.DrawRectangle(x, y, barWidth, bh)
+            dc.DrawRectangle(round(x), round(y), round(barWidth), round(bh))
             x += barWidth
 
         textColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)

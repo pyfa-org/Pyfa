@@ -69,7 +69,8 @@ props = {
                primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
                secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
                secondary=dynamicApplicable_table,
-               backref="applicableItems"
+               backref="applicableItems",
+               viewonly=True
            )
 }
 
