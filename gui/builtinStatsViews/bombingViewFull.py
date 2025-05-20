@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+import math
 
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
@@ -148,7 +149,7 @@ class BombingViewFull(StatsView):
                                     (min(bomb.attributes['signatureRadius'].value, shipSigRadius) /
                                      bomb.attributes['signatureRadius'].value)
                 label = getattr(self, "labelDamagetypeCovertlevel%s%s" % (damageType.capitalize(), covertLevel))
-                label.SetLabel("{:.1f}".format(ehp / appliedBombDamage))
+                label.SetLabel("{:.1f}".format(math.ceil((ehp / appliedBombDamage) * 10) / 10))
                 if covertLevel is not "0":
                     label.SetToolTip("Number of %s to kill a %s using a %s "
                                  "with Covert Ops level %s" % (bomb.customName, fit.name, bomber, covertLevel))
