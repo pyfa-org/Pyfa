@@ -46,8 +46,8 @@ pip list
 
 Build translations and database:
 ```
-python scripts\compile_lang.py
-python db_update.py
+python PyfaDEV\scripts\compile_lang.py
+python PyfaDEV\db_update.py
 ```
 
 Test that the project is starting properly
