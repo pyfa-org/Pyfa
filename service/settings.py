@@ -490,6 +490,7 @@ class ContextMenuSettings:
             "moduleFill"            : 1,
             "spoolup"               : 1,
             "additionsCopyPaste"    : 1,
+            "cargoFill"             : 1,
         }
 
         self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)
