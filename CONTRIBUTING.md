@@ -26,6 +26,7 @@ Activate the virtual environment
 
 ```
 For cmd.exe: PyfaEnv\scripts\activate.bat
+For PowerShell: PyfaEnv\Scripts\Activate.ps1
 For bash: source <venv>/Scripts/activate
 ```
 > For other OS check [Python documentation](https://docs.python.org/3/library/venv.html)
