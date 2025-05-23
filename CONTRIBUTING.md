@@ -36,6 +36,8 @@ pip install -r PyfaDEV\requirements.txt
 ```
 > For some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`
 
+> You may need to [install a C compiler](https://mesonbuild.com/SimpleStart.html#installing-a-compiler-toolchain)
+
 Check that the libs from *requirements.txt* are installed
 ```
 pip list
