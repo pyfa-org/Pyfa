@@ -91,6 +91,7 @@ Check that the project is starting properly.
 Switch to the proper virtual environment
 ```
 For cmd.exe: PyfaEnv\scripts\activate.bat
+For PowerShell: PyfaEnv\Scripts\Activate.ps1
 For bash: source <venv>/Scripts/activate
 ```
 
