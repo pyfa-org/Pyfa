@@ -9,4 +9,5 @@ __all__ = [
     "targetingMiscViewMinimal",
     "priceViewFull",
     "priceViewMinimal",
+    "bombingViewFull",
 ]
