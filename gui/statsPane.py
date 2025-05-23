@@ -43,8 +43,8 @@ class StatsPane(wx.Panel):
         "outgoing",
         "capacitor",
         "targetingMisc",
-        "price",
         "bombing",
+        "price",
     ]
 
     # Don't have these....yet....
