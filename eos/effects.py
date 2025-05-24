@@ -41285,6 +41285,58 @@ class Effect12221(BaseEffect):
             skill.getModifiedItemAttr('durationBonus') * skill.level, **kwargs)
 
 
+class Effect12244(BaseEffect):
+    """
+    shipBonusRole1CapitalProjectileDamageBonus
+
+    Used by:
+    Ship: Sarathiel
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Projectile Turret'),
+            'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole1'), **kwargs)
+
+
+class Effect12245(BaseEffect):
+    """
+    shipBonusDreadnoughtG1FalloffBonus
+
+    Used by:
+    Ship: Sarathiel
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Projectile Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonusDreadnoughtG1'), skill='Gallente Dreadnought', **kwargs)
+
+
+class Effect12246(BaseEffect):
+    """
+    shipBonusRoleAngelDreadMoveWhileSieged
+
+    Used by:
+    Ship: Sarathiel
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Siege Module', 'speedFactor',
+            ship.getModifiedItemAttr('shipBonusSiegeSpeedMultiplier'), **kwargs)
+
+
 class Effect12249(BaseEffect):
     """
     shipBonusDroneDamageHeavyMediumLightMultiplierGBC1
@@ -41504,3 +41556,54 @@ class Effect12284(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Data Miners', 'virusCoherence',
             implant.getModifiedItemAttr('implantSetHackingVirusCoherenceModifier'), **kwargs)
+
+
+class Effect12286(BaseEffect):
+    """
+    shipLPWRangeBonusPCBS1
+
+    Used by:
+    Ship: Babaroga
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Precursor Weapon'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusPBS1'), skill='Precursor Battleship', **kwargs)
+
+
+class Effect12287(BaseEffect):
+    """
+    shipLPWTrackingBonusPCBS1
+
+    Used by:
+    Ship: Babaroga
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Precursor Weapon'), 'trackingSpeed',
+            ship.getModifiedItemAttr('shipBonusPBS2'), skill='Precursor Battleship', **kwargs)
+
+
+class Effect12288(BaseEffect):
+    """
+    eliteBonusViolatorsLPWDmgMultiMax1
+
+    Used by:
+    Ship: Babaroga
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Precursor Weapon'), 'damageMultiplierBonusMax',
+            ship.getModifiedItemAttr('eliteBonusViolators1'), skill='Marauders', **kwargs)
