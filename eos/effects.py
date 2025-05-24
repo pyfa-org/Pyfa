@@ -41383,3 +41383,124 @@ class Effect12253(BaseEffect):
             lambda drone: drone.item.requiresSkill('Sentry Drone Interfacing'),
             'trackingSpeed', ship.getModifiedItemAttr('eliteBonusCommandShips4'),
             skill='Command Ships', **kwargs)
+
+
+class Effect12267(BaseEffect):
+    """
+    shipBloodRaiderCapitalNosNeutralizationSignatureResolutionReduction
+
+    Used by:
+    Ship: Chemosh
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'energyNeutralizerSignatureResolution',
+            ship.getModifiedItemAttr('shipBloodRaiderCapitalNosSignatureReductionMultiplyer'), **kwargs)
+
+
+class Effect12275(BaseEffect):
+    """
+    shipBonusArmorPlateMassEliteBonusLogistics4
+
+    Used by:
+    Ship: Oneiros
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
+            ship.getModifiedItemAttr('eliteBonusLogistics4'), skill='Logistics Cruisers', **kwargs)
+
+
+class Effect12276(BaseEffect):
+    """
+    shipBonusShieldExtenderSigEliteBonusLogistics4
+
+    Used by:
+    Ship: Scimitar
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Shield Extender', 'signatureRadiusAdd',
+            ship.getModifiedItemAttr('eliteBonusLogistics4'), skill='Logistics Cruisers', **kwargs)
+
+
+class Effect12278(BaseEffect):
+    """
+    shipBonusArmorPlateHitpointAmountEliteBonusLogistics4
+
+    Used by:
+    Ships from group: Logistics (3 of 7)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate', 'armorHPBonusAdd',
+            ship.getModifiedItemAttr('eliteBonusLogistics4'), skill='Logistics Cruisers', **kwargs)
+
+
+class Effect12279(BaseEffect):
+    """
+    shipBonusShieldExtenderCapacityBonusEliteBonusLogistics4
+
+    Used by:
+    Ship: Basilisk
+    Ship: Etana
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Shield Extender', 'capacityBonus',
+            ship.getModifiedItemAttr('eliteBonusLogistics4'), skill='Logistics Cruisers', **kwargs)
+
+
+class Effect12283(BaseEffect):
+    """
+    implantSetHackingVirusCoheranceEffect
+
+    Used by:
+    Implants named like: grade Wedge (12 of 12)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.appliedImplants.filteredItemMultiply(
+            lambda imp: imp.item.requiresSkill('Cybernetics'), 'implantSetHackingVirusCoherenceModifier',
+            implant.getModifiedItemAttr('implantSetHackingVirusCoherenceOmegaSetBonus'), **kwargs)
+
+
+class Effect12284(BaseEffect):
+    """
+    implantSetHackingVirusCoheranceModifierEffect
+
+    Used by:
+    Implants named like: grade Wedge (12 of 12)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Data Miners', 'virusCoherence',
+            implant.getModifiedItemAttr('implantSetHackingVirusCoherenceModifier'), **kwargs)
