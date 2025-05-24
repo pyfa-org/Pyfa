@@ -643,13 +643,17 @@ def update_db():
             else:
                 attr.value = value
 
-    def _hardcodeEffects(typeID, effectMap):
+    def _hardcodeEffects(typeID, effectMap, clearEffects=True):
         item = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.ID == typeID).one()
-        item.effects.clear()
+        if clearEffects:
+            item.effects.clear()
         for effectID, effectName in effectMap.items():
-            effect = eos.gamedata.Effect()
-            effect.effectID = effectID
-            effect.effectName = effectName
+            try:
+                effect = eos.db.gamedata_session.query(eos.gamedata.Effect).filter(eos.gamedata.Effect.ID == effectID).one()
+            except sqlalchemy.orm.exc.NoResultFound:
+                effect = eos.gamedata.Effect()
+                effect.effectID = effectID
+                effect.effectName = effectName
             item.effects[effectName] = effect
 
     def hardcodeSuppressionTackleRange():
@@ -660,6 +664,43 @@ def update_db():
         effectMap = {100000: 'pyfaCustomSuppressionTackleRange'}
         _hardcodeAttribs(beaconTypeID, attrMap)
         _hardcodeEffects(beaconTypeID, effectMap)
+        eos.db.gamedata_session.flush()
+
+    def hardcodeSovUpgradeBuffs():
+        typeBuffMap = {
+            # Gamma
+            87815: {
+                'warfareBuff1ID': 2433,
+                'warfareBuff1Value': 5,
+                'warfareBuff2ID': 2434,
+                'warfareBuff2Value': 10,
+                'warfareBuff3ID': 2441,
+                'warfareBuff3Value': 5},
+            # Plasma
+            87949: {
+                'warfareBuff1ID': 2442,
+                'warfareBuff1Value': 5,
+                'warfareBuff2ID': 2435,
+                'warfareBuff2Value': 5,
+                'warfareBuff3ID': 2436,
+                'warfareBuff3Value': 10},
+            # Electric
+            87950: {
+                'warfareBuff1ID': 2437,
+                'warfareBuff1Value': -25,
+                'warfareBuff2ID': 2438,
+                'warfareBuff2Value': 25},
+            # Exotic
+            87951: {
+                'warfareBuff1ID': 2440,
+                'warfareBuff1Value': 2,
+                'warfareBuff2ID': 2439,
+                'warfareBuff2Value': 25}}
+        effectMap = {100001: 'pyfaCustomSovUpgradeBuffEffect'}
+        for typeID, attrMap in typeBuffMap.items():
+            _hardcodeAttribs(typeID, attrMap)
+            _hardcodeEffects(typeID, effectMap, clearEffects=False)
+            eos.db.gamedata_session.flush()
 
 
     def hardcodeShapash():
@@ -806,6 +847,7 @@ def update_db():
         _hardcodeEffects(cybeleTypeID, effectMap)
 
     hardcodeSuppressionTackleRange()
+    hardcodeSovUpgradeBuffs()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')
