@@ -3882,5 +3882,297 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
+  }, 
+  "2433": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Shield HP Bonus", 
+    "displayName_de": "HP-Bonus für Schilde", 
+    "displayName_en-us": "Shield Hitpoint Bonus", 
+    "displayName_es": "Bonif. de puntos de vida del escudo", 
+    "displayName_fr": "Bonus de points de vie du bouclier", 
+    "displayName_it": "Shield Hitpoint Bonus", 
+    "displayName_ja": "シールドHPボーナス", 
+    "displayName_ko": "실드 내구도 보너스", 
+    "displayName_ru": "Влияние на запас прочности щитов", 
+    "displayName_zh": "护盾值加成", 
+    "displayNameID": 1011194, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2434": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Capacitor Capacity Bonus", 
+    "displayName_de": "Bonus auf Energiespeicherkapazität", 
+    "displayName_en-us": "Capacitor Capacity Bonus", 
+    "displayName_es": "Bonif. de capacidad del condensador", 
+    "displayName_fr": "Bonus de capacité du capaciteur", 
+    "displayName_it": "Capacitor Capacity Bonus", 
+    "displayName_ja": "キャパシタ容量ボーナス", 
+    "displayName_ko": "캐패시터 용량 보너스", 
+    "displayName_ru": "Влияние на ёмкость накопителя", 
+    "displayName_zh": "电容器容量加成", 
+    "displayNameID": 1011195, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 482
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2435": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Armor HP Bonus", 
+    "displayName_de": "HP-Bonus für Panzerung", 
+    "displayName_en-us": "Armor Hitpoint Bonus", 
+    "displayName_es": "Bonif. de puntos de vida del blindaje", 
+    "displayName_fr": "Bonus de PV du blindage", 
+    "displayName_it": "Armor Hitpoint Bonus", 
+    "displayName_ja": "アーマーHPボーナス", 
+    "displayName_ko": "장갑 내구도 보너스", 
+    "displayName_ru": "Увеличение запаса прочности брони", 
+    "displayName_zh": "装甲值加成", 
+    "displayNameID": 1011201, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2436": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Overheating Bonus - Includes Ewar", 
+    "displayName_de": "Modul-Überladungsbonus", 
+    "displayName_en-us": "Module Overload Bonus", 
+    "displayName_es": "Bonificación de sobrecarga de módulo", 
+    "displayName_fr": "Bonus de surcharge du module", 
+    "displayName_it": "Module Overload Bonus", 
+    "displayName_ja": "モジュールオーバーロードボーナス", 
+    "displayName_ko": "모듈 과부하 보너스", 
+    "displayName_ru": "Бонус к перегрузке модулей", 
+    "displayName_zh": "装备超载加成", 
+    "displayNameID": 1011202, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1181
+      }, 
+      {
+        "dogmaAttributeID": 1205
+      }, 
+      {
+        "dogmaAttributeID": 1206
+      }, 
+      {
+        "dogmaAttributeID": 1208
+      }, 
+      {
+        "dogmaAttributeID": 1210
+      }, 
+      {
+        "dogmaAttributeID": 1222
+      }, 
+      {
+        "dogmaAttributeID": 1223
+      }, 
+      {
+        "dogmaAttributeID": 1225
+      }, 
+      {
+        "dogmaAttributeID": 1226
+      }, 
+      {
+        "dogmaAttributeID": 1230
+      }, 
+      {
+        "dogmaAttributeID": 1231
+      }, 
+      {
+        "dogmaAttributeID": 1935
+      }, 
+      {
+        "dogmaAttributeID": 1936
+      }, 
+      {
+        "dogmaAttributeID": 1937
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2437": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Sov System Modifier Capacitor Recharge Bonus", 
+    "displayName_de": "Energiespeicher-Wiederaufladebonus", 
+    "displayName_en-us": "Capacitor Recharge Bonus", 
+    "displayName_es": "Bonificación de carga del condensador", 
+    "displayName_fr": "Bonus de recharge du capaciteur", 
+    "displayName_it": "Capacitor Recharge Bonus", 
+    "displayName_ja": "キャパシタリチャージボーナス", 
+    "displayName_ko": "캐패시터 충전 보너스", 
+    "displayName_ru": "Влияние на перезарядку накопителя", 
+    "displayName_zh": "电容回充量加成", 
+    "displayNameID": 1011203, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2438": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Targeting and DScan Range Bonus", 
+    "displayName_de": "Reichweitebonus für Zielerfassung und Richtungsscanner", 
+    "displayName_en-us": "Targeting and Directional Scanner Range Bonus", 
+    "displayName_es": "Bonificación al alcance de adquisición de objetivos y escáner direccional", 
+    "displayName_fr": "Bonus de portée pour le ciblage et le scanner directionnel", 
+    "displayName_it": "Targeting and Directional Scanner Range Bonus", 
+    "displayName_ja": "ターゲティングと指向性スキャナーの範囲ボーナス", 
+    "displayName_ko": "타겟팅 및 전방위 스캐너 범위 보너스", 
+    "displayName_ru": "Влияние на дальность наведения и дальность пеленгатора", 
+    "displayName_zh": "锁定和定向扫描仪范围加成", 
+    "displayNameID": 1011204, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 76
+      }, 
+      {
+        "dogmaAttributeID": 5796
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2439": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Scan Resolution Bonus", 
+    "displayName_de": "Scanauflösungsbonus", 
+    "displayName_en-us": "Scan Resolution Bonus", 
+    "displayName_es": "Bonificación de resolución de escaneo", 
+    "displayName_fr": "Bonus de résolution du balayage", 
+    "displayName_it": "Scan Resolution Bonus", 
+    "displayName_ja": "スキャン分解能ボーナス", 
+    "displayName_ko": "스캔 정밀도 보너스", 
+    "displayName_ru": "Влияние на разрешающую способность сенсоров", 
+    "displayName_zh": "扫描分辨率加成", 
+    "displayNameID": 1011205, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2440": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Warp Speed Addition", 
+    "displayName_de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+    "displayName_en-us": "AU/s Additional Base Warp Speed", 
+    "displayName_es": "UA/s de velocidad de warp base adicional", 
+    "displayName_fr": "UA/s de vitesse de warp de base supplémentaire", 
+    "displayName_it": "AU/s Additional Base Warp Speed", 
+    "displayName_ja": "基本ワープ速度に追加される速度（AU/秒）", 
+    "displayName_ko": "기본 워프 속도 증가", 
+    "displayName_ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+    "displayName_zh": "基础跃迁速度+AU/s", 
+    "displayNameID": 1011206, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2441": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Shield Booster Bonus", 
+    "displayName_de": "Local Shield Booster Bonus", 
+    "displayName_en-us": "Local Shield Booster Bonus", 
+    "displayName_es": "Local Shield Booster Bonus", 
+    "displayName_fr": "Local Shield Booster Bonus", 
+    "displayName_it": "Local Shield Booster Bonus", 
+    "displayName_ja": "Local Shield Booster Bonus", 
+    "displayName_ko": "Local Shield Booster Bonus", 
+    "displayName_ru": "Local Shield Booster Bonus", 
+    "displayName_zh": "Local Shield Booster Bonus", 
+    "displayNameID": 1015276, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 21802
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2442": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Armor Repairer Bonus", 
+    "displayName_de": "Local Armor Repairer Bonus", 
+    "displayName_en-us": "Local Armor Repairer Bonus", 
+    "displayName_es": "Local Armor Repairer Bonus", 
+    "displayName_fr": "Local Armor Repairer Bonus", 
+    "displayName_it": "Local Armor Repairer Bonus", 
+    "displayName_ja": "Local Armor Repairer Bonus", 
+    "displayName_ko": "Local Armor Repairer Bonus", 
+    "displayName_ru": "Local Armor Repairer Bonus", 
+    "displayName_zh": "Local Armor Repairer Bonus", 
+    "displayNameID": 1015333, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 21803
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

@@ -1961,7 +1961,6 @@ class Effect602(BaseEffect):
     Ship: Cobra
     Ship: Enforcer
     Ship: Huginn
-    Ship: Rupture
     Ship: Scythe Fleet Issue
     """
 
@@ -2843,7 +2842,6 @@ class Effect968(BaseEffect):
     Ship: Broadsword
     Ship: Cynabal
     Ship: Moracha
-    Ship: Rupture
     """
 
     type = 'passive'
@@ -4850,7 +4848,7 @@ class Effect1615(BaseEffect):
     shipAdvancedSpaceshipCommandAgilityBonus
 
     Used by:
-    Items from market group: Ships > Capital Ships (51 of 51)
+    Items from market group: Ships > Capital Ships (52 of 52)
     """
 
     type = 'passive'
@@ -4884,7 +4882,7 @@ class Effect1617(BaseEffect):
 
     Used by:
     Ships from group: Carrier (4 of 4)
-    Ships from group: Dreadnought (12 of 12)
+    Ships from group: Dreadnought (13 of 13)
     Ships from group: Force Auxiliary (6 of 6)
     Ships from group: Lancer Dreadnought (4 of 4)
     Ships from group: Supercarrier (6 of 6)
@@ -6975,6 +6973,7 @@ class Effect2402(BaseEffect):
     skillSuperWeaponDmgBonus
 
     Used by:
+    Skill: Advanced Doomsday Operation
     Skill: Doomsday Operation
     """
 
@@ -9310,18 +9309,15 @@ class Effect3002(BaseEffect):
     overloadSelfDurationBonus
 
     Used by:
-    Modules from group: Ancillary Remote Shield Booster (4 of 4)
+    Modules from group: Armor Resistance Shift Hardener (2 of 2)
     Modules from group: Capacitor Booster (43 of 43)
     Modules from group: Energy Neutralizer (57 of 57)
     Modules from group: Energy Nosferatu (58 of 58)
     Modules from group: Hull Repair Unit (25 of 25)
-    Modules from group: Remote Armor Repairer (43 of 43)
     Modules from group: Remote Capacitor Transmitter (37 of 37)
-    Modules from group: Remote Shield Booster (42 of 42)
+    Modules from group: Remote Hull Repairer (8 of 8)
     Modules from group: Smart Bomb (137 of 137)
     Modules from group: Warp Disrupt Field Generator (8 of 8)
-    Modules named like: Remote Repairer (60 of 60)
-    Module: Reactive Armor Hardener
     """
 
     type = 'overheat'
@@ -9699,8 +9695,10 @@ class Effect3200(BaseEffect):
     overloadSelfArmorDamageAmountDurationBonus
 
     Used by:
-    Modules from group: Ancillary Armor Repairer (8 of 8)
+    Modules from group: Ancillary Armor Repairer (12 of 12)
     Modules from group: Armor Repair Unit (105 of 105)
+    Modules from group: Remote Armor Repairer (43 of 43)
+    Modules named like: Remote Armor Repairer (52 of 52)
     """
 
     type = 'overheat'
@@ -9717,7 +9715,9 @@ class Effect3201(BaseEffect):
     overloadSelfShieldBonusDurationBonus
 
     Used by:
-    Modules from group: Ancillary Shield Booster (9 of 9)
+    Modules from group: Ancillary Remote Shield Booster (4 of 4)
+    Modules from group: Ancillary Shield Booster (14 of 14)
+    Modules from group: Remote Shield Booster (42 of 42)
     Modules from group: Shield Booster (94 of 94)
     """
 
@@ -10367,7 +10367,7 @@ class Effect3427(BaseEffect):
     eliteBonusViolatorsTractorBeamMaxRangeRole2
 
     Used by:
-    Ships from group: Marauder (4 of 4)
+    Ships from group: Marauder (5 of 5)
     """
 
     type = 'passive'
@@ -10467,7 +10467,7 @@ class Effect3473(BaseEffect):
     eliteBonusViolatorsTractorBeamMaxTractorVelocityRole3
 
     Used by:
-    Ships from group: Marauder (4 of 4)
+    Ships from group: Marauder (5 of 5)
     """
 
     type = 'passive'
@@ -11590,6 +11590,7 @@ class Effect3706(BaseEffect):
     shipBonusProjectileTrackingMC2
 
     Used by:
+    Ship: Rupture
     Ship: Stabber Fleet Issue
     """
 
@@ -11790,7 +11791,7 @@ class Effect3782(BaseEffect):
     powerOutputAddPassive
 
     Used by:
-    Subsystems from group: Offensive Subsystem (8 of 12)
+    Subsystems from group: Offensive Subsystem (12 of 12)
     """
 
     type = 'passive'
@@ -14873,6 +14874,7 @@ class Effect4472(BaseEffect):
 
     Used by:
     Ship: Mimir
+    Ship: Rupture
     """
 
     type = 'passive'
@@ -16389,7 +16391,7 @@ class Effect4921(BaseEffect):
     microJumpDrive
 
     Used by:
-    Modules named like: Micro Jump Drive (3 of 3)
+    Modules named like: Micro Jump Drive (6 of 6)
     """
 
     type = 'active'
@@ -16420,7 +16422,7 @@ class Effect4928(BaseEffect):
     adaptiveArmorHardener
 
     Used by:
-    Module: Reactive Armor Hardener
+    Modules from group: Armor Resistance Shift Hardener (2 of 2)
     """
 
     runTime = 'late'
@@ -16565,7 +16567,7 @@ class Effect4936(BaseEffect):
     fueledShieldBoosting
 
     Used by:
-    Modules from group: Ancillary Shield Booster (9 of 9)
+    Modules from group: Ancillary Shield Booster (14 of 14)
     """
 
     runTime = 'late'
@@ -18759,7 +18761,7 @@ class Effect5275(BaseEffect):
     fueledArmorRepair
 
     Used by:
-    Modules from group: Ancillary Armor Repairer (8 of 8)
+    Modules from group: Ancillary Armor Repairer (12 of 12)
     """
 
     runTime = 'late'
@@ -19683,8 +19685,7 @@ class Effect5365(BaseEffect):
     eliteBonusViolatorsRepairSystemsArmorDamageAmount2
 
     Used by:
-    Ship: Kronos
-    Ship: Paladin
+    Ships from group: Marauder (3 of 5)
     """
 
     type = 'passive'
@@ -19923,6 +19924,7 @@ class Effect5397(BaseEffect):
 
     Used by:
     Variations of module: Scan Pinpointing Array I (3 of 3)
+    Module: Triplot Scan Acqusition Array
     """
 
     type = 'passive'
@@ -19940,7 +19942,7 @@ class Effect5398(BaseEffect):
     systemScanDurationModuleModifier
 
     Used by:
-    Modules from group: Scanning Upgrade Time (3 of 3)
+    Modules from group: Scanning Upgrade Time (4 of 4)
     """
 
     type = 'passive'
@@ -19957,6 +19959,7 @@ class Effect5399(BaseEffect):
 
     Used by:
     Variations of module: Scan Rangefinding Array I (3 of 3)
+    Module: Triplot Scan Acqusition Array
     """
 
     type = 'passive'
@@ -20008,6 +20011,7 @@ class Effect5410(BaseEffect):
 
     Used by:
     Ship: Absolution
+    Ship: Harbinger Navy Issue
     """
 
     type = 'passive'
@@ -20934,7 +20938,7 @@ class Effect5560(BaseEffect):
     roleBonusMarauderMJDRReactivationDelayBonus
 
     Used by:
-    Ships from group: Marauder (4 of 4)
+    Ships from group: Marauder (5 of 5)
     """
 
     type = 'passive'
@@ -24154,7 +24158,7 @@ class Effect6104(BaseEffect):
 
     Used by:
     Ships from group: Carrier (4 of 4)
-    Ships from group: Dreadnought (12 of 12)
+    Ships from group: Dreadnought (13 of 13)
     Ships from group: Force Auxiliary (6 of 6)
     Ships from group: Lancer Dreadnought (4 of 4)
     Ships from group: Supercarrier (6 of 6)
@@ -27703,6 +27707,7 @@ class Effect6509(BaseEffect):
 
     Used by:
     Ships named like: Naglfar (2 of 2)
+    Ship: Sarathiel
     """
 
     type = 'passive'
@@ -29586,8 +29591,6 @@ class Effect6635(BaseEffect):
                                         src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'), 'kineticDamage',
                                         src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'kineticDamage',
-                                        src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan', **kwargs)
 
 
 class Effect6636(BaseEffect):
@@ -29636,8 +29639,6 @@ class Effect6638(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher XL Cruise', 'speed',
-                                      src.getModifiedItemAttr('shipBonusTitanC2'), skill='Caldari Titan', **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Torpedo', 'speed',
                                       src.getModifiedItemAttr('shipBonusTitanC2'), skill='Caldari Titan', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher XL Torpedo', 'speed',
                                       src.getModifiedItemAttr('shipBonusTitanC2'), skill='Caldari Titan', **kwargs)
@@ -29883,22 +29884,6 @@ class Effect6655(BaseEffect):
                                       src.getModifiedItemAttr('shipBonusTitanM2'), skill='Minmatar Titan', **kwargs)
 
 
-class Effect6656(BaseEffect):
-    """
-    shipBonusRole3XLTorpdeoVelocityBonus
-
-    Used by:
-    Variations of ship: Leviathan (2 of 2)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'maxVelocity',
-                                        src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
-
-
 class Effect6657(BaseEffect):
     """
     shipBonusTitanC5AllDamageBonus
@@ -29911,12 +29896,6 @@ class Effect6657(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'emDamage',
-                                        src.getModifiedItemAttr('shipBonusTitanC5'), skill='Caldari Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'explosiveDamage',
-                                        src.getModifiedItemAttr('shipBonusTitanC5'), skill='Caldari Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'thermalDamage',
-                                        src.getModifiedItemAttr('shipBonusTitanC5'), skill='Caldari Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'), 'explosiveDamage',
                                         src.getModifiedItemAttr('shipBonusTitanC5'), skill='Caldari Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Cruise Missiles'), 'thermalDamage',
@@ -29957,7 +29936,8 @@ class Effect6658(BaseEffect):
         # Turrets
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
                                                   mod.item.requiresSkill('Large Hybrid Turret') or
-                                                  mod.item.requiresSkill('Large Projectile Turret'),
+                                                  mod.item.requiresSkill('Large Projectile Turret') or
+                                                  mod.item.requiresSkill('Large Precursor Weapon'),
                                       'maxRange', src.getModifiedItemAttr('maxRangeBonus'),
                                       stackingPenalties=True, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
@@ -29967,7 +29947,8 @@ class Effect6658(BaseEffect):
                                       stackingPenalties=True, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
                                                   mod.item.requiresSkill('Large Hybrid Turret') or
-                                                  mod.item.requiresSkill('Large Projectile Turret'),
+                                                  mod.item.requiresSkill('Large Projectile Turret') or
+                                                  mod.item.requiresSkill('Large Precursor Weapon'),
                                       'speed', src.getModifiedItemAttr('bastionTurretROFBonus'),
                                       stackingPenalties=True, penaltyGroup='postPerc', **kwargs)
 
@@ -33127,8 +33108,10 @@ class Effect6958(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'overloadSelfDurationBonus',
-                                      src.getModifiedItemAttr('subsystemBonusAmarrOffensive3'), skill='Amarr Offensive Systems', **kwargs)
+        for attr in ('overloadSelfDurationBonus', 'overloadArmorDamageAmount'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), attr,
+                src.getModifiedItemAttr('subsystemBonusAmarrOffensive3'), skill='Amarr Offensive Systems', **kwargs)
 
 
 class Effect6959(BaseEffect):
@@ -33143,8 +33126,10 @@ class Effect6959(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'overloadSelfDurationBonus',
-                                      src.getModifiedItemAttr('subsystemBonusGallenteOffensive3'), skill='Gallente Offensive Systems', **kwargs)
+        for attr in ('overloadSelfDurationBonus', 'overloadArmorDamageAmount'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), attr,
+                src.getModifiedItemAttr('subsystemBonusGallenteOffensive3'), skill='Gallente Offensive Systems', **kwargs)
 
 
 class Effect6960(BaseEffect):
@@ -33159,9 +33144,10 @@ class Effect6960(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
-                                      'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusCaldariOffensive3'),
-                                      skill='Caldari Offensive Systems', **kwargs)
+        for attr in ('overloadSelfDurationBonus', 'overloadShieldBonus'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Shield Emission Systems'), attr,
+                src.getModifiedItemAttr('subsystemBonusCaldariOffensive3'), skill='Caldari Offensive Systems', **kwargs)
 
 
 class Effect6961(BaseEffect):
@@ -33176,9 +33162,16 @@ class Effect6961(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
-                                      'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusMinmatarOffensive3'),
-                                      skill='Minmatar Offensive Systems', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
+            'overloadSelfDurationBonus', src.getModifiedItemAttr('subsystemBonusMinmatarOffensive3'),
+            skill='Minmatar Offensive Systems', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'overloadShieldBonus',
+            src.getModifiedItemAttr('subsystemBonusMinmatarOffensive3'), skill='Minmatar Offensive Systems', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'overloadArmorDamageAmount',
+            src.getModifiedItemAttr('subsystemBonusMinmatarOffensive3'), skill='Minmatar Offensive Systems', **kwargs)
 
 
 class Effect6962(BaseEffect):
@@ -33246,32 +33239,6 @@ class Effect6965(BaseEffect):
             container.getModifiedItemAttr('surveyProbeDurationBonus'), **kwargs)
 
 
-class Effect6981(BaseEffect):
-    """
-    shipBonusTitanG1KinThermDamageBonus
-
-    Used by:
-    Ship: Komodo
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'thermalDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'kineticDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Torpedoes'), 'thermalDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Torpedoes'), 'kineticDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Cruise Missiles'), 'thermalDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Cruise Missiles'), 'kineticDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
-
-
 class Effect6982(BaseEffect):
     """
     shipBonusTitanG2EMExplosiveDamageBonus
@@ -33284,10 +33251,6 @@ class Effect6982(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'explosiveDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG2'), skill='Gallente Titan', **kwargs)
-        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('Torpedoes'), 'emDamage',
-                                      src.getModifiedItemAttr('shipBonusTitanG2'), skill='Gallente Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Torpedoes'), 'emDamage',
                                       src.getModifiedItemAttr('shipBonusTitanG2'), skill='Gallente Titan', **kwargs)
         fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Torpedoes'), 'explosiveDamage',
@@ -34649,10 +34612,10 @@ class Effect7092(BaseEffect):
     Used by:
     Variations of ship: Damavik (2 of 2)
     Variations of ship: Kikimora (2 of 2)
+    Variations of ship: Leshak (2 of 2)
     Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Leshak
     Ship: Tiamat
     Ship: Zirnitra
     """
@@ -34673,11 +34636,11 @@ class Effect7093(BaseEffect):
     Used by:
     Variations of ship: Damavik (2 of 2)
     Variations of ship: Kikimora (2 of 2)
+    Variations of ship: Leshak (2 of 2)
     Variations of ship: Rodiva (2 of 2)
     Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Leshak
     Ship: Tiamat
     Ship: Zirnitra
     """
@@ -34697,10 +34660,10 @@ class Effect7094(BaseEffect):
     Used by:
     Variations of ship: Damavik (2 of 2)
     Variations of ship: Kikimora (2 of 2)
+    Variations of ship: Leshak (2 of 2)
     Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Leshak
     Ship: Tiamat
     Ship: Zirnitra
     """
@@ -34788,10 +34751,10 @@ class Effect7112(BaseEffect):
     Used by:
     Variations of ship: Damavik (2 of 2)
     Variations of ship: Kikimora (2 of 2)
+    Variations of ship: Leshak (2 of 2)
     Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Leshak
     Ship: Tiamat
     Ship: Zirnitra
     """
@@ -34825,19 +34788,11 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
+    Items from category: Ship (42 of 404)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
-    Ships from group: Hauler (5 of 18)
     Ships from group: Interceptor (10 of 10)
     Ships from group: Interdictor (4 of 4)
-    Ship: Azariel
-    Ship: Cynabal
-    Ship: Dramiel
-    Ship: Khizriel
-    Ship: Leopard
-    Ship: Machariel
-    Ship: Mekubal
-    Ship: Victorieux Luxury Yacht
     """
 
     type = 'passive'
@@ -35782,12 +35737,12 @@ class Effect8017(BaseEffect):
     def handler(fit, implant, context, projectionRange, **kwargs):
         fit.appliedImplants.filteredItemMultiply(
             lambda implant: implant.item.requiresSkill('Cybernetics'),
-            'remoteRepDurationBonus', implant.getModifiedItemAttr('implantSetSavior'), **kwargs)
+            'remoteRepDurationCapBonus', implant.getModifiedItemAttr('implantSetSavior'), **kwargs)
 
 
 class Effect8018(BaseEffect):
     """
-    subcapRemoteArmorShieldRepDurationBonus
+    subcapRemoteArmorShieldRepDurationCapBonus
 
     Used by:
     Implants named like: grade Savior (15 of 18)
@@ -35797,10 +35752,11 @@ class Effect8018(BaseEffect):
 
     @staticmethod
     def handler(fit, implant, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Shield Emission Systems')
-                        or mod.item.requiresSkill('Remote Armor Repair Systems'),
-            'duration', implant.getModifiedItemAttr('remoteRepDurationBonus'), **kwargs)
+        for attr in ('duration', 'capacitorNeed'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Shield Emission Systems')
+                            or mod.item.requiresSkill('Remote Armor Repair Systems'),
+                attr, implant.getModifiedItemAttr('remoteRepDurationCapBonus'), **kwargs)
 
 
 class Effect8020(BaseEffect):
@@ -38378,7 +38334,7 @@ class Effect11059(BaseEffect):
 
 class Effect11060(BaseEffect):
     """
-    shipBonusDroneWebStrengthGBC3
+    shipBonusDroneWebStrengthAndHitpointsGBC3
 
     Used by:
     Ship: Myrmidon Navy Issue
@@ -38391,6 +38347,10 @@ class Effect11060(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'), 'speedFactor',
             ship.getModifiedItemAttr('shipBonusGBC3'), skill='Gallente Battlecruiser', **kwargs)
+        for attr in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Propulsion Jamming'), attr,
+                ship.getModifiedItemAttr('shipBonusGBC3'), skill='Gallente Battlecruiser', **kwargs)
 
 
 class Effect11061(BaseEffect):
