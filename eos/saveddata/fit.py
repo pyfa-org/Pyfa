@@ -1820,7 +1820,7 @@ class Fit:
             # That's right, for considerations of RR diminishing returns cycle time is rounded this way
             totalRaw += amount / int(cycleTime)
         RR_ADDITION = 7000
-        RR_MULTIPLIER = 10
+        RR_MULTIPLIER = 20
         appliedRr = 0
         for amount, cycleTime in rrList:
             rrps = amount / int(cycleTime)
