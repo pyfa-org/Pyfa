@@ -58,7 +58,8 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                     tgtSigRadius=tgtSigRadius)
             else:
                 applicationMap[mod] = 0
-        elif mod.hardpoint == FittingHardpoint.MISSILE:
+        # Missile launcher or civilian missile launcher
+        elif mod.hardpoint == FittingHardpoint.MISSILE or mod.item.ID == 32461:
             # FoF missiles can shoot beyond lock range
             if inLockRange or (mod.charge is not None and 'fofMissileLaunching' in mod.charge.effects):
                 applicationMap[mod] = getLauncherMult(
