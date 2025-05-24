@@ -890,6 +890,42 @@ class Fit:
                         lambda mod: mod.item.group.name == "Stasis Web",
                         "maxRange", value, stackingPenalties=True)
 
+                # Sov upgrades buffs
+                if warfareBuffID == 2433:  # Sov System Modifier Shield HP Bonus
+                    self.ship.boostItemAttr("shieldCapacity", value)
+                if warfareBuffID == 2434:  # Sov System Modifier Capacitor Capacity Bonus
+                    self.ship.boostItemAttr("capacitorCapacity", value)
+                if warfareBuffID == 2435:  # Sov System Modifier Armor HP Bonus
+                    self.ship.boostItemAttr("armorHP", value)
+                if warfareBuffID == 2436:  # Sov System Modifier Overheating Bonus - Includes Ewar
+                    for attr in (
+                        'overloadDurationBonus', 'overloadRofBonus', 'overloadSelfDurationBonus',
+                        'overloadHardeningBonus', 'overloadDamageModifier', 'overloadRangeBonus',
+                        'overloadSpeedFactorBonus', 'overloadECMStrengthBonus', 'overloadECCMStrenghtBonus',
+                        'overloadArmorDamageAmount', 'overloadShieldBonus', 'overloadTrackingModuleStrengthBonus',
+                        'overloadSensorModuleStrengthBonus', 'overloadPainterStrengthBonus',
+                    ):
+                        self.modules.filteredItemBoost(lambda mod: attr in mod.itemModifiedAttributes, attr, value)
+                if warfareBuffID == 2437:  # Sov System Modifier Capacitor Recharge Bonus
+                    self.ship.boostItemAttr("rechargeRate", value)
+                if warfareBuffID == 2438:  # Sov System Modifier Targeting and DScan Range Bonus
+                    self.ship.boostItemAttr("maxTargetRange", value)
+                    self.ship.boostItemAttr("maxDirectionalScanRange", value)
+                if warfareBuffID == 2439:  # Sov System Modifier Scan Resolution Bonus
+                    self.ship.boostItemAttr("scanResolution", value)
+                if warfareBuffID == 2440:  # Sov System Modifier Warp Speed Addition
+                    self.ship.increaseItemAttr('warpSpeedMultiplier', value)
+                if warfareBuffID == 2441:  # Sov System Modifier Shield Booster Bonus
+                    self.modules.filteredItemBoost(
+                        lambda mod: (mod.item.requiresSkill("Shield Operation")
+                                     or mod.item.requiresSkill("Capital Shield Operation")),
+                        "shieldBonus", value, stackingPenalties=True)
+                if warfareBuffID == 2442:  # Sov System Modifier Armor Repairer Bonus
+                    self.modules.filteredItemBoost(
+                        lambda mod: (mod.item.requiresSkill("Repair Systems")
+                                     or mod.item.requiresSkill("Capital Repair Systems")),
+                        "armorDamageAmount", value, stackingPenalties=True)
+
             del self.commandBonuses[warfareBuffID]
 
     def __resetDependentCalcs(self):
