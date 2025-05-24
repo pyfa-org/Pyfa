@@ -63,11 +63,10 @@ class Effect100001(BaseEffect):
 
     @staticmethod
     def handler(fit, beacon, context, projectionRange, **kwargs):
-        for i in (1, 4):
+        for i in range(1, 4):
             if id := beacon.getModifiedItemAttr(f'warfareBuff{i}ID'):
                 value = beacon.getModifiedItemAttr(f'warfareBuff{i}Value')
-                if id:
-                    fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
+                fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
 class Effect4(BaseEffect):

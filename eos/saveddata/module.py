@@ -66,8 +66,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
     """An instance of this class represents a module together with its charge and modified attributes"""
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = (
-        "Effect Beacon", "MassiveEnvironments", "Abyssal Hazards",
-        "Non-Interactable Object", "Destructible Effect Beacon")
+        "Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object",
+        "Destructible Effect Beacon", "Sovereignty Hub System Effect Generator Upgrades")
 
     def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""
