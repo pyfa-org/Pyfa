@@ -57,6 +57,12 @@ class Effect100000(BaseEffect):
 
 
 class Effect100001(BaseEffect):
+    """
+    pyfaCustomSovUpgradeBuffEffect
+
+    Used by:
+    Infrastructure Upgradess from group: Sovereignty Hub System Effect Generator Upgrades (4 of 4)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -20023,7 +20029,6 @@ class Effect5410(BaseEffect):
 
     Used by:
     Ship: Absolution
-    Ship: Harbinger Navy Issue
     """
 
     type = 'passive'
@@ -33251,6 +33256,29 @@ class Effect6965(BaseEffect):
             container.getModifiedItemAttr('surveyProbeDurationBonus'), **kwargs)
 
 
+class Effect6981(BaseEffect):
+    """
+    shipBonusTitanG1KinThermDamageBonus
+
+    Used by:
+    Ship: Komodo
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Torpedoes'), 'thermalDamage',
+                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
+        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Torpedoes'), 'kineticDamage',
+                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
+        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Cruise Missiles'), 'thermalDamage',
+                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
+        fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill('XL Cruise Missiles'), 'kineticDamage',
+                                      src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan', **kwargs)
+
+
+
 class Effect6982(BaseEffect):
     """
     shipBonusTitanG2EMExplosiveDamageBonus
@@ -41619,3 +41647,20 @@ class Effect12288(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Large Precursor Weapon'), 'damageMultiplierBonusMax',
             ship.getModifiedItemAttr('eliteBonusViolators1'), skill='Marauders', **kwargs)
+
+
+class Effect12296(BaseEffect):
+    """
+    shipLaserCapABC3
+
+    Used by:
+    Ship: Harbinger Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Energy Turret'), 'capacitorNeed',
+            ship.getModifiedItemAttr('shipBonusABC3'), skill='Amarr Battlecruiser', **kwargs)

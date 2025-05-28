@@ -97729,5 +97729,38 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "12296": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1015638, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12296, 
+    "effectName": "shipLaserCapABC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5205, 
+        "operation": 6, 
+        "skillTypeID": 3306
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }
