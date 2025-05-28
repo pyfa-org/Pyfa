@@ -28,17 +28,20 @@ from service.esiAccess import EsiAccess
 
 def renderMutant(mutant, firstPrefix='', prefix=''):
     exportLines = []
+    exportLines.append('{}{}'.format(firstPrefix, mutant.baseItem.name))
+    exportLines.append('{}{}'.format(prefix, mutant.mutaplasmid.item.name))
+    exportLines.append('{}{}'.format(prefix, renderMutantAttrs(mutant)))
+    return '\n'.join(exportLines)
+
+
+def renderMutantAttrs(mutant):
     mutatedAttrs = {}
     for attrID, mutator in mutant.mutators.items():
         attrName = getAttributeInfo(attrID).name
         mutatedAttrs[attrName] = mutator.value
-    exportLines.append('{}{}'.format(firstPrefix, mutant.baseItem.name))
-    exportLines.append('{}{}'.format(prefix, mutant.mutaplasmid.item.name))
-    customAttrsLine = ', '.join(
+    return ', '.join(
         '{} {}'.format(a, floatUnerr(mutatedAttrs[a]))
         for a in sorted(mutatedAttrs))
-    exportLines.append('{}{}'.format(prefix, customAttrsLine))
-    return '\n'.join(exportLines)
 
 
 def parseMutant(lines):
@@ -64,8 +67,13 @@ def parseMutant(lines):
         mutationsLine = lines[2]
     except IndexError:
         return baseItem, mutaplasmidItem, {}
+    mutations = parseMutantAttrs(mutationsLine)
+    return baseItem, mutaplasmidItem, mutations
+
+
+def parseMutantAttrs(line):
     mutations = {}
-    pairs = [p.strip() for p in mutationsLine.split(',')]
+    pairs = [p.strip() for p in line.split(',')]
     for pair in pairs:
         try:
             attrName, value = pair.split(' ')
@@ -79,7 +87,7 @@ def parseMutant(lines):
         if attrInfo is None:
             continue
         mutations[attrInfo.ID] = value
-    return baseItem, mutaplasmidItem, mutations
+    return mutations
 
 
 def parseDynamicItemString(text):

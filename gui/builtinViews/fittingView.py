@@ -39,9 +39,10 @@ from gui.builtinViewColumns.state import State
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
+from gui.utils.dark import isDark
 from service.fit import Fit
 from service.market import Market
-from config import slotColourMap
+from config import slotColourMap, slotColourMapDark, errColor, errColorDark
 from gui.fitCommands.helpers import getSimilarModPositions
 
 pyfalog = Logger(__name__)
@@ -126,6 +127,10 @@ class FittingViewDrop(wx.DropTarget):
         if self.GetData():
             dragged_data = DragDropHelper.data
             # pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
+
+            if dragged_data is None:
+                return t
+
             data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
@@ -729,7 +734,10 @@ class FittingView(d.Display):
             event.Skip()
 
     def slotColour(self, slot):
-        return slotColourMap.get(slot) or self.GetBackgroundColour()
+        if isDark():
+            return slotColourMapDark.get(slot) or self.GetBackgroundColour()
+        else:
+            return slotColourMap.get(slot) or self.GetBackgroundColour()
 
     def refresh(self, stuff):
         """
@@ -774,7 +782,7 @@ class FittingView(d.Display):
 
 
                 if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
-                    self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+                    self.SetItemBackgroundColour(i, errColorDark if isDark() else errColor)
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
@@ -895,7 +903,7 @@ class FittingView(d.Display):
                 opts.m_labelText = name
 
             if imgId != -1:
-                opts.m_labelBitmap = wx.Bitmap(isize, isize)
+                opts.m_labelBitmap = wx.Bitmap(round(isize), round(isize))
 
             width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16), sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
@@ -911,7 +919,7 @@ class FittingView(d.Display):
             maxWidth += columnsWidths[i]
 
         mdc = wx.MemoryDC()
-        mbmp = wx.Bitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
+        mbmp = wx.Bitmap(round(maxWidth), round(maxRowHeight * rows + padding * 4 + headerSize))
 
         mdc.SelectObject(mbmp)
 
@@ -956,7 +964,7 @@ class FittingView(d.Display):
             cx = padding
 
             if slotMap[st.slot]:
-                mdc.DrawRectangle(cx, cy, maxWidth - cx, maxRowHeight)
+                mdc.DrawRectangle(round(cx), round(cy), round(maxWidth - cx), round(maxRowHeight))
 
             for i, col in enumerate(self.activeColumns):
                 if i > maxColumns:

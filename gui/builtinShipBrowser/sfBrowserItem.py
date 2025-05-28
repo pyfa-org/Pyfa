@@ -233,8 +233,8 @@ class PFToolbar:
 
             bmpWidth = bmp.GetWidth()
 
-            pdc.DrawBitmap(dropShadowBmp, bx + self.padding / 2, self.toolbarY + self.padding / 2)
-            pdc.DrawBitmap(bmp, tbx, by)
+            pdc.DrawBitmap(dropShadowBmp, round(bx + self.padding / 2), round(self.toolbarY + self.padding / 2))
+            pdc.DrawBitmap(bmp, round(tbx), round(by))
 
             bx += bmpWidth + self.padding
 

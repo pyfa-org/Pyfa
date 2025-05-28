@@ -29,8 +29,9 @@ class Display(wx.ListCtrl):
     DEFAULT_COLS = None
 
     def __init__(self, parent, size=wx.DefaultSize, style=0):
-
-        wx.ListCtrl.__init__(self, parent, size=size, style=wx.LC_REPORT | style)
+        wx.ListCtrl.__init__(self)
+        self.EnableSystemTheme(False)
+        self.Create(parent, size=size, style=wx.LC_REPORT | style)
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []

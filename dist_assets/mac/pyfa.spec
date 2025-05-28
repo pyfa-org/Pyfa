@@ -80,6 +80,7 @@ exe = EXE(pyz,
 app = BUNDLE(
     exe,
     name='pyfa.app',
+    version=os.getenv('PYFA_VERSION'),
     icon=icon,
     bundle_identifier=None,
     info_plist={
@@ -88,5 +89,7 @@ app = BUNDLE(
         'CFBundleName': 'pyfa',
         'CFBundleDisplayName': 'pyfa',
         'CFBundleIdentifier': 'org.pyfaorg.pyfa',
+        'CFBundleVersion': os.getenv('PYFA_VERSION'),
+        'CFBundleShortVersionString': os.getenv('PYFA_VERSION'),
     }
 )

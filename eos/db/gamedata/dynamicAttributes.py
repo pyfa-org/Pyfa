@@ -51,7 +51,7 @@ mapper(DynamicItemAttribute, dynamicAttributes_table,
        properties={"info": relation(AttributeInfo, lazy=False)})
 
 mapper(DynamicItemItem, dynamicApplicable_table, properties={
-           "mutaplasmid": relation(DynamicItem),
+           "mutaplasmid": relation(DynamicItem, viewonly=True),
        })
 
 DynamicItemAttribute.ID = association_proxy("info", "attributeID")

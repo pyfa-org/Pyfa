@@ -72,6 +72,7 @@ AttrGroupDict = {
             "specialAmmoHoldCapacity",
             "specialCommandCenterHoldCapacity",
             "specialPlanetaryCommoditiesHoldCapacity",
+            "specialColonyResourcesHoldCapacity",
             "structureDamageLimit",
             "specialSubsystemHoldCapacity",
             "emDamageResonance",

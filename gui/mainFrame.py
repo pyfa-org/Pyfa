@@ -61,10 +61,11 @@ from gui.statsPane import StatsPane
 from gui.targetProfileEditor import TargetProfileEditor
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard
+from gui.utils.progressHelper import ProgressHelper
 from service.character import Character
 from service.esi import Esi
 from service.fit import Fit
-from service.port import IPortUser, Port
+from service.port import Port
 from service.price import Price
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
@@ -130,7 +131,6 @@ class OpenFitsThread(threading.Thread):
         self.running = False
 
 
-# todo: include IPortUser again
 class MainFrame(wx.Frame):
     __instance = None
 
@@ -845,14 +845,15 @@ class MainFrame(wx.Frame):
                 style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
-                self.progressDialog = wx.ProgressDialog(
-                        _t("Importing fits"),
-                        " " * 100,  # set some arbitrary spacing to create width in window
-                        parent=self,
-                        style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
-                )
-                Port.importFitsThreaded(dlg.GetPaths(), self)
-                self.progressDialog.ShowModal()
+                    # set some arbitrary spacing to create width in window
+                progress = ProgressHelper(message=" " * 100, callback=self._openAfterImport)
+                call = (Port.importFitsThreaded, [dlg.GetPaths(), progress], {})
+                self.handleProgress(
+                    title=_t("Importing fits"),
+                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE,
+                    call=call,
+                    progress=progress,
+                    errMsgLbl=_t("Import Error"))
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
@@ -863,32 +864,30 @@ class MainFrame(wx.Frame):
                 _t("Save Backup As..."),
                 wildcard=_t("EVE XML fitting file") + " (*.xml)|*.xml",
                 style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
-                defaultFile=defaultFile,
-        ) as dlg:
-            if dlg.ShowModal() == wx.ID_OK:
-                filePath = dlg.GetPath()
+                defaultFile=defaultFile) as fileDlg:
+            if fileDlg.ShowModal() == wx.ID_OK:
+                filePath = fileDlg.GetPath()
                 if '.' not in os.path.basename(filePath):
                     filePath += ".xml"
 
-                sFit = Fit.getInstance()
-                max_ = sFit.countAllFits()
-
-                self.progressDialog = wx.ProgressDialog(
-                        _t("Backup fits"),
-                        _t("Backing up {} fits to: {}").format(max_, filePath),
-                        maximum=max_,
-                        parent=self,
-                        style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
-                )
-                Port.backupFits(filePath, self)
-                self.progressDialog.ShowModal()
+                fitAmount = Fit.getInstance().countAllFits()
+                progress = ProgressHelper(
+                    message=_t("Backing up {} fits to: {}").format(fitAmount, filePath),
+                    maximum=fitAmount + 1)
+                call = (Port.backupFits, [filePath, progress], {})
+                self.handleProgress(
+                    title=_t("Backup fits"),
+                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE,
+                    call=call,
+                    progress=progress,
+                    errMsgLbl=_t("Export Error"))
 
     def exportHtml(self, event):
         from gui.utils.exportHtml import exportHtml
+
         sFit = Fit.getInstance()
         settings = HTMLExportSettings.getInstance()
 
-        max_ = sFit.countAllFits()
         path = settings.getPath()
 
         if not os.path.isdir(os.path.dirname(path)):
@@ -903,82 +902,44 @@ class MainFrame(wx.Frame):
             ) as dlg:
                 if dlg.ShowModal() == wx.ID_OK:
                     return
+        progress = ProgressHelper(
+            message=_t("Generating HTML file at: {}").format(path),
+            maximum=sFit.countAllFits() + 1)
+        call = (exportHtml.getInstance().refreshFittingHtml, [True, progress], {})
+        self.handleProgress(
+            title=_t("Backup fits"),
+            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME,
+            call=call,
+            progress=progress)
 
-        self.progressDialog = wx.ProgressDialog(
-                _t("Backup fits"),
-                _t("Generating HTML file at: {}").format(path),
-                maximum=max_, parent=self,
-                style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-
-        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
-        self.progressDialog.ShowModal()
-
-    def backupCallback(self, info):
-        if info == -1:
-            self.closeProgressDialog()
-        else:
-            self.progressDialog.Update(info)
-
-    def on_port_process_start(self):
-        # flag for progress dialog.
-        self.__progress_flag = True
-
-    def on_port_processing(self, action, data=None):
-        # 2017/03/29 NOTE: implementation like interface
-        wx.CallAfter(
-                self._on_port_processing, action, data
-        )
-
-        return self.__progress_flag
-
-    def _on_port_processing(self, action, data):
-        """
-        While importing fits from file, the logic calls back to this function to
-        update progress bar to show activity. XML files can contain multiple
-        ships with multiple fits, whereas EFT cfg files contain many fits of
-        a single ship. When iterating through the files, we update the message
-        when we start a new file, and then Pulse the progress bar with every fit
-        that is processed.
-
-        action : a flag that lets us know how to deal with :data
-                None: Pulse the progress bar
-                1: Replace message with data
-                other: Close dialog and handle based on :action (-1 open fits, -2 display error)
-        """
-        _message = None
-        if action & IPortUser.ID_ERROR:
-            self.closeProgressDialog()
-            _message = _t("Import Error") if action & IPortUser.PROCESS_IMPORT else _t("Export Error")
+    def handleProgress(self, title, style, call, progress, errMsgLbl=None):
+        extraArgs = {}
+        if progress.maximum is not None:
+            extraArgs['maximum'] = progress.maximum
+        with wx.ProgressDialog(
+                parent=self,
+                title=title,
+                message=progress.message,
+                style=style,
+                **extraArgs
+        ) as dlg:
+            func, args, kwargs = call
+            func(*args, **kwargs)
+            while progress.working:
+                wx.MilliSleep(250)
+                wx.Yield()
+                (progress.dlgWorking, skip) = dlg.Update(progress.current, progress.message)
+        if progress.error and errMsgLbl:
             with wx.MessageDialog(
                     self,
                     _t("The following error was generated") +
-                    f"\n\n{data}\n\n" +
+                    f"\n\n{progress.error}\n\n" +
                     _t("Be aware that already processed fits were not saved"),
-                    _message, wx.OK | wx.ICON_ERROR
+                    errMsgLbl, wx.OK | wx.ICON_ERROR
             ) as dlg:
                 dlg.ShowModal()
-            return
-
-        # data is str
-        if action & IPortUser.PROCESS_IMPORT:
-            if action & IPortUser.ID_PULSE:
-                _message = ()
-            # update message
-            elif action & IPortUser.ID_UPDATE:  # and data != self.progressDialog.message:
-                _message = data
-
-            if _message is not None:
-                self.__progress_flag, _unuse = self.progressDialog.Pulse(_message)
-            else:
-                self.closeProgressDialog()
-                if action & IPortUser.ID_DONE:
-                    self._openAfterImport(data)
-        # data is tuple(int, str)
-        elif action & IPortUser.PROCESS_EXPORT:
-            if action & IPortUser.ID_DONE:
-                self.closeProgressDialog()
-            else:
-                self.__progress_flag, _unuse = self.progressDialog.Update(data[0], data[1])
+        elif progress.callback:
+            progress.callback(*progress.cbArgs)
 
     def _openAfterImport(self, fits):
         if len(fits) > 0:
@@ -988,6 +949,8 @@ class MainFrame(wx.Frame):
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
             else:
                 fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))
+                # Show 100 fits max
+                fits = fits[:100]
                 results = []
                 for fit in fits:
                     results.append((
@@ -998,15 +961,6 @@ class MainFrame(wx.Frame):
                         fit.notes
                     ))
                 wx.PostEvent(self.shipBrowser, ImportSelected(fits=results, back=True))
-
-    def closeProgressDialog(self):
-        # Windows apparently handles ProgressDialogs differently. We can
-        # simply Destroy it here, but for other platforms we must Close it
-        if 'wxMSW' in wx.PlatformInfo:
-            self.progressDialog.Destroy()
-        else:
-            self.progressDialog.EndModal(wx.ID_OK)
-            self.progressDialog.Close()
 
     def importCharacter(self, event):
         """ Imports character XML file from EVE API """

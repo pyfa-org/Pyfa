@@ -222,9 +222,9 @@ class NetworkSettings:
             if prefix not in proxydict:
                 continue
             proxyline = proxydict[prefix]
-            proto = "{0}://".format(prefix)
-            if proxyline[:len(proto)] == proto:
-                proxyline = proxyline[len(proto):]
+            proto_pos = proxyline.find('://')
+            if proto_pos != -1:
+                proxyline = proxyline[proto_pos+3:]
             # sometimes proxyline contains "user:password@" section before proxy address
             # remove it if present, so later split by ":" works
             if '@' in proxyline:
@@ -376,6 +376,8 @@ class EsiSettings:
             "timeout": 60,
             "server": "Tranquility",
             "exportCharges": True,
+            "exportImplants": True,
+            "exportBoosters": True,
             "enforceJwtExpiration": True
         }
 
@@ -389,6 +391,9 @@ class EsiSettings:
 
     def set(self, type, value):
         self.settings[type] = value
+
+    def keys(self):
+        return config.supported_servers.keys()
 
 
 class StatViewSettings:
@@ -417,6 +422,7 @@ class StatViewSettings:
             "miningyield"  : 2,
             "drones"       : 2,
             "outgoing"     : 2,
+            "bombing"      : 0,
         }
 
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
@@ -484,6 +490,7 @@ class ContextMenuSettings:
             "moduleFill"            : 1,
             "spoolup"               : 1,
             "additionsCopyPaste"    : 1,
+            "cargoFill"             : 1,
         }
 
         self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)
@@ -557,7 +564,7 @@ class LocaleSettings:
             with open(os.path.join(config.pyfaPath, 'locale', 'progress.json'), "r") as f:
                 self.progress_data = json.load(f)
         except FileNotFoundError:
-            self.progress_data = None
+            self.progress_data = {}
 
     @classmethod
     def getInstance(cls):
@@ -566,14 +573,14 @@ class LocaleSettings:
         return cls._instance
 
     def get_progress(self, lang):
-        if self.progress_data is None:
+        if not self.progress_data:
             return None
         if lang == self.defaults['locale']:
             return None
-        return self.progress_data[lang]
+        return self.progress_data.get(lang)
 
     @classmethod
-    def supported_langauges(cls):
+    def supported_languages(cls):
         """Requires the application to be initialized, otherwise wx.Translation isn't set."""
         pyfalog.info(f'using "{config.CATALOG}" to fetch languages, relatively base path "{os.getcwd()}"')
         return {x: wx.Locale.FindLanguageInfo(x) for x in wx.Translations.Get().GetAvailableTranslations(config.CATALOG)}
@@ -588,6 +595,6 @@ class LocaleSettings:
         return val if val != self.defaults['eos_locale'] else self.settings['locale'].split("_")[0]
 
     def set(self, key, value):
-        if key == 'locale' and value not in self.supported_langauges():
+        if key == 'locale' and value not in self.supported_languages():
             self.settings[key] = self.DEFAULT
         self.settings[key] = value

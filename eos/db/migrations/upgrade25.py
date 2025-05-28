@@ -2,7 +2,7 @@
 Migration 25
 
 - Converts T3C fitting configurations based on the spreadsheet noted here:
-https://community.eveonline.com/news/patch-notes/patch-notes-for-july-2017-release
+https://www.eveonline.com/news/view/patch-notes-for-july-2017-release
 
 (csv copies can be found on the pyfa repo in case the official documents are deleted)
 
@@ -4228,8 +4228,8 @@ def upgrade(saveddata_engine):
                 # We don't have a conversion for this. I don't think this will ever happen, but who knows
                 continue
 
-            # It doesn't actully matter which old module is replaced with which new module, so we don't have to worry
-            # about module position or anything like that. Just doe a straight up record UPDATE
+            # It doesn't actually matter which old module is replaced with which new module, so we don't have to worry
+            # about module position or anything like that. Just do a straight up record UPDATE
             for i, old in enumerate(oldModules[:4]):
                 saveddata_engine.execute("UPDATE modules SET itemID = ? WHERE ID = ?", (newModules[i], old[0]))
 

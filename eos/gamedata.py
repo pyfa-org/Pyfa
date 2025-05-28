@@ -343,7 +343,9 @@ class Item(EqBase):
         500018: "mordu",
         500019: "sansha",
         500020: "serpentis",
-        500026: "triglavian"
+        500026: "triglavian",
+        500027: "upwell",
+        500029: "deathless",
     }
 
     @property
@@ -351,11 +353,7 @@ class Item(EqBase):
         if self.__race is None:
 
             try:
-                if (
-                    self.category.name == 'Structure' or
-                    # Here until CCP puts their shit together
-                    self.name in ("Thunderchild", "Stormbringer", "Skybreaker")
-                ):
+                if self.category.name == 'Structure':
                     self.__race = "upwell"
                 else:
                     self.__race = self.factionMap[self.factionID]
@@ -377,7 +375,8 @@ class Item(EqBase):
                     16 : "jove",
                     32 : "sansha",  # Incrusion Sansha
                     128: "ore",
-                    135: "triglavian"
+                    135: "triglavian",
+                    168: "upwell",
                 }
                 # Race is None by default
                 race = None
@@ -571,13 +570,18 @@ class DynamicItem(EqBase):
     @property
     def shortName(self):
         name = self.item.customName
-        keywords = ('Decayed', 'Gravid', 'Unstable', 'Radical')
+        keywords = (
+            'Decayed', 'Glorified Decayed',
+            'Gravid', 'Glorified Gravid',
+            'Unstable', 'Glorified Unstable',
+            'Radical', 'Glorified Radical')
         for kw in keywords:
             if name.startswith(f'{kw} '):
                 name = kw
-        m = re.match('(?P<mutagrade>\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', name)
+        m = re.match(r'(?P<mutagrade>(Glorified )?\S+) (?P<dronetype>\S+) Drone (?P<mutatype>\S+) Mutaplasmid', name)
         if m:
             name = '{} {}'.format(m.group('mutagrade'), m.group('mutatype'))
+        name = name.replace('Glorified ', 'Gl. ')
         return name
 
 

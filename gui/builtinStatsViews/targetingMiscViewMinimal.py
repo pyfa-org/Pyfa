@@ -112,6 +112,7 @@ class TargetingMiscViewMinimal(StatsView):
         cargoNamesOrder = OrderedDict((
             ("fleetHangarCapacity", _t("Fleet hangar")),
             ("shipMaintenanceBayCapacity", _t("Maintenance bay")),
+            ("specialColonyResourcesHoldCapacity", _t("Infrastructure hold")),
             ("specialAmmoHoldCapacity", _t("Ammo hold")),
             ("specialFuelBayCapacity", _t("Fuel bay")),
             ("specialShipHoldCapacity", _t("Ship hold")),
@@ -134,6 +135,7 @@ class TargetingMiscViewMinimal(StatsView):
         cargoValues = {
             "main": lambda: fit.ship.getModifiedItemAttr("capacity"),
             "fleetHangarCapacity": lambda: fit.ship.getModifiedItemAttr("fleetHangarCapacity"),
+            "specialColonyResourcesHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialColonyResourcesHoldCapacity"),
             "shipMaintenanceBayCapacity": lambda: fit.ship.getModifiedItemAttr("shipMaintenanceBayCapacity"),
             "specialAmmoHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialAmmoHoldCapacity"),
             "specialFuelBayCapacity": lambda: fit.ship.getModifiedItemAttr("specialFuelBayCapacity"),

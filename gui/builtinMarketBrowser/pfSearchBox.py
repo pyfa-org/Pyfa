@@ -253,8 +253,8 @@ class PFSearchBox(wx.Window):
                 else:
                     spad = 0
 
-                dc.DrawBitmap(self.searchBitmapShadow, self.searchButtonX + 1, self.searchButtonY + 1)
-                dc.DrawBitmap(self.searchBitmap, self.searchButtonX + spad, self.searchButtonY + spad)
+                dc.DrawBitmap(self.searchBitmapShadow, round(self.searchButtonX + 1), round(self.searchButtonY + 1))
+                dc.DrawBitmap(self.searchBitmap, round(self.searchButtonX + spad), round(self.searchButtonY + spad))
 
         if self.isCancelButtonVisible:
             if self.cancelBitmap:
@@ -262,8 +262,8 @@ class PFSearchBox(wx.Window):
                     cpad = 1
                 else:
                     cpad = 0
-                dc.DrawBitmap(self.cancelBitmapShadow, self.cancelButtonX + 1, self.cancelButtonY + 1)
-                dc.DrawBitmap(self.cancelBitmap, self.cancelButtonX + cpad, self.cancelButtonY + cpad)
+                dc.DrawBitmap(self.cancelBitmapShadow, round(self.cancelButtonX + 1), round(self.cancelButtonY + 1))
+                dc.DrawBitmap(self.cancelBitmap, round(self.cancelButtonX + cpad), round(self.cancelButtonY + cpad))
 
         dc.SetPen(wx.Pen(sepColor, 1))
         dc.DrawLine(0, rect.height - 1, rect.width, rect.height - 1)

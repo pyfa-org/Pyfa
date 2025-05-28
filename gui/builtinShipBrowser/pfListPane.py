@@ -57,7 +57,7 @@ class PFListPane(wx.ScrolledWindow):
 
         posy = self.GetScrollPos(wx.VERTICAL)
         posy -= self.itemsHeight
-        self.Scroll(0, posy)
+        self.Scroll(0, round(posy))
 
         event.Skip()
 
@@ -65,7 +65,7 @@ class PFListPane(wx.ScrolledWindow):
 
         posy = self.GetScrollPos(wx.VERTICAL)
         posy += self.itemsHeight
-        self.Scroll(0, posy)
+        self.Scroll(0, round(posy))
 
         event.Skip()
 
@@ -109,7 +109,7 @@ class PFListPane(wx.ScrolledWindow):
 
         # if we need to adjust
         if new_vs_x != -1 or new_vs_y != -1:
-            self.Scroll(new_vs_x, new_vs_y)
+            self.Scroll(round(new_vs_x), round(new_vs_y))
 
     def AddWidget(self, widget):
         widget.Reparent(self)
@@ -163,6 +163,10 @@ class PFListPane(wx.ScrolledWindow):
     def RemoveAllChildren(self):
         for widget in self._wList:
             widget.Destroy()
+            # this forces the garbage collector to work properly by removing dangling references to objects which are still alive, otherwise widget cannot be gc-ed eventually causing GDI id exhaustion and crash
+            for i in widget.__dict__.keys():
+                widget.__dict__[i] =None
+            del widget
 
         self.Scroll(0, 0)
         self._wList = []

@@ -104,14 +104,14 @@ class CategoryItem(SFBrowserItem):
         textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
-        mdc.DrawBitmap(self.dropShadowBitmap, self.shipBmpx + 1, self.shipBmpy + 1)
-        mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
+        mdc.DrawBitmap(self.dropShadowBitmap, round(self.shipBmpx + 1), round(self.shipBmpy + 1))
+        mdc.DrawBitmap(self.shipBmp, round(self.shipBmpx), round(self.shipBmpy), 0)
 
         mdc.SetFont(self.fontBig)
 
         categoryName, fittings = self.fittingInfo
 
-        mdc.DrawText(categoryName, self.catx, self.caty)
+        mdc.DrawText(categoryName, round(self.catx), round(self.caty))
 
 
 # =============================================================================

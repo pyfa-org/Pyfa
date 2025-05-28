@@ -2385,7 +2385,7 @@
     "displayName_de": "Bonus auf den Thermal-/Kinetikschaden von Lenkwaffen", 
     "displayName_en-us": "Thermal/Kinetic Missile Damage Bonus", 
     "displayName_es": "Bonificación de daño de los misiles térmicos/cinéticos", 
-    "displayName_fr": "Bonus de dégâts des missiles thermiques/cinétiques", 
+    "displayName_fr": "Bonus de dégâts thermiques/cinétiques des missiles", 
     "displayName_it": "Thermal/Kinetic Missile Damage Bonus", 
     "displayName_ja": "サーマル/キネティックミサイルダメージボーナス", 
     "displayName_ko": "열/키네틱 미사일 피해량 보너스", 
@@ -2921,14 +2921,14 @@
   "2158": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Proving Turret Optimal", 
-    "displayName_de": "Geschützturm (Optimal)", 
+    "displayName_de": "Bonus für Geschütztürme (Optimal)", 
     "displayName_en-us": "Turret Optimal Bonus", 
     "displayName_es": "Bonificación de alcance óptimo de torreta", 
-    "displayName_fr": "Optimisation de la tourelle", 
+    "displayName_fr": "Bonus optimal des tourelles", 
     "displayName_it": "Turret Optimal Bonus", 
-    "displayName_ja": "タレットの最適射程距離", 
-    "displayName_ko": "터렛 최적사거리", 
-    "displayName_ru": "Оптимальность турели", 
+    "displayName_ja": "タレットの最適射程距離ボーナス", 
+    "displayName_ko": "터렛 최적사거리 보너스", 
+    "displayName_ru": "Бонус к оптимальной дальности турелей", 
     "displayName_zh": "炮台最佳射程加成", 
     "displayNameID": 596685, 
     "itemModifiers": [], 
@@ -3556,6 +3556,622 @@
     "locationGroupModifiers": [], 
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2405": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Insurgency Suppression Bonus: Interdiction Range", 
+    "displayName_de": "Reichweitenbonus auf Stasisnetz und Warpunterbrecher für Anti-Piraten", 
+    "displayName_en-us": "Webifier and scrambler range bonus for anti-pirates", 
+    "displayName_es": "Bonificación al alcance de la red ralentizadora y el distorsionador para antipiratas", 
+    "displayName_fr": "Bonus de portée de générateur de stase et d'inhibiteur pour les antipirates", 
+    "displayName_it": "Webifier and scrambler range bonus for anti-pirates", 
+    "displayName_ja": "対海賊勢力のウェビファイヤーとスクランブラーの射程ボーナス", 
+    "displayName_ko": "진압군 스테이시스 웹 생성기 및 워프 스크램블러 사거리 증가", 
+    "displayName_ru": "Бонус к дальности стазис-индуктора и варп-глушителя для борцов с пиратами", 
+    "displayName_zh": "反海盗势力的停滞缠绕光束和跃迁扰频器距离加成", 
+    "displayNameID": 698669, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 65
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "skillID": 3449
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2414": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "CDCloudVelocity", 
+    "displayName_de": "Schiffsgeschwindigkeit", 
+    "displayName_en-us": "Ship Velocity", 
+    "displayName_es": "Velocidad de nave", 
+    "displayName_fr": "Vitesse du vaisseau", 
+    "displayName_it": "Ship Velocity", 
+    "displayName_ja": "航行速度", 
+    "displayName_ko": "함선 속도", 
+    "displayName_ru": "Скорость корабля", 
+    "displayName_zh": "舰船最大速度", 
+    "displayNameID": 708733, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2415": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "CDCloudInertia", 
+    "displayName_de": "Ship Inertia", 
+    "displayName_en-us": "Ship Inertia", 
+    "displayName_es": "Inercia de la nave", 
+    "displayName_fr": "Ship Inertia", 
+    "displayName_it": "Ship Inertia", 
+    "displayName_ja": "艦船の慣性", 
+    "displayName_ko": "관성 계수", 
+    "displayName_ru": "Ship Inertia", 
+    "displayName_zh": "舰船惯性调整系数", 
+    "displayNameID": 708734, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2416": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "CDCloudCapShieldRecharge", 
+    "displayName_de": "Schild- und Energiespeicherladezeit", 
+    "displayName_en-us": "Shield and Capacitor Recharge Rate", 
+    "displayName_es": "Índice de carga del condensador y del escudo", 
+    "displayName_fr": "Vitesse de recharge du bouclier et du capaciteur", 
+    "displayName_it": "Shield and Capacitor Recharge Rate", 
+    "displayName_ja": "シールドとキャパシタの充電速度", 
+    "displayName_ko": "실드 및 캐패시터 충전 속도", 
+    "displayName_ru": "Скорость перезарядки щита и накопителя", 
+    "displayName_zh": "护盾和电容回充速率", 
+    "displayNameID": 708735, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }, 
+      {
+        "dogmaAttributeID": 479
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2417": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "CDCloudModuleCycle", 
+    "displayName_de": "Modulzyklus und Nachladegeschwindigkeit", 
+    "displayName_en-us": "Module Cycle and Reload Speed", 
+    "displayName_es": "Velocidad de carga y ciclo de módulo", 
+    "displayName_fr": "Cycle des modules et vitesse de rechargement", 
+    "displayName_it": "Module Cycle and Reload Speed", 
+    "displayName_ja": "モジュールのサイクルとリロード速度", 
+    "displayName_ko": "모듈 사이클 시간 및 재장전 속도", 
+    "displayName_ru": "Время и скорость перезарядки модуля", 
+    "displayName_zh": "装备循环时间和装填速度", 
+    "displayNameID": 708736, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 51
+      }, 
+      {
+        "dogmaAttributeID": 73
+      }, 
+      {
+        "dogmaAttributeID": 1795
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2418": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "CDCloudTracking", 
+    "displayName_de": "Geschützturm-Nachführung und Lenkwaffen-Explosionsgeschwindigkeit", 
+    "displayName_en-us": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_es": "Velocidad de rastreo de torretas y explosión de misiles", 
+    "displayName_fr": "Poursuite des tourelles et vitesse d'explosion de missile", 
+    "displayName_it": "Turret Tracking and Missile Explosion Velocity", 
+    "displayName_ja": "タレットの追跡速度とミサイルの爆発速度", 
+    "displayName_ko": "터렛 트래킹 및 미사일 폭발 속도", 
+    "displayName_ru": "Скорость наведения орудий и распространения взрыва ракет", 
+    "displayName_zh": "炮台跟踪速度和导弹爆炸速度", 
+    "displayNameID": 708737, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }, 
+      {
+        "dogmaAttributeID": 653, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2419": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Anti-Tachyon Cloud Velocity Penalty", 
+    "displayName_de": "Schiffsgeschwindigkeit", 
+    "displayName_en-us": "Ship Velocity", 
+    "displayName_es": "Velocidad de nave", 
+    "displayName_fr": "Vitesse du vaisseau", 
+    "displayName_it": "Ship Velocity", 
+    "displayName_ja": "航行速度", 
+    "displayName_ko": "함선 속도", 
+    "displayName_ru": "Скорость корабля", 
+    "displayName_zh": "舰船最大速度", 
+    "displayNameID": 709266, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2420": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Anti-Tachyon Cloud Inertia Penalty", 
+    "displayName_de": "Schiffsträgheit", 
+    "displayName_en-us": "Ship Inertia", 
+    "displayName_es": "Inercia de la nave", 
+    "displayName_fr": "Inertie du vaisseau", 
+    "displayName_it": "Ship Inertia", 
+    "displayName_ja": "艦船の慣性", 
+    "displayName_ko": "관성 계수", 
+    "displayName_ru": "Инертность корабля", 
+    "displayName_zh": "舰船惯性调整系数", 
+    "displayNameID": 709267, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2421": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Anti-Tachyon Cloud Signature Radius  Bonus", 
+    "displayName_de": "Signaturradius", 
+    "displayName_en-us": "Signature Radius", 
+    "displayName_es": "Radio de la señal", 
+    "displayName_fr": "Rayon de signature", 
+    "displayName_it": "Signature Radius", 
+    "displayName_ja": "シグネチャ半径", 
+    "displayName_ko": "시그니처 반경", 
+    "displayName_ru": "Радиус сигнатуры", 
+    "displayName_zh": "信号半径", 
+    "displayNameID": 709278, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2426": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disable MJDs", 
+    "displayName_de": "Mikrosprungantrieb blockiert", 
+    "displayName_en-us": "Micro Jump Drive Blocked", 
+    "displayName_es": "Motor de microsalto bloqueado", 
+    "displayName_fr": "Propulseur de microsaut bloqué", 
+    "displayName_it": "Micro Jump Drive Blocked", 
+    "displayName_ja": "マイクロジャンプドライブの妨害", 
+    "displayName_ko": "마이크로 점프 드라이브 차단됨", 
+    "displayName_ru": "Маневровый гипердвигатель выведен из строя", 
+    "displayName_zh": "已阻止微型跳跃引擎", 
+    "displayNameID": 722294, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "skillID": 4385
+      }
+    ], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2427": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Set Speed Limit", 
+    "displayName_de": "Geschwindigkeitsbegrenzung angewendet", 
+    "displayName_en-us": "Speed Limit Applied", 
+    "displayName_es": "Límite de velocidad aplicada", 
+    "displayName_fr": "Limite de vitesse appliquée", 
+    "displayName_it": "Speed Limit Applied", 
+    "displayName_ja": "速度制限の適用", 
+    "displayName_ko": "속도 제한 적용됨", 
+    "displayName_ru": "Установлено ограничение скорости", 
+    "displayName_zh": "已应用速度限制", 
+    "displayNameID": 722295, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2033
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2428": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "MJFG Blocked", 
+    "displayName_de": "Mikrosprungfeldgenerator blockiert", 
+    "displayName_en-us": "Micro Jump Field Generator Blocked", 
+    "displayName_es": "Generador de campo de microsalto bloqueado", 
+    "displayName_fr": "Générateur de champ de microsaut bloqué", 
+    "displayName_it": "Micro Jump Field Generator Blocked", 
+    "displayName_ja": "マイクロジャンプフィールドジェネレーター使用不可", 
+    "displayName_ko": "마이크로 점프 필드 생성기 차단됨", 
+    "displayName_ru": "Генератор разгонного поля выведен из строя", 
+    "displayName_zh": "已阻止微型跳跃力场发生器", 
+    "displayNameID": 721861, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 5694
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2429": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disable Tractor Beam Repeating Activation", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 1014, 
+        "groupID": 650
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2433": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Shield HP Bonus", 
+    "displayName_de": "HP-Bonus für Schilde", 
+    "displayName_en-us": "Shield Hitpoint Bonus", 
+    "displayName_es": "Bonif. de puntos de vida del escudo", 
+    "displayName_fr": "Bonus de points de vie du bouclier", 
+    "displayName_it": "Shield Hitpoint Bonus", 
+    "displayName_ja": "シールドHPボーナス", 
+    "displayName_ko": "실드 내구도 보너스", 
+    "displayName_ru": "Влияние на запас прочности щитов", 
+    "displayName_zh": "护盾值加成", 
+    "displayNameID": 1011194, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2434": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Capacitor Capacity Bonus", 
+    "displayName_de": "Bonus auf Energiespeicherkapazität", 
+    "displayName_en-us": "Capacitor Capacity Bonus", 
+    "displayName_es": "Bonif. de capacidad del condensador", 
+    "displayName_fr": "Bonus de capacité du capaciteur", 
+    "displayName_it": "Capacitor Capacity Bonus", 
+    "displayName_ja": "キャパシタ容量ボーナス", 
+    "displayName_ko": "캐패시터 용량 보너스", 
+    "displayName_ru": "Влияние на ёмкость накопителя", 
+    "displayName_zh": "电容器容量加成", 
+    "displayNameID": 1011195, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 482
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2435": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Armor HP Bonus", 
+    "displayName_de": "HP-Bonus für Panzerung", 
+    "displayName_en-us": "Armor Hitpoint Bonus", 
+    "displayName_es": "Bonif. de puntos de vida del blindaje", 
+    "displayName_fr": "Bonus de PV du blindage", 
+    "displayName_it": "Armor Hitpoint Bonus", 
+    "displayName_ja": "アーマーHPボーナス", 
+    "displayName_ko": "장갑 내구도 보너스", 
+    "displayName_ru": "Увеличение запаса прочности брони", 
+    "displayName_zh": "装甲值加成", 
+    "displayNameID": 1011201, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2436": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Overheating Bonus - Includes Ewar", 
+    "displayName_de": "Modul-Überladungsbonus", 
+    "displayName_en-us": "Module Overload Bonus", 
+    "displayName_es": "Bonificación de sobrecarga de módulo", 
+    "displayName_fr": "Bonus de surcharge du module", 
+    "displayName_it": "Module Overload Bonus", 
+    "displayName_ja": "モジュールオーバーロードボーナス", 
+    "displayName_ko": "모듈 과부하 보너스", 
+    "displayName_ru": "Бонус к перегрузке модулей", 
+    "displayName_zh": "装备超载加成", 
+    "displayNameID": 1011202, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1181
+      }, 
+      {
+        "dogmaAttributeID": 1205
+      }, 
+      {
+        "dogmaAttributeID": 1206
+      }, 
+      {
+        "dogmaAttributeID": 1208
+      }, 
+      {
+        "dogmaAttributeID": 1210
+      }, 
+      {
+        "dogmaAttributeID": 1222
+      }, 
+      {
+        "dogmaAttributeID": 1223
+      }, 
+      {
+        "dogmaAttributeID": 1225
+      }, 
+      {
+        "dogmaAttributeID": 1226
+      }, 
+      {
+        "dogmaAttributeID": 1230
+      }, 
+      {
+        "dogmaAttributeID": 1231
+      }, 
+      {
+        "dogmaAttributeID": 1935
+      }, 
+      {
+        "dogmaAttributeID": 1936
+      }, 
+      {
+        "dogmaAttributeID": 1937
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2437": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Sov System Modifier Capacitor Recharge Bonus", 
+    "displayName_de": "Energiespeicher-Wiederaufladebonus", 
+    "displayName_en-us": "Capacitor Recharge Bonus", 
+    "displayName_es": "Bonificación de carga del condensador", 
+    "displayName_fr": "Bonus de recharge du capaciteur", 
+    "displayName_it": "Capacitor Recharge Bonus", 
+    "displayName_ja": "キャパシタリチャージボーナス", 
+    "displayName_ko": "캐패시터 충전 보너스", 
+    "displayName_ru": "Влияние на перезарядку накопителя", 
+    "displayName_zh": "电容回充量加成", 
+    "displayNameID": 1011203, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2438": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Targeting and DScan Range Bonus", 
+    "displayName_de": "Reichweitebonus für Zielerfassung und Richtungsscanner", 
+    "displayName_en-us": "Targeting and Directional Scanner Range Bonus", 
+    "displayName_es": "Bonificación al alcance de adquisición de objetivos y escáner direccional", 
+    "displayName_fr": "Bonus de portée pour le ciblage et le scanner directionnel", 
+    "displayName_it": "Targeting and Directional Scanner Range Bonus", 
+    "displayName_ja": "ターゲティングと指向性スキャナーの範囲ボーナス", 
+    "displayName_ko": "타겟팅 및 전방위 스캐너 범위 보너스", 
+    "displayName_ru": "Влияние на дальность наведения и дальность пеленгатора", 
+    "displayName_zh": "锁定和定向扫描仪范围加成", 
+    "displayNameID": 1011204, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 76
+      }, 
+      {
+        "dogmaAttributeID": 5796
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2439": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Scan Resolution Bonus", 
+    "displayName_de": "Scanauflösungsbonus", 
+    "displayName_en-us": "Scan Resolution Bonus", 
+    "displayName_es": "Bonificación de resolución de escaneo", 
+    "displayName_fr": "Bonus de résolution du balayage", 
+    "displayName_it": "Scan Resolution Bonus", 
+    "displayName_ja": "スキャン分解能ボーナス", 
+    "displayName_ko": "스캔 정밀도 보너스", 
+    "displayName_ru": "Влияние на разрешающую способность сенсоров", 
+    "displayName_zh": "扫描分辨率加成", 
+    "displayNameID": 1011205, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2440": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Warp Speed Addition", 
+    "displayName_de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+    "displayName_en-us": "AU/s Additional Base Warp Speed", 
+    "displayName_es": "UA/s de velocidad de warp base adicional", 
+    "displayName_fr": "UA/s de vitesse de warp de base supplémentaire", 
+    "displayName_it": "AU/s Additional Base Warp Speed", 
+    "displayName_ja": "基本ワープ速度に追加される速度（AU/秒）", 
+    "displayName_ko": "기본 워프 속도 증가", 
+    "displayName_ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+    "displayName_zh": "基础跃迁速度+AU/s", 
+    "displayNameID": 1011206, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2441": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Shield Booster Bonus", 
+    "displayName_de": "Local Shield Booster Bonus", 
+    "displayName_en-us": "Local Shield Booster Bonus", 
+    "displayName_es": "Local Shield Booster Bonus", 
+    "displayName_fr": "Local Shield Booster Bonus", 
+    "displayName_it": "Local Shield Booster Bonus", 
+    "displayName_ja": "Local Shield Booster Bonus", 
+    "displayName_ko": "Local Shield Booster Bonus", 
+    "displayName_ru": "Local Shield Booster Bonus", 
+    "displayName_zh": "Local Shield Booster Bonus", 
+    "displayNameID": 1015276, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 21802
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2442": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sov System Modifier Armor Repairer Bonus", 
+    "displayName_de": "Local Armor Repairer Bonus", 
+    "displayName_en-us": "Local Armor Repairer Bonus", 
+    "displayName_es": "Local Armor Repairer Bonus", 
+    "displayName_fr": "Local Armor Repairer Bonus", 
+    "displayName_it": "Local Armor Repairer Bonus", 
+    "displayName_ja": "Local Armor Repairer Bonus", 
+    "displayName_ko": "Local Armor Repairer Bonus", 
+    "displayName_ru": "Local Armor Repairer Bonus", 
+    "displayName_zh": "Local Armor Repairer Bonus", 
+    "displayNameID": 1015333, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 21803
+      }
+    ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }

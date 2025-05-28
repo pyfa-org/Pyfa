@@ -123,7 +123,12 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.groups[_t('Abyssal Weather')] = self.getAbyssalWeather()
         data.groups[_t('Sansha Incursion')] = self.getEffectBeacons(
             _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion'))
+        data.groups[_t('Drifter Incursion')] = self.getDrifterIncursion()
         data.groups[_t('Triglavian Invasion')] = self.getInvasionBeacons()
+        data.groups[_t('Pirate Insurgency')] = self.getEffectBeacons(
+            _t('ContextMenu|ProjectedEffectManipulation|Insurgency'),
+            extra_garbage=(_t('ContextMenu|ProjectedEffectManipulation|Beacon'),))
+        data.groups[_t('IHub Upgrades')] = self.getIHubEffects()
         return data
 
     def getEffectBeacons(self, *groups, extra_garbage=()):
@@ -174,7 +179,6 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                     container.append(Entry(beacon.ID, beaconname, shortname))
                     # Break loop on 1st result
                     break
-        data.sort()
         return data
 
     def getAbyssalWeather(self):
@@ -216,27 +220,42 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                 subsubdata.items.append(Entry(beacon.ID, beacon.customName, beacon.customName))
             subdata.sort()
 
-        # PVP weather
-        data.items.append(Entry(49766, _t('PvP Weather'), _t('PvP Weather')))
-
         return data
 
-    def getDestructibleBeacons(self):
-        data = Group()
-        sMkt = Market.getInstance()
-        for item in sMkt.getItemsByGroup(sMkt.getGroup('Destructible Effect Beacon')):
-            if not item.isType('projected'):
-                continue
-            data.items.append(Entry(item.ID, item.name, item.name))
-        data.sort()
+    def getDrifterIncursion(self):
+        data = self.getEffectBeacons(_t('ContextMenu|ProjectedEffectManipulation|Drifter Incursion'))
+        # Drifter Crisis
+        item = Market.getInstance().getItem(87294)
+        data.items.append(Entry(item.ID, item.name, item.name))
         return data
 
     def getInvasionBeacons(self):
-        data = self.getDestructibleBeacons()
+        data = Group()
+        # Trig Minor Victory
+        item = Market.getInstance().getItem(87177)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        # Trig Final Liminality
+        item = Market.getInstance().getItem(87164)
+        data.items.append(Entry(item.ID, item.name, item.name))
         # Turnur weather
         item = Market.getInstance().getItem(74002)
         data.items.append(Entry(item.ID, item.name, item.name))
         return data
 
+    def getIHubEffects(self):
+        data = Group()
+        # Electric
+        item = Market.getInstance().getItem(87950)
+        data.items.append(Entry(item.ID, item.name, _t('Electric')))
+        # Plasma
+        item = Market.getInstance().getItem(87949)
+        data.items.append(Entry(item.ID, item.name, _t('Plasma')))
+        # Exotic
+        item = Market.getInstance().getItem(87951)
+        data.items.append(Entry(item.ID, item.name, _t('Exotic')))
+        # Gamma
+        item = Market.getInstance().getItem(87815)
+        data.items.append(Entry(item.ID, item.name, _t('Gamma')))
+        return data
 
 AddEnvironmentEffect.register()

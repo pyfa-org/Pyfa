@@ -145,6 +145,11 @@ class TargetWrapper(BaseWrapper):
         else:
             return em, therm, kin, explo
 
+    def getFullHp(self):
+        if self.isProfile:
+            return self.item.hp
+        if self.isFit:
+            return self.item.hp.get('shield', 0) + self.item.hp.get('armor', 0) + self.item.hp.get('hull', 0)
 
 
 def _getShieldResists(ship):

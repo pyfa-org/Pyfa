@@ -34,7 +34,10 @@ from service.fit import Fit
 from service.market import Market
 
 
-FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
+FIGHTER_ORDER = (
+    'Light Fighter', 'Structure Light Fighter',
+    'Heavy Fighter', 'Structure Heavy Fighter',
+    'Support Fighter', 'Structure Support Fighter')
 _t = wx.GetTranslation
 
 
@@ -49,6 +52,10 @@ class FighterViewDrop(wx.DropTarget):
     def OnData(self, x, y, t):
         if self.GetData():
             dragged_data = DragDropHelper.data
+
+            if dragged_data is None:
+                return t
+
             data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t

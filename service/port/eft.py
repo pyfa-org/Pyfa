@@ -38,7 +38,7 @@ from service.const import PortEftOptions
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
-from service.port.shared import IPortUser, fetchItem, processing_notify
+from service.port.shared import fetchItem
 
 
 pyfalog = Logger(__name__)
@@ -46,7 +46,7 @@ pyfalog = Logger(__name__)
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'
-NAME_CHARS = '[^,/\[\]]'  # Characters which are allowed to be used in name
+NAME_CHARS = r'[^,/\[\]]'  # Characters which are allowed to be used in name
 
 
 class MutationExportData:
@@ -176,7 +176,11 @@ def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
         return drone.item.typeName
 
     def droneSorter(drone):
-        groupName = Market.getInstance().getMarketGroupByItem(drone.item).marketGroupName
+        if drone.isMutated:
+            item = drone.baseItem
+        else:
+            item = drone.item
+        groupName = Market.getInstance().getMarketGroupByItem(item).marketGroupName
         return (DRONE_ORDER.index(groupName), drone.isMutated, drone.fullName)
 
     if mutaData is None:
@@ -200,7 +204,10 @@ def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
 
 def exportFighters(fighters):
     # Same as in drone additions panel
-    FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
+    FIGHTER_ORDER = (
+        'Light Fighter', 'Structure Light Fighter',
+        'Heavy Fighter', 'Structure Heavy Fighter',
+        'Support Fighter', 'Structure Support Fighter')
 
     def fighterSorter(fighter):
         groupName = Market.getInstance().getGroupByItem(fighter.item).name
@@ -243,9 +250,9 @@ def importEft(lines):
     aFit = AbstractFit()
     aFit.mutations = importGetMutationData(lines)
 
-    stubPattern = '^\[.+?\]$'
-    modulePattern = '^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS, OFFLINE_SUFFIX)
-    droneCargoPattern = '^(?P<typeName>{}+?) x(?P<amount>\d+?)(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS)
+    stubPattern = r'^\[.+?\]$'
+    modulePattern = r'^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS, OFFLINE_SUFFIX)
+    droneCargoPattern = r'^(?P<typeName>{}+?) x(?P<amount>\d+?)(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS)
 
     sections = []
     for section in _importSectionIter(lines):
@@ -365,7 +372,7 @@ def importEft(lines):
     return fit
 
 
-def importEftCfg(shipname, lines, iportuser):
+def importEftCfg(shipname, lines, progress):
     """Handle import from EFT config store file"""
 
     # Check if we have such ship in database, bail if we don't
@@ -388,6 +395,8 @@ def importEftCfg(shipname, lines, iportuser):
             fitIndices.append(startPos)
 
     for i, startPos in enumerate(fitIndices):
+        if progress and progress.userCancelled:
+            return []
         # End position is last file line if we're trying to get it for last fit,
         # or start position of next fit minus 1
         endPos = len(lines) if i == len(fitIndices) - 1 else fitIndices[i + 1]
@@ -413,17 +422,17 @@ def importEftCfg(shipname, lines, iportuser):
                     continue
 
                 # Parse line into some data we will need
-                misc = re.match("(Drones|Implant|Booster)_(Active|Inactive)=(.+)", line)
-                cargo = re.match("Cargohold=(.+)", line)
+                misc = re.match(r"(Drones|Implant|Booster)_(Active|Inactive)=(.+)", line)
+                cargo = re.match(r"Cargohold=(.+)", line)
                 # 2017/03/27 NOTE: store description from EFT
-                description = re.match("Description=(.+)", line)
+                description = re.match(r"Description=(.+)", line)
 
                 if misc:
                     entityType = misc.group(1)
                     entityState = misc.group(2)
                     entityData = misc.group(3)
                     if entityType == "Drones":
-                        droneData = re.match("(.+),([0-9]+)", entityData)
+                        droneData = re.match(r"(.+),([0-9]+)", entityData)
                         # Get drone name and attempt to detect drone number
                         droneName = droneData.group(1) if droneData else entityData
                         droneAmount = int(droneData.group(2)) if droneData else 1
@@ -489,7 +498,7 @@ def importEftCfg(shipname, lines, iportuser):
                         fitobj.boosters.append(b)
                 # If we don't have any prefixes, then it's a module
                 elif cargo:
-                    cargoData = re.match("(.+),([0-9]+)", cargo.group(1))
+                    cargoData = re.match(r"(.+),([0-9]+)", cargo.group(1))
                     cargoName = cargoData.group(1) if cargoData else cargo.group(1)
                     cargoAmount = int(cargoData.group(2)) if cargoData else 1
                     # Bail if we can't get item
@@ -508,7 +517,7 @@ def importEftCfg(shipname, lines, iportuser):
                 elif description:
                     fitobj.notes = description.group(1).replace("|", "\n")
                 else:
-                    withCharge = re.match("(.+),(.+)", line)
+                    withCharge = re.match(r"(.+),(.+)", line)
                     modName = withCharge.group(1) if withCharge else line
                     chargeName = withCharge.group(2) if withCharge else None
                     # If we can't get module item, skip it
@@ -558,11 +567,8 @@ def importEftCfg(shipname, lines, iportuser):
             # Append fit to list of fits
             fits.append(fitobj)
 
-            if iportuser:  # NOTE: Send current processing status
-                processing_notify(
-                    iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
-                    "%s:\n%s" % (fitobj.ship.name, fitobj.name)
-                )
+            if progress:
+                progress.message = "%s:\n%s" % (fitobj.ship.name, fitobj.name)
 
         except (KeyboardInterrupt, SystemExit):
             raise
@@ -585,7 +591,7 @@ def _importPrepare(lines):
     return lines
 
 
-mutantHeaderPattern = re.compile('^\[(?P<ref>\d+)\](?P<tail>.*)')
+mutantHeaderPattern = re.compile(r'^\[(?P<ref>\d+)\](?P<tail>.*)')
 
 
 def importGetMutationData(lines):
@@ -646,7 +652,7 @@ def _importCreateFit(lines):
     """Create fit and set top-level entity (ship or citadel)."""
     fit = Fit()
     header = lines.pop(0)
-    m = re.match('\[(?P<shipType>[^,]+),\s*(?P<fitName>.+)\]', header)
+    m = re.match(r'\[(?P<shipType>[^,]+),\s*(?P<fitName>.+)\]', header)
     if not m:
         pyfalog.warning('service.port.eft.importEft: corrupted fit header')
         raise EftImportError
@@ -969,7 +975,7 @@ def lineIter(text):
 def parseAdditions(text, mutaData=None):
     items = []
     sMkt = Market.getInstance()
-    pattern = '^(?P<typeName>{}+?)( x(?P<amount>\d+?))?(\s*\[(?P<mutaref>\d+?)\])?$'.format(NAME_CHARS)
+    pattern = r'^(?P<typeName>{}+?)( x(?P<amount>\d+?))?(\s*\[(?P<mutaref>\d+?)\])?$'.format(NAME_CHARS)
     for line in lineIter(text):
         m = re.match(pattern, line)
         if not m:
@@ -992,7 +998,7 @@ def isValidDroneImport(text):
     lines = list(lineIter(text))
     mutaData = importGetMutationData(lines)
     text = '\n'.join(lines)
-    pattern = 'x\d+(\s*\[\d+\])?$'
+    pattern = r'x\d+(\s*\[\d+\])?$'
     for line in lineIter(text):
         if not re.search(pattern, line):
             return False, ()
@@ -1006,7 +1012,7 @@ def isValidDroneImport(text):
 
 
 def isValidFighterImport(text):
-    pattern = 'x\d+$'
+    pattern = r'x\d+$'
     for line in lineIter(text):
         if not re.search(pattern, line):
             return False, ()
@@ -1020,7 +1026,7 @@ def isValidFighterImport(text):
 
 
 def isValidCargoImport(text):
-    pattern = 'x\d+$'
+    pattern = r'x\d+$'
     for line in lineIter(text):
         if not re.search(pattern, line):
             return False, ()
@@ -1034,7 +1040,7 @@ def isValidCargoImport(text):
 
 
 def isValidImplantImport(text):
-    pattern = 'x\d+$'
+    pattern = r'x\d+$'
     for line in lineIter(text):
         if re.search(pattern, line):
             return False, ()
@@ -1048,7 +1054,7 @@ def isValidImplantImport(text):
 
 
 def isValidBoosterImport(text):
-    pattern = 'x\d+$'
+    pattern = r'x\d+$'
     for line in lineIter(text):
         if re.search(pattern, line):
             return False, ()

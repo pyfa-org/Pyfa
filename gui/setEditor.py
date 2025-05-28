@@ -39,7 +39,7 @@ class ImplantTextValidor(BaseValidator):
         return ImplantTextValidor()
 
     def Validate(self, win):
-        entityEditor = win.parent
+        entityEditor = win.Parent.parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
 

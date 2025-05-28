@@ -115,7 +115,7 @@ class CharacterEntityEditor(EntityEditor):
         sChar = Character.getInstance()
 
         if entity.alphaCloneID:
-            trimmed_name = re.sub('[ \(\u03B1\)]+$', '', name)
+            trimmed_name = re.sub('[ \\(\u03B1\\)]+$', '', name)
             sChar.rename(entity, trimmed_name)
         else:
             sChar.rename(entity, name)
@@ -371,7 +371,7 @@ class SkillTreeView(wx.Panel):
         bSizerButtons.AddStretchSpacer()
 
         importExport = ((_t("Import skills from clipboard"), wx.ART_FILE_OPEN, "import"),
-                        (_t("Export skills from clipboard"), wx.ART_FILE_SAVE_AS, "export"))
+                        (_t("Export skills to clipboard"), wx.ART_FILE_SAVE_AS, "export"))
 
         for tooltip, art, attr in importExport:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
@@ -446,6 +446,7 @@ class SkillTreeView(wx.Panel):
 
         text = fromClipboard().strip()
         if text:
+            sCharacter = Character.getInstance()
             char = self.charEditor.entityEditor.getActiveEntity()
             try:
                 lines = text.splitlines()
@@ -455,7 +456,7 @@ class SkillTreeView(wx.Panel):
                     skill, level = s.rsplit(None, 1)[0], arabicOrRomanToInt(s.rsplit(None, 1)[1])
                     skill = char.getSkill(skill)
                     if skill:
-                        skill.setLevel(level, ignoreRestrict=True)
+                        sCharacter.changeLevel(char.ID, skill.item.ID, level)
 
             except (KeyboardInterrupt, SystemExit):
                 raise
@@ -479,6 +480,35 @@ class SkillTreeView(wx.Panel):
             list += "{} {}\n".format(skill.item.name, skill.level)
 
         toClipboard(list)
+
+    def exportSkillsSuperCondensed(self, evt):
+        char = self.charEditor.entityEditor.getActiveEntity()
+
+        skills = {}
+        explicit_levels = {}
+        implicit_levels = {}
+        for s in char.__class__.getSkillNameMap().keys():
+            skill = char.getSkill(s)
+            if skill.level < 1:
+                continue
+            skills[skill.item.ID] = skill
+            explicit_levels[skill.item.ID] = skill.level
+
+        for skill in skills.values():
+            for req_skill, level in skill.item.requiredSkills.items():
+                if req_skill.ID not in implicit_levels or implicit_levels[req_skill.ID] < level:
+                    implicit_levels[req_skill.ID] = level
+
+        condensed = {}
+        for typeID, level in explicit_levels.items():
+            if typeID not in implicit_levels or implicit_levels[typeID] < level:
+                condensed[skills[typeID].item.name] = level
+
+        lines = []
+        for skill in sorted(condensed):
+            lines.append(f'{skill}\t{condensed[skill]}')
+
+        toClipboard('\n'.join(lines))
 
     def onSecStatus(self, event):
         sChar = Character.getInstance()
@@ -516,7 +546,10 @@ class SkillTreeView(wx.Panel):
     def populateSkillTreeSkillSearch(self, event=None):
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
-        search = self.searchInput.GetLineText(0)
+        try:
+            search = self.searchInput.GetLineText(0)
+        except AttributeError:
+            search = self.searchInput.GetValue()
 
         root = self.root
         tree = self.skillTreeListCtrl
@@ -530,7 +563,7 @@ class SkillTreeView(wx.Panel):
                 iconId = self.skillBookDirtyImageId
 
             childId = tree.AppendItem(root, name, iconId, data=('skill', id))
-            tree.SetItemText(childId, 1, _t("Level {}d").format(int(level)) if isinstance(level, float) else level)
+            tree.SetItemText(childId, 1, _t("Level {}").format(int(level)) if isinstance(level, float) else level)
 
     def populateSkillTree(self, event=None):
         sChar = Character.getInstance()
@@ -588,7 +621,6 @@ class SkillTreeView(wx.Panel):
                     iconId = self.skillBookDirtyImageId
 
                 childId = tree.AppendItem(root, name, iconId, data=('skill', id))
-
                 tree.SetItemText(childId, 1, _t("Level {}").format(int(level)) if isinstance(level, float) else level)
 
     def spawnMenu(self, event):
@@ -804,7 +836,12 @@ class APIView(wx.Panel):
 
         self.SetSizer(pmainSizer)
         self.Layout()
-        self.ssoListChanged(None)
+        try:
+            self.ssoListChanged(None)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            pass
 
     def ssoCharChanged(self, event):
         sChar = Character.getInstance()
@@ -856,7 +893,7 @@ class APIView(wx.Panel):
         noneID = self.charChoice.Append(_t("None"), None)
 
         for char in ssoChars:
-            currId = self.charChoice.Append(char.characterName, char.ID)
+            currId = self.charChoice.Append(char.characterDisplay, char.ID)
 
             if sso is not None and char.ID == sso.ID:
                 self.charChoice.SetSelection(currId)
@@ -910,7 +947,7 @@ class SecStatusDialog(wx.Dialog):
         self.m_staticText1.Wrap(-1)
         bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)
 
-        self.floatSpin = FloatSpin(self, value=sec, min_val=-5.0, max_val=5.0, increment=0.1, digits=2, size=(-1, -1))
+        self.floatSpin = FloatSpin(self, value=sec, min_val=-10.0, max_val=5.0, increment=0.1, digits=2, size=(-1, -1))
         bSizer1.Add(self.floatSpin, 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         btnOk = wx.Button(self, wx.ID_OK)

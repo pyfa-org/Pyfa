@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.7
+- Python 3.11
 - Git CLI installed
 - Python, pip and git are all available as command-line commands (add to the path if needed)
 

@@ -20,6 +20,7 @@ from gui.builtinContextMenus.targetProfile import editor
 from gui.builtinContextMenus import itemStats
 from gui.builtinContextMenus import itemMarketJump
 from gui.builtinContextMenus import fitSystemSecurity  # Not really an item info but want to keep it here
+from gui.builtinContextMenus import fitPilotSecurity  # Not really an item info but want to keep it here
 from gui.builtinContextMenus import shipJump
 # Generic item manipulations
 from gui.builtinContextMenus import itemRemove
@@ -35,6 +36,7 @@ from gui.builtinContextMenus import skillAffectors
 from gui.builtinContextMenus import itemFill
 from gui.builtinContextMenus import droneAddStack
 from gui.builtinContextMenus import cargoAdd
+from gui.builtinContextMenus import cargoFill
 from gui.builtinContextMenus import cargoAddAmmo
 from gui.builtinContextMenus import itemProject
 from gui.builtinContextMenus import ammoToDmgPattern

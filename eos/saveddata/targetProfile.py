@@ -254,7 +254,7 @@ class TargetProfile:
     def init(self):
         self.builtin = False
 
-    def update(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0, maxVelocity=None, signatureRadius=None, radius=None):
+    def update(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0, maxVelocity=None, signatureRadius=None, radius=None, hp=None):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
@@ -262,6 +262,7 @@ class TargetProfile:
         self._maxVelocity = maxVelocity
         self._signatureRadius = signatureRadius
         self._radius = radius
+        self._hp = hp
 
     @classmethod
     def getBuiltinList(cls):
@@ -330,6 +331,18 @@ class TargetProfile:
     @radius.setter
     def radius(self, val):
         self._radius = val
+
+    @property
+    def hp(self):
+        if self._hp is None or self._hp == -1:
+            return math.inf
+        return self._hp
+
+    @hp.setter
+    def hp(self, val):
+        if val is not None and math.isinf(val):
+            val = None
+        self._hp = val
 
     @classmethod
     def importPatterns(cls, text):

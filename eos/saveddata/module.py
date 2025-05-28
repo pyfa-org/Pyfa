@@ -33,7 +33,7 @@ from eos.utils.cycles import CycleInfo, CycleSequence
 from eos.utils.default import DEFAULT
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
-from eos.utils.stats import DmgTypes, RRTypes
+from eos.utils.stats import BreacherInfo, DmgTypes, RRTypes
 
 
 pyfalog = Logger(__name__)
@@ -66,8 +66,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
     """An instance of this class represents a module together with its charge and modified attributes"""
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = (
-        "Effect Beacon", "MassiveEnvironments", "Abyssal Hazards",
-        "Non-Interactable Object", "Destructible Effect Beacon")
+        "Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object",
+        "Destructible Effect Beacon", "Sovereignty Hub System Effect Generator Upgrades")
 
     def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""
@@ -453,6 +453,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 return True
         return False
 
+    @property
+    def isBreacher(self):
+        return self.charge and 'dotMissileLaunching' in self.charge.effects
+
     def canDealDamage(self, ignoreState=False):
         if self.isEmpty:
             return False
@@ -469,75 +473,77 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
 
     def getVolleyParameters(self, spoolOptions=None, targetProfile=None, ignoreState=False):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
-            return {0: DmgTypes(0, 0, 0, 0)}
+            return {0: DmgTypes.default()}
         if self.__baseVolley is None:
             self.__baseVolley = {}
-            dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
-            dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
-            # Some delay attributes have non-0 default value, so we have to pick according to effects
-            if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar', 'lightningWeapon'}.intersection(self.item.effects):
-                dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0)
-            elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT', 'debuffLance'}.intersection(self.item.effects):
-                dmgDelay = self.getModifiedItemAttr("doomsdayWarningDuration", 0)
+            if self.isBreacher:
+                dmgDelay = 1
+                subcycles = math.floor(self.getModifiedChargeAttr("dotDuration", 0) / 1000)
+                breacher_info = BreacherInfo(
+                    absolute=self.getModifiedChargeAttr("dotMaxDamagePerTick", 0),
+                    relative=self.getModifiedChargeAttr("dotMaxHPPercentagePerTick", 0) / 100)
+                for i in range(subcycles):
+                    volley = DmgTypes.default()
+                    volley.add_breacher(dmgDelay + i, breacher_info)
+                    self.__baseVolley[dmgDelay + i] = volley
             else:
-                dmgDelay = 0
-            dmgDuration = self.getModifiedItemAttr("doomsdayDamageDuration", 0)
-            dmgSubcycle = self.getModifiedItemAttr("doomsdayDamageCycleTime", 0)
-            # Reaper DD can damage each target only once
-            if dmgDuration != 0 and dmgSubcycle != 0 and 'doomsdaySlash' not in self.item.effects:
-                subcycles = math.floor(floatUnerr(dmgDuration / dmgSubcycle))
-            else:
-                subcycles = 1
-            for i in range(subcycles):
-                self.__baseVolley[dmgDelay + dmgSubcycle * i] = DmgTypes(
-                    em=(dmgGetter("emDamage", 0)) * dmgMult,
-                    thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
-                    kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
-                    explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
+                dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
+                dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
+                # Some delay attributes have non-0 default value, so we have to pick according to effects
+                if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar', 'lightningWeapon'}.intersection(self.item.effects):
+                    dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0)
+                elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT', 'debuffLance'}.intersection(self.item.effects):
+                    dmgDelay = self.getModifiedItemAttr("doomsdayWarningDuration", 0)
+                else:
+                    dmgDelay = 0
+                dmgDuration = self.getModifiedItemAttr("doomsdayDamageDuration", 0)
+                dmgSubcycle = self.getModifiedItemAttr("doomsdayDamageCycleTime", 0)
+                # Reaper DD can damage each target only once
+                if dmgDuration != 0 and dmgSubcycle != 0 and 'doomsdaySlash' not in self.item.effects:
+                    subcycles = math.floor(floatUnerr(dmgDuration / dmgSubcycle))
+                else:
+                    subcycles = 1
+                for i in range(subcycles):
+                    self.__baseVolley[dmgDelay + dmgSubcycle * i] = DmgTypes(
+                        em=(dmgGetter("emDamage", 0)) * dmgMult,
+                        thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
+                        kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
+                        explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
         spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
         spoolBoost = calculateSpoolup(
             self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
             self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
             self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
         spoolMultiplier = 1 + spoolBoost
-        adjustedVolley = {}
-        for volleyTime, volleyValue in self.__baseVolley.items():
-            adjustedVolley[volleyTime] = DmgTypes(
-                em=volleyValue.em * spoolMultiplier * (1 - getattr(targetProfile, "emAmount", 0)),
-                thermal=volleyValue.thermal * spoolMultiplier * (1 - getattr(targetProfile, "thermalAmount", 0)),
-                kinetic=volleyValue.kinetic * spoolMultiplier * (1 - getattr(targetProfile, "kineticAmount", 0)),
-                explosive=volleyValue.explosive * spoolMultiplier * (1 - getattr(targetProfile, "explosiveAmount", 0)))
-        return adjustedVolley
+        adjustedVolleys = {}
+        for volleyTime, baseVolley in self.__baseVolley.items():
+            adjustedVolley = baseVolley * spoolMultiplier
+            adjustedVolley.profile = targetProfile
+            adjustedVolleys[volleyTime] = adjustedVolley
+        return adjustedVolleys
 
     def getVolley(self, spoolOptions=None, targetProfile=None, ignoreState=False):
         volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
         if len(volleyParams) == 0:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes.default()
         return volleyParams[min(volleyParams)]
 
-    def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False, getSpreadDPS=False):
-        dmgDuringCycle = DmgTypes(0, 0, 0, 0)
+    def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False):
+        dps = DmgTypes.default()
         cycleParams = self.getCycleParameters()
         if cycleParams is None:
-            return dmgDuringCycle
+            return dps
         volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
         avgCycleTime = cycleParams.averageTime
         if len(volleyParams) == 0 or avgCycleTime == 0:
-            return dmgDuringCycle
-        for volleyValue in volleyParams.values():
-            dmgDuringCycle += volleyValue
-        dpsFactor = 1 / (avgCycleTime / 1000)
-        dps = DmgTypes(
-            em=dmgDuringCycle.em * dpsFactor,
-            thermal=dmgDuringCycle.thermal * dpsFactor,
-            kinetic=dmgDuringCycle.kinetic * dpsFactor,
-            explosive=dmgDuringCycle.explosive * dpsFactor)
-        if not getSpreadDPS:
             return dps
-        return {'em':dmgDuringCycle.em * dpsFactor,
-                'therm': dmgDuringCycle.thermal * dpsFactor,
-                'kin': dmgDuringCycle.kinetic * dpsFactor,
-                'exp': dmgDuringCycle.explosive * dpsFactor}
+        if self.isBreacher:
+            return volleyParams[min(volleyParams)]
+        for volleyValue in volleyParams.values():
+            dps += volleyValue
+        dpsFactor = 1 / (avgCycleTime / 1000)
+        dps *= dpsFactor
+        return dps
 
     def isRemoteRepping(self, ignoreState=False):
         repParams = self.getRepAmountParameters(ignoreState=ignoreState)
@@ -948,6 +954,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                         and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
                     effect.handler(fit, self, context, projectionRange, effect=effect)
+
+    def getCycleParametersForDps(self, reloadOverride=None):
+        # Special hack for breachers, since those are DoT and work independently of gun cycle
+        if self.isBreacher:
+            return CycleInfo(activeTime=1000, inactiveTime=0, quantity=math.inf, isInactivityReload=False)
+        else:
+            return self.getCycleParameters(reloadOverride=reloadOverride)
 
     def getCycleParameters(self, reloadOverride=None):
         """Copied from new eos as well"""
