@@ -45,7 +45,7 @@ pyfalog = Logger(__name__)
 
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE)
-OFFLINE_SUFFIX = '/OFFLINE'
+OFFLINE_SUFFIX = '/offline'
 NAME_CHARS = r'[^,/\[\]]'  # Characters which are allowed to be used in name
 
 
@@ -251,7 +251,7 @@ def importEft(lines):
     aFit.mutations = importGetMutationData(lines)
 
     stubPattern = r'^\[.+?\]$'
-    modulePattern = r'^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS, OFFLINE_SUFFIX)
+    modulePattern = r'^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*/(OFFLINE|offline))?(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS)
     droneCargoPattern = r'^(?P<typeName>{}+?) x(?P<amount>\d+?)(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS)
 
     sections = []
