@@ -1003,7 +1003,6 @@ class Effect272(BaseEffect):
     repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
 
     Used by:
-    Implants named like: Calyx Repair Booster (3 of 3)
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
@@ -1060,7 +1059,6 @@ class Effect279(BaseEffect):
     shieldEmmisionSystemsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringShieldEmmisionSystems
 
     Used by:
-    Implants named like: Asclepius Remote Repair Booster (3 of 3)
     Implants named like: Zainou 'Gnome' Shield Emission Systems SE (6 of 6)
     Skill: Shield Emission Systems
     """
@@ -1100,7 +1098,6 @@ class Effect290(BaseEffect):
     Used by:
     Implants named like: Frentix Booster (4 of 4)
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: Oxybeles Turret Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
     Skill: Sharpshooter
     """
@@ -1155,8 +1152,8 @@ class Effect391(BaseEffect):
     astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining
 
     Used by:
+    Implants named like: AIR Mining Yield Booster (3 of 3)
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
-    Implants named like: Mining Booster (6 of 8)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
@@ -1815,7 +1812,6 @@ class Effect584(BaseEffect):
     Implants named like: 'Pyrolancea' Dose (7 of 7)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Oxybeles Turret Booster (3 of 3)
     Implant: AIR Pyrolancea Booster II
     """
 
@@ -2430,7 +2426,7 @@ class Effect763(BaseEffect):
     missileDMGBonus
 
     Used by:
-    Modules from group: Ballistic Control system (22 of 22)
+    Modules from group: Ballistic Control System (22 of 22)
     """
 
     type = 'passive'
@@ -2600,7 +2596,7 @@ class Effect889(BaseEffect):
     missileLauncherSpeedMultiplier
 
     Used by:
-    Modules from group: Ballistic Control system (22 of 22)
+    Modules from group: Ballistic Control System (22 of 22)
     """
 
     type = 'passive'
@@ -3319,7 +3315,6 @@ class Effect1030(BaseEffect):
     remoteArmorSystemsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringRemoteArmorSystems
 
     Used by:
-    Implants named like: Asclepius Remote Repair Booster (3 of 3)
     Implants named like: Inherent Implants 'Noble' Remote Armor Repair Systems RA (6 of 6)
     Modules named like: Remote Repair Augmentor (6 of 8)
     Skill: Remote Armor Repair Systems
@@ -4804,7 +4799,6 @@ class Effect1595(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
-    Implants named like: Eidolon Missile Booster (3 of 3)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
@@ -4825,7 +4819,6 @@ class Effect1596(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
-    Implants named like: Eidolon Missile Booster (3 of 3)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
@@ -4846,7 +4839,6 @@ class Effect1597(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
-    Implants named like: Eidolon Missile Booster (3 of 3)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
@@ -4939,7 +4931,6 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
-    Implants named like: Calyx Repair Booster (3 of 3)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
     Skill: Capital Repair Systems
@@ -5095,7 +5086,6 @@ class Effect1657(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
-    Implants named like: Eidolon Missile Booster (3 of 3)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
     Skill: Warhead Upgrades
@@ -5318,7 +5308,6 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
-    Implants named like: Eidolon Missile Booster (3 of 3)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -6832,7 +6821,6 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Phylax Armor Booster (3 of 3)
     """
 
     type = 'passive'
@@ -6855,7 +6843,6 @@ class Effect2297(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: Pelte Shield Booster (3 of 3)
     """
 
     type = 'passive'
@@ -7031,7 +7018,6 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
-    Implants named like: Kausis Capacitor Booster (3 of 3)
     Implants named like: Mindflood Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Aegytica Volatile Booster
@@ -16693,7 +16679,6 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
-    Implants named like: Calyx Repair Booster (3 of 3)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
     Implant: AIR Repairer Booster III
     """
@@ -19942,7 +19927,7 @@ class Effect5397(BaseEffect):
 
     Used by:
     Variations of module: Scan Pinpointing Array I (3 of 3)
-    Module: Triplot Scan Acqusition Array
+    Module: Triplot Scan Acquisition Array
     """
 
     type = 'passive'
@@ -19977,7 +19962,7 @@ class Effect5399(BaseEffect):
 
     Used by:
     Variations of module: Scan Rangefinding Array I (3 of 3)
-    Module: Triplot Scan Acqusition Array
+    Module: Triplot Scan Acquisition Array
     """
 
     type = 'passive'
@@ -20249,7 +20234,6 @@ class Effect5437(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Mnemon Relic Coherence Booster (3 of 3)
     Modules named like: Emission Scope Sharpener (8 of 8)
     Implant: Poteque 'Prospector' Archaeology AC-905
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
@@ -37719,7 +37703,6 @@ class Effect8270(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Nocturne Anti Drain Booster (3 of 3)
     """
 
     type = 'passive'
@@ -38068,23 +38051,6 @@ class Effect8323(BaseEffect):
             'generalMiningHoldCapacity',
             ship.getModifiedItemAttr('gallenteIndustrialBonusMiningHoldCapacity'),
             skill='Gallente Hauler', **kwargs)
-
-
-class Effect8328(BaseEffect):
-    """
-    relicVirusStrengthBonusPassive
-
-    Used by:
-    Implants named like: Palimpsest Relic Strength Booster (3 of 3)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.requiresSkill('Archaeology'), 'virusStrength',
-            container.getModifiedItemAttr('virusStrengthBonus'), **kwargs)
 
 
 class Effect8360(BaseEffect):
