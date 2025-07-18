@@ -134,7 +134,7 @@ def update_db():
 
     def processEveTypes():
         print('processing evetypes')
-        data = _readData('fsd_binary', 'types', keyIdName='typeID')
+        data = _readData('fsd_built', 'types', keyIdName='typeID')
         for row in data:
             if (
                 # Apparently people really want Civilian modules available
@@ -185,7 +185,7 @@ def update_db():
 
     def processEveGroups():
         print('processing evegroups')
-        data = _readData('fsd_binary', 'groups', keyIdName='groupID')
+        data = _readData('fsd_built', 'groups', keyIdName='groupID')
         map = {'groupName_en-us': 'name'}
         map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Group, fieldMap=map)
@@ -193,14 +193,14 @@ def update_db():
 
     def processEveCategories():
         print('processing evecategories')
-        data = _readData('fsd_binary', 'categories', keyIdName='categoryID')
+        data = _readData('fsd_built', 'categories', keyIdName='categoryID')
         map = { 'categoryName_en-us': 'name' }
         map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.Category, fieldMap=map)
 
     def processDogmaAttributes():
         print('processing dogmaattributes')
-        data = _readData('fsd_binary', 'dogmaattributes', keyIdName='attributeID')
+        data = _readData('fsd_built', 'dogmaattributes', keyIdName='attributeID')
         map = {
             'displayName_en-us': 'displayName',
             # 'tooltipDescription_en-us': 'tooltipDescription'
@@ -209,7 +209,7 @@ def update_db():
 
     def processDogmaTypeAttributes(eveTypesData):
         print('processing dogmatypeattributes')
-        data = _readData('fsd_binary', 'typedogma', keyIdName='typeID')
+        data = _readData('fsd_built', 'typedogma', keyIdName='typeID')
         eveTypeIds = set(r['typeID'] for r in eveTypesData)
         newData = []
         seenKeys = set()
@@ -237,7 +237,7 @@ def update_db():
 
     def processDynamicItemAttributes():
         print('processing dynamicitemattributes')
-        data = _readData('fsd_binary', 'dynamicitemattributes')
+        data = _readData('fsd_built', 'dynamicitemattributes')
         for mutaID, mutaData in data.items():
             muta = eos.gamedata.DynamicItem()
             muta.typeID = mutaID
@@ -260,12 +260,12 @@ def update_db():
 
     def processDogmaEffects():
         print('processing dogmaeffects')
-        data = _readData('fsd_binary', 'dogmaeffects', keyIdName='effectID')
+        data = _readData('fsd_built', 'dogmaeffects', keyIdName='effectID')
         _addRows(data, eos.gamedata.Effect, fieldMap={'resistanceAttributeID': 'resistanceID'})
 
     def processDogmaTypeEffects(eveTypesData):
         print('processing dogmatypeeffects')
-        data = _readData('fsd_binary', 'typedogma', keyIdName='typeID')
+        data = _readData('fsd_built', 'typedogma', keyIdName='typeID')
         eveTypeIds = set(r['typeID'] for r in eveTypesData)
         newData = []
         for typeData in data:
@@ -279,7 +279,7 @@ def update_db():
 
     def processDogmaUnits():
         print('processing dogmaunits')
-        data = _readData('fsd_binary', 'dogmaunits', keyIdName='unitID')
+        data = _readData('fsd_built', 'dogmaunits', keyIdName='unitID')
         _addRows(data, eos.gamedata.Unit, fieldMap={
             'name': 'unitName',
             'displayName_en-us': 'displayName'
@@ -287,7 +287,7 @@ def update_db():
 
     def processMarketGroups():
         print('processing marketgroups')
-        data = _readData('fsd_binary', 'marketgroups', keyIdName='marketGroupID')
+        data = _readData('fsd_built', 'marketgroups', keyIdName='marketGroupID')
         map = {
             'name_en-us': 'marketGroupName',
             'description_en-us': '_description',
@@ -298,7 +298,7 @@ def update_db():
 
     def processMetaGroups():
         print('processing metagroups')
-        data = _readData('fsd_binary', 'metagroups', keyIdName='metaGroupID')
+        data = _readData('fsd_built', 'metagroups', keyIdName='metaGroupID')
         map = {'name_en-us': 'metaGroupName'}
         map.update({'name' + v: 'metaGroupName' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
         _addRows(data, eos.gamedata.MetaGroup, fieldMap=map)
@@ -393,7 +393,7 @@ def update_db():
             return reqSkills
 
         eveTypeIds = set(r['typeID'] for r in eveTypesData)
-        data = _readData('fsd_binary', 'requiredskillsfortypes')
+        data = _readData('fsd_built', 'requiredskillsfortypes')
         reqsByItem = {}
         itemsByReq = {}
         for typeID, skillreqData in data.items():
