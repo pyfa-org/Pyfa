@@ -321,6 +321,7 @@ class Fit:
             self.fill(fit)
 
     def getFit(self, fitID, projected=False, basic=False):
+        # type: (int, bool, bool) -> Fit
         """
         Gets fit from database
 
