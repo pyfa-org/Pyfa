@@ -41580,3 +41580,123 @@ class Effect12296(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Medium Energy Turret'), 'capacitorNeed',
             ship.getModifiedItemAttr('shipBonusABC3'), skill='Amarr Battlecruiser', **kwargs)
+
+
+class Effect12565(BaseEffect):
+    """
+    shipBonusDroneTrackingSpeedGBC1
+
+    Used by:
+    Ship: Myrmidon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'trackingSpeed',
+            ship.getModifiedItemAttr('shipBonusGBC1'), skill='Gallente Battlecruiser', **kwargs)
+
+
+class Effect12566(BaseEffect):
+    """
+    shipBonusDroneMWDboostrole6
+
+    Used by:
+    Ship: Mamba
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'maxVelocity',
+            ship.getModifiedItemAttr('shipBonusRole6'), **kwargs)
+
+
+class Effect12567(BaseEffect):
+    """
+    shipBonusSmallProjectileFalloffRole6
+
+    Used by:
+    Ship: Mekubal
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Projectile Turret'), 'falloff',
+            ship.getModifiedItemAttr('shipBonusRole6'), **kwargs)
+
+
+class Effect12568(BaseEffect):
+    """
+    eliteBonusJustWarpScramblerRangeBonusBlops1
+
+    Used by:
+    Ship: Sin
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Navigation'), 'maxRange',
+            src.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
+
+
+class Effect12569(BaseEffect):
+    """
+    eliteBonusJustWarpScramblerStrengthBonusBlops3
+
+    Used by:
+    Ship: Sin
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('Navigation'), 'warpScrambleStrength',
+            ship.getModifiedItemAttr('eliteBonusBlackOps3'), skill='Black Ops', **kwargs)
+
+
+class Effect12573(BaseEffect):
+    """
+    shipBonusLargeEnergyTurretCapReductionAB3
+
+    Used by:
+    Ship: Apocalypse
+    Ship: Apocalypse Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Energy Turret'), 'capacitorNeed',
+            ship.getModifiedItemAttr('shipBonusAB3'), skill='Amarr Battleship', **kwargs)
+
+
+class Effect12579(BaseEffect):
+    """
+    shipBonusArmorPlateMassGB3
+
+    Used by:
+    Ship: Megathron Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
+            ship.getModifiedItemAttr('shipBonusGB3'), skill='Gallente Battleship', **kwargs)
