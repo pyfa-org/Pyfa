@@ -7815,7 +7815,7 @@ class Effect2717(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('drawback'),
+        fit.ship.boostItemAttr('agility', module.getModifiedItemAttr('drawback'),
                                stackingPenalties=True, **kwargs)
 
 
@@ -29934,6 +29934,10 @@ class Effect6658(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', src.getModifiedItemAttr('shieldBoostMultiplier'),
                                       stackingPenalties=True, **kwargs)
+        for attrName in ('duration', 'capacitorNeed'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Shield Operation') or mod.item.requiresSkill('Repair Systems'),
+                attrName, src.getModifiedItemAttr('bastionModeArmorRepairAndShieldBoosterCapDurationBonus'), **kwargs)
 
         # Speed penalty
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), **kwargs)
@@ -29956,6 +29960,22 @@ class Effect6658(BaseEffect):
 
         fit.ship.forceItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'), **kwargs)
         fit.ship.forceItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'), **kwargs)
+
+
+class Effect6660(BaseEffect):
+    """
+    higgsWarpBubbleImmuneRemoval
+
+    Used by:
+    Modules from group: Burst Jammer (11 of 11)
+    Modules from group: Rig Anchor (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.forceItemAttr('warpBubbleImmune', ship.getModifiedItemAttr('warpBubbleImmuneModifier'), **kwargs)
 
 
 class Effect6661(BaseEffect):
@@ -30016,22 +30036,6 @@ class Effect6663(BaseEffect):
                                        src.getModifiedItemAttr('damageMultiplierBonus') * lvl, **kwargs)
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'), 'miningDroneAmountPercent',
                                      src.getModifiedItemAttr('miningAmountBonus') * lvl, **kwargs)
-
-
-class Effect6660(BaseEffect):
-    """
-    higgsWarpBubbleImmuneRemoval
-
-    Used by:
-    Modules from group: Burst Jammer (11 of 11)
-    Modules from group: Rig Anchor (4 of 4)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.forceItemAttr('warpBubbleImmune', ship.getModifiedItemAttr('warpBubbleImmuneModifier'), **kwargs)
 
 
 class Effect6664(BaseEffect):
@@ -38494,7 +38498,7 @@ class Effect11359(BaseEffect):
         for attr in ('cpu', 'power'):
             fit.modules.filteredItemBoost(
                 lambda mod: mod.item.requiresSkill('Shield Operation'), attr,
-                ship.getModifiedItemAttr('shipBonusCBC3'), skill='Caldari Battlecruiser', **kwargs)
+                ship.getModifiedItemAttr('shipBonusCBC4'), skill='Caldari Battlecruiser', **kwargs)
 
 
 class Effect11373(BaseEffect):
