@@ -1993,7 +1993,6 @@ class Effect604(BaseEffect):
     Used by:
     Ships from group: Black Ops (3 of 6)
     Variations of ship: Tempest (3 of 4)
-    Ship: Maelstrom
     Ship: Typhoon Fleet Issue
     """
 
@@ -2450,7 +2449,6 @@ class Effect784(BaseEffect):
     Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
     Modules named like: Rocket Fuel Cache Partition (8 of 8)
     Implant: Antipharmakon Toxot
-    Implant: Mithridate Volatile Booster
     Skill: Missile Bombardment
     """
 
@@ -2703,7 +2701,6 @@ class Effect907(BaseEffect):
 
     Used by:
     Ship: Omen
-    Ship: Zealot
     """
 
     type = 'passive'
@@ -7020,7 +7017,6 @@ class Effect2432(BaseEffect):
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
-    Implant: Aegytica Volatile Booster
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-1
@@ -7808,7 +7804,7 @@ class Effect2716(BaseEffect):
 
 class Effect2717(BaseEffect):
     """
-    drawbackMaxVelocity
+    drawbackAgility
 
     Used by:
     Modules from group: Rig Armor (48 of 72)
@@ -8516,7 +8512,6 @@ class Effect2847(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
-    Implant: Theriac Volatile Booster
     Skill: Motion Prediction
     """
 
@@ -16643,7 +16638,6 @@ class Effect4951(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Thureo
-    Implant: Balneum Volatile Booster
     """
 
     type = 'passive'
@@ -18099,7 +18093,7 @@ class Effect5201(BaseEffect):
     armorUpgradesMassPenaltyReductionBonus
 
     Used by:
-    Skill: Armor Layering
+    Skills named like: Armor Layering (2 of 2)
     """
 
     type = 'passive'
@@ -19670,7 +19664,6 @@ class Effect5364(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Kosybo
-    Implant: Vis Vitalis Volatile Booster
     Implant: Wisdom of Gheinok
     """
 
@@ -20186,23 +20179,6 @@ class Effect5430(BaseEffect):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusMB2'),
                                         skill='Minmatar Battleship', **kwargs)
-
-
-class Effect5431(BaseEffect):
-    """
-    shipBonusLargeEnergyTurretTrackingAB
-
-    Used by:
-    Ship: Apocalypse
-    Ship: Apocalypse Navy Issue
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
-                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship', **kwargs)
 
 
 class Effect5433(BaseEffect):
@@ -20932,22 +20908,6 @@ class Effect5559(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'),
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
-
-
-class Effect5560(BaseEffect):
-    """
-    roleBonusMarauderMJDRReactivationDelayBonus
-
-    Used by:
-    Ships from group: Marauder (5 of 5)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Micro Jump Drive',
-                                      'moduleReactivationDelay', ship.getModifiedItemAttr('roleBonusMarauder'), **kwargs)
 
 
 class Effect5564(BaseEffect):
@@ -23183,6 +23143,7 @@ class Effect5956(BaseEffect):
 
     Used by:
     Ship: Devoter
+    Ship: Zealot
     """
 
     type = 'passive'
@@ -36683,6 +36644,7 @@ class Effect8106(BaseEffect):
     shipPTdamageBonusMB2
 
     Used by:
+    Ship: Maelstrom
     Ship: Vargur
     """
 
@@ -37223,24 +37185,6 @@ class Effect8152(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Energy Nosferatu', 'powerTransferAmount',
             ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
-
-
-class Effect8153(BaseEffect):
-    """
-    eliteBonusDroneArmorShieldTransferBonusBlops1
-
-    Used by:
-    Ship: Sin
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'armorDamageAmount',
-                                     src.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'shieldBonus',
-                                     src.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
 
 
 class Effect8154(BaseEffect):
@@ -38537,7 +38481,7 @@ class Effect11358(BaseEffect):
 
 class Effect11359(BaseEffect):
     """
-    shipBonusShieldBoostFittingCBC3
+    shipBonusShieldBoostFittingCBC4
 
     Used by:
     Ship: Ferox Navy Issue
@@ -39241,6 +39185,8 @@ class Effect11424(BaseEffect):
     shipBonusLargeEnergyTurretDamageAB
 
     Used by:
+    Ship: Apocalypse
+    Ship: Apocalypse Navy Issue
     Ship: Armageddon Navy Issue
     """
 
