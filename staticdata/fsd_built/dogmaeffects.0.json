@@ -19060,10 +19060,9 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 2717, 
-    "effectName": "drawbackMaxVelocity", 
+    "effectName": "drawbackAgility", 
     "electronicChance": 0, 
     "guid": "None", 
-    "iconID": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
@@ -19071,13 +19070,14 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 37, 
+        "modifiedAttributeID": 70, 
         "modifyingAttributeID": 1138, 
         "operation": 6
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0, 
     "sfxName": "None"
   }, 
@@ -69447,10 +69447,43 @@
         "modifyingAttributeID": 351, 
         "operation": 6, 
         "skillTypeID": 47872
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 5964, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5964, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 5964, 
+        "operation": 6, 
+        "skillTypeID": 3393
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5964, 
+        "operation": 6, 
+        "skillTypeID": 3393
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6660": {
@@ -91186,7 +91219,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 11359, 
-    "effectName": "shipBonusShieldBoostFittingCBC3", 
+    "effectName": "shipBonusShieldBoostFittingCBC4", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -91196,7 +91229,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 30, 
-        "modifyingAttributeID": 5044, 
+        "modifyingAttributeID": 5956, 
         "operation": 6, 
         "skillTypeID": 3416
       }, 
@@ -91204,13 +91237,14 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 50, 
-        "modifyingAttributeID": 5044, 
+        "modifyingAttributeID": 5956, 
         "operation": 6, 
         "skillTypeID": 3416
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "11360": {
@@ -97731,15 +97765,15 @@
     "rangeChance": 0
   }, 
   "12296": {
-    "description_de": "Automatically generated effect", 
+    "description_de": "Automatisch erzeugter Effekt", 
     "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
     "description_it": "Automatically generated effect", 
-    "description_ja": "Automatically generated effect", 
-    "description_ko": "Automatically generated effect", 
-    "description_ru": "Automatically generated effect", 
-    "description_zh": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
     "descriptionID": 1015638, 
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -97757,6 +97791,325 @@
         "modifyingAttributeID": 5205, 
         "operation": 6, 
         "skillTypeID": 3306
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12564": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12564, 
+    "effectName": "battlecruiserSkillLevelPreMulShipBonusCBC4Ship", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5956, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12565": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12565, 
+    "effectName": "shipBonusDroneTrackingSpeedGBC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 160, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12566": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12566, 
+    "effectName": "shipBonusDroneMWDboostrole6", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 2303, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12567": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12567, 
+    "effectName": "shipBonusSmallProjectileFalloffRole6", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 158, 
+        "modifyingAttributeID": 2303, 
+        "operation": 6, 
+        "skillTypeID": 3302
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12568": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12568, 
+    "effectName": "eliteBonusJustWarpScramblerRangeBonusBlops1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 1257, 
+        "operation": 6, 
+        "skillTypeID": 3449
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12569": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12569, 
+    "effectName": " eliteBonusJustWarpScramblerStrengthBonusBlops3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 105, 
+        "modifyingAttributeID": 2627, 
+        "operation": 2, 
+        "skillTypeID": 3449
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12572": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12572, 
+    "effectName": "moduleQADroneControlModuleEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 352, 
+        "modifyingAttributeID": 5958, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12573": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12573, 
+    "effectName": "shipBonusLargeEnergyTurretCapReductionAB3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5960, 
+        "operation": 6, 
+        "skillTypeID": 3309
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12574": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12574, 
+    "effectName": "amarrBattleshipSkillLevelPreMulShipBonusAB3Ship", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5960, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12575": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12575, 
+    "effectName": "modeRemoteArmorRepairCapacitorCostPostDiv", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5961, 
+        "operation": 5, 
+        "skillTypeID": 16069
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12576": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12576, 
+    "effectName": "modeRemoteShieldRepairCapacitorCostPostDiv", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5961, 
+        "operation": 5, 
+        "skillTypeID": 3422
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12577": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12577, 
+    "effectName": "modeRemoteRepairAmountArmorPostDiv", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 84, 
+        "modifyingAttributeID": 5962, 
+        "operation": 5, 
+        "skillTypeID": 16069
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12578": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12578, 
+    "effectName": "modeRemoteRepairAmountShieldPostDiv", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 5962, 
+        "operation": 5, 
+        "skillTypeID": 3422
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12579": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12579, 
+    "effectName": " shipBonusArmorPlateMassGB3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 329, 
+        "modifiedAttributeID": 796, 
+        "modifyingAttributeID": 5240, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 
