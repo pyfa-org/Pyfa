@@ -41685,6 +41685,74 @@ class Effect12573(BaseEffect):
             ship.getModifiedItemAttr('shipBonusAB3'), skill='Amarr Battleship', **kwargs)
 
 
+class Effect12575(BaseEffect):
+    """
+    modeRemoteArmorRepairCapacitorCostPostDiv
+
+    Used by:
+    Module: Confessor Defense Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'capacitorNeed',
+            1 / ship.getModifiedItemAttr('modeRemoteRepairCapacitorCostPostDiv'), **kwargs)
+
+
+class Effect12576(BaseEffect):
+    """
+    modeRemoteShieldRepairCapacitorCostPostDiv
+
+    Used by:
+    Module: Svipul Defense Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'capacitorNeed',
+            1 / ship.getModifiedItemAttr('modeRemoteRepairCapacitorCostPostDiv'), **kwargs)
+
+
+class Effect12577(BaseEffect):
+    """
+    modeRemoteRepairAmountArmorPostDiv
+
+    Used by:
+    Module: Confessor Defense Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'), 'armorDamageAmount',
+            1 / ship.getModifiedItemAttr('modeRemoteRepairBonusPostDiv'), **kwargs)
+
+
+class Effect12578(BaseEffect):
+    """
+    modeRemoteRepairAmountShieldPostDiv
+
+    Used by:
+    Module: Svipul Defense Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems'), 'shieldBonus',
+            1 / ship.getModifiedItemAttr('modeRemoteRepairBonusPostDiv'), **kwargs)
+
+
 class Effect12579(BaseEffect):
     """
     shipBonusArmorPlateMassGB3
