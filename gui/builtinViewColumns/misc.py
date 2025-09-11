@@ -291,7 +291,7 @@ class Miscellanea(ViewColumn):
             "Gyrostabilizer",
             "Magnetic Field Stabilizer",
             "Heat Sink",
-            "Ballistic Control system",
+            "Ballistic Control System",
             "Structure Weapon Upgrade",
             "Entropic Radiation Sink",
             "Vorton Projector Upgrade"
@@ -300,7 +300,7 @@ class Miscellanea(ViewColumn):
                 "Gyrostabilizer": ("damageMultiplier", "speedMultiplier", "Projectile weapon"),
                 "Magnetic Field Stabilizer": ("damageMultiplier", "speedMultiplier", "Hybrid weapon"),
                 "Heat Sink": ("damageMultiplier", "speedMultiplier", "Energy weapon"),
-                "Ballistic Control system": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
+                "Ballistic Control System": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
                 "Structure Weapon Upgrade": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
                 "Entropic Radiation Sink": ("damageMultiplier", "speedMultiplier", "Precursor weapon"),
                 "Vorton Projector Upgrade": ("damageMultiplier", "speedMultiplier", "Vorton projector")}
