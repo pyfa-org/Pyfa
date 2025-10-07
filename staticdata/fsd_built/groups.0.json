@@ -30003,6 +30003,25 @@
     "published": 1, 
     "useBasePrice": 1
   }, 
+  "4909": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 4909, 
+    "groupName_de": "Vorhuteinheiten", 
+    "groupName_en-us": "Vanguard Entities", 
+    "groupName_es": "Entidades de vanguardia", 
+    "groupName_fr": "Entités Vanguard", 
+    "groupName_it": "Vanguard Entities", 
+    "groupName_ja": "ヴァンガードエンティティ", 
+    "groupName_ko": "Vanguard 개체", 
+    "groupName_ru": "Боевые единицы авангарда", 
+    "groupName_zh": "先锋实体", 
+    "groupNameID": 1018583, 
+    "published": 0, 
+    "useBasePrice": 0
+  }, 
   "350858": {
     "anchorable": 0, 
     "anchored": 0, 

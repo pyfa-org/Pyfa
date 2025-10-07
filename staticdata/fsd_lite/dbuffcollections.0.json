@@ -4174,5 +4174,20 @@
     ], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2473": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Disable Smart Bomb Repeating Activation", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "groupID": 72
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
   }
 }

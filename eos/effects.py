@@ -1003,6 +1003,7 @@ class Effect272(BaseEffect):
     repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
 
     Used by:
+    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
@@ -1152,8 +1153,8 @@ class Effect391(BaseEffect):
     astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining
 
     Used by:
-    Implants named like: AIR Mining Yield Booster (3 of 3)
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
+    Implants named like: Mining Booster (6 of 8)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
@@ -1810,6 +1811,7 @@ class Effect584(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
+    Implants named like: Chemal Tech Turret Booster (3 of 3)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
@@ -4928,6 +4930,7 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
+    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
     Skill: Capital Repair Systems
@@ -6818,6 +6821,7 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Tetrimon Resistance Booster (4 of 4)
     """
 
     type = 'passive'
@@ -7016,6 +7020,7 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
+    Implants named like: Tetrimon Capacitor Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -7642,6 +7647,7 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -8402,6 +8408,7 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Harvest Damage Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
     """
@@ -8507,6 +8514,7 @@ class Effect2847(BaseEffect):
     trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
 
     Used by:
+    Implants named like: Chemal Tech Turret Booster (3 of 3)
     Implants named like: Drop Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
@@ -13523,6 +13531,7 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (4 of 7)
+    Implants named like: Chemal Tech Exploration Booster (3 of 3)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
@@ -16673,6 +16682,7 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
+    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
     Implant: AIR Repairer Booster III
     """
@@ -18057,6 +18067,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -20312,6 +20323,7 @@ class Effect5459(BaseEffect):
     hackingVirusStrengthBonus
 
     Used by:
+    Implants named like: Chemal Tech Exploration Booster (3 of 3)
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
     Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     """
@@ -37010,6 +37022,7 @@ class Effect8128(BaseEffect):
 
     Used by:
     Implants named like: AIR Mining Range Booster (2 of 2)
+    Implants named like: Chemal Tech Mining Booster (3 of 3)
     """
 
     type = 'passive'
@@ -37651,6 +37664,7 @@ class Effect8270(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Tetrimon Anti Drain Booster (4 of 4)
     """
 
     type = 'passive'
