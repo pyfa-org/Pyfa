@@ -25,6 +25,44 @@ pyfalog = Logger(__name__)
 _t = wx.GetTranslation
 
 
+class EsiTokenValidationThread(threading.Thread):
+    def __init__(self, callback=None):
+        threading.Thread.__init__(self)
+        self.name = "EsiTokenValidation"
+        self.callback = callback
+        self.running = True
+
+    def run(self):
+        with config.logging_setup.threadbound():
+            try:
+                esi = Esi.getInstance()
+                chars = esi.getSsoCharacters()
+
+                for char in chars:
+                    if not self.running:
+                        return
+
+                    if char.is_token_expired():
+                        pyfalog.info(f"Token expired for {char.characterName}, attempting refresh")
+                        try:
+                            esi.refresh(char)
+                            eos.db.save(char)
+                            pyfalog.info(f"Successfully refreshed token for {char.characterName}")
+                        except Exception as e:
+                            pyfalog.error(f"Failed to refresh token for {char.characterName}: {e}")
+                    else:
+                        pyfalog.debug(f"Token valid for {char.characterName}")
+
+            except Exception as e:
+                pyfalog.error(f"Error validating ESI tokens: {e}")
+            finally:
+                if self.callback:
+                    wx.CallAfter(self.callback)
+
+    def stop(self):
+        self.running = False
+
+
 class Esi(EsiAccess):
     _instance = None
 
@@ -194,3 +232,9 @@ class Esi(EsiAccess):
         pyfalog.debug("Handling SSO login with: {0}", message)
 
         self.handleLogin(message['code'])
+
+    def startTokenValidation(self):
+        pyfalog.debug("Starting ESI token validation thread")
+        tokenValidationThread = EsiTokenValidationThread()
+        tokenValidationThread.daemon = True
+        tokenValidationThread.start()

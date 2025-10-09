@@ -150,6 +150,12 @@ if __name__ == "__main__":
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 
+        # Start ESI token validation, this helps avoid token expiry
+        from service.esi import Esi
+        esi = Esi.getInstance()
+        esi.startTokenValidation()
+        pyfalog.info("ESI token validation started")
+
         if options.profile_path:
             profile_path = os.path.join(options.profile_path, 'pyfa-{}.profile'.format(datetime.datetime.now().strftime('%Y%m%d_%H%M%S')))
             pyfalog.debug("Starting pyfa with a profiler, saving to {}".format(profile_path))
