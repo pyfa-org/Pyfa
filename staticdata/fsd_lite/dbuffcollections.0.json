@@ -4175,6 +4175,114 @@
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 
+  "2464": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Expedition Burst: Probe Strength ", 
+    "displayName_de": "Scan Probe Strength Bonus", 
+    "displayName_en-us": "Scan Probe Strength Bonus", 
+    "displayName_es": "Scan Probe Strength Bonus", 
+    "displayName_fr": "Scan Probe Strength Bonus", 
+    "displayName_it": "Scan Probe Strength Bonus", 
+    "displayName_ja": "Scan Probe Strength Bonus", 
+    "displayName_ko": "Scan Probe Strength Bonus", 
+    "displayName_ru": "Scan Probe Strength Bonus", 
+    "displayName_zh": "Scan Probe Strength Bonus", 
+    "displayNameID": 1017848, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1371, 
+        "skillID": 3412
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2465": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Expedition Burst: Directional Scanner, Hacking and Salvager Range", 
+    "displayName_de": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_en-us": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_es": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_fr": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_it": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_ja": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_ko": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_ru": "Directional scanner, hacking and salvager module range bonus", 
+    "displayName_zh": "Directional scanner, hacking and salvager module range bonus", 
+    "displayNameID": 1017853, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 5796
+      }
+    ], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 538
+      }, 
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 1122
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2466": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Expedition Burst: Maximum Scan Deviation Modifier", 
+    "displayName_de": "Scan Probe Deviation Bonus", 
+    "displayName_en-us": "Scan Probe Deviation Bonus", 
+    "displayName_es": "Scan Probe Deviation Bonus", 
+    "displayName_fr": "Scan Probe Deviation Bonus", 
+    "displayName_it": "Scan Probe Deviation Bonus", 
+    "displayName_ja": "Scan Probe Deviation Bonus", 
+    "displayName_ko": "Scan Probe Deviation Bonus", 
+    "displayName_ru": "Scan Probe Deviation Bonus", 
+    "displayName_zh": "Scan Probe Deviation Bonus", 
+    "displayNameID": 1017854, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 1372, 
+        "skillID": 3412
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2468": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Expedition Burst: Virus Coherence", 
+    "displayName_de": "Analyzer Coherence Bonus", 
+    "displayName_en-us": "Analyzer Coherence Bonus", 
+    "displayName_es": "Analyzer Coherence Bonus", 
+    "displayName_fr": "Analyzer Coherence Bonus", 
+    "displayName_it": "Analyzer Coherence Bonus", 
+    "displayName_ja": "Analyzer Coherence Bonus", 
+    "displayName_ko": "Analyzer Coherence Bonus", 
+    "displayName_ru": "Analyzer Coherence Bonus", 
+    "displayName_zh": "Analyzer Coherence Bonus", 
+    "displayNameID": 1017921, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 1909, 
+        "groupID": 538
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
   "2473": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Disable Smart Bomb Repeating Activation", 
@@ -4189,5 +4297,78 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
+  }, 
+  "2474": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Mining Burst: Enhanced Mining Scanner", 
+    "displayName_de": "Enhanced Mining Scanner", 
+    "displayName_en-us": "Enhanced Mining Scanner", 
+    "displayName_es": "Enhanced Mining Scanner", 
+    "displayName_fr": "Enhanced Mining Scanner", 
+    "displayName_it": "Enhanced Mining Scanner", 
+    "displayName_ja": "Enhanced Mining Scanner", 
+    "displayName_ko": "Enhanced Mining Scanner", 
+    "displayName_ru": "Enhanced Mining Scanner", 
+    "displayName_zh": "Enhanced Mining Scanner", 
+    "displayNameID": 1021435, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 5979
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2480": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Connected to PhaseStabilizer", 
+    "displayName_de": "Connected", 
+    "displayName_en-us": "Connected", 
+    "displayName_es": "Connected", 
+    "displayName_fr": "Connected", 
+    "displayName_it": "Connected", 
+    "displayName_ja": "Connected", 
+    "displayName_ko": "Connected", 
+    "displayName_ru": "Connected", 
+    "displayName_zh": "Connected", 
+    "displayNameID": 1022189, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 6042
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2481": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Expedition Burst: Salvager duration bonus", 
+    "displayName_de": "Salvager Module Duration Bonus", 
+    "displayName_en-us": "Salvager Module Duration Bonus", 
+    "displayName_es": "Salvager Module Duration Bonus", 
+    "displayName_fr": "Salvager Module Duration Bonus", 
+    "displayName_it": "Salvager Module Duration Bonus", 
+    "displayName_ja": "Salvager Module Duration Bonus", 
+    "displayName_ko": "Salvager Module Duration Bonus", 
+    "displayName_ru": "Salvager Module Duration Bonus", 
+    "displayName_zh": "Salvager Module Duration Bonus", 
+    "displayNameID": 1022798, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 73, 
+        "skillID": 25863
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

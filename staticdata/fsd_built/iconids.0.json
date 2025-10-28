@@ -14266,6 +14266,21 @@
   "27051": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cyan_highgloss_000_060_100_cs180.png"
   }, 
+  "27053": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/fleetBoost_ExpeditionBase.png"
+  }, 
+  "27054": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/fleetBoost_ExpeditionProbeStrength.png"
+  }, 
+  "27055": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/fleetBoost_ExpeditionDscanRange.png"
+  }, 
+  "27056": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/fleetBoost_ExpeditionProbeDeviation.png"
+  }, 
+  "27058": {
+    "iconFile": "res:/ui/texture/icons/marketicon_16px_ORE.png"
+  }, 
   "27059": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_tech_02_128.png"
   }, 
@@ -14376,5 +14391,48 @@
   }, 
   "27110": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_groovy_02_128.png"
+  }, 
+  "27135": {
+    "iconFile": "res:/ui/texture/icons/88_128_3.png", 
+    "iconType": "png"
+  }, 
+  "27136": {
+    "iconFile": "res:/ui/texture/icons/88_128_4.png", 
+    "iconType": "png"
+  }, 
+  "27137": {
+    "iconFile": "res:/ui/texture/icons/88_128_2.png", 
+    "iconType": "png"
+  }, 
+  "27138": {
+    "iconFile": "res:/ui/texture/icons/88_128_1.png", 
+    "iconType": "png"
+  }, 
+  "27139": {
+    "iconFile": "res:/ui/texture/icons/Prismaticite_Ore_64.png"
+  }, 
+  "27154": {
+    "iconFile": "res:/ui/texture/icons/Prismaticite_Ore_Compressed_64.png"
+  }, 
+  "27195": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/mining_phase_stabilizer_64.png"
+  }, 
+  "27218": {
+    "iconFile": "res:/UI/Texture/Icons/Ammo/erraticOreMiningCrystal_a_t1.png"
+  }, 
+  "27219": {
+    "iconFile": "res:/UI/Texture/Icons/Ammo/erraticOreMiningCrystal_a_t2.png"
+  }, 
+  "27220": {
+    "iconFile": "res:/UI/Texture/Icons/Ammo/erraticOreMiningCrystal_b_t1.png"
+  }, 
+  "27221": {
+    "iconFile": "res:/UI/Texture/Icons/Ammo/erraticOreMiningCrystal_b_t2.png"
+  }, 
+  "27222": {
+    "iconFile": "res:/UI/Texture/Icons/Ammo/erraticOreMiningCrystal_c_t1.png"
+  }, 
+  "27223": {
+    "iconFile": "res:/UI/Texture/Icons/Ammo/erraticOreMiningCrystal_c_t2.png"
   }
 }

@@ -97796,6 +97796,981 @@
     "published": 0, 
     "rangeChance": 0
   }, 
+  "12326": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12326, 
+    "effectName": "oreDestroyerSkillLevelPreMulShipBonusOreDestroyerShip1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5820, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12327": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12327, 
+    "effectName": "oreDestroyerSkillLevelPreMulShipBonusOreDestroyerShip2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5821, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12328": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12328, 
+    "effectName": "oreDestroyerSkillLevelPreMulShipBonusOreDestroyerShip3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5822, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12329": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1016660, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12329, 
+    "effectName": "shipMiningYieldBonusOreDestroyer1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 77, 
+        "modifyingAttributeID": 5820, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12330": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1016661, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12330, 
+    "effectName": "shipMiningRangeBonusOreDestroyer2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 5821, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12331": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1016662, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12331, 
+    "effectName": "shipGasCloudDurationBonusOreDestroyer3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 5822, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12529": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12529, 
+    "effectName": "shipBonusArmorResistsUniformSOEABC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 267, 
+        "modifyingAttributeID": 795, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 268, 
+        "modifyingAttributeID": 795, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 269, 
+        "modifyingAttributeID": 795, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 270, 
+        "modifyingAttributeID": 795, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12530": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12530, 
+    "effectName": "expeditionCommandDurationBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2535, 
+        "modifyingAttributeID": 66, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12531": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12531, 
+    "effectName": "expeditionCommandStrengthBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2469, 
+        "modifyingAttributeID": 2572, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2471, 
+        "modifyingAttributeID": 2572, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2473, 
+        "modifyingAttributeID": 2572, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2537, 
+        "modifyingAttributeID": 2572, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12532": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12532, 
+    "effectName": "ExpeditionCommandSkillLevelPreMulShipBonusExpeditionCommandShip1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5939, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12533": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12533, 
+    "effectName": "ExpeditionCommandSkillLevelPreMulShipBonusExpeditionCommandShip2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5940, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12534": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12534, 
+    "effectName": "ExpeditionCommandSkillLevelPreMulShipBonusExpeditionCommandShip3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5941, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12535": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12535, 
+    "effectName": "ExpeditionCommandSkillLevelPreMulShipBonusExpeditionCommandShip4", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5942, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12536": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12536, 
+    "effectName": "ExpeditionCommandSkillLevelPreMulShipBonusExpeditionCommandShip5", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5943, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12537": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12537, 
+    "effectName": "shipBonusAnalyzerRangeECS1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 538, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 5939, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12538": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12538, 
+    "effectName": "shipBonusGasCloudScoopDurationECS2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 5940, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12539": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12539, 
+    "effectName": "shipBonusExplorationCommandStrengthDurationECS3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2535, 
+        "modifyingAttributeID": 5941, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2469, 
+        "modifyingAttributeID": 5941, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2471, 
+        "modifyingAttributeID": 5941, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2473, 
+        "modifyingAttributeID": 5941, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2537, 
+        "modifyingAttributeID": 5941, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12540": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12540, 
+    "effectName": "shipBonusArmorCommandStrengthDurationECS4", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2535, 
+        "modifyingAttributeID": 5942, 
+        "operation": 6, 
+        "skillTypeID": 20494
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2469, 
+        "modifyingAttributeID": 5942, 
+        "operation": 6, 
+        "skillTypeID": 20494
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2471, 
+        "modifyingAttributeID": 5942, 
+        "operation": 6, 
+        "skillTypeID": 20494
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2473, 
+        "modifyingAttributeID": 5942, 
+        "operation": 6, 
+        "skillTypeID": 20494
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2537, 
+        "modifyingAttributeID": 5942, 
+        "operation": 6, 
+        "skillTypeID": 20494
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12541": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12541, 
+    "effectName": "shipBonusGasCloudScoopCPUreductionSOEECSrole", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 5945, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12542": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1017865, 
+    "disallowAutoRepeat": 0, 
+    "displayName_de": "expeditionCommandMindlink", 
+    "displayName_en-us": "expeditionCommandMindlink", 
+    "displayName_es": "expeditionCommandMindlink", 
+    "displayName_fr": "expeditionCommandMindlink", 
+    "displayName_it": "expeditionCommandMindlink", 
+    "displayName_ja": "expeditionCommandMindlink", 
+    "displayName_ko": "expeditionCommandMindlink", 
+    "displayName_ru": "expeditionCommandMindlink", 
+    "displayName_zh": "expeditionCommandMindlink", 
+    "displayNameID": 1017866, 
+    "effectCategory": 0, 
+    "effectID": 12542, 
+    "effectName": "expeditionCommandMindlink", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2535, 
+        "modifyingAttributeID": 884, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2469, 
+        "modifyingAttributeID": 884, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2471, 
+        "modifyingAttributeID": 884, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2473, 
+        "modifyingAttributeID": 884, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2537, 
+        "modifyingAttributeID": 884, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 1, 
+    "rangeChance": 0
+  }, 
+  "12543": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12543, 
+    "effectName": "shipBonusRole6ExpeditionBurstDurationSOEECS", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2535, 
+        "modifyingAttributeID": 2303, 
+        "operation": 6, 
+        "skillTypeID": 89611
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12552": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12552, 
+    "effectName": "shipRoleBonusOREExecutiveIssueMiningHoldAmount", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 1556, 
+        "modifyingAttributeID": 5950, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12554": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12554, 
+    "effectName": "shipDroneHPandDamageOreDestroyer2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 5821, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 5821, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 5821, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 5821, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12555": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12555, 
+    "effectName": "shipBonusShieldAllResistancesOreDestroyer3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 271, 
+        "modifyingAttributeID": 5822, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 272, 
+        "modifyingAttributeID": 5822, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 273, 
+        "modifyingAttributeID": 5822, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 274, 
+        "modifyingAttributeID": 5822, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12556": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12556, 
+    "effectName": "eliteBonusCommandDestroyerMining1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2535, 
+        "modifyingAttributeID": 2059, 
+        "operation": 6, 
+        "skillTypeID": 22536
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2469, 
+        "modifyingAttributeID": 2059, 
+        "operation": 6, 
+        "skillTypeID": 22536
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2471, 
+        "modifyingAttributeID": 2059, 
+        "operation": 6, 
+        "skillTypeID": 22536
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2473, 
+        "modifyingAttributeID": 2059, 
+        "operation": 6, 
+        "skillTypeID": 22536
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2537, 
+        "modifyingAttributeID": 2059, 
+        "operation": 6, 
+        "skillTypeID": 22536
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12557": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12557, 
+    "effectName": "shipBonusGasCloudDurationRoleBonusOreMiningDestroyer", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 5952, 
+        "operation": 6, 
+        "skillTypeID": 25544
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12558": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12558, 
+    "effectName": " oreDestroyerSkillLevelPreMulShipBonusOreDestroyerShip4", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5953, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12559": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12559, 
+    "effectName": "shipShieldBoosterBonusOreExecutiveDestroyer4", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 5953, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12560": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12560, 
+    "effectName": " oreExecutiveRoleBonusSalvageDroneAdditionalAccessDifficultyRoleBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 902, 
+        "modifyingAttributeID": 5954, 
+        "operation": 2, 
+        "skillTypeID": 3440
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12562": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12562, 
+    "effectName": "miningFrigateSkillLevelPreMulShipBonusOreFrigateShieldBoosterbonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5955, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12563": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12563, 
+    "effectName": "shipShieldBoosterBonusOreExecutiveFrigate", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 5955, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
   "12564": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -98109,6 +99084,310 @@
         "modifiedAttributeID": 796, 
         "modifyingAttributeID": 5240, 
         "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12586": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 5972, 
+    "distribution": 2, 
+    "durationAttributeID": 5970, 
+    "effectCategory": 1, 
+    "effectID": 12586, 
+    "effectName": "behaviorModuleBonusWarfareLinkMiningFake", 
+    "electronicChance": 0, 
+    "guid": "effects.WarfareLinkMining", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 5971, 
+    "rangeChance": 0
+  }, 
+  "12591": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 4, 
+    "effectID": 12591, 
+    "effectName": "miningSensorArrayScannerUpgrade", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5979, 
+        "modifyingAttributeID": 5979, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12596": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1021646, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12596, 
+    "effectName": "shipMiningBonusYieldOreDestroyerRoleBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 77, 
+        "modifyingAttributeID": 5986, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12753": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12753, 
+    "effectName": "shipRoleBonusOREExecutiveIssueMiningCriticalHitChanceBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5967, 
+        "modifyingAttributeID": 6048, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12754": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12754, 
+    "effectName": "miningCritChanceSkillBoostLevelBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6049, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12755": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12755, 
+    "effectName": "miningCritChanceSkillPostPercentLRSMBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5967, 
+        "modifyingAttributeID": 6049, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5967, 
+        "modifyingAttributeID": 6049, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12756": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12756, 
+    "effectName": "miningCritYieldSkillBoostLevelBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6050, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12757": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12757, 
+    "effectName": "miningCritYieldSkillPostPercentLRSMBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5969, 
+        "modifyingAttributeID": 6050, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5969, 
+        "modifyingAttributeID": 6050, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12759": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 4, 
+    "effectID": 12759, 
+    "effectName": "miningCritChanceBonusOreIceOnline", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5967, 
+        "modifyingAttributeID": 6049, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5967, 
+        "modifyingAttributeID": 6049, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12760": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 4, 
+    "effectID": 12760, 
+    "effectName": "miningCritBonusYieldBonusOreIceOnline", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5969, 
+        "modifyingAttributeID": 6050, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5969, 
+        "modifyingAttributeID": 6050, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12761": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 4, 
+    "effectID": 12761, 
+    "effectName": "miningWasteChanceBonusOreIceOnline", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3154, 
+        "modifyingAttributeID": 6053, 
+        "operation": 6, 
+        "skillTypeID": 3386
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3154, 
+        "modifyingAttributeID": 6053, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 3154, 
+        "modifyingAttributeID": 6053, 
+        "operation": 6, 
+        "skillTypeID": 25544
       }
     ], 
     "propulsionChance": 0, 
