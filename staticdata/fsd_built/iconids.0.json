@@ -14376,5 +14376,146 @@
   }, 
   "27110": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_groovy_02_128.png"
+  }, 
+  "27155": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_turquoise_metallic_000_100_100.png"
+  }, 
+  "27156": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_turquoise_metallic_000_100_100.png"
+  }, 
+  "27157": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_purple_polished_holo_001_100_010.png"
+  }, 
+  "27158": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_purple_polished_holo_001_100_010.png"
+  }, 
+  "27159": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_orange_gloss_000_100_050.png"
+  }, 
+  "27160": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_orange_gloss_000_100_050.png"
+  }, 
+  "27161": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_gloss_000_100_050.png"
+  }, 
+  "27162": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_gloss_000_100_050.png"
+  }, 
+  "27163": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_matt_000_100_010.png"
+  }, 
+  "27164": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_matt_000_100_010.png"
+  }, 
+  "27165": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_matt_000_100_001.png"
+  }, 
+  "27166": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_matt_000_100_001.png"
+  }, 
+  "27167": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_malachite_matt_000_080_100.png"
+  }, 
+  "27168": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_malachite_matt_000_080_100.png"
+  }, 
+  "27169": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cyan_gloss_000_100_050.png"
+  }, 
+  "27170": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cyan_gloss_000_100_050.png"
+  }, 
+  "27171": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_bw_flat_000_000_000.png"
+  }, 
+  "27172": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_bw_flat_000_000_000.png"
+  }, 
+  "27173": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_gloss_000_030_100_cs180.png"
+  }, 
+  "27174": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_gloss_000_030_100_cs180.png"
+  }, 
+  "27175": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_orange_gloss_000_100_010_cs180.png"
+  }, 
+  "27176": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_orange_gloss_000_100_010_cs180.png"
+  }, 
+  "27177": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rock_01_128.png"
+  }, 
+  "27178": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rock_01_128.png"
+  }, 
+  "27179": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rock_02_128.png"
+  }, 
+  "27180": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rock_02_128.png"
+  }, 
+  "27181": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rock_03_128.png"
+  }, 
+  "27182": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rock_03_128.png"
+  }, 
+  "27183": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_geometric_01_128.png"
+  }, 
+  "27184": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_geometric_01_128.png"
+  }, 
+  "27185": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_dazzle_03_128.png"
+  }, 
+  "27186": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_dazzle_03_128.png"
+  }, 
+  "27187": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rust_01_128.png"
+  }, 
+  "27188": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_rust_01_128.png"
+  }, 
+  "27189": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_leaf_03_128.png"
+  }, 
+  "27190": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_leaf_03_128.png"
+  }, 
+  "27191": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_circle_01_128.png"
+  }, 
+  "27192": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_drifter_circle_01_128.png"
+  }, 
+  "27193": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_abstract_01_128.png"
+  }, 
+  "27194": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_abstract_01_128.png"
+  }, 
+  "27224": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_metallic_000_080_100.png"
+  }, 
+  "27225": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_metallic_000_080_100.png"
+  }, 
+  "27226": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_metallic_000_080_100.png"
+  }, 
+  "27227": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_metallic_000_080_100.png"
+  }, 
+  "27228": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_caldari_tournament_XXI_128.png"
+  }, 
+  "27229": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_caldari_tournament_XXI_128.png"
+  }, 
+  "27230": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_caldari_tournament_XXI_128.png"
   }
 }

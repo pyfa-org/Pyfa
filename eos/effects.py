@@ -25272,6 +25272,7 @@ class Effect6281(BaseEffect):
     shipBonusEnergyNeutOptimalAF2
 
     Used by:
+    Ship: Cruor
     Ship: Malice
     """
 
@@ -25288,6 +25289,7 @@ class Effect6285(BaseEffect):
     shipBonusEnergyNeutFalloffAF3
 
     Used by:
+    Ship: Cruor
     Ship: Malice
     """
 
@@ -25304,6 +25306,7 @@ class Effect6287(BaseEffect):
     shipBonusEnergyNosOptimalAF2
 
     Used by:
+    Ship: Cruor
     Ship: Malice
     """
 
@@ -25320,6 +25323,7 @@ class Effect6291(BaseEffect):
     shipBonusEnergyNosFalloffAF3
 
     Used by:
+    Ship: Cruor
     Ship: Malice
     """
 
@@ -25352,6 +25356,7 @@ class Effect6299(BaseEffect):
     shipBonusEnergyNeutFalloffAC3
 
     Used by:
+    Ship: Ashimmu
     Ship: Vangel
     """
 
@@ -25402,6 +25407,7 @@ class Effect6305(BaseEffect):
     shipBonusEnergyNosFalloffAC3
 
     Used by:
+    Ship: Ashimmu
     Ship: Vangel
     """
 
@@ -41834,3 +41840,37 @@ class Effect12579(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
             ship.getModifiedItemAttr('shipBonusGB3'), skill='Gallente Battleship', **kwargs)
+
+
+class Effect12739(BaseEffect):
+    """
+    shipBonusEnergyNeutOptimalAC2
+
+    Used by:
+    Ship: Ashimmu
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Neutralizer', 'maxRange',
+            src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)
+
+
+class Effect12740(BaseEffect):
+    """
+    shipBonusEnergyNosOptimalAC2
+
+    Used by:
+    Ship: Ashimmu
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'maxRange',
+            src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser', **kwargs)

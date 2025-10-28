@@ -46159,5 +46159,30 @@
     "name_zh": "昇威", 
     "nameID": 1014781, 
     "parentGroupID": 1972
+  }, 
+  "3794": {
+    "description_de": "Triglavian Marauders", 
+    "description_en-us": "Triglavian Marauders", 
+    "description_es": "Triglavian Marauders", 
+    "description_fr": "Triglavian Marauders", 
+    "description_it": "Triglavian Marauders", 
+    "description_ja": "Triglavian Marauders", 
+    "description_ko": "Triglavian Marauders", 
+    "description_ru": "Triglavian Marauders", 
+    "description_zh": "Triglavian Marauders", 
+    "descriptionID": 1021708, 
+    "hasTypes": 1, 
+    "iconID": 21420, 
+    "name_de": "Triglavian", 
+    "name_en-us": "Triglavian", 
+    "name_es": "Triglavian", 
+    "name_fr": "Triglavian", 
+    "name_it": "Triglavian", 
+    "name_ja": "Triglavian", 
+    "name_ko": "Triglavian", 
+    "name_ru": "Triglavian", 
+    "name_zh": "Triglavian", 
+    "nameID": 1021707, 
+    "parentGroupID": 2023
   }
 }

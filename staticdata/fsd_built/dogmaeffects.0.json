@@ -98114,5 +98114,72 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "12739": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1022431, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12739, 
+    "effectName": "shipBonusEnergyNeutOptimalAC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 656, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12740": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1022434, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12740, 
+    "effectName": "shipBonusEnergyNosOptimalAC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 656, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
   }
 }
