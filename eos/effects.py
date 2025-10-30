@@ -41645,6 +41645,57 @@ class Effect12296(BaseEffect):
             ship.getModifiedItemAttr('shipBonusABC3'), skill='Amarr Battlecruiser', **kwargs)
 
 
+class Effect12329(BaseEffect):
+    """
+    shipMiningYieldBonusOreDestroyer1
+
+    Used by:
+    Variations of ship: Pioneer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            src.getModifiedItemAttr('shipBonusOreDestroyer1'), skill='Mining Destroyer', **kwargs)
+
+
+class Effect12330(BaseEffect):
+    """
+    shipMiningRangeBonusOreDestroyer2
+
+    Used by:
+    Ships named like: Pioneer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'maxRange',
+            src.getModifiedItemAttr('shipBonusOreDestroyer2'), skill='Mining Destroyer', **kwargs)
+
+
+class Effect12331(BaseEffect):
+    """
+    shipGasCloudDurationBonusOreDestroyer3
+
+    Used by:
+    Ships named like: Pioneer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            src.getModifiedItemAttr('shipBonusOreDestroyer3'), skill='Mining Destroyer', **kwargs)
+
+
 class Effect12552(BaseEffect):
     """
     shipRoleBonusOREExecutiveIssueMiningHoldAmount
@@ -41658,6 +41709,40 @@ class Effect12552(BaseEffect):
     @staticmethod
     def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.boostItemAttr('generalMiningHoldCapacity', mod.getModifiedItemAttr('oreExecutiveRoleBonusMiningHoldAmount'), **kwargs)
+
+
+class Effect12557(BaseEffect):
+    """
+    shipBonusGasCloudDurationRoleBonusOreMiningDestroyer
+
+    Used by:
+    Ships named like: Pioneer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            src.getModifiedItemAttr('shipBonusGasCloudDurationRoleBonusOreMiningDestroyer'), **kwargs)
+
+
+class Effect12559(BaseEffect):
+    """
+    shipShieldBoosterBonusOreExecutiveDestroyer4
+
+    Used by:
+    Ship: Pioneer Consortium Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('shipBonusOreDestroyer4'), skill='Mining Destroyer', **kwargs)
 
 
 class Effect12560(BaseEffect):
@@ -41896,6 +41981,23 @@ class Effect12591(BaseEffect):
     @staticmethod
     def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('miningScannerUpgrade', mod.getModifiedItemAttr('miningScannerUpgrade'), **kwargs)
+
+
+class Effect12596(BaseEffect):
+    """
+    shipMiningBonusYieldOreDestroyerRoleBonus
+
+    Used by:
+    Ships named like: Pioneer (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
+            src.getModifiedItemAttr('shipMiningBonusYieldOreDestroyerRoleBonus'), **kwargs)
 
 
 class Effect12753(BaseEffect):
