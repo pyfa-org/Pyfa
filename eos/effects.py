@@ -41645,6 +41645,56 @@ class Effect12296(BaseEffect):
             ship.getModifiedItemAttr('shipBonusABC3'), skill='Amarr Battlecruiser', **kwargs)
 
 
+class Effect12552(BaseEffect):
+    """
+    shipRoleBonusOREExecutiveIssueMiningHoldAmount
+
+    Used by:
+    Ships named like: Consortium Issue (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, mod, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('generalMiningHoldCapacity', mod.getModifiedItemAttr('oreExecutiveRoleBonusMiningHoldAmount'), **kwargs)
+
+
+class Effect12560(BaseEffect):
+    """
+    oreExecutiveRoleBonusSalvageDroneAdditionalAccessDifficultyRoleBonus
+
+    Used by:
+    Ships named like: Consortium Issue (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.drones.filteredItemIncrease(
+            lambda drone: drone.item.requiresSkill('Salvage Drone Operation'), 'accessDifficultyBonus',
+            container.getModifiedItemAttr('oreExecutiveRoleBonusSalvageDroneAdditionalAccessDifficulty'), **kwargs)
+
+
+class Effect12563(BaseEffect):
+    """
+    shipShieldBoosterBonusOreExecutiveFrigate
+
+    Used by:
+    Ship: Venture Consortium Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('OreMiningFrigateExecutiveShieldBoosterShipBonus'),
+            skill='Mining Frigate', **kwargs)
+
+
 class Effect12565(BaseEffect):
     """
     shipBonusDroneTrackingSpeedGBC1
@@ -41846,6 +41896,23 @@ class Effect12591(BaseEffect):
     @staticmethod
     def handler(fit, mod, context, projectionRange, **kwargs):
         fit.ship.increaseItemAttr('miningScannerUpgrade', mod.getModifiedItemAttr('miningScannerUpgrade'), **kwargs)
+
+
+class Effect12753(BaseEffect):
+    """
+    shipRoleBonusOREExecutiveIssueMiningCriticalHitChanceBonus
+
+    Used by:
+    Ships named like: Consortium Issue (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining'), 'miningCritChance',
+            ship.getModifiedItemAttr('shipRoleBonusOREExecutiveIssueMiningCriticalHitChance'), **kwargs)
 
 
 class Effect12759(BaseEffect):

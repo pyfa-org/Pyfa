@@ -925,6 +925,8 @@ class Fit:
                         lambda mod: (mod.item.requiresSkill("Repair Systems")
                                      or mod.item.requiresSkill("Capital Repair Systems")),
                         "armorDamageAmount", value, stackingPenalties=True)
+                if warfareBuffID == 2474:  # Mining burst charges
+                    self.ship.forceItemAttr("miningScannerUpgrade", value)
 
             del self.commandBonuses[warfareBuffID]
 
