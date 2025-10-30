@@ -41715,6 +41715,43 @@ class Effect12529(BaseEffect):
                 skill='Amarr Battlecruiser', **kwargs)
 
 
+class Effect12530(BaseEffect):
+    """
+    expeditionCommandDurationBonus
+
+    Used by:
+    Skill: Expedition Command
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        lvl = src.level
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Expedition Command'), 'buffDuration',
+            src.getModifiedItemAttr('durationBonus') * lvl, **kwargs)
+
+
+class Effect12531(BaseEffect):
+    """
+    expeditionCommandStrengthBonus
+
+    Used by:
+    Skill: Expedition Command Specialist
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        lvl = src.level
+        for i in (1, 2, 3, 4):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.item.requiresSkill('Expedition Command'), f'warfareBuff{i}Multiplier',
+                src.getModifiedItemAttr('commandStrengthBonus') * lvl, **kwargs)
+
+
 class Effect12537(BaseEffect):
     """
     shipBonusAnalyzerRangeECS1
@@ -41800,6 +41837,24 @@ class Effect12541(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'cpu',
             src.getModifiedItemAttr('shipBonusGasCloudScoopCPUreductionSOEECSrole'), **kwargs)
+
+
+class Effect12542(BaseEffect):
+    """
+    expeditionCommandMindlink
+
+    Used by:
+    Implants named like: Expedition Command Mindlink (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Expedition Command'), attrName,
+                src.getModifiedItemAttr('mindlinkBonus'), **kwargs)
 
 
 class Effect12543(BaseEffect):

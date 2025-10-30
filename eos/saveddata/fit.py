@@ -925,8 +925,25 @@ class Fit:
                         lambda mod: (mod.item.requiresSkill("Repair Systems")
                                      or mod.item.requiresSkill("Capital Repair Systems")),
                         "armorDamageAmount", value, stackingPenalties=True)
+                if warfareBuffID == 2464:  # Expedition Burst: Probe Strength
+                    self.modules.filteredChargeBoost(
+                        lambda mod: mod.charge.requiresSkill('Astrometrics'),
+                        'baseSensorStrength', value, stackingPenalties=True)
+                if warfareBuffID == 2465:  # Expedition Burst: Directional Scanner, Hacking and Salvager Range
+                    self.ship.boostItemAttr("maxDirectionalScanRange", value)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.group.name in ("Data Miners", "Salvager"), "maxRange", value, stackingPenalties=True)
+                if warfareBuffID == 2466:  # Expedition Burst: Maximum Scan Deviation Modifier
+                    self.modules.filteredChargeBoost(
+                        lambda mod: mod.charge.requiresSkill('Astrometrics'),
+                        'baseMaxScanDeviation', value, stackingPenalties=True)
+                if warfareBuffID == 2468:  # Expedition Burst: Virus Coherence
+                    self.modules.filteredItemIncrease(
+                        lambda mod: mod.item.group.name == "Data Miners", "virusCoherence", value)
                 if warfareBuffID == 2474:  # Mining burst charges
                     self.ship.forceItemAttr("miningScannerUpgrade", value)
+                if warfareBuffID == 2481:  # Expedition Burst: Salvager duration bonus
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Salvaging"), "duration", value)
 
             del self.commandBonuses[warfareBuffID]
 

@@ -775,6 +775,21 @@ class Miscellanea(ViewColumn):
                 elif buffId == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
                     textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
                     tooltipSections.append("mining crystal volatility")
+                elif buffId == 2464:  # Expedition Burst: Probe Strength
+                    textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
+                    tooltipSections.append("scan probe strength")
+                elif buffId == 2465:  # Expedition Burst: Directional Scanner, Hacking and Salvager Range
+                    textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
+                    tooltipSections.append("dscan, hacking & salvaging range")
+                elif buffId == 2466:  # Expedition Burst: Maximum Scan Deviation Modifier
+                    textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
+                    tooltipSections.append("scan probe deviation")
+                elif buffId == 2468:  # Expedition Burst: Virus Coherence
+                    textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}")
+                    tooltipSections.append("virus coherence")
+                elif buffId == 2481:  # Expedition Burst: Salvager duration bonus
+                    textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
+                    tooltipSections.append("salvager cycle time")
             if not textSections:
                 return '', None
             text = ' | '.join(textSections)
