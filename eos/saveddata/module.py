@@ -444,6 +444,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         wasteChance = self.getModifiedItemAttr("miningWasteProbability")
         wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
         wps = yps * max(0, min(1, wasteChance / 100)) * wasteMult
+        critChance = self.getModifiedItemAttr("miningCritChance")
+        critBonusMult = self.getModifiedItemAttr("miningCritBonusYield")
+        yps += yps * critChance * critBonusMult
         return yps, wps
 
     def isDealingDamage(self, ignoreState=False):
