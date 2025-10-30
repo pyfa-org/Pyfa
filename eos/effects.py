@@ -512,17 +512,6 @@ class Effect67(BaseEffect):
         module.reloadTime = 1000
 
 
-class Effect81(BaseEffect):
-    """
-    surveyScan
-
-    Used by:
-    Modules from group: Survey Scanner (3 of 3)
-    """
-
-    type = 'active'
-
-
 class Effect89(BaseEffect):
     """
     projectileWeaponSpeedMultiply
@@ -1896,7 +1885,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1013)
+    Items from category: Charge (608 of 1023)
     """
 
     type = 'passive'
@@ -2470,7 +2459,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (538 of 1013)
+    Items from category: Charge (544 of 1023)
     """
 
     type = 'passive'
@@ -3749,7 +3738,7 @@ class Effect1200(BaseEffect):
 
     Used by:
     Charges from group: Mercoxit Mining Crystal (6 of 6)
-    Charges from group: Mining Crystal (60 of 60)
+    Charges from group: Mining Crystal (66 of 66)
     """
 
     type = 'passive'
@@ -4970,9 +4959,7 @@ class Effect1643(BaseEffect):
     armoredCommandMindlink
 
     Used by:
-    Implant: Armored Command Mindlink
-    Implant: Federation Navy Command Mindlink
-    Implant: Imperial Navy Command Mindlink
+    Implants from group: Cyber Leadership (4 of 13)
     """
 
     type = 'passive'
@@ -4996,7 +4983,7 @@ class Effect1644(BaseEffect):
     skirmishCommandMindlink
 
     Used by:
-    Implants from group: Cyber Leadership (4 of 11)
+    Implants from group: Cyber Leadership (4 of 13)
     """
 
     type = 'passive'
@@ -5020,7 +5007,7 @@ class Effect1645(BaseEffect):
     shieldCommandMindlink
 
     Used by:
-    Implants from group: Cyber Leadership (4 of 11)
+    Implants from group: Cyber Leadership (4 of 13)
     """
 
     type = 'passive'
@@ -5044,7 +5031,7 @@ class Effect1646(BaseEffect):
     informationCommandMindlink
 
     Used by:
-    Implants from group: Cyber Leadership (4 of 11)
+    Implants from group: Cyber Leadership (4 of 13)
     """
 
     type = 'passive'
@@ -6737,6 +6724,7 @@ class Effect2251(BaseEffect):
     Used by:
     Ships from group: Command Ship (8 of 8)
     Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Odysseus
     Ship: Rorqual
     """
 
@@ -6766,6 +6754,7 @@ class Effect2252(BaseEffect):
     Ship: Astero
     Ship: Cenotaph
     Ship: Metamorphosis
+    Ship: Odysseus
     Ship: Rabisu
     Ship: Tholos
     """
@@ -10769,7 +10758,7 @@ class Effect3526(BaseEffect):
 
     Used by:
     Ships from group: Force Recon Ship (9 of 10)
-    Ship: Venture
+    Ships named like: Venture (2 of 2)
     Skill: Cynosural Field Theory
     """
 
@@ -11646,6 +11635,7 @@ class Effect3739(BaseEffect):
 
     Used by:
     Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Outrider
     """
 
     type = 'passive'
@@ -11662,6 +11652,7 @@ class Effect3740(BaseEffect):
 
     Used by:
     Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Outrider
     """
 
     type = 'passive'
@@ -11702,6 +11693,7 @@ class Effect3745(BaseEffect):
 
     Used by:
     Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Outrider
     """
 
     type = 'passive'
@@ -16349,7 +16341,7 @@ class Effect4902(BaseEffect):
 
     Used by:
     Ships from group: Assault Frigate (10 of 15)
-    Ships from group: Command Destroyer (5 of 5)
+    Ships from group: Command Destroyer (6 of 6)
     Ships from group: Heavy Assault Cruiser (9 of 14)
     """
 
@@ -17305,7 +17297,7 @@ class Effect5058(BaseEffect):
     miningYieldMultiplyPassive
 
     Used by:
-    Ship: Venture
+    Ships named like: Venture (2 of 2)
     """
 
     type = 'passive'
@@ -17866,7 +17858,7 @@ class Effect5139(BaseEffect):
     miningFrigateBonusOreMiningYield
 
     Used by:
-    Variations of ship: Venture (3 of 3)
+    Variations of ship: Venture (4 of 4)
     """
 
     type = 'passive'
@@ -18477,6 +18469,7 @@ class Effect5229(BaseEffect):
     Ships named like: Stratios (2 of 2)
     Ship: Astero
     Ship: Gnosis
+    Ship: Odysseus
     Ship: Praxis
     Ship: Sunesis
     """
@@ -18685,7 +18678,7 @@ class Effect5264(BaseEffect):
     warfareLinkCPUAddition
 
     Used by:
-    Modules from group: Command Burst (12 of 12)
+    Modules from group: Command Burst (15 of 15)
     Modules from group: Gang Coordinator (6 of 6)
     """
 
@@ -20350,6 +20343,7 @@ class Effect5460(BaseEffect):
     Ship: Astero
     Ship: Metamorphosis
     Ship: Nestor
+    Ship: Odysseus
     """
 
     type = 'passive'
@@ -21526,6 +21520,7 @@ class Effect5721(BaseEffect):
 
     Used by:
     Ships named like: Stratios (2 of 2)
+    Ship: Odysseus
     """
 
     type = 'passive'
@@ -24907,7 +24902,7 @@ class Effect6214(BaseEffect):
     roleBonusCDLinksPGReduction
 
     Used by:
-    Ships from group: Command Destroyer (5 of 5)
+    Ships from group: Command Destroyer (6 of 6)
     Ship: Porpoise
     """
 
@@ -25483,7 +25478,7 @@ class Effect6315(BaseEffect):
     eliteBonusCommandDestroyerSkirmish1
 
     Used by:
-    Ships from group: Command Destroyer (3 of 5)
+    Ships from group: Command Destroyer (3 of 6)
     """
 
     type = 'passive'
@@ -25501,8 +25496,7 @@ class Effect6316(BaseEffect):
     eliteBonusCommandDestroyerShield1
 
     Used by:
-    Ship: Bifrost
-    Ship: Stork
+    Ships from group: Command Destroyer (3 of 6)
     """
 
     type = 'passive'
@@ -25520,7 +25514,7 @@ class Effect6317(BaseEffect):
     eliteBonusCommandDestroyerMJFGspool2
 
     Used by:
-    Ships from group: Command Destroyer (5 of 5)
+    Ships from group: Command Destroyer (6 of 6)
     """
 
     type = 'passive'
@@ -25793,7 +25787,7 @@ class Effect6334(BaseEffect):
     eliteBonusCommandDestroyerInfo1
 
     Used by:
-    Ships from group: Command Destroyer (3 of 5)
+    Ships from group: Command Destroyer (3 of 6)
     """
 
     type = 'passive'
@@ -31175,6 +31169,7 @@ class Effect6735(BaseEffect):
     moduleBonusWarfareLinkInfo
 
     Used by:
+    Variations of module: Expedition Command Burst I (3 of 3)
     Variations of module: Information Command Burst I (2 of 2)
     """
 
@@ -31217,7 +31212,7 @@ class Effect6737(BaseEffect):
     chargeBonusWarfareCharge
 
     Used by:
-    Items from market group: Ammunition & Charges > Command Burst Charges (15 of 15)
+    Items from market group: Ammunition & Charges > Command Burst Charges (19 of 19)
     """
 
     type = 'offline'
@@ -31584,6 +31579,7 @@ class Effect6783(BaseEffect):
     Ships from group: Supercarrier (6 of 6)
     Ships from group: Titan (8 of 8)
     Subsystems named like: Offensive Support Processor (4 of 4)
+    Ship: Odysseus
     Ship: Orca
     Ship: Rorqual
     """
@@ -31848,7 +31844,7 @@ class Effect6845(BaseEffect):
     shipBonusCommandDestroyerRole1DefenderBonus
 
     Used by:
-    Ships from group: Command Destroyer (4 of 5)
+    Ships from group: Command Destroyer (5 of 6)
     """
 
     type = 'passive'
@@ -34789,7 +34785,7 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
-    Items from category: Ship (42 of 404)
+    Items from category: Ship (42 of 409)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
     Ships from group: Interceptor (10 of 10)
@@ -35258,6 +35254,7 @@ class Effect7193(BaseEffect):
     Used by:
     Celestials from group: Destructible Effect Beacon (4 of 6)
     Celestials named like: Triglavian Invasion System Effects (3 of 3)
+    Celestials named like: War HQ (4 of 4)
     """
 
     runTime = 'early'
@@ -37317,7 +37314,7 @@ class Effect8206(BaseEffect):
 
     Used by:
     Charges from group: Mercoxit Mining Crystal (6 of 6)
-    Charges from group: Mining Crystal (60 of 60)
+    Charges from group: Mining Crystal (66 of 66)
     """
 
     type = 'passive'
@@ -37999,8 +37996,7 @@ class Effect8313(BaseEffect):
     miningFrigateBonusGasCloudHarvestingDuration
 
     Used by:
-    Ship: Prospect
-    Ship: Venture
+    Variations of ship: Venture (3 of 4)
     """
 
     type = 'passive'
@@ -38018,8 +38014,7 @@ class Effect8315(BaseEffect):
     shipRoleBonusGasHarvestingYield
 
     Used by:
-    Ship: Prospect
-    Ship: Venture
+    Variations of ship: Venture (3 of 4)
     """
 
     type = 'passive'
@@ -41365,6 +41360,7 @@ class Effect12249(BaseEffect):
 
     Used by:
     Ship: Eos
+    Ship: Odysseus
     """
 
     type = 'passive'
@@ -41404,6 +41400,7 @@ class Effect12251(BaseEffect):
 
     Used by:
     Ship: Eos
+    Ship: Odysseus
     """
 
     type = 'passive'
@@ -41834,3 +41831,71 @@ class Effect12579(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Armor Plate', 'massAddition',
             ship.getModifiedItemAttr('shipBonusGB3'), skill='Gallente Battleship', **kwargs)
+
+
+class Effect12591(BaseEffect):
+    """
+    miningSensorArrayScannerUpgrade
+
+    Used by:
+    Modules from group: Survey Scanner (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, mod, context, projectionRange, **kwargs):
+        fit.ship.increaseItemAttr('miningScannerUpgrade', mod.getModifiedItemAttr('miningScannerUpgrade'), **kwargs)
+
+
+class Effect12759(BaseEffect):
+    """
+    miningCritChanceBonusOreIceOnline
+
+    Used by:
+    Modules from group: Survey Scanner (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
+            'miningCritChance', ship.getModifiedItemAttr('miningCritChanceBonus'), **kwargs)
+
+
+class Effect12760(BaseEffect):
+    """
+    miningCritBonusYieldBonusOreIceOnline
+
+    Used by:
+    Modules from group: Survey Scanner (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
+            'miningCritBonusYield', ship.getModifiedItemAttr('miningCritBonusYieldBonus'), **kwargs)
+
+
+class Effect12761(BaseEffect):
+    """
+    miningWasteChanceBonusOreIceOnline
+
+    Used by:
+    Modules from group: Survey Scanner (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: (mod.item.requiresSkill('Mining')
+                         or mod.item.requiresSkill('Ice Harvesting')
+                         or mod.item.requiresSkill('Gas Cloud Harvesting')),
+            'miningWasteProbability', ship.getModifiedItemAttr('miningWasteProbabilityBonus'), **kwargs)
