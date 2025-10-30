@@ -42249,6 +42249,40 @@ class Effect12753(BaseEffect):
             ship.getModifiedItemAttr('shipRoleBonusOREExecutiveIssueMiningCriticalHitChance'), **kwargs)
 
 
+class Effect12755(BaseEffect):
+    """
+    miningCritChanceSkillPostPercentLRSMBonus
+
+    Used by:
+    Skill: Mining Precision
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
+            'miningCritChance', src.getModifiedItemAttr('miningCritChanceBonus') * src.level, **kwargs)
+
+
+class Effect12757(BaseEffect):
+    """
+    miningCritYieldSkillPostPercentLRSMBonus
+
+    Used by:
+    Skill: Mining Bonanza Exploitation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
+            'miningCritBonusYield', src.getModifiedItemAttr('miningCritBonusYieldBonus') * src.level, **kwargs)
+
+
 class Effect12759(BaseEffect):
     """
     miningCritChanceBonusOreIceOnline
@@ -42260,10 +42294,10 @@ class Effect12759(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
-            'miningCritChance', ship.getModifiedItemAttr('miningCritChanceBonus'), **kwargs)
+            'miningCritChance', src.getModifiedItemAttr('miningCritChanceBonus'), **kwargs)
 
 
 class Effect12760(BaseEffect):
@@ -42277,10 +42311,10 @@ class Effect12760(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting'),
-            'miningCritBonusYield', ship.getModifiedItemAttr('miningCritBonusYieldBonus'), **kwargs)
+            'miningCritBonusYield', src.getModifiedItemAttr('miningCritBonusYieldBonus'), **kwargs)
 
 
 class Effect12761(BaseEffect):
@@ -42294,9 +42328,9 @@ class Effect12761(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
+    def handler(fit, src, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
             lambda mod: (mod.item.requiresSkill('Mining')
                          or mod.item.requiresSkill('Ice Harvesting')
                          or mod.item.requiresSkill('Gas Cloud Harvesting')),
-            'miningWasteProbability', ship.getModifiedItemAttr('miningWasteProbabilityBonus'), **kwargs)
+            'miningWasteProbability', src.getModifiedItemAttr('miningWasteProbabilityBonus'), **kwargs)
