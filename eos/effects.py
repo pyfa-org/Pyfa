@@ -41696,6 +41696,129 @@ class Effect12331(BaseEffect):
             src.getModifiedItemAttr('shipBonusOreDestroyer3'), skill='Mining Destroyer', **kwargs)
 
 
+class Effect12529(BaseEffect):
+    """
+    shipBonusArmorResistsUniformSOEABC1
+
+    Used by:
+    Ship: Odysseus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        damageTypes = ('Em', 'Explosive', 'Kinetic', 'Thermal')
+        for damageType in damageTypes:
+            fit.ship.boostItemAttr(
+                f'armor{damageType}DamageResonance', ship.getModifiedItemAttr('shipBonusABC1'),
+                skill='Amarr Battlecruiser', **kwargs)
+
+
+class Effect12537(BaseEffect):
+    """
+    shipBonusAnalyzerRangeECS1
+
+    Used by:
+    Ship: Odysseus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Data Miners', 'maxRange',
+            implant.getModifiedItemAttr('shipBonusSoEECS1'), skill='Expedition Command Ships', **kwargs)
+
+
+class Effect12538(BaseEffect):
+    """
+    shipBonusGasCloudScoopDurationECS2
+
+    Used by:
+    Ship: Odysseus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'duration',
+            src.getModifiedItemAttr('shipBonusSoEECS2'), skill='Expedition Command Ships', **kwargs)
+
+
+class Effect12539(BaseEffect):
+    """
+    shipBonusExplorationCommandStrengthDurationECS3
+
+    Used by:
+    Ship: Odysseus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Expedition Command'), attrName,
+                src.getModifiedItemAttr('shipBonusSoEECS3'), skill='Expedition Command Ships', **kwargs)
+
+
+class Effect12540(BaseEffect):
+    """
+    shipBonusArmorCommandStrengthDurationECS4
+
+    Used by:
+    Ship: Odysseus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Armored Command'), attrName,
+                src.getModifiedItemAttr('shipBonusSoEECS4'), skill='Expedition Command Ships', **kwargs)
+
+
+class Effect12541(BaseEffect):
+    """
+    shipBonusGasCloudScoopCPUreductionSOEECSrole
+
+    Used by:
+    Ship: Odysseus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Gas Cloud Harvesting'), 'cpu',
+            src.getModifiedItemAttr('shipBonusGasCloudScoopCPUreductionSOEECSrole'), **kwargs)
+
+
+class Effect12543(BaseEffect):
+    """
+    shipBonusRole6ExpeditionBurstDurationSOEECS
+
+    Used by:
+    Ship: Odysseus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Expedition Command'), 'buffDuration',
+            src.getModifiedItemAttr('shipBonusRole6'), **kwargs)
+
+
 class Effect12552(BaseEffect):
     """
     shipRoleBonusOREExecutiveIssueMiningHoldAmount
