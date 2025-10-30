@@ -39,6 +39,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
             ('r16', _t('Moon Uncommon')),
             ('r32', _t('Moon Rare')),
             ('r64', _t('Moon Exceptional')),
+            ('err', _t('Erratic')),
             ('misc', _t('Misc'))])
 
     def display(self, callingWindow, srcContext, mainItem, selection):

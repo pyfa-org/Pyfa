@@ -177,7 +177,8 @@ class Ammo:
                 260: 'r8',
                 261: 'r16',
                 262: 'r32',
-                263: 'r64'}
+                263: 'r64',
+                859: 'err'}
 
             prelim = {}
             for charge in chargesFlat:
