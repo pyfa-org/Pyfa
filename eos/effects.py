@@ -41711,6 +41711,60 @@ class Effect12552(BaseEffect):
         fit.ship.boostItemAttr('generalMiningHoldCapacity', mod.getModifiedItemAttr('oreExecutiveRoleBonusMiningHoldAmount'), **kwargs)
 
 
+class Effect12554(BaseEffect):
+    """
+    shipDroneHPandDamageOreDestroyer2
+
+    Used by:
+    Ship: Outrider
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in ('shieldCapacity', 'armorHP', 'hp', 'damageMultiplier'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'), attr,
+                ship.getModifiedItemAttr('shipBonusOreDestroyer2'), skill='Mining Destroyer', **kwargs)
+
+
+class Effect12555(BaseEffect):
+    """
+    shipBonusShieldAllResistancesOreDestroyer3
+
+    Used by:
+    Ship: Outrider
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('kinetic', 'thermal', 'explosive', 'em'):
+            fit.ship.boostItemAttr(
+                f'shield{type.capitalize()}DamageResonance', ship.getModifiedItemAttr('shipBonusOreDestroyer3'),
+                skill='Mining Destroyer', **kwargs)
+
+
+class Effect12556(BaseEffect):
+    """
+    eliteBonusCommandDestroyerMining1
+
+    Used by:
+    Ship: Outrider
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Mining Foreman'), attrName,
+                src.getModifiedItemAttr('eliteBonusCommandDestroyer1'), skill='Command Destroyers', **kwargs)
+
+
 class Effect12557(BaseEffect):
     """
     shipBonusGasCloudDurationRoleBonusOreMiningDestroyer
