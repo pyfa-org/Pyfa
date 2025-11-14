@@ -657,6 +657,20 @@
     "iconID": 24296, 
     "published": 1
   }, 
+  "2152": {
+    "categoryID": 2152, 
+    "categoryName_de": "QA- und Dev-Gruppen", 
+    "categoryName_en-us": "QA and Dev Groups", 
+    "categoryName_es": "Control de calidad y grupos de desarrolladores", 
+    "categoryName_fr": "Groupes QA et Dev", 
+    "categoryName_it": "QA and Dev Groups", 
+    "categoryName_ja": "QAと開発者グループ", 
+    "categoryName_ko": "QA and Dev Groups", 
+    "categoryName_ru": "Группы разработки и КК", 
+    "categoryName_zh": "质量保证和开发团队", 
+    "categoryNameID": 1025580, 
+    "published": 0
+  }, 
   "350001": {
     "categoryID": 350001, 
     "categoryName_de": "Infanterie", 

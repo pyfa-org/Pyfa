@@ -121,7 +121,7 @@ class Effect17(BaseEffect):
     mining
 
     Used by:
-    Drones from group: Mining Drone (10 of 10)
+    Drones from group: Mining Drone (14 of 14)
     """
 
     grouped = True
@@ -498,9 +498,9 @@ class Effect67(BaseEffect):
     miningLaser
 
     Used by:
-    Modules from group: Frequency Mining Laser (3 of 3)
-    Modules from group: Mining Laser (15 of 15)
-    Modules from group: Strip Miner (6 of 6)
+    Modules from group: Frequency Mining Laser (6 of 6)
+    Modules from group: Mining Laser (18 of 18)
+    Modules from group: Strip Miner (9 of 9)
     Module: Citizen Miner
     """
 
@@ -3764,7 +3764,7 @@ class Effect1212(BaseEffect):
     crystalMiningamountInfo2
 
     Used by:
-    Modules from group: Frequency Mining Laser (3 of 3)
+    Modules from group: Frequency Mining Laser (6 of 6)
     """
 
     runTime = 'late'
@@ -7836,7 +7836,7 @@ class Effect2726(BaseEffect):
     miningClouds
 
     Used by:
-    Modules named like: Gas Cloud (8 of 8)
+    Modules named like: Gas Cloud (10 of 10)
     """
 
     type = 'active'
@@ -9350,6 +9350,7 @@ class Effect3025(BaseEffect):
     Modules from group: Hybrid Weapon (107 of 223)
     Modules from group: Precursor Weapon (19 of 19)
     Modules from group: Projectile Weapon (101 of 167)
+    Modules named like: Pulse Laser (89 of 90)
     """
 
     type = 'overheat'
@@ -10512,6 +10513,7 @@ class Effect3483(BaseEffect):
     shipBonusMediumEnergyTurretDamagePirateFaction
 
     Used by:
+    Ships named like: Stratios (2 of 2)
     Ship: Ashimmu
     Ship: Fiend
     Ship: Gnosis
@@ -10596,22 +10598,6 @@ class Effect3493(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Cargo Scanner',
                                       'cargoScanRange', ship.getModifiedItemAttr('cargoScannerRangeBonus'), **kwargs)
-
-
-class Effect3494(BaseEffect):
-    """
-    rorqualSurveyScannerRangeBonus
-
-    Used by:
-    Ship: Rorqual
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Survey Scanner',
-                                      'surveyScanRange', ship.getModifiedItemAttr('surveyScannerRangeBonus'), **kwargs)
 
 
 class Effect3495(BaseEffect):
@@ -11685,23 +11671,6 @@ class Effect3744(BaseEffect):
                                       src.getModifiedItemAttr('shipBonusICS2'), skill='Industrial Command Ships', **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff2Value',
                                       src.getModifiedItemAttr('shipBonusICS2'), skill='Industrial Command Ships', **kwargs)
-
-
-class Effect3745(BaseEffect):
-    """
-    zColinOrcaSurveyScannerBonus
-
-    Used by:
-    Ships from group: Industrial Command Ship (2 of 2)
-    Ship: Outrider
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Survey Scanner', 'surveyScanRange',
-                                      src.getModifiedItemAttr('roleBonusSurveyScannerRange'), **kwargs)
 
 
 class Effect3765(BaseEffect):
@@ -29440,7 +29409,7 @@ class Effect6624(BaseEffect):
 
 class Effect6625(BaseEffect):
     """
-    shipBonusCarrierA2SupportFighterBonus
+    shipBonusCarrierA2SupportFighterBonusRange
 
     Used by:
     Ship: Archon
@@ -29459,7 +29428,7 @@ class Effect6625(BaseEffect):
 
 class Effect6626(BaseEffect):
     """
-    shipBonusCarrierC2SupportFighterBonus
+    shipBonusCarrierC2SupportFighterBonusRange
 
     Used by:
     Ship: Chimera
@@ -29478,7 +29447,7 @@ class Effect6626(BaseEffect):
 
 class Effect6627(BaseEffect):
     """
-    shipBonusCarrierG2SupportFighterBonus
+    shipBonusCarrierG2SupportFighterBonusRange
 
     Used by:
     Ship: Thanatos
@@ -29497,7 +29466,7 @@ class Effect6627(BaseEffect):
 
 class Effect6628(BaseEffect):
     """
-    shipBonusCarrierM2SupportFighterBonus
+    shipBonusCarrierM2SupportFighterBonusRange
 
     Used by:
     Ship: Nidhoggur
@@ -40772,6 +40741,7 @@ class Effect12098(BaseEffect):
 
     Used by:
     Ships from group: Carrier (4 of 4)
+    Ships from group: Supercarrier (6 of 6)
     """
 
     type = 'passive'
@@ -41882,10 +41852,7 @@ class Effect12543(BaseEffect):
 
 class Effect12552(BaseEffect):
     """
-    shipRoleBonusOREExecutiveIssueMiningHoldAmount
-
-    Used by:
-    Ships named like: Consortium Issue (2 of 2)
+    Not used by any item
     """
 
     type = 'passive'
@@ -42211,7 +42178,7 @@ class Effect12591(BaseEffect):
     miningSensorArrayScannerUpgrade
 
     Used by:
-    Modules from group: Survey Scanner (3 of 3)
+    Modules from group: Mining Survey Chipset (4 of 4)
     """
 
     type = 'passive'
@@ -42311,7 +42278,7 @@ class Effect12757(BaseEffect):
     miningCritYieldSkillPostPercentLRSMBonus
 
     Used by:
-    Skill: Mining Bonanza Exploitation
+    Skill: Mining Exploitation
     """
 
     type = 'passive'
@@ -42328,7 +42295,7 @@ class Effect12759(BaseEffect):
     miningCritChanceBonusOreIceOnline
 
     Used by:
-    Modules from group: Survey Scanner (3 of 3)
+    Modules from group: Mining Survey Chipset (4 of 4)
     """
 
     type = 'passive'
@@ -42345,7 +42312,7 @@ class Effect12760(BaseEffect):
     miningCritBonusYieldBonusOreIceOnline
 
     Used by:
-    Modules from group: Survey Scanner (3 of 3)
+    Modules from group: Mining Survey Chipset (4 of 4)
     """
 
     type = 'passive'
@@ -42362,7 +42329,7 @@ class Effect12761(BaseEffect):
     miningWasteChanceBonusOreIceOnline
 
     Used by:
-    Modules from group: Survey Scanner (3 of 3)
+    Modules from group: Mining Survey Chipset (4 of 4)
     """
 
     type = 'passive'

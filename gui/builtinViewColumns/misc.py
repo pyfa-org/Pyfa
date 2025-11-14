@@ -701,7 +701,7 @@ class Miscellanea(ViewColumn):
                 formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
             )
             return text, tooltip
-        elif itemGroup in ("Cargo Scanner", "Ship Scanner", "Survey Scanner"):
+        elif itemGroup in ("Cargo Scanner", "Ship Scanner"):
             duration = stuff.getModifiedItemAttr("duration")
             if not duration:
                 return "", None

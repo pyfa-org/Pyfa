@@ -66260,10 +66260,18 @@
         "modifiedAttributeID": 2362, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5981, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6584": {
@@ -66304,10 +66312,18 @@
         "modifiedAttributeID": 2366, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5982, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6585": {
@@ -66348,10 +66364,18 @@
         "modifiedAttributeID": 2370, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5983, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6586": {
@@ -66392,10 +66416,18 @@
         "modifiedAttributeID": 2374, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5984, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6587": {
@@ -68202,7 +68234,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 6625, 
-    "effectName": "shipBonusCarrierA2SupportFighterBonus", 
+    "effectName": "shipBonusCarrierA2SupportFighterBonusRange", 
     "electronicChance": 0, 
     "guid": "", 
     "isAssistance": 0, 
@@ -68228,13 +68260,14 @@
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6626": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 6626, 
-    "effectName": "shipBonusCarrierC2SupportFighterBonus", 
+    "effectName": "shipBonusCarrierC2SupportFighterBonusRange", 
     "electronicChance": 0, 
     "guid": "", 
     "isAssistance": 0, 
@@ -68260,13 +68293,14 @@
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6627": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 6627, 
-    "effectName": "shipBonusCarrierG2SupportFighterBonus", 
+    "effectName": "shipBonusCarrierG2SupportFighterBonusRange", 
     "electronicChance": 0, 
     "guid": "", 
     "isAssistance": 0, 
@@ -68292,13 +68326,14 @@
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6628": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 6628, 
-    "effectName": "shipBonusCarrierM2SupportFighterBonus", 
+    "effectName": "shipBonusCarrierM2SupportFighterBonusRange", 
     "electronicChance": 0, 
     "guid": "", 
     "isAssistance": 0, 
@@ -68324,6 +68359,7 @@
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6629": {
@@ -97863,15 +97899,15 @@
     "rangeChance": 0
   }, 
   "12329": {
-    "description_de": "Automatically generated effect", 
+    "description_de": "Automatisch erzeugter Effekt", 
     "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
     "description_it": "Automatically generated effect", 
-    "description_ja": "Automatically generated effect", 
-    "description_ko": "Automatically generated effect", 
-    "description_ru": "Automatically generated effect", 
-    "description_zh": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
     "descriptionID": 1016660, 
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -97897,15 +97933,15 @@
     "rangeChance": 0
   }, 
   "12330": {
-    "description_de": "Automatically generated effect", 
+    "description_de": "Automatisch erzeugter Effekt", 
     "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
     "description_it": "Automatically generated effect", 
-    "description_ja": "Automatically generated effect", 
-    "description_ko": "Automatically generated effect", 
-    "description_ru": "Automatically generated effect", 
-    "description_zh": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
     "descriptionID": 1016661, 
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -97930,15 +97966,15 @@
     "rangeChance": 0
   }, 
   "12331": {
-    "description_de": "Automatically generated effect", 
+    "description_de": "Automatisch erzeugter Effekt", 
     "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
     "description_it": "Automatically generated effect", 
-    "description_ja": "Automatically generated effect", 
-    "description_ko": "Automatically generated effect", 
-    "description_ru": "Automatically generated effect", 
-    "description_zh": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
     "descriptionID": 1016662, 
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -98366,26 +98402,26 @@
     "rangeChance": 0
   }, 
   "12542": {
-    "description_de": "Automatically generated effect", 
+    "description_de": "Automatisch erzeugter Effekt", 
     "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
     "description_it": "Automatically generated effect", 
-    "description_ja": "Automatically generated effect", 
-    "description_ko": "Automatically generated effect", 
-    "description_ru": "Automatically generated effect", 
-    "description_zh": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
     "descriptionID": 1017865, 
     "disallowAutoRepeat": 0, 
-    "displayName_de": "expeditionCommandMindlink", 
+    "displayName_de": "Expeditionskommando-Mind-Link", 
     "displayName_en-us": "expeditionCommandMindlink", 
-    "displayName_es": "expeditionCommandMindlink", 
+    "displayName_es": "Enlace mental de mando de expedición", 
     "displayName_fr": "expeditionCommandMindlink", 
     "displayName_it": "expeditionCommandMindlink", 
-    "displayName_ja": "expeditionCommandMindlink", 
+    "displayName_ja": "探査コマンドマインドリンク", 
     "displayName_ko": "expeditionCommandMindlink", 
     "displayName_ru": "expeditionCommandMindlink", 
-    "displayName_zh": "expeditionCommandMindlink", 
+    "displayName_zh": "远征指挥思维网络芯片", 
     "displayNameID": 1017866, 
     "effectCategory": 0, 
     "effectID": 12542, 
@@ -99131,16 +99167,136 @@
     "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
+  "12592": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12592, 
+    "effectName": "shipBonusCarrierA5SupportFighterBonusEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2211, 
+        "modifyingAttributeID": 5981, 
+        "operation": 6, 
+        "skillTypeID": 40573
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12593": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12593, 
+    "effectName": "shipBonusCarrierC5SupportFighterBonusEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2246, 
+        "modifyingAttributeID": 5982, 
+        "operation": 6, 
+        "skillTypeID": 40573
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2247, 
+        "modifyingAttributeID": 5982, 
+        "operation": 6, 
+        "skillTypeID": 40573
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2248, 
+        "modifyingAttributeID": 5982, 
+        "operation": 6, 
+        "skillTypeID": 40573
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2249, 
+        "modifyingAttributeID": 5982, 
+        "operation": 6, 
+        "skillTypeID": 40573
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12594": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12594, 
+    "effectName": "shipBonusCarrierG5SupportFighterBonusSpeed", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2151, 
+        "modifyingAttributeID": 5983, 
+        "operation": 6, 
+        "skillTypeID": 40573
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12595": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12595, 
+    "effectName": "shipBonusCarrierM5SupportFighterBonusEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2184, 
+        "modifyingAttributeID": 5984, 
+        "operation": 6, 
+        "skillTypeID": 40573
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
   "12596": {
-    "description_de": "Automatically generated effect", 
+    "description_de": "Automatisch erzeugter Effekt", 
     "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
     "description_it": "Automatically generated effect", 
-    "description_ja": "Automatically generated effect", 
-    "description_ko": "Automatically generated effect", 
-    "description_ru": "Automatically generated effect", 
-    "description_zh": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
     "descriptionID": 1021646, 
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -99162,6 +99318,226 @@
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12597": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 12597, 
+    "effectName": "moduleBonusIntegratedSensorArray", 
+    "electronicChance": 0, 
+    "guid": "effects.TriageMode", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 104, 
+        "modifyingAttributeID": 105, 
+        "operation": 2
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 564, 
+        "modifyingAttributeID": 566, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 211, 
+        "modifyingAttributeID": 1027, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 210, 
+        "modifyingAttributeID": 1029, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 208, 
+        "modifyingAttributeID": 1030, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 209, 
+        "modifyingAttributeID": 1028, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2354, 
+        "modifyingAttributeID": 2354, 
+        "operation": 2
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2343, 
+        "modifyingAttributeID": 2343, 
+        "operation": 2
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 211, 
+        "modifyingAttributeID": 1027, 
+        "operation": 6, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 210, 
+        "modifyingAttributeID": 1029, 
+        "operation": 6, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 208, 
+        "modifyingAttributeID": 1030, 
+        "operation": 6, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 209, 
+        "modifyingAttributeID": 1028, 
+        "operation": 6, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 76, 
+        "modifyingAttributeID": 237, 
+        "operation": 4
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 797, 
+        "modifyingAttributeID": 797, 
+        "operation": 7
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 2346, 
+        "operation": 6, 
+        "skillTypeID": 21802
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 73, 
+        "modifyingAttributeID": 2346, 
+        "operation": 6, 
+        "skillTypeID": 21803
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5988, 
+        "operation": 6, 
+        "skillTypeID": 21802
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 5988, 
+        "operation": 6, 
+        "skillTypeID": 21803
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12739": {
+    "description_de": "Automatisch erzeugter Effekt", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
+    "descriptionID": 1022431, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12739, 
+    "effectName": "shipBonusEnergyNeutOptimalAC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 656, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12740": {
+    "description_de": "Automatisch erzeugter Effekt", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
+    "descriptionID": 1022434, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12740, 
+    "effectName": "shipBonusEnergyNosOptimalAC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 656, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "12753": {
