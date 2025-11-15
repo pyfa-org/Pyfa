@@ -195,7 +195,7 @@ class Miscellanea(ViewColumn):
             tooltip = "Warp core strength modification"
             return text, tooltip
         elif (
-            itemGroup in ("Stasis Web", "Stasis Webifying Drone", "Structure Stasis Webifier") or
+            itemGroup in ("Stasis Web", "Stasis Grappler", "Stasis Webifying Drone", "Structure Stasis Webifier") or
             (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEWeb" in item.effects)
         ):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
