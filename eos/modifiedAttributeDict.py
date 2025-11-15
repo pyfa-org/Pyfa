@@ -324,7 +324,7 @@ class ModifiedAttributeDict(MutableMapping):
                 cappingAttrKeyCache[key] = cappingKey
 
         if cappingKey:
-            cappingValue = self.original.get(cappingKey, self.__calculateValue(cappingKey))
+            cappingValue = self[cappingKey]
             cappingValue = cappingValue.value if hasattr(cappingValue, "value") else cappingValue
         else:
             cappingValue = None

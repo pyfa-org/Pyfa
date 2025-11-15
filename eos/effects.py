@@ -41850,18 +41850,6 @@ class Effect12543(BaseEffect):
             src.getModifiedItemAttr('shipBonusRole6'), **kwargs)
 
 
-class Effect12552(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, mod, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('generalMiningHoldCapacity', mod.getModifiedItemAttr('oreExecutiveRoleBonusMiningHoldAmount'), **kwargs)
-
-
 class Effect12554(BaseEffect):
     """
     shipDroneHPandDamageOreDestroyer2
@@ -42188,6 +42176,75 @@ class Effect12591(BaseEffect):
         fit.ship.increaseItemAttr('miningScannerUpgrade', mod.getModifiedItemAttr('miningScannerUpgrade'), **kwargs)
 
 
+class Effect12592(BaseEffect):
+    """
+    shipBonusCarrierA5SupportFighterBonusEffect
+
+    Used by:
+    Ship: Archon
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Support Fighters'), 'fighterAbilityEnergyNeutralizerAmount',
+            src.getModifiedItemAttr('shipBonusCarrierA5'), skill='Amarr Carrier', **kwargs)
+
+
+class Effect12593(BaseEffect):
+    """
+    shipBonusCarrierC5SupportFighterBonusEffect
+
+    Used by:
+    Ship: Chimera
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for sensorType in ('Radar', 'Magnetometric', 'Ladar', 'Gravimetric'):
+            fit.fighters.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Support Fighters'), f'fighterAbilityECMStrength{sensorType}',
+                src.getModifiedItemAttr('shipBonusCarrierC5'), skill='Caldari Carrier', **kwargs)
+
+
+class Effect12594(BaseEffect):
+    """
+    shipBonusCarrierG5SupportFighterBonusSpeed
+
+    Used by:
+    Ship: Thanatos
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Support Fighters'), 'fighterAbilityAfterburnerSpeedBonus',
+            src.getModifiedItemAttr('shipBonusCarrierG5'), skill='Gallente Carrier', **kwargs)
+
+
+class Effect12595(BaseEffect):
+    """
+    shipBonusCarrierM5SupportFighterBonusEffect
+
+    Used by:
+    Ship: Nidhoggur
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Support Fighters'), 'fighterAbilityStasisWebifierSpeedPenalty',
+            src.getModifiedItemAttr('shipBonusCarrierM5'), skill='Minmatar Carrier', **kwargs)
+
+
 class Effect12596(BaseEffect):
     """
     shipMiningBonusYieldOreDestroyerRoleBonus
@@ -42203,6 +42260,37 @@ class Effect12596(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Mining'), 'miningAmount',
             src.getModifiedItemAttr('shipMiningBonusYieldOreDestroyerRoleBonus'), **kwargs)
+
+
+class Effect12597(BaseEffect):
+    """
+    moduleBonusIntegratedSensorArray
+
+    Used by:
+    Module: Integrated Sensor Array
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('scanResolution', src.getModifiedItemAttr('scanResolutionBonus'), stackingPenalties=True, **kwargs)
+        fit.ship.multiplyItemAttr('maxTargetRange', src.getModifiedItemAttr('maxTargetRangeMultiplier'), stackingPenalties=True, **kwargs)
+        fit.ship.forceItemAttr('maximumRangeCap', src.getModifiedItemAttr('maximumRangeCap'), **kwargs)
+
+        for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
+            attr = 'scan{}Strength'.format(scanType)
+            bonus = src.getModifiedItemAttr('scan{}StrengthPercent'.format(scanType))
+            fit.ship.boostItemAttr(attr, bonus, stackingPenalties=True, **kwargs)
+            fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), attr, bonus,
+                                           stackingPenalties=True, **kwargs)
+
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Shield Operation') or mod.item.requiresSkill('Capital Repair Systems'),
+            'duration', src.getModifiedItemAttr('siegeLocalLogisticsDurationBonus'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Shield Operation') or mod.item.requiresSkill('Capital Repair Systems'),
+            'capacitorNeed', src.getModifiedItemAttr('siegeLocalLogisticsCapacitorNeedBonus'), **kwargs)
 
 
 class Effect12739(BaseEffect):

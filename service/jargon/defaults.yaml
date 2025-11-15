@@ -949,6 +949,9 @@ resebo:
 nsa:
   - 'nsa'
   - 'networked sensor array'
+isa:
+  - 'isa'
+  - 'integrated sensor array'
 sigamp:
   - 'sigamp'
   - 'signal amplifier'
