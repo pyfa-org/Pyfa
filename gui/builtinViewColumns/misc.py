@@ -766,9 +766,9 @@ class Miscellanea(ViewColumn):
                 elif buffId == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
                     textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
                     tooltipSections.append("AB/MWD speed increase")
-                elif buffId == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
+                elif buffId == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining Range
                     textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
-                    tooltipSections.append("mining/survey module range")
+                    tooltipSections.append("mining module range")
                 elif buffId == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
                     textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
                     tooltipSections.append("mining module duration & capacitor use")
@@ -790,6 +790,12 @@ class Miscellanea(ViewColumn):
                 elif buffId == 2481:  # Expedition Burst: Salvager duration bonus
                     textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
                     tooltipSections.append("salvager cycle time")
+                elif buffId == 2516:  # Mining Burst: Mining Crit Chance
+                    textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
+                    tooltipSections.append("crit chance")
+                elif buffId == 2517:  # Mining Burst: Mining Residue Chance Reduction
+                    textSections.append(f"{formatAmount(buffValue, 3, 0, 3, forceSign=True)}%")
+                    tooltipSections.append("waste chance")
             if not textSections:
                 return '', None
             text = ' | '.join(textSections)

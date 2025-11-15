@@ -702,14 +702,11 @@ class Fit:
                                                                mod.item.requiresSkill("High Speed Maneuvering"),
                                                    "speedFactor", value, stackingPenalties=True)
 
-                if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
+                if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining Range
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
                                                                mod.item.requiresSkill("Ice Harvesting") or
                                                                mod.item.requiresSkill("Gas Cloud Harvesting"),
                                                    "maxRange", value, stackingPenalties=True)
-
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
-                                                   "surveyScanRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
@@ -944,6 +941,17 @@ class Fit:
                     self.ship.forceItemAttr("miningScannerUpgrade", value)
                 if warfareBuffID == 2481:  # Expedition Burst: Salvager duration bonus
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Salvaging"), "duration", value)
+                if warfareBuffID == 2516:  # Mining Burst: Mining Crit Chance
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting"),
+                        "miningCritChance", value)
+                if warfareBuffID == 2517:  # Mining Burst: Mining Residue Chance Reduction
+                    self.modules.filteredItemBoost(
+                        lambda mod: (
+                                mod.item.requiresSkill("Mining")
+                                or mod.item.requiresSkill("Ice Harvesting")
+                                or mod.item.requiresSkill("Gas Cloud Harvesting")),
+                        "miningWasteProbability", value)
 
             del self.commandBonuses[warfareBuffID]
 
