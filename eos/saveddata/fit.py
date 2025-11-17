@@ -140,8 +140,8 @@ class Fit:
         self.__remoteRepMap = {}
         self.__minerYield = None
         self.__droneYield = None
-        self.__minerWaste = None
-        self.__droneWaste = None
+        self.__minerDrain = None
+        self.__droneDrain = None
         self.__droneDps = None
         self.__droneVolley = None
         self.__sustainableTank = None
@@ -378,11 +378,11 @@ class Fit:
         return self.__minerYield
 
     @property
-    def minerWaste(self):
-        if self.__minerWaste is None:
+    def minerDrain(self):
+        if self.__minerDrain is None:
             self.calculatemining()
 
-        return self.__minerWaste
+        return self.__minerDrain
 
     @property
     def droneYield(self):
@@ -392,19 +392,19 @@ class Fit:
         return self.__droneYield
 
     @property
-    def droneWaste(self):
-        if self.__droneWaste is None:
+    def droneDrain(self):
+        if self.__droneDrain is None:
             self.calculatemining()
 
-        return self.__droneWaste
+        return self.__droneDrain
 
     @property
     def totalYield(self):
         return self.droneYield + self.minerYield
 
     @property
-    def totalWaste(self):
-        return self.droneWaste + self.minerWaste
+    def totalDrain(self):
+        return self.droneDrain + self.minerDrain
 
     @property
     def maxTargets(self):
@@ -518,8 +518,8 @@ class Fit:
         self.__remoteRepMap = {}
         self.__minerYield = None
         self.__droneYield = None
-        self.__minerWaste = None
-        self.__droneWaste = None
+        self.__minerDrain = None
+        self.__droneDrain = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
         self.__droneDps = None
@@ -1734,21 +1734,21 @@ class Fit:
 
     def calculatemining(self):
         minerYield = 0
-        minerWaste = 0
+        minerDrain = 0
         droneYield = 0
-        droneWaste = 0
+        droneDrain = 0
 
         for mod in self.modules:
             minerYield += mod.getMiningYPS()
-            minerWaste += mod.getMiningWPS()
+            minerDrain += mod.getMiningDPS()
         for drone in self.drones:
             droneYield += drone.getMiningYPS()
-            droneWaste += drone.getMiningWPS()
+            droneDrain += drone.getMiningDPS()
 
         self.__minerYield = minerYield
-        self.__minerWaste = minerWaste
+        self.__minerDrain = minerDrain
         self.__droneYield = droneYield
-        self.__droneWaste = droneWaste
+        self.__droneDrain = droneDrain
 
     def calculateWeaponDmgStats(self, spoolOptions):
         weaponVolley = DmgTypes.default()

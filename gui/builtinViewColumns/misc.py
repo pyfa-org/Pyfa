@@ -27,6 +27,7 @@ from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
+from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 import eos.config
 
@@ -547,18 +548,24 @@ class Miscellanea(ViewColumn):
             if not yps:
                 return "", None
             yph = yps * 3600
-            wps = stuff.getMiningWPS(ignoreState=True)
-            wph = wps * 3600
+            dps = stuff.getMiningDPS(ignoreState=True)
+            dph = dps * 3600
+            try:
+                efficiency = yps / dps
+            except ZeroDivisionError:
+                efficiency = 0
             textParts = []
-            textParts.append(formatAmount(yps, 3, 0, 3))
             tipLines = []
+            textParts.append('{} m\u00B3/s'.format(formatAmount(yps, 3, 0, 3)))
             tipLines.append("{} m\u00B3 mining yield per second ({} m\u00B3 per hour)".format(
                 formatAmount(yps, 3, 0, 3), formatAmount(yph, 3, 0, 3)))
-            if wps > 0:
-                textParts.append(formatAmount(wps, 3, 0, 3))
-                tipLines.append("{} m\u00B3 mining waste per second ({} m\u00B3 per hour)".format(
-                    formatAmount(wps, 3, 0, 3), formatAmount(wph, 3, 0, 3)))
-            text = '{} m\u00B3/s'.format('+'.join(textParts))
+            tipLines.append("{} m\u00B3 mining drain per second ({} m\u00B3 per hour)".format(
+                formatAmount(dps, 3, 0, 3), formatAmount(dph, 3, 0, 3)))
+            if floatUnerr(efficiency) != 1:
+                eff_text = '{}%'.format(formatAmount(efficiency * 100, 4, 0, 0))
+                textParts.append(eff_text)
+                tipLines.append(f"{eff_text} mining efficiency")
+            text = '{}'.format(' | '.join(textParts))
             tooltip = '\n'.join(tipLines)
             return text, tooltip
         elif itemGroup == "Logistic Drone":

@@ -82,7 +82,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         self.__baseVolley = None
         self.__baseRRAmount = None
         self.__miningYield = None
-        self.__miningWaste = None
+        self.__miningDrain = None
         self.__ehp = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self._item.attributes
@@ -240,15 +240,15 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         if not ignoreState and self.amountActive <= 0:
             return 0
         if self.__miningYield is None:
-            self.__miningYield, self.__miningWaste = self.__calculateMining()
+            self.__miningYield, self.__miningDrain = self.__calculateMining()
         return self.__miningYield
 
-    def getMiningWPS(self, ignoreState=False):
+    def getMiningDPS(self, ignoreState=False):
         if not ignoreState and self.amountActive <= 0:
             return 0
-        if self.__miningWaste is None:
-            self.__miningYield, self.__miningWaste = self.__calculateMining()
-        return self.__miningWaste
+        if self.__miningDrain is None:
+            self.__miningYield, self.__miningDrain = self.__calculateMining()
+        return self.__miningDrain
 
     def __calculateMining(self):
         if self.mines is True:
@@ -262,8 +262,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
                 yps = yield_ / (cycleTime / 1000.0)
             wasteChance = self.getModifiedItemAttr("miningWasteProbability")
             wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
-            wps = yps * max(0, min(1, wasteChance / 100)) * wasteMult
-            return yps, wps
+            dps = yps * (1 + max(0, min(1, wasteChance / 100)) * wasteMult)
+            return yps, dps
         else:
             return 0, 0
 
@@ -335,7 +335,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, Mu
         self.__baseVolley = None
         self.__baseRRAmount = None
         self.__miningYield = None
-        self.__miningWaste = None
+        self.__miningDrain = None
         self.__ehp = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()

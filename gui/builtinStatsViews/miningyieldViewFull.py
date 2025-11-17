@@ -130,9 +130,9 @@ class MiningYieldViewFull(StatsView):
     def refreshPanel(self, fit):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, lambda: fit.minerWaste, 3, 0, 0, "{}{} m\u00B3/s", None),
-                 ("labelFullminingyieldDrone", lambda: fit.droneYield, lambda: fit.droneWaste, 3, 0, 0, "{}{} m\u00B3/s", None),
-                 ("labelFullminingyieldTotal", lambda: fit.totalYield, lambda: fit.totalWaste, 3, 0, 0, "{}{} m\u00B3/s", None))
+        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, lambda: fit.minerDrain, 3, 0, 0, "{} m\u00B3/s", None),
+                 ("labelFullminingyieldDrone", lambda: fit.droneYield, lambda: fit.droneDrain, 3, 0, 0, "{} m\u00B3/s", None),
+                 ("labelFullminingyieldTotal", lambda: fit.totalYield, lambda: fit.totalDrain, 3, 0, 0, "{} m\u00B3/s", None))
 
         def processValue(value):
             value = value() if fit is not None else 0
@@ -140,23 +140,26 @@ class MiningYieldViewFull(StatsView):
             return value
 
         counter = 0
-        for labelName, yieldValue, wasteValue, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, yieldValue, drainValue, prec, lowest, highest, valueFormat, altFormat in stats:
             label = getattr(self, labelName)
             yieldValue = processValue(yieldValue)
-            wasteValue = processValue(wasteValue)
-            if self._cachedValues[counter] != (yieldValue, wasteValue):
+            drainValue = processValue(drainValue)
+            if self._cachedValues[counter] != (yieldValue, drainValue):
+                try:
+                    efficiency = '{}%'.format(formatAmount(yieldValue / drainValue * 100, 4, 0, 0))
+                except ZeroDivisionError:
+                    efficiency = '0%'
                 yps = formatAmount(yieldValue, prec, lowest, highest)
                 yph = formatAmount(yieldValue * 3600, prec, lowest, highest)
-                wps = formatAmount(wasteValue, prec, lowest, highest)
-                wph = formatAmount(wasteValue * 3600, prec, lowest, highest)
-                wasteSuffix = '\u02b7' if wasteValue > 0 else ''
-                label.SetLabel(valueFormat.format(yps, wasteSuffix))
+                dps = formatAmount(drainValue, prec, lowest, highest)
+                dph = formatAmount(drainValue * 3600, prec, lowest, highest)
+                label.SetLabel(valueFormat.format(yps))
                 tipLines = []
-                tipLines.append("{} m\u00B3 mining yield per second ({} m\u00B3 per hour)".format(yps, yph))
-                if wasteValue > 0:
-                    tipLines.append("{} m\u00B3 mining waste per second ({} m\u00B3 per hour)".format(wps, wph))
+                tipLines.append("{} m\u00B3 yield per second ({} m\u00B3 per hour)".format(yps, yph))
+                tipLines.append("{} m\u00B3 drain per second ({} m\u00B3 per hour)".format(dps, dph))
+                tipLines.append(f'{efficiency} efficiency')
                 label.SetToolTip(wx.ToolTip('\n'.join(tipLines)))
-                self._cachedValues[counter] = (yieldValue, wasteValue)
+                self._cachedValues[counter] = (yieldValue, drainValue)
             counter += 1
         self.panel.Layout()
         self.headerPanel.Layout()

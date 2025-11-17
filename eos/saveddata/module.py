@@ -127,7 +127,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         self.__baseVolley = None
         self.__baseRRAmount = None
         self.__miningYield = None
-        self.__miningWaste = None
+        self.__miningDrain = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -418,17 +418,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         if not ignoreState and self.state < FittingModuleState.ACTIVE:
             return 0
         if self.__miningYield is None:
-            self.__miningYield, self.__miningWaste = self.__calculateMining()
+            self.__miningYield, self.__miningDrain = self.__calculateMining()
         return self.__miningYield
 
-    def getMiningWPS(self, ignoreState=False):
+    def getMiningDPS(self, ignoreState=False):
         if self.isEmpty:
             return 0
         if not ignoreState and self.state < FittingModuleState.ACTIVE:
             return 0
-        if self.__miningWaste is None:
-            self.__miningYield, self.__miningWaste = self.__calculateMining()
-        return self.__miningWaste
+        if self.__miningDrain is None:
+            self.__miningYield, self.__miningDrain = self.__calculateMining()
+        return self.__miningDrain
 
     def __calculateMining(self):
         yield_ = self.getModifiedItemAttr("miningAmount")
@@ -443,11 +443,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             yps = 0
         wasteChance = self.getModifiedItemAttr("miningWasteProbability")
         wasteMult = self.getModifiedItemAttr("miningWastedVolumeMultiplier")
-        wps = yps * max(0, min(1, wasteChance / 100)) * wasteMult
+        dps = yps * (1 + max(0, min(1, wasteChance / 100)) * wasteMult)
         critChance = self.getModifiedItemAttr("miningCritChance")
         critBonusMult = self.getModifiedItemAttr("miningCritBonusYield")
         yps += yps * critChance * critBonusMult
-        return yps, wps
+        return yps, dps
 
     def isDealingDamage(self, ignoreState=False):
         volleyParams = self.getVolleyParameters(ignoreState=ignoreState)
@@ -897,7 +897,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         self.__baseVolley = None
         self.__baseRRAmount = None
         self.__miningYield = None
-        self.__miningWaste = None
+        self.__miningDrain = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
