@@ -42448,7 +42448,8 @@ class Effect12761(BaseEffect):
             lambda mod: (mod.item.requiresSkill('Mining')
                          or mod.item.requiresSkill('Ice Harvesting')
                          or mod.item.requiresSkill('Gas Cloud Harvesting')),
-            'miningWasteProbability', src.getModifiedItemAttr('miningWasteProbabilityBonus'), **kwargs)
+            'miningWasteProbability', src.getModifiedItemAttr('miningWasteProbabilityBonus'),
+            stackingPenalties=True, **kwargs)
 
 
 class Effect12771(BaseEffect):

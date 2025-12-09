@@ -951,7 +951,7 @@ class Fit:
                                 mod.item.requiresSkill("Mining")
                                 or mod.item.requiresSkill("Ice Harvesting")
                                 or mod.item.requiresSkill("Gas Cloud Harvesting")),
-                        "miningWasteProbability", value)
+                        "miningWasteProbability", value, stackingPenalties=True)
 
             del self.commandBonuses[warfareBuffID]
 
