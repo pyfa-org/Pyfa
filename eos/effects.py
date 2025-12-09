@@ -1333,10 +1333,10 @@ class Effect446(BaseEffect):
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
+    Implants named like: Nirvana Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
-    Implant: AIR Nirvana Booster II
     Implant: Genolution Core Augmentation CA-3
     Implant: Sansha Modified 'Gnome' Implant
     Skill: Shield Management
@@ -1358,6 +1358,7 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
+    Implants named like: Wightstorm Rapture Booster (4 of 4)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
@@ -8398,6 +8399,7 @@ class Effect2803(BaseEffect):
 
     Used by:
     Implants named like: Harvest Damage Booster (4 of 4)
+    Implants named like: Wightstorm Vitarka Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
     """
@@ -9674,6 +9676,7 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
+    Implants named like: Wightstorm Sunyata Booster (4 of 4)
     Skill: Thermodynamics
     """
 
@@ -18029,6 +18032,7 @@ class Effect5189(BaseEffect):
 
     Used by:
     Implants named like: Tetrimon Precision Booster (4 of 4)
+    Implants named like: Wightstorm Manasikara Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -34760,7 +34764,7 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
-    Items from category: Ship (42 of 409)
+    Items from category: Ship (42 of 410)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
     Ships from group: Interceptor (10 of 10)
@@ -37749,6 +37753,23 @@ class Effect8279(BaseEffect):
         fit.ship.boostItemAttr(
             'capacity', ship.getModifiedItemAttr('industrialCommandBonusShipCargoCapacity'),
             skill='Industrial Command Ships', **kwargs)
+
+
+class Effect8291(BaseEffect):
+    """
+    afterburnerSpeedBoostBonusPassive
+
+    Used by:
+    Implants named like: Wightstorm Cetana Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
+            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
 
 
 class Effect8294(BaseEffect):
@@ -41626,7 +41647,7 @@ class Effect12329(BaseEffect):
     shipMiningYieldBonusOreDestroyer1
 
     Used by:
-    Variations of ship: Pioneer (3 of 3)
+    Variations of ship: Pioneer (3 of 4)
     """
 
     type = 'passive'
