@@ -106,6 +106,9 @@ class CharacterSelection(wx.Panel):
         exportItem = menu.Append(wx.ID_ANY, _t("Copy Missing Skills"))
         self.Bind(wx.EVT_MENU, self.exportSkills, exportItem)
 
+        exportItem = menu.Append(wx.ID_ANY, _t("Copy Missing Skills (condensed)"))
+        self.Bind(wx.EVT_MENU, self.exportSkillsCondensed, exportItem)
+
         exportItem = menu.Append(wx.ID_ANY, _t("Copy Missing Skills (EVEMon)"))
         self.Bind(wx.EVT_MENU, self.exportSkillsEveMon, exportItem)
 
@@ -261,6 +264,15 @@ class CharacterSelection(wx.Panel):
 
     def exportSkills(self, evt):
         skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
+
+        list = ""
+        for key in sorted(skillsMap):
+            list += "%s %d\n" % (key, skillsMap[key][0])
+
+        toClipboard(list)
+
+    def exportSkillsCondensed(self, evt):
+        skillsMap = self._buildSkillsTooltipSuperCondensed(self.reqs, skillsMap={})
 
         list = ""
         for key in sorted(skillsMap):
