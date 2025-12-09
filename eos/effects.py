@@ -1358,11 +1358,10 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
-    Implants named like: Wightstorm Rapture Booster (4 of 4)
+    Implants named like: Rapture Booster (5 of 5)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
-    Implant: AIR Rapture Booster II
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Implant: Quafe Zero Green Apple
@@ -42450,3 +42449,71 @@ class Effect12761(BaseEffect):
                          or mod.item.requiresSkill('Ice Harvesting')
                          or mod.item.requiresSkill('Gas Cloud Harvesting')),
             'miningWasteProbability', src.getModifiedItemAttr('miningWasteProbabilityBonus'), **kwargs)
+
+
+class Effect12771(BaseEffect):
+    """
+    shipRoleBonusPerseveranceIceMiningCriticalHitChanceBonus
+
+    Used by:
+    Ship: Perseverance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'miningCritChance',
+            ship.getModifiedItemAttr('shipRoleBonusPerseveranceIceMiningCriticalHitChance'), **kwargs)
+
+
+class Effect12772(BaseEffect):
+    """
+    shipIceMiningCriticalHitChanceBonusOreDestroyer1
+
+    Used by:
+    Ship: Perseverance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'miningCritChance',
+            ship.getModifiedItemAttr('shipBonusOreDestroyer1'), skill='Mining Destroyer', **kwargs)
+
+
+class Effect12773(BaseEffect):
+    """
+    shipIceMiningCriticalHitYieldBonusOreDestroyer2
+
+    Used by:
+    Ship: Perseverance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'miningCritBonusYield',
+            ship.getModifiedItemAttr('shipBonusOreDestroyer2'), skill='Mining Destroyer', **kwargs)
+
+
+class Effect12774(BaseEffect):
+    """
+    shipIceMiningRangeBonusOreDestroyer3
+
+    Used by:
+    Ship: Perseverance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'maxRange',
+            ship.getModifiedItemAttr('shipBonusOreDestroyer3'), skill='Mining Destroyer', **kwargs)
