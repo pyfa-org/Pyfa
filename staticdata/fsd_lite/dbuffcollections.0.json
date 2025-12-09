@@ -70,7 +70,7 @@
     "displayNameID": 517442, 
     "itemModifiers": [
       {
-        "dogmaAttributeID": 37
+        "dogmaAttributeID": 3171
       }
     ], 
     "locationGroupModifiers": [], 
@@ -5260,6 +5260,136 @@
       }
     ], 
     "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2518": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "Sisters of EVE Metaliminal Storm Bonus 5 - Winter Nexus Storm", 
+    "displayName_de": "Thermalresistenz-Bonus (unbeständiger Eissturm)", 
+    "displayName_en-us": "Thermal Resistance Bonus (Volatile Ice Storm)", 
+    "displayName_es": "Bonificación de resistencia térmica (tormenta de hielo volátil)", 
+    "displayName_fr": "Bonus de résistance thermique (tempête de glace volatile)", 
+    "displayName_it": "Thermal Resistance Bonus (Volatile Ice Storm)", 
+    "displayName_ja": "サーマルレジスタンスボーナス（揮発性アイスストーム）", 
+    "displayName_ko": "열 저항력 보너스(불안정한 얼음 폭풍)", 
+    "displayName_ru": "Бонус к сопротивляемости термальному урону (нестабильная ледяная буря)", 
+    "displayName_zh": "热能抗性加成（不稳定冰风暴）", 
+    "displayNameID": 1030721, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 110
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2519": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 21", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2520": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 22", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2521": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 23", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2522": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 24", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2523": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 25", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2524": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 27", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2525": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 28", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2526": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 26", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2527": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 29", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2528": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Sisters of EVE Landmark Bonus 30", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
     "showOutputValueInUI": "ShowNormal"
   }
 }

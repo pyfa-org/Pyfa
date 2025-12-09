@@ -99769,5 +99769,97 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeChance": 0
+  }, 
+  "12771": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12771, 
+    "effectName": "shipRoleBonusPerseveranceIceMiningCriticalHitChanceBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5967, 
+        "modifyingAttributeID": 6062, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12772": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12772, 
+    "effectName": "shipIceMiningCriticalHitChanceBonusOreDestroyer1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5967, 
+        "modifyingAttributeID": 5820, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12773": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12773, 
+    "effectName": "shipIceMiningCriticalHitYieldBonusOreDestroyer2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 5969, 
+        "modifyingAttributeID": 5821, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12774": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12774, 
+    "effectName": "shipIceMiningRangeBonusOreDestroyer3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 5822, 
+        "operation": 6, 
+        "skillTypeID": 16281
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
   }
 }

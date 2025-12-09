@@ -49167,5 +49167,17 @@
     "published": 1, 
     "stackable": 1, 
     "unitID": 105
+  }, 
+  "6062": {
+    "attributeID": 6062, 
+    "categoryID": 51, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "description": "Role Bonus for Perseverance Ice Mining Critical Hit Role bonus", 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "shipRoleBonusPerseveranceIceMiningCriticalHitChance", 
+    "published": 0, 
+    "stackable": 1
   }
 }
