@@ -14,7 +14,7 @@ def toClipboard(text):
 
     See: https://discuss.wxpython.org/t/wx-theclipboard-pasting-different-content-on-every-second-paste/35361
     """
-    clipboard = wx.Clipboard()
+    clipboard = wx.TheClipboard
     try:
         # Explicitly use CLIPBOARD selection, not PRIMARY selection
         # This prevents X11 confusion between the two clipboard types
@@ -24,7 +24,6 @@ def toClipboard(text):
             try:
                 data = wx.TextDataObject(text)
                 clipboard.SetData(data)
-                clipboard.Flush()  # Ensure clipboard manager gets the data
                 return True
             finally:
                 clipboard.Close()
@@ -45,7 +44,7 @@ def fromClipboard():
 
     See: https://discuss.wxpython.org/t/wx-theclipboard-pasting-different-content-on-every-second-paste/35361
     """
-    clipboard = wx.Clipboard()
+    clipboard = wx.TheClipboard
     try:
         # Explicitly use CLIPBOARD selection, not PRIMARY selection
         # This prevents X11 confusion between the two clipboard types
