@@ -17,7 +17,11 @@ class ChangeShipTacticalMode(ContextMenuUnconditional):
         self.modeMap = {
             'Defense': _t('Defense'),
             'Propulsion': _t('Propulsion'),
-            'Sharpshooter': _t('Sharpshooter')
+            'Sharpshooter': _t('Sharpshooter'),
+            'Primary': _t('Primary'),
+            'Secondary': _t('Secondary'),
+            'Tertiary': _t('Tetriary'),  # A mistype by CCP upon anhinga release
+            'Tetriary': _t('Tetriary'),
         }
 
     def display(self, callingWindow, srcContext):

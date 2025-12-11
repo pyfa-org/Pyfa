@@ -49168,6 +49168,40 @@
     "stackable": 1, 
     "unitID": 105
   }, 
+  "6054": {
+    "attributeID": 6054, 
+    "categoryID": 37, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "AnhingaLargeMissilePowerFittingBonus", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "6055": {
+    "attributeID": 6055, 
+    "categoryID": 37, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "AnhingaLargeMissileCpuFittingBonus", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "6057": {
+    "attributeID": 6057, 
+    "categoryID": 2, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "description": "", 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "modeShieldRechargePostDiv", 
+    "published": 0, 
+    "stackable": 1
+  }, 
   "6062": {
     "attributeID": 6062, 
     "categoryID": 51, 

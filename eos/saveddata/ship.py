@@ -126,7 +126,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         valid Item objects, not the Mode objects. Returns None if not a
         t3 dessy
         """
-        if self.item.group.name != "Tactical Destroyer":
+        if self.item.group.name != "Tactical Destroyer" and self.item.name != "Anhinga":
             return None
 
         items = []
