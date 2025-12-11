@@ -20,8 +20,7 @@ class ChangeShipTacticalMode(ContextMenuUnconditional):
             'Sharpshooter': _t('Sharpshooter'),
             'Primary': _t('Primary'),
             'Secondary': _t('Secondary'),
-            'Tertiary': _t('Tetriary'),  # A mistype by CCP upon anhinga release
-            'Tetriary': _t('Tetriary'),
+            'Tertiary': _t('Tertiary'),
         }
 
     def display(self, callingWindow, srcContext):
