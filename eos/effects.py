@@ -1358,10 +1358,11 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
-    Implants named like: Rapture Booster (5 of 5)
+    Implants named like: Wightstorm Rapture Booster (4 of 4)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
+    Implant: AIR Rapture Booster II
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Implant: Quafe Zero Green Apple
@@ -2603,15 +2604,22 @@ class Effect891(BaseEffect):
 
     Used by:
     Variations of ship: Raven (3 of 4)
+    Module: Anhinga Tertiary Mode
     """
 
     type = 'passive'
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Cruise Missiles'),
-                                        'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'),
-                                        skill='Caldari Battleship', **kwargs)
+        if 'ship' in context:
+            skill = 'Caldari Battleship'
+            penalties = False
+        else:
+            skill = None
+            penalties = True
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Cruise Missiles'), 'maxVelocity',
+            ship.getModifiedItemAttr('shipBonusCB3'), skill=skill, stackingPenalties=penalties, **kwargs)
 
 
 class Effect892(BaseEffect):
@@ -2620,15 +2628,22 @@ class Effect892(BaseEffect):
 
     Used by:
     Variations of ship: Raven (3 of 4)
+    Module: Anhinga Tertiary Mode
     """
 
     type = 'passive'
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
-                                        'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'),
-                                        skill='Caldari Battleship', **kwargs)
+        if 'ship' in context:
+            skill = 'Caldari Battleship'
+            penalties = False
+        else:
+            skill = None
+            penalties = True
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Torpedoes'), 'maxVelocity',
+            ship.getModifiedItemAttr('shipBonusCB3'), skill=skill, stackingPenalties=penalties, **kwargs)
 
 
 class Effect896(BaseEffect):
@@ -3285,6 +3300,7 @@ class Effect1024(BaseEffect):
     shipMissileHeavyVelocityBonusCC2
 
     Used by:
+    Module: Anhinga Tertiary Mode
     Ship: Caracal
     Ship: Osprey Navy Issue
     """
@@ -3293,9 +3309,15 @@ class Effect1024(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Heavy Missiles'),
-                                        'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'),
-                                        skill='Caldari Cruiser', **kwargs)
+        if 'ship' in context:
+            skill = 'Caldari Cruiser'
+            penalties = False
+        else:
+            skill = None
+            penalties = True
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Heavy Missiles'), 'maxVelocity',
+            ship.getModifiedItemAttr('shipBonusCC2'), skill=skill, stackingPenalties=penalties, **kwargs)
 
 
 class Effect1030(BaseEffect):
@@ -3905,6 +3927,7 @@ class Effect1230(BaseEffect):
     shipMissileVelocityPirateFactionFrigate
 
     Used by:
+    Module: Anhinga Primary Mode
     Ship: Barghest
     Ship: Garmur
     Ship: Laelaps
@@ -3916,8 +3939,10 @@ class Effect1230(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                        'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
+        penalties = 'ship' not in context
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'maxVelocity',
+            ship.getModifiedItemAttr('shipBonusRole7'), stackingPenalties=penalties, **kwargs)
 
 
 class Effect1232(BaseEffect):
@@ -5654,6 +5679,7 @@ class Effect1885(BaseEffect):
     shipCruiseLauncherROFBonus2CB
 
     Used by:
+    Modules named like: Anhinga Mode (3 of 3)
     Ship: Raven
     Ship: Raven State Issue
     """
@@ -5662,9 +5688,18 @@ class Effect1885(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Cruise',
-                                      'speed', ship.getModifiedItemAttr('shipBonus2CB'),
-                                      skill='Caldari Battleship', **kwargs)
+        if 'ship' in context:
+            skill = 'Caldari Battleship'
+            penalties = False
+            penaltyGroup = None
+        else:
+            skill = None
+            penalties = True
+            penaltyGroup = 'postPerc'
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Missile Launcher Cruise', 'speed',
+            ship.getModifiedItemAttr('shipBonus2CB'), skill=skill,
+            stackingPenalties=penalties, penaltyGroup=penaltyGroup, **kwargs)
 
 
 class Effect1886(BaseEffect):
@@ -5672,6 +5707,7 @@ class Effect1886(BaseEffect):
     shipSiegeLauncherROFBonus2CB
 
     Used by:
+    Modules named like: Anhinga Mode (3 of 3)
     Ship: Raven
     Ship: Raven State Issue
     """
@@ -5680,9 +5716,18 @@ class Effect1886(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo',
-                                      'speed', ship.getModifiedItemAttr('shipBonus2CB'),
-                                      skill='Caldari Battleship', **kwargs)
+        if 'ship' in context:
+            skill = 'Caldari Battleship'
+            penalties = False
+            penaltyGroup = None
+        else:
+            skill = None
+            penalties = True
+            penaltyGroup = 'postPerc'
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Missile Launcher Torpedo', 'speed',
+            ship.getModifiedItemAttr('shipBonus2CB'), skill=skill,
+            stackingPenalties=penalties, penaltyGroup=penaltyGroup, **kwargs)
 
 
 class Effect1910(BaseEffect):
@@ -18182,6 +18227,7 @@ class Effect5213(BaseEffect):
     shipRocketMaxVelocityBonusRookie
 
     Used by:
+    Module: Skua Sharpshooter Mode
     Ship: Taipan
     """
 
@@ -18189,8 +18235,10 @@ class Effect5213(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
-                                        'maxVelocity', ship.getModifiedItemAttr('rookieRocketVelocity'), **kwargs)
+        penalties = 'ship' not in context
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Rockets'), 'maxVelocity',
+            ship.getModifiedItemAttr('rookieRocketVelocity'), stackingPenalties=penalties, **kwargs)
 
 
 class Effect5214(BaseEffect):
@@ -18198,6 +18246,7 @@ class Effect5214(BaseEffect):
     shipLightMissileMaxVelocityBonusRookie
 
     Used by:
+    Module: Skua Sharpshooter Mode
     Ship: Taipan
     """
 
@@ -18205,8 +18254,10 @@ class Effect5214(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Light Missiles'),
-                                        'maxVelocity', ship.getModifiedItemAttr('rookieLightMissileVelocity'), **kwargs)
+        penalties = 'ship' not in context
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Light Missiles'), 'maxVelocity',
+            ship.getModifiedItemAttr('rookieLightMissileVelocity'), stackingPenalties=penalties, **kwargs)
 
 
 class Effect5215(BaseEffect):
@@ -20348,6 +20399,7 @@ class Effect5468(BaseEffect):
     shipBonusAgilityCI2
 
     Used by:
+    Module: Anhinga Tertiary Mode
     Ship: Badger
     """
 
@@ -20355,7 +20407,14 @@ class Effect5468(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Hauler', **kwargs)
+        if 'ship' in context:
+            skill = 'Caldari Hauler'
+            penalties = False
+        else:
+            skill = None
+            penalties = True
+        fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusCI2'),
+                               skill=skill, stackingPenalties=penalties, **kwargs)
 
 
 class Effect5469(BaseEffect):
@@ -20888,6 +20947,24 @@ class Effect5559(BaseEffect):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser', **kwargs)
 
 
+class Effect5560(BaseEffect):
+    """
+    roleBonusMarauderMJDRReactivationDelayBonus
+
+    Used by:
+    Module: Anhinga Tertiary Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        penalties = 'ship' not in context
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Micro Jump Drive', 'moduleReactivationDelay',
+            ship.getModifiedItemAttr('roleBonusMarauder'), stackingPenalties=penalties, **kwargs)
+
+
 class Effect5564(BaseEffect):
     """
     subSystemBonusCaldariOffensiveCommandBursts
@@ -21078,6 +21155,7 @@ class Effect5618(BaseEffect):
     shipBonusRHMLROF2CB
 
     Used by:
+    Modules named like: Anhinga Mode (3 of 3)
     Ship: Raven
     Ship: Widow
     """
@@ -21086,8 +21164,18 @@ class Effect5618(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Rapid Heavy',
-                                      'speed', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship', **kwargs)
+        if 'ship' in context:
+            skill = 'Caldari Battleship'
+            penalties = False
+            penaltyGroup = None
+        else:
+            skill = None
+            penalties = True
+            penaltyGroup = 'postPerc'
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Missile Launcher Rapid Heavy', 'speed',
+            ship.getModifiedItemAttr('shipBonus2CB'), skill=skill,
+            stackingPenalties=penalties, penaltyGroup=penaltyGroup, **kwargs)
 
 
 class Effect5619(BaseEffect):
@@ -22376,6 +22464,8 @@ class Effect5867(BaseEffect):
     shipBonusMissileExplosionDelayPirateFaction2
 
     Used by:
+    Module: Anhinga Primary Mode
+    Module: Anhinga Secondary Mode
     Ship: Barghest
     Ship: Garmur
     Ship: Laelaps
@@ -22387,8 +22477,10 @@ class Effect5867(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                        'explosionDelay', ship.getModifiedItemAttr('shipBonusRole8'), **kwargs)
+        penalties = 'ship' not in context
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), 'explosionDelay',
+            ship.getModifiedItemAttr('shipBonusRole8'), stackingPenalties=penalties, **kwargs)
 
 
 class Effect5868(BaseEffect):
@@ -23310,7 +23402,7 @@ class Effect6009(BaseEffect):
 
     Used by:
     Ships from group: Strategic Cruiser (4 of 4)
-    Ships from group: Tactical Destroyer (4 of 4)
+    Ships from group: Tactical Destroyer (5 of 5)
     """
 
     type = 'passive'
@@ -23327,7 +23419,8 @@ class Effect6010(BaseEffect):
     shipModeMaxTargetRangePostDiv
 
     Used by:
-    Modules named like: Sharpshooter Mode (4 of 4)
+    Modules named like: Sharpshooter Mode (5 of 5)
+    Module: Anhinga Primary Mode
     """
 
     type = 'passive'
@@ -23368,7 +23461,7 @@ class Effect6012(BaseEffect):
     shipModeScanStrengthPostDiv
 
     Used by:
-    Modules named like: Sharpshooter Mode (4 of 4)
+    Modules named like: Sharpshooter Mode (5 of 5)
     """
 
     type = 'passive'
@@ -23389,8 +23482,7 @@ class Effect6014(BaseEffect):
     modeSigRadiusPostDiv
 
     Used by:
-    Module: Confessor Defense Mode
-    Module: Jackdaw Defense Mode
+    Modules named like: Defense Mode (3 of 5)
     """
 
     type = 'passive'
@@ -23406,7 +23498,7 @@ class Effect6015(BaseEffect):
     modeArmorResonancePostDiv
 
     Used by:
-    Modules named like: Defense Mode (3 of 4)
+    Modules named like: Defense Mode (3 of 5)
     """
 
     type = 'passive'
@@ -23432,7 +23524,7 @@ class Effect6016(BaseEffect):
     modeAgilityPostDiv
 
     Used by:
-    Modules named like: Propulsion Mode (4 of 4)
+    Modules named like: Propulsion Mode (5 of 5)
     """
 
     type = 'passive'
@@ -23646,8 +23738,7 @@ class Effect6041(BaseEffect):
     modeShieldResonancePostDiv
 
     Used by:
-    Module: Jackdaw Defense Mode
-    Module: Svipul Defense Mode
+    Modules named like: Defense Mode (3 of 5)
     """
 
     type = 'passive'
@@ -23971,6 +24062,7 @@ class Effect6077(BaseEffect):
 
     Used by:
     Ship: Jackdaw
+    Ship: Skua
     """
 
     type = 'passive'
@@ -23989,6 +24081,7 @@ class Effect6083(BaseEffect):
     Used by:
     Ship: Jackdaw
     Ship: Metamorphosis
+    Ship: Skua
     Ship: Sunesis
     """
 
@@ -24008,6 +24101,7 @@ class Effect6085(BaseEffect):
 
     Used by:
     Ship: Jackdaw
+    Ship: Skua
     """
 
     type = 'passive'
@@ -24082,6 +24176,7 @@ class Effect6098(BaseEffect):
 
     Used by:
     Ship: Jackdaw
+    Ship: Skua
     """
 
     type = 'passive'
@@ -25475,6 +25570,7 @@ class Effect6316(BaseEffect):
 
     Used by:
     Ships from group: Command Destroyer (3 of 6)
+    Ship: Skua
     """
 
     type = 'passive'
@@ -25493,6 +25589,7 @@ class Effect6317(BaseEffect):
 
     Used by:
     Ships from group: Command Destroyer (6 of 6)
+    Ship: Skua
     """
 
     type = 'passive'
@@ -25766,6 +25863,7 @@ class Effect6334(BaseEffect):
 
     Used by:
     Ships from group: Command Destroyer (3 of 6)
+    Ship: Skua
     """
 
     type = 'passive'
@@ -31730,6 +31828,7 @@ class Effect6799(BaseEffect):
 
     Used by:
     Module: Jackdaw Sharpshooter Mode
+    Module: Skua Sharpshooter Mode
     """
 
     type = 'passive'
@@ -31750,7 +31849,7 @@ class Effect6800(BaseEffect):
     modeDampTDResistsPostDiv
 
     Used by:
-    Modules named like: Sharpshooter Mode (4 of 4)
+    Modules named like: Sharpshooter Mode (5 of 5)
     """
 
     type = 'passive'
@@ -31766,8 +31865,7 @@ class Effect6801(BaseEffect):
     modeMWDandABBoostPostDiv
 
     Used by:
-    Module: Confessor Propulsion Mode
-    Module: Svipul Propulsion Mode
+    Modules named like: Propulsion Mode (3 of 5)
     """
 
     type = 'passive'
@@ -34763,11 +34861,20 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
-    Items from category: Ship (42 of 410)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
+    Ships from group: Hauler (5 of 18)
     Ships from group: Interceptor (10 of 10)
     Ships from group: Interdictor (4 of 4)
+    Ship: Azariel
+    Ship: Cynabal
+    Ship: Dramiel
+    Ship: Khizriel
+    Ship: Leopard
+    Ship: Machariel
+    Ship: Mekubal
+    Ship: Sarathiel
+    Ship: Victorieux Luxury Yacht
     """
 
     type = 'passive'
@@ -42398,6 +42505,26 @@ class Effect12757(BaseEffect):
             'miningCritBonusYield', src.getModifiedItemAttr('miningCritBonusYieldBonus') * src.level, **kwargs)
 
 
+class Effect12758(BaseEffect):
+    """
+    shipRoleBonusAnhingaLargeMissilePowerFittingBonus
+
+    Used by:
+    Ship: Anhinga
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name in (
+                'Missile Launcher Rapid Heavy',
+                'Missile Launcher Cruise',
+                'Missile Launcher Torpedo'),
+            'power', ship.getModifiedItemAttr('AnhingaLargeMissilePowerFittingBonus'), **kwargs)
+
+
 class Effect12759(BaseEffect):
     """
     miningCritChanceBonusOreIceOnline
@@ -42450,6 +42577,58 @@ class Effect12761(BaseEffect):
                          or mod.item.requiresSkill('Gas Cloud Harvesting')),
             'miningWasteProbability', src.getModifiedItemAttr('miningWasteProbabilityBonus'),
             stackingPenalties=True, **kwargs)
+
+
+class Effect12764(BaseEffect):
+    """
+    shipRoleBonusAnhingaLargeMissileCpuFittingBonus
+
+    Used by:
+    Ship: Anhinga
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name in (
+                'Missile Launcher Rapid Heavy',
+                'Missile Launcher Cruise',
+                'Missile Launcher Torpedo'),
+            'cpu', ship.getModifiedItemAttr('AnhingaLargeMissileCpuFittingBonus'), **kwargs)
+
+
+class Effect12766(BaseEffect):
+    """
+    shipBonusTorpedoAndCruiseMissileExplosionRadiusCBC1
+
+    Used by:
+    Ship: Anhinga
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Torpedoes') or mod.charge.requiresSkill('Cruise Missiles'),
+            'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCBC1'), skill='Caldari Battlecruiser', **kwargs)
+
+
+class Effect12767(BaseEffect):
+    """
+    tacticalBonusSkuaDefensiveShieldRechargeRate
+
+    Used by:
+    Module: Skua Defense Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.multiplyItemAttr('shieldRechargeRate', 1 / module.getModifiedItemAttr('modeShieldRechargePostDiv'), **kwargs)
 
 
 class Effect12771(BaseEffect):
@@ -42518,3 +42697,38 @@ class Effect12774(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Ice Harvesting'), 'maxRange',
             ship.getModifiedItemAttr('shipBonusOreDestroyer3'), skill='Mining Destroyer', **kwargs)
+
+
+class Effect12777(BaseEffect):
+    """
+    roleBonusCDLinksPGCPUReductionSkua
+
+    Used by:
+    Ship: Skua
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'cpu',
+                                      src.getModifiedItemAttr('roleBonusCD'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'), 'power',
+                                      src.getModifiedItemAttr('roleBonusCD'), **kwargs)
+
+
+class Effect12790(BaseEffect):
+    """
+    shipBonusTorpedoAndCruiseMissileExplosionVelocityCBC2
+
+    Used by:
+    Ship: Anhinga
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Torpedoes') or mod.charge.requiresSkill('Cruise Missiles'),
+            'aoeVelocity', ship.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)

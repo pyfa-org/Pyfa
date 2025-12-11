@@ -41,11 +41,15 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     new_cursor = new_db.cursor()
 
     # Force some of the items to make them published
-    FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper",
-    "Amarr Tactical Destroyer Propulsion Mode",
-    "Amarr Tactical Destroyer Sharpshooter Mode",
-    "Amarr Tactical Destroyer Defense Mode")
-    OVERRIDES_TYPEPUB = 'UPDATE invtypes SET published = 1 WHERE typeName = ?'
+    FORCEPUB_TYPES = (
+        "% Propulsion Mode",
+        "% Sharpshooter Mode",
+        "% Defense Mode",
+        "% Primary Mode",
+        "% Secondary Mode",
+        "% Tertiary Mode",
+    )
+    OVERRIDES_TYPEPUB = 'UPDATE invtypes SET published = 1 WHERE typeName like ?'
     for typename in FORCEPUB_TYPES:
         old_cursor.execute(OVERRIDES_TYPEPUB, (typename,))
         new_cursor.execute(OVERRIDES_TYPEPUB, (typename,))
