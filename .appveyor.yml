@@ -32,7 +32,7 @@ for:
       - sh: export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
       - sh: mkdir build
       # Download packaging tool
-      - sh: curl -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+      - sh: curl --fail-with-body -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
       - sh: chmod +x $APPIMAGE_TOOL
     build_script:
       - sh: mkdir -p AppDir/opt/pyfa
