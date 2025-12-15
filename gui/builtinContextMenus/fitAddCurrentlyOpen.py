@@ -47,6 +47,8 @@ class AddCurrentlyOpenFit(ContextMenuUnconditional):
             if isinstance(page, BlankPage):
                 continue
             fit = sFit.getFit(page.activeFitID, basic=True)
+            if fit is None:
+                continue
             id = ContextMenuUnconditional.nextID()
             mitem = wx.MenuItem(rootMenu, id, "{}: {}".format(fit.ship.item.name, fit.name))
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
