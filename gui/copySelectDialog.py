@@ -151,6 +151,7 @@ class CopySelectDialog(wx.Dialog):
         def cb(text):
             if self.waitDialog:
                 del self.waitDialog
+            print("cb called. Text: {}", text) # TODO REMOVE DEBUG
             toClipboard(text)
             self.EndModal(wx.ID_OK)
 
