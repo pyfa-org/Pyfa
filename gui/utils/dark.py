@@ -80,7 +80,7 @@ def isDark():
     return usePyfaDark()
 
 
-def setWindowsDarkMode():
+def enableWindowsDarkModeSupport():
     """
     Enable dark mode for the entire application on Windows 10/11.
     This affects the menu bar, context menus, and other system UI elements.
