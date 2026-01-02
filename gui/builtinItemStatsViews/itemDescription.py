@@ -4,6 +4,8 @@ import wx
 import wx.html
 import re
 
+from gui.utils.colors import Colors
+
 _t = wx.GetTranslation
 
 
@@ -13,8 +15,8 @@ class ItemDescription(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
-        bgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        fgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        bgcolor = Colors.windowBackground()
+        fgcolor = Colors.text()
 
         self.description = wx.html.HtmlWindow(self)
         if not item.description:

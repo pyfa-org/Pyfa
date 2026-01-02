@@ -24,6 +24,7 @@ from gui.builtinMarketBrowser.searchBox import SearchBox
 from gui.builtinMarketBrowser.itemView import ItemView
 from gui.builtinMarketBrowser.metaButton import MetaButton
 from gui.builtinMarketBrowser.marketTree import MarketTree
+from gui.utils.colors import ThemedPanel
 from service.market import Market
 from service.settings import MarketPriceSettings
 
@@ -32,11 +33,11 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class MarketBrowser(wx.Panel):
+class MarketBrowser(ThemedPanel):
 
 
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+        super().__init__(parent)
 
         pyfalog.debug("Initialize marketBrowser")
         vbox = wx.BoxSizer(wx.VERTICAL)

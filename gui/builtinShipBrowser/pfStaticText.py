@@ -3,13 +3,16 @@
 import wx
 from logbook import Logger
 
+from gui.utils.colors import Colors
+
 pyfalog = Logger(__name__)
 
 
 class PFStaticText(wx.Panel):
     def __init__(self, parent, label=wx.EmptyString):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=parent.GetSize())
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Colors.windowBackground())
+        self.SetForegroundColour(Colors.text())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         text = wx.StaticText(self, wx.ID_ANY, label, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)

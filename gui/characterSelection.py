@@ -30,6 +30,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.clipboard import toClipboard
+from gui.utils.colors import Colors, ThemedPanel
 from service.character import Character
 from service.fit import Fit
 
@@ -37,20 +38,23 @@ _t = wx.GetTranslation
 pyfalog = Logger(__name__)
 
 
-class CharacterSelection(wx.Panel):
+class CharacterSelection(ThemedPanel):
     def __init__(self, parent):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        wx.Panel.__init__(self, parent)
+        super().__init__(parent)
+        
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(mainSizer)
 
-        mainSizer.Add(wx.StaticText(self, wx.ID_ANY, _t("Character: ")), 0, wx.CENTER | wx.RIGHT | wx.LEFT, 3)
+        charLabel = wx.StaticText(self, wx.ID_ANY, _t("Character: "))
+        mainSizer.Add(charLabel, 0, wx.CENTER | wx.RIGHT | wx.LEFT, 3)
 
         # cache current selection to fall back in case we choose to open char editor
         self.charCache = None
 
         self.charChoice = wx.Choice(self)
+        Colors.styleInput(self.charChoice)
         mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         self.refreshCharacterList()

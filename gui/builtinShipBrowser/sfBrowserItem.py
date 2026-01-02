@@ -2,6 +2,7 @@
 import wx
 import gui.utils.draw as drawUtils
 import gui.mainFrame
+from gui.utils.colors import Colors
 
 SB_ITEM_NORMAL = 0
 SB_ITEM_SELECTED = 1
@@ -405,7 +406,7 @@ class SFBrowserItem(wx.Window):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Colors.windowBackground()
 
         state = self.GetState()
 

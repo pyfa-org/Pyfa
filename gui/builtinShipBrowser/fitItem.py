@@ -15,6 +15,7 @@ import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
+from gui.utils.colors import Colors
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
 from .events import BoosterListUpdated, FitSelected, ImportSelected, SearchSelected, Stage3Selected
@@ -421,7 +422,7 @@ class FitItem(SFItem.SFBrowserItem):
                         bmpWidth = self.toolbarx if self.toolbarx < 200 else 200
                         self.dragTLFBmp = wx.Bitmap(round(bmpWidth), round(self.GetRect().height))
                         tdc.SelectObject(self.dragTLFBmp)
-                        tdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
+                        tdc.SetBrush(wx.Brush(Colors.windowBackground()))
                         tdc.DrawRectangle(0, 0, bmpWidth, self.GetRect().height)
                         self.DrawItem(tdc)
                         tdc.SelectObject(wx.NullBitmap)
@@ -488,7 +489,7 @@ class FitItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Colors.windowBackground()
         textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
@@ -572,7 +573,7 @@ class FitItem(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Colors.windowBackground()
 
         # activeFitID = self.mainFrame.getActiveFit()
         state = self.GetState()

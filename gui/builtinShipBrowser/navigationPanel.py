@@ -9,6 +9,7 @@ import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
+from gui.utils.colors import Colors
 from gui.utils.helpers_wxPython import HandleCtrlBackspace
 from service.fit import Fit
 from utils.cjk import isStringCjk
@@ -219,7 +220,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Colors.windowBackground()
         textColor = colorUtils.GetSuitable(windowColor, 1)
         sepColor = colorUtils.GetSuitable(windowColor, 0.2)
 
@@ -238,7 +239,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Colors.windowBackground()
 
         sFactor = 0.1
 

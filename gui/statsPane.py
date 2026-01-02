@@ -29,12 +29,13 @@ import gui.globalEvents as GE
 from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
 from gui.toggle_panel import TogglePanel
+from gui.utils.colors import ThemedPanel
 from logbook import Logger
 
 pyfalog = Logger(__name__)
 
 
-class StatsPane(wx.Panel):
+class StatsPane(ThemedPanel):
     AVAILIBLE_VIEWS = [
         "resources",
         "resistances",
@@ -80,7 +81,7 @@ class StatsPane(wx.Panel):
             view.refreshPanel(fit)
 
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+        super().__init__(parent)
 
         # Use 25% smaller fonts if MAC or force font size to 8 for msw/linux
 
