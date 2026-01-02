@@ -22,7 +22,7 @@ import wx
 # noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
-from gui.utils.colors import ThemedDialog
+from gui.utils.themes import ThemedDialog
 import wx.html2
 import webbrowser
 import re

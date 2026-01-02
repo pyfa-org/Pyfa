@@ -2,7 +2,7 @@
 import wx
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from gui.utils.helpers_wxPython import HandleCtrlBackspace
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()

@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.clipboard import toClipboard
-from gui.utils.colors import Colors, ThemedPanel
+from gui.utils.themes import Colors, ThemedPanel
 from service.character import Character
 from service.fit import Fit
 

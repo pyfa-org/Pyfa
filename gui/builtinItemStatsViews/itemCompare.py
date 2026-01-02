@@ -2,7 +2,7 @@
 import wx
 
 from .helpers import AutoListCtrl
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.price import Price as ServicePrice
 from service.market import Market
 from service.attribute import Attribute

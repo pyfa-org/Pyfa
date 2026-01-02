@@ -29,7 +29,7 @@ from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.fitCommands.helpers import getSimilarFighters
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market

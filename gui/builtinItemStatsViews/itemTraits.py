@@ -3,7 +3,7 @@ import wx
 # noinspection PyPackageRequirements
 import wx.html
 
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 _t = wx.GetTranslation
 

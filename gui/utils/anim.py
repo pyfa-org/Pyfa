@@ -1,7 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 import gui.utils.color as colorUtils
-from gui.utils.colors import Colors, ThemedDialog
+from gui.utils.themes import Colors, ThemedDialog
 
 
 class LoadAnimation(wx.Window):

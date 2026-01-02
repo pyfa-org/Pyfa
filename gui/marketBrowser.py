@@ -24,7 +24,7 @@ from gui.builtinMarketBrowser.searchBox import SearchBox
 from gui.builtinMarketBrowser.itemView import ItemView
 from gui.builtinMarketBrowser.metaButton import MetaButton
 from gui.builtinMarketBrowser.marketTree import MarketTree
-from gui.utils.colors import ThemedPanel
+from gui.utils.themes import ThemedPanel
 from service.market import Market
 from service.settings import MarketPriceSettings
 

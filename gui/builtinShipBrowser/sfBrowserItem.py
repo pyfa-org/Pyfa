@@ -2,7 +2,7 @@
 import wx
 import gui.utils.draw as drawUtils
 import gui.mainFrame
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 SB_ITEM_NORMAL = 0
 SB_ITEM_SELECTED = 1

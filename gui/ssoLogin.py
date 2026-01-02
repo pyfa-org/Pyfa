@@ -5,7 +5,7 @@ import gui.globalEvents as GE
 import config
 import time
 
-from gui.utils.colors import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Colors
 from service.settings import EsiSettings
 
 _t = wx.GetTranslation

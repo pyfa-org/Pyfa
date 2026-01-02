@@ -9,7 +9,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.fit import Fit as es_Fit
 from gui.contextMenu import ContextMenuCombined
-from gui.utils.colors import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Colors
 from service.fit import Fit
 
 # noinspection PyPackageRequirements

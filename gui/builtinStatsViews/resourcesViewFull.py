@@ -25,7 +25,7 @@ from gui.pyfa_gauge import PyGauge
 import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.utils import fonts
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 from eos.const import FittingHardpoint
 

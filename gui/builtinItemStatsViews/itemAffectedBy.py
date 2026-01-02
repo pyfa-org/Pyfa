@@ -16,7 +16,7 @@ from eos.saveddata.fit import Fit
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 _t = wx.GetTranslation
 

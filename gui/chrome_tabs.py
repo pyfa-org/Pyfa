@@ -22,7 +22,7 @@ import wx.lib.newevent
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils import color as color_utils, draw, fonts
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.fit import Fit
 
 _t = wx.GetTranslation

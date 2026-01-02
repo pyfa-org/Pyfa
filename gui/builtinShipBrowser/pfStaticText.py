@@ -3,7 +3,7 @@
 import wx
 from logbook import Logger
 
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 pyfalog = Logger(__name__)
 

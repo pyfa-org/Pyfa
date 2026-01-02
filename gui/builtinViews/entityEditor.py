@@ -1,7 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 class BaseValidator(wx.Validator):

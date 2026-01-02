@@ -25,7 +25,7 @@ from gui.auxWindow import AuxiliaryFrame
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import fromClipboard, toClipboard
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.implantSet import ImplantSets
 
 

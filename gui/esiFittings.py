@@ -20,7 +20,7 @@ from service.fit import Fit
 from service.port import Port
 from service.port.esi import ESIExportException
 from service.settings import EsiSettings
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 _t = wx.GetTranslation

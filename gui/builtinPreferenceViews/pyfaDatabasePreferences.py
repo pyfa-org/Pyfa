@@ -5,7 +5,7 @@ from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTarg
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from gui.utils import helpers_wxPython as wxHelpers
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 _t = wx.GetTranslation
 

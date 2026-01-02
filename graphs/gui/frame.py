@@ -29,7 +29,7 @@ from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
 from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from . import canvasPanel

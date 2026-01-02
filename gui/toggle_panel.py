@@ -14,7 +14,7 @@
 
 import wx
 
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 class TogglePanel(wx.Panel):

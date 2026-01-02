@@ -4,7 +4,7 @@ import re
 import wx
 
 import gui.display as d
-from gui.utils.colors import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Colors
 from service.fit import Fit
 
 _t = wx.GetTranslation

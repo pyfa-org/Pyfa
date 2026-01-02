@@ -6,7 +6,7 @@ from logbook import Logger
 import gui.utils.anim_effects as animEffects
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from .events import Stage2Selected
 from gui.bitmap_loader import BitmapLoader
 

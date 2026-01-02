@@ -9,7 +9,7 @@ import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
 from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.market import Market
 
 

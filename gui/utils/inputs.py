@@ -24,7 +24,7 @@ from abc import ABCMeta, abstractmethod
 import wx
 
 from eos.utils.float import floatUnerr
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 def valToStr(val):

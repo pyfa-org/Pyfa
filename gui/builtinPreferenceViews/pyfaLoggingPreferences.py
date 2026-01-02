@@ -2,7 +2,7 @@ import wx
 
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 import config
 from logbook import Logger
 

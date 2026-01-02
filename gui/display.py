@@ -22,7 +22,7 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 class Display(wx.ListCtrl):

@@ -8,7 +8,7 @@ import gui.fitCommands as cmd
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.fit import Fit
 from .attributeSlider import AttributeSlider, EVT_VALUE_CHANGED
 from .itemAttributes import ItemParams

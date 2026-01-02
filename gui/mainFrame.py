@@ -58,7 +58,7 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.setEditor import ImplantSetEditor
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from gui.utils.dark import setDarkTitleBar
 from gui.targetProfileEditor import TargetProfileEditor
 from gui.updateDialog import UpdateDialog

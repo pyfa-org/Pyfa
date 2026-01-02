@@ -18,7 +18,7 @@ import copy
 import wx
 
 from gui.utils import anim_effects, color as color_utils, draw
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 _t = wx.GetTranslation

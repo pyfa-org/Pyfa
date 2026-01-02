@@ -23,7 +23,7 @@ import wx
 
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.const import GraphLightness
 
 

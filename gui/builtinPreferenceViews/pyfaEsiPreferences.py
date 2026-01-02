@@ -5,7 +5,7 @@ import config
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.esi import Esi
 from service.settings import EsiSettings
 

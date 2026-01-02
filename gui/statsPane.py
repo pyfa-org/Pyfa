@@ -29,7 +29,7 @@ import gui.globalEvents as GE
 from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
 from gui.toggle_panel import TogglePanel
-from gui.utils.colors import ThemedPanel
+from gui.utils.themes import ThemedPanel
 from logbook import Logger
 
 pyfalog = Logger(__name__)

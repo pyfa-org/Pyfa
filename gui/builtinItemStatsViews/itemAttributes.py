@@ -10,7 +10,7 @@ import gui
 from gui import globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinItemStatsViews.attributeGrouping import *
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from gui.utils.numberFormatter import formatAmount, roundDec
 from service.const import GuiAttrGroup
 

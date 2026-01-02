@@ -6,7 +6,7 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
-from gui.utils.colors import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Colors
 from service.fit import Fit
 
 _t = wx.GetTranslation

@@ -9,7 +9,7 @@ import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market

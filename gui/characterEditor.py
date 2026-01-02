@@ -40,7 +40,7 @@ from gui.builtinViews.entityEditor import BaseValidator, EntityEditor, TextEntry
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.contextMenu import ContextMenu
 from gui.utils.clipboard import fromClipboard, toClipboard
-from gui.utils.colors import Colors, ThemedDialog
+from gui.utils.themes import Colors, ThemedDialog
 from service.character import Character
 from service.esi import Esi
 from service.esiAccess import APIException

@@ -31,7 +31,7 @@ from logbook import Logger
 
 
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from gui.utils.dark import isDark
 from gui.utils.numberFormatter import roundToPrec
 

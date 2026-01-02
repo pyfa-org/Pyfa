@@ -2,7 +2,7 @@ import wx
 
 from gui.cachingImageList import CachingImageList
 from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES, CHARGES_FOR_FIT
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 from logbook import Logger
 

@@ -25,7 +25,7 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
-from gui.utils.colors import ThemedPanel, Colors
+from gui.utils.themes import ThemedPanel, Colors
 from gui.utils.inputs import FloatBox, FloatRangeBox
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit

@@ -23,7 +23,7 @@ from collections import OrderedDict, namedtuple
 # noinspection PyPackageRequirements
 import wx
 
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.const import GraphColor, GraphLightness, GraphLineStyle
 
 ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))

@@ -40,7 +40,7 @@ from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from gui.utils.dark import isDark
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.fit import Fit
 from service.market import Market
 from config import slotColourMap, slotColourMapDark, errColor, errColorDark

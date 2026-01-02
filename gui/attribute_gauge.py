@@ -3,7 +3,7 @@ import math
 import wx
 
 from gui.utils import anim_effects
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 # todo: clean class up. Took from pyfa gauge, has a bunch of extra shit we don't need

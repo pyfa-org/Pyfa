@@ -4,7 +4,7 @@ import wx
 import wx.html
 import re
 
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 _t = wx.GetTranslation
 

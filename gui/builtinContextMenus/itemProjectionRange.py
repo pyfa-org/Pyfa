@@ -9,7 +9,7 @@ from eos.saveddata.fit import Fit as EosFit
 from eos.saveddata.module import Module as EosModule
 from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
-from gui.utils.colors import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Colors
 from service.fit import Fit
 
 # noinspection PyPackageRequirements

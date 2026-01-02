@@ -24,7 +24,7 @@ import math
 import wx
 
 from eos.utils.float import floatUnerr
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 class VectorPicker(wx.Window):

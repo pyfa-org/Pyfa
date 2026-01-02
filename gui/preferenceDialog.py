@@ -21,7 +21,7 @@
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.colors import Colors, ThemedDialog
+from gui.utils.themes import Colors, ThemedDialog
 
 _t = wx.GetTranslation
 

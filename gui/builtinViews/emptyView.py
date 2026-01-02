@@ -3,7 +3,7 @@ import wx
 import gui.globalEvents as GE
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 import gui.mainFrame
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 class BlankPage(wx.Panel):

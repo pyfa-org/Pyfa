@@ -5,7 +5,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 from service.fit import Fit
 from service.settings import SettingsProvider, LocaleSettings, ThemeSettings
 import eos.config

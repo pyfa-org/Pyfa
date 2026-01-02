@@ -15,7 +15,7 @@ from gui.builtinShipBrowser.pfWidgetContainer import PFWidgetsContainer
 from gui.builtinShipBrowser.navigationPanel import NavigationPanel
 from gui.builtinShipBrowser.raceSelector import RaceSelector
 from gui.builtinShipBrowser.pfStaticText import PFStaticText
-from gui.utils.colors import ThemedPanel
+from gui.utils.themes import ThemedPanel
 
 pyfalog = Logger(__name__)
 

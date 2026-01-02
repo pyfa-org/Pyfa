@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from gui.utils.colors import Colors
+from gui.utils.themes import Colors
 
 
 class PFListPane(wx.ScrolledWindow):
