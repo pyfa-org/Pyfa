@@ -23,7 +23,7 @@ import wx
 
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from service.const import GraphLightness
 
 
@@ -33,7 +33,7 @@ class StylePickerPopup(wx.PopupTransientWindow):
         super().__init__(parent, flags=wx.BORDER_SIMPLE)
         self.wrapper = wrapper
 
-        self.SetBackgroundColour(Colors.windowBackground())
+        self.SetBackgroundColour(Themes.windowBackground())
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         grid = wx.GridSizer(self.nrows, self.ncols, 0, 0)

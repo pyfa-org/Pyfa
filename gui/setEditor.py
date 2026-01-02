@@ -25,7 +25,7 @@ from gui.auxWindow import AuxiliaryFrame
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import fromClipboard, toClipboard
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from service.implantSet import ImplantSets
 
 
@@ -91,7 +91,7 @@ class ImplantSetEditorView(BaseImplantEditorView):
     def __init__(self, parent):
         BaseImplantEditorView.__init__(self, parent)
         if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(Colors.buttonFace())
+            self.SetBackgroundColour(Themes.buttonFace())
 
     def bindContext(self):
         self.Parent.entityEditor.Bind(wx.EVT_CHOICE, self.contextChanged)

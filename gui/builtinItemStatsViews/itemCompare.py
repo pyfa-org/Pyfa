@@ -2,7 +2,7 @@
 import wx
 
 from .helpers import AutoListCtrl
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from service.price import Price as ServicePrice
 from service.market import Market
 from service.attribute import Attribute
@@ -22,8 +22,8 @@ class ItemCompare(wx.Panel):
         sPrice.getPrices(items, self.UpdateList, fetchTimeout=90)
 
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour(Colors.buttonFace())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.buttonFace())
+        self.SetForegroundColour(Themes.text())
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,

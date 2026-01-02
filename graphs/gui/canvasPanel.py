@@ -31,7 +31,7 @@ from logbook import Logger
 
 
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from gui.utils.dark import isDark
 from gui.utils.numberFormatter import roundToPrec
 
@@ -86,7 +86,7 @@ class GraphCanvasPanel(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.figure = Figure(figsize=(5, 3), tight_layout={'pad': 1.08})
-        rgbtuple = Colors.buttonFace().Get()
+        rgbtuple = Themes.buttonFace().Get()
         clr = [c / 255. for c in rgbtuple]
         self.figure.set_facecolor(clr)
         self.figure.set_edgecolor(clr)
@@ -311,7 +311,7 @@ class GraphCanvasPanel(wx.Panel):
             axisColor = '#000000'  # Black for axis lines
         
         # Set background color for the plot area
-        bgColor = Colors.windowBackground().Get()
+        bgColor = Themes.windowBackground().Get()
         bgColorNorm = [c / 255. for c in bgColor]
         self.subplot.set_facecolor(bgColorNorm)
         

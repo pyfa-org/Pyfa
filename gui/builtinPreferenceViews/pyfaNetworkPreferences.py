@@ -3,7 +3,7 @@ import wx
 
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 
 import gui.mainFrame
 from service.settings import NetworkSettings
@@ -87,7 +87,7 @@ class PFNetworkPref(PreferenceView):
 
         self.chProxyTypeChoices = [_t("No proxy"), _t("Auto-detected proxy settings"), _t("Manual proxy settings")]
         self.chProxyType = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.chProxyTypeChoices, 0)
-        Colors.styleInput(self.chProxyType)
+        Themes.styleInput(self.chProxyType)
 
         self.chProxyType.SetSelection(self.nMode)
 
@@ -105,7 +105,7 @@ class PFNetworkPref(PreferenceView):
         fgAddrSizer.Add(self.stPSetAddr, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.editProxySettingsAddr = wx.TextCtrl(panel, wx.ID_ANY, self.nAddr, wx.DefaultPosition, wx.DefaultSize, 0)
-        Colors.styleInput(self.editProxySettingsAddr)
+        Themes.styleInput(self.editProxySettingsAddr)
 
         fgAddrSizer.Add(self.editProxySettingsAddr, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
@@ -115,7 +115,7 @@ class PFNetworkPref(PreferenceView):
         fgAddrSizer.Add(self.stPSetPort, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.editProxySettingsPort = wx.TextCtrl(panel, wx.ID_ANY, self.nPort, wx.DefaultPosition, wx.DefaultSize, 0)
-        Colors.styleInput(self.editProxySettingsPort)
+        Themes.styleInput(self.editProxySettingsPort)
 
         fgAddrSizer.Add(self.editProxySettingsPort, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
@@ -126,12 +126,12 @@ class PFNetworkPref(PreferenceView):
         self.stPSetLogin.Wrap(-1)
         self.editProxySettingsLogin = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[0], wx.DefaultPosition, wx.DefaultSize,
                                                   0)
-        Colors.styleInput(self.editProxySettingsLogin)
+        Themes.styleInput(self.editProxySettingsLogin)
         self.stPSetPassword = wx.StaticText(panel, wx.ID_ANY, _t("Password:"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.stPSetPassword.Wrap(-1)
         self.editProxySettingsPassword = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[1], wx.DefaultPosition,
                                                      wx.DefaultSize, wx.TE_PASSWORD)
-        Colors.styleInput(self.editProxySettingsPassword)
+        Themes.styleInput(self.editProxySettingsPassword)
         pAuthSizer = wx.BoxSizer(wx.HORIZONTAL)
         pAuthSizer.Add(self.stPSetLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         pAuthSizer.Add(self.editProxySettingsLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)

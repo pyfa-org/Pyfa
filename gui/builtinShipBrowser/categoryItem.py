@@ -8,7 +8,7 @@ import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from .events import Stage2Selected
 
 pyfalog = Logger(__name__)
@@ -101,7 +101,7 @@ class CategoryItem(SFBrowserItem):
         # rect = self.GetRect()
         self.UpdateElementsPos(mdc)
 
-        windowColor = Colors.windowBackground()
+        windowColor = Themes.windowBackground()
         textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)

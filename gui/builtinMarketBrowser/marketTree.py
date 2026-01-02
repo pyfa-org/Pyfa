@@ -2,7 +2,7 @@ import wx
 
 from gui.cachingImageList import CachingImageList
 from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES, CHARGES_FOR_FIT
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 
 from logbook import Logger
 
@@ -14,8 +14,8 @@ class MarketTree(wx.TreeCtrl):
 
     def __init__(self, parent, marketBrowser):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
-        self.SetBackgroundColour(Colors.listBackground())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.listBackground())
+        self.SetForegroundColour(Themes.text())
         pyfalog.debug("Initialize marketTree")
         self.root = self.AddRoot("root")
 

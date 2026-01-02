@@ -4,7 +4,7 @@ import re
 import wx
 
 import gui.display as d
-from gui.utils.themes import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Themes
 from service.fit import Fit
 
 _t = wx.GetTranslation
@@ -30,7 +30,7 @@ class FitBrowserLiteDialog(ThemedDialog):
 
         searchSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.searchBox = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        Colors.styleInput(self.searchBox)
+        Themes.styleInput(self.searchBox)
         searchSizer.Add(self.searchBox, 1, wx.EXPAND | wx.ALL, 5)
         mainSizer.Add(searchSizer, 0, wx.EXPAND | wx.ALL, 0)
 

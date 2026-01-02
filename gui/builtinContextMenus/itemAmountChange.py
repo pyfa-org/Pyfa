@@ -9,7 +9,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.fit import Fit as es_Fit
 from gui.contextMenu import ContextMenuCombined
-from gui.utils.themes import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Themes
 from service.fit import Fit
 
 # noinspection PyPackageRequirements
@@ -108,7 +108,7 @@ class AmountChanger(ThemedDialog):
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        Colors.styleInput(self.input)
+        Themes.styleInput(self.input)
         self.input.SetValue(str(value))
 
         bSizer1.Add(self.input, 0, wx.LEFT | wx.RIGHT | wx.EXPAND, 15)

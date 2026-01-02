@@ -21,7 +21,7 @@
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.themes import Colors, ThemedDialog
+from gui.utils.themes import Themes, ThemedDialog
 
 _t = wx.GetTranslation
 
@@ -38,8 +38,8 @@ class PreferenceDialog(ThemedDialog):
 
         self.listview = self.listbook.GetListView()
         # Apply theme colors to the listview
-        self.listview.SetBackgroundColour(Colors.listBackground())
-        self.listview.SetForegroundColour(Colors.text())
+        self.listview.SetBackgroundColour(Themes.listBackground())
+        self.listview.SetForegroundColour(Themes.text())
         # self.listview.SetMinSize((500, -1))
         # self.listview.SetSize((500, -1))
 
@@ -65,8 +65,8 @@ class PreferenceDialog(ThemedDialog):
             page = wx.ScrolledWindow(self.listbook)
             page.SetScrollRate(15, 15)
             # Apply theme colors to the page
-            page.SetBackgroundColour(Colors.buttonFace())
-            page.SetForegroundColour(Colors.text())
+            page.SetBackgroundColour(Themes.buttonFace())
+            page.SetForegroundColour(Themes.text())
             bmp = prefView.getImage()
             if bmp:
                 imgID = self.imageList.Add(bmp)

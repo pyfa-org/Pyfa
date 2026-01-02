@@ -22,7 +22,7 @@ import wx.lib.newevent
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils import color as color_utils, draw, fonts
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from service.fit import Fit
 
 _t = wx.GetTranslation
@@ -119,7 +119,7 @@ class ChromeNotebook(wx.Panel):
         else:
             style = wx.SIMPLE_BORDER
 
-        back_color = Colors.windowBackground()
+        back_color = Themes.windowBackground()
 
         content_sizer = wx.BoxSizer(wx.VERTICAL)
         self.page_container = wx.Panel(self, style=style)
@@ -560,7 +560,7 @@ class _TabRenderer:
 
     def InitColors(self):
         """Determines colors used for tab, based on system settings"""
-        self.tab_color = Colors.buttonFace()
+        self.tab_color = Themes.buttonFace()
         self.inactive_color = color_utils.GetSuitable(self.tab_color, 0.25)
         self.selected_color = color_utils.GetSuitable(self.tab_color, 0.10)
 
@@ -1188,7 +1188,7 @@ class _TabsContainer(wx.Panel):
         #     from Carbon.Appearance import kThemeBrushDialogBackgroundActive
         #     brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
         # else:
-        color = Colors.buttonFace()
+        color = Themes.buttonFace()
         brush = wx.Brush(color)
 
         if "wxGTK" not in wx.PlatformInfo:
@@ -1505,7 +1505,7 @@ class PFNotebookPagePreview(wx.Frame):
         canvas = wx.Bitmap(round(rect.width), round(rect.height))
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
-        color = Colors.windowBackground()
+        color = Themes.windowBackground()
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
@@ -1514,10 +1514,10 @@ class PFNotebookPagePreview(wx.Frame):
 
         x, y = mdc.GetTextExtent(self.title)
 
-        mdc.SetBrush(wx.Brush(Colors.text()))
+        mdc.SetBrush(wx.Brush(Themes.text()))
         mdc.DrawRectangle(0, 0, round(rect.width), 16)
 
-        mdc.SetTextForeground(Colors.windowBackground())
+        mdc.SetTextForeground(Themes.windowBackground())
 
         mdc.DrawBitmap(self.bitmap, 0, 16)
 

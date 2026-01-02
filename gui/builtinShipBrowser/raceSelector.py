@@ -6,7 +6,7 @@ from logbook import Logger
 import gui.utils.anim_effects as animEffects
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from .events import Stage2Selected
 from gui.bitmap_loader import BitmapLoader
 
@@ -62,7 +62,7 @@ class RaceSelector(wx.Window):
 
         # Make the bitmaps have the same color as window text
 
-        sysTextColour = Colors.text()
+        sysTextColour = Themes.text()
 
         img = self.bmpArrow.ConvertToImage()
         if layout == wx.VERTICAL:
@@ -169,7 +169,7 @@ class RaceSelector(wx.Window):
     def OnPaint(self, event):
         rect = self.GetRect()
 
-        windowColor = Colors.windowBackground()
+        windowColor = Themes.windowBackground()
         # bkColor = colorUtils.GetSuitable(windowColor, 0.1)
         sepColor = colorUtils.GetSuitable(windowColor, 0.2)
 

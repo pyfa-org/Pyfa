@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.clipboard import toClipboard
-from gui.utils.themes import Colors, ThemedPanel
+from gui.utils.themes import Themes, ThemedPanel
 from service.character import Character
 from service.fit import Fit
 
@@ -54,7 +54,7 @@ class CharacterSelection(ThemedPanel):
         self.charCache = None
 
         self.charChoice = wx.Choice(self)
-        Colors.styleInput(self.charChoice)
+        Themes.styleInput(self.charChoice)
         mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         self.refreshCharacterList()

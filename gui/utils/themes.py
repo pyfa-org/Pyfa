@@ -11,7 +11,7 @@ import wx
 from gui.utils.dark import usePyfaDark, useSystemColors
 
 
-class Colors:
+class Themes:
     """Provides theme-aware colors for the application."""
 
     # =========================================================================
@@ -135,11 +135,11 @@ class Colors:
             return
         
         if disabled:
-            bgColor = Colors.inputDisabledBackground()
+            bgColor = Themes.inputDisabledBackground()
         else:
-            bgColor = Colors.inputBackground()
+            bgColor = Themes.inputBackground()
         
-        fgColor = Colors.text()
+        fgColor = Themes.text()
         
         # On Windows, we need to disable the native theme to allow custom colors
         if wx.Platform == '__WXMSW__':
@@ -188,26 +188,26 @@ class ThemedPanel(wx.Panel):
     
     def _getBackgroundColor(self):
         """Override this to use a different background color."""
-        return Colors.buttonFace()
+        return Themes.buttonFace()
     
     def _applyThemeColors(self):
         """Apply theme colors to this panel."""
         self.SetBackgroundColour(self._getBackgroundColor())
-        self.SetForegroundColour(Colors.text())
+        self.SetForegroundColour(Themes.text())
 
 
 class ThemedContentPanel(ThemedPanel):
     """A panel using windowBackground() - suitable for content areas."""
     
     def _getBackgroundColor(self):
-        return Colors.windowBackground()
+        return Themes.windowBackground()
 
 
 class ThemedListPanel(ThemedPanel):
     """A panel using listBackground() - suitable for list containers."""
     
     def _getBackgroundColor(self):
-        return Colors.listBackground()
+        return Themes.listBackground()
 
 
 class ThemedFrame(wx.Frame):
@@ -223,8 +223,8 @@ class ThemedFrame(wx.Frame):
     def _applyThemeColors(self):
         """Apply theme colors and dark title bar to this frame."""
         from gui.utils.dark import setDarkTitleBar
-        self.SetBackgroundColour(Colors.buttonFace())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.buttonFace())
+        self.SetForegroundColour(Themes.text())
         setDarkTitleBar(self)
 
 
@@ -241,6 +241,6 @@ class ThemedDialog(wx.Dialog):
     def _applyThemeColors(self):
         """Apply theme colors and dark title bar to this dialog."""
         from gui.utils.dark import setDarkTitleBar
-        self.SetBackgroundColour(Colors.buttonFace())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.buttonFace())
+        self.SetForegroundColour(Themes.text())
         setDarkTitleBar(self)

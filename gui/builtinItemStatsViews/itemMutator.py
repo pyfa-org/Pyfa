@@ -8,7 +8,7 @@ import gui.fitCommands as cmd
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from service.fit import Fit
 from .attributeSlider import AttributeSlider, EVT_VALUE_CHANGED
 from .itemAttributes import ItemParams
@@ -22,8 +22,8 @@ class ItemMutatorPanel(wx.Panel):
     def __init__(self, parent, stuff):
         wx.Panel.__init__(self, parent)
         self.stuff = stuff
-        self.SetBackgroundColour(Colors.buttonFace())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.buttonFace())
+        self.SetForegroundColour(Themes.text())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -74,8 +74,8 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.SetScrollRate(0, 15)
         self.carryingFitID = gui.mainFrame.MainFrame.getInstance().getActiveFit()
         self.initialMutations = {}
-        self.SetBackgroundColour(Colors.windowBackground())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.windowBackground())
+        self.SetForegroundColour(Themes.text())
         self.stuff = stuff
         self.timer = None
         self.isModified = False

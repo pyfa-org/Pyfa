@@ -23,7 +23,7 @@ from collections import OrderedDict, namedtuple
 # noinspection PyPackageRequirements
 import wx
 
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from service.const import GraphColor, GraphLightness, GraphLineStyle
 
 ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))
@@ -42,7 +42,7 @@ class LineStyleData:
     def iconName(self):
         # Get lightness out of RGB color, see following link for math:
         # https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
-        r, g, b, a = (c / 255 for c in Colors.windowBackground())
+        r, g, b, a = (c / 255 for c in Themes.windowBackground())
         l = (max(r, g, b) + min (r, g, b)) / 2
         suffix = '_black' if l > 0.3 else '_white'
         return '{}{}'.format(self._iconNamePrefix, suffix)

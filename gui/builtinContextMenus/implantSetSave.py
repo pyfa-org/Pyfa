@@ -2,7 +2,7 @@ import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
-from gui.utils.themes import ThemedDialog, Colors
+from gui.utils.themes import ThemedDialog, Themes
 from service.fit import Fit
 
 _t = wx.GetTranslation
@@ -55,7 +55,7 @@ class NameDialog(ThemedDialog):
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        Colors.styleInput(self.input)
+        Themes.styleInput(self.input)
         if value is None:
             value = ''
         else:

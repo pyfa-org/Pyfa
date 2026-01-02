@@ -58,7 +58,7 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.setEditor import ImplantSetEditor
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from gui.utils.dark import setDarkTitleBar
 from gui.targetProfileEditor import TargetProfileEditor
 from gui.updateDialog import UpdateDialog
@@ -155,8 +155,8 @@ class MainFrame(wx.Frame):
         self.disableOverrideEditor = disableOverrideEditor
 
         # Set frame background color (supports dark mode)
-        self.SetBackgroundColour(Colors.buttonFace())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.buttonFace())
+        self.SetForegroundColour(Themes.text())
 
         # Enable dark title bar on Windows when in dark mode
         setDarkTitleBar(self)

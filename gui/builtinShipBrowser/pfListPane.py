@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 
 
 class PFListPane(wx.ScrolledWindow):
@@ -32,8 +32,8 @@ class PFListPane(wx.ScrolledWindow):
         self._wCount = 0
         self.itemsHeight = 1
 
-        self.SetBackgroundColour(Colors.windowBackground())
-        self.SetForegroundColour(Colors.text())
+        self.SetBackgroundColour(Themes.windowBackground())
+        self.SetForegroundColour(Themes.text())
 
         self.SetVirtualSize((1, 1))
         self.SetScrollRate(0, 1)

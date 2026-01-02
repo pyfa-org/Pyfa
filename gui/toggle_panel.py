@@ -14,7 +14,7 @@
 
 import wx
 
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 
 
 class TogglePanel(wx.Panel):
@@ -31,8 +31,8 @@ class TogglePanel(wx.Panel):
 
         # Create the header panel, set sizer, and add to main sizer
         self.header_panel = wx.Panel(self)
-        self.header_panel.SetBackgroundColour(Colors.buttonFace())
-        self.header_panel.SetForegroundColour(Colors.text())
+        self.header_panel.SetBackgroundColour(Themes.buttonFace())
+        self.header_panel.SetForegroundColour(Themes.text())
         header_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.header_panel.SetSizer(header_sizer)
 
@@ -57,8 +57,8 @@ class TogglePanel(wx.Panel):
 
         # Create the content panel, set sizer, and add to main sizer
         self.content_panel = wx.Panel(self)
-        self.content_panel.SetBackgroundColour(Colors.buttonFace())
-        self.content_panel.SetForegroundColour(Colors.text())
+        self.content_panel.SetBackgroundColour(Themes.buttonFace())
+        self.content_panel.SetForegroundColour(Themes.text())
         self.content_sizer = wx.BoxSizer(wx.VERTICAL)
         self.content_panel.SetSizer(self.content_sizer)
 

@@ -22,7 +22,7 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 
 
 class Display(wx.ListCtrl):
@@ -33,8 +33,8 @@ class Display(wx.ListCtrl):
         wx.ListCtrl.__init__(self)
         self.EnableSystemTheme(False)
         self.Create(parent, size=size, style=wx.LC_REPORT | style)
-        self.SetBackgroundColour(Colors.listBackground())
-        self.SetTextColour(Colors.text())
+        self.SetBackgroundColour(Themes.listBackground())
+        self.SetTextColour(Themes.text())
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []

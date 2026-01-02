@@ -24,7 +24,7 @@ import math
 import wx
 
 from eos.utils.float import floatUnerr
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 
 
 class VectorPicker(wx.Window):
@@ -115,13 +115,13 @@ class VectorPicker(wx.Window):
         width, height = self.GetScaledClientSize()
         if not width or not height:
             return
-        dc.SetBackground(wx.Brush(Colors.buttonFace(), wx.BRUSHSTYLE_SOLID))
+        dc.SetBackground(wx.Brush(Themes.buttonFace(), wx.BRUSHSTYLE_SOLID))
         dc.Clear()
-        dc.SetTextForeground(Colors.text())
+        dc.SetTextForeground(Themes.text())
         dc.SetFont(self._font)
 
         radius = min(width, height) / 2 - 2
-        dc.SetBrush(wx.Brush(Colors.windowBackground()))
+        dc.SetBrush(wx.Brush(Themes.windowBackground()))
         dc.DrawCircle(round(radius + 2), round(radius + 2), round(radius))
         a = math.radians(self._angle + self._offset)
         x = math.cos(a) * radius

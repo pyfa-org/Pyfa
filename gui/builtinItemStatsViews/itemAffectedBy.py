@@ -16,7 +16,7 @@ from eos.saveddata.fit import Fit
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 
 _t = wx.GetTranslation
 
@@ -42,7 +42,7 @@ class ItemAffectedBy(wx.Panel):
 
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour(Colors.buttonFace())
+        self.SetBackgroundColour(Themes.buttonFace())
         self.stuff = stuff
         self.item = item
 
@@ -57,7 +57,7 @@ class ItemAffectedBy(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.affectedBy = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
-        self.affectedBy.SetBackgroundColour(Colors.windowBackground())
+        self.affectedBy.SetBackgroundColour(Themes.windowBackground())
         mainSizer.Add(self.affectedBy, 1, wx.ALL | wx.EXPAND, 0)
 
         self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)

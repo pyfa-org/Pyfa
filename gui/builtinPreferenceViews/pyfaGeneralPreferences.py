@@ -5,7 +5,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
-from gui.utils.themes import Colors
+from gui.utils.themes import Themes
 from service.fit import Fit
 from service.settings import SettingsProvider, LocaleSettings, ThemeSettings
 import eos.config
@@ -55,7 +55,7 @@ class PFGeneralPref(PreferenceView):
                 return langInfo.Description + progress_display
 
             self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [langDisplay(x) for x in self.langChoices], 0)
-            Colors.styleInput(self.chLang)
+            Themes.styleInput(self.chLang)
             self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
 
             selectedIndex = self.langChoices.index(next((x for x in self.langChoices if x.CanonicalName == self.localeSettings.get('locale')), None))
@@ -82,7 +82,7 @@ class PFGeneralPref(PreferenceView):
                               sorted([(wx.Locale.FindLanguageInfo(x).Description, x) for x in eos.config.translation_mapping.keys()], key=lambda x: x[0])
 
         self.chEosLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x[0] for x in self.eosLangChoices], 0)
-        Colors.styleInput(self.chEosLang)
+        Themes.styleInput(self.chEosLang)
         self.chEosLang.Bind(wx.EVT_CHOICE, self.onEosLangSelection)
 
         selectedIndex = self.eosLangChoices.index(
@@ -108,7 +108,7 @@ class PFGeneralPref(PreferenceView):
 
         self.themeChoices = [_t("System Default"), _t("Pyfa Dark"), _t("Pyfa Light")]
         self.chTheme = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.themeChoices, 0)
-        Colors.styleInput(self.chTheme)
+        Themes.styleInput(self.chTheme)
         self.chTheme.SetSelection(self.themeSettings.get('theme_mode'))
         self.chTheme.Bind(wx.EVT_CHOICE, self.onThemeSelection)
         themeSizer.Add(self.chTheme, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
