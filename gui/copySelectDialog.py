@@ -25,6 +25,7 @@ import wx
 
 from eos.db import getFit
 from gui.utils.clipboard import toClipboard
+from gui.utils.colors import ThemedDialog
 from service.const import PortDnaOptions, PortEftOptions, PortMultiBuyOptions
 from service.port import EfsPort, Port
 from service.settings import SettingsProvider
@@ -32,7 +33,7 @@ from service.settings import SettingsProvider
 _t = wx.GetTranslation
 
 
-class CopySelectDialog(wx.Dialog):
+class CopySelectDialog(ThemedDialog):
     copyFormatEft = 0
     copyFormatXml = 1
     copyFormatDna = 2

@@ -6,6 +6,7 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
+from gui.utils.colors import ThemedDialog, Colors
 from service.fit import Fit
 
 _t = wx.GetTranslation
@@ -49,7 +50,7 @@ class DroneSplitStack(ContextMenuSingle):
 DroneSplitStack.register()
 
 
-class DroneStackSplit(wx.Dialog):
+class DroneStackSplit(ThemedDialog):
 
     def __init__(self, parent, value):
         super().__init__(parent, title="Split Drone Stack", style=wx.DEFAULT_DIALOG_STYLE)
@@ -64,6 +65,7 @@ class DroneStackSplit(wx.Dialog):
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        Colors.styleInput(self.input)
         self.input.SetValue(str(value))
 
         bSizer1.Add(self.input, 0, wx.LEFT | wx.RIGHT | wx.EXPAND, 15)

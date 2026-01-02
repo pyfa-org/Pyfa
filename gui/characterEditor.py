@@ -40,6 +40,7 @@ from gui.builtinViews.entityEditor import BaseValidator, EntityEditor, TextEntry
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.contextMenu import ContextMenu
 from gui.utils.clipboard import fromClipboard, toClipboard
+from gui.utils.colors import Colors, ThemedDialog
 from service.character import Character
 from service.esi import Esi
 from service.esiAccess import APIException
@@ -297,13 +298,15 @@ class SkillTreeView(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Colors.windowBackground())
+        self.SetForegroundColour(Colors.text())
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.clonesChoice = wx.Choice(self, wx.ID_ANY, style=0)
+        Colors.styleInput(self.clonesChoice)
         i = self.clonesChoice.Append("Omega Clone", None)
         self.clonesChoice.SetSelection(i)
         hSizer.Add(self.clonesChoice, 5, wx.ALL | wx.EXPAND, 5)
@@ -780,7 +783,8 @@ class APIView(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300),
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Colors.windowBackground())
+        self.SetForegroundColour(Colors.text())
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -806,6 +810,7 @@ class APIView(wx.Panel):
         fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
+        Colors.styleInput(self.charChoice)
         fgSizerInput.Add(self.charChoice, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 10)
 
         self.fetchButton = wx.Button(self, wx.ID_ANY, _t("Get Skills"), wx.DefaultPosition, wx.DefaultSize, 0)
@@ -932,7 +937,7 @@ class APIView(wx.Panel):
                 _t("Successfully fetched skills"), _t("Success"), wx.ICON_INFORMATION | wx.STAY_ON_TOP)
 
 
-class SecStatusDialog(wx.Dialog):
+class SecStatusDialog(ThemedDialog):
 
     def __init__(self, parent, sec):
         super().__init__(parent, title=_t("Set Security Status"), size=(300, 175), style=wx.DEFAULT_DIALOG_STYLE)

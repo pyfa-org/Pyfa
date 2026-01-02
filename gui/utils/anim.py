@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 import gui.utils.color as colorUtils
+from gui.utils.colors import Colors, ThemedDialog
 
 
 class LoadAnimation(wx.Window):
@@ -55,11 +56,11 @@ class LoadAnimation(wx.Window):
     def OnPaint(self, event):
         rect = self.GetClientRect()
         dc = wx.AutoBufferedPaintDC(self)
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Colors.windowBackground()
         dc.SetBackground(wx.Brush(windowColor))
         dc.Clear()
 
-        barColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        barColor = Colors.text()
         shadeColor = colorUtils.GetSuitable(barColor, 0.75)
 
         barWidth = rect.width / self.bars
@@ -83,12 +84,12 @@ class LoadAnimation(wx.Window):
             dc.DrawRectangle(round(x), round(y), round(barWidth), round(bh))
             x += barWidth
 
-        textColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        textColor = Colors.text()
         dc.SetTextForeground(textColor)
         dc.DrawLabel(self.label, rect, wx.ALIGN_CENTER)
 
 
-class WaitDialog(wx.Dialog):
+class WaitDialog(ThemedDialog):
 
     def __init__(self, parent, title="Processing"):
         super().__init__(parent, id=wx.ID_ANY, title=title, size=(300, 30), style=wx.NO_BORDER)

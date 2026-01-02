@@ -2,6 +2,7 @@ import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
+from gui.utils.colors import ThemedDialog, Colors
 from service.fit import Fit
 
 _t = wx.GetTranslation
@@ -39,7 +40,7 @@ class ImplantSetSave(ContextMenuUnconditional):
 ImplantSetSave.register()
 
 
-class NameDialog(wx.Dialog):
+class NameDialog(ThemedDialog):
 
     def __init__(self, parent, value):
         super().__init__(parent, title=_t('New Implant Set'), style=wx.DEFAULT_DIALOG_STYLE)
@@ -54,6 +55,7 @@ class NameDialog(wx.Dialog):
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        Colors.styleInput(self.input)
         if value is None:
             value = ''
         else:
