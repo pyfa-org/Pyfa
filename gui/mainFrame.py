@@ -58,6 +58,8 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.setEditor import ImplantSetEditor
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
+from gui.utils.colors import Colors
+from gui.utils.dark import setDarkTitleBar
 from gui.targetProfileEditor import TargetProfileEditor
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard
@@ -152,9 +154,12 @@ class MainFrame(wx.Frame):
 
         self.disableOverrideEditor = disableOverrideEditor
 
-        # Fix for msw (have the frame background color match panel color
-        if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        # Set frame background color (supports dark mode)
+        self.SetBackgroundColour(Colors.buttonFace())
+        self.SetForegroundColour(Colors.text())
+
+        # Enable dark title bar on Windows when in dark mode
+        setDarkTitleBar(self)
 
         # Load and set the icon for pyfa main window
         i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))
@@ -483,8 +488,10 @@ class MainFrame(wx.Frame):
                     return
 
     def OnShowPreferenceDialog(self, event):
-        with PreferenceDialog(self) as dlg:
-            dlg.ShowModal()
+        dlg = PreferenceDialog(self)
+        dlg.ShowModal()
+        if self:  # MainFrame still exists (wasn't closed from within the dialog)
+            dlg.Destroy()
 
     @staticmethod
     def goWiki(event):

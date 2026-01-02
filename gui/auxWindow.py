@@ -21,6 +21,9 @@
 # noinspection PyPackageRequirements
 import wx
 
+from gui.utils.colors import Colors
+from gui.utils.dark import setDarkTitleBar
+
 
 class AuxiliaryMixin:
 
@@ -52,7 +55,9 @@ class AuxiliaryMixin:
             self.Bind(wx.EVT_MENU, self.OnSuppressedAction, id=wx.ID_COPY)
             self.Bind(wx.EVT_MENU, self.OnSuppressedAction, id=wx.ID_PASTE)
         if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+            self.SetBackgroundColour(Colors.buttonFace())
+            self.SetForegroundColour(Colors.text())
+            setDarkTitleBar(self)
 
     @classmethod
     def openOne(cls, parent, *args, forceReopen=False, **kwargs):
