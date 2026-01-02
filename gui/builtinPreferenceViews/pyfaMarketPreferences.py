@@ -4,6 +4,7 @@ from wx.lib.intctrl import IntCtrl
 
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
+from gui.utils.colors import Colors
 
 import gui.mainFrame
 import gui.globalEvents as GE
@@ -44,6 +45,7 @@ class PFMarketPref(PreferenceView):
                 _t('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.')))
         delayTimer.Add(self.stMarketDelay, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.intDelay = IntCtrl(panel, max=1000, limited=True)
+        Colors.styleInput(self.intDelay)
         delayTimer.Add(self.intDelay, 0, wx.ALL, 5)
         mainSizer.Add(delayTimer, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 10)
         self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
@@ -65,6 +67,8 @@ class PFMarketPref(PreferenceView):
                    'The system you choose will also be tried first, and if no data is available, global price will be used.')))
         self.chPriceSource = wx.Choice(panel, choices=sorted(Price.sources.keys()))
         self.chPriceSystem = wx.Choice(panel, choices=list(Price.systemsList.keys()))
+        Colors.styleInput(self.chPriceSource)
+        Colors.styleInput(self.chPriceSystem)
         priceSizer.Add(self.chPriceSource, 1, wx.ALL | wx.EXPAND, 5)
         priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
         mainSizer.Add(priceSizer, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 10)

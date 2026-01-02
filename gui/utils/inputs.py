@@ -24,6 +24,7 @@ from abc import ABCMeta, abstractmethod
 import wx
 
 from eos.utils.float import floatUnerr
+from gui.utils.colors import Colors
 
 
 def valToStr(val):
@@ -77,7 +78,7 @@ class FloatBox(wx.TextCtrl):
 
     def updateColor(self):
         if self.isValid():
-            self.SetForegroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            self.SetForegroundColour(Colors.text())
         else:
             self.SetForegroundColour(wx.RED)
 

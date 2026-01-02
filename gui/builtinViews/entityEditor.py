@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmap_loader import BitmapLoader
+from gui.utils.colors import Colors
 
 
 class BaseValidator(wx.Validator):
@@ -45,6 +46,7 @@ class EntityEditor(wx.Panel):
         self.choices = []
         self.choices.sort(key=lambda p: p.name)
         self.entityChoices = wx.Choice(self, choices=[p.name for p in self.choices])
+        Colors.styleInput(self.entityChoices)
         self.navSizer.Add(self.entityChoices, 1, wx.ALL, 5)
 
         buttons = (("new", wx.ART_NEW, self.OnNew),
