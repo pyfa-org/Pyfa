@@ -106,7 +106,7 @@ class PFGeneralPref(PreferenceView):
         self.stThemeLabel.Wrap(-1)
         themeSizer.Add(self.stThemeLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.themeChoices = [_t("System Default"), _t("Pyfa Dark"), _t("Light")]
+        self.themeChoices = [_t("System Default"), _t("Pyfa Dark"), _t("Pyfa Light")]
         self.chTheme = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.themeChoices, 0)
         Colors.styleInput(self.chTheme)
         self.chTheme.SetSelection(self.themeSettings.get('theme_mode'))
