@@ -5,8 +5,9 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
+from gui.utils.colors import Colors
 from service.fit import Fit
-from service.settings import SettingsProvider, LocaleSettings
+from service.settings import SettingsProvider, LocaleSettings, ThemeSettings
 import eos.config
 import wx.lib.agw.hyperlink as hl
 
@@ -54,6 +55,7 @@ class PFGeneralPref(PreferenceView):
                 return langInfo.Description + progress_display
 
             self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [langDisplay(x) for x in self.langChoices], 0)
+            Colors.styleInput(self.chLang)
             self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
 
             selectedIndex = self.langChoices.index(next((x for x in self.langChoices if x.CanonicalName == self.localeSettings.get('locale')), None))
@@ -72,7 +74,6 @@ class PFGeneralPref(PreferenceView):
             langBox.Add(langSizer)
 
         eosLangSizer = wx.BoxSizer(wx.HORIZONTAL)
-
         self.stEosLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("EVE Data:"), wx.DefaultPosition, wx.DefaultSize, 0)
         self.stEosLangLabel.Wrap(-1)
         eosLangSizer.Add(self.stEosLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -81,6 +82,7 @@ class PFGeneralPref(PreferenceView):
                               sorted([(wx.Locale.FindLanguageInfo(x).Description, x) for x in eos.config.translation_mapping.keys()], key=lambda x: x[0])
 
         self.chEosLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x[0] for x in self.eosLangChoices], 0)
+        Colors.styleInput(self.chEosLang)
         self.chEosLang.Bind(wx.EVT_CHOICE, self.onEosLangSelection)
 
         selectedIndex = self.eosLangChoices.index(
@@ -94,6 +96,24 @@ class PFGeneralPref(PreferenceView):
                                   _t("Auto will use the same language pyfa uses if available, otherwise English"),
                                   wx.DefaultPosition,
                                   wx.DefaultSize, 0), 0, wx.LEFT, 15)
+
+        self.themeSettings = ThemeSettings.getInstance()
+        themeBox = wx.StaticBoxSizer(wx.VERTICAL, panel, _t("Theme (requires restart)"))
+        mainSizer.Add(themeBox, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
+
+        themeSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.stThemeLabel = wx.StaticText(panel, wx.ID_ANY, _t("Appearance:"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stThemeLabel.Wrap(-1)
+        themeSizer.Add(self.stThemeLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.themeChoices = [_t("System Default"), _t("Pyfa Dark"), _t("Light")]
+        self.chTheme = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.themeChoices, 0)
+        Colors.styleInput(self.chTheme)
+        self.chTheme.SetSelection(self.themeSettings.get('theme_mode'))
+        self.chTheme.Bind(wx.EVT_CHOICE, self.onThemeSelection)
+        themeSizer.Add(self.chTheme, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        themeBox.Add(themeSizer)
 
         self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, _t("Use global character"), wx.DefaultPosition, wx.DefaultSize,
                                         0)
@@ -209,6 +229,27 @@ class PFGeneralPref(PreferenceView):
         selection = self.chEosLang.GetSelection()
         locale = self.eosLangChoices[selection]
         self.localeSettings.set('eos_locale', locale[1])
+
+    def onThemeSelection(self, event):
+        selection = self.chTheme.GetSelection()
+        self.themeSettings.set('theme_mode', selection)
+        dlg = wx.MessageDialog(
+            self.mainFrame,
+            _t("Theme changed. Close pyfa now to apply?"),
+            _t("Restart Required"),
+            wx.YES_NO | wx.ICON_QUESTION
+        )
+        result = dlg.ShowModal()
+        dlg.Destroy()
+        if result == wx.ID_YES:
+            # Save settings explicitly before closing
+            SettingsProvider.getInstance().saveAll()
+            # Find the PreferenceDialog parent and close it first
+            # to avoid hanging (can't close mainFrame while modal is open)
+            prefDialog = self.chTheme.GetTopLevelParent()
+            if prefDialog and hasattr(prefDialog, 'EndModal'):
+                prefDialog.EndModal(wx.ID_OK)
+            wx.CallAfter(self.mainFrame.Close)
 
     def onCBGlobalColorBySlot(self, event):
         # todo: maybe create a SettingChanged event that we can fire, and have other things hook into, instead of having the preference panel itself handle the
