@@ -577,6 +577,7 @@ def calculateTransitions(chargeData, baseTgtSpeed, baseTgtSigRadius,
         baseTgtSigRadius: Base target sig radius
         projectedCache: Pre-built cache for webs/TPs
         maxDistance: Maximum distance to scan (m)
+        resolution: Distance interval (m)
     
     Returns:
         List of tuples: [(distance, charge_index, charge_name, volley), ...]
