@@ -391,7 +391,7 @@ class FitAmmoOptimalDpsGraph(FitGraph):
                             explosionDelay = base_explosion_delay * flight_mults['explosionDelay']
                             # Estimate range: velocity * flight_time
                             flightTime = explosionDelay / 1000
-                            estimated_range = maxVelocity * flightTime
+                            estimated_range = maxVelocity * flightTime * 1.1
                             if estimated_range > max_range_m:
                                 max_range_m = estimated_range
         
@@ -399,7 +399,7 @@ class FitAmmoOptimalDpsGraph(FitGraph):
             return inputDef.defaultRange
         
         # Add 10% buffer and convert to km
-        max_range_km = (max_range_m * 1.05) / 1000
+        max_range_km = (max_range_m * 1.1) / 1000
         
         # Cap at 300km (EVE's max lock range)
         max_range_km = min(max_range_km, 300)
