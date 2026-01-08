@@ -567,7 +567,7 @@ def _updateParamsWithCache(baseTgtSpeed, baseTgtSigRadius, projectedCache, dista
 
 
 def calculateTransitions(chargeData, baseTgtSpeed, baseTgtSigRadius,
-                         projectedCache, maxDistance=300000, resolution=1000):
+                         projectedCache, maxDistance=300000, resolution=100):
     """
     Calculate distances where optimal missile ammo changes.
     
@@ -577,7 +577,6 @@ def calculateTransitions(chargeData, baseTgtSpeed, baseTgtSigRadius,
         baseTgtSigRadius: Base target sig radius
         projectedCache: Pre-built cache for webs/TPs
         maxDistance: Maximum distance to scan (m)
-        resolution: Scan resolution (m)
     
     Returns:
         List of tuples: [(distance, charge_index, charge_name, volley), ...]

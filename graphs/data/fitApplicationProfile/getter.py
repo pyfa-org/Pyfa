@@ -571,7 +571,7 @@ class YOptimalAmmoVolleyMixin:
 class XDistanceMixin(SmoothPointGetter):
     """X-axis mixin: Distance in meters. Builds weapon cache and handles lookups."""
 
-    # Coarse resolution for graph display - 500m intervals
+    # Coarse resolution for graph display - 100m intervals
     # Exact calculations are done on-demand via getPoint/getPointExtended
     _baseResolution = 100  # meters
 
@@ -765,7 +765,7 @@ class XDistanceMixin(SmoothPointGetter):
             baseTgtSpeed=tgtSpeed,
             baseTgtSigRadius=tgtSigRadius,
             maxDistance=maxEffectiveRange,
-            resolution=100,  # 1km intervals
+            resolution=100,  # 100m intervals
             existingCache=existingCache
         )
         
@@ -947,7 +947,7 @@ class XDistanceMixin(SmoothPointGetter):
             if segStart >= segEnd:
                 continue
             
-            # Generate points at fixed 500m resolution for performance
+            # Generate points at fixed 100m resolution for performance
             step = 100
             xs, ys = [], []
             x = segStart

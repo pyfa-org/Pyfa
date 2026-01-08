@@ -108,7 +108,7 @@ def calculateTransitions(chargeData, turretBase, baseTrackingParams,
         baseTrackingParams: Base tracking params dict (with base tgtSpeed/tgtSigRadius)
         projectedCache: Pre-built cache from buildProjectedCache()
         maxDistance: Maximum distance to scan (m)
-        resolution: Scan resolution (m)
+        resolution: Data resolution (m)
     
     Returns:
         List of tuples: [(distance, charge_index, charge_name, volley), ...]
