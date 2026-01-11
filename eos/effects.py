@@ -1359,11 +1359,10 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
-    Implants named like: Wightstorm Rapture Booster (4 of 4)
+    Implants named like: Rapture Booster (5 of 5)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
-    Implant: AIR Rapture Booster II
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Implant: Quafe Zero Green Apple
@@ -42723,3 +42722,115 @@ class Effect12790(BaseEffect):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.requiresSkill('Torpedoes') or mod.charge.requiresSkill('Cruise Missiles'),
             'aoeVelocity', ship.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
+
+
+class Effect12794(BaseEffect):
+    """
+    shipRocketMaxVelocityBonusPostDivSkua
+
+    Used by:
+    Module: Skua Sharpshooter Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeMultiply(
+            lambda mod: mod.charge.requiresSkill('Rockets'),
+            'maxVelocity', 1 / module.getModifiedItemAttr('modeRocketMissileMaxVelocityBonusPostDivSkua'),
+            stackingPenalties=True, penaltyGroup='postDiv', **kwargs)
+
+
+class Effect12795(BaseEffect):
+    """
+    shipLightMissileMaxVelocityBonusPostDivSkua
+
+    Used by:
+    Module: Skua Sharpshooter Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeMultiply(
+            lambda mod: mod.charge.requiresSkill('Light Missiles'),
+            'maxVelocity', 1 / module.getModifiedItemAttr('modeLightMissileMaxVelocityBonusPostDivSkua'),
+            stackingPenalties=True, penaltyGroup='postDiv', **kwargs)
+
+
+class Effect12796(BaseEffect):
+    """
+    shipModeMissileFlightTimePostDiv
+
+    Used by:
+    Module: Anhinga Primary Mode
+    Module: Anhinga Secondary Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeMultiply(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosionDelay', 1 / ship.getModifiedItemAttr('modeAnhingaMissileFlightTimePostDiv'),
+            stackingPenalties=True, penaltyGroup='postDiv', **kwargs)
+
+
+class Effect12798(BaseEffect):
+    """
+    shipModeMissileVelocityPostDiv
+
+    Used by:
+    Module: Anhinga Primary Mode
+    Module: Anhinga Tertiary Mode
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeMultiply(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'maxVelocity', 1 / module.getModifiedItemAttr('modeAnhingaMissileMaxVelocityPostDiv'),
+            stackingPenalties=True, penaltyGroup='postDiv', **kwargs)
+
+
+class Effect12799(BaseEffect):
+    """
+    shipModeAnhingaCruiseLauncherTorpedoLauncherRapidHeavyLauncherROFPostDiv
+
+    Used by:
+    Modules named like: Anhinga Mode (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name in (
+                'Missile Launcher Rapid Heavy',
+                'Missile Launcher Cruise',
+                'Missile Launcher Torpedo'),
+            'speed', 1 / ship.getModifiedItemAttr('modeAnhingaCruiseLauncherTorpedoLauncherRapidHeavyLauncherROFPostDiv'),
+            stackingPenalties=True, penaltyGroup='postDiv',**kwargs)
+
+
+class Effect12802(BaseEffect):
+    """
+    MutatedMiningDroneOperationMiningAmountBonusPostPercentMiningDroneAmountPercentChar
+
+    Used by:
+    Skill: Mutated Drone Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Mutated Drone Specialization'), 'miningAmount',
+            src.getModifiedItemAttr('miningAmountBonus') * src.level, **kwargs)
