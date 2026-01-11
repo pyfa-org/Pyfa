@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.11
+- Python 3.11 (later versions may not work)
 - Git CLI installed
 - Python, pip and git are all available as command-line commands (add to the path if needed)
 
@@ -26,6 +26,7 @@ Activate the virtual environment
 
 ```
 For cmd.exe: PyfaEnv\scripts\activate.bat
+For PowerShell: PyfaEnv\Scripts\Activate.ps1
 For bash: source <venv>/Scripts/activate
 ```
 > For other OS check [Python documentation](https://docs.python.org/3/library/venv.html)
@@ -36,6 +37,8 @@ pip install -r PyfaDEV\requirements.txt
 ```
 > For some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`
 
+> You may need to [install a C compiler](https://mesonbuild.com/SimpleStart.html#installing-a-compiler-toolchain)
+
 Check that the libs from *requirements.txt* are installed
 ```
 pip list
@@ -43,8 +46,8 @@ pip list
 
 Build translations and database:
 ```
-python scripts\compile_lang.py
-python db_update.py
+python PyfaDEV\scripts\compile_lang.py
+python PyfaDEV\db_update.py
 ```
 
 Test that the project is starting properly
@@ -88,6 +91,7 @@ Check that the project is starting properly.
 Switch to the proper virtual environment
 ```
 For cmd.exe: PyfaEnv\scripts\activate.bat
+For PowerShell: PyfaEnv\Scripts\Activate.ps1
 For bash: source <venv>/Scripts/activate
 ```
 
