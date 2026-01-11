@@ -1,7 +1,7 @@
 image:
   - Ubuntu2204
   - Visual Studio 2022
-  - macos-catalina
+  - macos-monterey
 for:
   -
     matrix:
