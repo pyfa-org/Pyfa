@@ -49213,5 +49213,74 @@
     "name": "shipRoleBonusPerseveranceIceMiningCriticalHitChance", 
     "published": 0, 
     "stackable": 1
+  }, 
+  "6067": {
+    "attributeID": 6067, 
+    "categoryID": 9, 
+    "dataType": 5, 
+    "defaultValue": 5.0, 
+    "description": "", 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "shipBonus1AF", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "6078": {
+    "attributeID": 6078, 
+    "categoryID": 30, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "description": "Increase in Light Missile velocity", 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "modeLightMissileMaxVelocityBonusPostDivSkua", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "6079": {
+    "attributeID": 6079, 
+    "categoryID": 30, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "description": "Increase in Rocket velocity", 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "modeRocketMissileMaxVelocityBonusPostDivSkua", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "6080": {
+    "attributeID": 6080, 
+    "categoryID": 30, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "modeAnhingaMissileFlightTimePostDiv", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "6081": {
+    "attributeID": 6081, 
+    "categoryID": 30, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "modeAnhingaMissileMaxVelocityPostDiv", 
+    "published": 0, 
+    "stackable": 1
+  }, 
+  "6082": {
+    "attributeID": 6082, 
+    "categoryID": 30, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "modeAnhingaCruiseLauncherTorpedoLauncherRapidHeavyLauncherROFPostDiv", 
+    "published": 0, 
+    "stackable": 1
   }
 }

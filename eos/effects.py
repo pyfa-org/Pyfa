@@ -1333,10 +1333,11 @@ class Effect446(BaseEffect):
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
-    Implants named like: Nirvana Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
+    Implants named like: Wightstorm Nirvana Booster (4 of 4)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
+    Implant: AIR Nirvana Booster II
     Implant: Genolution Core Augmentation CA-3
     Implant: Sansha Modified 'Gnome' Implant
     Skill: Shield Management
@@ -2604,7 +2605,6 @@ class Effect891(BaseEffect):
 
     Used by:
     Variations of ship: Raven (3 of 4)
-    Module: Anhinga Tertiary Mode
     """
 
     type = 'passive'
@@ -2628,7 +2628,6 @@ class Effect892(BaseEffect):
 
     Used by:
     Variations of ship: Raven (3 of 4)
-    Module: Anhinga Tertiary Mode
     """
 
     type = 'passive'
@@ -3300,7 +3299,6 @@ class Effect1024(BaseEffect):
     shipMissileHeavyVelocityBonusCC2
 
     Used by:
-    Module: Anhinga Tertiary Mode
     Ship: Caracal
     Ship: Osprey Navy Issue
     """
@@ -3927,7 +3925,6 @@ class Effect1230(BaseEffect):
     shipMissileVelocityPirateFactionFrigate
 
     Used by:
-    Module: Anhinga Primary Mode
     Ship: Barghest
     Ship: Garmur
     Ship: Laelaps
@@ -5679,7 +5676,6 @@ class Effect1885(BaseEffect):
     shipCruiseLauncherROFBonus2CB
 
     Used by:
-    Modules named like: Anhinga Mode (3 of 3)
     Ship: Raven
     Ship: Raven State Issue
     """
@@ -5707,7 +5703,6 @@ class Effect1886(BaseEffect):
     shipSiegeLauncherROFBonus2CB
 
     Used by:
-    Modules named like: Anhinga Mode (3 of 3)
     Ship: Raven
     Ship: Raven State Issue
     """
@@ -16831,6 +16826,7 @@ class Effect4990(BaseEffect):
     Used by:
     Ship: Hematos
     Ship: Impairor
+    Ship: Succubus
     """
 
     type = 'passive'
@@ -18227,7 +18223,6 @@ class Effect5213(BaseEffect):
     shipRocketMaxVelocityBonusRookie
 
     Used by:
-    Module: Skua Sharpshooter Mode
     Ship: Taipan
     """
 
@@ -18246,7 +18241,6 @@ class Effect5214(BaseEffect):
     shipLightMissileMaxVelocityBonusRookie
 
     Used by:
-    Module: Skua Sharpshooter Mode
     Ship: Taipan
     """
 
@@ -20399,7 +20393,6 @@ class Effect5468(BaseEffect):
     shipBonusAgilityCI2
 
     Used by:
-    Module: Anhinga Tertiary Mode
     Ship: Badger
     """
 
@@ -21155,7 +21148,6 @@ class Effect5618(BaseEffect):
     shipBonusRHMLROF2CB
 
     Used by:
-    Modules named like: Anhinga Mode (3 of 3)
     Ship: Raven
     Ship: Widow
     """
@@ -22464,8 +22456,6 @@ class Effect5867(BaseEffect):
     shipBonusMissileExplosionDelayPirateFaction2
 
     Used by:
-    Module: Anhinga Primary Mode
-    Module: Anhinga Secondary Mode
     Ship: Barghest
     Ship: Garmur
     Ship: Laelaps
@@ -23525,6 +23515,7 @@ class Effect6016(BaseEffect):
 
     Used by:
     Modules named like: Propulsion Mode (5 of 5)
+    Module: Anhinga Tertiary Mode
     """
 
     type = 'passive'

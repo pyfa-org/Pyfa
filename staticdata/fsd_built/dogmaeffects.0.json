@@ -99671,15 +99671,15 @@
     "rangeChance": 0
   }, 
   "12758": {
-    "description_de": "Automatically generated effect", 
+    "description_de": "Automatisch erzeugter Effekt", 
     "description_en-us": "Automatically generated effect", 
-    "description_es": "Automatically generated effect", 
-    "description_fr": "Automatically generated effect", 
+    "description_es": "Efecto generado automáticamente.", 
+    "description_fr": "Effet généré automatiquement", 
     "description_it": "Automatically generated effect", 
-    "description_ja": "Automatically generated effect", 
-    "description_ko": "Automatically generated effect", 
-    "description_ru": "Automatically generated effect", 
-    "description_zh": "Automatically generated effect", 
+    "description_ja": "自動生成効果", 
+    "description_ko": "자동 생성 효과", 
+    "description_ru": "Автоматически созданный эффект", 
+    "description_zh": "自动生成效果", 
     "descriptionID": 1022818, 
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -100069,6 +100069,30 @@
     "published": 0, 
     "rangeChance": 0
   }, 
+  "12781": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12781, 
+    "effectName": "shipETOptimalRange1AF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 464, 
+        "operation": 6, 
+        "skillTypeID": 3303
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
   "12790": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -100099,6 +100123,184 @@
     "propulsionChance": 0, 
     "published": 0, 
     "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12794": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12794, 
+    "effectName": "shipRocketMaxVelocityBonusPostDivSkua", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 6079, 
+        "operation": 5, 
+        "skillTypeID": 3320
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12795": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12795, 
+    "effectName": "shipLightMissileMaxVelocityBonusPostDivSkua", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 6078, 
+        "operation": 5, 
+        "skillTypeID": 3321
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12796": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12796, 
+    "effectName": "shipModeMissileFlightTimePostDiv", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 281, 
+        "modifyingAttributeID": 6080, 
+        "operation": 5, 
+        "skillTypeID": 3319
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12798": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12798, 
+    "effectName": "shipModeMissileVelocityPostDiv", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 6081, 
+        "operation": 5, 
+        "skillTypeID": 3319
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12799": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12799, 
+    "effectName": "shipModeAnhingaCruiseLauncherTorpedoLauncherRapidHeavyLauncherROFPostDiv", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 506, 
+        "modifiedAttributeID": 51, 
+        "modifyingAttributeID": 6082, 
+        "operation": 5
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 1245, 
+        "modifiedAttributeID": 51, 
+        "modifyingAttributeID": 6082, 
+        "operation": 5
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 508, 
+        "modifiedAttributeID": 51, 
+        "modifyingAttributeID": 6082, 
+        "operation": 5
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12801": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12801, 
+    "effectName": "miningAmountMultiplierSkillBonusPreMul", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 434, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12802": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12802, 
+    "effectName": "MutatedMiningDroneOperationMiningAmountBonusPostPercentMiningDroneAmountPercentChar", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 77, 
+        "modifyingAttributeID": 434, 
+        "operation": 6, 
+        "skillTypeID": 60515
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
     "rangeChance": 0
   }
 }
