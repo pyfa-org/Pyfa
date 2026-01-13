@@ -21,10 +21,11 @@
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
+from gui.utils.themes import Themes, ThemedDialog
 
 _t = wx.GetTranslation
 
-class PreferenceDialog(wx.Dialog):
+class PreferenceDialog(ThemedDialog):
 
     def __init__(self, parent):
         super().__init__(parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
@@ -36,6 +37,9 @@ class PreferenceDialog(wx.Dialog):
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
 
         self.listview = self.listbook.GetListView()
+        # Apply theme colors to the listview
+        self.listview.SetBackgroundColour(Themes.listBackground())
+        self.listview.SetForegroundColour(Themes.text())
         # self.listview.SetMinSize((500, -1))
         # self.listview.SetSize((500, -1))
 
@@ -60,6 +64,9 @@ class PreferenceDialog(wx.Dialog):
         for prefView in PreferenceView.views:
             page = wx.ScrolledWindow(self.listbook)
             page.SetScrollRate(15, 15)
+            # Apply theme colors to the page
+            page.SetBackgroundColour(Themes.buttonFace())
+            page.SetForegroundColour(Themes.text())
             bmp = prefView.getImage()
             if bmp:
                 imgID = self.imageList.Add(bmp)

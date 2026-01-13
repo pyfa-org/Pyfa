@@ -92,3 +92,23 @@ msgstr "Triglavian Invasion"
 #: gui/builtinContextMenus/envEffectAdd.py:122
 msgid "ContextMenu|ProjectedEffectManipulation|Wolf Rayet"
 msgstr "Wolf Rayet"
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:101
+msgid "Theme (requires restart)"
+msgstr "Theme (requires restart)"
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:105
+msgid "Appearance:"
+msgstr "Appearance:"
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:109
+msgid "System Default"
+msgstr "System Default"
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:109
+msgid "Pyfa Dark"
+msgstr "Pyfa Dark"
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:109
+msgid "Pyfa Light"
+msgstr "Pyfa Light"

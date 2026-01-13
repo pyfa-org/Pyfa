@@ -20,6 +20,7 @@ from service.fit import Fit
 from service.port import Port
 from service.port.esi import ESIExportException
 from service.settings import EsiSettings
+from gui.utils.themes import Themes
 
 
 _t = wx.GetTranslation
@@ -39,6 +40,7 @@ class EveFittings(AuxiliaryFrame):
         characterSelectSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+        Themes.styleInput(self.charChoice)
         characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
         self.updateCharList()
 
@@ -276,6 +278,7 @@ class ExportToEve(AuxiliaryFrame):
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+        Themes.styleInput(self.charChoice)
         hSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
         self.updateCharList()
         self.charChoice.SetSelection(0)

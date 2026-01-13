@@ -10,6 +10,7 @@ import gui
 from gui import globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinItemStatsViews.attributeGrouping import *
+from gui.utils.themes import Themes
 from gui.utils.numberFormatter import formatAmount, roundDec
 from service.const import GuiAttrGroup
 
@@ -26,7 +27,8 @@ class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         # Had to manually set the size here, otherwise column widths couldn't be calculated correctly. See #1878
         wx.Panel.__init__(self, parent, size=(1000, 1000))
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Themes.buttonFace())
+        self.SetForegroundColour(Themes.text())
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -34,7 +36,7 @@ class ItemParams(wx.Panel):
 
         self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY,
                                                                 agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
-        self.paramList.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.paramList.SetBackgroundColour(Themes.windowBackground())
 
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
@@ -209,7 +211,7 @@ class ItemParams(wx.Panel):
 
             attrIcon, attrName, currentVal, baseVal = data
             attr_item = self.paramList.AppendItem(parent, attrName)
-            self.paramList.SetItemTextColour(attr_item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            self.paramList.SetItemTextColour(attr_item, Themes.text())
 
             self.paramList.SetItemText(attr_item, currentVal, 1)
             if self.stuff is not None:
@@ -238,7 +240,7 @@ class ItemParams(wx.Panel):
             heading = data.get("label")
 
             header_item = self.paramList.AppendItem(root, heading)
-            self.paramList.SetItemTextColour(header_item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            self.paramList.SetItemTextColour(header_item, Themes.text())
             for attr in data.get("attributes", []):
                 # Attribute is a "grouped" attr (eg: damage, sensor strengths, etc). Automatically group these into a child item
                 if attr in GroupedAttributes:
@@ -249,7 +251,7 @@ class ItemParams(wx.Panel):
 
                     # create a child item with the groups label
                     item = self.paramList.AppendItem(header_item, grouping[1])
-                    self.paramList.SetItemTextColour(item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+                    self.paramList.SetItemTextColour(item, Themes.text())
                     for attr2 in grouping[0]:
                         # add each attribute in the group
                         self.AddAttribute(item, attr2)
@@ -274,7 +276,7 @@ class ItemParams(wx.Panel):
 
                 # get all attributes in group
                 item = self.paramList.AppendItem(root, grouping[1])
-                self.paramList.SetItemTextColour(item, wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+                self.paramList.SetItemTextColour(item, Themes.text())
                 for attr2 in grouping[0]:
                     self.AddAttribute(item, attr2)
 

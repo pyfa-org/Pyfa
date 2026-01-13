@@ -5,6 +5,7 @@ from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTarg
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from gui.utils import helpers_wxPython as wxHelpers
+from gui.utils.themes import Themes
 
 _t = wx.GetTranslation
 
@@ -40,7 +41,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.stSetUserPath, 0, wx.ALL, 5)
         self.inputUserPath = wx.TextCtrl(panel, wx.ID_ANY, config.savePath, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputUserPath.SetEditable(False)
-        self.inputUserPath.SetBackgroundColour((200, 200, 200))
+        Themes.styleInput(self.inputUserPath, disabled=True)
         mainSizer.Add(self.inputUserPath, 0, wx.ALL | wx.EXPAND, 5)
 
         # Save DB
@@ -50,7 +51,7 @@ class PFGeneralPref(PreferenceView):
 
         self.inputFitDB = wx.TextCtrl(panel, wx.ID_ANY, config.saveDB, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputFitDB.SetEditable(False)
-        self.inputFitDB.SetBackgroundColour((200, 200, 200))
+        Themes.styleInput(self.inputFitDB, disabled=True)
         mainSizer.Add(self.inputFitDB, 0, wx.ALL | wx.EXPAND, 5)
 
         # Game Data DB
@@ -60,7 +61,7 @@ class PFGeneralPref(PreferenceView):
 
         self.inputGameDB = wx.TextCtrl(panel, wx.ID_ANY, config.gameDB, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputGameDB.SetEditable(False)
-        self.inputGameDB.SetBackgroundColour((200, 200, 200))
+        Themes.styleInput(self.inputGameDB, disabled=True)
         mainSizer.Add(self.inputGameDB, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbsaveInRoot.SetValue(config.saveInRoot)

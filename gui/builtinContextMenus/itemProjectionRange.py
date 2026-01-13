@@ -9,6 +9,7 @@ from eos.saveddata.fit import Fit as EosFit
 from eos.saveddata.module import Module as EosModule
 from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
+from gui.utils.themes import ThemedDialog, Themes
 from service.fit import Fit
 
 # noinspection PyPackageRequirements
@@ -72,7 +73,7 @@ class ChangeItemProjectionRange(ContextMenuCombined):
 ChangeItemProjectionRange.register()
 
 
-class RangeChanger(wx.Dialog):
+class RangeChanger(ThemedDialog):
 
     def __init__(self, parent, value):
         super().__init__(parent, title='Change Projection Range', style=wx.DEFAULT_DIALOG_STYLE)
@@ -87,6 +88,7 @@ class RangeChanger(wx.Dialog):
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        Themes.styleInput(self.input)
         if value is None:
             value = ''
         else:

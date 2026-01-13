@@ -9,6 +9,7 @@ import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
+from gui.utils.themes import Themes
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market
@@ -233,7 +234,7 @@ class ShipItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         # rect = self.GetRect()
 
-        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Themes.windowBackground()
         textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)

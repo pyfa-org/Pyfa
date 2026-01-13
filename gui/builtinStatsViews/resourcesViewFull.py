@@ -25,6 +25,7 @@ from gui.pyfa_gauge import PyGauge
 import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.utils import fonts
+from gui.utils.themes import Themes
 
 from eos.const import FittingHardpoint
 
@@ -304,7 +305,7 @@ class ResourcesViewFull(StatsView):
             label.InvalidateBestSize()
 
         colorWarn = wx.Colour(204, 51, 51)
-        colorNormal = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        colorNormal = Themes.text()
 
         if usedTurretHardpoints > totalTurretHardpoints:
             colorT = colorWarn

@@ -2,6 +2,7 @@
 import wx
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
+from gui.utils.themes import Themes
 from gui.utils.helpers_wxPython import HandleCtrlBackspace
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
@@ -44,6 +45,7 @@ class PFSearchBox(wx.Window):
         self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
                                    (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
                                    wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
+        Themes.styleInput(self.EditBox)
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
@@ -235,7 +237,7 @@ class PFSearchBox(wx.Window):
     def OnPaint(self, event):
         dc = wx.AutoBufferedPaintDC(self)
 
-        bkColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        bkColor = Themes.windowBackground()
         sepColor = colorUtils.GetSuitable(bkColor, 0.2)
         rect = self.GetRect()
 

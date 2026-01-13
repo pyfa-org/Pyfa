@@ -31,6 +31,8 @@ from logbook import Logger
 
 
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
+from gui.utils.themes import Themes
+from gui.utils.dark import isDark
 from gui.utils.numberFormatter import roundToPrec
 
 
@@ -84,7 +86,7 @@ class GraphCanvasPanel(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.figure = Figure(figsize=(5, 3), tight_layout={'pad': 1.08})
-        rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
+        rgbtuple = Themes.buttonFace().Get()
         clr = [c / 255. for c in rgbtuple]
         self.figure.set_facecolor(clr)
         self.figure.set_edgecolor(clr)
@@ -93,6 +95,10 @@ class GraphCanvasPanel(wx.Panel):
         self.canvas.mpl_connect('button_press_event', self.OnMplCanvasClick)
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
+        
+        # Style axes for dark mode
+        self._styleAxes()
+        
         mainSizer.Add(self.canvas, 1, wx.EXPAND | wx.ALL, 0)
 
         self.SetSizer(mainSizer)
@@ -104,6 +110,7 @@ class GraphCanvasPanel(wx.Panel):
     def draw(self, accurateMarks=True):
         self.subplot.clear()
         self.subplot.grid(True)
+        self._styleAxes()  # Re-apply styling after clear
         allXs = set()
         allYs = set()
         plotData = {}
@@ -293,6 +300,32 @@ class GraphCanvasPanel(wx.Panel):
     def unmarkX(self):
         self.xMark = None
         self.draw()
+
+    def _styleAxes(self):
+        """Style the matplotlib axes for dark/light mode."""
+        if isDark():
+            textColor = '#DCDCDC'  # Light gray text for dark mode
+            axisColor = '#888888'  # Gray for axis lines
+        else:
+            textColor = '#000000'  # Black text for light mode
+            axisColor = '#000000'  # Black for axis lines
+        
+        # Set background color for the plot area
+        bgColor = Themes.windowBackground().Get()
+        bgColorNorm = [c / 255. for c in bgColor]
+        self.subplot.set_facecolor(bgColorNorm)
+        
+        # Style axis spines (the lines around the plot)
+        for spine in self.subplot.spines.values():
+            spine.set_color(axisColor)
+        
+        # Style tick labels and axis labels
+        self.subplot.tick_params(colors=textColor, labelcolor=textColor)
+        self.subplot.xaxis.label.set_color(textColor)
+        self.subplot.yaxis.label.set_color(textColor)
+        
+        # Style grid
+        self.subplot.grid(True, color=axisColor, alpha=0.3)
 
     @staticmethod
     def _getLimits(vals, minExtra=0, maxExtra=0):

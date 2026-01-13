@@ -15,13 +15,14 @@ from gui.builtinShipBrowser.pfWidgetContainer import PFWidgetsContainer
 from gui.builtinShipBrowser.navigationPanel import NavigationPanel
 from gui.builtinShipBrowser.raceSelector import RaceSelector
 from gui.builtinShipBrowser.pfStaticText import PFStaticText
+from gui.utils.themes import ThemedPanel
 
 pyfalog = Logger(__name__)
 
 
-class ShipBrowser(wx.Panel):
+class ShipBrowser(ThemedPanel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, style=0)
+        super().__init__(parent, style=0)
 
         self._lastWidth = 0
         self._activeStage = 1
