@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+	<fittings>
+		<fitting name="Vargur - expensive 2024 es es">
+			<description value="&lt;font size=&quot;15&quot; color=&quot;#bfffffff&quot;&gt;[20241127@tq]&lt;br&gt;EM 83% Them 85% Kin 87% Exp 89%&lt;br&gt;repair: 744.8hp/s&lt;br&gt;&lt;br&gt;fit を少し変更&lt;br&gt;&lt;br&gt;現実的には &lt;/font&gt;&lt;font size=&quot;15&quot; color=&quot;#ffd98d00&quot;&gt;&lt;a href=&quot;showinfo:4349&quot;&gt;Pithum C-Type Multispectrum Shield Hardener&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;15&quot; color=&quot;#bfffffff&quot;&gt; x 2&lt;br&gt;になるでしょうね...&lt;/font&gt;"/>
+			<shipType value="&lt;localized hint=&quot;Vargur&quot;&gt;Vargur*&lt;/localized&gt;"/>
+			<hardware slot="low slot 5" type="&lt;localized hint=&quot;Power Diagnostic System II&quot;&gt;Sistema de diagnóstico de energía II*&lt;/localized&gt;"/>
+			<hardware slot="low slot 0" type="&lt;localized hint=&quot;Damage Control II&quot;&gt;Control de daños II*&lt;/localized&gt;"/>
+			<hardware qty="5" slot="drone bay" type="&lt;localized hint=&quot;Infiltrator II&quot;&gt;Infiltrator II*&lt;/localized&gt;"/>
+			<hardware qty="5" slot="drone bay" type="&lt;localized hint=&quot;Hornet II&quot;&gt;Hornet II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 0" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;Cañón de repetición de 800 mm II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 2" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;Cañón de repetición de 800 mm II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 4" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;Cañón de repetición de 800 mm II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 6" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;Cañón de repetición de 800 mm II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 5" type="&lt;localized hint=&quot;Small Tractor Beam II&quot;&gt;Rayo tractor pequeño II*&lt;/localized&gt;"/>
+			<hardware slot="med slot 1" type="&lt;localized hint=&quot;Pithum A-Type Multispectrum Shield Hardener&quot;&gt;Endurecedor de escudo multiespectro pithum tipo A*&lt;/localized&gt;"/>
+			<hardware slot="med slot 3" type="&lt;localized hint=&quot;Pithum A-Type Multispectrum Shield Hardener&quot;&gt;Endurecedor de escudo multiespectro pithum tipo A*&lt;/localized&gt;"/>
+			<hardware slot="med slot 4" type="&lt;localized hint=&quot;Heavy F-RX Compact Capacitor Booster&quot;&gt;Potenciador de condensador compacto F-RX pesado*&lt;/localized&gt;"/>
+			<hardware slot="low slot 1" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;Giroestabilizador de la Flota de la República*&lt;/localized&gt;"/>
+			<hardware slot="low slot 2" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;Giroestabilizador de la Flota de la República*&lt;/localized&gt;"/>
+			<hardware slot="low slot 3" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;Giroestabilizador de la Flota de la República*&lt;/localized&gt;"/>
+			<hardware slot="low slot 4" type="&lt;localized hint=&quot;Republic Fleet Tracking Enhancer&quot;&gt;Intensificador de rastreo de la Flota de la República*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 1" type="&lt;localized hint=&quot;Heavy Knave Scoped Energy Nosferatu&quot;&gt;Nosferatu de energía dirigido Knave pesado*&lt;/localized&gt;"/>
+			<hardware slot="med slot 2" type="&lt;localized hint=&quot;Federation Navy Stasis Webifier&quot;&gt;Red ralentizadora de la Armada de la Federación*&lt;/localized&gt;"/>
+			<hardware slot="med slot 5" type="&lt;localized hint=&quot;Pith A-Type X-Large Shield Booster&quot;&gt;Potenciador de escudo extragrande pith tipo A*&lt;/localized&gt;"/>
+			<hardware slot="med slot 0" type="&lt;localized hint=&quot;Pith X-Type Shield Boost Amplifier&quot;&gt;Amplificador de potenciador de escudo pith tipo X*&lt;/localized&gt;"/>
+			<hardware qty="4800" slot="cargo" type="&lt;localized hint=&quot;Republic Fleet EMP L&quot;&gt;EMP de la Flota de la República (G)*&lt;/localized&gt;"/>
+			<hardware qty="6240" slot="cargo" type="&lt;localized hint=&quot;Republic Fleet Phased Plasma L&quot;&gt;Plasma fásico de la Flota de la República (G)*&lt;/localized&gt;"/>
+			<hardware slot="rig slot 0" type="&lt;localized hint=&quot;Large Core Defense Field Extender II&quot;&gt;Extensor de campo defensivo central grande II*&lt;/localized&gt;"/>
+			<hardware slot="rig slot 1" type="&lt;localized hint=&quot;Large Core Defense Field Extender II&quot;&gt;Extensor de campo defensivo central grande II*&lt;/localized&gt;"/>
+			<hardware qty="23" slot="cargo" type="&lt;localized hint=&quot;Navy Cap Booster 800&quot;&gt;Potenciador de condensador de la Armada 800*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 3" type="&lt;localized hint=&quot;Bastion Module I&quot;&gt;Módulo de baluarte I*&lt;/localized&gt;"/>
+		</fitting>
+	</fittings>

@@ -18,8 +18,8 @@
 # =============================================================================
 
 import re
-import xml.dom
-import xml.parsers.expat
+from xml.dom import minidom
+# import xml.parsers.expat
 
 from logbook import Logger
 
@@ -37,113 +37,123 @@ from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import renderMutantAttrs, parseMutantAttrs
 from service.port.shared import fetchItem
-from utils.strfunctions import replace_ltgt, sequential_rep
+from html import unescape
+from utils.strfunctions import sequential_rep
+from config import EVE_FIT_NOTE_MAX
+
+from eos.gamedata import Item # for type annotation
+# NOTE: I want to define an interface in the utils package and reference it (IProgress)
+# gui.utils.progressHelper.ProgressHelper inherits utils.IProgress
+from gui.utils.progressHelper import ProgressHelper # for type annotation
 
 
 pyfalog = Logger(__name__)
 
 # -- 170327 Ignored description --
-RE_LTGT = "&(lt|gt);"
 L_MARK = "&lt;localized hint=&quot;"
 # &lt;localized hint=&quot;([^"]+)&quot;&gt;([^\*]+)\*&lt;\/localized&gt;
-LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"]+)">([^\*]+)\*</localized>')
-
-
+LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"*]+)\*?">([^*]+)\*?</localized>')
 class ExtractingError(Exception):
     pass
 
-
 def _extract_match(t):
+    # type: (str) -> tuple[str, str]
     m = LOCALIZED_PATTERN.match(t)
     if m is None:
         raise ExtractingError
     # hint attribute, text content
     return m.group(1), m.group(2)
 
-
-def _resolve_ship(fitting, sMkt, b_localized):
-    # type: (xml.dom.minidom.Element, service.market.Market, bool) -> eos.saveddata.fit.Fit
-    """ NOTE: Since it is meaningless unless a correct ship object can be constructed,
-        process flow changed
-    """
-    # ------ Confirm ship
-    # <localized hint="Maelstrom">Maelstrom</localized>
-    shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
-    anything = None
+def doIt(text, b_localized):
+    # type: (str, bool) -> tuple[str, str|None]
+    altText = None
     if b_localized:
         try:
             # expect an official name, emergency cache
-            shipType, anything = _extract_match(shipType)
+            text, altText = _extract_match(text)
         except ExtractingError:
             pass
 
+    return text, altText
+
+def _solve(name, altName, handler):
+    # type: (str, str|None, function) -> any # enable inferer
     limit = 2
-    ship = None
+    subject = None
     while True:
         must_retry = False
         try:
-            try:
-                ship = Ship(sMkt.getItem(shipType))
-            except ValueError:
-                ship = Citadel(sMkt.getItem(shipType))
+            subject = handler(name)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
-            pyfalog.warning("Caught exception on _resolve_ship")
-            pyfalog.error(e)
+            # pyfalog.warning("Caught exception on _solve")
+            pyfalog.error("Caught exception on _solve:: {}", e)
             limit -= 1
             if limit == 0:
                 break
-            shipType = anything
+            name = altName
             must_retry = True
         if not must_retry:
             break
 
+    return subject
+
+def _solve_ship(fitting, sMkt, b_localized):
+    # type: (minidom.Element, Market, bool) -> Fit
+    """ NOTE: Since it is meaningless unless a correct ship object can be constructed,
+        process flow changed
+    """
+    def handler(name):
+        # type: (str) -> Ship
+        item = sMkt.getItem(name)
+        try:
+            return Ship(item)
+        except ValueError:
+            return Citadel(item)
+
+    # ------ Confirm ship
+    # <localized hint="Maelstrom">Maelstrom</localized>
+    shipType, anything = doIt(
+        fitting.getElementsByTagName("shipType")[0].getAttribute("value"), b_localized
+    )
+    ship = _solve(shipType, anything, handler) # type: Ship
+
     if ship is None:
-        raise Exception("cannot resolve ship type.")
+        raise Exception(
+            f"cannot solve ship type, name: '{shipType}', altName: '{anything}'"
+        )
 
     fitobj = Fit(ship=ship)
     # ------ Confirm fit name
     anything = fitting.getAttribute("name")
     # 2017/03/29 NOTE:
-    #    if fit name contained "<" or ">" then reprace to named html entity by EVE client
-    # if re.search(RE_LTGT, anything):
-    if "&lt;" in anything or "&gt;" in anything:
-        anything = replace_ltgt(anything)
+    #    if fit name contained "<" or ">" then replace to named html entity by EVE client
+    if re.search(f"&(lt|gt);", anything):
+        anything = unescape(anything)
     fitobj.name = anything
 
     return fitobj
 
 
-def _resolve_module(hardware, sMkt, b_localized):
-    # type: (xml.dom.minidom.Element, service.market.Market, bool) -> eos.saveddata.module.Module
-    moduleName = hardware.getAttribute("base_type") or hardware.getAttribute("type")
-    emergency = None
-    if b_localized:
-        try:
-            # expect an official name, emergency cache
-            moduleName, emergency = _extract_match(moduleName)
-        except ExtractingError:
-            pass
+def _solve_module(hardware, sMkt, b_localized):
+    # type: (minidom.Element, Market, bool) -> tuple[Item, Item|None, dict[int, float]|None]
+    def handler(name):
+        # type: (str) -> Item
+        mod = sMkt.getItem(name, eager="group.category")
+        if not mod:
+            raise ValueError(f'"{name}" is not valid')
+        pyfalog.info('_solve_module - sMkt.getItem: {}', mod)
+        return mod
 
-    item = None
-    limit = 2
-    while True:
-        must_retry = False
-        try:
-            item = sMkt.getItem(moduleName, eager="group.category")
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except Exception as e:
-            pyfalog.warning("Caught exception on _resolve_module")
-            pyfalog.error(e)
-            limit -= 1
-            if limit == 0:
-                break
-            moduleName = emergency
-            must_retry = True
-        if not must_retry:
-            break
+    moduleName, emergency = doIt(
+        hardware.getAttribute("base_type") or hardware.getAttribute("type"), b_localized
+    )
+    item = _solve(moduleName, emergency, handler)
+    if item is None:
+        raise Exception(
+            f"cannot solve module, name: '{moduleName}', altName: '{emergency}'"
+        )
 
     mutaplasmidName = hardware.getAttribute("mutaplasmid")
     mutaplasmidItem = fetchItem(mutaplasmidName) if mutaplasmidName else None
@@ -154,49 +164,69 @@ def _resolve_module(hardware, sMkt, b_localized):
     return item, mutaplasmidItem, mutatedAttrs
 
 
-def importXml(text, progress):
+def importXml(text, progress, path="---"):
+    # type: (str, ProgressHelper, str) -> list[Fit]
     from .port import Port
+    import os.path
     sMkt = Market.getInstance()
-    doc = xml.dom.minidom.parseString(text)
+
     # NOTE:
     #   When L_MARK is included at this point,
     #   Decided to be localized data
     b_localized = L_MARK in text
-    fittings = doc.getElementsByTagName("fittings").item(0)
-    fittings = fittings.getElementsByTagName("fitting")
-    fit_list = []
+    fittings = minidom.parseString(text).getElementsByTagName("fitting")
+    fit_list = [] # type: list[Fit]
     failed = 0
 
-    for fitting in fittings:
+    pyfalog.info(
+        f"importXml - fitting is {'localized' if b_localized else 'normally'}"
+    )
+
+    if progress:
+        progress.setRange(fittings.length)
+        progress.current = 0
+        path = os.path.basename(path)
+    for idx, fitting in enumerate(fittings):
         if progress and progress.userCancelled:
             return []
 
         try:
-            fitobj = _resolve_ship(fitting, sMkt, b_localized)
+            fitobj = _solve_ship(fitting, sMkt, b_localized)
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
             failed += 1
             continue
 
+        if progress:
+            currentIdx = idx + 1
+            if (currentIdx < fittings.length):
+                progress.current = currentIdx
+            # progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
+            progress.message = f"""Processing file: {path}
+  current  - {fitobj.ship.name}
+  fit name - {fitobj.name}
+"""
         # -- 170327 Ignored description --
         # read description from exported xml. (EVE client, EFT)
-        description = fitting.getElementsByTagName("description").item(0).getAttribute("value")
+        description = fitting.getElementsByTagName("description")[0].getAttribute("value")
         if description is None:
             description = ""
         elif len(description):
             # convert <br> to "\n" and remove html tags.
             if Port.is_tag_replace():
-                description = replace_ltgt(
+                description = unescape(
                     sequential_rep(description, r"<(br|BR)>", "\n", r"<[^<>]+>", "")
                 )
         fitobj.notes = description
 
         hardwares = fitting.getElementsByTagName("hardware")
-        moduleList = []
+        # Sorting by "slot" attr is cool
+        hardwares.sort(key=lambda e: e.getAttribute("slot"))
+        moduleList = [] # type: list[Module]
         for hardware in hardwares:
             try:
-                item, mutaItem, mutaAttrs = _resolve_module(hardware, sMkt, b_localized)
+                item, mutaItem, mutaAttrs = _solve_module(hardware, sMkt, b_localized)
                 if not item or not item.published:
                     continue
 
@@ -229,7 +259,7 @@ def importXml(text, progress):
                     c.amount = int(hardware.getAttribute("qty"))
                     fitobj.cargo.append(c)
                 else:
-                    m = None
+                    m = None # type: Module
                     try:
                         if mutaItem:
                             mutaplasmid = getDynamicItem(mutaItem.ID)
@@ -274,18 +304,18 @@ def importXml(text, progress):
                 fitobj.modules.append(module)
 
         fit_list.append(fitobj)
-        if progress:
-            progress.message = "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
+
+    pyfalog.info(f"importXml - stats of parse, succeeded: {fittings.length - failed}, failed: {failed}")
 
     return fit_list
 
-
 def exportXml(fits, progress, callback):
-    doc = xml.dom.minidom.Document()
+    # type: (list[Fit], ProgressHelper, function) -> str|None
+    doc = minidom.Document()
     fittings = doc.createElement("fittings")
     # fit count
     fit_count = len(fits)
-    fittings.setAttribute("count", "%s" % fit_count)
+    fittings.setAttribute("count", str(fit_count))
     doc.appendChild(fittings)
 
     def addMutantAttributes(node, mutant):
@@ -299,7 +329,8 @@ def exportXml(fits, progress, callback):
                 return None
             processedFits = i + 1
             progress.current = processedFits
-            progress.message = "converting to xml (%s/%s) %s" % (processedFits, fit_count, fit.ship.name)
+            progress.message = f"converting to xml ({processedFits}/{fit_count}) {fit.ship.name}"
+        
         try:
             fitting = doc.createElement("fitting")
             fitting.setAttribute("name", fit.name)
@@ -307,14 +338,10 @@ def exportXml(fits, progress, callback):
             description = doc.createElement("description")
             # -- 170327 Ignored description --
             try:
-                notes = fit.notes  # unicode
-
-                if notes:
-                    notes = notes[:397] + '...' if len(notes) > 400 else notes
-
-                description.setAttribute(
-                    "value", re.sub("(\r|\n|\r\n)+", "<br>", notes) if notes is not None else ""
-                )
+                notes = re.sub(r"(\r|\n|\r\n)", "<br>", fit.notes or "")
+                if len(notes) > EVE_FIT_NOTE_MAX:
+                    notes = notes[:EVE_FIT_NOTE_MAX - 3] + '...'
+                description.setAttribute("value", notes)
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
@@ -347,7 +374,7 @@ def exportXml(fits, progress, callback):
                 hardware.setAttribute("type", module.item.name)
                 slotName = FittingSlot(slot).name.lower()
                 slotName = slotName if slotName != "high" else "hi"
-                hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
+                hardware.setAttribute("slot", f"{slotName} slot {slotId}")
                 if module.isMutated:
                     addMutantAttributes(hardware, module)
 
@@ -381,16 +408,16 @@ def exportXml(fits, progress, callback):
                     charges[cargo.item.name] = 0
                 charges[cargo.item.name] += cargo.amount
 
-            for name, qty in list(charges.items()):
+            for name, qty in charges.items():
                 hardware = doc.createElement("hardware")
-                hardware.setAttribute("qty", "%d" % qty)
+                hardware.setAttribute("qty", str(qty))
                 hardware.setAttribute("slot", "cargo")
                 hardware.setAttribute("type", name)
                 fitting.appendChild(hardware)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
-            pyfalog.error("Failed on fitID: %d, message: %s" % e.message)
+            pyfalog.error(f"Failed on fitID: {fit.ship.ID}, message: {e}")
             continue
     text = doc.toprettyxml()
 

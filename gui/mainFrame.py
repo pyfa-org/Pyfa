@@ -363,6 +363,7 @@ class MainFrame(wx.Frame):
         self.statsWnds.remove(wnd)
 
     def getActiveFit(self):
+        # type: () -> int
         p = self.fitMultiSwitch.GetSelectedPage()
         m = getattr(p, "getActiveFit", None)
         return m() if m is not None else None
@@ -845,12 +846,13 @@ class MainFrame(wx.Frame):
                 style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
-                    # set some arbitrary spacing to create width in window
+                # set some arbitrary spacing to create width in window
                 progress = ProgressHelper(message=" " * 100, callback=self._openAfterImport)
                 call = (Port.importFitsThreaded, [dlg.GetPaths(), progress], {})
                 self.handleProgress(
                     title=_t("Importing fits"),
-                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE,
+                    # style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE,
+                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL | wx.PD_AUTO_HIDE, # old style at 2017  | wx.RESIZE_BORDER
                     call=call,
                     progress=progress,
                     errMsgLbl=_t("Import Error"))
@@ -866,7 +868,7 @@ class MainFrame(wx.Frame):
                 style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
                 defaultFile=defaultFile) as fileDlg:
             if fileDlg.ShowModal() == wx.ID_OK:
-                filePath = fileDlg.GetPath()
+                filePath = fileDlg.GetPath() # type: str
                 if '.' not in os.path.basename(filePath):
                     filePath += ".xml"
 
@@ -913,7 +915,8 @@ class MainFrame(wx.Frame):
             progress=progress)
 
     def handleProgress(self, title, style, call, progress, errMsgLbl=None):
-        extraArgs = {}
+        # type: (str, int, tuple[function, list[str], dict[str, str]], ProgressHelper, str) -> None
+        extraArgs = {} # type: dict[str, any]
         if progress.maximum is not None:
             extraArgs['maximum'] = progress.maximum
         with wx.ProgressDialog(
@@ -924,9 +927,11 @@ class MainFrame(wx.Frame):
                 **extraArgs
         ) as dlg:
             func, args, kwargs = call
+            # important
+            progress.dlg = dlg
             func(*args, **kwargs)
             while progress.working:
-                wx.MilliSleep(250)
+                wx.MilliSleep(33)
                 wx.Yield()
                 (progress.dlgWorking, skip) = dlg.Update(progress.current, progress.message)
         if progress.error and errMsgLbl:
