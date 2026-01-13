@@ -21,7 +21,7 @@ for:
       # AppImage dependencies
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
       # Preparation script dependencies
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0 python3-sqlalchemy python3-logbook xclip wl-clipboard
+      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0 python3-sqlalchemy python3-logbook
     before_build:
       # Prepare pyfa data
       - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
