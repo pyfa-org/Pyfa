@@ -84,6 +84,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
 
         self.projected = False
         self.projectionRange = None
+        self.pulseInterval = None
         self.state = FittingModuleState.ONLINE
         self.build()
 
@@ -110,6 +111,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         if self.isInvalid:
             pyfalog.error("Item (id: {0}) is not a Module", self.itemID)
             return
+
+        if not hasattr(self, "pulseInterval"):
+            self.pulseInterval = None
 
         if self.chargeID:
             self.__charge = eos.db.getItem(self.chargeID)
@@ -474,59 +478,81 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 return True
         return False
 
-    def getVolleyParameters(self, spoolOptions=None, targetProfile=None, ignoreState=False):
+    def getVolleyParameters(self, spoolOptions=None, targetProfile=None, ignoreState=False, ignoreAfflictors=()):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return {0: DmgTypes.default()}
-        if self.__baseVolley is None:
-            self.__baseVolley = {}
+        def get_item_attr(name, default=0):
+            if ignoreAfflictors:
+                return self.getModifiedItemAttrExtended(name, ignoreAfflictors=ignoreAfflictors, default=default)
+            return self.getModifiedItemAttr(name, default)
+
+        def get_charge_attr(name, default=0):
+            if ignoreAfflictors:
+                return self.getModifiedChargeAttrExtended(name, ignoreAfflictors=ignoreAfflictors, default=default)
+            return self.getModifiedChargeAttr(name, default)
+
+        baseVolleys = self.__baseVolley
+        if ignoreAfflictors:
+            baseVolleys = None
+        if baseVolleys is None:
+            baseVolleys = {}
             if self.isBreacher:
                 dmgDelay = 1
-                subcycles = math.floor(self.getModifiedChargeAttr("dotDuration", 0) / 1000)
+                subcycles = math.floor(get_charge_attr("dotDuration", 0) / 1000)
                 breacher_info = BreacherInfo(
-                    absolute=self.getModifiedChargeAttr("dotMaxDamagePerTick", 0),
-                    relative=self.getModifiedChargeAttr("dotMaxHPPercentagePerTick", 0) / 100)
+                    absolute=get_charge_attr("dotMaxDamagePerTick", 0),
+                    relative=get_charge_attr("dotMaxHPPercentagePerTick", 0) / 100)
                 for i in range(subcycles):
                     volley = DmgTypes.default()
                     volley.add_breacher(dmgDelay + i, breacher_info)
-                    self.__baseVolley[dmgDelay + i] = volley
+                    baseVolleys[dmgDelay + i] = volley
             else:
-                dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
-                dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
+                dmgGetter = get_charge_attr if self.charge else get_item_attr
+                dmgMult = get_item_attr("damageMultiplier", 1)
                 # Some delay attributes have non-0 default value, so we have to pick according to effects
                 if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar', 'lightningWeapon'}.intersection(self.item.effects):
-                    dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0)
+                    dmgDelay = get_item_attr("damageDelayDuration", 0)
                 elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT', 'debuffLance'}.intersection(self.item.effects):
-                    dmgDelay = self.getModifiedItemAttr("doomsdayWarningDuration", 0)
+                    dmgDelay = get_item_attr("doomsdayWarningDuration", 0)
                 else:
                     dmgDelay = 0
-                dmgDuration = self.getModifiedItemAttr("doomsdayDamageDuration", 0)
-                dmgSubcycle = self.getModifiedItemAttr("doomsdayDamageCycleTime", 0)
+                dmgDuration = get_item_attr("doomsdayDamageDuration", 0)
+                dmgSubcycle = get_item_attr("doomsdayDamageCycleTime", 0)
                 # Reaper DD can damage each target only once
                 if dmgDuration != 0 and dmgSubcycle != 0 and 'doomsdaySlash' not in self.item.effects:
                     subcycles = math.floor(floatUnerr(dmgDuration / dmgSubcycle))
                 else:
                     subcycles = 1
                 for i in range(subcycles):
-                    self.__baseVolley[dmgDelay + dmgSubcycle * i] = DmgTypes(
+                    baseVolleys[dmgDelay + dmgSubcycle * i] = DmgTypes(
                         em=(dmgGetter("emDamage", 0)) * dmgMult,
                         thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                         kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
                         explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
-        spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+            if not ignoreAfflictors:
+                self.__baseVolley = baseVolleys
+        if self.pulseInterval is not None and self.state >= FittingModuleState.ACTIVE:
+            spoolType, spoolAmount = None, None
+        else:
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
         spoolBoost = calculateSpoolup(
-            self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
-            self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
+            get_item_attr("damageMultiplierBonusMax", 0),
+            get_item_attr("damageMultiplierBonusPerCycle", 0),
             self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
         spoolMultiplier = 1 + spoolBoost
         adjustedVolleys = {}
-        for volleyTime, baseVolley in self.__baseVolley.items():
+        for volleyTime, baseVolley in baseVolleys.items():
             adjustedVolley = baseVolley * spoolMultiplier
             adjustedVolley.profile = targetProfile
             adjustedVolleys[volleyTime] = adjustedVolley
         return adjustedVolleys
 
-    def getVolley(self, spoolOptions=None, targetProfile=None, ignoreState=False):
-        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
+    def getVolley(self, spoolOptions=None, targetProfile=None, ignoreState=False, ignoreAfflictors=()):
+        volleyParams = self.getVolleyParameters(
+            spoolOptions=spoolOptions,
+            targetProfile=targetProfile,
+            ignoreState=ignoreState,
+            ignoreAfflictors=ignoreAfflictors)
         if len(volleyParams) == 0:
             return DmgTypes.default()
         return volleyParams[min(volleyParams)]
@@ -589,7 +615,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 capacitorAmount += self.getModifiedItemAttr("powerTransferAmount", 0)
             rrDelay = 0 if rrType == "Shield" else self.rawCycleTime
             self.__baseRRAmount[rrDelay] = RRTypes(shield=shieldAmount, armor=armorAmount, hull=hullAmount, capacitor=capacitorAmount)
-        spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+        if self.pulseInterval is not None and self.state >= FittingModuleState.ACTIVE:
+            spoolType, spoolAmount = None, None
+        else:
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
         spoolBoost = calculateSpoolup(
             self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
             self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
@@ -619,6 +648,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         return rps
 
     def getSpoolData(self, spoolOptions=None):
+        if self.pulseInterval is not None and self.state >= FittingModuleState.ACTIVE:
+            return 0, 0
         weaponMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax", 0)
         weaponMultPerCycle = self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0)
         if weaponMultMax and weaponMultPerCycle:
@@ -981,6 +1012,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         if active_time == 0:
             return None
         forced_inactive_time = self.reactivationDelay
+        if self.pulseInterval is not None and self.state >= FittingModuleState.ACTIVE:
+            pulse_interval_ms = max(active_time, self.pulseInterval * 1000)
+            pulse_inactive_time = max(0, pulse_interval_ms - active_time)
+            forced_inactive_time = max(forced_inactive_time, pulse_inactive_time)
         reload_time = self.reloadTime
         # Effects which cannot be reloaded have the same processing whether
         # caller wants to take reload time into account or not
@@ -1034,6 +1069,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
                 self.getModifiedItemAttr("durationWeaponDisruptionBurstProjector", 0)
         )
         return speed
+
+    @property
+    def pulseAdjustedCycleTime(self):
+        cycle_time = self.rawCycleTime
+        if cycle_time == 0:
+            return 0
+        inactive_time = self.reactivationDelay
+        if self.pulseInterval is not None and self.state >= FittingModuleState.ACTIVE:
+            pulse_interval_ms = max(cycle_time, self.pulseInterval * 1000)
+            inactive_time = max(inactive_time, pulse_interval_ms - cycle_time)
+        return cycle_time + inactive_time
 
     @property
     def disallowRepeatingAction(self):

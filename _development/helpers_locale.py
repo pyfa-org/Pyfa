@@ -82,7 +82,8 @@ def GetPath(root, file=None, codec=None):
         path = os.path.join(path, file)
 
     if codec:
-        path = path.decode(codec)
+        # path = path.decode(codec)
+        pass
 
     return path
 

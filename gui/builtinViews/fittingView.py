@@ -36,6 +36,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ITEM_SELECTED
 from gui.builtinShipBrowser.events import EVT_FIT_SELECTED, FitSelected
 from gui.builtinViewColumns.state import State
+from gui.builtinViewColumns.pulse import Pulse
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
@@ -138,6 +139,7 @@ class FittingViewDrop(wx.DropTarget):
 
 class FittingView(d.Display):
     DEFAULT_COLS = ["State",
+                    "Pulse",
                     "Ammo Icon",
                     "Base Icon",
                     "Base Name",
@@ -682,6 +684,26 @@ class FittingView(d.Display):
 
         clickedRow, _, col = self.HitTestSubItem(event.Position)
 
+        # handle pulse column clicks
+        if clickedRow != -1 and clickedRow not in self.blanks and col == self.getColIndex(Pulse):
+            selectedRows = []
+            currentRow = self.GetFirstSelected()
+
+            while currentRow != -1 and clickedRow not in self.blanks:
+                selectedRows.append(currentRow)
+                currentRow = self.GetNextSelected(currentRow)
+
+            if clickedRow not in selectedRows:
+                try:
+                    selectedMods = [self.mods[clickedRow]]
+                except IndexError:
+                    return
+            else:
+                selectedMods = self.getSelectedMods()
+
+            self._setPulseInterval(selectedMods)
+            return
+
         # only do State column and ignore invalid rows
         if clickedRow != -1 and clickedRow not in self.blanks and col == self.getColIndex(State):
             selectedRows = []
@@ -732,6 +754,74 @@ class FittingView(d.Display):
 
         else:
             event.Skip()
+
+    def _setPulseInterval(self, selectedMods):
+        mods = [mod for mod in selectedMods if isinstance(mod, Module) and not mod.isEmpty]
+        if len(mods) == 0:
+            return
+
+        raw_cycle_times = [mod.rawCycleTime for mod in mods]
+        if any(cycle_time == 0 for cycle_time in raw_cycle_times):
+            wx.MessageBox(
+                _t("Some selected modules do not have a cycle time."),
+                _t("Pulse Interval"),
+                wx.OK | wx.ICON_ERROR)
+            return
+
+        min_cycle_seconds = max(raw_cycle_times) / 1000.0
+        existing = mods[0].pulseInterval
+        if any(mod.pulseInterval != existing for mod in mods):
+            initial_value = ""
+        else:
+            initial_value = "" if existing is None else "{:.3f}".format(existing)
+
+        message = _t("Pulse every (seconds). Minimum {min:.3f}, maximum 999. Leave blank to disable.").format(
+            min=min_cycle_seconds)
+        dlg = wx.TextEntryDialog(self, message, _t("Set Pulse Interval"), initial_value)
+        if dlg.ShowModal() != wx.ID_OK:
+            dlg.Destroy()
+            return
+        value_text = dlg.GetValue().strip()
+        dlg.Destroy()
+
+        if value_text == "":
+            pulse_interval = None
+        else:
+            try:
+                pulse_interval = float(value_text)
+            except ValueError:
+                wx.MessageBox(
+                    _t("Please enter a valid number of seconds."),
+                    _t("Pulse Interval"),
+                    wx.OK | wx.ICON_ERROR)
+                return
+            if pulse_interval < min_cycle_seconds:
+                wx.MessageBox(
+                    _t("Pulse interval must be at least {min:.3f} seconds.").format(min=min_cycle_seconds),
+                    _t("Pulse Interval"),
+                    wx.OK | wx.ICON_ERROR)
+                return
+            if pulse_interval > 999:
+                wx.MessageBox(
+                    _t("Pulse interval must be 999 seconds or less."),
+                    _t("Pulse Interval"),
+                    wx.OK | wx.ICON_ERROR)
+                return
+
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        positions = []
+        for mod in mods:
+            if mod in fit.modules:
+                positions.append(fit.modules.index(mod))
+
+        if len(positions) == 0:
+            return
+
+        self.mainFrame.command.Submit(cmd.GuiChangeLocalModulePulseIntervalCommand(
+            fitID=fitID,
+            positions=positions,
+            pulseInterval=pulse_interval))
 
     def slotColour(self, slot):
         if isDark():

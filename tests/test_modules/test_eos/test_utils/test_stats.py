@@ -22,7 +22,7 @@ def test_dmgtypes_names():
 
 
 def test_dmgtypes__repr(setup_damage_types):
-    assert setup_damage_types.__repr__() == '<DmgTypes(em=10, thermal=20, kinetic=30, explosive=40, total=100)>'
+    assert setup_damage_types.__repr__() == '<DmgTypes(em=10, thermal=20, kinetic=30, explosive=40, breachers=0)>'
 
 
 def test_dmgtypes_names_lambda():

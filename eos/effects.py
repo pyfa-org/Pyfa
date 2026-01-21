@@ -37,6 +37,34 @@ class DummyEffect(BaseEffect):
     pass
 
 
+def _get_effect_cycle_time_ms(container, reloadOverride=None):
+    try:
+        cycle_params = container.getCycleParameters(reloadOverride=reloadOverride)
+    except AttributeError:
+        cycle_params = None
+    if cycle_params is not None:
+        return cycle_params.averageTime
+    return getattr(container, 'pulseAdjustedCycleTime', 0)
+
+
+def _get_projected_rr_cycle_time_s(container, fit):
+    reload_override = None
+    try:
+        reload_override = container.owner.factorReload
+    except AttributeError:
+        reload_override = None
+    if reload_override is None:
+        reload_override = getattr(fit, "factorReload", None)
+    cycle_ms = _get_effect_cycle_time_ms(container, reloadOverride=reload_override)
+    if reload_override and getattr(container, "charge", None) and getattr(container, "reloadTime", 0):
+        shots = getattr(container, "numShots", 0) or 0
+        if shots == 0:
+            base_ms = getattr(container, "pulseAdjustedCycleTime", 0) or getattr(container, "rawCycleTime", 0)
+            if base_ms:
+                cycle_ms = base_ms + container.reloadTime
+    return cycle_ms / 1000.0
+
+
 class Effect100000(BaseEffect):
     """
     pyfaCustomSuppressionTackleRange
@@ -89,7 +117,7 @@ class Effect4(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('shieldBonus')
-        speed = module.getModifiedItemAttr('duration') / 1000.0
+        speed = _get_effect_cycle_time_ms(module) / 1000.0
         fit.extraAttributes.increase('shieldRepair', amount / speed, **kwargs)
 
 
@@ -181,7 +209,7 @@ class Effect26(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('structureDamageAmount')
-        speed = module.getModifiedItemAttr('duration') / 1000.0
+        speed = _get_effect_cycle_time_ms(module) / 1000.0
         fit.extraAttributes.increase('hullRepair', amount / speed, **kwargs)
 
 
@@ -199,7 +227,7 @@ class Effect27(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('armorDamageAmount')
-        speed = module.getModifiedItemAttr('duration') / 1000.0
+        speed = _get_effect_cycle_time_ms(module) / 1000.0
         rps = amount / speed
         fit.extraAttributes.increase('armorRepair', rps, **kwargs)
         fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
@@ -16586,7 +16614,7 @@ class Effect4936(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         amount = module.getModifiedItemAttr('shieldBonus')
-        speed = module.getModifiedItemAttr('duration') / 1000.0
+        speed = _get_effect_cycle_time_ms(module) / 1000.0
         fit.extraAttributes.increase('shieldRepair', amount / speed, **kwargs)
 
 
@@ -18792,7 +18820,7 @@ class Effect5275(BaseEffect):
             multiplier = 1
 
         amount = module.getModifiedItemAttr('armorDamageAmount') * multiplier
-        speed = module.getModifiedItemAttr('duration') / 1000.0
+        speed = _get_effect_cycle_time_ms(module) / 1000.0
         rps = amount / speed
         fit.extraAttributes.increase('armorRepair', rps, **kwargs)
         fit.extraAttributes.increase('armorRepairPreSpool', rps, **kwargs)
@@ -24762,7 +24790,7 @@ class Effect6184(BaseEffect):
         if src.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
             return
         amount = src.getModifiedItemAttr('powerTransferAmount')
-        duration = src.getModifiedItemAttr('duration')
+        duration = _get_effect_cycle_time_ms(src)
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
@@ -24791,7 +24819,7 @@ class Effect6185(BaseEffect):
             srcOptimalRange=module.getModifiedItemAttr('maxRange'),
             srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
-        duration = module.getModifiedItemAttr('duration') / 1000.0
+        duration = _get_projected_rr_cycle_time_s(module, fit)
         fit._hullRr.append((bonus, duration))
 
 
@@ -24816,7 +24844,7 @@ class Effect6186(BaseEffect):
             srcOptimalRange=container.getModifiedItemAttr('maxRange'),
             srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
-        duration = container.getModifiedItemAttr('duration') / 1000.0
+        duration = _get_projected_rr_cycle_time_s(container, fit)
         fit._shieldRr.append((bonus, duration))
 
 
@@ -24844,7 +24872,7 @@ class Effect6187(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        time = src.getModifiedItemAttr('duration')
+        time = _get_effect_cycle_time_ms(src)
         fit.addDrain(src, time, amount, 0)
 
 
@@ -24870,7 +24898,7 @@ class Effect6188(BaseEffect):
             srcOptimalRange=container.getModifiedItemAttr('maxRange'),
             srcFalloffRange=container.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
-        duration = container.getModifiedItemAttr('duration') / 1000.0
+        duration = _get_projected_rr_cycle_time_s(container, fit)
         fit._armorRr.append((bonus, duration))
         fit._armorRrPreSpool.append((bonus, duration))
         fit._armorRrFullSpool.append((bonus, duration))
@@ -24908,7 +24936,7 @@ class Effect6197(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         amount = src.getModifiedItemAttr('powerTransferAmount')
-        time = src.getModifiedItemAttr('duration')
+        time = _get_effect_cycle_time_ms(src)
         if 'projected' in context:
             if 'effect' in kwargs:
                 from eos.modifiedAttributeDict import ModifiedAttributeDict
@@ -24996,7 +25024,7 @@ class Effect6216(BaseEffect):
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict
             amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-        time = src.getModifiedItemAttr('duration')
+        time = src.pulseAdjustedCycleTime
         fit.addDrain(src, time, amount, 0)
 
 
@@ -29865,8 +29893,8 @@ class Effect6652(BaseEffect):
             srcOptimalRange=module.getModifiedItemAttr('maxRange'),
             srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
-        speed = module.getModifiedItemAttr('duration') / 1000.0
-        fit._shieldRr.append((amount, speed))
+        duration = _get_projected_rr_cycle_time_s(module, fit)
+        fit._shieldRr.append((amount, duration))
 
 
 class Effect6653(BaseEffect):
@@ -35103,6 +35131,10 @@ class Effect7166(BaseEffect):
         repSpoolPerCycle = container.getModifiedItemAttr('repairMultiplierBonusPerCycle')
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         spoolType, spoolAmount = resolveSpoolOptions(SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False), container)
+
+        if container.pulseInterval is not None and container.pulseInterval > cycleTime + 0.001:
+            spoolAmount = 0
+
         amount = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, spoolType, spoolAmount)[0])
         amountPreSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 0)[0])
         amountFullSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SPOOL_SCALE, 1)[0])

@@ -32,6 +32,8 @@ defaultValuesCache = {}
 cappingAttrKeyCache = {}
 resistanceCache = {}
 
+_debug_max_velocity_count = 0
+
 
 def getAttrDefault(key, fallback=None):
     try:
@@ -217,18 +219,124 @@ class ModifiedAttributeDict(MutableMapping):
         multiplierAdjustment = 1
         ignorePenalizedMultipliers = {}
         postIncreaseAdjustment = 0
-        for fit, afflictors in self.getAfflictions(key).items():
+        afflictions = self.getAfflictions(key)
+        ignored_zero_multiplier = False
+        global _debug_max_velocity_count
+        if key == 'maxVelocity' and _debug_max_velocity_count < 8:
+            ignore_names = []
+            if ignoreAfflictors:
+                ignore_names = [getattr(getattr(a, 'item', None), 'name', str(a)) for a in ignoreAfflictors]
+            affliction_names = []
+            for fit, afflictors in afflictions.items():
+                for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
+                    name = getattr(getattr(afflictor, 'item', None), 'name', str(afflictor))
+                    affliction_names.append((name, operator, stackingGroup, preResAmount, postResAmount, used))
+            print(
+                "[AttrDebug] key=maxVelocity ignores={} afflictions={}".format(ignore_names, affliction_names),
+                flush=True)
+            _debug_max_velocity_count += 1
+
+        for fit, afflictors in afflictions.items():
             for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
                 if afflictor in ignoreAfflictors:
                     if operator == Operator.MULTIPLY:
                         if stackingGroup is None:
-                            multiplierAdjustment /= postResAmount
+                            if postResAmount == 0:
+                                ignored_zero_multiplier = True
+                            else:
+                                multiplierAdjustment /= postResAmount
                         else:
                             ignorePenalizedMultipliers.setdefault(stackingGroup, []).append(postResAmount)
                     elif operator == Operator.PREINCREASE:
                         preIncreaseAdjustment -= postResAmount
                     elif operator == Operator.POSTINCREASE:
                         postIncreaseAdjustment -= postResAmount
+
+        if ignored_zero_multiplier and self.__multipliers.get(key, 1) == 0:
+            recomputed_multiplier = 1
+            for fit, afflictors in afflictions.items():
+                for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
+                    if operator != Operator.MULTIPLY or stackingGroup is not None:
+                        continue
+                    if afflictor in ignoreAfflictors:
+                        continue
+                    recomputed_multiplier *= postResAmount
+            # Recalculate value without applying stored zero multiplier
+            try:
+                cappingKey = cappingAttrKeyCache[key]
+            except KeyError:
+                attrInfo = getAttributeInfo(key)
+                if attrInfo is None:
+                    cappingId = cappingAttrKeyCache[key] = None
+                else:
+                    cappingId = attrInfo.maxAttributeID
+                if cappingId is None:
+                    cappingKey = None
+                else:
+                    cappingAttrInfo = getAttributeInfo(cappingId)
+                    cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
+                    cappingAttrKeyCache[key] = cappingKey
+            if cappingKey:
+                cappingValue = self[cappingKey]
+                cappingValue = cappingValue.value if hasattr(cappingValue, "value") else cappingValue
+            else:
+                cappingValue = None
+
+            preIncrease = self.__preIncreases.get(key, 0)
+            postIncrease = self.__postIncreases.get(key, 0)
+            penalizedMultiplierGroups = self.__penalizedMultipliers.get(key, {})
+            if extraMultipliers is not None:
+                penalizedMultiplierGroups = copy(penalizedMultiplierGroups)
+                for stackGroup, operationsData in extraMultipliers.items():
+                    multipliers = []
+                    for mult, resAttrID in operationsData:
+                        if not resAttrID:
+                            multipliers.append(mult)
+                            continue
+                        resAttrInfo = getAttributeInfo(resAttrID)
+                        if not resAttrInfo:
+                            multipliers.append(mult)
+                            continue
+                        resMult = self.fit.ship.itemModifiedAttributes[resAttrInfo.attributeName]
+                        if resMult is None or resMult == 1:
+                            multipliers.append(mult)
+                            continue
+                        mult = (mult - 1) * resMult + 1
+                        multipliers.append(mult)
+                    penalizedMultiplierGroups[stackGroup] = penalizedMultiplierGroups.get(stackGroup, []) + multipliers
+
+            default = getAttrDefault(key, fallback=0.0)
+            val = self.__intermediary.get(key, self.__preAssigns.get(key, self.getOriginal(key, default)))
+            val += preIncrease
+            if preIncreaseAdjustment is not None:
+                val += preIncreaseAdjustment
+            val *= recomputed_multiplier
+            for penaltyGroup, penalizedMultipliers in penalizedMultiplierGroups.items():
+                if ignorePenalizedMultipliers is not None and penaltyGroup in ignorePenalizedMultipliers:
+                    penalizedMultipliers = penalizedMultipliers[:]
+                    for ignoreMult in ignorePenalizedMultipliers[penaltyGroup]:
+                        try:
+                            penalizedMultipliers.remove(ignoreMult)
+                        except ValueError:
+                            pass
+                l1 = [_val for _val in penalizedMultipliers if _val > 1]
+                l2 = [_val for _val in penalizedMultipliers if _val < 1]
+                abssort = lambda _val: -abs(_val - 1)
+                l1.sort(key=abssort)
+                l2.sort(key=abssort)
+                for l in (l1, l2):
+                    for i in range(len(l)):
+                        bonus = l[i]
+                        val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
+            val += postIncrease
+            if postIncreaseAdjustment is not None:
+                val += postIncreaseAdjustment
+
+            if cappingValue is not None:
+                val = min(val, cappingValue)
+            if key in ("cpu", "power", "cpuOutput", "powerOutput"):
+                val = round(val, 2)
+            return val
 
         # If we apply no customizations - use regular getter
         if (

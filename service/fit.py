@@ -269,10 +269,11 @@ class Fit:
         for fit in set(self._loadedFits):
             if fit is None:
                 continue
-            if fit.calculated:
-                fit.factorReload = self.serviceFittingOptions['useGlobalForceReload']
-                fit.clearFactorReloadDependentData()
-                fitIDs.add(fit.ID)
+            if fit.isInvalid:
+                continue
+            fit.factorReload = self.serviceFittingOptions['useGlobalForceReload']
+            self.recalc(fit)
+            fitIDs.add(fit.ID)
         return fitIDs
 
     def processOverrideToggle(self):
@@ -336,6 +337,7 @@ class Fit:
             return None
 
         self._loadedFits.add(fit)
+        fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
 
         if basic:
             return fit
