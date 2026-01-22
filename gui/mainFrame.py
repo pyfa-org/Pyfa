@@ -234,6 +234,9 @@ class MainFrame(wx.Frame):
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
 
+        self.Bind(GE.FIT_CHANGED, self.onFitChanged)
+        self.Bind(GE.FIT_RENAMED, self.onFitRenamed)
+
     @property
     def command(self) -> wx.CommandProcessor:
         return Fit.getCommandProcessor(self.getActiveFit())
@@ -996,3 +999,39 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
+
+    def onFitChanged(self, event):
+        """
+        Triggered by a FIT_CHANGED event (which is posted when the active fit changes)
+        This method updates the windows's title via `_updateTitle()`.
+        """
+        event.Skip()
+        activeFitID = self.getActiveFit()
+        if activeFitID is not None and activeFitID not in event.fitIDs:
+            return
+        self._updateTitle(fitID=activeFitID)
+
+    def onFitRenamed(self, event):
+        """
+        Triggered by a FIT_RENAMED event.
+        This method updates the windows's title via `_updateTitle()` if the current fit is renamed.
+        """
+        event.Skip()
+        if self.getActiveFit() != event.fitID:
+            return
+        self._updateTitle(fitID=event.fitID)
+
+    def _updateTitle(self, fitID):
+        """
+        This method updates the frame's title with information from the fit with ID `fitID`.
+        """
+        fit = Fit.getInstance().getFit(fitID)
+        fitName = fit and fit.name or None
+        shipName = fit and fit.ship.name or None
+
+        newTitle = ""
+        if fitName is not None and shipName is not None:
+            newTitle = f'{shipName} "{fitName}" — {self.title}'
+        else:
+            newTitle = self.title
+        self.SetTitle(newTitle)
