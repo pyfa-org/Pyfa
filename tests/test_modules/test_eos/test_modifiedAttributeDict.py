@@ -19,7 +19,7 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
     RifterFit.character = char0
     starting_em_resist = RifterFit.ship.getModifiedItemAttr("shieldEmDamageResonance")
 
-    mod = Saveddata['Module'](DB['db'].getItem("EM Ward Amplifier II"))
+    mod = Saveddata['Module'](DB['db'].getItem("EM Shield Amplifier II"))
     item_modifer = mod.item.getAttribute("emDamageResistanceBonus")
 
     RifterFit.calculateModifiedAttributes()

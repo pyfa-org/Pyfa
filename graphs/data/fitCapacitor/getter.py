@@ -46,14 +46,27 @@ class Time2CapAmountGetter(SmoothPointGetter):
         # When time range lies to the right of last cap sim data point, return nothing
         if len(capSimDataBefore) > 0 and max(capSimDataBefore) == capSimDataMaxTime:
             return xs, ys
-        maxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
-        capRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
+        defaultMaxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
+        defaultCapRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
+
+        def getCapAttrs(atTime):
+            if getattr(src, 'isFit', False):
+                ignore_afflictors = src.item.getInactiveModulesAt(atTime * 1000)
+                maxCap = src.item.ship.getModifiedItemAttrExtended(
+                    'capacitorCapacity',
+                    ignoreAfflictors=ignore_afflictors)
+                capRegen = src.item.ship.getModifiedItemAttrExtended(
+                    'rechargeRate',
+                    ignoreAfflictors=ignore_afflictors) / 1000
+                return maxCap, capRegen
+            return defaultMaxCapAmount, defaultCapRegenTime
 
         def plotCapRegen(prevTime, prevCap, currentTime):
             subrangeAmount = math.ceil((currentTime - prevTime) / maxPointXDistance)
             subrangeLength = (currentTime - prevTime) / subrangeAmount
             for i in range(1, subrangeAmount + 1):
                 subrangeTime = prevTime + subrangeLength * i
+                maxCapAmount, capRegenTime = getCapAttrs(subrangeTime)
                 subrangeCap = calculateCapAmount(
                     maxCapAmount=maxCapAmount,
                     capRegenTime=capRegenTime,
@@ -66,12 +79,14 @@ class Time2CapAmountGetter(SmoothPointGetter):
         if capSimDataBefore:
             timeBefore = max(capSimDataBefore)
             capBefore = capSimDataBefore[timeBefore]
+            maxCapAmount, capRegenTime = getCapAttrs(prevTime)
             prevCap = calculateCapAmount(
                     maxCapAmount=maxCapAmount,
                     capRegenTime=capRegenTime,
                     capAmountT0=capBefore,
                     time=prevTime - timeBefore)
         else:
+            maxCapAmount, capRegenTime = getCapAttrs(prevTime)
             prevCap = calculateCapAmount(
                 maxCapAmount=maxCapAmount,
                 capRegenTime=capRegenTime,
@@ -106,8 +121,17 @@ class Time2CapAmountGetter(SmoothPointGetter):
         # When time range lies to the right of last cap sim data point, return nothing
         if len(capSimDataBefore) > 0 and max(capSimDataBefore) == capSimDataMaxTime:
             return None
-        maxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
-        capRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
+        if getattr(src, 'isFit', False):
+            ignore_afflictors = src.item.getInactiveModulesAt(currentTime * 1000)
+            maxCapAmount = src.item.ship.getModifiedItemAttrExtended(
+                'capacitorCapacity',
+                ignoreAfflictors=ignore_afflictors)
+            capRegenTime = src.item.ship.getModifiedItemAttrExtended(
+                'rechargeRate',
+                ignoreAfflictors=ignore_afflictors) / 1000
+        else:
+            maxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
+            capRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
         if capSimDataBefore:
             timeBefore = max(capSimDataBefore)
             capBefore = capSimDataBefore[timeBefore]
@@ -134,9 +158,20 @@ class Time2CapAmountGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
+        if getattr(src, 'isFit', False):
+            ignore_afflictors = src.item.getInactiveModulesAt(time * 1000)
+            maxCapAmount = src.item.ship.getModifiedItemAttrExtended(
+                'capacitorCapacity',
+                ignoreAfflictors=ignore_afflictors)
+            capRegenTime = src.item.ship.getModifiedItemAttrExtended(
+                'rechargeRate',
+                ignoreAfflictors=ignore_afflictors) / 1000
+        else:
+            maxCapAmount = commonData['maxCapAmount']
+            capRegenTime = commonData['capRegenTime']
         capAmount = calculateCapAmount(
-            maxCapAmount=commonData['maxCapAmount'],
-            capRegenTime=commonData['capRegenTime'],
+            maxCapAmount=maxCapAmount,
+            capRegenTime=capRegenTime,
             capAmountT0=miscParams['capAmountT0'] or 0,
             time=time)
         return capAmount
@@ -151,14 +186,25 @@ class Time2CapRegenGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
+        if getattr(src, 'isFit', False):
+            ignore_afflictors = src.item.getInactiveModulesAt(time * 1000)
+            maxCapAmount = src.item.ship.getModifiedItemAttrExtended(
+                'capacitorCapacity',
+                ignoreAfflictors=ignore_afflictors)
+            capRegenTime = src.item.ship.getModifiedItemAttrExtended(
+                'rechargeRate',
+                ignoreAfflictors=ignore_afflictors) / 1000
+        else:
+            maxCapAmount = commonData['maxCapAmount']
+            capRegenTime = commonData['capRegenTime']
         capAmount = calculateCapAmount(
-            maxCapAmount=commonData['maxCapAmount'],
-            capRegenTime=commonData['capRegenTime'],
+            maxCapAmount=maxCapAmount,
+            capRegenTime=capRegenTime,
             capAmountT0=miscParams['capAmountT0'] or 0,
             time=time)
         capRegen = calculateCapRegen(
-            maxCapAmount=commonData['maxCapAmount'],
-            capRegenTime=commonData['capRegenTime'],
+            maxCapAmount=maxCapAmount,
+            capRegenTime=capRegenTime,
             currentCapAmount=capAmount)
         return capRegen
 
