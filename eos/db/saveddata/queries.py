@@ -35,6 +35,7 @@ from eos.saveddata.character import Character
 from eos.saveddata.implantSet import ImplantSet
 from eos.saveddata.fit import Fit, FitLite
 from eos.saveddata.module import Module
+from eos.saveddata.vault import Vault
 from eos.saveddata.miscData import MiscData
 from eos.saveddata.override import Override
 
@@ -224,17 +225,22 @@ def getFit(lookfor, eager=None):
     return fit
 
 
-def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+def getFitsWithShip(shipID, ownerID=None, vaultID=None, where=None, eager=None):
     """
     Get all the fits using a certain ship.
     If no user is passed, do this for all users.
+    If vaultID is provided, only fits in that vault are returned.
     """
     if isinstance(shipID, int):
         if ownerID is not None and not isinstance(ownerID, int):
             raise TypeError("OwnerID must be integer")
+        if vaultID is not None and not isinstance(vaultID, int):
+            raise TypeError("vaultID must be integer or None")
         filter = Fit.shipID == shipID
         if ownerID is not None:
             filter = and_(filter, Fit.ownerID == ownerID)
+        if vaultID is not None:
+            filter = and_(filter, Fit.vaultID == vaultID)
 
         filter = processWhere(filter, where)
         eager = processEager(eager)
@@ -246,7 +252,7 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     return fits
 
 
-def getRecentFits(ownerID=None, where=None, eager=None):
+def getRecentFits(ownerID=None, vaultID=None, where=None, eager=None):
     eager = processEager(eager)
     with sd_lock:
         q = select((
@@ -258,6 +264,8 @@ def getRecentFits(ownerID=None, where=None, eager=None):
             Fit.timestamp,
             Fit.notes
         )).order_by(desc(Fit.modified), desc(Fit.timestamp)).limit(50)
+        if vaultID is not None:
+            q = q.where(Fit.vaultID == vaultID)
         fits = eos.db.saveddata_session.execute(q).fetchall()
 
     return fits
@@ -284,19 +292,25 @@ def countAllFits():
     return count
 
 
-def countFitGroupedByShip():
+def countFitGroupedByShip(vaultID=None):
     with sd_lock:
-        count = eos.db.saveddata_session.query(Fit.shipID, func.count(Fit.shipID)).group_by(Fit.shipID).all()
+        q = eos.db.saveddata_session.query(Fit.shipID, func.count(Fit.shipID))
+        if vaultID is not None:
+            q = q.filter(Fit.vaultID == vaultID)
+        count = q.group_by(Fit.shipID).all()
     return count
 
 
-def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
+def countFitsWithShip(lookfor, ownerID=None, vaultID=None, where=None, eager=None):
     """
     Get all the fits using a certain ship.
     If no user is passed, do this for all users.
+    If vaultID is provided, only fits in that vault are counted.
     """
     if ownerID is not None and not isinstance(ownerID, int):
         raise TypeError("OwnerID must be integer")
+    if vaultID is not None and not isinstance(vaultID, int):
+        raise TypeError("vaultID must be integer or None")
 
     if isinstance(lookfor, int):
         filter = Fit.shipID == lookfor
@@ -309,6 +323,8 @@ def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
 
     if ownerID is not None:
         filter = and_(filter, Fit.ownerID == ownerID)
+    if vaultID is not None:
+        filter = and_(filter, Fit.vaultID == vaultID)
 
     filter = processWhere(filter, where)
     eager = processEager(eager)
@@ -318,17 +334,22 @@ def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
     return count
 
 
-def getFitList(eager=None):
+def getFitList(eager=None, vaultID=None):
     eager = processEager(eager)
     with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
+        q = saveddata_session.query(Fit).options(*eager)
+        if vaultID is not None:
+            q = q.filter(Fit.vaultID == vaultID)
+        fits = removeInvalid(q.all())
 
     return fits
 
 
-def getFitListLite():
+def getFitListLite(vaultID=None):
     with sd_lock:
         stmt = select([fits_table.c.ID, fits_table.c.name, fits_table.c.shipID])
+        if vaultID is not None:
+            stmt = stmt.where(fits_table.c.vaultID == vaultID)
         data = eos.db.saveddata_session.execute(stmt).fetchall()
     fits = []
     for fitID, fitName, shipID in data:
@@ -389,6 +410,91 @@ def clearTargetProfiles():
         deleted_rows = saveddata_session.query(TargetProfile).delete()
     commit()
     return deleted_rows
+
+
+def getVaultList():
+    """Return all vaults ordered by sortOrder, then A-Z by name."""
+    with sd_lock:
+        vaults = saveddata_session.query(Vault).order_by(Vault.sortOrder, Vault.name).all()
+    return vaults
+
+
+def getVault(vaultID):
+    if not isinstance(vaultID, int):
+        raise TypeError("vaultID must be integer")
+    with sd_lock:
+        vault = saveddata_session.query(Vault).get(vaultID)
+    return vault
+
+
+def countFitsInVault(vaultID):
+    """Return number of fits in the given vault (for delete confirmation)."""
+    if not isinstance(vaultID, int):
+        raise TypeError("vaultID must be integer")
+    with sd_lock:
+        count = saveddata_session.query(Fit).filter(Fit.vaultID == vaultID).count()
+    return count
+
+
+def createVault(name):
+    if not isinstance(name, str):
+        raise TypeError("name must be string")
+    with sd_lock:
+        vault = Vault(name=name, sortOrder=0)
+        saveddata_session.add(vault)
+        saveddata_session.flush()
+        vid = vault.ID
+    commit()
+    return vid
+
+
+def renameVault(vaultID, name):
+    if not isinstance(vaultID, int):
+        raise TypeError("vaultID must be integer")
+    if not isinstance(name, str):
+        raise TypeError("name must be string")
+    with sd_lock:
+        vault = saveddata_session.query(Vault).get(vaultID)
+        if vault is not None:
+            vault.name = name
+    commit()
+
+
+def deleteVault(vaultID, defaultVaultID):
+    """
+    Move all fits in vaultID to defaultVaultID, then delete the vault.
+    Caller must ensure at least one vault remains.
+    """
+    if not isinstance(vaultID, int) or not isinstance(defaultVaultID, int):
+        raise TypeError("vaultID and defaultVaultID must be integers")
+    with sd_lock:
+        saveddata_session.query(Fit).filter(Fit.vaultID == vaultID).update({Fit.vaultID: defaultVaultID})
+        vault = saveddata_session.query(Vault).get(vaultID)
+        if vault is not None:
+            saveddata_session.delete(vault)
+    commit()
+
+
+def moveFitToVault(fitID, vaultID):
+    if not isinstance(fitID, int) or not isinstance(vaultID, int):
+        raise TypeError("fitID and vaultID must be integers")
+    with sd_lock:
+        fit = saveddata_session.query(Fit).get(fitID)
+        if fit is not None:
+            fit.vaultID = vaultID
+    commit()
+
+
+def updateVaultSortOrder(vault_ids_in_order):
+    """Persist vault order. vault_ids_in_order is a list of vault IDs in display order."""
+    if not isinstance(vault_ids_in_order, (list, tuple)):
+        raise TypeError("vault_ids_in_order must be list or tuple")
+    with sd_lock:
+        for sort_order, vid in enumerate(vault_ids_in_order):
+            vault = saveddata_session.query(Vault).get(vid)
+            if vault is not None:
+                vault.sortOrder = sort_order
+    commit()
 
 
 def getImplantSetList(eager=None):
@@ -460,7 +566,7 @@ def getImplantSet(lookfor, eager=None):
     return pattern
 
 
-def searchFits(nameLike, where=None, eager=None):
+def searchFits(nameLike, vaultID=None, where=None, eager=None):
     if not isinstance(nameLike, str):
         raise TypeError("Need string as argument")
     # Prepare our string for request
@@ -468,6 +574,8 @@ def searchFits(nameLike, where=None, eager=None):
 
     # Add any extra components to the search to our where clause
     filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
+    if vaultID is not None:
+        filter = and_(filter, Fit.vaultID == vaultID)
     eager = processEager(eager)
     with sd_lock:
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).limit(100).all())
