@@ -14812,5 +14812,11 @@
   }, 
   "27309": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_brass_metallic_013_051_089.png"
+  }, 
+  "27334": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_metallic_000_100_001.png"
+  }, 
+  "27335": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_geomask_01_128.png"
   }
 }

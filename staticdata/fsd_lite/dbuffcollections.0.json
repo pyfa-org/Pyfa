@@ -4189,7 +4189,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4247,7 +4247,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1372, 
+        "dogmaAttributeID": 6119, 
         "skillID": 3412
       }
     ], 
@@ -4529,7 +4529,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4804,7 +4804,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4853,7 +4853,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4871,7 +4871,7 @@
     "displayName_ja": "エネルギー戦レジスタンス・ボーナス（メタリミナルガンマ線嵐）", 
     "displayName_ko": "에너지전 저항 보너스(메타경계성 감마 폭풍)", 
     "displayName_ru": "+ к сопротивляемости энергетич. воздействию (металиминальная гамма-буря)", 
-    "displayName_zh": "能量战抗性加成（金属极限伽马风暴）", 
+    "displayName_zh": "电容战抗性加成（超阈限伽马风暴）", 
     "displayNameID": 1025540, 
     "itemModifiers": [
       {
@@ -4895,7 +4895,7 @@
     "displayName_ja": "モジュール熱ダメージ減少（メタリミナルプラズマ嵐）", 
     "displayName_ko": "모듈 과부하 피해 감소(메타경계성 플라즈마 폭풍)", 
     "displayName_ru": "Снижение теплового урона для модулей (металиминальная пламенная буря)", 
-    "displayName_zh": "装备超载伤害降低（金属极限等离子体风暴）", 
+    "displayName_zh": "装备超载伤害降低（超阈限等离子体风暴）", 
     "displayNameID": 1025539, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -4919,7 +4919,7 @@
     "displayName_ja": "スキャン分解能ボーナス（メタリミナルエキゾチック嵐）", 
     "displayName_ko": "스캔 정밀도 보너스(메타경계성 엑조틱 폭풍)", 
     "displayName_ru": "Повышение эффективности сканирования (металиминальная экзотическая буря)", 
-    "displayName_zh": "扫描分辨率加成（金属极限异种风暴）", 
+    "displayName_zh": "扫描分辨率加成（超阈限异种风暴）", 
     "displayNameID": 1025538, 
     "itemModifiers": [
       {
@@ -4943,7 +4943,7 @@
     "displayName_ja": "キャパシタ量ボーナス（メタリミナル電気嵐）", 
     "displayName_ko": "캐패시터 용량 보너스(메타경계성 전기 폭풍)", 
     "displayName_ru": "Увеличение заряда накопителя (металиминальная электрическая буря)", 
-    "displayName_zh": "电容数量加成（金属极限电子风暴）", 
+    "displayName_zh": "电容量加成（超阈限电子风暴）", 
     "displayNameID": 1025537, 
     "itemModifiers": [
       {

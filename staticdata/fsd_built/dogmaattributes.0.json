@@ -49282,5 +49282,39 @@
     "name": "modeAnhingaCruiseLauncherTorpedoLauncherRapidHeavyLauncherROFPostDiv", 
     "published": 0, 
     "stackable": 1
+  }, 
+  "6108": {
+    "attributeID": 6108, 
+    "categoryID": 51, 
+    "dataType": 3, 
+    "defaultValue": 0.0, 
+    "description": "If set to true, this results in no mining crits when mining this typeID", 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "name": "ignoreMiningCrits", 
+    "published": 0, 
+    "stackable": 0
+  }, 
+  "6118": {
+    "attributeID": 6118, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "expeditionCommandBurstProbeStrengthBonusCharID", 
+    "published": 0, 
+    "stackable": 1, 
+    "unitID": 105
+  }, 
+  "6119": {
+    "attributeID": 6119, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "expeditionCommandBurstProbeDeviationBonusCharID", 
+    "published": 0, 
+    "stackable": 1, 
+    "unitID": 105
   }
 }
