@@ -992,7 +992,6 @@ class Effect272(BaseEffect):
     repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
 
     Used by:
-    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
@@ -1142,8 +1141,8 @@ class Effect391(BaseEffect):
     astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining
 
     Used by:
+    Implants named like: AIR Mining Yield Booster (3 of 3)
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
-    Implants named like: Mining Booster (6 of 8)
     Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
@@ -1334,7 +1333,6 @@ class Effect446(BaseEffect):
     Implants named like: Festival only 'Rock' SH Dose (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
-    Implants named like: Wightstorm Nirvana Booster (4 of 4)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: AIR Nirvana Booster II
@@ -1359,10 +1357,10 @@ class Effect485(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
-    Implants named like: Rapture Booster (5 of 5)
     Implants named like: grade Rapture (15 of 18)
     Modules named like: Capacitor Control Circuit (8 of 8)
     Implant: AIR Overclocker Booster III
+    Implant: AIR Rapture Booster II
     Implant: Basic Capsuleer Engineering Augmentation Chip
     Implant: Genolution Core Augmentation CA-2
     Implant: Quafe Zero Green Apple
@@ -1801,7 +1799,6 @@ class Effect584(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
-    Implants named like: Chemal Tech Turret Booster (3 of 3)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
@@ -4940,7 +4937,6 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
-    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
     Skill: Capital Repair Systems
@@ -6849,7 +6845,6 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Tetrimon Resistance Booster (4 of 4)
     """
 
     type = 'passive'
@@ -7048,7 +7043,6 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
-    Implants named like: Tetrimon Capacitor Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -7675,7 +7669,6 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -8436,8 +8429,6 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Harvest Damage Booster (4 of 4)
-    Implants named like: Wightstorm Vitarka Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
     """
@@ -8543,7 +8534,6 @@ class Effect2847(BaseEffect):
     trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
 
     Used by:
-    Implants named like: Chemal Tech Turret Booster (3 of 3)
     Implants named like: Drop Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
@@ -9714,7 +9704,6 @@ class Effect3196(BaseEffect):
     thermodynamicsSkillDamageBonus
 
     Used by:
-    Implants named like: Wightstorm Sunyata Booster (4 of 4)
     Skill: Thermodynamics
     """
 
@@ -13533,7 +13522,6 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (4 of 7)
-    Implants named like: Chemal Tech Exploration Booster (3 of 3)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
@@ -16684,7 +16672,6 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
-    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
     Implant: AIR Repairer Booster III
     """
@@ -18070,8 +18057,6 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
-    Implants named like: Tetrimon Precision Booster (4 of 4)
-    Implants named like: Wightstorm Manasikara Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -20332,7 +20317,6 @@ class Effect5459(BaseEffect):
     hackingVirusStrengthBonus
 
     Used by:
-    Implants named like: Chemal Tech Exploration Booster (3 of 3)
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
     Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     """
@@ -37094,7 +37078,6 @@ class Effect8128(BaseEffect):
 
     Used by:
     Implants named like: AIR Mining Range Booster (2 of 2)
-    Implants named like: Chemal Tech Mining Booster (3 of 3)
     """
 
     type = 'passive'
@@ -37732,10 +37715,7 @@ class Effect8264(BaseEffect):
 
 class Effect8267(BaseEffect):
     """
-    weaponDisruptorResistanceBonusPassive
-
-    Used by:
-    Implants named like: Harvest Anti Disruptor Booster (4 of 4)
+    Not used by any item
     """
 
     type = 'passive'
@@ -37749,10 +37729,7 @@ class Effect8267(BaseEffect):
 
 class Effect8268(BaseEffect):
     """
-    nosferatuDurationBonusPassive
-
-    Used by:
-    Implants named like: Harvest Nosferatu Booster (4 of 4)
+    Not used by any item
     """
 
     type = 'passive'
@@ -37766,10 +37743,7 @@ class Effect8268(BaseEffect):
 
 class Effect8269(BaseEffect):
     """
-    stasisWebifierMaxRangeAddPassive
-
-    Used by:
-    Implants named like: Harvest Webifier Booster (4 of 4)
+    Not used by any item
     """
 
     type = 'passive'
@@ -37788,7 +37762,6 @@ class Effect8270(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Tetrimon Anti Drain Booster (4 of 4)
     """
 
     type = 'passive'
@@ -37853,10 +37826,7 @@ class Effect8279(BaseEffect):
 
 class Effect8291(BaseEffect):
     """
-    afterburnerSpeedBoostBonusPassive
-
-    Used by:
-    Implants named like: Wightstorm Cetana Booster (4 of 4)
+    Not used by any item
     """
 
     type = 'passive'
@@ -42834,3 +42804,41 @@ class Effect12802(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Mutated Drone Specialization'), 'miningAmount',
             src.getModifiedItemAttr('miningAmountBonus') * src.level, **kwargs)
+
+
+class Effect12838(BaseEffect):
+    """
+    expeditionCommandBurstProbeStrengthBonusCharIDEffectPassivePostMul
+
+    Used by:
+    Modules from group: Scan Probe Launcher (7 of 7)
+    """
+
+    runTime = 'late'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeMultiply(
+            lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseSensorStrength',
+            container.getModifiedItemAttr('expeditionCommandBurstProbeStrengthBonusCharID'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+
+
+class Effect12839(BaseEffect):
+    """
+    expeditionCommandBurstProbeDeviationBonusCharIDEffectPassivePostMul
+
+    Used by:
+    Modules from group: Scan Probe Launcher (7 of 7)
+    """
+
+    runTime = 'late'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeMultiply(
+            lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseMaxScanDeviation',
+            container.getModifiedItemAttr('expeditionCommandBurstProbeDeviationBonusCharID'),
+            stackingPenalties=True, penaltyGroup='postMul', **kwargs)

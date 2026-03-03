@@ -923,17 +923,17 @@ class Fit:
                                      or mod.item.requiresSkill("Capital Repair Systems")),
                         "armorDamageAmount", value, stackingPenalties=True)
                 if warfareBuffID == 2464:  # Expedition Burst: Probe Strength
-                    self.modules.filteredChargeBoost(
+                    self.modules.filteredItemBoost(
                         lambda mod: mod.charge.requiresSkill('Astrometrics'),
-                        'baseSensorStrength', value, stackingPenalties=True)
+                        'expeditionCommandBurstProbeStrengthBonusCharID', value, stackingPenalties=True)
                 if warfareBuffID == 2465:  # Expedition Burst: Directional Scanner, Hacking and Salvager Range
                     self.ship.boostItemAttr("maxDirectionalScanRange", value)
                     self.modules.filteredItemBoost(
                         lambda mod: mod.item.group.name in ("Data Miners", "Salvager"), "maxRange", value, stackingPenalties=True)
                 if warfareBuffID == 2466:  # Expedition Burst: Maximum Scan Deviation Modifier
-                    self.modules.filteredChargeBoost(
+                    self.modules.filteredItemBoost(
                         lambda mod: mod.charge.requiresSkill('Astrometrics'),
-                        'baseMaxScanDeviation', value, stackingPenalties=True)
+                        'expeditionCommandBurstProbeDeviationBonusCharID', value, stackingPenalties=True)
                 if warfareBuffID == 2468:  # Expedition Burst: Virus Coherence
                     self.modules.filteredItemIncrease(
                         lambda mod: mod.item.group.name == "Data Miners", "virusCoherence", value)
