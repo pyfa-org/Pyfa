@@ -20,6 +20,8 @@
 
 from copy import copy
 
+from logbook import Logger
+
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
 from eos.utils.stats import DmgTypes
@@ -27,6 +29,7 @@ from graphs.data.base import FitDataCache
 
 
 class TimeCache(FitDataCache):
+    pyfalog = Logger(__name__)
 
     # Whole data getters
     def getDpsData(self, src):
@@ -66,6 +69,7 @@ class TimeCache(FitDataCache):
         # we do not need cache for that
         if maxTime is None:
             return
+        print("[DamageStats] prepareDmgData called", flush=True)
         self._generateInternalForm(src=src, maxTime=maxTime)
         fitCache = self._data[src.item.ID]
         # Final cache has been generated already, don't do anything
@@ -98,6 +102,7 @@ class TimeCache(FitDataCache):
         # we do not need cache for that
         if maxTime is None:
             return True
+        print("[DamageStats] prepareDpsVolleyData called", flush=True)
         self._generateInternalForm(src=src, maxTime=maxTime)
         fitCache = self._data[src.item.ID]
         # Final cache has been generated already, don't do anything
@@ -150,9 +155,12 @@ class TimeCache(FitDataCache):
     def _generateInternalForm(self, src, maxTime):
         if self._isTimeCacheValid(src=src, maxTime=maxTime):
             return
+        self.pyfalog.debug("DamageStats TimeCache: generating for fit %s up to %.3fs", getattr(src.item, 'ID', None), maxTime)
+        print("[DamageStats] TimeCache generating for fit {} up to {:.3f}s".format(getattr(src.item, 'ID', None), maxTime), flush=True)
         fitCache = self._data[src.item.ID] = {'maxTime': maxTime}
         intCacheDpsVolley = fitCache['internalDpsVolley'] = {}
         intCacheDmg = fitCache['internalDmg'] = {}
+        dmgPrintCount = 0
 
         def addDpsVolley(ddKey, addedTimeStart, addedTimeFinish, addedVolleys):
             if not addedVolleys:
@@ -170,6 +178,10 @@ class TimeCache(FitDataCache):
         def addDmg(ddKey, addedTime, addedDmg):
             if addedDmg.total == 0:
                 return
+            nonlocal dmgPrintCount
+            if dmgPrintCount < 5:
+                print("[DamageStats] Dmg event key={} t={:.3f}s total={}".format(ddKey, addedTime, addedDmg.total), flush=True)
+                dmgPrintCount += 1
             addedDmg._breachers = {addedTime + k: v for k, v in addedDmg._breachers.items()}
             addedDmg._clear_cached()
             intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
@@ -186,9 +198,18 @@ class TimeCache(FitDataCache):
             isBreacher = mod.isBreacher
             for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleVolleys = []
-                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
-
-                for volleyTimeMs, volley in volleyParams.items():
+                baseVolleyParams = mod.getVolleyParameters(
+                    spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+                if not baseVolleyParams:
+                    self.pyfalog.debug("DamageStats TimeCache: no base volleys for mod %s at t=%.3fs", mod, currentTime)
+                    print("[DamageStats] No base volleys for mod {} at t={:.3f}s".format(mod, currentTime), flush=True)
+                for volleyTimeMs in baseVolleyParams:
+                    inactive_afflictors = src.item.getInactiveModulesAt(
+                        currentTime * 1000 + volleyTimeMs, exclude=(mod,))
+                    volleyParams = mod.getVolleyParameters(
+                        spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True),
+                        ignoreAfflictors=inactive_afflictors)
+                    volley = volleyParams.get(volleyTimeMs, DmgTypes.default())
                     cycleVolleys.append(volley)
                     time = currentTime + volleyTimeMs / 1000
                     if isBreacher:
@@ -209,6 +230,12 @@ class TimeCache(FitDataCache):
                 if currentTime > maxTime:
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
+        self.pyfalog.debug("DamageStats TimeCache: generated %d dps segments and %d dmg events",
+                           sum(len(v) for v in intCacheDpsVolley.values()),
+                           sum(len(v) for v in intCacheDmg.values()))
+        print("[DamageStats] Generated {} dps segments and {} dmg events".format(
+            sum(len(v) for v in intCacheDpsVolley.values()),
+            sum(len(v) for v in intCacheDmg.values())), flush=True)
         # Drones
         for drone in src.item.activeDronesIter():
             if not drone.isDealingDamage():

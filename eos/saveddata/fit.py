@@ -41,6 +41,7 @@ from eos.saveddata.ship import Ship
 from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.float import floatUnerr
 from eos.utils.stats import DmgTypes, RRTypes
+from eos.utils.timeline import ModuleTimeline
 
 pyfalog = Logger(__name__)
 
@@ -165,6 +166,7 @@ class Fit:
         self._armorRrPreSpool = []
         self._armorRrFullSpool = []
         self._shieldRr = []
+        self.__timelineCache = {}
 
     def clearFactorReloadDependentData(self):
         # Here we clear all data known to rely on cycle parameters
@@ -561,6 +563,7 @@ class Fit:
         self._armorRrPreSpool.clear()
         self._armorRrFullSpool.clear()
         self._shieldRr.clear()
+        self.__timelineCache.clear()
 
         # If this is the active fit that we are clearing, not a projected fit,
         # then this will run and clear the projected ships and flag the next
@@ -1099,6 +1102,7 @@ class Fit:
             for fit in self.projectedFits:
                 projInfo = fit.getProjectionInfo(self.ID)
                 if projInfo.active:
+                    fit.factorReload = self.factorReload
                     if fit == self:
                         # If doing self projection, no need to run through the recursion process. Simply run the
                         # projection effects on ourselves
@@ -1434,9 +1438,7 @@ class Fit:
         capAdded = 0
         for mod in self.activeModulesIter():
             if (mod.getModifiedItemAttr("capacitorNeed") or 0) != 0:
-                cycleTime = mod.rawCycleTime or 0
-                reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
-                fullCycleTime = cycleTime + reactivationTime
+                fullCycleTime = mod.pulseAdjustedCycleTime or 0
                 reloadTime = mod.reloadTime
                 if fullCycleTime > 0:
                     capNeed = mod.capUse
@@ -1649,13 +1651,15 @@ class Fit:
 
                             # Normal Repairers
                             if usesCap and not afflictor.charge:
-                                cycleTime = afflictor.rawCycleTime
+                                cycle_params = afflictor.getCycleParameters()
+                                cycleTime = (cycle_params.averageTime if cycle_params is not None else afflictor.pulseAdjustedCycleTime)
                                 amount = afflictor.getModifiedItemAttr(groupAttrMap[afflictor.item.group.name])
                                 localAdjustment[tankType] -= amount / (cycleTime / 1000.0)
                                 repairers.append(afflictor)
                             # Ancillary Armor reps etc
                             elif usesCap and afflictor.charge:
-                                cycleTime = afflictor.rawCycleTime
+                                cycle_params = afflictor.getCycleParameters()
+                                cycleTime = (cycle_params.averageTime if cycle_params is not None else afflictor.pulseAdjustedCycleTime)
                                 amount = afflictor.getModifiedItemAttr(groupAttrMap[afflictor.item.group.name])
                                 if afflictor.charge.name == "Nanite Repair Paste":
                                     multiplier = afflictor.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
@@ -1665,7 +1669,8 @@ class Fit:
                                 repairers.append(afflictor)
                             # Ancillary Shield boosters etc
                             elif not usesCap and afflictor.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
-                                cycleTime = afflictor.rawCycleTime
+                                cycle_params = afflictor.getCycleParameters()
+                                cycleTime = (cycle_params.averageTime if cycle_params is not None else afflictor.pulseAdjustedCycleTime)
                                 amount = afflictor.getModifiedItemAttr(groupAttrMap[afflictor.item.group.name])
                                 if self.factorReload and afflictor.charge:
                                     reloadtime = afflictor.reloadTime
@@ -1692,7 +1697,8 @@ class Fit:
                     else:
                         reloadtime = 0.0
 
-                    cycleTime = afflictor.rawCycleTime
+                    cycle_params = afflictor.getCycleParameters()
+                    cycleTime = (cycle_params.averageTime if cycle_params is not None else afflictor.pulseAdjustedCycleTime)
                     capPerSec = afflictor.capUse
 
                     if capPerSec is not None and cycleTime is not None:
@@ -1844,6 +1850,47 @@ class Fit:
             for ability in fighter.abilities:
                 if ability.active:
                     yield fighter, ability
+
+    def getInactiveModulesAt(self, timeMs, exclude=()):
+        if timeMs is None or timeMs < 0:
+            return []
+        inactive = []
+        exclude_set = set(exclude) if exclude else set()
+        for mod in self.activeModulesIter():
+            if mod in exclude_set:
+                continue
+            timeline = self.__timelineCache.get(mod)
+            if timeline is None:
+                cycleParams = mod.getCycleParameters(reloadOverride=True)
+                timeline = ModuleTimeline(mod, cycleParams)
+                self.__timelineCache[mod] = timeline
+            if not timeline.is_active_at(timeMs):
+                inactive.append(mod)
+        return inactive
+
+    def getPulseInactiveAfflictorsAt(self, timeMs, exclude=()):
+        """Return list of pulsed modules inactive at a given time in ms."""
+        if timeMs is None:
+            return []
+        if timeMs < 0:
+            return []
+        exclude_set = set(exclude) if exclude else set()
+        inactive_afflictors = []
+        for mod in self.activeModulesIter():
+            if mod in exclude_set:
+                continue
+            if mod.pulseInterval is None:
+                continue
+            cycle_time = mod.rawCycleTime
+            if not cycle_time:
+                continue
+            full_cycle = mod.pulseAdjustedCycleTime
+            if full_cycle <= cycle_time:
+                continue
+            time_in_cycle = timeMs % full_cycle
+            if time_in_cycle >= cycle_time:
+                inactive_afflictors.append(mod)
+        return inactive_afflictors
 
     def getDampMultScanRes(self):
         damps = []

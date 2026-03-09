@@ -19,6 +19,7 @@
 
 
 import eos.config
+from logbook import Logger
 from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
 from eos.utils.stats import DmgTypes
@@ -26,6 +27,8 @@ from graphs.data.base import PointGetter, SmoothPointGetter
 from service.settings import GraphSettings
 from .calc.application import getApplicationPerKey
 from .calc.projected import getScramRange, getScrammables, getTackledSpeed, getSigRadiusMult
+
+pyfalog = Logger(__name__)
 
 
 def applyDamage(dmgMap, applicationMap, tgtResists, tgtFullHp):
@@ -194,13 +197,13 @@ class XDistanceMixin(SmoothPointGetter):
 
 class XTimeMixin(PointGetter):
 
-    def _prepareApplicationMap(self, miscParams, src, tgt):
+    def _prepareApplicationMap(self, miscParams, src, tgt, timeMs=None):
         tgtSpeed = miscParams['tgtSpeed']
         tgtSigRadius = tgt.getSigRadius()
         if GraphSettings.getInstance().get('applyProjected'):
             srcScramRange = getScramRange(src=src)
             tgtScrammables = getScrammables(tgt=tgt)
-            webMods, tpMods = self.graph._projectedCache.getProjModData(src)
+            webMods, tpMods = self.graph._projectedCache.getProjModData(src, timeMs=timeMs)
             webDrones, tpDrones = self.graph._projectedCache.getProjDroneData(src)
             webFighters, tpFighters = self.graph._projectedCache.getProjFighterData(src)
             tgtSpeed = getTackledSpeed(
@@ -236,53 +239,92 @@ class XTimeMixin(PointGetter):
         return applicationMap
 
     def getRange(self, xRange, miscParams, src, tgt):
+        print("[DamageStats] TimeGraph getRange called", flush=True)
         xs = []
         ys = []
         minTime, maxTime = xRange
         # Prepare time cache and various shared data
         self._prepareTimeCache(src=src, maxTime=maxTime)
         timeCache = self._getTimeCacheData(src=src)
-        applicationMap = self._prepareApplicationMap(miscParams=miscParams, src=src, tgt=tgt)
-        # Custom iteration for time graph to show all data points
-        currentDmg = None
-        currentTime = None
-        for currentTime in sorted(timeCache):
-            prevDmg = currentDmg
-            currentDmgData = timeCache[currentTime]
-            currentDmg = applyDamage(
-                dmgMap=currentDmgData,
-                applicationMap=applicationMap,
-                tgtResists=tgt.getResists(),
-                tgtFullHp=tgt.getFullHp()).total
-            if currentTime < minTime:
-                continue
-            # First set of data points
-            if not xs:
-                # Start at exactly requested time, at last known value
-                initialDmg = prevDmg or 0
-                xs.append(minTime)
-                ys.append(initialDmg)
-                # If current time is bigger then starting, extend plot to that time with old value
-                if currentTime > minTime:
-                    xs.append(currentTime)
+        pyfalog.debug("DamageStats TimeGraph: time cache keys=%s", list(timeCache.keys())[:10])
+        print("[DamageStats] TimeGraph cache keys (first 10): {}".format(list(timeCache.keys())[:10]), flush=True)
+        if timeCache:
+            print("[DamageStats] TimeGraph timeCache min={} max={} maxTime={}".format(min(timeCache), max(timeCache), maxTime), flush=True)
+        if not timeCache:
+            xs.append(minTime)
+            ys.append(0)
+            xs.append(maxTime)
+            ys.append(0)
+            return xs, ys
+        if min(timeCache) > maxTime:
+            pyfalog.debug("DamageStats TimeGraph: first damage time %.3fs beyond maxTime %.3fs", min(timeCache), maxTime)
+            print("[DamageStats] First damage time {:.3f}s beyond maxTime {:.3f}s".format(min(timeCache), maxTime), flush=True)
+            xs.append(minTime)
+            ys.append(0)
+            xs.append(maxTime)
+            ys.append(0)
+            return xs, ys
+        print("[DamageStats] TimeGraph passed cache checks", flush=True)
+        try:
+            applicationMap = self._prepareApplicationMap(miscParams=miscParams, src=src, tgt=tgt, timeMs=minTime * 1000)
+            # Custom iteration for time graph to show all data points
+            currentDmg = None
+            currentTime = None
+            maxDmg = 0
+            sampleCount = 0
+            print("[DamageStats] TimeGraph entering loop, points={}".format(len(timeCache)), flush=True)
+            for currentTime in sorted(timeCache):
+                prevDmg = currentDmg
+                currentDmgData = timeCache[currentTime]
+                applicationMap = self._prepareApplicationMap(miscParams=miscParams, src=src, tgt=tgt, timeMs=currentTime * 1000)
+                if sampleCount < 5:
+                    missing_keys = [k for k in currentDmgData if k not in applicationMap]
+                    if missing_keys:
+                        print("[DamageStats] TimeGraph missing app keys: {} of {}".format(len(missing_keys), len(currentDmgData)), flush=True)
+                currentDmg = applyDamage(
+                    dmgMap=currentDmgData,
+                    applicationMap=applicationMap,
+                    tgtResists=tgt.getResists(),
+                    tgtFullHp=tgt.getFullHp()).total
+                if currentDmg > maxDmg:
+                    maxDmg = currentDmg
+                if sampleCount < 5:
+                    print("[DamageStats] TimeGraph sample t={:.3f}s dmg={}".format(currentTime, currentDmg), flush=True)
+                    sampleCount += 1
+                if currentTime < minTime:
+                    continue
+                # First set of data points
+                if not xs:
+                    # Start at exactly requested time, at last known value
+                    initialDmg = prevDmg or 0
+                    xs.append(minTime)
                     ys.append(initialDmg)
-                # If new value is different, extend it with new point to the new value
+                    # If current time is bigger then starting, extend plot to that time with old value
+                    if currentTime > minTime:
+                        xs.append(currentTime)
+                        ys.append(initialDmg)
+                    # If new value is different, extend it with new point to the new value
+                    if currentDmg != prevDmg:
+                        xs.append(currentTime)
+                        ys.append(currentDmg)
+                    continue
+                # Last data point
+                if currentTime >= maxTime:
+                    xs.append(maxTime)
+                    ys.append(prevDmg if prevDmg is not None else 0)
+                    break
+                # Anything in-between
                 if currentDmg != prevDmg:
+                    if prevDmg is not None:
+                        xs.append(currentTime)
+                        ys.append(prevDmg)
                     xs.append(currentTime)
                     ys.append(currentDmg)
-                continue
-            # Last data point
-            if currentTime >= maxTime:
-                xs.append(maxTime)
-                ys.append(prevDmg)
-                break
-            # Anything in-between
-            if currentDmg != prevDmg:
-                if prevDmg is not None:
-                    xs.append(currentTime)
-                    ys.append(prevDmg)
-                xs.append(currentTime)
-                ys.append(currentDmg)
+        except Exception as exc:
+            print("[DamageStats] TimeGraph exception: {}".format(exc), flush=True)
+            xs = [minTime, maxTime]
+            ys = [0, 0]
+            return xs, ys
         # Special case - there are no damage dealers
         if currentDmg is None and currentTime is None:
             xs.append(minTime)
@@ -291,6 +333,10 @@ class XTimeMixin(PointGetter):
         if maxTime > (currentTime or 0):
             xs.append(maxTime)
             ys.append(currentDmg or 0)
+        print("[DamageStats] TimeGraph exiting loop, max dmg observed: {}".format(maxDmg), flush=True)
+        print("[DamageStats] TimeGraph series length xs={} ys={} first=({},{}) last=({},{})".format(
+            len(xs), len(ys), xs[0] if xs else None, ys[0] if ys else None,
+            xs[-1] if xs else None, ys[-1] if ys else None), flush=True)
         return xs, ys
 
     def getPoint(self, x, miscParams, src, tgt):
@@ -298,7 +344,7 @@ class XTimeMixin(PointGetter):
         # Prepare time cache and various data
         self._prepareTimeCache(src=src, maxTime=time)
         dmgData = self._getTimeCacheDataPoint(src=src, time=time)
-        applicationMap = self._prepareApplicationMap(miscParams=miscParams, src=src, tgt=tgt)
+        applicationMap = self._prepareApplicationMap(miscParams=miscParams, src=src, tgt=tgt, timeMs=time * 1000)
         y = applyDamage(
             dmgMap=dmgData,
             applicationMap=applicationMap,
@@ -328,7 +374,8 @@ class XTgtSpeedMixin(SmoothPointGetter):
         if commonData['applyProjected']:
             srcScramRange = getScramRange(src=src)
             tgtScrammables = getScrammables(tgt=tgt)
-            webMods, tpMods = self.graph._projectedCache.getProjModData(src)
+            timeMs = miscParams['time'] * 1000 if miscParams.get('time') is not None else None
+            webMods, tpMods = self.graph._projectedCache.getProjModData(src, timeMs=timeMs)
             webDrones, tpDrones = self.graph._projectedCache.getProjDroneData(src)
             webFighters, tpFighters = self.graph._projectedCache.getProjFighterData(src)
             tgtSpeed = getTackledSpeed(
@@ -379,7 +426,8 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
         if GraphSettings.getInstance().get('applyProjected'):
             srcScramRange = getScramRange(src=src)
             tgtScrammables = getScrammables(tgt=tgt)
-            webMods, tpMods = self.graph._projectedCache.getProjModData(src)
+            timeMs = miscParams['time'] * 1000 if miscParams.get('time') is not None else None
+            webMods, tpMods = self.graph._projectedCache.getProjModData(src, timeMs=timeMs)
             webDrones, tpDrones = self.graph._projectedCache.getProjDroneData(src)
             webFighters, tpFighters = self.graph._projectedCache.getProjFighterData(src)
             tgtSpeed = getTackledSpeed(
