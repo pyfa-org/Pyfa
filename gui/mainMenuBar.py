@@ -40,6 +40,7 @@ class MainMenuBar(wx.MenuBar):
         self.targetProfileEditorId = wx.NewId()
         self.implantSetEditorId = wx.NewId()
         self.graphFrameId = wx.NewId()
+        self.ammoBreakdownFrameId = wx.NewId()
         self.backupFitsId = wx.NewId()
         self.exportSkillsNeededId = wx.NewId()
         self.importCharacterId = wx.NewId()
@@ -93,6 +94,8 @@ class MainMenuBar(wx.MenuBar):
 
         fitMenu.AppendSeparator()
         fitMenu.Append(self.optimizeFitPrice, _t("&Optimize Fit Price") + "\tCTRL+D")
+        fitMenu.Append(self.ammoBreakdownFrameId, _t("Ammo Break&down"), _t("Cargo ammo stats and export"))
+        self.Enable(self.ammoBreakdownFrameId, False)
         graphFrameItem = wx.MenuItem(fitMenu, self.graphFrameId, _t("&Graphs") + "\tCTRL+G")
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         fitMenu.Append(graphFrameItem)
@@ -191,6 +194,7 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.revertCharId, char.isDirty)
 
         self.Enable(self.toggleIgnoreRestrictionID, enable)
+        self.Enable(self.ammoBreakdownFrameId, enable)
 
         if activeFitID:
             sFit = Fit.getInstance()
