@@ -40,6 +40,7 @@ from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from gui.utils.dark import isDark
+from gui.utils.themes import Themes
 from service.fit import Fit
 from service.market import Market
 from config import slotColourMap, slotColourMapDark, errColor, errColorDark
@@ -923,11 +924,11 @@ class FittingView(d.Display):
 
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground(wx.Brush(Themes.windowBackground()))
         mdc.Clear()
 
         mdc.SetFont(self.font)
-        mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+        mdc.SetTextForeground(Themes.text())
 
         cx = padding
         for i, col in enumerate(self.activeColumns):

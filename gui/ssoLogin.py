@@ -5,12 +5,13 @@ import gui.globalEvents as GE
 import config
 import time
 
+from gui.utils.themes import ThemedDialog, Themes
 from service.settings import EsiSettings
 
 _t = wx.GetTranslation
 
 
-class SsoLogin(wx.Dialog):
+class SsoLogin(ThemedDialog):
 
     def __init__(self, server: config.ApiServer, start_local_server=True):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -37,6 +38,7 @@ class SsoLogin(wx.Dialog):
 
         self.ssoInfoCtrl = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, (-1, -1), style=wx.TE_MULTILINE)
         self.ssoInfoCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
+        Themes.styleInput(self.ssoInfoCtrl)
         self.ssoInfoCtrl.Layout()
         self.ssoInfoCtrl.Bind(wx.EVT_TEXT, self.OnTextEnter)
 
