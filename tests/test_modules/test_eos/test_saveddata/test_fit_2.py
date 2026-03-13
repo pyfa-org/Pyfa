@@ -9,9 +9,10 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..', '..')))
 
 # noinspection PyPackageRequirements
+import pytest
 
 
-def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):
+def test_calculateModifiedAttributes_Rifter(DB, RifterFit):
     rifter_modifier_dicts = {
         '_ModifiedAttributeDict__affectedBy'          : 26,
         '_ModifiedAttributeDict__forced'              : 0,
@@ -34,7 +35,10 @@ def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):
     for test_dict in rifter_modifier_dicts:
         assert len(getattr(RifterFit.ship.itemModifiedAttributes, test_dict)) == rifter_modifier_dicts[test_dict]
 
-    # Keepstars don't have any basic skills that would change their attributes
+
+@pytest.mark.skip(reason="Needs rewrite to not depend on DB; was disabled with assert 1==1.")
+def test_calculateModifiedAttributes_Keepstar(DB, KeepstarFit):
+    """Keepstars: no basic skills that would change their attributes. Disabled until rewritten."""
     keepstar_modifier_dicts = {
         '_ModifiedAttributeDict__affectedBy'          : 0,
         '_ModifiedAttributeDict__forced'              : 0,
@@ -47,19 +51,14 @@ def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):
         '_ModifiedAttributeDict__preAssigns'          : 0,
         '_ModifiedAttributeDict__preIncreases'        : 0,
     }
-
-    # quick hack to disable test. Need to rewrite ttests to not point to the DB
-    assert 1==1
-    return
-    # Test before calculating attributes
     for test_dict in keepstar_modifier_dicts:
         assert len(getattr(KeepstarFit.ship.itemModifiedAttributes, test_dict)) == 0
-
     KeepstarFit.calculateModifiedAttributes()
-
     for test_dict in keepstar_modifier_dicts:
         assert len(getattr(KeepstarFit.ship.itemModifiedAttributes, test_dict)) == keepstar_modifier_dicts[test_dict]
 
+
+@pytest.mark.skip(reason="Projections not working correctly; TODO rewrite. Was disabled with assert 1==1.")
 def test_calculateModifiedAttributes_withProjected(DB, RifterFit, HeronFit):
     # TODO: This test is not currently functional or meaningful as projections are not happening correctly.
     # This is true for all tested branches (master, dev, etc)
@@ -75,10 +74,6 @@ def test_calculateModifiedAttributes_withProjected(DB, RifterFit, HeronFit):
         '_ModifiedAttributeDict__preAssigns'          : 0,
         '_ModifiedAttributeDict__preIncreases'        : 4,
     }
-
-    # quick hack to disable test. Need to rewrite ttests to not point to the DB
-    assert 1==1
-    return
 
     # Test before calculating attributes
     for test_dict in rifter_modifier_dicts:
