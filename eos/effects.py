@@ -119,7 +119,7 @@ class Effect10(BaseEffect):
 
     Used by:
     Celestials from group: Destructible Effect Beacon (6 of 6)
-    Drones from group: Combat Drone (80 of 80)
+    Drones from group: Combat Drone (98 of 98)
     Modules from group: Energy Weapon (216 of 220)
     Celestial: BH Sentry Gun
     Celestial: EDENCOM Stockpile Non-Interactable (Do not translate)
@@ -471,7 +471,7 @@ class Effect60(BaseEffect):
     structureHPMultiply
 
     Used by:
-    Modules from group: Nanofiber Internal Structure (7 of 7)
+    Modules from group: Nanofiber Internal Structure (8 of 8)
     Modules from group: Reinforced Bulkhead (8 of 8)
     """
 
@@ -641,7 +641,7 @@ class Effect101(BaseEffect):
     Used by:
     Modules from group: Missile Launcher Heavy (12 of 12)
     Modules from group: Missile Launcher Rocket (16 of 16)
-    Modules named like: Launcher (158 of 158)
+    Modules named like: Launcher (159 of 159)
     Structure Modules named like: Standup Launcher (7 of 7)
     """
 
@@ -974,6 +974,7 @@ class Effect244(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' High Speed Maneuvering HS (6 of 6)
+    Implants named like: Federation Mobility Booster (4 of 4)
     Skill: High Speed Maneuvering
     """
 
@@ -1239,6 +1240,7 @@ class Effect395(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
+    Implants named like: Federation Mobility Booster (4 of 4)
     Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
@@ -2074,7 +2076,7 @@ class Effect657(BaseEffect):
 
     Used by:
     Modules from group: Inertial Stabilizer (7 of 7)
-    Modules from group: Nanofiber Internal Structure (7 of 7)
+    Modules from group: Nanofiber Internal Structure (8 of 8)
     Modules from group: Reinforced Bulkhead (8 of 8)
     """
 
@@ -2547,6 +2549,7 @@ class Effect856(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
+    Implants named like: Federation Mobility Booster (4 of 4)
     Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
@@ -4406,6 +4409,7 @@ class Effect1445(BaseEffect):
     ewSkillRsdMaxRangeBonus
 
     Used by:
+    Implants named like: Federation Electronics Booster (4 of 4)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4466,6 +4470,7 @@ class Effect1449(BaseEffect):
     ewSkillRsdFallOffBonus
 
     Used by:
+    Implants named like: Federation Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
@@ -7653,6 +7658,7 @@ class Effect2694(BaseEffect):
     falloffBonusEffectHybrids
 
     Used by:
+    Implants named like: Federation Projection Booster (4 of 4)
     Modules named like: Hybrid Ambit Extension (8 of 8)
     """
 
@@ -7707,6 +7713,7 @@ class Effect2697(BaseEffect):
     maxRangeBonusEffectHybrids
 
     Used by:
+    Implants named like: Federation Projection Booster (4 of 4)
     Modules named like: Hybrid Locus Coordinator (8 of 8)
     """
 
@@ -8431,6 +8438,7 @@ class Effect2802(BaseEffect):
     hybridWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Federation Damage Booster (4 of 4)
     Modules named like: Hybrid Collision Accelerator (8 of 8)
     """
 
@@ -8701,7 +8709,7 @@ class Effect2865(BaseEffect):
 
     Used by:
     Modules from group: Entosis Link (6 of 6)
-    Modules from group: Nanofiber Internal Structure (7 of 7)
+    Modules from group: Nanofiber Internal Structure (8 of 8)
     Modules from group: Overdrive Injector System (7 of 7)
     """
 
@@ -13537,7 +13545,8 @@ class Effect4162(BaseEffect):
     baseSensorStrengthModifierRequiringAstrometrics
 
     Used by:
-    Modules from group: Scan Probe Launcher (4 of 7)
+    Modules from group: Scan Probe Launcher (5 of 8)
+    Implants named like: Federation Electronics Booster (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
@@ -16073,6 +16082,7 @@ class Effect4817(BaseEffect):
     salvagerModuleDurationReduction
 
     Used by:
+    Implants named like: Federation Electronics Booster (4 of 4)
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
     """
 
@@ -18055,6 +18065,7 @@ class Effect5188(BaseEffect):
     trackingSpeedBonusEffectHybrids
 
     Used by:
+    Implants named like: Federation Application Booster (4 of 4)
     Modules named like: Hybrid Metastasis Adjuster (8 of 8)
     """
 
@@ -18695,7 +18706,7 @@ class Effect5264(BaseEffect):
     warfareLinkCPUAddition
 
     Used by:
-    Modules from group: Command Burst (15 of 15)
+    Modules from group: Command Burst (18 of 18)
     Modules from group: Gang Coordinator (6 of 6)
     """
 
@@ -21457,6 +21468,7 @@ class Effect5647(BaseEffect):
 
     Used by:
     Ships from group: Expedition Frigate (2 of 2)
+    Ships from group: Gallente Election YC128 Campaign Buses (3 of 3)
     Ship: Astero
     Ship: Cenotaph
     Ship: Cobra
@@ -26419,7 +26431,7 @@ class Effect6384(BaseEffect):
     overloadSelfMissileGuidanceModuleBonus
 
     Used by:
-    Variations of module: Guidance Disruptor I (6 of 6)
+    Variations of module: Guidance Disruptor I (7 of 7)
     """
 
     type = 'overheat'
@@ -26825,7 +26837,7 @@ class Effect6423(BaseEffect):
     shipModuleGuidanceDisruptor
 
     Used by:
-    Variations of module: Guidance Disruptor I (6 of 6)
+    Variations of module: Guidance Disruptor I (7 of 7)
     """
 
     type = 'active', 'projected'
@@ -30169,6 +30181,7 @@ class Effect6667(BaseEffect):
 
     Used by:
     Implants named like: Black Market 'Valdimar' Drone Navigation DN (3 of 3)
+    Implants named like: Federation Application Booster (4 of 4)
     Skill: Drone Navigation
     """
 
@@ -30536,7 +30549,7 @@ class Effect6690(BaseEffect):
     remoteWebifierEntity
 
     Used by:
-    Drones from group: Stasis Webifying Drone (3 of 3)
+    Drones named like: SW (6 of 6)
     """
 
     type = 'active', 'projected'
@@ -30558,7 +30571,7 @@ class Effect6691(BaseEffect):
     entityEnergyNeutralizerFalloff
 
     Used by:
-    Drones from group: Energy Neutralizer Drone (3 of 3)
+    Drones named like: EV (6 of 6)
     """
 
     type = 'active', 'projected'
@@ -30584,7 +30597,7 @@ class Effect6692(BaseEffect):
     remoteTargetPaintEntity
 
     Used by:
-    Drones named like: TP (3 of 3)
+    Drones named like: TP (6 of 6)
     """
 
     type = 'projected', 'active'
@@ -30606,7 +30619,7 @@ class Effect6693(BaseEffect):
     remoteSensorDampEntity
 
     Used by:
-    Drones named like: SD (3 of 3)
+    Drones named like: SD (6 of 6)
     """
 
     type = 'projected', 'active'
@@ -30630,7 +30643,7 @@ class Effect6694(BaseEffect):
     npcEntityWeaponDisruptor
 
     Used by:
-    Drones named like: TD (3 of 3)
+    Drones named like: TD (6 of 6)
     """
 
     type = 'projected', 'active'
@@ -30658,7 +30671,7 @@ class Effect6695(BaseEffect):
     entityECMFalloff
 
     Used by:
-    Drones named like: EC (3 of 3)
+    Drones named like: EC (6 of 6)
     """
 
     type = 'projected', 'active'
@@ -30861,6 +30874,7 @@ class Effect6708(BaseEffect):
     armorRepairAmountBonusSubcap
 
     Used by:
+    Implants named like: Federation Defense Booster (4 of 4)
     Implants named like: grade Asklepian (15 of 18)
     """
 
@@ -31214,7 +31228,7 @@ class Effect6734(BaseEffect):
     moduleBonusWarfareLinkSkirmish
 
     Used by:
-    Variations of module: Skirmish Command Burst I (2 of 2)
+    Variations of module: Skirmish Command Burst I (3 of 3)
     """
 
     type = 'active', 'gang'
@@ -31236,7 +31250,7 @@ class Effect6735(BaseEffect):
 
     Used by:
     Variations of module: Expedition Command Burst I (3 of 3)
-    Variations of module: Information Command Burst I (2 of 2)
+    Variations of module: Information Command Burst I (3 of 3)
     """
 
     type = 'active', 'gang'
@@ -31257,7 +31271,7 @@ class Effect6736(BaseEffect):
     moduleBonusWarfareLinkMining
 
     Used by:
-    Variations of module: Mining Foreman Burst I (2 of 2)
+    Variations of module: Mining Foreman Burst I (3 of 3)
     """
 
     type = 'active', 'gang'
@@ -34851,20 +34865,12 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
+    Items from category: Ship (45 of 415)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
-    Ships from group: Hauler (5 of 18)
+    Ships from group: Gallente Election YC128 Campaign Buses (3 of 3)
     Ships from group: Interceptor (10 of 10)
     Ships from group: Interdictor (4 of 4)
-    Ship: Azariel
-    Ship: Cynabal
-    Ship: Dramiel
-    Ship: Khizriel
-    Ship: Leopard
-    Ship: Machariel
-    Ship: Mekubal
-    Ship: Sarathiel
-    Ship: Victorieux Luxury Yacht
     """
 
     type = 'passive'
@@ -35221,6 +35227,7 @@ class Effect7176(BaseEffect):
     skillBonusDroneInterfacingNotFighters
 
     Used by:
+    Implants named like: Federation Damage Booster (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
     Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
     Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
@@ -35240,6 +35247,7 @@ class Effect7177(BaseEffect):
 
     Used by:
     Implants named like: Drone Tuner (4 of 4)
+    Implants named like: Federation Projection Booster (4 of 4)
     """
 
     type = 'passive'
@@ -37003,6 +37011,7 @@ class Effect8120(BaseEffect):
     interceptorNullificationRoleBonus
 
     Used by:
+    Ships from group: Gallente Election YC128 Campaign Buses (3 of 3)
     Ships from group: Interceptor (6 of 10)
     Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
     Ship: Victorieux Luxury Yacht
@@ -38079,6 +38088,23 @@ class Effect8364(BaseEffect):
     type = 'active'
 
 
+class Effect8366(BaseEffect):
+    """
+    modifyHullResonancePostPercentpassive
+
+    Used by:
+    Implants named like: Federation Defense Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                f'{dmgType}DamageResonance', src.getModifiedItemAttr('hullDamageResistanceBonus'), **kwargs)
+
+
 class Effect8372(BaseEffect):
     """
     fleetCompressionLogisticsRangeBonus
@@ -38199,6 +38225,7 @@ class Effect8477(BaseEffect):
     droneTrackingBonusPassive
 
     Used by:
+    Implants named like: Federation Application Booster (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
     """
 
@@ -38234,6 +38261,7 @@ class Effect8479(BaseEffect):
     droneOptimalFalloffBonusPassive
 
     Used by:
+    Implants named like: Federation Projection Booster (4 of 4)
     Implants named like: Halcyon Y Booster (5 of 5)
     """
 
@@ -42790,7 +42818,7 @@ class Effect12838(BaseEffect):
     expeditionCommandBurstProbeStrengthBonusCharIDEffectPassivePostMul
 
     Used by:
-    Modules from group: Scan Probe Launcher (7 of 7)
+    Modules from group: Scan Probe Launcher (8 of 8)
     """
 
     runTime = 'late'
@@ -42809,7 +42837,7 @@ class Effect12839(BaseEffect):
     expeditionCommandBurstProbeDeviationBonusCharIDEffectPassivePostMul
 
     Used by:
-    Modules from group: Scan Probe Launcher (7 of 7)
+    Modules from group: Scan Probe Launcher (8 of 8)
     """
 
     runTime = 'late'
