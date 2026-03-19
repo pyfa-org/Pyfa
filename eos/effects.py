@@ -42814,3 +42814,112 @@ class Effect12839(BaseEffect):
             lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseMaxScanDeviation',
             container.getModifiedItemAttr('expeditionCommandBurstProbeDeviationBonusCharID'),
             stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+
+
+class Effect12844(BaseEffect):
+    """
+    skillBonusAmarrFighters
+
+    Used by:
+    Skill: Amarr Fighter Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        boost = src.getModifiedItemAttr('damageMultiplierBonus') * src.level
+        for attr in (
+                'fighterAbilityAttackTurretDamageMultiplier',
+                'fighterAbilityAttackMissileDamageMultiplier',
+                'fighterAbilityMissilesDamageMultiplier'
+        ):
+            fit.fighters.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Amarr Fighter Specialization'),
+                attr, boost, **kwargs)
+
+
+class Effect12846(BaseEffect):
+    """
+    skillBonusCaldariFighters
+
+    Used by:
+    Skill: Caldari Fighter Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        boost = src.getModifiedItemAttr('damageMultiplierBonus') * src.level
+        for attr in (
+                'fighterAbilityAttackTurretDamageMultiplier',
+                'fighterAbilityAttackMissileDamageMultiplier',
+                'fighterAbilityMissilesDamageMultiplier'
+        ):
+            fit.fighters.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Caldari Fighter Specialization'),
+                attr, boost, **kwargs)
+
+
+class Effect12847(BaseEffect):
+    """
+    skillBonusGallenteFighters
+
+    Used by:
+    Skill: Gallente Fighter Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        boost = src.getModifiedItemAttr('damageMultiplierBonus') * src.level
+        for attr in (
+                'fighterAbilityAttackTurretDamageMultiplier',
+                'fighterAbilityAttackMissileDamageMultiplier',
+                'fighterAbilityMissilesDamageMultiplier'
+        ):
+            fit.fighters.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Gallente Fighter Specialization'),
+                attr, boost, **kwargs)
+
+
+class Effect12848(BaseEffect):
+    """
+    skillBonusMinmatarFighters
+
+    Used by:
+    Skill: Minmatar Fighter Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        boost = src.getModifiedItemAttr('damageMultiplierBonus') * src.level
+        for attr in (
+                'fighterAbilityAttackTurretDamageMultiplier',
+                'fighterAbilityAttackMissileDamageMultiplier',
+                'fighterAbilityMissilesDamageMultiplier'
+        ):
+            fit.fighters.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Minmatar Fighter Specialization'),
+                attr, boost, **kwargs)
+
+
+class Effect12862(BaseEffect):
+    """
+    extralargeDisintegratorSkillDmgBonus
+
+    Used by:
+    Skill: Capital Disintegrator Specialization
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, skill, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Disintegrator Specialization'),
+            'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
