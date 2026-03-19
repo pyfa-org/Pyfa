@@ -1883,7 +1883,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (608 of 1023)
+    Items from category: Charge (610 of 1025)
     """
 
     type = 'passive'
@@ -1941,7 +1941,7 @@ class Effect600(BaseEffect):
     Charges from group: Advanced Autocannon Ammo (8 of 8)
     Charges from group: Advanced Beam Laser Crystal (8 of 8)
     Charges from group: Advanced Blaster Charge (8 of 8)
-    Charges from group: Advanced Exotic Plasma Charge (6 of 6)
+    Charges from group: Advanced Exotic Plasma Charge (8 of 8)
     Charges from group: Advanced Pulse Laser Crystal (8 of 8)
     Charges from group: Advanced Railgun Charge (8 of 8)
     Charges from group: Projectile Ammo (128 of 128)
@@ -2457,7 +2457,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (544 of 1023)
+    Items from category: Charge (546 of 1025)
     """
 
     type = 'passive'
@@ -5264,7 +5264,7 @@ class Effect1730(BaseEffect):
     droneDmgBonus
 
     Used by:
-    Skills from group: Drones (9 of 28)
+    Skills from group: Drones (9 of 32)
     """
 
     type = 'passive'
@@ -9318,7 +9318,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (446 of 930)
+    Items from market group: Ship Equipment > Turrets & Launchers (446 of 931)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9378,7 +9378,7 @@ class Effect3025(BaseEffect):
     Used by:
     Modules from group: Energy Weapon (105 of 220)
     Modules from group: Hybrid Weapon (107 of 223)
-    Modules from group: Precursor Weapon (19 of 19)
+    Modules from group: Precursor Weapon (20 of 20)
     Modules from group: Projectile Weapon (101 of 167)
     Modules named like: Pulse Laser (89 of 90)
     """
@@ -13144,8 +13144,6 @@ class Effect4088(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
-    Celestial: Final Liminality
-    Celestial: Triglavian Minor Victory
     """
 
     runTime = 'early'
@@ -13166,8 +13164,6 @@ class Effect4089(BaseEffect):
 
     Used by:
     Celestials named like: Class Cataclysmic Variable Effects (6 of 6)
-    Celestial: Final Liminality
-    Celestial: Triglavian Minor Victory
     """
 
     runTime = 'early'
@@ -33480,7 +33476,7 @@ class Effect6995(BaseEffect):
     targetDisintegratorAttack
 
     Used by:
-    Modules from group: Precursor Weapon (19 of 19)
+    Modules from group: Precursor Weapon (20 of 20)
     """
 
     dealsDamage = True
@@ -35634,7 +35630,6 @@ class Effect7237(BaseEffect):
 
     Used by:
     Celestial: Drifter Crisis
-    Celestial: Final Liminality
     Celestial: Turnur Aftermath
     """
 
@@ -35940,11 +35935,7 @@ class Effect8029(BaseEffect):
 
 class Effect8031(BaseEffect):
     """
-    systemMaxTargets
-
-    Used by:
-    Celestial: Final Liminality
-    Celestial: Triglavian Minor Victory
+    Not used by any item
     """
 
     runTime = 'early'
@@ -36480,9 +36471,10 @@ class Effect8082(BaseEffect):
 
 class Effect8091(BaseEffect):
     """
-    shipBonusForceAuxiliaryG2CapBoosterStrength
+    shipBonusForceAuxiliaryG5CapBoosterStrength
 
     Used by:
+    Ship: Loggerhead
     Ship: Ninazu
     """
 
@@ -36492,26 +36484,8 @@ class Effect8091(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredChargeBoost(
             lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
-            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryG2'),
+            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryG5'),
             skill='Gallente Carrier', **kwargs)
-
-
-class Effect8092(BaseEffect):
-    """
-    shipBonusForceAuxiliaryM2CapBoosterStrength
-
-    Used by:
-    Ship: Lif
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(
-            lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
-            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryM2'),
-            skill='Minmatar Carrier', **kwargs)
 
 
 class Effect8094(BaseEffect):
@@ -37279,23 +37253,6 @@ class Effect8154(BaseEffect):
             ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
 
 
-class Effect8155(BaseEffect):
-    """
-    eliteBonusLPTtrackingBlackOps1
-
-    Used by:
-    Ship: Panther
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
-            'trackingSpeed', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
-
-
 class Effect8156(BaseEffect):
     """
     eliteBonusLPTfalloffBlackOps2
@@ -37713,48 +37670,6 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
-class Effect8267(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, container, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'weaponDisruptionResistance',
-            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
-
-
-class Effect8268(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
-            module.getModifiedItemAttr('durationBonus'), **kwargs)
-
-
-class Effect8269(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, module, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
-            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
-
-
 
 class Effect8270(BaseEffect):
     """
@@ -37822,20 +37737,6 @@ class Effect8279(BaseEffect):
         fit.ship.boostItemAttr(
             'capacity', ship.getModifiedItemAttr('industrialCommandBonusShipCargoCapacity'),
             skill='Industrial Command Ships', **kwargs)
-
-
-class Effect8291(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, booster, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(
-            lambda mod: mod.item.requiresSkill('Afterburner'), 'speedFactor',
-            booster.getModifiedItemAttr('speedFBonus'), **kwargs)
 
 
 class Effect8294(BaseEffect):
@@ -42804,6 +42705,77 @@ class Effect12802(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('Mutated Drone Specialization'), 'miningAmount',
             src.getModifiedItemAttr('miningAmountBonus') * src.level, **kwargs)
+
+
+class Effect12811(BaseEffect):
+    """
+    eliteBonusGrapplerFalloffBlackOps1
+
+    Used by:
+    Ship: Panther
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Stasis Grappler', 'falloffEffectiveness',
+            ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
+
+
+class Effect12835(BaseEffect):
+    """
+    shipBonusForceAuxiliaryC5CapBoosterStrength
+
+    Used by:
+    Ship: Minokawa
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
+            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryC5'),
+            skill='Caldari Carrier', **kwargs)
+
+
+class Effect12836(BaseEffect):
+    """
+    shipBonusForceAuxiliaryA5CapBoosterStrength
+
+    Used by:
+    Variations of ship: Apostle (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
+            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryA5'),
+            skill='Amarr Carrier', **kwargs)
+
+
+class Effect12837(BaseEffect):
+    """
+    shipBonusForceAuxiliaryM5CapBoosterStrength
+
+    Used by:
+    Ship: Lif
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.group.name == 'Capacitor Booster Charge',
+            'capacitorBonus', ship.getModifiedItemAttr('shipBonusForceAuxiliaryM5'),
+            skill='Minmatar Carrier', **kwargs)
 
 
 class Effect12838(BaseEffect):
