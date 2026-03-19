@@ -14827,6 +14827,9 @@
     "iconFile": "res:/UI/Texture/Icons/Inventory/Drifter_Key_64.png", 
     "iconType": "png"
   }, 
+  "27345": {
+    "iconFile": "res:/ui/texture/icons/inventory/icon_background_03.png"
+  }, 
   "27354": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_gallente_voteday_128.png"
   }, 
@@ -14893,6 +14896,19 @@
   }, 
   "27384": {
     "iconFile": "res:/UI/Asset/mannequin/outer/92644_Male_outer_ArmorSuitMM01_Types_ArmorSuitMM01_Glem.png", 
+    "iconType": "png"
+  }, 
+  "27385": {
+    "iconFile": "res:/ui/texture/icons/inventory/trading_token_elite_128.png"
+  }, 
+  "27386": {
+    "iconFile": "res:/ui/texture/icons/inventory/trading_token_regular_128.png"
+  }, 
+  "27387": {
+    "iconFile": "res:/ui/texture/icons/inventory/Gallente_crate_splashscreen_512.png"
+  }, 
+  "27388": {
+    "iconFile": "res:/ui/texture/icons/inventory/FabricatorData.png", 
     "iconType": "png"
   }
 }

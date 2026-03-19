@@ -47149,5 +47149,35 @@
     "name_zh": "凛冬将至资产", 
     "nameID": 1032633, 
     "parentGroupID": 3834
+  }, 
+  "3845": {
+    "hasTypes": 1, 
+    "iconID": 21832, 
+    "name_de": "Besitz – Wahl der Gallente", 
+    "name_en-us": "Gallente Election Assets", 
+    "name_es": "Bienes de elecciones gallente", 
+    "name_fr": "Ressources électorales gallente", 
+    "name_it": "Gallente Election Assets", 
+    "name_ja": "ガレンテ大選挙のアセット", 
+    "name_ko": "갈란테 선거 자원", 
+    "name_ru": "Материалы галлентских выборов", 
+    "name_zh": "盖伦特选举资产", 
+    "nameID": 1035664, 
+    "parentGroupID": 3834
+  }, 
+  "3846": {
+    "hasTypes": 1, 
+    "iconID": 27345, 
+    "name_de": "Porträthintergründe", 
+    "name_en-us": "Portrait Backgrounds", 
+    "name_es": "Fondos de retrato", 
+    "name_fr": "Arrière-plans de portrait", 
+    "name_it": "Portrait Backgrounds", 
+    "name_ja": "ポートレイト背景", 
+    "name_ko": "초상화 배경", 
+    "name_ru": "Фоны для портретов", 
+    "name_zh": "人像背景", 
+    "nameID": 1037311, 
+    "parentGroupID": 1396
   }
 }
