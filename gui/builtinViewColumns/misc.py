@@ -94,7 +94,7 @@ class Miscellanea(ViewColumn):
                 text = "{} dmg".format(formatAmount(dmg, 3, 0, 6))
                 tooltip = "Raw damage done"
             return text, tooltip
-        elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
+        elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
             if not trackingSpeed or not optimalSig:
@@ -103,6 +103,89 @@ class Miscellanea(ViewColumn):
             text = "{0}".format(formatAmount(normalizedTracking, 3, 0, 3))
             tooltip = "Tracking speed"
             return text, tooltip
+        elif itemGroup == "Combat Drone":
+            text_parts = []
+            tooltip_parts = []
+            trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
+            optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
+            if trackingSpeed and optimalSig:
+                normalizedTracking = trackingSpeed * 40000 / optimalSig
+                text_parts.append("{0}".format(formatAmount(normalizedTracking, 3, 0, 3)))
+                tooltip_parts.append("Tracking speed")
+            if 'entityEnergyNeutralizerFalloff' in item.effects:
+                neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
+                cycleTime = stuff.getModifiedItemAttr("energyNeutralizerDuration")
+                if neutAmount and cycleTime:
+                    capPerSec = float(-neutAmount) * 1000 / cycleTime
+                    text_parts.append("{0}/s".format(formatAmount(capPerSec, 3, 0, 3)))
+                    tooltip_parts.append("Energy neutralization per second")
+            if 'npcEntityWeaponDisruptor' in item.effects:
+                falloffRangeBonus = stuff.getModifiedItemAttr("falloffBonus")
+                optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
+                trackingSpeedBonus = stuff.getModifiedItemAttr("trackingSpeedBonus")
+                if falloffRangeBonus or optimalRangeBonus or trackingSpeedBonus:
+                    display = 0
+                    for bonus in (falloffRangeBonus, optimalRangeBonus, trackingSpeedBonus):
+                        if abs(bonus) > abs(display):
+                            display = bonus
+                    if display:
+                        ttEntries = []
+                        if display == optimalRangeBonus:
+                            ttEntries.append("optimal range")
+                        if display == falloffRangeBonus:
+                            ttEntries.append("falloff range")
+                        if display == trackingSpeedBonus:
+                            ttEntries.append("tracking speed")
+                        text_parts.append("{0}%".format(formatAmount(display, 3, 0, 3), forceSign=True))
+                        tooltip_parts.append("{0} disruption".format(formatList(ttEntries)).capitalize())
+            if 'entityECMFalloff' in item.effects:
+                grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
+                ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
+                radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
+                magnet = stuff.getModifiedItemAttr("scanMagnetometricStrengthBonus")
+                if grav is not None and ladar is not None and radar is not None and magnet is not None:
+                    display = max(grav, ladar, radar, magnet)
+                    if not display:
+                        return "", None
+                    ttEntries = []
+                    if display == grav:
+                        ttEntries.append("gravimetric")
+                    if display == ladar:
+                        ttEntries.append("ladar")
+                    if display == magnet:
+                        ttEntries.append("magnetometric")
+                    if display == radar:
+                        ttEntries.append("radar")
+                    plu = "" if len(ttEntries) == 1 else "s"
+                    text_parts.append("{0}".format(formatAmount(display, 3, 0, 3)))
+                    tooltip_parts.append("{0} strength{1}".format(formatList(ttEntries), plu).capitalize())
+            if 'remoteSensorDampEntity' in item.effects:
+                lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
+                scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
+                if lockRangeBonus or scanResBonus:
+                    display = 0
+                    for bonus in (lockRangeBonus, scanResBonus):
+                        if abs(bonus) > abs(display):
+                            display = bonus
+                    if display:
+                        ttEntries = []
+                        if display == lockRangeBonus:
+                            ttEntries.append("lock range")
+                        if display == scanResBonus:
+                            ttEntries.append("scan resolution")
+                        text_parts.append("{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)))
+                        tooltip_parts.append("{0} dampening".format(formatList(ttEntries)).capitalize())
+            if 'remoteWebifierEntity' in item.effects:
+                speedFactor = stuff.getModifiedItemAttr("speedFactor")
+                if speedFactor:
+                    text_parts.append("{0}%".format(formatAmount(speedFactor, 3, 0, 3)))
+                    tooltip_parts.append("Speed reduction")
+            if 'remoteTargetPaintEntity' in item.effects:
+                sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
+                if sigRadBonus:
+                    text_parts.append("{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True)))
+                    tooltip_parts.append("Signature radius increase")
+            return " | ".join(text_parts), '\n'.join(tooltip_parts)
         elif itemGroup == "Precursor Weapon":
             info = []
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
