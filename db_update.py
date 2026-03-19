@@ -142,6 +142,7 @@ def update_db():
                 or row['typeName_en-us'] == 'Capsule'
                 or row['groupID'] == 4033  # destructible effect beacons
                 or row['typeID'] == 82941  # Metenox service
+                or row['typeID'] in (87164, 87177)  # Trig buff carriers
                 or re.match(r'AIR .+Booster.*', row['typeName_en-us'])
             ):
                 row['published'] = True
@@ -702,6 +703,35 @@ def update_db():
             _hardcodeEffects(typeID, effectMap, clearEffects=False)
             eos.db.gamedata_session.flush()
 
+    def hardcodeTrigSystemEffects():
+        typeBuffMap = {
+            # Final Liminality / Pochven
+            87164: ('Final Liminality', {
+                'warfareBuff1ID': 2534,
+                'warfareBuff1Value': -50,
+                'warfareBuff2ID': 2535,
+                'warfareBuff2Value': -30,
+                'warfareBuff3ID': 2538,
+                'warfareBuff3Value': 30,
+                'warfareBuff4ID': 2539,
+                'warfareBuff4Value': 30}),
+            # Minor Victory
+            87177: ('Triglavian Minor Victory', {
+                'warfareBuff1ID': 2534,
+                'warfareBuff1Value': -50,
+                'warfareBuff2ID': 2538,
+                'warfareBuff2Value': 15,
+                'warfareBuff3ID': 2539,
+                'warfareBuff3Value': 15})}
+        effectMap = {100002: 'pyfaCustomTrigSystemBuffEffect'}
+        for typeID, (name, attrMap) in typeBuffMap.items():
+            item = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.ID == typeID).one()
+            item.published = True
+            item.name = name
+            _hardcodeAttribs(typeID, attrMap)
+            _hardcodeEffects(typeID, effectMap, clearEffects=True)
+            eos.db.gamedata_session.flush()
+
 
     def hardcodeShapash():
         shapashTypeID = 1000000
@@ -848,6 +878,7 @@ def update_db():
 
     hardcodeSuppressionTackleRange()
     hardcodeSovUpgradeBuffs()
+    hardcodeTrigSystemEffects()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')

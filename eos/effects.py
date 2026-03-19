@@ -75,6 +75,19 @@ class Effect100001(BaseEffect):
                 fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
+class Effect100002(BaseEffect):
+
+    runTime = 'early'
+    type = ('projected', 'passive', 'gang')
+
+    @staticmethod
+    def handler(fit, beacon, context, projectionRange, **kwargs):
+        for i in range(1, 4):
+            if id := beacon.getModifiedItemAttr(f'warfareBuff{i}ID'):
+                value = beacon.getModifiedItemAttr(f'warfareBuff{i}Value')
+                fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
+
+
 class Effect4(BaseEffect):
     """
     shieldBoosting
