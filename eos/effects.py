@@ -76,6 +76,13 @@ class Effect100001(BaseEffect):
 
 
 class Effect100002(BaseEffect):
+    """
+    pyfaCustomTrigSystemBuffEffect
+
+    Used by:
+    Celestial: Final Liminality
+    Celestial: Triglavian Minor Victory
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -35944,19 +35951,6 @@ class Effect8029(BaseEffect):
             fit.modules.filteredItemForce(
                 lambda mod: mod.item.group.name == 'Capacitor Booster',
                 attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
-
-
-class Effect8031(BaseEffect):
-    """
-    Not used by any item
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, beacon, context, projectionRange, **kwargs):
-        fit.ship.multiplyItemAttr('maxLockedTargets', beacon.getModifiedItemAttr('maxLockedTargetsMultiplier'), **kwargs)
 
 
 class Effect8032(BaseEffect):
