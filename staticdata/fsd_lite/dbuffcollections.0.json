@@ -4474,7 +4474,7 @@
     "displayName_ja": "最高速度（EVE Gate）", 
     "displayName_ko": "최대 속도(이브 게이트)", 
     "displayName_ru": "Увеличение максимальной скорости (врата EVE)", 
-    "displayName_zh": "最大速度（垩渭垩之门）", 
+    "displayName_zh": "最大速度（EVE之门）", 
     "displayNameID": 1025521, 
     "itemModifiers": [
       {
@@ -5103,15 +5103,15 @@
   "2512": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Sisters of EVE Wormhole Bonus 3 - Wolf Rayet", 
-    "displayName_de": "Bonus auf die Nachführung von mittleren Energiegeschütztürmen (Wolf Rayet) ", 
-    "displayName_en-us": "Medium Energy Turret Tracking Bonus (Wolf Rayet) ", 
-    "displayName_es": "Bonificación de rastreo de la torreta de energía mediana (Wolf-Rayet) ", 
-    "displayName_fr": "Bonus de poursuite pour tourelle à énergie intermédiaire (Wolf Rayet) ", 
-    "displayName_it": "Medium Energy Turret Tracking Bonus (Wolf Rayet) ", 
-    "displayName_ja": "中型エネルギータレット・トラッキングボーナス（ウォルフ・ライエ） ", 
-    "displayName_ko": "중형 에너지 터렛 트래킹 보너스(볼프-레이에) ", 
-    "displayName_ru": "Ускорение наведения средних лазерных орудий (звезда Вольфа-Райе) ", 
-    "displayName_zh": "中型能量炮台跟踪速度加成（沃尔夫-拉叶星） ", 
+    "displayName_de": "Bonus auf die Nachführung von mittleren Energiegeschütztürmen (Wolf Rayet)", 
+    "displayName_en-us": "Medium Energy Turret Tracking Bonus (Wolf Rayet)", 
+    "displayName_es": "Bonificación de rastreo de la torreta de energía mediana (Wolf-Rayet)", 
+    "displayName_fr": "Bonus de poursuite pour tourelle à énergie intermédiaire (Wolf Rayet)", 
+    "displayName_it": "Medium Energy Turret Tracking Bonus (Wolf Rayet)", 
+    "displayName_ja": "中型エネルギータレット・トラッキングボーナス（ウォルフ・ライエ）", 
+    "displayName_ko": "중형 에너지 터렛 트래킹 보너스(볼프-레이에)", 
+    "displayName_ru": "Ускорение наведения средних лазерных орудий (звезда Вольфа-Райе)", 
+    "displayName_zh": "中型能量炮台跟踪速度加成（沃尔夫-拉叶星）", 
     "displayNameID": 1025547, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -5390,6 +5390,104 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [], 
     "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2534": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Maximum Locked Targets Percentage", 
+    "displayName_de": "Maximum Targets Penalty", 
+    "displayName_en-us": "Maximum Targets Penalty", 
+    "displayName_es": "Maximum Targets Penalty", 
+    "displayName_fr": "Maximum Targets Penalty", 
+    "displayName_it": "Maximum Targets Penalty", 
+    "displayName_ja": "Maximum Targets Penalty", 
+    "displayName_ko": "Maximum Targets Penalty", 
+    "displayName_ru": "Maximum Targets Penalty", 
+    "displayName_zh": "Maximum Targets Penalty", 
+    "displayNameID": 1036727, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 192
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2535": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Warp Speed Multiplier Percentage", 
+    "displayName_de": "Warp Speed Penalty", 
+    "displayName_en-us": "Warp Speed Penalty", 
+    "displayName_es": "Warp Speed Penalty", 
+    "displayName_fr": "Warp Speed Penalty", 
+    "displayName_it": "Warp Speed Penalty", 
+    "displayName_ja": "Warp Speed Penalty", 
+    "displayName_ko": "Warp Speed Penalty", 
+    "displayName_ru": "Warp Speed Penalty", 
+    "displayName_zh": "Warp Speed Penalty", 
+    "displayNameID": 1036726, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2538": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Remote Armor Repair Percentage", 
+    "displayName_de": "Remote Armor Repair Bonus", 
+    "displayName_en-us": "Remote Armor Repair Bonus", 
+    "displayName_es": "Remote Armor Repair Bonus", 
+    "displayName_fr": "Remote Armor Repair Bonus", 
+    "displayName_it": "Remote Armor Repair Bonus", 
+    "displayName_ja": "Remote Armor Repair Bonus", 
+    "displayName_ko": "Remote Armor Repair Bonus", 
+    "displayName_ru": "Remote Armor Repair Bonus", 
+    "displayName_zh": "Remote Armor Repair Bonus", 
+    "displayNameID": 1036730, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "groupID": 325
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2539": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Remote Shield Boost Percentage", 
+    "displayName_de": "Remote Shield Boost Bonus", 
+    "displayName_en-us": "Remote Shield Boost Bonus", 
+    "displayName_es": "Remote Shield Boost Bonus", 
+    "displayName_fr": "Remote Shield Boost Bonus", 
+    "displayName_it": "Remote Shield Boost Bonus", 
+    "displayName_ja": "Remote Shield Boost Bonus", 
+    "displayName_ko": "Remote Shield Boost Bonus", 
+    "displayName_ru": "Remote Shield Boost Bonus", 
+    "displayName_zh": "Remote Shield Boost Bonus", 
+    "displayNameID": 1036729, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "groupID": 41
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }
 }
