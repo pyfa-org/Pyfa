@@ -620,7 +620,7 @@ class Fit:
                     for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
                         self.ship.boostItemAttr("shield%sDamageResonance" % damageType, value, stackingPenalties=True)
 
-                if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
+                elif warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
                             lambda mod: mod.item.requiresSkill("Shield Operation") or
                                         mod.item.requiresSkill("Shield Emission Systems") or
@@ -632,14 +632,14 @@ class Fit:
                                         mod.item.requiresSkill("Capital Shield Emission Systems"),
                             "duration", value)
 
-                if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
+                elif warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
                     self.ship.boostItemAttr("shieldCapacity", value)
 
-                if warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
+                elif warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
                     for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
                         self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
 
-                if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
+                elif warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
                             lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
                                         mod.item.requiresSkill("Repair Systems") or
@@ -651,13 +651,13 @@ class Fit:
                                         mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
                             "duration", value)
 
-                if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
+                elif warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value)
 
-                if warfareBuffID == 16:  # Information Burst: Sensor Optimization: Scan Resolution
+                elif warfareBuffID == 16:  # Information Burst: Sensor Optimization: Scan Resolution
                     self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
 
-                if warfareBuffID == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
+                elif warfareBuffID == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
                     groups = ("ECM", "Sensor Dampener", "Weapon Disruptor", "Target Painter")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
                                                    stackingPenalties=True)
@@ -681,34 +681,34 @@ class Fit:
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Target Painter",
                                                    "signatureRadiusBonus", value, stackingPenalties=True)
 
-                if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
+                elif warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
                     for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):
                         self.ship.boostItemAttr("scan%sStrength" % scanType, value, stackingPenalties=True)
 
-                if warfareBuffID == 19:  # Information Burst: Electronic Hardening: RSD/RWD Resistance
+                elif warfareBuffID == 19:  # Information Burst: Electronic Hardening: RSD/RWD Resistance
                     self.ship.boostItemAttr("sensorDampenerResistance", value)
                     self.ship.boostItemAttr("weaponDisruptionResistance", value)
 
-                if warfareBuffID == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
+                elif warfareBuffID == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
 
-                if warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
+                elif warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
                     groups = ("Stasis Web", "Warp Scrambler")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
                                                    stackingPenalties=True)
 
-                if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
+                elif warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or
                                                                mod.item.requiresSkill("High Speed Maneuvering"),
                                                    "speedFactor", value, stackingPenalties=True)
 
-                if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining Range
+                elif warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining Range
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
                                                                mod.item.requiresSkill("Ice Harvesting") or
                                                                mod.item.requiresSkill("Gas Cloud Harvesting"),
                                                    "maxRange", value, stackingPenalties=True)
 
-                if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
+                elif warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
                                                                mod.item.requiresSkill("Ice Harvesting") or
                                                                mod.item.requiresSkill("Gas Cloud Harvesting"),
@@ -719,100 +719,100 @@ class Fit:
                                                                mod.item.requiresSkill("Gas Cloud Harvesting"),
                                                    "duration", value, stackingPenalties=True)
 
-                if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
+                elif warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
                     self.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Mining"),
                                                      "crystalVolatilityChance", value, stackingPenalties=True)
 
-                if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
+                elif warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
                     self.ship.boostItemAttr("maxTargetRange", value, stackingPenalties=True)
 
-                if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
+                elif warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
 
                 # Titan effects
 
-                if warfareBuffID == 39:  # Avatar Effect Generator : Capacitor Recharge bonus
+                elif warfareBuffID == 39:  # Avatar Effect Generator : Capacitor Recharge bonus
                     self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
 
-                if warfareBuffID == 40:  # Avatar Effect Generator : Kinetic resistance bonus
+                elif warfareBuffID == 40:  # Avatar Effect Generator : Kinetic resistance bonus
                     for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "kineticDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 41:  # Avatar Effect Generator : EM resistance penalty
+                elif warfareBuffID == 41:  # Avatar Effect Generator : EM resistance penalty
                     for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 42:  # Erebus Effect Generator : Armor HP bonus
+                elif warfareBuffID == 42:  # Erebus Effect Generator : Armor HP bonus
                     self.ship.boostItemAttr("armorHP", value)
 
-                if warfareBuffID == 43:  # Erebus Effect Generator : Explosive resistance bonus
+                elif warfareBuffID == 43:  # Erebus Effect Generator : Explosive resistance bonus
                     for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 44:  # Erebus Effect Generator : Thermal resistance penalty
+                elif warfareBuffID == 44:  # Erebus Effect Generator : Thermal resistance penalty
                     for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "thermalDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 45:  # Ragnarok Effect Generator : Signature Radius bonus
+                elif warfareBuffID == 45:  # Ragnarok Effect Generator : Signature Radius bonus
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
 
-                if warfareBuffID == 46:  # Ragnarok Effect Generator : Thermal resistance bonus
+                elif warfareBuffID == 46:  # Ragnarok Effect Generator : Thermal resistance bonus
                     for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "thermalDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 47:  # Ragnarok Effect Generator : Explosive resistance penaly
+                elif warfareBuffID == 47:  # Ragnarok Effect Generator : Explosive resistance penaly
                     for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 48:  # Leviathan Effect Generator : Shield HP bonus
+                elif warfareBuffID == 48:  # Leviathan Effect Generator : Shield HP bonus
                     self.ship.boostItemAttr("shieldCapacity", value)
 
-                if warfareBuffID == 49:  # Leviathan Effect Generator : EM resistance bonus
+                elif warfareBuffID == 49:  # Leviathan Effect Generator : EM resistance bonus
                     for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 50:  # Leviathan Effect Generator : Kinetic resistance penalty
+                elif warfareBuffID == 50:  # Leviathan Effect Generator : Kinetic resistance penalty
                     for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "kineticDamageResonance"):
                         self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if warfareBuffID == 51:  # Avatar Effect Generator : Velocity penalty
+                elif warfareBuffID == 51:  # Avatar Effect Generator : Velocity penalty
                     self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
 
-                if warfareBuffID == 52:  # Erebus Effect Generator : Shield RR penalty
+                elif warfareBuffID == 52:  # Erebus Effect Generator : Shield RR penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus", value, stackingPenalties=True)
 
-                if warfareBuffID == 53:  # Leviathan Effect Generator : Armor RR penalty
+                elif warfareBuffID == 53:  # Leviathan Effect Generator : Armor RR penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
                                                    "armorDamageAmount", value, stackingPenalties=True)
 
-                if warfareBuffID == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
+                elif warfareBuffID == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
                 # Localized environment effects
 
-                if warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
+                elif warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "signatureRadius", value, stackingPenalties=True)
 
-                if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_inertia
+                elif warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_inertia
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
 
-                if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_velocity
+                elif warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_velocity
                     self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
 
-                if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster_shield_bonus
+                elif warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster_shield_bonus
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
                                                    "shieldBonus", value, stackingPenalties=True)
 
-                if warfareBuffID == 89:  # AOE_Beacon_filament_cloud_shield_booster_duration
+                elif warfareBuffID == 89:  # AOE_Beacon_filament_cloud_shield_booster_duration
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
                                                    "duration", value, stackingPenalties=True)
 
                 # Abyssal Weather Effects
 
-                if warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty
+                elif warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}EmDamageResonance".format(tankType), value)
                         self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
@@ -821,10 +821,10 @@ class Fit:
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "emDamageResonance", value)  #for hull
 
-                if warfareBuffID == 92:  # Weather_electric_storm_capacitor_recharge_bonus
+                elif warfareBuffID == 92:  # Weather_electric_storm_capacitor_recharge_bonus
                     self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
 
-                if warfareBuffID == 93:  # Weather_xenon_gas_explosive_resistance_penalty
+                elif warfareBuffID == 93:  # Weather_xenon_gas_explosive_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}ExplosiveDamageResonance".format(tankType), value)
                         self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
@@ -833,12 +833,12 @@ class Fit:
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "explosiveDamageResonance", value)  # for hull
 
-                if warfareBuffID == 94:  # Weather_xenon_gas_shield_hp_bonus
+                elif warfareBuffID == 94:  # Weather_xenon_gas_shield_hp_bonus
                     self.ship.boostItemAttr("shieldCapacity", value)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "shieldCapacity", value)
 
-                if warfareBuffID == 95:  # Weather_infernal_thermal_resistance_penalty
+                elif warfareBuffID == 95:  # Weather_infernal_thermal_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}ThermalDamageResonance".format(tankType), value)
                         self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
@@ -847,12 +847,12 @@ class Fit:
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "thermalDamageResonance", value)  # for hull
 
-                if warfareBuffID == 96:  # Weather_infernal_armor_hp_bonus
+                elif warfareBuffID == 96:  # Weather_infernal_armor_hp_bonus
                     self.ship.boostItemAttr("armorHP", value)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "armorHP", value)
 
-                if warfareBuffID == 97:  # Weather_darkness_turret_range_penalty
+                elif warfareBuffID == 97:  # Weather_darkness_turret_range_penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                                    "maxRange", value, stackingPenalties=True)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
@@ -862,12 +862,12 @@ class Fit:
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "falloff", value, stackingPenalties=True)
 
-                if warfareBuffID == 98:  # Weather_darkness_velocity_bonus
+                elif warfareBuffID == 98:  # Weather_darkness_velocity_bonus
                     self.ship.boostItemAttr("maxVelocity", value)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "maxVelocity", value)
 
-                if warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
+                elif warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}KineticDamageResonance".format(tankType), value)
                         self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
@@ -876,10 +876,10 @@ class Fit:
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
                         "kineticDamageResonance", value)  # for hull
 
-                if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
+                elif warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
                     self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
 
-                if warfareBuffID == 2405:  # Insurgency Suppression Bonus: Interdiction Range
+                elif warfareBuffID == 2405:  # Insurgency Suppression Bonus: Interdiction Range
                     self.modules.filteredItemBoost(
                         lambda mod: mod.item.requiresSkill("Navigation"),
                         "maxRange", value, stackingPenalties=True)
@@ -888,13 +888,13 @@ class Fit:
                         "maxRange", value, stackingPenalties=True)
 
                 # Sov upgrades buffs
-                if warfareBuffID == 2433:  # Sov System Modifier Shield HP Bonus
+                elif warfareBuffID == 2433:  # Sov System Modifier Shield HP Bonus
                     self.ship.boostItemAttr("shieldCapacity", value)
-                if warfareBuffID == 2434:  # Sov System Modifier Capacitor Capacity Bonus
+                elif warfareBuffID == 2434:  # Sov System Modifier Capacitor Capacity Bonus
                     self.ship.boostItemAttr("capacitorCapacity", value)
-                if warfareBuffID == 2435:  # Sov System Modifier Armor HP Bonus
+                elif warfareBuffID == 2435:  # Sov System Modifier Armor HP Bonus
                     self.ship.boostItemAttr("armorHP", value)
-                if warfareBuffID == 2436:  # Sov System Modifier Overheating Bonus - Includes Ewar
+                elif warfareBuffID == 2436:  # Sov System Modifier Overheating Bonus - Includes Ewar
                     for attr in (
                         'overloadDurationBonus', 'overloadRofBonus', 'overloadSelfDurationBonus',
                         'overloadHardeningBonus', 'overloadDamageModifier', 'overloadRangeBonus',
@@ -903,55 +903,67 @@ class Fit:
                         'overloadSensorModuleStrengthBonus', 'overloadPainterStrengthBonus',
                     ):
                         self.modules.filteredItemBoost(lambda mod: attr in mod.itemModifiedAttributes, attr, value)
-                if warfareBuffID == 2437:  # Sov System Modifier Capacitor Recharge Bonus
+                elif warfareBuffID == 2437:  # Sov System Modifier Capacitor Recharge Bonus
                     self.ship.boostItemAttr("rechargeRate", value)
-                if warfareBuffID == 2438:  # Sov System Modifier Targeting and DScan Range Bonus
+                elif warfareBuffID == 2438:  # Sov System Modifier Targeting and DScan Range Bonus
                     self.ship.boostItemAttr("maxTargetRange", value)
                     self.ship.boostItemAttr("maxDirectionalScanRange", value)
-                if warfareBuffID == 2439:  # Sov System Modifier Scan Resolution Bonus
+                elif warfareBuffID == 2439:  # Sov System Modifier Scan Resolution Bonus
                     self.ship.boostItemAttr("scanResolution", value)
-                if warfareBuffID == 2440:  # Sov System Modifier Warp Speed Addition
+                elif warfareBuffID == 2440:  # Sov System Modifier Warp Speed Addition
                     self.ship.increaseItemAttr('warpSpeedMultiplier', value)
-                if warfareBuffID == 2441:  # Sov System Modifier Shield Booster Bonus
+                elif warfareBuffID == 2441:  # Sov System Modifier Shield Booster Bonus
                     self.modules.filteredItemBoost(
                         lambda mod: (mod.item.requiresSkill("Shield Operation")
                                      or mod.item.requiresSkill("Capital Shield Operation")),
                         "shieldBonus", value, stackingPenalties=True)
-                if warfareBuffID == 2442:  # Sov System Modifier Armor Repairer Bonus
+                elif warfareBuffID == 2442:  # Sov System Modifier Armor Repairer Bonus
                     self.modules.filteredItemBoost(
                         lambda mod: (mod.item.requiresSkill("Repair Systems")
                                      or mod.item.requiresSkill("Capital Repair Systems")),
                         "armorDamageAmount", value, stackingPenalties=True)
-                if warfareBuffID == 2464:  # Expedition Burst: Probe Strength
+                elif warfareBuffID == 2464:  # Expedition Burst: Probe Strength
                     self.modules.filteredItemBoost(
                         lambda mod: mod.charge.requiresSkill('Astrometrics'),
                         'expeditionCommandBurstProbeStrengthBonusCharID', value, stackingPenalties=True)
-                if warfareBuffID == 2465:  # Expedition Burst: Directional Scanner, Hacking and Salvager Range
+                elif warfareBuffID == 2465:  # Expedition Burst: Directional Scanner, Hacking and Salvager Range
                     self.ship.boostItemAttr("maxDirectionalScanRange", value)
                     self.modules.filteredItemBoost(
                         lambda mod: mod.item.group.name in ("Data Miners", "Salvager"), "maxRange", value, stackingPenalties=True)
-                if warfareBuffID == 2466:  # Expedition Burst: Maximum Scan Deviation Modifier
+                elif warfareBuffID == 2466:  # Expedition Burst: Maximum Scan Deviation Modifier
                     self.modules.filteredItemBoost(
                         lambda mod: mod.charge.requiresSkill('Astrometrics'),
                         'expeditionCommandBurstProbeDeviationBonusCharID', value, stackingPenalties=True)
-                if warfareBuffID == 2468:  # Expedition Burst: Virus Coherence
+                elif warfareBuffID == 2468:  # Expedition Burst: Virus Coherence
                     self.modules.filteredItemIncrease(
                         lambda mod: mod.item.group.name == "Data Miners", "virusCoherence", value)
-                if warfareBuffID == 2474:  # Mining burst charges
+                elif warfareBuffID == 2474:  # Mining burst charges
                     self.ship.forceItemAttr("miningScannerUpgrade", value)
-                if warfareBuffID == 2481:  # Expedition Burst: Salvager duration bonus
+                elif warfareBuffID == 2481:  # Expedition Burst: Salvager duration bonus
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Salvaging"), "duration", value)
-                if warfareBuffID == 2516:  # Mining Burst: Mining Crit Chance
+                elif warfareBuffID == 2516:  # Mining Burst: Mining Crit Chance
                     self.modules.filteredItemBoost(
                         lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting"),
                         "miningCritChance", value)
-                if warfareBuffID == 2517:  # Mining Burst: Mining Residue Chance Reduction
+                elif warfareBuffID == 2517:  # Mining Burst: Mining Residue Chance Reduction
                     self.modules.filteredItemBoost(
                         lambda mod: (
                                 mod.item.requiresSkill("Mining")
                                 or mod.item.requiresSkill("Ice Harvesting")
                                 or mod.item.requiresSkill("Gas Cloud Harvesting")),
                         "miningWasteProbability", value, stackingPenalties=True)
+                elif warfareBuffID == 2534:  # Triglavian System Effect - Maximum Locked Targets Percentage
+                    self.ship.boostItemAttr("maxLockedTargets", value)
+                elif warfareBuffID == 2535:  # Triglavian System Effect - Warp Speed Multiplier Percentage
+                    self.ship.boostItemAttr("warpSpeedMultiplier", value, stackingPenalties=True)
+                elif warfareBuffID == 2538:  # Triglavian System Effect - Remote Armor Repair Percentage
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.group.name == 'Remote Armor Repairer',
+                        "armorDamageAmount", value, stackingPenalties=True)
+                elif warfareBuffID == 2539:  # Triglavian System Effect - Remote Shield Boost Percentage
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.group.name == 'Remote Shield Booster',
+                        "shieldBonus", value, stackingPenalties=True)
 
             del self.commandBonuses[warfareBuffID]
 
