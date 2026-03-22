@@ -4189,7 +4189,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4247,7 +4247,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1372, 
+        "dogmaAttributeID": 6119, 
         "skillID": 3412
       }
     ], 
@@ -4281,7 +4281,7 @@
   }, 
   "2473": {
     "aggregateMode": "Maximum", 
-    "developerDescription": "Disable Smart Bomb Repeating Activation", 
+    "developerDescription": "Disable Smart Bomb Activation", 
     "itemModifiers": [], 
     "locationGroupModifiers": [
       {
@@ -4474,7 +4474,7 @@
     "displayName_ja": "最高速度（EVE Gate）", 
     "displayName_ko": "최대 속도(이브 게이트)", 
     "displayName_ru": "Увеличение максимальной скорости (врата EVE)", 
-    "displayName_zh": "最大速度（垩渭垩之门）", 
+    "displayName_zh": "最大速度（EVE之门）", 
     "displayNameID": 1025521, 
     "itemModifiers": [
       {
@@ -4529,7 +4529,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4804,7 +4804,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4853,7 +4853,7 @@
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [
       {
-        "dogmaAttributeID": 1371, 
+        "dogmaAttributeID": 6118, 
         "skillID": 3412
       }
     ], 
@@ -4871,7 +4871,7 @@
     "displayName_ja": "エネルギー戦レジスタンス・ボーナス（メタリミナルガンマ線嵐）", 
     "displayName_ko": "에너지전 저항 보너스(메타경계성 감마 폭풍)", 
     "displayName_ru": "+ к сопротивляемости энергетич. воздействию (металиминальная гамма-буря)", 
-    "displayName_zh": "能量战抗性加成（金属极限伽马风暴）", 
+    "displayName_zh": "电容战抗性加成（超阈限伽马风暴）", 
     "displayNameID": 1025540, 
     "itemModifiers": [
       {
@@ -4895,7 +4895,7 @@
     "displayName_ja": "モジュール熱ダメージ減少（メタリミナルプラズマ嵐）", 
     "displayName_ko": "모듈 과부하 피해 감소(메타경계성 플라즈마 폭풍)", 
     "displayName_ru": "Снижение теплового урона для модулей (металиминальная пламенная буря)", 
-    "displayName_zh": "装备超载伤害降低（金属极限等离子体风暴）", 
+    "displayName_zh": "装备超载伤害降低（超阈限等离子体风暴）", 
     "displayNameID": 1025539, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -4919,7 +4919,7 @@
     "displayName_ja": "スキャン分解能ボーナス（メタリミナルエキゾチック嵐）", 
     "displayName_ko": "스캔 정밀도 보너스(메타경계성 엑조틱 폭풍)", 
     "displayName_ru": "Повышение эффективности сканирования (металиминальная экзотическая буря)", 
-    "displayName_zh": "扫描分辨率加成（金属极限异种风暴）", 
+    "displayName_zh": "扫描分辨率加成（超阈限异种风暴）", 
     "displayNameID": 1025538, 
     "itemModifiers": [
       {
@@ -4943,7 +4943,7 @@
     "displayName_ja": "キャパシタ量ボーナス（メタリミナル電気嵐）", 
     "displayName_ko": "캐패시터 용량 보너스(메타경계성 전기 폭풍)", 
     "displayName_ru": "Увеличение заряда накопителя (металиминальная электрическая буря)", 
-    "displayName_zh": "电容数量加成（金属极限电子风暴）", 
+    "displayName_zh": "电容量加成（超阈限电子风暴）", 
     "displayNameID": 1025537, 
     "itemModifiers": [
       {
@@ -5103,15 +5103,15 @@
   "2512": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Sisters of EVE Wormhole Bonus 3 - Wolf Rayet", 
-    "displayName_de": "Bonus auf die Nachführung von mittleren Energiegeschütztürmen (Wolf Rayet) ", 
-    "displayName_en-us": "Medium Energy Turret Tracking Bonus (Wolf Rayet) ", 
-    "displayName_es": "Bonificación de rastreo de la torreta de energía mediana (Wolf-Rayet) ", 
-    "displayName_fr": "Bonus de poursuite pour tourelle à énergie intermédiaire (Wolf Rayet) ", 
-    "displayName_it": "Medium Energy Turret Tracking Bonus (Wolf Rayet) ", 
-    "displayName_ja": "中型エネルギータレット・トラッキングボーナス（ウォルフ・ライエ） ", 
-    "displayName_ko": "중형 에너지 터렛 트래킹 보너스(볼프-레이에) ", 
-    "displayName_ru": "Ускорение наведения средних лазерных орудий (звезда Вольфа-Райе) ", 
-    "displayName_zh": "中型能量炮台跟踪速度加成（沃尔夫-拉叶星） ", 
+    "displayName_de": "Bonus auf die Nachführung von mittleren Energiegeschütztürmen (Wolf Rayet)", 
+    "displayName_en-us": "Medium Energy Turret Tracking Bonus (Wolf Rayet)", 
+    "displayName_es": "Bonificación de rastreo de la torreta de energía mediana (Wolf-Rayet)", 
+    "displayName_fr": "Bonus de poursuite pour tourelle à énergie intermédiaire (Wolf Rayet)", 
+    "displayName_it": "Medium Energy Turret Tracking Bonus (Wolf Rayet)", 
+    "displayName_ja": "中型エネルギータレット・トラッキングボーナス（ウォルフ・ライエ）", 
+    "displayName_ko": "중형 에너지 터렛 트래킹 보너스(볼프-레이에)", 
+    "displayName_ru": "Ускорение наведения средних лазерных орудий (звезда Вольфа-Райе)", 
+    "displayName_zh": "中型能量炮台跟踪速度加成（沃尔夫-拉叶星）", 
     "displayNameID": 1025547, 
     "itemModifiers": [], 
     "locationGroupModifiers": [], 
@@ -5391,5 +5391,632 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PreAssignment", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2529": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Gallente Elections Warp Speed Bonus", 
+    "displayName_de": "Warpgeschwindigkeitsbonus", 
+    "displayName_en-us": "Warp Speed Bonus", 
+    "displayName_es": "Bonificación de velocidad de warp", 
+    "displayName_fr": "Bonus de vitesse de warp", 
+    "displayName_it": "Warp Speed Bonus", 
+    "displayName_ja": "ワープ速度ボーナス", 
+    "displayName_ko": "워프 속도 보너스", 
+    "displayName_ru": "Повышение скорости варп-прыжка", 
+    "displayName_zh": "跃迁速度加成", 
+    "displayNameID": 1035896, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2530": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Hybrid Turret Tracking", 
+    "displayName_de": "Nachführungsgeschwindigkeitsbonus von Hybridgeschütztürmen", 
+    "displayName_en-us": "Hybrid Turret Tracking Speed Bonus", 
+    "displayName_es": "Bonificación de velocidad de rastreo de la torreta híbrida", 
+    "displayName_fr": "Bonus à la vitesse de poursuite des tourelles hybrides", 
+    "displayName_it": "Hybrid Turret Tracking Speed Bonus", 
+    "displayName_ja": "ハイブリッドタレット追跡速度ボーナス", 
+    "displayName_ko": "하이브리드 터렛 트래킹 속도 증가", 
+    "displayName_ru": "Бонус к скорости наведения гибридных орудий", 
+    "displayName_zh": "混合炮台跟踪速度加成", 
+    "displayNameID": 1035899, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3301
+      }, 
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3304
+      }, 
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3307
+      }, 
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 21666
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2533": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Gallente Elections Local Armor Repair", 
+    "displayName_de": "Bonus für Panzerungsreparatursystem", 
+    "displayName_en-us": "Local Armor Repairer Bonus", 
+    "displayName_es": "Bonificación de reparador de blindaje local", 
+    "displayName_fr": "Bonus au réparateur de blindage local", 
+    "displayName_it": "Local Armor Repairer Bonus", 
+    "displayName_ja": "ローカルアーマーリペアラボーナス", 
+    "displayName_ko": "장갑 수리 장치 보너스", 
+    "displayName_ru": "Бонус для местной установки ремонта брони", 
+    "displayName_zh": "自身装甲维修器加成", 
+    "displayNameID": 1035904, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 21803
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2534": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Maximum Locked Targets Percentage", 
+    "displayName_de": "Maximum Targets Penalty", 
+    "displayName_en-us": "Maximum Targets Penalty", 
+    "displayName_es": "Maximum Targets Penalty", 
+    "displayName_fr": "Maximum Targets Penalty", 
+    "displayName_it": "Maximum Targets Penalty", 
+    "displayName_ja": "Maximum Targets Penalty", 
+    "displayName_ko": "Maximum Targets Penalty", 
+    "displayName_ru": "Maximum Targets Penalty", 
+    "displayName_zh": "Maximum Targets Penalty", 
+    "displayNameID": 1036727, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 192
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2535": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Warp Speed Multiplier Percentage", 
+    "displayName_de": "Warp Speed Penalty", 
+    "displayName_en-us": "Warp Speed Penalty", 
+    "displayName_es": "Warp Speed Penalty", 
+    "displayName_fr": "Warp Speed Penalty", 
+    "displayName_it": "Warp Speed Penalty", 
+    "displayName_ja": "Warp Speed Penalty", 
+    "displayName_ko": "Warp Speed Penalty", 
+    "displayName_ru": "Warp Speed Penalty", 
+    "displayName_zh": "Warp Speed Penalty", 
+    "displayNameID": 1036726, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2536": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Smart Bomb Blocker", 
+    "displayName_de": "<color=\"#FFFF454B\">Aktivierung blockiert:</color> Smart Bombs", 
+    "displayName_en-us": "<color=\"#FFFF454B\">Activation Blocked:</color> Smart Bombs", 
+    "displayName_es": "<color=\"#FFFF454B\">Activación bloqueada:</color> bombas inteligentes", 
+    "displayName_fr": "<color=\"#FFFF454B\">Activation bloquée :</color> bombes de proximité", 
+    "displayName_it": "<color=\"#FFFF454B\">Activation Blocked:</color> Smart Bombs", 
+    "displayName_ja": "<color=\"#FFFF454B\">起動ブロック：</color>スマートボム", 
+    "displayName_ko": "<color=\"#FFFF454B\">모듈 사용 금지:</color> 스마트폭탄", 
+    "displayName_ru": "<color=\"#FFFF454B\">Заблокированы:</color> импульсные излучатели", 
+    "displayName_zh": "<color=\"#FFFF454B\">启动受阻：</color>立体炸弹", 
+    "displayNameID": 1036280, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "groupID": 72
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2537": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Micro Jump Field Generator Blocker", 
+    "displayName_de": "<color=\"#FFFF454B\">Aktivierung blockiert:</color> Mikrosprungfeldgeneratoren", 
+    "displayName_en-us": "<color=\"#FFFF454B\">Activation Blocked:</color> Micro Jump Field Generators", 
+    "displayName_es": "<color=\"#FFFF454B\">Activación bloqueada:</color> generadores de campo de microsalto", 
+    "displayName_fr": "<color=\"#FFFF454B\">Activation bloquée :</color> générateurs de champ de microsaut", 
+    "displayName_it": "<color=\"#FFFF454B\">Activation Blocked:</color> Micro Jump Field Generators", 
+    "displayName_ja": "<color=\"#FFFF454B\">起動ブロック：</color>マイクロジャンプフィールドジェネレーター", 
+    "displayName_ko": "<color=\"#FFFF454B\">모듈 사용 금지:</color> 마이크로 점프 필드 생성기", 
+    "displayName_ru": "<color=\"#FFFF454B\">Заблокированы:</color> генераторы разгонного поля", 
+    "displayName_zh": "<color=\"#FFFF454B\">启动受阻：</color>微型跳跃力场发生器", 
+    "displayNameID": 1036279, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "groupID": 1533
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2538": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Remote Armor Repair Percentage", 
+    "displayName_de": "Remote Armor Repair Bonus", 
+    "displayName_en-us": "Remote Armor Repair Bonus", 
+    "displayName_es": "Remote Armor Repair Bonus", 
+    "displayName_fr": "Remote Armor Repair Bonus", 
+    "displayName_it": "Remote Armor Repair Bonus", 
+    "displayName_ja": "Remote Armor Repair Bonus", 
+    "displayName_ko": "Remote Armor Repair Bonus", 
+    "displayName_ru": "Remote Armor Repair Bonus", 
+    "displayName_zh": "Remote Armor Repair Bonus", 
+    "displayNameID": 1036730, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "groupID": 325
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2539": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Triglavian System Effect - Remote Shield Boost Percentage", 
+    "displayName_de": "Remote Shield Boost Bonus", 
+    "displayName_en-us": "Remote Shield Boost Bonus", 
+    "displayName_es": "Remote Shield Boost Bonus", 
+    "displayName_fr": "Remote Shield Boost Bonus", 
+    "displayName_it": "Remote Shield Boost Bonus", 
+    "displayName_ja": "Remote Shield Boost Bonus", 
+    "displayName_ko": "Remote Shield Boost Bonus", 
+    "displayName_ru": "Remote Shield Boost Bonus", 
+    "displayName_zh": "Remote Shield Boost Bonus", 
+    "displayNameID": 1036729, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "groupID": 41
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2548": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Heat Damage Reduction", 
+    "displayName_de": "Hitzeschadenreduktion", 
+    "displayName_en-us": "Heat Damage Reduction", 
+    "displayName_es": "Reducción de daño por calor", 
+    "displayName_fr": "Réduction des dégâts thermiques", 
+    "displayName_it": "Heat Damage Reduction", 
+    "displayName_ja": "熱ダメージ減少", 
+    "displayName_ko": "열 피해량 감소", 
+    "displayName_ru": "Снижение теплового урона", 
+    "displayName_zh": "超载伤害降低", 
+    "displayNameID": 1037571, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1211
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2549": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Overload Bonus", 
+    "displayName_de": "Erhöhung des Überlastungsbonus", 
+    "displayName_en-us": "Overload Bonus Increase", 
+    "displayName_es": "Aumento de bonificación de sobrecarga", 
+    "displayName_fr": "Augmentation du bonus de surcharge", 
+    "displayName_it": "Overload Bonus Increase", 
+    "displayName_ja": "オーバーロードボーナス増加", 
+    "displayName_ko": "과부하 보너스 증가", 
+    "displayName_ru": "Усиление бонуса к перегрузке модулей", 
+    "displayName_zh": "超载加成提升", 
+    "displayNameID": 1037573, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1181
+      }, 
+      {
+        "dogmaAttributeID": 1205
+      }, 
+      {
+        "dogmaAttributeID": 1206
+      }, 
+      {
+        "dogmaAttributeID": 1208
+      }, 
+      {
+        "dogmaAttributeID": 1210
+      }, 
+      {
+        "dogmaAttributeID": 1222
+      }, 
+      {
+        "dogmaAttributeID": 1223
+      }, 
+      {
+        "dogmaAttributeID": 1225
+      }, 
+      {
+        "dogmaAttributeID": 1226
+      }, 
+      {
+        "dogmaAttributeID": 1230
+      }, 
+      {
+        "dogmaAttributeID": 1231
+      }, 
+      {
+        "dogmaAttributeID": 1935
+      }, 
+      {
+        "dogmaAttributeID": 1936
+      }, 
+      {
+        "dogmaAttributeID": 1937
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2550": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Signature Radius Reduction", 
+    "displayName_de": "Signaturradiusreduktion", 
+    "displayName_en-us": "Signature Radius Reduction", 
+    "displayName_es": "Reducción de radio de la señal", 
+    "displayName_fr": "Réduction du rayon de signature", 
+    "displayName_it": "Signature Radius Reduction", 
+    "displayName_ja": "シグネチャ半径縮小", 
+    "displayName_ko": "시그니처 반경 감소", 
+    "displayName_ru": "Уменьшение радиуса сигнатуры", 
+    "displayName_zh": "信号半径降低", 
+    "displayNameID": 1037574, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2551": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Capacitor Capacity Bonus", 
+    "displayName_de": "Bonus auf Energiespeicherkapazität", 
+    "displayName_en-us": "Capacitor Capacity Bonus", 
+    "displayName_es": "Bonificación de capacidad del condensador", 
+    "displayName_fr": "Bonus de charge du capaciteur", 
+    "displayName_it": "Capacitor Capacity Bonus", 
+    "displayName_ja": "キャパシタ容量ボーナス", 
+    "displayName_ko": "캐패시터 용량 보너스", 
+    "displayName_ru": "Влияние на ёмкость накопителя", 
+    "displayName_zh": "电容器容量加成", 
+    "displayNameID": 1037575, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 482
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2552": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Ship Velocity Bonus", 
+    "displayName_de": "Schiffsgeschwindigkeitsbonus", 
+    "displayName_en-us": "Ship Velocity Bonus", 
+    "displayName_es": "Bonificación de velocidad de la nave", 
+    "displayName_fr": "Bonus de vitesse du vaisseau", 
+    "displayName_it": "Ship Velocity Bonus", 
+    "displayName_ja": "航行速度ボーナス", 
+    "displayName_ko": "함선 속도 증가", 
+    "displayName_ru": "Бонус к скорости корабля", 
+    "displayName_zh": "舰船速度加成", 
+    "displayNameID": 1037576, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2553": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Tracking Speed Bonus", 
+    "displayName_de": "Nachführungsgeschwindigkeit-Bonus", 
+    "displayName_en-us": "Tracking Speed Bonus", 
+    "displayName_es": "Bonificación de velocidad de rastreo", 
+    "displayName_fr": "Bonus à la vitesse de poursuite", 
+    "displayName_it": "Tracking Speed Bonus", 
+    "displayName_ja": "追跡速度ボーナス", 
+    "displayName_ko": "트래킹 속도 보너스", 
+    "displayName_ru": "Влияние на скорость слежения", 
+    "displayName_zh": "跟踪速度加成", 
+    "displayNameID": 1037577, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "skillID": 3300
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2554": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Missile Explosion Radius Reduction", 
+    "displayName_de": "Reduktion des Explosionsradius von Lenkwaffen", 
+    "displayName_en-us": "Missile Explosion Radius Reduction", 
+    "displayName_es": "Reducción de radio de explosión de misiles", 
+    "displayName_fr": "Réduction du rayon d'explosion des missiles", 
+    "displayName_it": "Missile Explosion Radius Reduction", 
+    "displayName_ja": "ミサイル爆発半径減少", 
+    "displayName_ko": "미사일 폭발반경 감소", 
+    "displayName_ru": "Уменьшение сигнатуры взрыва ракет", 
+    "displayName_zh": "导弹爆炸半径减小", 
+    "displayNameID": 1037578, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 654, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2555": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Scan Resolution Bonus", 
+    "displayName_de": "Scanauflösungsbonus", 
+    "displayName_en-us": "Scan Resolution Bonus", 
+    "displayName_es": "Bonificación de resolución de escaneo", 
+    "displayName_fr": "Bonus de résolution du balayage", 
+    "displayName_it": "Scan Resolution Bonus", 
+    "displayName_ja": "スキャン分解能ボーナス", 
+    "displayName_ko": "스캔 정밀도 보너스", 
+    "displayName_ru": "Влияние на разрешающую способность сенсоров", 
+    "displayName_zh": "扫描分辨率加成", 
+    "displayNameID": 1037579, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 564
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2556": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Local Armor Repair Amount Bonus", 
+    "displayName_de": "Bonus auf die lokale Panzerungsreparaturmenge", 
+    "displayName_en-us": "Local Armor Repair Amount Bonus", 
+    "displayName_es": "Bonificación de cantidad de reparación del blindaje local", 
+    "displayName_fr": "Bonus au volume de réparation du blindage local", 
+    "displayName_it": "Local Armor Repair Amount Bonus", 
+    "displayName_ja": "ローカルアーマーリペア量ボーナス", 
+    "displayName_ko": "장갑 수리 장치 회복량 증가", 
+    "displayName_ru": "Бонус к эффективности местного ремонта брони", 
+    "displayName_zh": "自身装甲维修量加成", 
+    "displayNameID": 1037580, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 21803
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2557": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Local Shield Boost Amount Bonus", 
+    "displayName_de": "Bonus auf die lokale Schildsteigerungsmenge", 
+    "displayName_en-us": "Local Shield Boost Amount Bonus", 
+    "displayName_es": "Bonificación de cantidad de potenciador de escudo local", 
+    "displayName_fr": "Bonus au volume du boost de bouclier local", 
+    "displayName_it": "Local Shield Boost Amount Bonus", 
+    "displayName_ja": "ローカルシールドブースト量ボーナス", 
+    "displayName_ko": "실드 부스터 회복량 증가", 
+    "displayName_ru": "Бонус к эффективности местной накачки щитов", 
+    "displayName_zh": "自身护盾回充量加成", 
+    "displayNameID": 1037581, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 21802
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2558": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Remote Armor Repair Amount Bonus", 
+    "displayName_de": "Bonus auf die entfernte Panzerungsreparaturmenge", 
+    "displayName_en-us": "Remote Armor Repair Amount Bonus", 
+    "displayName_es": "Bonificación de cantidad de reparación del blindaje remoto", 
+    "displayName_fr": "Bonus au volume de réparation de blindage à distance", 
+    "displayName_it": "Remote Armor Repair Amount Bonus", 
+    "displayName_ja": "リモートアーマーリペア量ボーナス", 
+    "displayName_ko": "원격 장갑수리 회복량 증가", 
+    "displayName_ru": "Бонус к эффективности дистанционного ремонта брони", 
+    "displayName_zh": "远程装甲维修量加成", 
+    "displayNameID": 1037874, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 16069
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2559": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Remote Shield Boost Amount Bonus", 
+    "displayName_de": "Bonus auf die Fernschildsteigerungsmenge", 
+    "displayName_en-us": "Remote Shield Boost Amount Bonus", 
+    "displayName_es": "Bonificación de cantidad de potenciador de escudo remoto", 
+    "displayName_fr": "Bonus au volume du boost de bouclier à distance", 
+    "displayName_it": "Remote Shield Boost Amount Bonus", 
+    "displayName_ja": "リモートシールドブースト量ボーナス", 
+    "displayName_ko": "원격 실드 부스터 회복량 증가", 
+    "displayName_ru": "Бонус к эффективности дистанционной накачки щитов", 
+    "displayName_zh": "远程护盾回充量加成", 
+    "displayNameID": 1037875, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3422
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2560": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Warp Drive Blocker", 
+    "displayName_de": "<color=\"#FFFF454B\">Aktivierung blockiert:</color> Warpantriebe", 
+    "displayName_en-us": "<color=\"#FFFF454B\">Activation Blocked:</color> Warp Drives", 
+    "displayName_es": "<color=\"#FFFF454B\">Activación bloqueada:</color> motores de warp", 
+    "displayName_fr": "<color=\"#FFFF454B\">Activation bloquée :</color> propulseurs de warp", 
+    "displayName_it": "<color=\"#FFFF454B\">Activation Blocked:</color> Warp Drives", 
+    "displayName_ja": "<color=\"#FFFF454B\">起動ブロック：</color>ワープドライブ", 
+    "displayName_ko": "<color=\"#FFFF454B\">모듈 사용 금지:</color> 워프 드라이브", 
+    "displayName_ru": "<color=\"#FFFF454B\">Заблокированы:</color> варп-двигатели", 
+    "displayName_zh": "<color=\"#FFFF454B\">启动受阻：</color>跃迁引擎", 
+    "displayNameID": 1038311, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 104
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2561": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Horde Mode - Cloaking Devices Blocker", 
+    "displayName_de": "<color=\"#FFFF454B\">Aktivierung blockiert:</color> Tarnvorrichtungen", 
+    "displayName_en-us": "<color=\"#FFFF454B\">Activation Blocked:</color> Cloaking Devices", 
+    "displayName_es": "<color=\"#FFFF454B\">Activación bloqueada:</color> dispositivos de camuflaje", 
+    "displayName_fr": "<color=\"#FFFF454B\">Activation bloquée :</color> dispositifs de camouflage", 
+    "displayName_it": "<color=\"#FFFF454B\">Activation Blocked:</color> Cloaking Devices", 
+    "displayName_ja": "<color=\"#FFFF454B\">起動ブロック：</color>遮蔽装置", 
+    "displayName_ko": "<color=\"#FFFF454B\">모듈 사용 금지:</color> 클로킹 장치", 
+    "displayName_ru": "<color=\"#FFFF454B\">Заблокированы:</color> устройства маскировки", 
+    "displayName_zh": "<color=\"#FFFF454B\">启动受阻：</color>隐形装置", 
+    "displayNameID": 1038313, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 2454
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
   }
 }

@@ -63611,10 +63611,18 @@
         "modifiedAttributeID": 2320, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6114, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6517": {
@@ -63655,10 +63663,18 @@
         "modifiedAttributeID": 2321, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6113, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "6520": {
@@ -63697,6 +63713,13 @@
         "domain": "shipID", 
         "func": "ItemModifier", 
         "modifiedAttributeID": 2322, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6112, 
         "modifyingAttributeID": 280, 
         "operation": 0
       }
@@ -63743,6 +63766,13 @@
         "modifiedAttributeID": 2323, 
         "modifyingAttributeID": 280, 
         "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6116, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
       }
     ], 
     "propulsionChance": 0, 
@@ -63763,18 +63793,18 @@
       {
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 90, 
-        "modifyingAttributeID": 2308, 
-        "operation": 6, 
-        "skillTypeID": 24572
-      }, 
-      {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 84, 
         "modifyingAttributeID": 2308, 
         "operation": 6, 
         "skillTypeID": 24568
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 90, 
+        "modifyingAttributeID": 2308, 
+        "operation": 6, 
+        "skillTypeID": 24572
       }
     ], 
     "propulsionChance": 0, 
@@ -64247,15 +64277,15 @@
       {
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 90, 
+        "modifiedAttributeID": 68, 
         "modifyingAttributeID": 2311, 
         "operation": 6, 
-        "skillTypeID": 24572
+        "skillTypeID": 24571
       }, 
       {
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 68, 
+        "modifiedAttributeID": 90, 
         "modifyingAttributeID": 2311, 
         "operation": 6, 
         "skillTypeID": 24571
@@ -85788,7 +85818,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 8091, 
-    "effectName": "shipBonusForceAuxiliaryG2CapBoosterStrength", 
+    "effectName": "shipBonusForceAuxiliaryG5CapBoosterStrength", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -85799,7 +85829,7 @@
         "func": "LocationGroupModifier", 
         "groupID": 87, 
         "modifiedAttributeID": 67, 
-        "modifyingAttributeID": 2315, 
+        "modifyingAttributeID": 6112, 
         "operation": 6
       }
     ], 
@@ -100297,6 +100327,351 @@
         "modifyingAttributeID": 434, 
         "operation": 6, 
         "skillTypeID": 60515
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12811": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12811, 
+    "effectName": "eliteBonusGrapplerFalloffBlackOps1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 1672, 
+        "modifiedAttributeID": 2044, 
+        "modifyingAttributeID": 1257, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12834": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12834, 
+    "effectName": "shipBonusForceAuxiliaryG5CapAmount", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 90, 
+        "modifyingAttributeID": 6112, 
+        "operation": 6, 
+        "skillTypeID": 24572
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12835": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12835, 
+    "effectName": "shipBonusForceAuxiliaryC5CapBoosterStrength", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 87, 
+        "modifiedAttributeID": 67, 
+        "modifyingAttributeID": 6113, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12836": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12836, 
+    "effectName": "shipBonusForceAuxiliaryA5CapBoosterStrength", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 87, 
+        "modifiedAttributeID": 67, 
+        "modifyingAttributeID": 6114, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12837": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12837, 
+    "effectName": "shipBonusForceAuxiliaryM5CapBoosterStrength", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 87, 
+        "modifiedAttributeID": 67, 
+        "modifyingAttributeID": 6116, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12838": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12838, 
+    "effectName": "expeditionCommandBurstProbeStrengthBonusCharIDEffectPassivePostMul", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1371, 
+        "modifyingAttributeID": 6118, 
+        "operation": 4, 
+        "skillTypeID": 3412
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12839": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12839, 
+    "effectName": "expeditionCommandBurstProbeDeviationBonusCharIDEffectPassivePostMul", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 1372, 
+        "modifyingAttributeID": 6119, 
+        "operation": 4, 
+        "skillTypeID": 3412
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12844": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12844, 
+    "effectName": "skillBonusAmarrFighters", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2226, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92397
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2178, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92397
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2130, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92397
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12846": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12846, 
+    "effectName": "skillBonusCaldariFighters", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2226, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92400
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2178, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92400
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2130, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92400
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12847": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12847, 
+    "effectName": "skillBonusGallenteFighters", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2226, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92398
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2178, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92398
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2130, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92398
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12848": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12848, 
+    "effectName": "skillBonusMinmatarFighters", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2226, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92399
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2178, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92399
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2130, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92399
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12862": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12862, 
+    "effectName": "extralargeDisintegratorSkillDmgBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 292, 
+        "operation": 6, 
+        "skillTypeID": 92541
       }
     ], 
     "propulsionChance": 0, 
