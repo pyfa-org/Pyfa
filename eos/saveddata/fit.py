@@ -958,11 +958,15 @@ class Fit:
                     self.ship.boostItemAttr("warpSpeedMultiplier", value, stackingPenalties=True)
                 elif warfareBuffID == 2538:  # Triglavian System Effect - Remote Armor Repair Percentage
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.group.name == 'Remote Armor Repairer',
+                        lambda mod: (
+                            mod.item.requiresSkill("Remote Armor Repair Systems")
+                            or mod.item.requiresSkill("Capital Remote Armor Repair Systems")),
                         "armorDamageAmount", value, stackingPenalties=True)
                 elif warfareBuffID == 2539:  # Triglavian System Effect - Remote Shield Boost Percentage
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.group.name == 'Remote Shield Booster',
+                        lambda mod: (
+                            mod.item.requiresSkill("Shield Emission Systems")
+                            or mod.item.requiresSkill("Capital Shield Emission Systems")),
                         "shieldBonus", value, stackingPenalties=True)
 
             del self.commandBonuses[warfareBuffID]

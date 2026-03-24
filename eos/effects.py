@@ -21468,7 +21468,7 @@ class Effect5647(BaseEffect):
 
     Used by:
     Ships from group: Expedition Frigate (2 of 2)
-    Ships from group: Gallente Election YC128 Campaign Buses (3 of 3)
+    Ships from group: Special Edition Yachts (4 of 5)
     Ship: Astero
     Ship: Cenotaph
     Ship: Cobra
@@ -21477,7 +21477,6 @@ class Effect5647(BaseEffect):
     Ship: Sidewinder
     Ship: Tholos
     Ship: Victor
-    Ship: Victorieux Luxury Yacht
     Ship: Virtuoso
     """
 
@@ -34865,12 +34864,20 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
-    Items from category: Ship (45 of 415)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
-    Ships from group: Gallente Election YC128 Campaign Buses (3 of 3)
+    Ships from group: Hauler (5 of 18)
     Ships from group: Interceptor (10 of 10)
     Ships from group: Interdictor (4 of 4)
+    Ships from group: Special Edition Yachts (4 of 5)
+    Ship: Azariel
+    Ship: Cynabal
+    Ship: Dramiel
+    Ship: Khizriel
+    Ship: Leopard
+    Ship: Machariel
+    Ship: Mekubal
+    Ship: Sarathiel
     """
 
     type = 'passive'
@@ -37011,10 +37018,9 @@ class Effect8120(BaseEffect):
     interceptorNullificationRoleBonus
 
     Used by:
-    Ships from group: Gallente Election YC128 Campaign Buses (3 of 3)
     Ships from group: Interceptor (6 of 10)
+    Ships from group: Special Edition Yachts (4 of 5)
     Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
-    Ship: Victorieux Luxury Yacht
     """
 
     type = 'passive'

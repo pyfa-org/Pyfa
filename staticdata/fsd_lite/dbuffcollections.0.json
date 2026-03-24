@@ -4297,15 +4297,15 @@
   "2474": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Mining Burst: Enhanced Mining Scanner", 
-    "displayName_de": "Verbesserter Bergbauscanner", 
+    "displayName_de": "Verbesserter Bergbauvermesser", 
     "displayName_en-us": "Enhanced Mining Surveyor", 
-    "displayName_es": "Escáner minero mejorado", 
-    "displayName_fr": "Scanner d'extraction minière amélioré", 
+    "displayName_es": "Topógrafo minero mejorado", 
+    "displayName_fr": "Arpenteur d'extraction minière amélioré", 
     "displayName_it": "Enhanced Mining Surveyor", 
-    "displayName_ja": "強化型採掘用スキャナー", 
-    "displayName_ko": "향상된 채굴 스캐너", 
-    "displayName_ru": "Улучшенный буровой сканер", 
-    "displayName_zh": "增强型采矿扫描器", 
+    "displayName_ja": "強化型採掘サーベイヤー", 
+    "displayName_ko": "향상된 채굴 탐사선", 
+    "displayName_ru": "Улучшенный считыватель сырья", 
+    "displayName_zh": "增强型采矿勘测仪", 
     "displayNameID": 1021435, 
     "itemModifiers": [
       {
@@ -5594,14 +5594,18 @@
     "displayName_zh": "Remote Armor Repair Bonus", 
     "displayNameID": 1036730, 
     "itemModifiers": [], 
-    "locationGroupModifiers": [
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
       {
         "dogmaAttributeID": 84, 
-        "groupID": 325
+        "skillID": 16069
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 24568
       }
     ], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 
@@ -5619,14 +5623,18 @@
     "displayName_zh": "Remote Shield Boost Bonus", 
     "displayNameID": 1036729, 
     "itemModifiers": [], 
-    "locationGroupModifiers": [
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
       {
         "dogmaAttributeID": 68, 
-        "groupID": 41
+        "skillID": 3422
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 24571
       }
     ], 
-    "locationModifiers": [], 
-    "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 
@@ -5941,6 +5949,10 @@
       {
         "dogmaAttributeID": 84, 
         "skillID": 16069
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 24568
       }
     ], 
     "operationName": "PostPercent", 
@@ -5966,6 +5978,10 @@
       {
         "dogmaAttributeID": 68, 
         "skillID": 3422
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 24571
       }
     ], 
     "operationName": "PostPercent", 
