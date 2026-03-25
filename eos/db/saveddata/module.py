@@ -43,6 +43,7 @@ modules_table = Table("modules", saveddata_meta,
                       Column("spoolType", Integer, nullable=True),
                       Column("spoolAmount", Float, nullable=True),
                       Column("projectionRange", Float, nullable=True),
+                      Column("pulseInterval", Float, nullable=True),
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
 
