@@ -4450,3 +4450,23 @@ msgstr[1] ""
 #, no-python-format, python-brace-format
 msgid "{}% chance to be jammed"
 msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:101
+msgid "Theme (requires restart)"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:105
+msgid "Appearance:"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:109
+msgid "System Default"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:109
+msgid "Pyfa Dark"
+msgstr ""
+
+#: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:109
+msgid "Pyfa Light"
+msgstr ""

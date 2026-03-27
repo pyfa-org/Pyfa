@@ -22,6 +22,7 @@ import wx
 # noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
+from gui.utils.themes import ThemedDialog
 import wx.html2
 import webbrowser
 import re
@@ -47,7 +48,7 @@ hr {{ border: #000 1px solid; }}
 """
 
 
-class UpdateDialog(wx.Dialog):
+class UpdateDialog(ThemedDialog):
 
     def __init__(self, parent, release, version):
         super().__init__(
