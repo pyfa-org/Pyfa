@@ -2,6 +2,7 @@ __all__ = [
     "character",
     "fit",
     "mutatorMod",
+    "vault",
     "mutatorDrone",
     "module",
     "user",
