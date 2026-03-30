@@ -14910,5 +14910,8 @@
   "27388": {
     "iconFile": "res:/ui/texture/icons/inventory/FabricatorData.png", 
     "iconType": "png"
+  }, 
+  "27414": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_anger_games_01_128.png"
   }
 }
