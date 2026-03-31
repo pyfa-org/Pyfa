@@ -100337,7 +100337,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 12811, 
-    "effectName": "eliteBonusGrapplerFalloffBlackOps1", 
+    "effectName": "eliteBonusStasisGrapplerMaxRangeBlackOps3", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -100347,13 +100347,14 @@
         "domain": "shipID", 
         "func": "LocationGroupModifier", 
         "groupID": 1672, 
-        "modifiedAttributeID": 2044, 
-        "modifyingAttributeID": 1257, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 2627, 
         "operation": 6
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "12834": {

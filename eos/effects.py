@@ -8641,6 +8641,7 @@ class Effect2851(BaseEffect):
 
     Used by:
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
+    Implant: Guristas Damage Booster III
     """
 
     type = 'passive'
@@ -35234,7 +35235,7 @@ class Effect7176(BaseEffect):
     skillBonusDroneInterfacingNotFighters
 
     Used by:
-    Implants named like: Federation Damage Booster (4 of 4)
+    Implants named like: Damage Booster (5 of 5)
     Implants named like: Halcyon G Booster (5 of 5)
     Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
     Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
@@ -37273,6 +37274,23 @@ class Effect8154(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'), 'trackingSpeed',
             ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops', **kwargs)
+
+
+class Effect8155(BaseEffect):
+    """
+    eliteBonusLPTtrackingBlackOps1
+
+    Used by:
+    Ship: Panther
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Projectile Turret'),
+            'trackingSpeed', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
 
 
 class Effect8156(BaseEffect):
@@ -42750,7 +42768,7 @@ class Effect12802(BaseEffect):
 
 class Effect12811(BaseEffect):
     """
-    eliteBonusGrapplerFalloffBlackOps1
+    eliteBonusStasisGrapplerMaxRangeBlackOps3
 
     Used by:
     Ship: Panther
@@ -42761,8 +42779,8 @@ class Effect12811(BaseEffect):
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == 'Stasis Grappler', 'falloffEffectiveness',
-            ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops', **kwargs)
+            lambda mod: mod.item.group.name == 'Stasis Grappler', 'maxRange',
+            ship.getModifiedItemAttr('eliteBonusBlackOps3'), skill='Black Ops', **kwargs)
 
 
 class Effect12835(BaseEffect):
