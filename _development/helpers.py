@@ -92,7 +92,7 @@ def DBInMemory_test():
     return helper
 
 # noinspection PyUnresolvedReferences,PyUnusedLocal
-@pytest.fixture
+@pytest.fixture(name='DB')
 def DBInMemory():
     print("Creating database in memory")
 
