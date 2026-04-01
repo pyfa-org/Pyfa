@@ -286,7 +286,8 @@ class SFBrowserItem(wx.Window):
 
         self.RenderBackground()
 
-        mdc.DrawBitmap(self.bkBitmap, 0, 0)
+        if self.bkBitmap is not None:
+            mdc.DrawBitmap(self.bkBitmap, 0, 0)
 
         self.DrawItem(mdc)
         self.toolbar.Render(mdc)
