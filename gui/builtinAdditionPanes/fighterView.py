@@ -29,6 +29,7 @@ from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.fitCommands.helpers import getSimilarFighters
+from gui.utils.themes import Themes
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
@@ -115,8 +116,7 @@ class FighterView(wx.Panel):
                     slot = getattr(FittingSlot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
-                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings.GetColour(
-                    wx.SYS_COLOUR_WINDOWTEXT)
+                color = wx.Colour(204, 51, 51) if used > total else Themes.text()
 
                 lbl = getattr(self, "label%sUsed" % x.capitalize())
                 lbl.SetLabel(str(int(used)))

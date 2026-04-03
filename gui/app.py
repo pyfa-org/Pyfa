@@ -4,7 +4,8 @@ import os
 import sys
 from logbook import Logger
 pyfalog = Logger(__name__)
-from service.settings import LocaleSettings
+from service.settings import LocaleSettings, ThemeSettings
+from gui.utils.dark import enableWindowsDarkModeSupport
 
 
 class PyfaApp(wx.App):
@@ -15,6 +16,10 @@ class PyfaApp(wx.App):
 
         # Name for my application.
         self.appName = "pyfa"
+
+        # Initialize theme settings early so isDark() works correctly
+        ThemeSettings.getInstance()
+        enableWindowsDarkModeSupport()
 
         #------------
 
