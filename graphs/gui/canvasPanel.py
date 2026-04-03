@@ -30,11 +30,57 @@ import wx
 from logbook import Logger
 
 
+from eos.saveddata.fit import Fit
+from eos.saveddata.targetProfile import TargetProfile
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
 from gui.utils.numberFormatter import roundToPrec
 
 
 pyfalog = Logger(__name__)
+
+
+def _graph_item_key(item):
+    if isinstance(item, Fit):
+        return ('fit', item.ID)
+    if isinstance(item, TargetProfile):
+        return ('profile', item.ID)
+    return None
+
+
+def expand_reverse_filtered_matchups(ctrl, base_pairs):
+    """
+    For each (attacker, target) in base_pairs, optionally add (targetShip as attacker, attackerShip as target)
+    using the SourceWrapper / TargetWrapper instances from the full lists when present.
+    """
+    if not ctrl.showReverseFilteredMatchups:
+        return base_pairs
+    src_by_key = {}
+    for w in ctrl.sources:
+        k = _graph_item_key(w.item)
+        if k:
+            src_by_key[k] = w
+    tgt_by_key = {}
+    for w in ctrl.targets:
+        k = _graph_item_key(w.item)
+        if k:
+            tgt_by_key[k] = w
+    seen = set((id(s), id(t)) for s, t in base_pairs)
+    out = list(base_pairs)
+    for s, t in base_pairs:
+        ks = _graph_item_key(t.item)
+        kt = _graph_item_key(s.item)
+        if ks is None or kt is None:
+            continue
+        rev_s = src_by_key.get(ks)
+        rev_t = tgt_by_key.get(kt)
+        if rev_s is None or rev_t is None:
+            continue
+        key = (id(rev_s), id(rev_t))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append((rev_s, rev_t))
+    return out
 
 
 try:
@@ -116,9 +162,11 @@ class GraphCanvasPanel(wx.Panel):
 
         mainInput, miscInputs = self.graphFrame.ctrlPanel.getValues()
         view = self.graphFrame.getView()
-        sources = self.graphFrame.ctrlPanel.sources
+        ctrl = self.graphFrame.ctrlPanel
+        sources = ctrl.filteredSources
         if view.hasTargets:
-            iterList = tuple(itertools.product(sources, self.graphFrame.ctrlPanel.targets))
+            base_pairs = list(itertools.product(sources, ctrl.filteredTargets))
+            iterList = tuple(expand_reverse_filtered_matchups(ctrl, base_pairs))
         else:
             iterList = tuple((f, None) for f in sources)
 
