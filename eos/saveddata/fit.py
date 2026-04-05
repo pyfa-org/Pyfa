@@ -1107,6 +1107,11 @@ class Fit:
         # tabs. See GH issue 1193
         if type == CalcType.COMMAND and targetFit in self.commandFits:
             pyfalog.debug("{} is in the command listing for COMMAND ({}), do not mark self as calculated (recursive)".format(repr(targetFit), repr(self)))
+        elif type == CalcType.PROJECTED:
+            # A projected-source pass only applies this fit's remote effects to the target; it is not a full local
+            # calculation of this fit. Marking calculated would make switchFit skip recalc, so bidirectional
+            # projections show wrong stats when switching tabs until the projection is toggled.
+            pass
         else:
             self.__calculated = True
 
