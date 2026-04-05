@@ -25,7 +25,7 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
-from gui.utils.inputs import FloatBox, FloatRangeBox
+from gui.utils.inputs import FloatBox, FloatRangeBox, valToStr
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
 from .lists import SourceWrapperList, TargetWrapperList
@@ -47,40 +47,77 @@ class GraphControlPanel(wx.Panel):
         self._inputCheckboxes = []
         self._storedRanges = {}
         self._storedConsts = {}
+        self._lastDynamicRange = None  # Track last applied dynamic range
+        self._userModifiedMainInput = False  # Flag: has user manually changed main input?
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         optsSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         commonOptsSizer = wx.BoxSizer(wx.VERTICAL)
+        
+        # Row 1: Y axis
         ySubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
         yText = wx.StaticText(self, wx.ID_ANY, _t('Axis Y:'))
         ySubSelectionSizer.Add(yText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.ySubSelection = wx.Choice(self, wx.ID_ANY)
         self.ySubSelection.Bind(wx.EVT_CHOICE, self.OnYTypeUpdate)
-        ySubSelectionSizer.Add(self.ySubSelection, 1, wx.EXPAND | wx.ALL, 0)
-        commonOptsSizer.Add(ySubSelectionSizer, 0, wx.EXPAND | wx.ALL, 0)
+        ySubSelectionSizer.Add(self.ySubSelection, 1, wx.EXPAND, 0)
+        commonOptsSizer.Add(ySubSelectionSizer, 0, wx.EXPAND, 0)
 
-        xSubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
-        xText = wx.StaticText(self, wx.ID_ANY, _t('Axis X:'))
-        xSubSelectionSizer.Add(xText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        # Row 2: X axis (hidden for segment graphs)
+        self.xSubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.xText = wx.StaticText(self, wx.ID_ANY, _t('Axis X:'))
+        self.xSubSelectionSizer.Add(self.xText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.xSubSelection = wx.Choice(self, wx.ID_ANY)
         self.xSubSelection.Bind(wx.EVT_CHOICE, self.OnXTypeUpdate)
-        xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND | wx.ALL, 0)
-        commonOptsSizer.Add(xSubSelectionSizer, 0, wx.EXPAND | wx.TOP, 5)
+        self.xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND, 0)
+        commonOptsSizer.Add(self.xSubSelectionSizer, 0, wx.EXPAND | wx.TOP, 5)
 
+        # Row 3: Color dropdown (only shown for graphs with segments) - Quality is in right column
+        self.ammoStyleSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.ammoStyleText = wx.StaticText(self, wx.ID_ANY, _t('Style:'))
+        self.ammoStyleSizer.Add(self.ammoStyleText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        self.ammoStyleSelection = wx.Choice(self, wx.ID_ANY)
+        self.ammoStyleSelection.Append(_t('None'), 'none')
+        self.ammoStyleSelection.Append(_t('Pattern'), 'pattern')
+        self.ammoStyleSelection.Append(_t('Color'), 'color')
+        self.ammoStyleSelection.SetSelection(2)  # Default to Color
+        self.ammoStyleSelection.Bind(wx.EVT_CHOICE, self.OnAmmoStyleChange)
+        self.ammoStyleSizer.Add(self.ammoStyleSelection, 1, wx.EXPAND, 0)
+        commonOptsSizer.Add(self.ammoStyleSizer, 0, wx.EXPAND | wx.TOP, 5)
+
+        # Row 4: Ammo Meta dropdown (moved from right column)
+        self.ammoQualitySizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.ammoQualityText = wx.StaticText(self, wx.ID_ANY, _t('Ammo Meta:'))
+        self.ammoQualitySizer.Add(self.ammoQualityText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        self.ammoQualitySelection = wx.Choice(self, wx.ID_ANY)
+        self.ammoQualitySelection.Append(_t('T1'), 't1')
+        self.ammoQualitySelection.Append(_t('Navy'), 'navy')
+        self.ammoQualitySelection.Append(_t('All'), 'all')
+        self.ammoQualitySelection.SetSelection(1)  # Default to Navy
+        self.ammoQualitySelection.Bind(wx.EVT_CHOICE, self.OnAmmoQualityChange)
+        self.ammoQualitySizer.Add(self.ammoQualitySelection, 1, wx.EXPAND, 0)
+        commonOptsSizer.Add(self.ammoQualitySizer, 0, wx.EXPAND | wx.TOP, 5)
+
+        # Row 5: Show legend checkbox
         self.showLegendCb = wx.CheckBox(self, wx.ID_ANY, _t('Show legend'), wx.DefaultPosition, wx.DefaultSize, 0)
         self.showLegendCb.SetValue(True)
         self.showLegendCb.Bind(wx.EVT_CHECKBOX, self.OnShowLegendChange)
-        commonOptsSizer.Add(self.showLegendCb, 0, wx.EXPAND | wx.TOP, 5)
-        self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, _t('Always show Y = 0'), wx.DefaultPosition, wx.DefaultSize, 0)
-        self.showY0Cb.SetValue(True)
-        self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
-        commonOptsSizer.Add(self.showY0Cb, 0, wx.EXPAND | wx.TOP, 5)
+        commonOptsSizer.Add(self.showLegendCb, 0, wx.TOP, 5)
+
         optsSizer.Add(commonOptsSizer, 0, wx.EXPAND | wx.RIGHT, 10)
 
+        # Right column: inputs
         graphOptsSizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        # Container for inputs (normal graphs)
+        self.rightColumnSizer = wx.BoxSizer(wx.VERTICAL)
+        
+        # Input fields sizer (shown for normal graphs) - at the top
         self.inputsSizer = wx.BoxSizer(wx.VERTICAL)
-        graphOptsSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.ALL, 0)
+        self.rightColumnSizer.Add(self.inputsSizer, 0, wx.EXPAND, 0)
+        
+        graphOptsSizer.Add(self.rightColumnSizer, 1, wx.EXPAND | wx.ALL, 0)
 
         vectorSize = 90 if 'wxGTK' in wx.PlatformInfo else 75
         self.srcVectorSizer = wx.BoxSizer(wx.VERTICAL)
@@ -159,6 +196,28 @@ class GraphControlPanel(wx.Panel):
         self.refreshColumns(layout=False)
         self.targetList.Show(view.hasTargets)
 
+        # Ammo options and X axis visibility (only for graphs with segments)
+        hasSegments = getattr(view, 'hasSegments', False)
+        # Hide X axis dropdown for segment graphs (Application Profile)
+        self.xText.Show(not hasSegments)
+        self.xSubSelection.Show(not hasSegments)
+        self.xSubSelectionSizer.ShowItems(not hasSegments)
+        # Show ammo style (Color) dropdown for segment graphs (left column)
+        self.ammoStyleText.Show(hasSegments)
+        self.ammoStyleSelection.Show(hasSegments)
+        self.ammoStyleSizer.ShowItems(hasSegments)
+        # Show ammo quality dropdown for segment graphs (right column)
+        self.ammoQualityText.Show(hasSegments)
+        self.ammoQualitySelection.Show(hasSegments)
+        self.ammoQualitySizer.ShowItems(hasSegments)
+        
+        # Check if we need to auto-switch ammo style when switching to/from segmented graphs
+        if hasSegments:
+            # First check if we should switch back to color (no conflicts)
+            self.sourceList._checkAutoSwitchBackToColor()
+            # Then check if we need to switch to pattern (conflicts exist)
+            self.sourceList._checkAutoSwitchAmmoStyle()
+
         # Inputs
         self._updateInputs(storeInputs=False)
 
@@ -229,7 +288,14 @@ class GraphControlPanel(wx.Panel):
         fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
         tooltipText = (inputDef.mainTooltip if mainInput else inputDef.secondaryTooltip) or ''
         if mainInput:
-            fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
+            # Check if view has a dynamic default range method
+            view = self.graphFrame.getView()
+            defaultRange = inputDef.defaultRange
+            if hasattr(view, 'getDefaultInputRange'):
+                dynamicRange = view.getDefaultInputRange(inputDef, self.sources)
+                if dynamicRange is not None:
+                    defaultRange = dynamicRange
+            fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), defaultRange))
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnMainInputChanged)
         else:
             fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
@@ -313,6 +379,8 @@ class GraphControlPanel(wx.Panel):
         view = self.graphFrame.getView()
         self.sourceList.refreshExtraColumns(view.srcExtraCols)
         self.targetList.refreshExtraColumns(view.tgtExtraCols)
+        # Also refresh default columns for target list based on ammo style
+        self.targetList.refreshDefaultColumns()
         self.srcTgtSizer.Detach(self.sourceList)
         self.srcTgtSizer.Detach(self.targetList)
         self.srcTgtSizer.Add(self.sourceList, self.sourceList.getWidthProportion(), wx.EXPAND | wx.ALL, 0)
@@ -323,8 +391,16 @@ class GraphControlPanel(wx.Panel):
         event.Skip()
         self.graphFrame.draw()
 
-    def OnShowY0Change(self, event):
+    def OnAmmoStyleChange(self, event):
         event.Skip()
+        # Refresh target list columns to show/hide lightness/line style based on ammo style
+        self.targetList.refreshDefaultColumns()
+        self.graphFrame.draw()
+
+    def OnAmmoQualityChange(self, event):
+        event.Skip()
+        # Clear cache when quality changes since we need to recalculate with different ammo
+        self.graphFrame.clearCache(reason=GraphCacheCleanupReason.inputChanged)
         self.graphFrame.draw()
 
     def OnYTypeUpdate(self, event):
@@ -358,6 +434,64 @@ class GraphControlPanel(wx.Panel):
         event.Skip()
         self.graphFrame.clearCache(reason=GraphCacheCleanupReason.inputChanged)
         self.graphFrame.draw()
+
+    def _refreshMainInputRange(self):
+        """
+        Refresh the main input field's range based on current fit data.
+        
+        Called when fits change to update the distance range dynamically
+        for graphs that support getDefaultInputRange (like Application Profile).
+        """
+        # If user has manually modified the main input, never override it
+        if self._userModifiedMainInput:
+            return
+        
+        if self._mainInputBox is None:
+            return
+        
+        view = self.graphFrame.getView()
+        if not hasattr(view, 'getDefaultInputRange'):
+            return
+        
+        # Get the input definition for the main input
+        mainInputKey = self.xType.mainInput
+        if mainInputKey not in view.inputMap:
+            return
+        
+        inputDef = view.inputMap[mainInputKey]
+        
+        # Check if user has manually modified the input field since last dynamic update
+        currentRange = self._mainInputBox.textBox.GetValueRange()
+        if currentRange:
+            currentMin, currentMax = currentRange
+            # Get the baseline to compare against
+            if self._lastDynamicRange is not None:
+                baselineMin, baselineMax = self._lastDynamicRange
+            else:
+                baselineMin, baselineMax = inputDef.defaultRange
+            
+            # If current range differs from the baseline, user has manually changed it
+            # Set the flag permanently to prevent future overrides
+            if currentMin != baselineMin or currentMax != baselineMax:
+                self._userModifiedMainInput = True
+                return
+        
+        # Calculate the new dynamic range
+        dynamicRange = view.getDefaultInputRange(inputDef, self.sources)
+        if dynamicRange is None:
+            dynamicRange = inputDef.defaultRange
+        
+        # Store this as the last dynamic range we applied
+        self._lastDynamicRange = dynamicRange
+        
+        # Clear the stored range so the new default is used
+        storedKey = (inputDef.handle, inputDef.unit)
+        if storedKey in self._storedRanges:
+            del self._storedRanges[storedKey]
+        
+        # Update the text box with the new range
+        self._mainInputBox.textBox.ChangeValue('{}-{}'.format(
+            valToStr(dynamicRange[0]), valToStr(dynamicRange[1])))
 
     def getValues(self):
         view = self.graphFrame.getView()
@@ -398,8 +532,24 @@ class GraphControlPanel(wx.Panel):
         return self.showLegendCb.GetValue()
 
     @property
-    def showY0(self):
-        return self.showY0Cb.GetValue()
+    def ammoStyle(self):
+        """Returns ammo style: 'none', 'pattern', or 'color'"""
+        return self.ammoStyleSelection.GetClientData(self.ammoStyleSelection.GetSelection())
+
+    def setAmmoStyle(self, style):
+        """Set ammo style programmatically: 'none', 'pattern', or 'color'"""
+        for i in range(self.ammoStyleSelection.GetCount()):
+            if self.ammoStyleSelection.GetClientData(i) == style:
+                self.ammoStyleSelection.SetSelection(i)
+                # Trigger the same updates as OnAmmoStyleChange
+                self.targetList.refreshDefaultColumns()
+                self.graphFrame.draw()
+                return
+
+    @property
+    def ammoQuality(self):
+        """Returns ammo quality tier: 't1', 'navy', or 'all'"""
+        return self.ammoQualitySelection.GetClientData(self.ammoQualitySelection.GetSelection())
 
     @property
     def yType(self):
@@ -425,6 +575,8 @@ class GraphControlPanel(wx.Panel):
     def OnFitChanged(self, event):
         self.sourceList.OnFitChanged(event)
         self.targetList.OnFitChanged(event)
+        # Refresh the main input's default range when fit changes
+        self._refreshMainInputRange()
 
     def OnFitRemoved(self, event):
         self.sourceList.OnFitRemoved(event)

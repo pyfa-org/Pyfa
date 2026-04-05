@@ -127,3 +127,5 @@ gitversion
 
 # vscode settings
 .vscode
+
+eve.db
