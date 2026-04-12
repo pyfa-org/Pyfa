@@ -30,6 +30,7 @@ from graphs.events import RESIST_MODE_CHANGED
 from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
+from service.fit import Fit
 from service.settings import GraphSettings
 from . import canvasPanel
 from .ctrlPanel import GraphControlPanel
@@ -239,7 +240,30 @@ class GraphFrame(AuxiliaryFrame):
     def clearCache(self, reason, extraData=None):
         self.getView().clearCache(reason, extraData)
 
+    def _ensureGraphFitsRecalculated(self):
+        """
+        Recalculate every fit shown in the graph when multiple ships are listed.
+
+        The main window only runs a full local calculation for the active tab. Other
+        loaded fits can keep stale ship attributes for incoming projections (mutual
+        projected effects) until they become active, which breaks multi-fit graphs.
+        """
+        ctrl = self.ctrlPanel
+        sFit = Fit.getInstance()
+        seen = set()
+        fits = []
+        for wrapper in ctrl.sources + ctrl.targets:
+            if not wrapper.isFit or wrapper.item.ID in seen:
+                continue
+            seen.add(wrapper.item.ID)
+            fits.append(wrapper.item)
+        if len(fits) < 2:
+            return
+        for fit in fits:
+            sFit.recalc(fit)
+
     def draw(self):
+        self._ensureGraphFitsRecalculated()
         self.canvasPanel.draw()
 
     def resetXMark(self):
