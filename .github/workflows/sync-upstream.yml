@@ -1,0 +1,85 @@
+# Daily sync: merge pyfa-org/Pyfa master into this fork's master, then build an
+# integration branch that merges fix branches (see env vars below) and prunes
+# older auto-created integration branches on success.
+name: Sync upstream and integrate fix branches
+
+on:
+  schedule:
+    # Daily at 05:15 UTC (adjust if you prefer another window)
+    - cron: "15 5 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+env:
+  UPSTREAM_REPO: pyfa-org/Pyfa
+  UPSTREAM_BRANCH: master
+  # Fork branches to merge into each new integration branch (after upstream sync)
+  FIX_BRANCH_1: fix-projected-on-tab-switch
+  # Named "focus graph" in docs; remote branch is focus-graph
+  FIX_BRANCH_2: focus-graph
+  INTEGRATION_PREFIX: upstream-integration
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync upstream and merge fix branches
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git remote add upstream "https://github.com/${UPSTREAM_REPO}.git"
+
+          git fetch origin
+          git fetch upstream "${UPSTREAM_BRANCH}"
+
+          # Nothing new on upstream compared to our published master — stop
+          ahead_count="$(git rev-list --count "origin/${UPSTREAM_BRANCH}..upstream/${UPSTREAM_BRANCH}")"
+          if [ "${ahead_count}" -eq 0 ]; then
+            echo "No new commits on upstream/${UPSTREAM_BRANCH}; nothing to do."
+            exit 0
+          fi
+
+          echo "Upstream is ${ahead_count} commit(s) ahead of origin/${UPSTREAM_BRANCH}; merging."
+
+          git checkout -B "${UPSTREAM_BRANCH}" "origin/${UPSTREAM_BRANCH}"
+          git merge "upstream/${UPSTREAM_BRANCH}" -m "Merge upstream ${UPSTREAM_BRANCH} ($(date -u +%Y-%m-%d))"
+
+          git push origin "${UPSTREAM_BRANCH}"
+
+          # Unique integration branch name (safe for multiple runs per day)
+          stamp="$(date -u +%Y-%m-%d-%H%M%S)"
+          integration_branch="${INTEGRATION_PREFIX}/${stamp}"
+
+          git checkout -b "${integration_branch}"
+
+          git merge "origin/${FIX_BRANCH_1}" -m "Merge ${FIX_BRANCH_1} into ${integration_branch}"
+          git merge "origin/${FIX_BRANCH_2}" -m "Merge ${FIX_BRANCH_2} into ${integration_branch}"
+
+          git push origin "${integration_branch}"
+
+          # Remove older auto integration branches; keep the one we just pushed
+          while IFS=$'\t' read -r _ ref; do
+            name="${ref#refs/heads/}"
+            case "${name}" in
+              "${INTEGRATION_PREFIX}/"*)
+                if [ "${name}" != "${integration_branch}" ]; then
+                  echo "Deleting superseded branch: ${name}"
+                  git push origin --delete "${name}"
+                fi
+                ;;
+            esac
+          done < <(git ls-remote origin "refs/heads/${INTEGRATION_PREFIX}/*")
