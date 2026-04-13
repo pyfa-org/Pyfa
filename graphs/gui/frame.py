@@ -25,6 +25,7 @@ from logbook import Logger
 import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
+from eos.saveddata.fit import Fit as EosFit
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
 from gui.auxWindow import AuxiliaryFrame
@@ -259,8 +260,9 @@ class GraphFrame(AuxiliaryFrame):
             fits.append(wrapper.item)
         if len(fits) < 2:
             return
-        for fit in fits:
-            sFit.recalc(fit)
+        with EosFit.suspendVictimCalcReset():
+            for fit in fits:
+                sFit.recalc(fit)
 
     def draw(self):
         self._ensureGraphFitsRecalculated()
