@@ -19,6 +19,8 @@
 
 
 # noinspection PyPackageRequirements
+from contextlib import nullcontext
+
 import wx
 from logbook import Logger
 
@@ -260,7 +262,8 @@ class GraphFrame(AuxiliaryFrame):
             fits.append(wrapper.item)
         if len(fits) < 2:
             return
-        with EosFit.suspendVictimCalcReset():
+        suspend_ctx = getattr(EosFit, 'suspendVictimCalcReset', None)
+        with (suspend_ctx() if callable(suspend_ctx) else nullcontext()):
             for fit in fits:
                 sFit.recalc(fit)
 
