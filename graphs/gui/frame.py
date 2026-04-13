@@ -25,7 +25,6 @@ from logbook import Logger
 import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
-from eos.saveddata.fit import Fit as EosFit
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
 from gui.auxWindow import AuxiliaryFrame
@@ -260,13 +259,8 @@ class GraphFrame(AuxiliaryFrame):
             fits.append(wrapper.item)
         if len(fits) < 2:
             return
-        # Without this, each recalc's __resetDependentCalcs marks projection victims
-        # as not calculated; the next fit's calculation then invokes those victims in
-        # PROJECTED mode with calculated=False, which runs clear() and wipes ship state
-        # built by the previous recalc in the batch.
-        with EosFit.suspendVictimCalcReset():
-            for fit in fits:
-                sFit.recalc(fit)
+        for fit in fits:
+            sFit.recalc(fit)
 
     def draw(self):
         self._ensureGraphFitsRecalculated()
