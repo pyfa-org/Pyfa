@@ -67,12 +67,13 @@ def expand_reverse_filtered_matchups(ctrl, base_pairs):
     seen = set((id(s), id(t)) for s, t in base_pairs)
     out = list(base_pairs)
     for s, t in base_pairs:
-        ks = _graph_item_key(t.item)
-        kt = _graph_item_key(s.item)
-        if ks is None or kt is None:
+        # Reverse matchup means target ship becomes attacker and vice versa.
+        reverse_src_key = _graph_item_key(t.item)
+        reverse_tgt_key = _graph_item_key(s.item)
+        if reverse_src_key is None or reverse_tgt_key is None:
             continue
-        rev_s = src_by_key.get(ks)
-        rev_t = tgt_by_key.get(kt)
+        rev_s = src_by_key.get(reverse_src_key)
+        rev_t = tgt_by_key.get(reverse_tgt_key)
         if rev_s is None or rev_t is None:
             continue
         key = (id(rev_s), id(rev_t))
