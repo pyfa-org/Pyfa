@@ -25,6 +25,7 @@ from gui.pyfa_gauge import PyGauge
 import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.utils import fonts
+from gui.utils.resourceWarnings import is_calibration_over_limit
 
 from eos.const import FittingHardpoint
 
@@ -322,7 +323,7 @@ class ResourcesViewFull(StatsView):
             colorF = colorWarn
         else:
             colorF = colorNormal
-        if usedCalibrationPoints > totalCalibrationPoints:
+        if is_calibration_over_limit(usedCalibrationPoints, totalCalibrationPoints):
             colorC = colorWarn
         else:
             colorC = colorNormal
@@ -337,6 +338,8 @@ class ResourcesViewFull(StatsView):
         labelTFT.SetForegroundColour(colorF)
         labelUCP.SetForegroundColour(colorC)
         labelTCP.SetForegroundColour(colorC)
+        labelUCP.Refresh()
+        labelTCP.Refresh()
 
         if fit is not None:
             resMax = (
