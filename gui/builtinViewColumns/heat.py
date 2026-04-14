@@ -34,7 +34,6 @@ class Thermodynamics():
     def __init__(self, fit):
         self.fit = fit
         self.hgm = fit.ship.getModifiedItemAttr("heatGenerationMultiplier")
-        self.heatAttenuation = [fit.ship.getModifiedItemAttr("heatAttenuationHi"), fit.ship.getModifiedItemAttr("heatAttenuationMed"), fit.ship.getModifiedItemAttr("heatAttenuationLow")]
         self.harm = self.calcHeatAbsorbtionRateModifier()
         self.slotfactor = self.calcSlotFactor()
         self.simTime = 120
@@ -287,7 +286,7 @@ class Heat(ViewColumn):
         if int(h) > 0: # hours is rarely relevant, only show if it is
             out.insert(0, f"{int(h):02d}")
 
-        return ":".join(out) # display as 00:00:00 to vertically align across slot wows consistently
+        return ":".join(out) # display as 00:00:00 to vertically align across slot cols consistently
 
     def getToolTip(self, mod):
         if isinstance(mod, Module) and mod.state == FittingModuleState.OVERHEATED:
