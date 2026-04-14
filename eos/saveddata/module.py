@@ -970,8 +970,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
         # Determine if we'll take into account reload time or not
         if reloadOverride is not None:
             factorReload = reloadOverride
+        elif self.forceReload is not None:
+            factorReload = self.forceReload
+        elif self.owner is None:
+            # Owner can be temporarily unset during fit/tab transitions; default to
+            # no reload factoring until association is restored.
+            factorReload = False
         else:
-            factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
+            factorReload = self.owner.factorReload
 
         cycles_until_reload = self.numShots
         if cycles_until_reload == 0:
