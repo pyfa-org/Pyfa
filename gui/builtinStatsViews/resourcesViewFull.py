@@ -25,7 +25,6 @@ from gui.pyfa_gauge import PyGauge
 import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.utils import fonts
-from gui.utils.resourceWarnings import is_calibration_over_limit
 
 from eos.const import FittingHardpoint
 
@@ -323,7 +322,7 @@ class ResourcesViewFull(StatsView):
             colorF = colorWarn
         else:
             colorF = colorNormal
-        if is_calibration_over_limit(usedCalibrationPoints, totalCalibrationPoints):
+        if usedCalibrationPoints > totalCalibrationPoints:
             colorC = colorWarn
         else:
             colorC = colorNormal
