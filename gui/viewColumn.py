@@ -83,6 +83,7 @@ from gui.builtinViewColumns import (  # noqa: E402, F401
     graphColor,
     graphLightness,
     graphLineStyle,
+    heat,
     maxRange,
     misc,
     price,
