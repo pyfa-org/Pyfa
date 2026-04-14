@@ -125,7 +125,6 @@ class Thermodynamics():
 
         probs = []
         for m in self.fit.modules:
-            # print("enumerate", m.item.name, "slot", m.slot)
             if (m == mod): continue
             if m.slot == mod.slot:
                 if m.state == FittingModuleState.OVERHEATED:
