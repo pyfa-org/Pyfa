@@ -52,7 +52,7 @@ class Thermodynamics():
         harm = [0,0,0,0] # 0 is a dummy slot, align with mod.slot constants, 1=low, 2=med, 3=hi, 4=rig, ...
 
         for mod in self.fit.modules:
-            if(mod.state == 2 and mod.slot <= 3):
+            if(mod.state == FittingModuleState.OVERHEATED):
                 harm[mod.slot] += mod.getModifiedItemAttr("heatAbsorbtionRateModifier")
 
         return harm
