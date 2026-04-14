@@ -31,8 +31,6 @@ from logbook import Logger
 
 
 from graphs.mpl_fonts import configure_matplotlib_font
-from eos.saveddata.fit import Fit
-from eos.saveddata.targetProfile import TargetProfile
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
 from gui.utils.numberFormatter import roundToPrec
 
@@ -40,11 +38,13 @@ from gui.utils.numberFormatter import roundToPrec
 pyfalog = Logger(__name__)
 
 
-def _graph_item_key(item):
-    if isinstance(item, Fit):
-        return ('fit', item.ID)
-    if isinstance(item, TargetProfile):
-        return ('profile', item.ID)
+def _graph_wrapper_key(wrapper):
+    if wrapper is None or wrapper.item is None:
+        return None
+    if wrapper.isFit:
+        return 'fit', wrapper.item.ID
+    if wrapper.isProfile:
+        return 'profile', wrapper.item.ID
     return None
 
 
@@ -57,20 +57,20 @@ def expand_reverse_filtered_matchups(ctrl, base_pairs):
         return base_pairs
     src_by_key = {}
     for w in ctrl.sources:
-        k = _graph_item_key(w.item)
+        k = _graph_wrapper_key(w)
         if k:
             src_by_key[k] = w
     tgt_by_key = {}
     for w in ctrl.targets:
-        k = _graph_item_key(w.item)
+        k = _graph_wrapper_key(w)
         if k:
             tgt_by_key[k] = w
     seen = set((id(s), id(t)) for s, t in base_pairs)
     out = list(base_pairs)
     for s, t in base_pairs:
         # Reverse matchup means target ship becomes attacker and vice versa.
-        reverse_src_key = _graph_item_key(t.item)
-        reverse_tgt_key = _graph_item_key(s.item)
+        reverse_src_key = _graph_wrapper_key(t)
+        reverse_tgt_key = _graph_wrapper_key(s)
         if reverse_src_key is None or reverse_tgt_key is None:
             continue
         rev_s = src_by_key.get(reverse_src_key)
