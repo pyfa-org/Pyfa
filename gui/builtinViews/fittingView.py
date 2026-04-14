@@ -557,8 +557,19 @@ class FittingView(d.Display):
         ]
 
         if fit is not None:
-            self.mods = fit.modules[:]
-            self.mods.sort(key=lambda _mod: (slotOrder.index(_mod.slot), _mod.position))
+            self.mods = [mod for mod in fit.modules if mod is not None]
+
+            def _get_sort_key(mod):
+                slot = getattr(mod, "slot", None)
+                try:
+                    slot_index = slotOrder.index(slot)
+                except ValueError:
+                    # During rapid fit switches we may briefly see transient modules
+                    # with unresolved slot references; keep UI stable by sorting them last.
+                    slot_index = len(slotOrder)
+                return slot_index, getattr(mod, "position", 0)
+
+            self.mods.sort(key=_get_sort_key)
 
             # Blanks is a list of indexes that mark non-module positions (such
             # as Racks and tactical Modes. This allows us to skip over common
