@@ -148,6 +148,7 @@ class FittingView(d.Display):
                     "Miscellanea",
                     "Price",
                     "Ammo",
+                    "Heat",
                     ]
 
     def __init__(self, parent):
