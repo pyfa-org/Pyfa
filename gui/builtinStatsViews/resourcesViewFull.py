@@ -337,6 +337,8 @@ class ResourcesViewFull(StatsView):
         labelTFT.SetForegroundColour(colorF)
         labelUCP.SetForegroundColour(colorC)
         labelTCP.SetForegroundColour(colorC)
+        labelUCP.Refresh()
+        labelTCP.Refresh()
 
         if fit is not None:
             resMax = (
