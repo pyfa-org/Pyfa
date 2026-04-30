@@ -6034,5 +6034,256 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
+  }, 
+  "2583": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day - Energy Weapon Damage", 
+    "displayName_de": "Energy Weapon Damage Bonus", 
+    "displayName_en-us": "Energy Weapon Damage Bonus", 
+    "displayName_es": "Energy Weapon Damage Bonus", 
+    "displayName_fr": "Energy Weapon Damage Bonus", 
+    "displayName_it": "Energy Weapon Damage Bonus", 
+    "displayName_ja": "Energy Weapon Damage Bonus", 
+    "displayName_ko": "Energy Weapon Damage Bonus", 
+    "displayName_ru": "Energy Weapon Damage Bonus", 
+    "displayName_zh": "Energy Weapon Damage Bonus", 
+    "displayNameID": 1039934, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "groupID": 53
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2584": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day Armor Resist", 
+    "displayName_de": "Armor Hit Points Bonus", 
+    "displayName_en-us": "Armor Hit Points Bonus", 
+    "displayName_es": "Armor Hit Points Bonus", 
+    "displayName_fr": "Armor Hit Points Bonus", 
+    "displayName_it": "Armor Hit Points Bonus", 
+    "displayName_ja": "Armor Hit Points Bonus", 
+    "displayName_ko": "Armor Hit Points Bonus", 
+    "displayName_ru": "Armor Hit Points Bonus", 
+    "displayName_zh": "Armor Hit Points Bonus", 
+    "displayNameID": 1039935, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2585": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day - Missile Laucher Rate of Fire", 
+    "displayName_de": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_en-us": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_es": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_fr": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_it": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_ja": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_ko": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_ru": "Missile Launcher Rate of Fire Bonus", 
+    "displayName_zh": "Missile Launcher Rate of Fire Bonus", 
+    "displayNameID": 1039936, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 51, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2586": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day - Shield HP", 
+    "displayName_de": "Shield Hit Points Bonus", 
+    "displayName_en-us": "Shield Hit Points Bonus", 
+    "displayName_es": "Shield Hit Points Bonus", 
+    "displayName_fr": "Shield Hit Points Bonus", 
+    "displayName_it": "Shield Hit Points Bonus", 
+    "displayName_ja": "Shield Hit Points Bonus", 
+    "displayName_ko": "Shield Hit Points Bonus", 
+    "displayName_ru": "Shield Hit Points Bonus", 
+    "displayName_zh": "Shield Hit Points Bonus", 
+    "displayNameID": 1039937, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2587": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day - Projectile Turret Falloff", 
+    "displayName_de": "Projectile Turret Falloff Bonus", 
+    "displayName_en-us": "Projectile Turret Falloff Bonus", 
+    "displayName_es": "Projectile Turret Falloff Bonus", 
+    "displayName_fr": "Projectile Turret Falloff Bonus", 
+    "displayName_it": "Projectile Turret Falloff Bonus", 
+    "displayName_ja": "Projectile Turret Falloff Bonus", 
+    "displayName_ko": "Projectile Turret Falloff Bonus", 
+    "displayName_ru": "Projectile Turret Falloff Bonus", 
+    "displayName_zh": "Projectile Turret Falloff Bonus", 
+    "displayNameID": 1039940, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 158, 
+        "skillID": 3302
+      }, 
+      {
+        "dogmaAttributeID": 158, 
+        "skillID": 3305
+      }, 
+      {
+        "dogmaAttributeID": 158, 
+        "skillID": 3308
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2588": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day - Velocity", 
+    "displayName_de": "Max Velocity Bonus", 
+    "displayName_en-us": "Max Velocity Bonus", 
+    "displayName_es": "Max Velocity Bonus", 
+    "displayName_fr": "Max Velocity Bonus", 
+    "displayName_it": "Max Velocity Bonus", 
+    "displayName_ja": "Max Velocity Bonus", 
+    "displayName_ko": "Max Velocity Bonus", 
+    "displayName_ru": "Max Velocity Bonus", 
+    "displayName_zh": "Max Velocity Bonus", 
+    "displayNameID": 1039941, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2589": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day Amarr Warp Speed", 
+    "displayName_de": "Warp Speed Bonus", 
+    "displayName_en-us": "Warp Speed Bonus", 
+    "displayName_es": "Warp Speed Bonus", 
+    "displayName_fr": "Warp Speed Bonus", 
+    "displayName_it": "Warp Speed Bonus", 
+    "displayName_ja": "Warp Speed Bonus", 
+    "displayName_ko": "Warp Speed Bonus", 
+    "displayName_ru": "Warp Speed Bonus", 
+    "displayName_zh": "Warp Speed Bonus", 
+    "displayNameID": 1039964, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2590": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day Caldari Warp Speed", 
+    "displayName_de": "Warp Speed Bonus", 
+    "displayName_en-us": "Warp Speed Bonus", 
+    "displayName_es": "Warp Speed Bonus", 
+    "displayName_fr": "Warp Speed Bonus", 
+    "displayName_it": "Warp Speed Bonus", 
+    "displayName_ja": "Warp Speed Bonus", 
+    "displayName_ko": "Warp Speed Bonus", 
+    "displayName_ru": "Warp Speed Bonus", 
+    "displayName_zh": "Warp Speed Bonus", 
+    "displayNameID": 1039965, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2591": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Capsuleer Day Minmatar Warp Speed", 
+    "displayName_de": "Warp Speed Bonus", 
+    "displayName_en-us": "Warp Speed Bonus", 
+    "displayName_es": "Warp Speed Bonus", 
+    "displayName_fr": "Warp Speed Bonus", 
+    "displayName_it": "Warp Speed Bonus", 
+    "displayName_ja": "Warp Speed Bonus", 
+    "displayName_ko": "Warp Speed Bonus", 
+    "displayName_ru": "Warp Speed Bonus", 
+    "displayName_zh": "Warp Speed Bonus", 
+    "displayNameID": 1039966, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2593": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Item Trader Shield Buff", 
+    "displayName_de": "Additional Base Shield Hitpoints", 
+    "displayName_en-us": "Additional Base Shield Hitpoints", 
+    "displayName_es": "Additional Base Shield Hitpoints", 
+    "displayName_fr": "Additional Base Shield Hitpoints", 
+    "displayName_it": "Additional Base Shield Hitpoints", 
+    "displayName_ja": "Additional Base Shield Hitpoints", 
+    "displayName_ko": "Additional Base Shield Hitpoints", 
+    "displayName_ru": "Additional Base Shield Hitpoints", 
+    "displayName_zh": "Additional Base Shield Hitpoints", 
+    "displayNameID": 1041619, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }

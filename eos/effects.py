@@ -335,7 +335,7 @@ class Effect50(BaseEffect):
     Modules from group: Power Diagnostic System (23 of 23)
     Modules from group: Reactor Control Unit (22 of 22)
     Modules from group: Shield Recharger (4 of 4)
-    Modules named like: Flux Coil (12 of 12)
+    Modules named like: Flux Coil (13 of 13)
     """
 
     type = 'passive'
@@ -350,7 +350,7 @@ class Effect51(BaseEffect):
     modifyPowerRechargeRate
 
     Used by:
-    Modules from group: Capacitor Flux Coil (6 of 6)
+    Modules from group: Capacitor Flux Coil (7 of 7)
     Modules from group: Capacitor Power Relay (20 of 20)
     Modules from group: Capacitor Recharger (18 of 18)
     Modules from group: Power Diagnostic System (23 of 23)
@@ -392,7 +392,7 @@ class Effect56(BaseEffect):
     powerOutputMultiply
 
     Used by:
-    Modules from group: Capacitor Flux Coil (6 of 6)
+    Modules from group: Capacitor Flux Coil (7 of 7)
     Modules from group: Capacitor Power Relay (20 of 20)
     Modules from group: Power Diagnostic System (23 of 23)
     Modules from group: Reactor Control Unit (22 of 22)
@@ -416,7 +416,7 @@ class Effect57(BaseEffect):
     Modules from group: Capacitor Power Relay (20 of 20)
     Modules from group: Power Diagnostic System (23 of 23)
     Modules from group: Reactor Control Unit (22 of 22)
-    Modules named like: Flux Coil (12 of 12)
+    Modules named like: Flux Coil (13 of 13)
     """
 
     type = 'passive'
@@ -433,7 +433,7 @@ class Effect58(BaseEffect):
     capacitorCapacityMultiply
 
     Used by:
-    Modules from group: Capacitor Flux Coil (6 of 6)
+    Modules from group: Capacitor Flux Coil (7 of 7)
     Modules from group: Capacitor Power Relay (20 of 20)
     Modules from group: Power Diagnostic System (23 of 23)
     Modules from group: Propulsion Module (73 of 147)
@@ -454,7 +454,7 @@ class Effect59(BaseEffect):
     cargoCapacityMultiply
 
     Used by:
-    Modules from group: Expanded Cargohold (7 of 7)
+    Modules from group: Expanded Cargohold (8 of 8)
     Modules from group: Overdrive Injector System (7 of 7)
     Modules from group: Reinforced Bulkhead (8 of 8)
     """
@@ -975,6 +975,7 @@ class Effect244(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' High Speed Maneuvering HS (6 of 6)
     Implants named like: Federation Mobility Booster (4 of 4)
+    Implants named like: Republic Mobility Booster (4 of 4)
     Skill: High Speed Maneuvering
     """
 
@@ -1212,6 +1213,8 @@ class Effect394(BaseEffect):
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
     Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Imperial Mobility Booster (4 of 4)
+    Implants named like: Republic Mobility Booster (4 of 4)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: AIR Overclocker Booster II
@@ -1244,6 +1247,7 @@ class Effect395(BaseEffect):
     Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: State Mobility Booster (4 of 4)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
     Implant: AIR Agility Booster II
@@ -2457,6 +2461,7 @@ class Effect784(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: Republic Projection Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
     Modules named like: Rocket Fuel Cache Partition (8 of 8)
     Implant: Antipharmakon Toxot
@@ -2549,9 +2554,9 @@ class Effect856(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
-    Implants named like: Federation Mobility Booster (4 of 4)
     Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: Mobility Booster (16 of 16)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
@@ -4248,6 +4253,7 @@ class Effect1395(BaseEffect):
     shieldBoostAmplifierPassive
 
     Used by:
+    Implants named like: Republic Defense Booster (4 of 4)
     Implants named like: grade Crystal (15 of 18)
     """
 
@@ -4409,7 +4415,7 @@ class Effect1445(BaseEffect):
     ewSkillRsdMaxRangeBonus
 
     Used by:
-    Implants named like: Federation Electronics Booster (4 of 4)
+    Implants named like: Federation Electronics Booster (3 of 3)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4430,6 +4436,7 @@ class Effect1446(BaseEffect):
     ewSkillTpMaxRangeBonus
 
     Used by:
+    Implants named like: Republic Electronics Booster (4 of 4)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4450,6 +4457,7 @@ class Effect1448(BaseEffect):
     ewSkillTdMaxRangeBonus
 
     Used by:
+    Implants named like: Imperial Electronics Booster (4 of 4)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4470,7 +4478,7 @@ class Effect1449(BaseEffect):
     ewSkillRsdFallOffBonus
 
     Used by:
-    Implants named like: Federation Electronics Booster (4 of 4)
+    Implants named like: Federation Electronics Booster (3 of 3)
     Skill: Frequency Modulation
     """
 
@@ -4489,6 +4497,7 @@ class Effect1450(BaseEffect):
     ewSkillTpFallOffBonus
 
     Used by:
+    Implants named like: Republic Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
@@ -4506,6 +4515,7 @@ class Effect1451(BaseEffect):
     ewSkillTdFallOffBonus
 
     Used by:
+    Implants named like: Imperial Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
@@ -4523,6 +4533,7 @@ class Effect1452(BaseEffect):
     ewSkillEwMaxRangeBonus
 
     Used by:
+    Implants named like: State Electronics Booster (4 of 4)
     Implants named like: grade Centurion (10 of 12)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Implant: Serenity YC122.9 Season Booster - EW Range
@@ -4544,6 +4555,7 @@ class Effect1453(BaseEffect):
     ewSkillEwFallOffBonus
 
     Used by:
+    Implants named like: State Electronics Booster (4 of 4)
     Skill: Frequency Modulation
     """
 
@@ -4561,6 +4573,7 @@ class Effect1472(BaseEffect):
     missileSkillAoeCloudSizeBonus
 
     Used by:
+    Implants named like: State Application Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Guided Missile Precision GP (6 of 6)
     Modules named like: Warhead Rigor Catalyst (8 of 8)
     Skill: Guided Missile Precision
@@ -4754,6 +4767,7 @@ class Effect1590(BaseEffect):
 
     Used by:
     Implants named like: Halcyon G Booster (5 of 5)
+    Implants named like: Republic Application Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
     Skill: Target Navigation Prediction
@@ -5305,7 +5319,7 @@ class Effect1738(BaseEffect):
     doHacking
 
     Used by:
-    Modules from group: Data Miners (11 of 11)
+    Modules from group: Data Miners (12 of 12)
     """
 
     type = 'active'
@@ -5337,6 +5351,7 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
+    Implants named like: State Projection Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -5679,8 +5694,8 @@ class Effect1882(BaseEffect):
     miningYieldMultiplyPercent
 
     Used by:
-    Modules from group: Mining Upgrade (7 of 12)
-    Variations of module: Mining Laser Upgrade I (5 of 5)
+    Modules from group: Mining Upgrade (8 of 13)
+    Variations of module: Mining Laser Upgrade I (6 of 6)
     """
 
     type = 'passive'
@@ -6870,6 +6885,7 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Imperial Defense Booster (4 of 4)
     """
 
     type = 'passive'
@@ -6892,6 +6908,7 @@ class Effect2297(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
+    Implants named like: State Defense Booster (4 of 4)
     """
 
     type = 'passive'
@@ -7088,8 +7105,8 @@ class Effect2444(BaseEffect):
     minerCpuUsageMultiplyPercent2
 
     Used by:
-    Modules from group: Mining Upgrade (7 of 12)
-    Variations of module: Mining Laser Upgrade I (5 of 5)
+    Modules from group: Mining Upgrade (8 of 13)
+    Variations of module: Mining Laser Upgrade I (6 of 6)
     """
 
     type = 'passive'
@@ -7640,6 +7657,7 @@ class Effect2693(BaseEffect):
     falloffBonusEffectLasers
 
     Used by:
+    Implants named like: Imperial Projection Booster (4 of 4)
     Modules named like: Energy Ambit Extension (8 of 8)
     """
 
@@ -7659,6 +7677,7 @@ class Effect2694(BaseEffect):
 
     Used by:
     Implants named like: Federation Projection Booster (4 of 4)
+    Implants named like: State Projection Booster (4 of 4)
     Modules named like: Hybrid Ambit Extension (8 of 8)
     """
 
@@ -7677,6 +7696,7 @@ class Effect2695(BaseEffect):
     falloffBonusEffectProjectiles
 
     Used by:
+    Implants named like: Republic Projection Booster (4 of 4)
     Modules named like: Projectile Ambit Extension (8 of 8)
     """
 
@@ -7695,6 +7715,7 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
+    Implants named like: Imperial Projection Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -7714,6 +7735,7 @@ class Effect2697(BaseEffect):
 
     Used by:
     Implants named like: Federation Projection Booster (4 of 4)
+    Implants named like: State Projection Booster (4 of 4)
     Modules named like: Hybrid Locus Coordinator (8 of 8)
     """
 
@@ -7732,6 +7754,7 @@ class Effect2698(BaseEffect):
     maxRangeBonusEffectProjectiles
 
     Used by:
+    Implants named like: Republic Projection Booster (4 of 4)
     Modules named like: Projectile Locus Coordinator (8 of 8)
     """
 
@@ -8386,6 +8409,7 @@ class Effect2798(BaseEffect):
     projectileWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Republic Damage Booster (4 of 4)
     Modules named like: Projectile Collision Accelerator (8 of 8)
     """
 
@@ -8439,6 +8463,7 @@ class Effect2802(BaseEffect):
 
     Used by:
     Implants named like: Federation Damage Booster (4 of 4)
+    Implants named like: State Damage Booster (4 of 4)
     Modules named like: Hybrid Collision Accelerator (8 of 8)
     """
 
@@ -8457,6 +8482,7 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Imperial Damage Booster (4 of 4)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
     """
@@ -8640,6 +8666,8 @@ class Effect2851(BaseEffect):
     missileDMGBonusPassive
 
     Used by:
+    Implants named like: Republic Damage Booster (4 of 4)
+    Implants named like: State Damage Booster (4 of 4)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     Implant: Guristas Damage Booster III
     """
@@ -9347,7 +9375,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (446 of 931)
+    Items from market group: Ship Equipment > Turrets & Launchers (446 of 935)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9578,7 +9606,7 @@ class Effect3046(BaseEffect):
     modifyMaxVelocityOfShipPassive
 
     Used by:
-    Modules from group: Expanded Cargohold (7 of 7)
+    Modules from group: Expanded Cargohold (8 of 8)
     """
 
     type = 'offline'
@@ -9593,7 +9621,7 @@ class Effect3047(BaseEffect):
     structureHPMultiplyPassive
 
     Used by:
-    Modules from group: Expanded Cargohold (7 of 7)
+    Modules from group: Expanded Cargohold (8 of 8)
     """
 
     type = 'passive'
@@ -10276,6 +10304,8 @@ class Effect3379(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Fuel Conservation FC (6 of 6)
+    Implants named like: Imperial Mobility Booster (4 of 4)
+    Implants named like: State Mobility Booster (4 of 4)
     """
 
     type = 'passive'
@@ -13547,7 +13577,7 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (5 of 8)
-    Implants named like: Federation Electronics Booster (4 of 4)
+    Implants named like: Electronics Booster (15 of 15)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
     Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
@@ -16083,7 +16113,7 @@ class Effect4817(BaseEffect):
     salvagerModuleDurationReduction
 
     Used by:
-    Implants named like: Federation Electronics Booster (4 of 4)
+    Implants named like: Electronics Booster (15 of 15)
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
     """
 
@@ -18067,6 +18097,7 @@ class Effect5188(BaseEffect):
 
     Used by:
     Implants named like: Federation Application Booster (4 of 4)
+    Implants named like: State Application Booster (4 of 4)
     Modules named like: Hybrid Metastasis Adjuster (8 of 8)
     """
 
@@ -18085,6 +18116,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
+    Implants named like: Imperial Application Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -18103,6 +18135,7 @@ class Effect5190(BaseEffect):
     trackingSpeedBonusEffectProjectiles
 
     Used by:
+    Implants named like: Republic Application Booster (4 of 4)
     Modules named like: Projectile Metastasis Adjuster (8 of 8)
     """
 
@@ -29961,7 +29994,7 @@ class Effect6658(BaseEffect):
     moduleBonusBastionModule
 
     Used by:
-    Module: Bastion Module I
+    Variations of module: Bastion Module I (5 of 5)
     """
 
     runTime = 'early'
@@ -30020,8 +30053,11 @@ class Effect6658(BaseEffect):
                                       stackingPenalties=True, **kwargs)
         for attrName in ('duration', 'capacitorNeed'):
             fit.modules.filteredItemBoost(
-                lambda mod: mod.item.requiresSkill('Shield Operation') or mod.item.requiresSkill('Repair Systems'),
-                attrName, src.getModifiedItemAttr('bastionModeArmorRepairAndShieldBoosterCapDurationBonus'), **kwargs)
+                lambda mod: mod.item.requiresSkill('Repair Systems'),
+                attrName, src.getModifiedItemAttr('bastionModeArmorRepairCapDurationBonus'), **kwargs)
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Shield Operation'),
+                attrName, src.getModifiedItemAttr('bastionModeShieldBoosterCapDurationBonus'), **kwargs)
 
         # Speed penalty
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), **kwargs)
@@ -30182,6 +30218,7 @@ class Effect6667(BaseEffect):
     Used by:
     Implants named like: Black Market 'Valdimar' Drone Navigation DN (3 of 3)
     Implants named like: Federation Application Booster (4 of 4)
+    Implants named like: Imperial Application Booster (4 of 4)
     Skill: Drone Navigation
     """
 
@@ -30875,6 +30912,7 @@ class Effect6708(BaseEffect):
 
     Used by:
     Implants named like: Federation Defense Booster (4 of 4)
+    Implants named like: Republic Defense Booster (4 of 4)
     Implants named like: grade Asklepian (15 of 18)
     """
 
@@ -35235,10 +35273,12 @@ class Effect7176(BaseEffect):
     skillBonusDroneInterfacingNotFighters
 
     Used by:
-    Implants named like: Damage Booster (5 of 5)
+    Implants named like: Federation Damage Booster (4 of 4)
     Implants named like: Halcyon G Booster (5 of 5)
+    Implants named like: Imperial Damage Booster (4 of 4)
     Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
     Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
+    Implant: Guristas Damage Booster III
     """
 
     type = 'passive'
@@ -35256,6 +35296,7 @@ class Effect7177(BaseEffect):
     Used by:
     Implants named like: Drone Tuner (4 of 4)
     Implants named like: Federation Projection Booster (4 of 4)
+    Implants named like: Imperial Projection Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38251,6 +38292,7 @@ class Effect8477(BaseEffect):
     Used by:
     Implants named like: Federation Application Booster (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Imperial Application Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38287,6 +38329,7 @@ class Effect8479(BaseEffect):
     Used by:
     Implants named like: Federation Projection Booster (4 of 4)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Imperial Projection Booster (4 of 4)
     """
 
     type = 'passive'

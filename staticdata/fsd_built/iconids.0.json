@@ -14913,5 +14913,97 @@
   }, 
   "27414": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_anger_games_01_128.png"
+  }, 
+  "27415": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_racial_ama_logo_01_128.png"
+  }, 
+  "27416": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_racial_ama_logo_01_128.png"
+  }, 
+  "27417": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_gallente_logo_01_128.png"
+  }, 
+  "27418": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_gallente_logo_01_128.png"
+  }, 
+  "27419": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_racial_cal_logo_01_128.png"
+  }, 
+  "27420": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_racial_cal_logo_01_128.png"
+  }, 
+  "27421": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_minmatar_logo_01_128.png"
+  }, 
+  "27422": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_minmatar_logo_01_128.png"
+  }, 
+  "27423": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_jita44_01_128.png"
+  }, 
+  "27424": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_jita44_01_128.png"
+  }, 
+  "27425": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_jita444_01_128.png"
+  }, 
+  "27426": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_jita444_01_128.png"
+  }, 
+  "27427": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_groovy_03_128.png"
+  }, 
+  "27428": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_groovy_03_128.png"
+  }, 
+  "27429": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_gradient_circle_02_128.png"
+  }, 
+  "27430": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_gradient_circle_02_128.png"
+  }, 
+  "27431": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_tactical_10_128.png"
+  }, 
+  "27432": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_tactical_10_128.png"
+  }, 
+  "27433": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_splatter_04_128.png"
+  }, 
+  "27434": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_splatter_04_128.png"
+  }, 
+  "27435": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_racial_gal_08b_128.png"
+  }, 
+  "27436": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_racial_gal_08b_128.png"
+  }, 
+  "27463": {
+    "iconFile": "res:/UI/Asset/mannequin/topmiddle/93589_Female_TopMiddle_ShirtQF01_Types_soerff03.png", 
+    "iconType": "png"
+  }, 
+  "27464": {
+    "iconFile": "res:/UI/Asset/mannequin/topmiddle/93590_Male_topMiddle_ShirtQM01_Types_soerfm03.png", 
+    "iconType": "png"
+  }, 
+  "27466": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/warpath_regular_token.png"
+  }, 
+  "27467": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/warpath_elite_token.png"
+  }, 
+  "27471": {
+    "iconFile": "res:/ui/texture/icons/inventory/EmpireCrate_Amarr.png"
+  }, 
+  "27472": {
+    "iconFile": "res:/ui/texture/icons/inventory/EmpireCrate_Caldari.png"
+  }, 
+  "27473": {
+    "iconFile": "res:/ui/texture/icons/inventory/EmpireCrate_Gallente.png"
+  }, 
+  "27474": {
+    "iconFile": "res:/ui/texture/icons/inventory/EmpireCrate_Minmatar.png"
   }
 }

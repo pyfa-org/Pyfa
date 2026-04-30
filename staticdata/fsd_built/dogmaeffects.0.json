@@ -69519,7 +69519,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 73, 
-        "modifyingAttributeID": 5964, 
+        "modifyingAttributeID": 6187, 
         "operation": 6, 
         "skillTypeID": 3416
       }, 
@@ -69527,7 +69527,7 @@
         "domain": "shipID", 
         "func": "LocationRequiredSkillModifier", 
         "modifiedAttributeID": 6, 
-        "modifyingAttributeID": 5964, 
+        "modifyingAttributeID": 6187, 
         "operation": 6, 
         "skillTypeID": 3416
       }, 
