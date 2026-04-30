@@ -150,6 +150,7 @@ def update_db():
             elif (
                 row['typeName_en-us'].startswith('Limited Synth ')
                 or row['typeName_en-us'].startswith('Expired ')
+                or re.match(r'Grand Prix .*Booster', row['typeName_en-us'])
                 or re.match(r'Mining Blitz .+ Booster Dose .+', row['typeName_en-us'])
                 or row['typeName_en-us'].endswith(' Filament') and (
                     "'Needlejack'" not in row['typeName_en-us'] and
