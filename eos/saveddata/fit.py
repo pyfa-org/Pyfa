@@ -19,6 +19,7 @@
 
 import datetime
 import time
+from contextlib import contextmanager
 from copy import deepcopy
 from itertools import chain
 from math import ceil, log, sqrt
@@ -66,6 +67,22 @@ class Fit:
     """Represents a fitting, with modules, ship, implants, etc."""
 
     PEAK_RECHARGE = 0.25
+
+    # When > 0, __resetDependentCalcs does not mark projection victims stale.
+    # Sequential full recalcs for mutually-projected fits (e.g. graph) would
+    # otherwise set victim.calculated = False without clearing them; the next
+    # PROJECTED pass then runs clear() and wipes that fit after it was just
+    # calculated correctly.
+    _suspendVictimCalcResetDepth = 0
+
+    @classmethod
+    @contextmanager
+    def suspendVictimCalcReset(cls):
+        cls._suspendVictimCalcResetDepth += 1
+        try:
+            yield
+        finally:
+            cls._suspendVictimCalcResetDepth -= 1
 
     def __init__(self, ship=None, name=""):
         """Initialize a fit from the program"""
@@ -973,6 +990,8 @@ class Fit:
 
     def __resetDependentCalcs(self):
         self.calculated = False
+        if Fit._suspendVictimCalcResetDepth > 0:
+            return
         for value in list(self.projectedOnto.values()):
             if value.victim_fit:  # removing a self-projected fit causes victim fit to be None. @todo: look into why. :3
                 value.victim_fit.calculated = False
@@ -1107,6 +1126,8 @@ class Fit:
         # tabs. See GH issue 1193
         if type == CalcType.COMMAND and targetFit in self.commandFits:
             pyfalog.debug("{} is in the command listing for COMMAND ({}), do not mark self as calculated (recursive)".format(repr(targetFit), repr(self)))
+        elif type == CalcType.PROJECTED:
+            pyfalog.debug("{} is projecting onto {} (PROJECTED), do not mark self as calculated (not a full local calc)".format(repr(self), repr(targetFit)))
         else:
             self.__calculated = True
 
