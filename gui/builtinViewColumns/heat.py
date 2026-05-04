@@ -62,7 +62,12 @@ class Thermodynamics():
         empty = self.fit.getSlotsFree(3) + self.fit.getSlotsFree(2) + self.fit.getSlotsFree(1) # FittingSlot.HIGH doesn"t work here?
         rigslots = self.fit.getNumSlots(4)
 
-        return (slots - empty) / (slots + rigslots)
+        offline = 0
+        for mod in self.fit.modules:
+            if (mod.state == FittingModuleState.OFFLINE and mod.slot in [1, 2, 3]): # only count offline low, med, hi mods
+                offline += 1
+
+        return (slots - empty - offline) / (slots + rigslots)
 
     def calcDamageProbability(self, mod, t): # get chance the module is damaged when overheated at time t
         keys = ["", "heatAttenuationLow", "heatAttenuationMed", "heatAttenuationHi"]
