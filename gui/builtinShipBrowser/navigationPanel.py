@@ -260,9 +260,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         self.bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor, 2)
 
-        self.bkBitmap.sFactor = sFactor
-        self.bkBitmap.eFactor = eFactor
-        self.bkBitmap.mFactor = mFactor
+        if self.bkBitmap is not None:
+            self.bkBitmap.sFactor = sFactor
+            self.bkBitmap.eFactor = eFactor
+            self.bkBitmap.mFactor = mFactor
 
     def gotoStage(self, stage, data=None):
         self.shipBrowser.recentFits = False
