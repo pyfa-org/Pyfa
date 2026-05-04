@@ -4,6 +4,7 @@ import re
 import wx
 
 import gui.display as d
+from gui.utils.themes import ThemedDialog, Themes
 from service.fit import Fit
 
 _t = wx.GetTranslation
@@ -12,7 +13,7 @@ def fitSorter(fit):
     return fit.shipName, fit.name
 
 
-class FitBrowserLiteDialog(wx.Dialog):
+class FitBrowserLiteDialog(ThemedDialog):
 
     def __init__(self, parent, title=_t('Add Fits'), excludedFitIDs=()):
         super().__init__(parent, title=title, style=wx.DEFAULT_DIALOG_STYLE)
@@ -29,6 +30,7 @@ class FitBrowserLiteDialog(wx.Dialog):
 
         searchSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.searchBox = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        Themes.styleInput(self.searchBox)
         searchSizer.Add(self.searchBox, 1, wx.EXPAND | wx.ALL, 5)
         mainSizer.Add(searchSizer, 0, wx.EXPAND | wx.ALL, 0)
 

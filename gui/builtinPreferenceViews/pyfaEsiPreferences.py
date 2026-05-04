@@ -5,6 +5,7 @@ import config
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
+from gui.utils.themes import Themes
 from service.esi import Esi
 from service.settings import EsiSettings
 
@@ -67,6 +68,7 @@ class PFEsiPref(PreferenceView):
         self.esiServer.SetToolTip(wx.ToolTip(_t('The source you choose will be used on connection.')))
 
         self.chESIserver = wx.Choice(panel, choices=list(self.settings.keys()))
+        Themes.styleInput(self.chESIserver)
 
         self.chESIserver.SetStringSelection(self.settings.get("server"))
 

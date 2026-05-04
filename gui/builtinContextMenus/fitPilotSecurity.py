@@ -5,6 +5,7 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
+from gui.utils.themes import ThemedDialog, Themes
 from service.fit import Fit
 
 _t = wx.GetTranslation
@@ -101,7 +102,7 @@ class FitPilotSecurityMenu(ContextMenuUnconditional):
 FitPilotSecurityMenu.register()
 
 
-class SecStatusChanger(wx.Dialog):
+class SecStatusChanger(ThemedDialog):
 
     def __init__(self, parent, value):
         super().__init__(parent, title=_t('Change Security Status'), style=wx.DEFAULT_DIALOG_STYLE)
@@ -116,6 +117,7 @@ class SecStatusChanger(wx.Dialog):
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        Themes.styleInput(self.input)
         if value is None:
             value = '0.0'
         else:
