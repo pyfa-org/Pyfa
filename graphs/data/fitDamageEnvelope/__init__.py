@@ -18,14 +18,6 @@
 # =============================================================================
 
 
-from . import fitDamageStats
-from . import fitDamageEnvelope
-from . import fitEwarStats
-from . import fitRemoteReps
-from . import fitShieldRegen
-from . import fitCapacitor
-from . import fitMobility
-from . import fitWarpTime
-from . import fitLockTime
-# Hidden graphs, available via ctrl-alt-g
-from . import fitEcmBurstScanresDamps
+from .graph import FitDamageEnvelopeGraph
+
+FitDamageEnvelopeGraph.register()
