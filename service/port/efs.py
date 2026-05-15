@@ -15,6 +15,7 @@ from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup
 from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
+from eos.calc import applyWebStrengthCap
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
 from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModulesCommand
@@ -180,7 +181,8 @@ class EfsPort:
             if mod.item.group.name in ["Stasis Web", "Stasis Grappler"]:
                 stats["type"] = "Stasis Web"
                 stats["optimal"] = mod.getModifiedItemAttr("maxRange")
-                EfsPort.attrDirectMap(["duration", "speedFactor"], stats, mod)
+                EfsPort.attrDirectMap(["duration"], stats, mod)
+                stats["speedFactor"] = applyWebStrengthCap(mod.getModifiedItemAttr("speedFactor"))
             elif mod.item.group.name == "Weapon Disruptor":
                 stats["type"] = "Weapon Disruptor"
                 stats["optimal"] = mod.getModifiedItemAttr("maxRange")

@@ -20,6 +20,7 @@
 
 from collections import namedtuple
 
+from eos.calc import applyWebStrengthCap
 from eos.modifiedAttributeDict import getResistanceAttrID
 from graphs.data.base import FitDataCache
 
@@ -42,14 +43,14 @@ class ProjectedDataCache(FitDataCache):
                 for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
                     if webEffectName in mod.item.effects:
                         webMods.append(ModProjData(
-                            mod.getModifiedItemAttr('speedFactor'),
+                            applyWebStrengthCap(mod.getModifiedItemAttr('speedFactor')),
                             mod.maxRange or 0,
                             mod.falloff or 0,
                             'default',
                             getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects[webEffectName])))
                 if 'doomsdayAOEWeb' in mod.item.effects:
                     webMods.append(ModProjData(
-                        mod.getModifiedItemAttr('speedFactor'),
+                        applyWebStrengthCap(mod.getModifiedItemAttr('speedFactor')),
                         max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                         mod.falloff or 0,
                         'default',
@@ -82,7 +83,7 @@ class ProjectedDataCache(FitDataCache):
             for drone in src.item.activeDronesIter():
                 if 'remoteWebifierEntity' in drone.item.effects:
                     webDrones.extend(drone.amountActive * (MobileProjData(
-                        drone.getModifiedItemAttr('speedFactor'),
+                        applyWebStrengthCap(drone.getModifiedItemAttr('speedFactor')),
                         drone.maxRange or 0,
                         drone.falloff or 0,
                         'default',
@@ -111,7 +112,7 @@ class ProjectedDataCache(FitDataCache):
             for fighter, ability in src.item.activeFighterAbilityIter():
                 if ability.effect.name == 'fighterAbilityStasisWebifier':
                     webFighters.append(MobileProjData(
-                        fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amount,
+                        applyWebStrengthCap(fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty')) * fighter.amount,
                         fighter.getModifiedItemAttr('fighterAbilityStasisWebifierOptimalRange'),
                         fighter.getModifiedItemAttr('fighterAbilityStasisWebifierFalloffRange'),
                         'default',

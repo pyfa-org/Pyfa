@@ -12,6 +12,14 @@ from gui.bitmap_loader import BitmapLoader
 from gui.builtinItemStatsViews.attributeGrouping import *
 from gui.utils.numberFormatter import formatAmount, roundDec
 from service.const import GuiAttrGroup
+from eos.calc import applyWebStrengthCap
+
+_WEB_SPEED_FACTOR_EFFECTS = frozenset((
+    'remoteWebifierFalloff',
+    'structureModuleEffectStasisWebifier',
+    'remoteWebifierEntity',
+    'doomsdayAOEWeb',
+))
 
 
 _t = wx.GetTranslation
@@ -306,6 +314,13 @@ class ItemParams(wx.Panel):
 
         val = getattr(att, "value", None)
         value = val if val is not None else att
+
+        if (self.toggleView == AttributeView.NORMAL and
+                attr == 'speedFactor' and
+                self.isStuffItem and
+                hasattr(self.stuff, 'item') and self.stuff.item and
+                _WEB_SPEED_FACTOR_EFFECTS.intersection(getattr(self.stuff.item, 'effects', {}))):
+            value = applyWebStrengthCap(value)
 
         if self.toggleView == AttributeView.NORMAL and (
                 (attr not in GroupedAttributes and not (value or valueDefault)) or info is None or not info.published or attr in RequiredSkillAttrs):

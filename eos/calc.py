@@ -69,3 +69,8 @@ def calculateLockTime(srcScanRes, tgtSigRadius):
     if not srcScanRes or not tgtSigRadius:
         return None
     return min(40000 / srcScanRes / math.asinh(tgtSigRadius) ** 2, 30 * 60)
+
+
+def applyWebStrengthCap(speed_factor):
+    """Single-web speed reduction cap (EVE: at most -99%)."""
+    return max(speed_factor, -99.0)

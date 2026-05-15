@@ -19,7 +19,7 @@
 
 
 import eos.config
-from eos.calc import calculateRangeFactor
+from eos.calc import calculateRangeFactor, applyWebStrengthCap
 from eos.const import FittingModuleState, FitSystemSecurity
 from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, resolveSpoolOptions
 
@@ -26967,7 +26967,7 @@ class Effect6426(BaseEffect):
             return
         if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
             return
-        appliedBoost = module.getModifiedItemAttr('speedFactor') * calculateRangeFactor(
+        appliedBoost = applyWebStrengthCap(module.getModifiedItemAttr('speedFactor')) * calculateRangeFactor(
             srcOptimalRange=module.getModifiedItemAttr('maxRange'),
             srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
             distance=projectionRange)
@@ -27099,7 +27099,7 @@ class Effect6435(BaseEffect):
             return
         if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
             return
-        speedBoost = src.getModifiedItemAttr('{}SpeedPenalty'.format(cls.prefix)) * src.amount
+        speedBoost = applyWebStrengthCap(src.getModifiedItemAttr('{}SpeedPenalty'.format(cls.prefix))) * src.amount
         speedBoost *= calculateRangeFactor(
             srcOptimalRange=src.getModifiedItemAttr('{}OptimalRange'.format(cls.prefix)),
             srcFalloffRange=src.getModifiedItemAttr('{}FalloffRange'.format(cls.prefix)),
@@ -27445,7 +27445,7 @@ class Effect6476(BaseEffect):
             return
         if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
             return
-        fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
+        fit.ship.boostItemAttr('maxVelocity', applyWebStrengthCap(module.getModifiedItemAttr('speedFactor')),
                                stackingPenalties=True, **kwargs)
 
 
@@ -30385,7 +30385,7 @@ class Effect6682(BaseEffect):
             return
         if fit.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
             return
-        speedBoost = module.getModifiedItemAttr('speedFactor')
+        speedBoost = applyWebStrengthCap(module.getModifiedItemAttr('speedFactor'))
         speedBoost *= calculateRangeFactor(
             srcOptimalRange=module.getModifiedItemAttr('maxRange'),
             srcFalloffRange=module.getModifiedItemAttr('falloffEffectiveness'),
@@ -30599,7 +30599,7 @@ class Effect6690(BaseEffect):
             return
         if module.getModifiedItemAttr('maxRange', 0) < (projectionRange or 0):
             return
-        fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'),
+        fit.ship.boostItemAttr('maxVelocity', applyWebStrengthCap(module.getModifiedItemAttr('speedFactor')),
                                stackingPenalties=True, **kwargs)
 
 
