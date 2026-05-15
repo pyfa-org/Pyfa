@@ -32,6 +32,48 @@ The following is a list of pyfa packages available for certain distributions.
 ## Contribution
 If you wish to help with development or you need to run pyfa through a Python interpreter, check out [the instructions](https://github.com/pyfa-org/Pyfa/blob/master/CONTRIBUTING.md).
 
+## MCP server
+
+Pyfa now includes a local [Model Context Protocol](https://modelcontextprotocol.io/) server for AI assistants.
+
+1. Install the Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Build `eve.db` if your checkout does not already contain it:
+   ```bash
+   python3 db_update.py
+   ```
+3. Start the MCP server over stdio:
+   ```bash
+   python3 pyfa_mcp_server.py
+   ```
+
+The server exposes:
+
+- **Resources:** `fit://all`, `fit://{fit_id}`, `ship://{ship_name}`
+- **Tools:** `list_fits`, `get_fit_stats`, `compare_fits`, `create_fit`, `get_ship_profile`
+- **Prompts:** `compare_fits_prompt`, `analyze_fit_prompt`
+
+For Claude Desktop, add an entry similar to this to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "pyfa": {
+      "command": "python3",
+      "args": [
+        "/path/to/Pyfa/pyfa_mcp_server.py",
+        "--game-db",
+        "/path/to/Pyfa/eve.db",
+        "--savedata-db",
+        "/path/to/.pyfa/savedata.db"
+      ]
+    }
+  }
+}
+```
+
 ## Bug Reporting
 The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](https://forums.eveonline.com/t/27156) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/pyfa-org/Pyfa/wiki/Bug-Reporting). 
 
