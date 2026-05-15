@@ -29,6 +29,7 @@ from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from eos.calc import applyWebStrengthCap
 import eos.config
 
 
@@ -176,7 +177,7 @@ class Miscellanea(ViewColumn):
                         text_parts.append("{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)))
                         tooltip_parts.append("{0} dampening".format(formatList(ttEntries)).capitalize())
             if 'remoteWebifierEntity' in item.effects:
-                speedFactor = stuff.getModifiedItemAttr("speedFactor")
+                speedFactor = applyWebStrengthCap(stuff.getModifiedItemAttr("speedFactor"))
                 if speedFactor:
                     text_parts.append("{0}%".format(formatAmount(speedFactor, 3, 0, 3)))
                     tooltip_parts.append("Speed reduction")
@@ -282,7 +283,7 @@ class Miscellanea(ViewColumn):
             itemGroup in ("Stasis Web", "Stasis Grappler", "Stasis Webifying Drone", "Structure Stasis Webifier") or
             (itemGroup in ("Structure Burst Projector", "Burst Projectors") and "doomsdayAOEWeb" in item.effects)
         ):
-            speedFactor = stuff.getModifiedItemAttr("speedFactor")
+            speedFactor = applyWebStrengthCap(stuff.getModifiedItemAttr("speedFactor"))
             if not speedFactor:
                 return "", None
             text = "{0}%".format(formatAmount(speedFactor, 3, 0, 3))

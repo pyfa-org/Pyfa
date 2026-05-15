@@ -20,7 +20,7 @@
 
 import math
 
-from eos.calc import calculateMultiplier, calculateRangeFactor
+from eos.calc import calculateMultiplier, calculateRangeFactor, applyWebStrengthCap
 from graphs.calc import checkLockRange, checkDroneControlRange
 from graphs.data.base import SmoothPointGetter
 
@@ -88,22 +88,22 @@ class Distance2WebbingStrGetter(SmoothPointGetter):
             for effectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
                 if effectName in mod.item.effects:
                     webs.append((
-                        mod.getModifiedItemAttr('speedFactor') * resonance,
+                        applyWebStrengthCap(mod.getModifiedItemAttr('speedFactor')) * resonance,
                         mod.maxRange or 0, mod.falloff or 0, 'default', True, False))
             if 'doomsdayAOEWeb' in mod.item.effects:
                 webs.append((
-                    mod.getModifiedItemAttr('speedFactor') * resonance,
+                    applyWebStrengthCap(mod.getModifiedItemAttr('speedFactor')) * resonance,
                     max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange')),
                     mod.falloff or 0, 'default', False, False))
         for drone in src.item.activeDronesIter():
             if 'remoteWebifierEntity' in drone.item.effects:
                 webs.extend(drone.amountActive * ((
-                    drone.getModifiedItemAttr('speedFactor') * resonance,
+                    applyWebStrengthCap(drone.getModifiedItemAttr('speedFactor')) * resonance,
                     math.inf, 0, 'default', True, True),))
         for fighter, ability in src.item.activeFighterAbilityIter():
             if ability.effect.name == 'fighterAbilityStasisWebifier':
                 webs.append((
-                    fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amount * resonance,
+                    applyWebStrengthCap(fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty')) * fighter.amount * resonance,
                     math.inf, 0, 'default', True, False))
         return {'webs': webs}
 
