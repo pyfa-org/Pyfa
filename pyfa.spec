@@ -116,7 +116,7 @@ if platform.system() == 'Darwin':
         'CFBundleVersion': '1.2.3',
         'CFBundleShortVersionString': '1.2.3',
     }
-    app = BUNDLE(exe,
+    app = BUNDLE(coll,
         name='pyfa.app',
         icon=icon,
         bundle_identifier=None,
