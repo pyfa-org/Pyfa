@@ -43065,6 +43065,214 @@ class Effect12862(BaseEffect):
             'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
 
+class Effect12872(BaseEffect):
+    """
+    shipBonusCarrierA3SupportFighterShieldBonusEffect
+
+    Used by:
+    Ship: Salvation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Support Fighters'), 'shieldCapacity',
+            ship.getModifiedItemAttr('shipBonusCarrierA3'), skill='Amarr Carrier', **kwargs)
+
+
+class Effect12873(BaseEffect):
+    """
+    shipBonusCarrierA6JumpDriveBonus
+
+    Used by:
+    Ship: Salvation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierA6'), skill='Amarr Carrier', **kwargs)
+
+
+class Effect12875(BaseEffect):
+    """
+    shipBonusCommandCarrierInformationCommand
+
+    Used by:
+    Ship: Salvation
+    Ship: Simurgh
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Information Command'), attrName,
+                src.getModifiedItemAttr('shipBonusCommandCarrierInformationCommand'),
+                skill='Command Carriers', **kwargs)
+
+
+class Effect12876(BaseEffect):
+    """
+    shipBonusCommandCarrierArmorCommand
+
+    Used by:
+    Ship: Gaia
+    Ship: Salvation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Armored Command'), attrName,
+                src.getModifiedItemAttr('shipBonusCommandCarrierArmorCommand'),
+                skill='Command Carriers', **kwargs)
+
+
+class Effect12877(BaseEffect):
+    """
+    shipBonusCommandCarrierShieldCommand
+
+    Used by:
+    Ship: Simurgh
+    Ship: Ymir
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Shield Command'), attrName,
+                src.getModifiedItemAttr('shipBonusCommandCarrierShieldCommand'),
+                skill='Command Carriers', **kwargs)
+
+
+class Effect12878(BaseEffect):
+    """
+    shipBonusCommandCarrierSkirmishCommand
+
+    Used by:
+    Ship: Gaia
+    Ship: Ymir
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in ('buffDuration', 'warfareBuff1Value', 'warfareBuff2Value', 'warfareBuff3Value', 'warfareBuff4Value'):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Skirmish Command'), attrName,
+                src.getModifiedItemAttr('shipBonusCommandCarrierSkirmishCommand'),
+                skill='Command Carriers', **kwargs)
+
+
+class Effect12880(BaseEffect):
+    """
+    shipBonusCarrierC3SupportFighterShieldBonusEffect
+
+    Used by:
+    Ship: Simurgh
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Support Fighters'), 'shieldCapacity',
+            ship.getModifiedItemAttr('shipBonusCarrierC3'), skill='Caldari Carrier', **kwargs)
+
+
+class Effect12881(BaseEffect):
+    """
+    shipBonusCarrierC6JumpDriveBonus
+
+    Used by:
+    Ship: Simurgh
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierC6'), skill='Caldari Carrier', **kwargs)
+
+
+class Effect12882(BaseEffect):
+    """
+    shipBonusCarrierG6SupportFighterShieldBonusEffect
+
+    Used by:
+    Ship: Gaia
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Support Fighters'), 'shieldCapacity',
+            ship.getModifiedItemAttr('shipBonusCarrierG6'), skill='Gallente Carrier', **kwargs)
+
+
+class Effect12883(BaseEffect):
+    """
+    shipBonusCarrierG7JumpDriveBonus
+
+    Used by:
+    Ship: Gaia
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierG7'), skill='Gallente Carrier', **kwargs)
+
+
+class Effect12884(BaseEffect):
+    """
+    shipBonusCarrierM6SupportFighterShieldBonusEffect
+
+    Used by:
+    Ship: Ymir
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Support Fighters'), 'shieldCapacity',
+            ship.getModifiedItemAttr('shipBonusCarrierM6'), skill='Minmatar Carrier', **kwargs)
+
+
+class Effect12885(BaseEffect):
+    """
+    shipBonusCarrierM7JumpDriveBonus
+
+    Used by:
+    Ship: Ymir
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierM7'), skill='Minmatar Carrier', **kwargs)
+
+
 class Effect12887(BaseEffect):
     """
     angelCartelProjectileReloadingSpeed
@@ -43088,6 +43296,40 @@ class Effect12887(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Projectile Weapon', 'reloadTime',
             ship.getModifiedItemAttr('angelCartelProjectileReloadingSpeed'), **kwargs)
+
+
+class Effect12890(BaseEffect):
+    """
+    shipBonusCarrierM8SupportFighterVelocity
+
+    Used by:
+    Ship: Ymir
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.fighters.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Support Fighters'), 'maxVelocity',
+            ship.getModifiedItemAttr('shipBonusCarrierM8'), skill='Minmatar Carrier', **kwargs)
+
+
+class Effect12891(BaseEffect):
+    """
+    shipBonusCommandCarrierCMJDDuration
+
+    Used by:
+    Ships from group: Command Carrier (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Micro Jump Drive Operation'), 'duration',
+            ship.getModifiedItemAttr('shipBonusCommandCarrierCMJDDuration'), skill='Command Carriers', **kwargs)
 
 
 class Effect12892(BaseEffect):
