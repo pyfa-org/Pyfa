@@ -21,7 +21,7 @@ from logbook import Logger
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, cappingAttrKeyCache
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, maxLimitAttrKeyCache
 from eos.saveddata.mode import Mode
 
 pyfalog = Logger(__name__)
@@ -55,7 +55,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.__itemModifiedAttributes.overrides = self.item.overrides
 
         if "maximumRangeCap" in self.__itemModifiedAttributes.original:
-            cappingAttrKeyCache["maxTargetRange"] = "maximumRangeCap"
+            maxLimitAttrKeyCache["maxTargetRange"] = "maximumRangeCap"
 
         self.owner = owner
         self.commandBonus = 0
