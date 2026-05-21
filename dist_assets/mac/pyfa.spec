@@ -65,20 +65,28 @@ pyz = PYZ(a.pure, a.zipped_data,
 
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
+          exclude_binaries=True,
           name='pyfa',
           debug=False,
           strip=False,
           upx=True,
-          runtime_tmpdir=None,
           console=False ,
           icon=icon,
+          contents_directory='app',
           )
 
-app = BUNDLE(
+coll = COLLECT(
     exe,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
+    strip=False,
+    upx=True,
+    name='pyfa',
+)
+
+app = BUNDLE(
+    coll,
     name='pyfa.app',
     version=os.getenv('PYFA_VERSION'),
     icon=icon,
