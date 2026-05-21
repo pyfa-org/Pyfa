@@ -37788,6 +37788,25 @@ class Effect8264(BaseEffect):
             skill='Industrial Command Ships', **kwargs)
 
 
+class Effect8267(BaseEffect):
+    """
+    weaponDisruptorResistanceBonusPassive
+
+    Used by:
+    Implant: Republic Electronics Booster I
+    Implant: Republic Electronics Booster II
+    Implant: Republic Electronics Booster III
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'weaponDisruptionResistance',
+            container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
+
+
 
 class Effect8270(BaseEffect):
     """
@@ -38379,6 +38398,24 @@ class Effect8479(BaseEffect):
         fit.drones.filteredItemBoost(
             lambda drone: drone.item.requiresSkill('Drones'), 'falloff',
             container.getModifiedItemAttr('falloffBonus'), **kwargs)
+
+
+class Effect8517(BaseEffect):
+    """
+    stasisWebifierResistanceBonusPassive
+
+    Used by:
+    Implant: Imperial Electronics Booster I
+    Implant: Imperial Electronics Booster II
+    Implant: Imperial Electronics Booster III
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('stasisWebifierResistance',
+                               booster.getModifiedItemAttr('stasisWebifierResistanceBonus'), **kwargs)
 
 
 class Effect11055(BaseEffect):
@@ -42864,6 +42901,187 @@ class Effect12811(BaseEffect):
             ship.getModifiedItemAttr('eliteBonusBlackOps3'), skill='Black Ops', **kwargs)
 
 
+class Effect12820(BaseEffect):
+    """
+    boosterImplantMiningCriticalHitChanceBonusEffect
+
+    Used by:
+    Implants named like: Electronics Booster (12 of 27)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: (mod.item.requiresSkill('Mining') or mod.item.requiresSkill('Ice Harvesting')),
+            'miningCritChance', src.getModifiedItemAttr('boosterMiningCriticalHitChanceBonus'), **kwargs)
+
+
+class Effect12821(BaseEffect):
+    """
+    sensorDampenerResistanceBonusPassive
+
+    Used by:
+    Implant: State Electronics Booster I
+    Implant: State Electronics Booster II
+    Implant: State Electronics Booster III
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('sensorDampenerResistance', container.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
+
+
+class Effect12822(BaseEffect):
+    """
+    modifyShieldArmorHullEMResonancePassivePostPercentPassive
+
+    Used by:
+    Implant: Republic Defense Booster I
+    Implant: Republic Defense Booster II
+    Implant: Republic Defense Booster III
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldEmDamageResonance', src.getModifiedItemAttr('passiveEmDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('passiveEmDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('emDamageResonance', src.getModifiedItemAttr('passiveEmDamageResistanceBonus'), **kwargs)
+
+
+class Effect12823(BaseEffect):
+    """
+    modifyShieldArmorHullThermalResonancePassivePostPercentPassive
+
+    Used by:
+    Implants named like: Defense Booster (9 of 28)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldThermalDamageResonance', src.getModifiedItemAttr('passiveThermicDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('armorThermalDamageResonance', src.getModifiedItemAttr('passiveThermicDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('thermalDamageResonance', src.getModifiedItemAttr('passiveThermicDamageResistanceBonus'), **kwargs)
+
+
+class Effect12824(BaseEffect):
+    """
+    modifyShieldArmorHullKineticResonancePassivePostPercentPassive
+
+    Used by:
+    Implants named like: Defense Booster (9 of 28)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldKineticDamageResonance', src.getModifiedItemAttr('passiveKineticDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('passiveKineticDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('kineticDamageResonance', src.getModifiedItemAttr('passiveKineticDamageResistanceBonus'), **kwargs)
+
+
+class Effect12825(BaseEffect):
+    """
+    modifyShieldArmorHullExplosiveResonancePassivePostPercentPassive
+
+    Used by:
+    Implant: Imperial Defense Booster I
+    Implant: Imperial Defense Booster II
+    Implant: Imperial Defense Booster III
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('shieldExplosiveDamageResonance', src.getModifiedItemAttr('passiveExplosiveDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('passiveExplosiveDamageResistanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('explosiveDamageResonance', src.getModifiedItemAttr('passiveExplosiveDamageResistanceBonus'), **kwargs)
+
+
+class Effect12826(BaseEffect):
+    """
+    boosterHackingVirusCoherenceModifierEffect
+
+    Used by:
+    Implants named like: Defense Booster (12 of 28)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Data Miners', 'virusCoherence',
+            implant.getModifiedItemAttr('boosterHackingVirusCoherenceModifier'), **kwargs)
+
+
+class Effect12827(BaseEffect):
+    """
+    miningWasteChanceBonusOreIceGasPassive
+
+    Used by:
+    Implants named like: Defense Booster (12 of 28)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: (mod.item.requiresSkill('Mining')
+                         or mod.item.requiresSkill('Ice Harvesting')
+                         or mod.item.requiresSkill('Gas Cloud Harvesting')),
+            'miningWasteProbability', src.getModifiedItemAttr('miningWasteProbabilityBonus'), **kwargs)
+
+
+class Effect12828(BaseEffect):
+    """
+    boosterMinerMaxRangeBonusEffect
+
+    Used by:
+    Implants named like: Mobility Booster (12 of 28)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: (mod.item.requiresSkill('Mining')
+                         or mod.item.requiresSkill('Ice Harvesting')
+                         or mod.item.requiresSkill('Gas Cloud Harvesting')),
+            'maxRange', src.getModifiedItemAttr('boosterMinerMaxRangeBonus'), **kwargs)
+
+
+class Effect12829(BaseEffect):
+    """
+    boosterMiningLaserIceGasHarvesterDurationReductionAndCapacitorEffectPassive
+
+    Used by:
+    Implants named like: Hardpoint Booster (12 of 12)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attr in ('capacitorNeed', 'duration'):
+            fit.modules.filteredItemBoost(
+                lambda mod: (mod.item.requiresSkill('Mining')
+                             or mod.item.requiresSkill('Ice Harvesting')
+                             or mod.item.requiresSkill('Gas Cloud Harvesting')),
+                attr, src.getModifiedItemAttr('boosterMiningLaserIceGasHarvesterDurationReductionAndCapacitor'), **kwargs)
+
+
 class Effect12835(BaseEffect):
     """
     shipBonusForceAuxiliaryC5CapBoosterStrength
@@ -43046,6 +43264,25 @@ class Effect12848(BaseEffect):
             fit.fighters.filteredItemBoost(
                 lambda mod: mod.item.requiresSkill('Minmatar Fighter Specialization'),
                 attr, boost, **kwargs)
+
+
+class Effect12849(BaseEffect):
+    """
+    boosterMissileDamageBonusAllDamageTypesPostPercent
+
+    Used by:
+    Implants named like: Republic Hardpoint Booster (3 of 3)
+    Implants named like: State Hardpoint Booster (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for damageType in ('em', 'explosive', 'kinetic', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), f'{damageType}Damage',
+                src.getModifiedItemAttr('boosterMissileDamageBonusPostPercent'), **kwargs)
 
 
 class Effect12862(BaseEffect):
