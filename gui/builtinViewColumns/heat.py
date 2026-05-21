@@ -36,7 +36,7 @@ class Thermodynamics():
         self.hgm = fit.ship.getModifiedItemAttr("heatGenerationMultiplier")
         self.harm = self.calcHeatAbsorbtionRateModifier()
         self.slotfactor = self.calcSlotFactor()
-        self.simTime = 120
+        self.simTime = 600
 
     def getSlotPos(self, mod): # get rack position of mod, 0-7
         rack = []
@@ -57,65 +57,17 @@ class Thermodynamics():
 
         return harm
 
-        """
-        HANGAR.ShipInfoThermodynamics.prototype.getHARM = function() {
-            var harm = [0,0,0];
-            var rack = ["hs", "ms", "ls"];
-
-            for(var i = 0; i < rack.length; i++) {
-
-                for(var j = 1; j <= 8; j++) {
-                    // if slot and slot is overheated
-                    if(this.shipinfo.ship.slots[rack[i]+j] && this.fitwindow.slots[rack[i]+j].find(" .sloticon").hasClass("heat") ) {
-                        harm[i] += this.shipinfo.ship.slots[rack[i]+j].heatAbsorbtionRateModifier;
-                    }
-                }
-            }
-
-            return harm;
-        };
-        """
-
     def calcSlotFactor(self):
         slots = self.fit.ship.getModifiedItemAttr("hiSlots") + self.fit.ship.getModifiedItemAttr("medSlots") + self.fit.ship.getModifiedItemAttr("lowSlots")
         empty = self.fit.getSlotsFree(3) + self.fit.getSlotsFree(2) + self.fit.getSlotsFree(1) # FittingSlot.HIGH doesn"t work here?
         rigslots = self.fit.getNumSlots(4)
 
-        return (slots - empty) / (slots + rigslots)
+        offline = 0
+        for mod in self.fit.modules:
+            if (mod.state == FittingModuleState.OFFLINE and mod.slot in [1, 2, 3]): # only count offline low, med, hi mods
+                offline += 1
 
-        """
-            HANGAR.ShipInfoThermodynamics.prototype.getSlotFactor = function() {
-            var slots = 0;
-            var emptyslots = 0;
-            for(var i = 1; i <= 8; i++) {
-
-                var hs = this.fitwindow.slots["hs"+i];
-                var ms = this.fitwindow.slots["ms"+i];
-                var ls = this.fitwindow.slots["ls"+i];
-
-                if(hs.hasClass("highslot") ) {
-                    slots++;
-                    if(!hs.hasClass("occupied") || hs.hasClass("offline") ) {
-                        emptyslots++;
-                    }
-                }
-                if(ms.hasClass("midslot") ) {
-                    slots++;
-                    if(!ms.hasClass("occupied") || ms.hasClass("offline") ) {
-                        emptyslots++;
-                    }
-                }
-                if(ls.hasClass("lowslot") ) {
-                    slots++;
-                    if(!ls.hasClass("occupied") || ls.hasClass("offline") ) {
-                        emptyslots++;
-                    }
-                }
-            }
-
-            return (slots-emptyslots)/(slots + this.shipinfo.ship.data.rigSlots);
-        };
-        """
+        return (slots - empty - offline) / (slots + rigslots)
 
     def calcDamageProbability(self, mod, t): # get chance the module is damaged when overheated at time t
         keys = ["", "heatAttenuationLow", "heatAttenuationMed", "heatAttenuationHi"]
@@ -141,41 +93,6 @@ class Thermodynamics():
 
         return res
 
-        """
-        HANGAR.ShipInfoThermodynamics.prototype.getDamageProb = function(slot, t) {
-            var rack = slot[0] == "h" ? "hs" : slot[0] == "m" ? "ms" : "ls";
-            var harmNdx = rack === "hs" ? 0 : rack === "ms" ? 1 : 2;
-            var att = rack == "hs" ? this.shipinfo.ship.data.heatAttenuationHi :
-                    rack == "ms" ? this.shipinfo.ship.data.heatAttenuationMed :
-                    this.shipinfo.ship.data.heatAttenuationLow ?
-                    this.shipinfo.ship.data.heatAttenuationLow : 0.25;
-
-            var slotpos = parseInt( slot.substr(2) );
-            var rackheat = 1 + -Math.pow(Math.E, (-t * this.hgm * this.harm[harmNdx]));
-
-            var prob = [];
-            for(var i = 1; i <= 8; i++) {
-                if(rack+i == slot) continue;
-                if(this.shipinfo.ship.slots[ rack+i ] && this.shipinfo.ship.slots[ rack+i ].state === "overload"){
-                    var pos = Math.abs(i - slotpos);
-                    prob.push( Math.pow(att, pos)*this.slotfactor*rackheat );
-                }
-            }
-
-            var p = 1;
-            for(var i = 0; i < prob.length; i++) {
-                p *= (1-prob[i]);
-            }
-
-            var selfprob = this.slotfactor * rackheat;
-            if(p === 1) {
-                return selfprob;
-            } else {
-                return 1 - p*(1-selfprob);
-            }
-        };
-        """
-
     def calcBurnCycles(self, mod): # estimates the number of cycles a module will OH before it burns out
         speed = mod.getModifiedItemAttr("speed")
         duration = mod.getModifiedItemAttr("duration")
@@ -188,12 +105,13 @@ class Thermodynamics():
             p = self.calcDamageProbability(mod, t)
             fp.append(p)
 
-            if f"{p:.2f}" == f"{lastp:.2f}":
+            if f"{p:.5f}" == f"{lastp:.5f}":
                 break
 
             t += inc
             lastp = p
 
+        # http://jsfiddle.net/kkspy/86/
         E = 0 # expected wait to failure
         n = math.ceil(mod.getModifiedItemAttr("hp") / mod.getModifiedItemAttr("heatDamage")) # fault tolerance
         a = [1]
@@ -213,45 +131,6 @@ class Thermodynamics():
             E += (t + 1 + (n - k) * (1 / fp[t])) * a[k]
 
         return math.floor(E)
-
-        """
-        HANGAR.ShipInfoThermodynamics.prototype.calcBurnCycles = function(slot) {
-            var fp = [];
-            var p = 0, lastp = 0;
-            var mod = this.shipinfo.ship.slots[slot];
-            var inc = mod.speed ? mod.speed/1000 : mod.duration/1000;
-            var t = inc;
-
-            while(t < this.simTime) {
-                p = this.getDamageProb(slot, t);
-                fp.push(p);
-                if(p.toFixed(2) === lastp.toFixed(2)) break;
-                t += inc;
-                lastp = p;
-            }
-
-            //http://jsfiddle.net/kkspy/86/
-            var E = 0;
-            var n = Math.ceil(mod.hp / mod.heatDamage);
-            var a = [1];
-            for(var i = 1; i < n;i++) { a.push(0); }
-
-            for(var t = 0; t < fp.length; t++) {
-                E += (t+1)*fp[t]*a[n-1];
-                for(var k = n-1; k > 0; k--) {
-                    a[k] = (1-fp[t])*a[k] + fp[t]*a[k-1];
-                }
-                a[0] = (1-fp[t])*a[0];
-            }
-
-            t--;
-            for(var k = 0; k < n; k++) {
-                E += ( t+1 + (n-k)*(1/fp[t]))*a[k];
-            }
-
-            return Math.floor(E);
-        };
-        """
 
 class Heat(ViewColumn):
     name = "Heat"
