@@ -15514,7 +15514,7 @@ class Effect4579(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Stasis Webifying Drone',
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drone Navigation'),
                                      'speedFactor', module.getModifiedItemAttr('webSpeedFactorBonus'), **kwargs)
 
 
