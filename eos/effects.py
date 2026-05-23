@@ -20770,22 +20770,6 @@ class Effect5501(BaseEffect):
                                       skill='Command Ships', **kwargs)
 
 
-class Effect5505(BaseEffect):
-    """
-    eliteBonusCommandShipMediumHybridRoFCS1
-
-    Used by:
-    Ship: Astarte
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'),
-                                      'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships', **kwargs)
-
-
 class Effect5514(BaseEffect):
     """
     eliteBonusCommandShipHeavyAssaultMissileDamageCS2
@@ -43321,7 +43305,7 @@ class Effect12872(BaseEffect):
 
 class Effect12873(BaseEffect):
     """
-    shipBonusCarrierA6JumpDriveBonus
+    shipBonusCarrierA6ConduitJumpPassengerCount
 
     Used by:
     Ship: Salvation
@@ -43331,7 +43315,7 @@ class Effect12873(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierA6'), skill='Amarr Carrier', **kwargs)
+        fit.ship.boostItemAttr('conduitJumpPassengerCount', ship.getModifiedItemAttr('shipBonusCarrierA6'), skill='Amarr Carrier', **kwargs)
 
 
 class Effect12875(BaseEffect):
@@ -43433,7 +43417,7 @@ class Effect12880(BaseEffect):
 
 class Effect12881(BaseEffect):
     """
-    shipBonusCarrierC6JumpDriveBonus
+    shipBonusCarrierC6ConduitJumpPassengerCount
 
     Used by:
     Ship: Simurgh
@@ -43443,7 +43427,7 @@ class Effect12881(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierC6'), skill='Caldari Carrier', **kwargs)
+        fit.ship.boostItemAttr('conduitJumpPassengerCount', ship.getModifiedItemAttr('shipBonusCarrierC6'), skill='Caldari Carrier', **kwargs)
 
 
 class Effect12882(BaseEffect):
@@ -43465,7 +43449,7 @@ class Effect12882(BaseEffect):
 
 class Effect12883(BaseEffect):
     """
-    shipBonusCarrierG7JumpDriveBonus
+    shipBonusCarrierG7ConduitJumpPassengerCount
 
     Used by:
     Ship: Gaia
@@ -43475,7 +43459,7 @@ class Effect12883(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierG7'), skill='Gallente Carrier', **kwargs)
+        fit.ship.boostItemAttr('conduitJumpPassengerCount', ship.getModifiedItemAttr('shipBonusCarrierG7'), skill='Gallente Carrier', **kwargs)
 
 
 class Effect12884(BaseEffect):
@@ -43497,7 +43481,7 @@ class Effect12884(BaseEffect):
 
 class Effect12885(BaseEffect):
     """
-    shipBonusCarrierM7JumpDriveBonus
+    shipBonusCarrierM7ConduitJumpPassengerCount
 
     Used by:
     Ship: Ymir
@@ -43507,7 +43491,7 @@ class Effect12885(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('jumpDriveRange', ship.getModifiedItemAttr('shipBonusCarrierM7'), skill='Minmatar Carrier', **kwargs)
+        fit.ship.boostItemAttr('conduitJumpPassengerCount', ship.getModifiedItemAttr('shipBonusCarrierM7'), skill='Minmatar Carrier', **kwargs)
 
 
 class Effect12887(BaseEffect):
@@ -43603,3 +43587,37 @@ class Effect12893(BaseEffect):
             fit.modules.filteredChargeBoost(
                 lambda mod: mod.charge.requiresSkill('Heavy Assault Missiles'), f'{damageType}Damage',
                 ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser', **kwargs)
+
+
+class Effect12894(BaseEffect):
+    """
+    shipBonusCommandCarrierCMJDShipJumpCap
+
+    Used by:
+    Ships from group: Command Carrier (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Capital Micro Jump Drive Operation'), 'mjdShipJumpCap',
+            ship.getModifiedItemAttr('shipBonusCommandCarrierCMJDShipJumpCap'), **kwargs)
+
+
+class Effect12897(BaseEffect):
+    """
+    eliteBonusCommandShipMediumHybridDamageCS1
+
+    Used by:
+    Ship: Astarte
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'damageMultiplier',
+            ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships', **kwargs)

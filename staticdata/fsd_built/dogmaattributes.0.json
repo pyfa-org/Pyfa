@@ -49694,5 +49694,16 @@
     "name": "shipBonusCarrierM8", 
     "published": 0, 
     "stackable": 1
+  }, 
+  "6210": {
+    "attributeID": 6210, 
+    "categoryID": 37, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "shipBonusCommandCarrierCMJDShipJumpCap", 
+    "published": 1, 
+    "stackable": 1
   }
 }

@@ -101175,7 +101175,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 12873, 
-    "effectName": "shipBonusCarrierA6JumpDriveBonus", 
+    "effectName": "shipBonusCarrierA6ConduitJumpPassengerCount", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -101184,14 +101184,13 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 867, 
+        "modifiedAttributeID": 3133, 
         "modifyingAttributeID": 6191, 
         "operation": 6
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
-    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "12875": {
@@ -101491,7 +101490,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 12881, 
-    "effectName": "shipBonusCarrierC6JumpDriveBonus", 
+    "effectName": "shipBonusCarrierC6ConduitJumpPassengerCount", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -101500,7 +101499,7 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 867, 
+        "modifiedAttributeID": 3133, 
         "modifyingAttributeID": 6196, 
         "operation": 6
       }
@@ -101536,7 +101535,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 12883, 
-    "effectName": "shipBonusCarrierG7JumpDriveBonus", 
+    "effectName": "shipBonusCarrierG7ConduitJumpPassengerCount", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -101545,7 +101544,7 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 867, 
+        "modifiedAttributeID": 3133, 
         "modifyingAttributeID": 6197, 
         "operation": 6
       }
@@ -101581,7 +101580,7 @@
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
     "effectID": 12885, 
-    "effectName": "shipBonusCarrierM7JumpDriveBonus", 
+    "effectName": "shipBonusCarrierM7ConduitJumpPassengerCount", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
@@ -101590,7 +101589,7 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 867, 
+        "modifiedAttributeID": 3133, 
         "modifyingAttributeID": 6200, 
         "operation": 6
       }
@@ -101756,6 +101755,62 @@
         "modifyingAttributeID": 749, 
         "operation": 6, 
         "skillTypeID": 25719
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12894": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12894, 
+    "effectName": "shipBonusCommandCarrierCMJDShipJumpCap", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 2832, 
+        "modifyingAttributeID": 6210, 
+        "operation": 6, 
+        "skillTypeID": 83464
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12897": {
+    "description_de": "Automatically generated effect", 
+    "description_en-us": "Automatically generated effect", 
+    "description_es": "Automatically generated effect", 
+    "description_fr": "Automatically generated effect", 
+    "description_it": "Automatically generated effect", 
+    "description_ja": "Automatically generated effect", 
+    "description_ko": "Automatically generated effect", 
+    "description_ru": "Automatically generated effect", 
+    "description_zh": "Automatically generated effect", 
+    "descriptionID": 1046024, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12897, 
+    "effectName": "eliteBonusCommandShipMediumHybridDamageCS1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 1000, 
+        "operation": 6, 
+        "skillTypeID": 3304
       }
     ], 
     "propulsionChance": 0, 
