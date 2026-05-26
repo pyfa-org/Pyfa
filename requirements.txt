@@ -3,7 +3,7 @@ logbook==1.7.0.post0
 numpy==1.26.2
 matplotlib==3.8.2
 python-dateutil==2.8.2
-requests==2.31.0
+requests==2.32.0
 sqlalchemy==1.4.50
 cryptography==42.0.4
 markdown2==2.4.11
