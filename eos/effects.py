@@ -42806,6 +42806,21 @@ class Effect12802(BaseEffect):
             src.getModifiedItemAttr('miningAmountBonus') * src.level, **kwargs)
 
 
+class Effect12810(BaseEffect):
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'speedFactor',
+            ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
+        for attr in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Propulsion Jamming'), attr,
+                ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer', **kwargs)
+
+
 class Effect12811(BaseEffect):
     """
     eliteBonusStasisGrapplerMaxRangeBlackOps3
@@ -42913,6 +42928,17 @@ class Effect12839(BaseEffect):
             lambda mod: mod.charge.requiresSkill('Astrometrics'), 'baseMaxScanDeviation',
             container.getModifiedItemAttr('expeditionCommandBurstProbeDeviationBonusCharID'),
             stackingPenalties=True, penaltyGroup='postMul', **kwargs)
+
+
+class Effect12843(BaseEffect):
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'damageMultiplier',
+            src.getModifiedItemAttr('shipBonusGD2'), skill='Gallente Destroyer', **kwargs)
 
 
 class Effect12844(BaseEffect):
