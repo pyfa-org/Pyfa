@@ -161,6 +161,10 @@ def update_db():
                     "'Krai Perun'" not in row['typeName_en-us'] and
                     "'Krai Svarog'" not in row['typeName_en-us']
                 )
+                # Some draft boosters added to sisi, should be removed later when FC/CCP finishes them
+                or row['typeID'] in (
+                        91916,
+                )
             ):
                 row['published'] = False
 

@@ -14911,6 +14911,10 @@
     "iconFile": "res:/ui/texture/icons/inventory/FabricatorData.png", 
     "iconType": "png"
   }, 
+  "27413": {
+    "iconFile": "res:/ui/Texture/classes/Menu/Icons/info_glyph.png", 
+    "iconType": "png"
+  }, 
   "27414": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_anger_games_01_128.png"
   }, 
@@ -14994,6 +14998,18 @@
   "27467": {
     "iconFile": "res:/UI/Texture/Icons/Inventory/warpath_elite_token.png"
   }, 
+  "27468": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/93725_Female_Outer_LabCoatF01_Types_LabCoatF01_WhiteRed.png", 
+    "iconType": "png"
+  }, 
+  "27469": {
+    "iconFile": "res:/UI/Asset/mannequin/outer/93737_Male_outer_LabCoatM01_Types_LabCoatM01_WhiteRed.png", 
+    "iconType": "png"
+  }, 
+  "27470": {
+    "iconFile": "res:/UI/Texture/Icons/skillinjector_blood_64.png", 
+    "iconType": "png"
+  }, 
   "27471": {
     "iconFile": "res:/ui/texture/icons/inventory/EmpireCrate_Amarr.png"
   }, 
@@ -15005,5 +15021,26 @@
   }, 
   "27474": {
     "iconFile": "res:/ui/texture/icons/inventory/EmpireCrate_Minmatar.png"
+  }, 
+  "27523": {
+    "iconFile": "res:/ui/texture/corps/IMN_128.png"
+  }, 
+  "27524": {
+    "iconFile": "res:/ui/texture/corps/VerityEnhancements_128.png"
+  }, 
+  "27525": {
+    "iconFile": "res:/ui/texture/corps/VaporSeaTechnologies_128.png"
+  }, 
+  "27526": {
+    "iconFile": "res:/ui/texture/corps/Cromeaux_128.png"
+  }, 
+  "27527": {
+    "iconFile": "res:/ui/texture/corps/AdaptiveProvisioning_128.png"
+  }, 
+  "27528": {
+    "iconFile": "res:/ui/texture/icons/icon_background_04.png"
+  }, 
+  "27529": {
+    "iconFile": "res:/ui/texture/icons/icon_background_05.png"
   }
 }

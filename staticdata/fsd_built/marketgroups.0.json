@@ -47183,15 +47183,15 @@
   "3851": {
     "hasTypes": 1, 
     "iconID": 21920, 
-    "name_de": "Extra Large", 
+    "name_de": "Extragroß", 
     "name_en-us": "Extra Large", 
-    "name_es": "Extra Large", 
-    "name_fr": "Extra Large", 
+    "name_es": "Extragrande", 
+    "name_fr": "Très grand", 
     "name_it": "Extra Large", 
-    "name_ja": "Extra Large", 
-    "name_ko": "Extra Large", 
-    "name_ru": "Extra Large", 
-    "name_zh": "Extra Large", 
+    "name_ja": "超大型", 
+    "name_ko": "초대형", 
+    "name_ru": "Очень крупный", 
+    "name_zh": "超大", 
     "nameID": 1040825, 
     "parentGroupID": 2464
   }
