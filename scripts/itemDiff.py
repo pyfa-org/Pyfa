@@ -447,7 +447,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 for item in itemorder:
                     groupdata = items[item][0]
                     groupstr = " ({0} => {1})".format(getgroupname(groupdata[1]), getgroupname(groupdata[2])) if groupdata[0] == S["changed"] else ""
-                    print(("\n[{0}] {1}{2}".format(TG[itmstate], getitemname(item).encode('utf-8'), groupstr)))
+                    print(("\n[{0}] {3} {1}{2}".format(TG[itmstate], getitemname(item).encode('utf-8'), groupstr, item)))
 
                     effdata = items[item][1]
                     for effstate in stateorder:
