@@ -42806,7 +42806,48 @@ class Effect12802(BaseEffect):
             src.getModifiedItemAttr('miningAmountBonus') * src.level, **kwargs)
 
 
+class Effect12807(BaseEffect):
+    """
+    shipLightMissileAndRocketDamageBonusAD1
+
+    Used by:
+    Ship: Dragoon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
+                f'{dmgType}Damage', ship.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
+
+
+class Effect12808(BaseEffect):
+    """
+    shipBonusSETDamageAD1
+
+    Used by:
+    Ship: Dragoon Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'), 'damageMultiplier',
+            src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer', **kwargs)
+
+
 class Effect12810(BaseEffect):
+    """
+    shipBonusDroneWebStrengthAndHitpointsGD1
+
+    Used by:
+    Ship: Algos Navy Issue
+    """
 
     type = 'passive'
 
@@ -42836,6 +42877,109 @@ class Effect12811(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.group.name == 'Stasis Grappler', 'maxRange',
             ship.getModifiedItemAttr('eliteBonusBlackOps3'), skill='Black Ops', **kwargs)
+
+
+class Effect12812(BaseEffect):
+    """
+    shipLightMissileAndRocketDamageEMThermalExplosiveCD1
+
+    Used by:
+    Ship: Corax Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'explosive'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
+                f'{dmgType}Damage', ship.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer', **kwargs)
+
+
+class Effect12813(BaseEffect):
+    """
+    shipBonusLightMissileAndRocketKineticCD2
+
+    Used by:
+    Ship: Corax Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
+            'kineticDamage', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer', **kwargs)
+
+
+class Effect12815(BaseEffect):
+    """
+    shipLightMissileRocketAOECloudSizeCD3
+
+    Used by:
+    Ship: Corax Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
+            'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCD3'), skill='Caldari Destroyer', **kwargs)
+
+
+class Effect12817(BaseEffect):
+    """
+    shipBonusMissileLauncherRoFMD3
+
+    Used by:
+    Ship: Talwar Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Missile Launcher Operation'), 'speed',
+            src.getModifiedItemAttr('shipBonusMD3'), skill='Minmatar Destroyer', **kwargs)
+
+
+class Effect12818(BaseEffect):
+    """
+    shipShieldBoostMD2
+
+    Used by:
+    Ship: Talwar Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
+            src.getModifiedItemAttr('shipBonusMD2'), skill='Minmatar Destroyer', **kwargs)
+
+
+class Effect12819(BaseEffect):
+    """
+    shipBonusLightMissileRocketAoeVelocityMD1
+
+    Used by:
+    Ship: Talwar Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Rockets') or mod.charge.requiresSkill('Light Missiles'),
+            'aoeVelocity', ship.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer', **kwargs)
 
 
 class Effect12835(BaseEffect):
@@ -42931,6 +43075,12 @@ class Effect12839(BaseEffect):
 
 
 class Effect12843(BaseEffect):
+    """
+    shipSmallHybridDamageBonusGD2
+
+    Used by:
+    Ship: Algos Navy Issue
+    """
 
     type = 'passive'
 
