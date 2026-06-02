@@ -1211,7 +1211,6 @@ class Effect394(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
-    Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Imperial Mobility Booster (4 of 4)
     Implants named like: Republic Mobility Booster (4 of 4)
@@ -1244,7 +1243,6 @@ class Effect395(BaseEffect):
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
     Implants named like: Federation Mobility Booster (4 of 4)
-    Implants named like: Grand Prix Booster (4 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: State Mobility Booster (4 of 4)
@@ -2554,7 +2552,6 @@ class Effect856(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
-    Implants named like: Grand Prix Booster (5 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Mobility Booster (16 of 16)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
@@ -4005,8 +4002,8 @@ class Effect1234(BaseEffect):
     shipMissileVelocityPirateFactionLight
 
     Used by:
-    Ship: Corax
-    Ship: Talwar
+    Ships named like: Corax (2 of 2)
+    Ships named like: Talwar (2 of 2)
     """
 
     type = 'passive'
@@ -17930,8 +17927,8 @@ class Effect5153(BaseEffect):
     shipMissileVelocityPirateFactionRocket
 
     Used by:
-    Ship: Corax
-    Ship: Talwar
+    Ships named like: Corax (2 of 2)
+    Ships named like: Talwar (2 of 2)
     """
 
     type = 'passive'
@@ -17966,8 +17963,8 @@ class Effect5165(BaseEffect):
     shipBonusDroneMWDboostrole
 
     Used by:
-    Ship: Algos
-    Ship: Dragoon
+    Ships named like: Algos (2 of 2)
+    Ships named like: Dragoon (2 of 2)
     """
 
     type = 'passive'
@@ -18882,7 +18879,7 @@ class Effect5295(BaseEffect):
     shipBonusDroneDamageMultiplierAD1
 
     Used by:
-    Variations of ship: Dragoon (2 of 2)
+    Variations of ship: Dragoon (3 of 3)
     """
 
     type = 'passive'
@@ -18898,7 +18895,7 @@ class Effect5300(BaseEffect):
     shipBonusDroneHitpointsAD1
 
     Used by:
-    Variations of ship: Dragoon (2 of 2)
+    Variations of ship: Dragoon (3 of 3)
     """
 
     type = 'passive'
@@ -19032,7 +19029,7 @@ class Effect5310(BaseEffect):
     shipHybridTracking1GD2
 
     Used by:
-    Ship: Algos
+    Ships named like: Algos (2 of 2)
     Ship: Catalyst
     Ship: Eris
     """
@@ -19050,7 +19047,7 @@ class Effect5311(BaseEffect):
     shipBonusDroneDamageMultiplierGD1
 
     Used by:
-    Variations of ship: Algos (2 of 2)
+    Variations of ship: Algos (3 of 3)
     """
 
     type = 'passive'
@@ -19066,7 +19063,7 @@ class Effect5316(BaseEffect):
     shipBonusDroneHitpointsGD1
 
     Used by:
-    Variations of ship: Algos (2 of 2)
+    Variations of ship: Algos (3 of 3)
     """
 
     type = 'passive'
@@ -25171,7 +25168,7 @@ class Effect6241(BaseEffect):
     shipBonusEnergyNeutFalloffAD1
 
     Used by:
-    Ship: Dragoon
+    Ships named like: Dragoon (2 of 2)
     """
 
     type = 'passive'
@@ -25187,7 +25184,7 @@ class Effect6242(BaseEffect):
     shipBonusEnergyNeutOptimalAD2
 
     Used by:
-    Ship: Dragoon
+    Ships named like: Dragoon (2 of 2)
     """
 
     type = 'passive'
@@ -25203,7 +25200,7 @@ class Effect6245(BaseEffect):
     shipBonusEnergyNosOptimalAD2
 
     Used by:
-    Ship: Dragoon
+    Ships named like: Dragoon (2 of 2)
     """
 
     type = 'passive'
@@ -25219,7 +25216,7 @@ class Effect6246(BaseEffect):
     shipBonusEnergyNosFalloffAD1
 
     Used by:
-    Ship: Dragoon
+    Ships named like: Dragoon (2 of 2)
     """
 
     type = 'passive'
