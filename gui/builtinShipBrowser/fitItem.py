@@ -17,6 +17,7 @@ import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
+from service.vault import Vault as VaultService
 from .events import BoosterListUpdated, FitSelected, ImportSelected, SearchSelected, Stage3Selected
 
 pyfalog = Logger(__name__)
@@ -188,6 +189,10 @@ class FitItem(SFItem.SFBrowserItem):
             if self.mainFrame.command.Submit(cmd.GuiAddCommandFitsCommand(fitID=activeFit, commandFitIDs=[self.fitID])):
                 self.mainFrame.additionsPane.select("Command")
 
+    def OnMoveToVault(self, vaultID):
+        VaultService.getInstance().moveFitToVault(self.fitID, vaultID)
+        wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
+
     def OnMouseCaptureLost(self, event):
         """ Destroy drag information (GH issue #479)"""
         if self.dragging and self.dragged:
@@ -232,6 +237,16 @@ class FitItem(SFItem.SFBrowserItem):
 
             commandItem = menu.Append(wx.ID_ANY, _t("Add Command Booster"))
             self.Bind(wx.EVT_MENU, self.OnAddCommandFit, commandItem)
+
+            sVault = VaultService.getInstance()
+            other_vaults = [v for v in sVault.getVaultList() if v.ID != sVault.getCurrentVaultID()]
+            if other_vaults:
+                menu.AppendSeparator()
+                moveSub = wx.Menu()
+                for v in other_vaults:
+                    item = moveSub.Append(wx.ID_ANY, v.name)
+                    self.Bind(wx.EVT_MENU, lambda evt, vid=v.ID: self.OnMoveToVault(vid), item)
+                menu.AppendSubMenu(moveSub, _t("Move to vault"))
 
         self.PopupMenu(menu, pos)
 

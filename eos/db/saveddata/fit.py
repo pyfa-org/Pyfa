@@ -43,6 +43,7 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.module import Module
 from eos.saveddata.targetProfile import TargetProfile
 from eos.saveddata.user import User
+from eos.saveddata.vault import Vault
 
 
 fits_table = Table("fits", saveddata_meta,
@@ -65,6 +66,7 @@ fits_table = Table("fits", saveddata_meta,
                    Column("modified", DateTime, nullable=True, default=datetime.datetime.now, onupdate=datetime.datetime.now),
                    Column("systemSecurity", Integer, nullable=True),
                    Column("pilotSecurity", Float, nullable=True),
+                   Column("vaultID", ForeignKey("vaults.ID"), nullable=True, index=True),
                    )
 
 projectedFits_table = Table("projectedFits", saveddata_meta,
@@ -240,6 +242,7 @@ mapper(es_Fit, fits_table,
            "_Fit__builtinDamagePatternID": fits_table.c.builtinDamagePatternID,
            "_Fit__userTargetProfile": relation(TargetProfile),
            "_Fit__builtinTargetProfileID": fits_table.c.builtinTargetResistsID,
+           "_Fit__vault": relation(Vault, backref="fits"),
            "projectedOnto": projectedFitSourceRel,
            "victimOf": relationship(
                    ProjectedFit,
