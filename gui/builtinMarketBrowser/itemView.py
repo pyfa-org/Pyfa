@@ -20,7 +20,8 @@ pyfalog = Logger(__name__)
 
 class ItemView(Display):
 
-    DEFAULT_COLS = ["Base Icon",
+    DEFAULT_COLS = ["Omega",
+                    "Base Icon",
                     "Base Name",
                     "attr:power,,,True",
                     "attr:cpu,,,True"]
