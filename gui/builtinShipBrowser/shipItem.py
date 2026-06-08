@@ -93,6 +93,10 @@ class ShipItem(SFItem.SFBrowserItem):
         self.marketInstance = Market.getInstance()
         self.baseItem = self.marketInstance.getItem(self.shipID)
 
+        self.omegaBmp = None
+        if self.baseItem.getAttribute("cloneGradeRestriction", 0) > 0:
+            self.omegaBmp = BitmapLoader.getBitmap("25874", "icons")
+
         # =====================================================================
         # DISABLED - it will be added as an option in PREFERENCES
 
@@ -211,7 +215,12 @@ class ShipItem(SFItem.SFBrowserItem):
         self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
         self.raceBmpy = (rect.height - self.raceBmp.GetHeight()) / 2
 
-        self.textStartx = self.raceBmpx + self.raceBmp.GetWidth() + self.padding
+        self.omegaBmpx = self.raceBmpx + self.raceBmp.GetWidth() + self.padding
+        omegaWidth = self.omegaBmp.GetWidth() if self.omegaBmp else 0
+        omegaHeight = self.omegaBmp.GetHeight() if self.omegaBmp else 0
+        self.omegaBmpy = (rect.height - omegaHeight) / 2
+
+        self.textStartx = self.omegaBmpx + omegaWidth + self.padding
 
         self.shipNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
@@ -253,6 +262,9 @@ class ShipItem(SFItem.SFBrowserItem):
 
         mdc.DrawBitmap(self.raceDropShadowBmp, round(self.raceBmpx + 1), round(self.raceBmpy + 1))
         mdc.DrawBitmap(self.raceBmp, round(self.raceBmpx), round(self.raceBmpy))
+
+        if self.omegaBmp:
+            mdc.DrawBitmap(self.omegaBmp, round(self.omegaBmpx), round(self.omegaBmpy))
 
         shipName, shipTrait, fittings = self.shipFittingInfo
 
