@@ -44,8 +44,11 @@ class BaseWrapperList(gui.display.Display):
 
         self.hoveredRow = None
         self.hoveredColumn = None
+        self._graphSelectionRedrawPending = False
 
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnGraphListSelectionChanged)
+        self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.OnGraphListSelectionChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -55,6 +58,16 @@ class BaseWrapperList(gui.display.Display):
     def wrappers(self):
         # Sort fits first, then target profiles
         return sorted(self._wrappers, key=lambda w: not w.isFit)
+
+    def OnGraphListSelectionChanged(self, event):
+        event.Skip()
+        if not self._graphSelectionRedrawPending:
+            self._graphSelectionRedrawPending = True
+            wx.CallAfter(self._flushGraphSelectionRedraw)
+
+    def _flushGraphSelectionRedraw(self):
+        self._graphSelectionRedrawPending = False
+        self.graphFrame.draw()
 
     # UI-related stuff
     @property
@@ -121,23 +134,24 @@ class BaseWrapperList(gui.display.Display):
 
     def OnLeftDown(self, event):
         row, _ = self.HitTest(event.Position)
-        if row != -1:
-            pickers = {
-                self.getColIndex(GraphColor): ColorPickerPopup,
-                self.getColIndex(GraphLightness): LightnessPickerPopup,
-                self.getColIndex(GraphLineStyle): LineStylePickerPopup}
-            # In case we had no index for some column, remove None
-            pickers.pop(None, None)
-            col = self.getColumn(event.Position)
-            if col in pickers:
-                picker = pickers[col]
-                wrapper = self.getWrapper(row)
-                if wrapper is not None:
-                    win = picker(parent=self, wrapper=wrapper)
-                    pos = wx.GetMousePosition()
-                    win.Position(pos, (0, 0))
-                    win.Popup()
-                    return
+        if row == -1:
+            self.unselectAll()
+            event.Skip()
+            return
+        pickers = {
+            self.getColIndex(GraphColor): ColorPickerPopup,
+            self.getColIndex(GraphLightness): LightnessPickerPopup,
+            self.getColIndex(GraphLineStyle): LineStylePickerPopup}
+        pickers.pop(None, None)
+        col = self.getColumn(event.Position)
+        if col in pickers:
+            wrapper = self.getWrapper(row)
+            if wrapper is not None:
+                win = pickers[col](parent=self, wrapper=wrapper)
+                pos = wx.GetMousePosition()
+                win.Position(pos, (0, 0))
+                win.Popup()
+                return
         event.Skip()
 
     def OnLineStyleChange(self):
@@ -310,7 +324,7 @@ class SourceWrapperList(BaseWrapperList):
 
     @property
     def defaultTTText(self):
-        return _t('Drag a fit into this list to graph it')
+        return _t('Drag a fit into this list to graph it. Select rows to filter attackers (Shift/Ctrl); click empty space to show all attackers.')
 
 
 class TargetWrapperList(BaseWrapperList):
@@ -367,7 +381,7 @@ class TargetWrapperList(BaseWrapperList):
 
     @property
     def defaultTTText(self):
-        return _t('Drag a fit into this list to have your fits graphed against it')
+        return _t('Drag a fit into this list to have your fits graphed against it. Select rows to filter targets (Shift/Ctrl); click empty space to show all targets.')
 
     # Context menu handlers
     def addProfile(self, profile):
