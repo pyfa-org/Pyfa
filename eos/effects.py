@@ -693,7 +693,6 @@ class Effect157(BaseEffect):
     Used by:
     Implants named like: Zainou 'Deadeye' Large Hybrid Turret LH (6 of 6)
     Implant: Festival-only 'Longbow' HD4 Dose
-    Implant: Festival-only 'Longbow' HD6 Dose
     Skill: Large Hybrid Turret
     """
 
@@ -713,7 +712,6 @@ class Effect159(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Lancer' Medium Energy Turret ME (6 of 6)
     Implant: Festival-only 'Longbow' ED3 Dose
-    Implant: Festival-only 'Longbow' ED6 Dose
     Skill: Medium Energy Turret
     """
 
@@ -733,7 +731,6 @@ class Effect160(BaseEffect):
     Used by:
     Implants named like: Zainou 'Deadeye' Medium Hybrid Turret MH (6 of 6)
     Implant: Festival-only 'Longbow' HD3 Dose
-    Implant: Festival-only 'Longbow' HD6 Dose
     Skill: Medium Hybrid Turret
     """
 
@@ -753,7 +750,6 @@ class Effect161(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Gunslinger' Medium Projectile Turret MP (6 of 6)
     Implant: Festival-only 'Longbow' PD3 Dose
-    Implant: Festival-only 'Longbow' PD6 Dose
     Skill: Medium Projectile Turret
     """
 
@@ -773,7 +769,6 @@ class Effect162(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Lancer' Large Energy Turret LE (6 of 6)
     Implant: Festival-only 'Longbow' ED4 Dose
-    Implant: Festival-only 'Longbow' ED6 Dose
     Implant: Pashan's Turret Handling Mindlink
     Skill: Large Energy Turret
     """
@@ -794,7 +789,6 @@ class Effect172(BaseEffect):
     Used by:
     Implants named like: Inherent Implants 'Lancer' Small Energy Turret SE (6 of 6)
     Implant: Festival-only 'Longbow' ED2 Dose
-    Implant: Festival-only 'Longbow' ED6 Dose
     Skill: Small Energy Turret
     """
 
@@ -814,7 +808,6 @@ class Effect173(BaseEffect):
     Used by:
     Implants named like: Zainou 'Deadeye' Small Hybrid Turret SH (6 of 6)
     Implant: Festival-only 'Longbow' HD2 Dose
-    Implant: Festival-only 'Longbow' HD6 Dose
     Skill: Small Hybrid Turret
     """
 
@@ -834,7 +827,6 @@ class Effect174(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Gunslinger' Small Projectile Turret SP (6 of 6)
     Implant: Festival-only 'Longbow' PD2 Dose
-    Implant: Festival-only 'Longbow' PD6 Dose
     Skill: Small Projectile Turret
     """
 
@@ -920,8 +912,8 @@ class Effect230(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Afterburner AB (6 of 6)
-    Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
+    Implant: Eifyr and Co. 'Rogue' Agility ZhenNiu
     Implant: Zor's Custom Navigation Link
     Skill: Afterburner
     """
@@ -956,8 +948,8 @@ class Effect242(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Acceleration Control AC (6 of 6)
-    Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
+    Implant: Eifyr and Co. 'Rogue' Agility ZhenNiu
     """
 
     type = 'passive'
@@ -974,8 +966,8 @@ class Effect244(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' High Speed Maneuvering HS (6 of 6)
-    Implants named like: Federation Mobility Booster (7 of 7)
-    Implants named like: Republic Mobility Booster (7 of 7)
+    Implants named like: Federation Mobility Booster (3 of 3)
+    Implants named like: Republic Mobility Booster (3 of 3)
     Skill: High Speed Maneuvering
     """
 
@@ -1167,10 +1159,10 @@ class Effect391(BaseEffect):
     Used by:
     Implants named like: AIR Mining Yield Booster (3 of 3)
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
-    Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
     Implant: Michi's Excavation Augmentor
+    Implant: ORE 'Harvester' Efficiency ZhenNiu
     Skill: Astrogeology
     Skill: Mining
     """
@@ -1190,7 +1182,7 @@ class Effect392(BaseEffect):
 
     Used by:
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
-    Implants named like: Festival only 'Rock' HH Dose (4 of 4)
+    Implants named like: Festival only 'Rock' HH Dose (3 of 3)
     Implants named like: Free Zone Booster (2 of 2)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
@@ -1215,14 +1207,13 @@ class Effect394(BaseEffect):
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: Imperial Mobility Booster (7 of 7)
-    Implants named like: Republic Mobility Booster (7 of 7)
+    Implants named like: Imperial Mobility Booster (3 of 3)
+    Implants named like: Republic Mobility Booster (3 of 3)
     Implants named like: Strokar Booster (2 of 2)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: AIR Overclocker Booster II
     Implant: Quafe Zero Classic
-    Implant: Serenity YC122.9 Season Booster - Max Velocity
     Implant: Starsi Blast! Classic
     Implant: Wisdom of Gheinok
     Skill: Navigation
@@ -1246,18 +1237,17 @@ class Effect395(BaseEffect):
     Used by:
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
-    Implants named like: Federation Mobility Booster (7 of 7)
+    Implants named like: Federation Mobility Booster (3 of 3)
     Implants named like: Free Zone Booster (2 of 2)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: State Mobility Booster (7 of 7)
+    Implants named like: State Mobility Booster (3 of 3)
     Implants named like: grade Nomad (10 of 12)
     Modules named like: Low Friction Nozzle Joints (8 of 8)
     Implant: AIR Agility Booster II
     Implant: AIR Overclocker Booster III
     Implant: Genolution Core Augmentation CA-4
     Implant: Quafe Zero Green Apple
-    Implant: Serenity YC122.9 Season Booster - Agility
     Implant: Starsi Blast! Classic
     Skill: Evasive Maneuvering
     Skill: Spaceship Command
@@ -1320,7 +1310,6 @@ class Effect408(BaseEffect):
     Used by:
     Implants named like: Eifyr and Co. 'Gunslinger' Large Projectile Turret LP (6 of 6)
     Implant: Festival-only 'Longbow' PD4 Dose
-    Implant: Festival-only 'Longbow' PD6 Dose
     Skill: Large Projectile Turret
     """
 
@@ -1360,7 +1349,7 @@ class Effect446(BaseEffect):
     Used by:
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Crucible Booster (2 of 2)
-    Implants named like: Festival only 'Rock' SH Dose (4 of 4)
+    Implants named like: Festival only 'Rock' SH Dose (3 of 3)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Implants named like: Strokar Booster (2 of 2)
@@ -1510,13 +1499,9 @@ class Effect507(BaseEffect):
     Implants named like: Crucible Booster (2 of 2)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Imperial Electronics Booster (3 of 3)
+    Implants named like: State Electronics Booster (3 of 3)
     Implants named like: Zainou 'Gypsy' Long Range Targeting LT (6 of 6)
-    Implant: Imperial Electronics Booster I
-    Implant: Imperial Electronics Booster II
-    Implant: Imperial Electronics Booster III
-    Implant: State Electronics Booster I
-    Implant: State Electronics Booster II
-    Implant: State Electronics Booster III
     Skill: Long Range Targeting
     """
 
@@ -2217,17 +2202,13 @@ class Effect699(BaseEffect):
     signatureAnalysisScanResolutionBonusPostPercentScanResolutionShip
 
     Used by:
+    Implants named like: Federation Electronics Booster (3 of 3)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon R Booster (5 of 5)
+    Implants named like: Republic Electronics Booster (3 of 3)
     Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
     Modules named like: Targeting System Subcontroller (8 of 8)
-    Implant: Federation Electronics Booster I
-    Implant: Federation Electronics Booster II
-    Implant: Federation Electronics Booster III
     Implant: Quafe Zero Classic
-    Implant: Republic Electronics Booster I
-    Implant: Republic Electronics Booster II
-    Implant: Republic Electronics Booster III
     Implant: Starsi Blast! Orange
     Skill: Signature Analysis
     """
@@ -2480,7 +2461,6 @@ class Effect784(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: Republic Projection Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
     Modules named like: Rocket Fuel Cache Partition (8 of 8)
     Implant: Antipharmakon Toxot
@@ -2571,15 +2551,14 @@ class Effect856(BaseEffect):
     warpSkillSpeed
 
     Used by:
-    Implants named like: Eifyr and Co. 'Rogue' Agility (2 of 2)
     Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: Mobility Booster (28 of 28)
+    Implants named like: Mobility Booster (12 of 12)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
     Implants named like: Strokar Booster (2 of 2)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
-    Implant: Serenity YC122.9 Season Booster - Warp Speed
+    Implant: Eifyr and Co. 'Rogue' Agility ZhenNiu
     """
 
     type = 'passive'
@@ -3764,7 +3743,6 @@ class Effect1185(BaseEffect):
     Implants named like: Haven Booster (2 of 2)
     Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
-    Implant: Serenity YC122.9 Season Booster - Signature Radius
     """
 
     type = 'passive'
@@ -3780,9 +3758,9 @@ class Effect1190(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
-    Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
+    Implant: ORE 'Harvester' Efficiency ZhenNiu
     Module: Medium Ice Harvester Accelerator I
     Skill: Ice Harvesting
     """
@@ -4273,7 +4251,6 @@ class Effect1395(BaseEffect):
     shieldBoostAmplifierPassive
 
     Used by:
-    Implants named like: Republic Defense Booster (4 of 7)
     Implants named like: grade Crystal (15 of 18)
     """
 
@@ -4309,9 +4286,9 @@ class Effect1409(BaseEffect):
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
-    Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Implant: AIR Astro-Acquisition II Booster
+    Implant: Poteque 'Prospector' Sharpeye ZhenNiu
     Skill: Astrometric Acquisition
     Skill: Astrometrics
     """
@@ -4436,9 +4413,6 @@ class Effect1445(BaseEffect):
 
     Used by:
     Modules named like: Particle Dispersion Projector (8 of 8)
-    Implant: Federation Electronics Booster I
-    Implant: Federation Electronics Booster II
-    Implant: Federation Electronics Booster IV
     Skill: Long Distance Jamming
     """
 
@@ -4458,7 +4432,6 @@ class Effect1446(BaseEffect):
     ewSkillTpMaxRangeBonus
 
     Used by:
-    Implants named like: Republic Electronics Booster (4 of 7)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4479,7 +4452,6 @@ class Effect1448(BaseEffect):
     ewSkillTdMaxRangeBonus
 
     Used by:
-    Implants named like: Imperial Electronics Booster (4 of 7)
     Modules named like: Particle Dispersion Projector (8 of 8)
     Skill: Long Distance Jamming
     """
@@ -4500,9 +4472,6 @@ class Effect1449(BaseEffect):
     ewSkillRsdFallOffBonus
 
     Used by:
-    Implant: Federation Electronics Booster I
-    Implant: Federation Electronics Booster II
-    Implant: Federation Electronics Booster IV
     Skill: Frequency Modulation
     """
 
@@ -4521,7 +4490,6 @@ class Effect1450(BaseEffect):
     ewSkillTpFallOffBonus
 
     Used by:
-    Implants named like: Republic Electronics Booster (4 of 7)
     Skill: Frequency Modulation
     """
 
@@ -4539,7 +4507,6 @@ class Effect1451(BaseEffect):
     ewSkillTdFallOffBonus
 
     Used by:
-    Implants named like: Imperial Electronics Booster (4 of 7)
     Skill: Frequency Modulation
     """
 
@@ -4557,10 +4524,8 @@ class Effect1452(BaseEffect):
     ewSkillEwMaxRangeBonus
 
     Used by:
-    Implants named like: State Electronics Booster (4 of 7)
     Implants named like: grade Centurion (10 of 12)
     Modules named like: Particle Dispersion Projector (8 of 8)
-    Implant: Serenity YC122.9 Season Booster - EW Range
     Skill: Long Distance Jamming
     """
 
@@ -4579,7 +4544,6 @@ class Effect1453(BaseEffect):
     ewSkillEwFallOffBonus
 
     Used by:
-    Implants named like: State Electronics Booster (4 of 7)
     Skill: Frequency Modulation
     """
 
@@ -4597,7 +4561,6 @@ class Effect1472(BaseEffect):
     missileSkillAoeCloudSizeBonus
 
     Used by:
-    Implants named like: State Application Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Guided Missile Precision GP (6 of 6)
     Modules named like: Warhead Rigor Catalyst (8 of 8)
     Skill: Guided Missile Precision
@@ -4791,7 +4754,6 @@ class Effect1590(BaseEffect):
 
     Used by:
     Implants named like: Halcyon G Booster (5 of 5)
-    Implants named like: Republic Application Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
     Modules named like: Warhead Flare Catalyst (8 of 8)
     Skill: Target Navigation Prediction
@@ -5370,7 +5332,6 @@ class Effect1764(BaseEffect):
     missileSkillMissileProjectileVelocityBonus
 
     Used by:
-    Implants named like: State Projection Booster (4 of 4)
     Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
     Modules named like: Hydraulic Bay Thrusters (8 of 8)
     Skill: Missile Projection
@@ -6904,7 +6865,6 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Imperial Defense Booster (4 of 7)
     """
 
     type = 'passive'
@@ -6927,7 +6887,6 @@ class Effect2297(BaseEffect):
 
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
-    Implants named like: State Defense Booster (4 of 7)
     """
 
     type = 'passive'
@@ -6950,15 +6909,13 @@ class Effect2298(BaseEffect):
 
     Used by:
     Implants named like: Crucible Booster (2 of 2)
+    Implants named like: Federation Electronics Booster (3 of 3)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: High grade Grail (5 of 6)
     Implants named like: High grade Jackal (5 of 6)
     Implants named like: High grade Spur (5 of 6)
     Implants named like: High grade Talon (5 of 6)
-    Implant: Federation Electronics Booster I
-    Implant: Federation Electronics Booster II
-    Implant: Federation Electronics Booster III
     """
 
     type = 'passive'
@@ -7217,7 +7174,7 @@ class Effect2485(BaseEffect):
 
     Used by:
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
-    Implants named like: Festival only 'Rock' AH Dose (4 of 4)
+    Implants named like: Festival only 'Rock' AH Dose (3 of 3)
     Implants named like: Inherent Implants 'Noble' Hull Upgrades HG (7 of 7)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
     Implant: Genolution Core Augmentation CA-4
@@ -7682,7 +7639,6 @@ class Effect2693(BaseEffect):
     falloffBonusEffectLasers
 
     Used by:
-    Implants named like: Imperial Projection Booster (4 of 4)
     Modules named like: Energy Ambit Extension (8 of 8)
     """
 
@@ -7701,8 +7657,6 @@ class Effect2694(BaseEffect):
     falloffBonusEffectHybrids
 
     Used by:
-    Implants named like: Federation Projection Booster (4 of 4)
-    Implants named like: State Projection Booster (4 of 4)
     Modules named like: Hybrid Ambit Extension (8 of 8)
     """
 
@@ -7721,7 +7675,6 @@ class Effect2695(BaseEffect):
     falloffBonusEffectProjectiles
 
     Used by:
-    Implants named like: Republic Projection Booster (4 of 4)
     Modules named like: Projectile Ambit Extension (8 of 8)
     """
 
@@ -7740,7 +7693,6 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
-    Implants named like: Imperial Projection Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -7759,8 +7711,6 @@ class Effect2697(BaseEffect):
     maxRangeBonusEffectHybrids
 
     Used by:
-    Implants named like: Federation Projection Booster (4 of 4)
-    Implants named like: State Projection Booster (4 of 4)
     Modules named like: Hybrid Locus Coordinator (8 of 8)
     """
 
@@ -7779,7 +7729,6 @@ class Effect2698(BaseEffect):
     maxRangeBonusEffectProjectiles
 
     Used by:
-    Implants named like: Republic Projection Booster (4 of 4)
     Modules named like: Projectile Locus Coordinator (8 of 8)
     """
 
@@ -8434,7 +8383,6 @@ class Effect2798(BaseEffect):
     projectileWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Republic Damage Booster (4 of 4)
     Implants named like: Republic Hardpoint Booster (3 of 3)
     Implants named like: Strokar Booster (2 of 2)
     Modules named like: Projectile Collision Accelerator (8 of 8)
@@ -8489,10 +8437,8 @@ class Effect2802(BaseEffect):
     hybridWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Federation Damage Booster (4 of 4)
     Implants named like: Federation Hardpoint Booster (3 of 3)
     Implants named like: Free Zone Booster (2 of 2)
-    Implants named like: State Damage Booster (4 of 4)
     Implants named like: State Hardpoint Booster (3 of 3)
     Modules named like: Hybrid Collision Accelerator (8 of 8)
     """
@@ -8513,7 +8459,6 @@ class Effect2803(BaseEffect):
 
     Used by:
     Implants named like: Haven Booster (2 of 2)
-    Implants named like: Imperial Damage Booster (4 of 4)
     Implants named like: Imperial Hardpoint Booster (3 of 3)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
@@ -8699,8 +8644,6 @@ class Effect2851(BaseEffect):
 
     Used by:
     Implants named like: Crucible Booster (2 of 2)
-    Implants named like: Republic Damage Booster (4 of 4)
-    Implants named like: State Damage Booster (4 of 4)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     Implant: Guristas Damage Booster III
     """
@@ -8858,7 +8801,6 @@ class Effect2881(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
     Implant: Festival-only 'Longbow' CM3 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8876,7 +8818,6 @@ class Effect2882(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
     Implant: Festival-only 'Longbow' CM3 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8894,7 +8835,6 @@ class Effect2883(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
     Implant: Festival-only 'Longbow' CM3 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8912,7 +8852,6 @@ class Effect2884(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
     Implant: Festival-only 'Longbow' CM3 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -8929,9 +8868,9 @@ class Effect2885(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
-    Implants named like: ORE 'Harvester' Efficiency (2 of 2)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
+    Implant: ORE 'Harvester' Efficiency ZhenNiu
     """
 
     type = 'passive'
@@ -8948,7 +8887,6 @@ class Effect2887(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' RD2 Dose
     """
 
@@ -8966,7 +8904,6 @@ class Effect2888(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' RD2 Dose
     """
 
@@ -8984,7 +8921,6 @@ class Effect2889(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' RD2 Dose
     """
 
@@ -9002,7 +8938,6 @@ class Effect2890(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' RD2 Dose
     """
 
@@ -9019,8 +8954,8 @@ class Effect2891(BaseEffect):
     missileEMDmgBonusStandard
 
     Used by:
-    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    Implant: Festival-only 'Longbow' MD2 Dose
     """
 
     type = 'passive'
@@ -9036,8 +8971,8 @@ class Effect2892(BaseEffect):
     missileExplosiveDmgBonusStandard
 
     Used by:
-    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    Implant: Festival-only 'Longbow' MD2 Dose
     """
 
     type = 'passive'
@@ -9053,8 +8988,8 @@ class Effect2893(BaseEffect):
     missileKineticDmgBonusStandard
 
     Used by:
-    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    Implant: Festival-only 'Longbow' MD2 Dose
     """
 
     type = 'passive'
@@ -9070,8 +9005,8 @@ class Effect2894(BaseEffect):
     missileThermalDmgBonusStandard
 
     Used by:
-    Implants named like: Festival only 'Longbow' MD Dose (2 of 2)
     Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    Implant: Festival-only 'Longbow' MD2 Dose
     """
 
     type = 'passive'
@@ -9089,7 +9024,6 @@ class Effect2899(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
     Implant: Festival-only 'Longbow' HM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9107,7 +9041,6 @@ class Effect2900(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
     Implant: Festival-only 'Longbow' HM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9125,7 +9058,6 @@ class Effect2901(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
     Implant: Festival-only 'Longbow' HM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9143,7 +9075,6 @@ class Effect2902(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
     Implant: Festival-only 'Longbow' HM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9161,7 +9092,6 @@ class Effect2903(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
     Implant: Festival-only 'Longbow' HAM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9179,7 +9109,6 @@ class Effect2904(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
     Implant: Festival-only 'Longbow' HAM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9197,7 +9126,6 @@ class Effect2905(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
     Implant: Festival-only 'Longbow' HAM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9215,7 +9143,6 @@ class Effect2906(BaseEffect):
     Used by:
     Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
     Implant: Festival-only 'Longbow' HAM4 Dose
-    Implant: Festival-only 'Longbow' MD6 Dose
     """
 
     type = 'passive'
@@ -9232,7 +9159,6 @@ class Effect2907(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' TP3 Dose
     """
 
@@ -9250,7 +9176,6 @@ class Effect2908(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' TP3 Dose
     """
 
@@ -9268,7 +9193,6 @@ class Effect2909(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' TP3 Dose
     """
 
@@ -9286,7 +9210,6 @@ class Effect2910(BaseEffect):
 
     Used by:
     Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
-    Implant: Festival-only 'Longbow' MD6 Dose
     Implant: Festival-only 'Longbow' TP3 Dose
     """
 
@@ -10337,8 +10260,8 @@ class Effect3379(BaseEffect):
 
     Used by:
     Implants named like: Eifyr and Co. 'Rogue' Fuel Conservation FC (6 of 6)
-    Implants named like: Imperial Mobility Booster (7 of 7)
-    Implants named like: State Mobility Booster (7 of 7)
+    Implants named like: Imperial Mobility Booster (3 of 3)
+    Implants named like: State Mobility Booster (3 of 3)
     """
 
     type = 'passive'
@@ -11276,7 +11199,6 @@ class Effect3650(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11293,7 +11215,6 @@ class Effect3651(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11310,7 +11231,6 @@ class Effect3652(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11327,7 +11247,6 @@ class Effect3653(BaseEffect):
 
     Used by:
     Implants named like: grade Centurion (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - EW Range
     """
 
     type = 'passive'
@@ -11430,7 +11349,6 @@ class Effect3668(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: grade Harvest (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11449,7 +11367,6 @@ class Effect3669(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: grade Harvest (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11468,7 +11385,6 @@ class Effect3670(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: grade Harvest (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11485,7 +11401,6 @@ class Effect3671(BaseEffect):
 
     Used by:
     Implants named like: grade Harvest (10 of 12)
-    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     type = 'passive'
@@ -11502,7 +11417,6 @@ class Effect3672(BaseEffect):
 
     Used by:
     Implants named like: grade Harvest (12 of 12)
-    Implant: Serenity YC122.9 Season Booster - Mining Range
     """
 
     runTime = 'early'
@@ -13587,9 +13501,9 @@ class Effect4161(BaseEffect):
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
-    Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Implant: AIR Astro-Pinpointing II Booster
+    Implant: Poteque 'Prospector' Sharpeye ZhenNiu
     Skill: Astrometric Pinpointing
     Skill: Astrometrics
     """
@@ -13610,15 +13524,14 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (5 of 8)
-    Implants named like: Electronics Booster (27 of 27)
+    Implants named like: Electronics Booster (12 of 12)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
-    Implants named like: Poteque 'Prospector' Sharpeye (2 of 2)
     Implants named like: Serenity Limited 'Sharpeye' Dose (3 of 3)
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
     Implant: AIR Astro-Rangefinding II Booster
-    Implant: Serenity YC122.9 Season Booster - Probe Scanning Strength
+    Implant: Poteque 'Prospector' Sharpeye ZhenNiu
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
     """
@@ -16146,7 +16059,6 @@ class Effect4817(BaseEffect):
     salvagerModuleDurationReduction
 
     Used by:
-    Implants named like: Electronics Booster (15 of 27)
     Implants named like: Hardpoint Booster (12 of 12)
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
     """
@@ -18131,8 +18043,6 @@ class Effect5188(BaseEffect):
     trackingSpeedBonusEffectHybrids
 
     Used by:
-    Implants named like: Federation Application Booster (4 of 4)
-    Implants named like: State Application Booster (4 of 4)
     Modules named like: Hybrid Metastasis Adjuster (8 of 8)
     """
 
@@ -18151,7 +18061,6 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
-    Implants named like: Imperial Application Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -18170,7 +18079,6 @@ class Effect5190(BaseEffect):
     trackingSpeedBonusEffectProjectiles
 
     Used by:
-    Implants named like: Republic Application Booster (4 of 4)
     Modules named like: Projectile Metastasis Adjuster (8 of 8)
     """
 
@@ -30242,8 +30150,6 @@ class Effect6667(BaseEffect):
 
     Used by:
     Implants named like: Black Market 'Valdimar' Drone Navigation DN (3 of 3)
-    Implants named like: Federation Application Booster (4 of 4)
-    Implants named like: Imperial Application Booster (4 of 4)
     Skill: Drone Navigation
     """
 
@@ -30937,8 +30843,6 @@ class Effect6708(BaseEffect):
     armorRepairAmountBonusSubcap
 
     Used by:
-    Implants named like: Federation Defense Booster (4 of 7)
-    Implants named like: Republic Defense Booster (4 of 7)
     Implants named like: grade Asklepian (15 of 18)
     """
 
@@ -35292,10 +35196,8 @@ class Effect7176(BaseEffect):
     skillBonusDroneInterfacingNotFighters
 
     Used by:
-    Implants named like: Federation Damage Booster (4 of 4)
     Implants named like: Federation Hardpoint Booster (3 of 3)
     Implants named like: Halcyon G Booster (5 of 5)
-    Implants named like: Imperial Damage Booster (4 of 4)
     Implants named like: Imperial Hardpoint Booster (3 of 3)
     Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
     Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
@@ -35316,8 +35218,6 @@ class Effect7177(BaseEffect):
 
     Used by:
     Implants named like: Drone Tuner (4 of 4)
-    Implants named like: Federation Projection Booster (4 of 4)
-    Implants named like: Imperial Projection Booster (4 of 4)
     """
 
     type = 'passive'
@@ -37777,9 +37677,7 @@ class Effect8267(BaseEffect):
     weaponDisruptorResistanceBonusPassive
 
     Used by:
-    Implant: Republic Electronics Booster I
-    Implant: Republic Electronics Booster II
-    Implant: Republic Electronics Booster III
+    Implants named like: Republic Electronics Booster (3 of 3)
     """
 
     type = 'passive'
@@ -38193,23 +38091,6 @@ class Effect8364(BaseEffect):
     type = 'active'
 
 
-class Effect8366(BaseEffect):
-    """
-    modifyHullResonancePostPercentpassive
-
-    Used by:
-    Implants named like: Federation Defense Booster (4 of 7)
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
-            fit.ship.boostItemAttr(
-                f'{dmgType}DamageResonance', src.getModifiedItemAttr('hullDamageResistanceBonus'), **kwargs)
-
-
 class Effect8372(BaseEffect):
     """
     fleetCompressionLogisticsRangeBonus
@@ -38330,9 +38211,7 @@ class Effect8477(BaseEffect):
     droneTrackingBonusPassive
 
     Used by:
-    Implants named like: Federation Application Booster (4 of 4)
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: Imperial Application Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38367,9 +38246,7 @@ class Effect8479(BaseEffect):
     droneOptimalFalloffBonusPassive
 
     Used by:
-    Implants named like: Federation Projection Booster (4 of 4)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Imperial Projection Booster (4 of 4)
     """
 
     type = 'passive'
@@ -38389,9 +38266,7 @@ class Effect8517(BaseEffect):
     stasisWebifierResistanceBonusPassive
 
     Used by:
-    Implant: Imperial Electronics Booster I
-    Implant: Imperial Electronics Booster II
-    Implant: Imperial Electronics Booster III
+    Implants named like: Imperial Electronics Booster (3 of 3)
     """
 
     type = 'passive'
@@ -43049,7 +42924,7 @@ class Effect12820(BaseEffect):
     boosterImplantMiningCriticalHitChanceBonusEffect
 
     Used by:
-    Implants named like: Electronics Booster (12 of 27)
+    Implants named like: Electronics Booster (12 of 12)
     """
 
     type = 'passive'
@@ -43066,9 +42941,7 @@ class Effect12821(BaseEffect):
     sensorDampenerResistanceBonusPassive
 
     Used by:
-    Implant: State Electronics Booster I
-    Implant: State Electronics Booster II
-    Implant: State Electronics Booster III
+    Implants named like: State Electronics Booster (3 of 3)
     """
 
     type = 'passive'
@@ -43083,9 +42956,7 @@ class Effect12822(BaseEffect):
     modifyShieldArmorHullEMResonancePassivePostPercentPassive
 
     Used by:
-    Implant: Republic Defense Booster I
-    Implant: Republic Defense Booster II
-    Implant: Republic Defense Booster III
+    Implants named like: Republic Defense Booster (3 of 3)
     """
 
     type = 'passive'
@@ -43102,7 +42973,7 @@ class Effect12823(BaseEffect):
     modifyShieldArmorHullThermalResonancePassivePostPercentPassive
 
     Used by:
-    Implants named like: Defense Booster (9 of 28)
+    Implants named like: Defense Booster (9 of 12)
     """
 
     type = 'passive'
@@ -43119,7 +42990,7 @@ class Effect12824(BaseEffect):
     modifyShieldArmorHullKineticResonancePassivePostPercentPassive
 
     Used by:
-    Implants named like: Defense Booster (9 of 28)
+    Implants named like: Defense Booster (9 of 12)
     """
 
     type = 'passive'
@@ -43136,9 +43007,7 @@ class Effect12825(BaseEffect):
     modifyShieldArmorHullExplosiveResonancePassivePostPercentPassive
 
     Used by:
-    Implant: Imperial Defense Booster I
-    Implant: Imperial Defense Booster II
-    Implant: Imperial Defense Booster III
+    Implants named like: Imperial Defense Booster (3 of 3)
     """
 
     type = 'passive'
@@ -43155,7 +43024,7 @@ class Effect12826(BaseEffect):
     boosterHackingVirusCoherenceModifierEffect
 
     Used by:
-    Implants named like: Defense Booster (12 of 28)
+    Implants named like: Defense Booster (12 of 12)
     """
 
     type = 'passive'
@@ -43172,7 +43041,7 @@ class Effect12827(BaseEffect):
     miningWasteChanceBonusOreIceGasPassive
 
     Used by:
-    Implants named like: Defense Booster (12 of 28)
+    Implants named like: Defense Booster (12 of 12)
     """
 
     type = 'passive'
@@ -43191,7 +43060,7 @@ class Effect12828(BaseEffect):
     boosterMinerMaxRangeBonusEffect
 
     Used by:
-    Implants named like: Mobility Booster (12 of 28)
+    Implants named like: Mobility Booster (12 of 12)
     """
 
     type = 'passive'
