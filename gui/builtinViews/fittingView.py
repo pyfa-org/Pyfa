@@ -138,6 +138,7 @@ class FittingViewDrop(wx.DropTarget):
 
 class FittingView(d.Display):
     DEFAULT_COLS = ["State",
+                    "Omega",
                     "Ammo Icon",
                     "Base Icon",
                     "Base Name",

@@ -666,6 +666,27 @@ def update_db():
             else:
                 attr.value = value
 
+    def processCloneGradeRestrictions():
+        print('processing clone grade restrictions')
+        alpha_caps = {}
+        for clone in eos.db.gamedata_session.query(eos.gamedata.AlphaClone).all():
+            for skill in clone.skills:
+                alpha_caps[skill.typeID] = skill.level
+        for item in eos.db.gamedata_session.query(eos.gamedata.Item).all():
+            if not item.reqskills:
+                continue
+            try:
+                reqskills = json.loads(item.reqskills)
+            except (ValueError, TypeError):
+                continue
+            for skill_type_id, required_level in reqskills.items():
+                max_alpha_level = alpha_caps.get(int(skill_type_id))
+                if max_alpha_level is None or required_level > max_alpha_level:
+                    _hardcodeAttribs(item.ID, {"cloneGradeRestriction": 1})
+                    break
+
+    processCloneGradeRestrictions()
+
     def _hardcodeEffects(typeID, effectMap, clearEffects=True):
         item = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.ID == typeID).one()
         if clearEffects:
