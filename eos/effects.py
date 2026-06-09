@@ -27108,7 +27108,8 @@ class Effect6439(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         container.boostItemAttr('maxVelocity',
-                                container.getModifiedItemAttr('fighterAbilityEvasiveManeuversSpeedBonus'), **kwargs)
+                                container.getModifiedItemAttr('fighterAbilityEvasiveManeuversSpeedBonus'),
+                                stackingPenalties=True, **kwargs)
         container.boostItemAttr('signatureRadius',
                                 container.getModifiedItemAttr('fighterAbilityEvasiveManeuversSignatureRadiusBonus'),
                                 stackingPenalties=True, **kwargs)
