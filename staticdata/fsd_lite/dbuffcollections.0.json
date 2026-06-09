@@ -5638,6 +5638,210 @@
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowNormal"
   }, 
+  "2540": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Amarr Navy Ships Dbuff effect from FW Relay Site", 
+    "displayName_de": "Alle Boni von Amarr-Navy-Schiffen pro Skillstufe verbessert (Taktisches Relais der Amarr).", 
+    "displayName_en-us": "All Amarr Navy ship bonuses per skill level enhanced (Amarr Tactical Relay)", 
+    "displayName_es": "Todas las bonificaciones navieras de la Armada Amarr por nivel de habilidad mejoradas (relé táctico amarriano)", 
+    "displayName_fr": "Augmentation de tous les bonus de vaisseaux de l'Amarr Navy par niveau de compétence (Relais tactique amarr)", 
+    "displayName_it": "All Amarr Navy ship bonuses per skill level enhanced (Amarr Tactical Relay)", 
+    "displayName_ja": "アマー海軍艦船に付与されるスキルレベルごとの全シップボーナスを強化（アマー戦略的中継ステーション）", 
+    "displayName_ko": "스킬 레벨당 모든 아마르 해군 함선 보너스 강화 (아마르 전술 통신 중계시설)", 
+    "displayName_ru": "+ ко всем усилениям амаррских флотских судов за степень освоения навыка (амаррское тактическое реле)", 
+    "displayName_zh": "每升一级，所有艾玛海军的舰船加成增强（艾玛战术中继站）", 
+    "displayNameID": 1037249, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 478
+      }, 
+      {
+        "dogmaAttributeID": 485
+      }, 
+      {
+        "dogmaAttributeID": 492
+      }, 
+      {
+        "dogmaAttributeID": 585
+      }, 
+      {
+        "dogmaAttributeID": 656
+      }, 
+      {
+        "dogmaAttributeID": 795
+      }, 
+      {
+        "dogmaAttributeID": 1623
+      }, 
+      {
+        "dogmaAttributeID": 1887
+      }, 
+      {
+        "dogmaAttributeID": 1888
+      }, 
+      {
+        "dogmaAttributeID": 1889
+      }, 
+      {
+        "dogmaAttributeID": 2070
+      }, 
+      {
+        "dogmaAttributeID": 5205
+      }, 
+      {
+        "dogmaAttributeID": 5218
+      }, 
+      {
+        "dogmaAttributeID": 5219
+      }, 
+      {
+        "dogmaAttributeID": 5220
+      }, 
+      {
+        "dogmaAttributeID": 5221
+      }, 
+      {
+        "dogmaAttributeID": 5222
+      }, 
+      {
+        "dogmaAttributeID": 5223
+      }, 
+      {
+        "dogmaAttributeID": 5224
+      }, 
+      {
+        "dogmaAttributeID": 5960
+      }, 
+      {
+        "dogmaAttributeID": 6067
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostMul", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2541": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Caldari Navy Ships Dbuff effect from FW Relay Site", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2542": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Minmatar Navy Ships Dbuff effect from FW Relay Site", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2543": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Gallente Navy Ships Dbuff effect from FW Relay Site", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2544": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "FW Dungeon Effect 1", 
+    "displayName_de": "Bonus auf die Boni von Schlachtkreuzer-Schiffen je Skillstufe", 
+    "displayName_en-us": "bonus to battlecruiser ship bonuses per skill level", 
+    "displayName_es": "de bonificación a las bonificaciones navieras de cruceros de combate por nivel de habilidad.", 
+    "displayName_fr": "de bonus aux bonus de vaisseaux pour les croiseurs cuirassés par niveau de compétence", 
+    "displayName_it": "bonus to battlecruiser ship bonuses per skill level", 
+    "displayName_ja": "スキルレベルごとに付与される巡洋戦艦シップボーナス", 
+    "displayName_ko": "배틀크루저 함선 보너스 (레벨 당)", 
+    "displayName_ru": "усиление бонусов для линейных крейсеров за степень навыка", 
+    "displayName_zh": "每升一级，对战列巡洋舰的加成效果", 
+    "displayNameID": 1037517, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 743
+      }, 
+      {
+        "dogmaAttributeID": 745
+      }, 
+      {
+        "dogmaAttributeID": 746
+      }, 
+      {
+        "dogmaAttributeID": 747
+      }, 
+      {
+        "dogmaAttributeID": 748
+      }, 
+      {
+        "dogmaAttributeID": 749
+      }, 
+      {
+        "dogmaAttributeID": 795
+      }, 
+      {
+        "dogmaAttributeID": 1889
+      }, 
+      {
+        "dogmaAttributeID": 5044
+      }, 
+      {
+        "dogmaAttributeID": 5046
+      }, 
+      {
+        "dogmaAttributeID": 5205
+      }, 
+      {
+        "dogmaAttributeID": 5207
+      }, 
+      {
+        "dogmaAttributeID": 5956
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2545": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "FW Dungeon Effect 2", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2546": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "FW Dungeon Effect 3", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2547": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "FW Dungeon Effect 4", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
   "2548": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Horde Mode - Heat Damage Reduction", 
@@ -6035,6 +6239,674 @@
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
   }, 
+  "2562": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon1 - Prefix Hybrid Damage Bonus", 
+    "displayName_de": "Bonus auf den Schaden von Hybridgeschütztürmen", 
+    "displayName_en-us": "bonus to hybrid turret damage", 
+    "displayName_es": "de bonificación al daño de la torreta híbrida.", 
+    "displayName_fr": "de bonus aux dégâts des tourelles hybrides", 
+    "displayName_it": "bonus to hybrid turret damage", 
+    "displayName_ja": "ハイブリッドタレットダメージにボーナス", 
+    "displayName_ko": "하이브리드 터렛 피해량 증가", 
+    "displayName_ru": "бонус к урону гибридных орудий", 
+    "displayName_zh": "混合炮台伤害加成", 
+    "displayNameID": 1038948, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3301
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3304
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3307
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2563": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon2 - Prefix Energy Turret Damage", 
+    "displayName_de": "Bonus auf den Schaden von Energiegeschütztürmen", 
+    "displayName_en-us": "bonus to energy turret damage", 
+    "displayName_es": "de bonificación al daño de la torreta de energía.", 
+    "displayName_fr": "de bonus aux dégâts des tourelles à énergie", 
+    "displayName_it": "bonus to energy turret damage", 
+    "displayName_ja": "エネルギータレットダメージにボーナス", 
+    "displayName_ko": "에너지 터렛 피해량 증가", 
+    "displayName_ru": "бонус к урону лазерных орудий", 
+    "displayName_zh": "能量炮台伤害加成", 
+    "displayNameID": 1038952, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3303
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3306
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3309
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2564": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon3 - Prefix Projectile Turret Damage", 
+    "displayName_de": "Bonus auf den Schaden von Projektilgeschütztürmen", 
+    "displayName_en-us": "bonus to projectile turret damage", 
+    "displayName_es": "de bonificación al daño de la torreta de proyectiles.", 
+    "displayName_fr": "de bonus aux dégâts des tourelles à projectiles", 
+    "displayName_it": "bonus to projectile turret damage", 
+    "displayName_ja": "プロジェクタイルタレットダメージにボーナス", 
+    "displayName_ko": "발사체 터렛 피해량 증가", 
+    "displayName_ru": "бонус к урону баллистических орудий", 
+    "displayName_zh": "射弹炮台伤害加成", 
+    "displayNameID": 1038955, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3302
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3305
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3308
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2565": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon4 - Prefix Disintegrator Damage", 
+    "displayName_de": "Bonus auf den Schaden von Precursor-Waffen", 
+    "displayName_en-us": "bonus to precursor weapon damage", 
+    "displayName_es": "de bonificación al daño de las armas precursoras.", 
+    "displayName_fr": "de bonus aux dégâts des armes de précursion", 
+    "displayName_it": "bonus to precursor weapon damage", 
+    "displayName_ja": "プリカーサー兵器ダメージにボーナス", 
+    "displayName_ko": "프리커서 무기 피해량 증가", 
+    "displayName_ru": "бонус к урону орудий Предтечей", 
+    "displayName_zh": "先驱者武器伤害加成", 
+    "displayNameID": 1038958, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 47870
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 47871
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 47872
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2566": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon5 - Prefix Vorton Projector Damage", 
+    "displayName_de": "Bonus auf den Schaden von Vorton-Projektoren", 
+    "displayName_en-us": "bonus to vorton projector damage", 
+    "displayName_es": "de bonificación al daño del proyector vortónico.", 
+    "displayName_fr": "de bonus aux dégâts du projecteur de vortons", 
+    "displayName_it": "bonus to vorton projector damage", 
+    "displayName_ja": "ヴォートンプロジェクターダメージにボーナス", 
+    "displayName_ko": "보르톤 프로젝터 피해량 증가", 
+    "displayName_ru": "бонус к урону вортонных проекторов", 
+    "displayName_zh": "电弧弦投射器伤害加成", 
+    "displayNameID": 1038961, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 54826
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 55034
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 55035
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2567": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon6 - prefix Rocket + HAM + torpedo only ", 
+    "displayName_de": "Bonus auf die Feuerrate von Raketen-, schweren Angriffs- und Torpedo-Lenkwaffenwerfern", 
+    "displayName_en-us": "bonus to rocket, heavy assault and torpedo missile launcher rate of fire", 
+    "displayName_es": "de bonificación de cadencia de tiro de lanzamisiles de cohetes, asalto pesado y torpedos.", 
+    "displayName_fr": "de bonus à la cadence de tir des lance-missiles d'assaut lourd et des lance-torpilles", 
+    "displayName_it": "bonus to rocket, heavy assault and torpedo missile launcher rate of fire", 
+    "displayName_ja": "ロケット、ヘビーアサルト、トルピードミサイルランチャーの発射間隔にボーナス", 
+    "displayName_ko": "로켓, 헤비 어썰트 미사일, 토피도 연사속도 증가", 
+    "displayName_ru": "бонус к скорострельности пусковых установок ракет, тяж. штурм. ракет и торпед", 
+    "displayName_zh": "火箭、重型突击导弹和鱼雷发射器射速加成", 
+    "displayNameID": 1038964, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 51, 
+        "groupID": 507
+      }, 
+      {
+        "dogmaAttributeID": 51, 
+        "groupID": 508
+      }, 
+      {
+        "dogmaAttributeID": 51, 
+        "groupID": 771
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2568": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon7 - suffix local armor repair amount", 
+    "displayName_de": "Bonus auf die Panzerungsreparaturmenge", 
+    "displayName_en-us": "bonus to armor repair amount", 
+    "displayName_es": "de bonificación a la cantidad de reparación de blindaje.", 
+    "displayName_fr": "de bonus à la quantité de réparation de blindage", 
+    "displayName_it": "bonus to armor repair amount", 
+    "displayName_ja": "アーマーリペア量にボーナス", 
+    "displayName_ko": "장갑수리 장치 수리량 증가", 
+    "displayName_ru": "бонус к эффективности ремонта брони", 
+    "displayName_zh": "装甲维修器维修量加成", 
+    "displayNameID": 1038965, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 3393
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2569": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon8 - suffix local shield boost amount", 
+    "displayName_de": "Bonus auf die Leistung von Schildboostern", 
+    "displayName_en-us": "bonus to shield boost amount", 
+    "displayName_es": "de bonificación a la cantidad de potenciadores de escudo.", 
+    "displayName_fr": "de bonus au volume de boost du bouclier", 
+    "displayName_it": "bonus to shield boost amount", 
+    "displayName_ja": "シールドブースト量にボーナス", 
+    "displayName_ko": "실드 부스터 회복량 증가", 
+    "displayName_ru": "бонус к эффективности накачки щитов", 
+    "displayName_zh": "护盾回充增量器回充量加成", 
+    "displayNameID": 1038966, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3416
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2570": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon9 - Suffix Remote Repair Effectiveness", 
+    "displayName_de": "Bonus auf die Fernreparaturmenge", 
+    "displayName_en-us": "bonus to remote repair amount", 
+    "displayName_es": "de bonificación a la cantidad de reparación remota.", 
+    "displayName_fr": "de bonus à la quantité de réparation à distance", 
+    "displayName_it": "bonus to remote repair amount", 
+    "displayName_ja": "リモートリペア量にボーナス", 
+    "displayName_ko": "원격 수리 장치 수리량 증가", 
+    "displayName_ru": "бонус к эффективности дистанционного ремонта брони", 
+    "displayName_zh": "远程装甲维修器维修量加成", 
+    "displayNameID": 1038967, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "groupID": 41
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "groupID": 1697
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "groupID": 325
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "groupID": 1698
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "groupID": 2018
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2571": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon10 - Suffix Signature Radius Reduction", 
+    "displayName_de": "Reduktion des Signaturradius von Schiffen", 
+    "displayName_en-us": "reduction in ship signature radius", 
+    "displayName_es": "de reducción del radio de la señal de la nave.", 
+    "displayName_fr": "de réduction du rayon de signature du vaisseau", 
+    "displayName_it": "reduction in ship signature radius", 
+    "displayName_ja": "艦船のシグネチャ半径が縮小", 
+    "displayName_ko": "함선 시그니처 반경 감소", 
+    "displayName_ru": "уменьшение размера сигнатуры корабля", 
+    "displayName_zh": "舰船信号半径降低", 
+    "displayNameID": 1038968, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2572": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon11 - Suffix Polarization Effect", 
+    "displayName_de": "Alle Resistenzen auf 0 gesetzt", 
+    "displayName_en-us": "All resistances set to 0", 
+    "displayName_es": "Todas las resistencias establecidas a 0", 
+    "displayName_fr": "Toutes les résistances à 0", 
+    "displayName_it": "All resistances set to 0", 
+    "displayName_ja": "すべてのレジスタンスを0に設定", 
+    "displayName_ko": "모든 저항력 0으로 고정", 
+    "displayName_ru": "Общая сопротивляемость падает до 0", 
+    "displayName_zh": "所有抗性设为0", 
+    "displayNameID": 1038969, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 109
+      }, 
+      {
+        "dogmaAttributeID": 110
+      }, 
+      {
+        "dogmaAttributeID": 111
+      }, 
+      {
+        "dogmaAttributeID": 113
+      }, 
+      {
+        "dogmaAttributeID": 267
+      }, 
+      {
+        "dogmaAttributeID": 268
+      }, 
+      {
+        "dogmaAttributeID": 269
+      }, 
+      {
+        "dogmaAttributeID": 270
+      }, 
+      {
+        "dogmaAttributeID": 271
+      }, 
+      {
+        "dogmaAttributeID": 272
+      }, 
+      {
+        "dogmaAttributeID": 273
+      }, 
+      {
+        "dogmaAttributeID": 274
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2573": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon12 - Energy Nosferatu and Energy Neutralizer drain amount.", 
+    "displayName_de": "Bonus auf die Transfermenge von Energie-Nosferatu und Energieneutralisierer", 
+    "displayName_en-us": "bonus to energy nosferatu and energy neutralizer drain amount", 
+    "displayName_es": "de bonificación a la cantidad drenada por el nosferatu de energía y el neutralizador energético.", 
+    "displayName_fr": "de bonus au volume d'énergie drainée par les Nosferatu à énergie et les neutraliseurs d'énergie", 
+    "displayName_it": "bonus to energy nosferatu and energy neutralizer drain amount", 
+    "displayName_ja": "エネルギーノスフェラトゥとエネルギーニュートラライザーの吸収量が増加", 
+    "displayName_ko": "에너지 노스페라투 및 에너지 뉴트럴라이저 흡수량 증가", 
+    "displayName_ru": "бонус к эффективности модулей паразитной подзарядки и энергонейтрализаторов", 
+    "displayName_zh": "掠能器和能量中和器吸取量加成", 
+    "displayNameID": 1038970, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 90, 
+        "groupID": 68
+      }, 
+      {
+        "dogmaAttributeID": 97, 
+        "groupID": 71
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2574": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon13 - Suffix Ancillary Remote Repair Effect", 
+    "displayName_de": "Bonus auf die Menge von zusätzlichen Panzerungs-Fernreparatursystem- und zusätzlichen Schildmodulen", 
+    "displayName_en-us": "bonus to ancillary remote shield and ancillary remote armor repairer module amount", 
+    "displayName_es": "de bonificación a la cantidad de módulos de reparador de blindaje remotos auxiliares y escudos remotos auxiliares.", 
+    "displayName_fr": "de bonus au bouclier à distance auxiliaire et au module de réparateur de blindage à distance auxiliaire", 
+    "displayName_it": "bonus to ancillary remote shield and ancillary remote armor repairer module amount", 
+    "displayName_ja": "補助リモートシールドと補助リモートアーマーリペアラモジュールの回復量にボーナス", 
+    "displayName_ko": "보조 원격 실드 부스터 및 원격 장갑수리 장치 수리량 증가", 
+    "displayName_ru": "бонус к эффективности вспом. модулей дист. накачки щитов и ремонта брони", 
+    "displayName_zh": "辅助远程护盾和辅助远程装甲维修器模块数量加成", 
+    "displayNameID": 1038971, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "groupID": 1697
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "groupID": 1698
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2575": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon14 - ECM Module Strength Increase", 
+    "displayName_de": "Bonus auf die Stärke von ECM-Modulen", 
+    "displayName_en-us": "bonus to ECM module strength", 
+    "displayName_es": "de bonificación a la intensidad del módulo de ECM.", 
+    "displayName_fr": "de bonus à la puissance des modules CME", 
+    "displayName_it": "bonus to ECM module strength", 
+    "displayName_ja": "ECMモジュール強度にボーナス", 
+    "displayName_ko": "ECM 모듈 강도 증가", 
+    "displayName_ru": "бонус к эффективности модулей МЭП", 
+    "displayName_zh": "ECM模块强度加成", 
+    "displayNameID": 1038972, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 238, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 239, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 240, 
+        "groupID": 201
+      }, 
+      {
+        "dogmaAttributeID": 241, 
+        "groupID": 201
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2576": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon15 - Implicit max target range chad mode forced", 
+    "displayName_de": "Sperrreichweite ist begrenzt auf und beträgt immer 30 km", 
+    "displayName_en-us": "lock range limited to and is always 30km", 
+    "displayName_es": "alcance de fijación limitado y siempre a 30 km", 
+    "displayName_fr": "portée de verrouillage limitée à et toujours 30 km", 
+    "displayName_it": "lock range limited to and is always 30km", 
+    "displayName_ja": "ロック射程は常に30kmに制限される", 
+    "displayName_ko": "타겟팅 범위 30km로 고정", 
+    "displayName_ru": "дальность захвата целей всегда равна 30 км", 
+    "displayName_zh": "锁定范围始终限制为30公里。", 
+    "displayNameID": 1038973, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 76
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "Hide"
+  }, 
+  "2577": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon16 - Implicit longer range webs but reduced strength", 
+    "displayName_de": "Stasisnetze haben eine erhöhte Reichweite, aber eine verringerte Stärke", 
+    "displayName_en-us": "stasis webifiers have increased range but reduced strength", 
+    "displayName_es": "las redes ralentizadoras tiene más alcance, pero menos intensidad", 
+    "displayName_fr": "Les générateurs de stase ont une portée augmentée mais une résistance réduite", 
+    "displayName_it": "stasis webifiers have increased range but reduced strength", 
+    "displayName_ja": "ステイシスウェビファイヤーの射程が伸びる半面、強度は減少する", 
+    "displayName_ko": "스테이시스 웹 생성기 사정거리 증가, 강도 감소", 
+    "displayName_ru": "повышается дальность, но снижается эффективность стазис-индуктора", 
+    "displayName_zh": "停滞缠绕光束范围增加，但强度降低", 
+    "displayNameID": 1038974, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 54, 
+        "groupID": 65
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2578": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon17 - Implicit Afterburner speed bonus for everyone", 
+    "displayName_de": "Nachbrenner-Geschwindigkeitsbonus", 
+    "displayName_en-us": "afterburner speed bonus", 
+    "displayName_es": "bonificación de velocidad del posquemador", 
+    "displayName_fr": "bonus à la vitesse de la post-combustion", 
+    "displayName_it": "afterburner speed bonus", 
+    "displayName_ja": "アフターバーナー速度ボーナス", 
+    "displayName_ko": "애프터버너 속도 증가", 
+    "displayName_ru": "бонус к скорости форсажных ускорителей", 
+    "displayName_zh": "加力燃烧器速度加成", 
+    "displayNameID": 1038975, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "skillID": 3450
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2579": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon18 - Implicit all ships have increased top speed but reduced agility", 
+    "displayName_de": "erhöhte Höchstgeschwindigkeit, aber verringerte Wendigkeit", 
+    "displayName_en-us": "increased top speed but reduced agility", 
+    "displayName_es": "aumento de velocidad máxima, pero agilidad reducida", 
+    "displayName_fr": "vitesse de pointe augmentée mais agilité réduite", 
+    "displayName_it": "increased top speed but reduced agility", 
+    "displayName_ja": "最高速度が上がる半面、機動性は減少する", 
+    "displayName_ko": "최대 속도 증가, 기동성 감소", 
+    "displayName_ru": "повышается макс. скорость, но снижается манёвренность", 
+    "displayName_zh": "提高最高速度，但降低灵活性", 
+    "displayNameID": 1038978, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 37
+      }, 
+      {
+        "dogmaAttributeID": 70
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2580": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "ChaosDungeon19 - Implicit heat damage reduction", 
+    "displayName_de": "Modul-Hitzeschadenreduktion", 
+    "displayName_en-us": "module heat damage reduction", 
+    "displayName_es": "reducción de daño por calor del módulo", 
+    "displayName_fr": "réduction des dégâts thermiques des modules", 
+    "displayName_it": "module heat damage reduction", 
+    "displayName_ja": "モジュール熱ダメージ減少", 
+    "displayName_ko": "모듈 과부하 피해 감소", 
+    "displayName_ru": "снижение теплового урона для модулей", 
+    "displayName_zh": "模块超载伤害降低", 
+    "displayNameID": 1038979, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1211
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2581": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "ChaosDungeon20 - Implicit Overheating Bonus - Includes Ewar", 
+    "displayName_de": "Modul-Überlastungsbonus", 
+    "displayName_en-us": "module overload bonus", 
+    "displayName_es": "bonificación de sobrecarga de módulo", 
+    "displayName_fr": "bonus à la surcharge du module", 
+    "displayName_it": "module overload bonus", 
+    "displayName_ja": "モジュールオーバーロードボーナス", 
+    "displayName_ko": "모듈 과부하 효과 증가", 
+    "displayName_ru": "бонус к перегрузке модулей", 
+    "displayName_zh": "模块超载加成", 
+    "displayNameID": 1038980, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [
+      {
+        "dogmaAttributeID": 1181
+      }, 
+      {
+        "dogmaAttributeID": 1205
+      }, 
+      {
+        "dogmaAttributeID": 1206
+      }, 
+      {
+        "dogmaAttributeID": 1208
+      }, 
+      {
+        "dogmaAttributeID": 1210
+      }, 
+      {
+        "dogmaAttributeID": 1222
+      }, 
+      {
+        "dogmaAttributeID": 1223
+      }, 
+      {
+        "dogmaAttributeID": 1225
+      }, 
+      {
+        "dogmaAttributeID": 1226
+      }, 
+      {
+        "dogmaAttributeID": 1230
+      }, 
+      {
+        "dogmaAttributeID": 1231
+      }, 
+      {
+        "dogmaAttributeID": 1935
+      }, 
+      {
+        "dogmaAttributeID": 1936
+      }, 
+      {
+        "dogmaAttributeID": 1937
+      }
+    ], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2582": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Chaos Dungeon 16 - Reduced Web Strength (used with the other dbuff ID)", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "groupID": 65
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "Hide"
+  }, 
   "2583": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Capsuleer Day - Energy Weapon Damage", 
@@ -6285,5 +7157,28 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "ModAdd", 
     "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2599": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "AIR Epic Arc - Hull Resistance", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 974
+      }, 
+      {
+        "dogmaAttributeID": 975
+      }, 
+      {
+        "dogmaAttributeID": 976
+      }, 
+      {
+        "dogmaAttributeID": 977
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostAssignment", 
+    "showOutputValueInUI": "Hide"
   }
 }

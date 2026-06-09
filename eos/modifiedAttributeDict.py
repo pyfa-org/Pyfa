@@ -29,7 +29,8 @@ from eos.db.gamedata.queries import getAttributeInfo
 
 
 defaultValuesCache = {}
-cappingAttrKeyCache = {}
+minLimitAttrKeyCache = {}
+maxLimitAttrKeyCache = {}
 resistanceCache = {}
 
 
@@ -307,34 +308,57 @@ class ModifiedAttributeDict(MutableMapping):
 
     def __calculateValue(self, key, extraMultipliers=None, preIncAdj=None, multAdj=None, postIncAdj=None, ignorePenMult=None):
         # It's possible that various attributes are capped by other attributes,
-        # it's defined by reference maxAttributeID
+        # it's defined by reference min/maxAttributeID
+        # Min
         try:
-            cappingKey = cappingAttrKeyCache[key]
+            minLimitKey = minLimitAttrKeyCache[key]
         except KeyError:
             attrInfo = getAttributeInfo(key)
             if attrInfo is None:
-                cappingId = cappingAttrKeyCache[key] = None
+                cappingId = minLimitAttrKeyCache[key] = None
+            else:
+                cappingId = attrInfo.minAttributeID
+            if cappingId is None:
+                minLimitKey = None
+            else:
+                cappingAttrInfo = getAttributeInfo(cappingId)
+                minLimitKey = None if cappingAttrInfo is None else cappingAttrInfo.name
+                minLimitAttrKeyCache[key] = minLimitKey
+        if minLimitKey:
+            minLimitValue = self[minLimitKey]
+            minLimitValue = minLimitValue.value if hasattr(minLimitValue, "value") else minLimitValue
+        else:
+            minLimitValue = None
+        # Max
+        try:
+            maxLimitKey = maxLimitAttrKeyCache[key]
+        except KeyError:
+            attrInfo = getAttributeInfo(key)
+            if attrInfo is None:
+                cappingId = maxLimitAttrKeyCache[key] = None
             else:
                 cappingId = attrInfo.maxAttributeID
             if cappingId is None:
-                cappingKey = None
+                maxLimitKey = None
             else:
                 cappingAttrInfo = getAttributeInfo(cappingId)
-                cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
-                cappingAttrKeyCache[key] = cappingKey
+                maxLimitKey = None if cappingAttrInfo is None else cappingAttrInfo.name
+                maxLimitAttrKeyCache[key] = maxLimitKey
 
-        if cappingKey:
-            cappingValue = self[cappingKey]
-            cappingValue = cappingValue.value if hasattr(cappingValue, "value") else cappingValue
+        if maxLimitKey:
+            maxLimitValue = self[maxLimitKey]
+            maxLimitValue = maxLimitValue.value if hasattr(maxLimitValue, "value") else maxLimitValue
         else:
-            cappingValue = None
+            maxLimitValue = None
 
         # If value is forced, we don't have to calculate anything,
         # just return forced value instead
         force = self.__forced[key] if key in self.__forced else None
         if force is not None:
-            if cappingValue is not None:
-                force = min(force, cappingValue)
+            if minLimitValue is not None:
+                force = max(force, minLimitValue)
+            if maxLimitValue is not None:
+                force = min(force, maxLimitValue)
             if key in ("cpu", "power", "cpuOutput", "powerOutput"):
                 force = round(force, 2)
             return force
@@ -409,8 +433,10 @@ class ModifiedAttributeDict(MutableMapping):
             val += postIncAdj
 
         # Cap value if we have cap defined
-        if cappingValue is not None:
-            val = min(val, cappingValue)
+        if minLimitValue is not None:
+            val = max(val, minLimitValue)
+        if maxLimitValue is not None:
+            val = min(val, maxLimitValue)
         if key in ("cpu", "power", "cpuOutput", "powerOutput"):
             val = round(val, 2)
         return val
