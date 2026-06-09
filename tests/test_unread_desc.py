@@ -17,7 +17,7 @@ sys._called_from_test = True  # need db open for tests. (see eos/config.py#17
 # This import is here to hack around circular import issues
 import gui.mainFrame
 # noinspection PyPep8
-from service.port import Port, IPortUser
+from service.port import Port
 
 """
 NOTE:
@@ -47,11 +47,22 @@ for local coverage:
     py.test --cov=./ --cov-report=html
 """
 
-class PortUser(IPortUser):
+class PortUser:
+
+    def __init__(self):
+        self.userCancelled = False
+        self.message = ""
+        self.error = None
+        self.current = 0
+        self.workerWorking = False
+        self.cbArgs = []
 
     def on_port_processing(self, action, data=None):
         print(data)
         return True
+        
+    def on_port_process_start(self):
+        pass
 
 
 #stpw = Stopwatch('test measurementer')
@@ -74,9 +85,8 @@ def test_import_xml(print_db_info):
     xml_file = "jeffy_ja-en[99].xml"
     fit_count = int(re.search(r"\[(\d+)\]", xml_file).group(1))
     fits = None
-    with open(os.path.join(script_dir, xml_file), "r") as file_:
+    with open(os.path.join(script_dir, xml_file), "r", encoding="utf-8") as file_:
         srcString = file_.read()
-        srcString = str(srcString, "utf-8")
         #  (basestring, IPortUser, basestring) -> list[eos.saveddata.fit.Fit]
         usr.on_port_process_start()
         #stpw.reset()

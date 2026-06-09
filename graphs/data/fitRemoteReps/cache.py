@@ -164,7 +164,10 @@ class TimeCache(FitDataCache):
             for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cyclesWithoutReload += 1
                 cycleRepAmounts = []
-                repAmountParams = mod.getRepAmountParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+                inactive_afflictors = src.item.getInactiveModulesAt(currentTime * 1000, exclude=(mod,))
+                repAmountParams = mod.getRepAmountParameters(
+                    spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True),
+                    ignoreAfflictors=inactive_afflictors)
                 for repTimeMs, repAmount in repAmountParams.items():
                     # Loaded ancillary armor rep can keep running at less efficiency if we decide to not reload
                     if isAncArmor and mod.charge and not ancReload and cyclesWithoutReload > cyclesUntilReload:
