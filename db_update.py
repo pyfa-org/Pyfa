@@ -617,7 +617,7 @@ def update_db():
     attr = eos.db.gamedata_session.query(eos.gamedata.AttributeInfo).filter(eos.gamedata.AttributeInfo.name == 'boosterLastInjectionDatetime').first()
     dumpTime = eos.db.gamedata_session.query(eos.gamedata.MetaData).filter(eos.gamedata.MetaData.field_name == 'dump_time').first()
     if attr is not None and dumpTime is not None and dumpTime.field_value.isdigit():
-        epochDelta = (datetime.datetime.fromtimestamp(timestamp=int(dumpTime.field_value), tz=datetime.UTC)
+        epochDelta = (datetime.datetime.fromtimestamp(timestamp=int(dumpTime.field_value), tz=datetime.timezone.utc)
                       - datetime.datetime(year=1970, month=1, day=1, tzinfo=datetime.timezone.utc))
         dumpDatetime = epochDelta.days + epochDelta.seconds / (24 * 60 * 60)
         query = (
