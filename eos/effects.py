@@ -34930,7 +34930,7 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
-    Items from category: Ship (46 of 419)
+    Items from category: Ship (46 of 423)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
     Ships from group: Interceptor (10 of 10)

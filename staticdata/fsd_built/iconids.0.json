@@ -15324,5 +15324,11 @@
   }, 
   "27527": {
     "iconFile": "res:/ui/texture/corps/AdaptiveProvisioning_128.png"
+  }, 
+  "27528": {
+    "iconFile": "res:/ui/texture/icons/icon_background_04.png"
+  }, 
+  "27529": {
+    "iconFile": "res:/ui/texture/icons/icon_background_05.png"
   }
 }
