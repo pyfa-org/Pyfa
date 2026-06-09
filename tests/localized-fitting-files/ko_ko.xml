@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+	<fittings>
+		<fitting name="Vargur - expensive 2024 ko ko">
+			<description value="&lt;font size=&quot;15&quot; color=&quot;#bfffffff&quot;&gt;[20241127@tq]&lt;br&gt;EM 83% Them 85% Kin 87% Exp 89%&lt;br&gt;repair: 744.8hp/s&lt;br&gt;&lt;br&gt;fit を少し変更&lt;br&gt;&lt;br&gt;現実的には &lt;/font&gt;&lt;font size=&quot;15&quot; color=&quot;#ffd98d00&quot;&gt;&lt;a href=&quot;showinfo:4349&quot;&gt;Pithum C-Type Multispectrum Shield Hardener&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;15&quot; color=&quot;#bfffffff&quot;&gt; x 2&lt;br&gt;になるでしょうね...&lt;/font&gt;"/>
+			<shipType value="&lt;localized hint=&quot;Vargur&quot;&gt;바르거*&lt;/localized&gt;"/>
+			<hardware slot="low slot 5" type="&lt;localized hint=&quot;Power Diagnostic System II&quot;&gt;전력 진단 시스템 II*&lt;/localized&gt;"/>
+			<hardware slot="low slot 0" type="&lt;localized hint=&quot;Damage Control II&quot;&gt;데미지 컨트롤 II*&lt;/localized&gt;"/>
+			<hardware qty="5" slot="drone bay" type="&lt;localized hint=&quot;Infiltrator II&quot;&gt;인필트레이터 II*&lt;/localized&gt;"/>
+			<hardware qty="5" slot="drone bay" type="&lt;localized hint=&quot;Hornet II&quot;&gt;호넷 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 0" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm 기관포 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 2" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm 기관포 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 4" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm 기관포 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 6" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm 기관포 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 5" type="&lt;localized hint=&quot;Small Tractor Beam II&quot;&gt;소형 트랙터 빔 II*&lt;/localized&gt;"/>
+			<hardware slot="med slot 1" type="&lt;localized hint=&quot;Pithum A-Type Multispectrum Shield Hardener&quot;&gt;피섬 A-타입 다중스팩트럼 실드 강화장치*&lt;/localized&gt;"/>
+			<hardware slot="med slot 3" type="&lt;localized hint=&quot;Pithum A-Type Multispectrum Shield Hardener&quot;&gt;피섬 A-타입 다중스팩트럼 실드 강화장치*&lt;/localized&gt;"/>
+			<hardware slot="med slot 4" type="&lt;localized hint=&quot;Heavy F-RX Compact Capacitor Booster&quot;&gt;헤비 F-RX 컴팩트 캐패시터 부스터*&lt;/localized&gt;"/>
+			<hardware slot="low slot 1" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;공화국 함대 자이로 안정기*&lt;/localized&gt;"/>
+			<hardware slot="low slot 2" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;공화국 함대 자이로 안정기*&lt;/localized&gt;"/>
+			<hardware slot="low slot 3" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;공화국 함대 자이로 안정기*&lt;/localized&gt;"/>
+			<hardware slot="low slot 4" type="&lt;localized hint=&quot;Republic Fleet Tracking Enhancer&quot;&gt;공화국 함대 트래킹 향상장치*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 1" type="&lt;localized hint=&quot;Heavy Knave Scoped Energy Nosferatu&quot;&gt;대형 네이브 스코프 에너지 노스페라투*&lt;/localized&gt;"/>
+			<hardware slot="med slot 2" type="&lt;localized hint=&quot;Federation Navy Stasis Webifier&quot;&gt;연방 해군 스테이시스 웹 생성기*&lt;/localized&gt;"/>
+			<hardware slot="med slot 5" type="&lt;localized hint=&quot;Pith A-Type X-Large Shield Booster&quot;&gt;피스 A-타입 초대형 실드 부스터*&lt;/localized&gt;"/>
+			<hardware slot="med slot 0" type="&lt;localized hint=&quot;Pith X-Type Shield Boost Amplifier&quot;&gt;피스 X-타입 실드 부스터 증폭기*&lt;/localized&gt;"/>
+			<hardware qty="4800" slot="cargo" type="&lt;localized hint=&quot;Republic Fleet EMP L&quot;&gt;공화국 함대 EMP탄 L*&lt;/localized&gt;"/>
+			<hardware qty="6240" slot="cargo" type="&lt;localized hint=&quot;Republic Fleet Phased Plasma L&quot;&gt;공화국 함대 위상 플라즈마탄 L*&lt;/localized&gt;"/>
+			<hardware slot="rig slot 0" type="&lt;localized hint=&quot;Large Core Defense Field Extender II&quot;&gt;대형 코어 방어 필드 확장장치 II*&lt;/localized&gt;"/>
+			<hardware slot="rig slot 1" type="&lt;localized hint=&quot;Large Core Defense Field Extender II&quot;&gt;대형 코어 방어 필드 확장장치 II*&lt;/localized&gt;"/>
+			<hardware qty="23" slot="cargo" type="&lt;localized hint=&quot;Navy Cap Booster 800&quot;&gt;해군 캐패시터 부스터 800*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 3" type="&lt;localized hint=&quot;Bastion Module I&quot;&gt;바스티온 모듈 I*&lt;/localized&gt;"/>
+		</fitting>
+	</fittings>

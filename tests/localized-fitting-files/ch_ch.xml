@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+	<fittings>
+		<fitting name="Vargur - expensive 2024 ch ch">
+			<description value="&lt;font size=&quot;15&quot; color=&quot;#bfffffff&quot;&gt;[20241127@tq]&lt;br&gt;EM 83% Them 85% Kin 87% Exp 89%&lt;br&gt;repair: 744.8hp/s&lt;br&gt;&lt;br&gt;fit を少し変更&lt;br&gt;&lt;br&gt;現実的には &lt;/font&gt;&lt;font size=&quot;15&quot; color=&quot;#ffd98d00&quot;&gt;&lt;a href=&quot;showinfo:4349&quot;&gt;Pithum C-Type Multispectrum Shield Hardener&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;15&quot; color=&quot;#bfffffff&quot;&gt; x 2&lt;br&gt;になるでしょうね...&lt;/font&gt;"/>
+			<shipType value="&lt;localized hint=&quot;Vargur&quot;&gt;恶狼级*&lt;/localized&gt;"/>
+			<hardware slot="low slot 5" type="&lt;localized hint=&quot;Power Diagnostic System II&quot;&gt;能源诊断系统 II*&lt;/localized&gt;"/>
+			<hardware slot="low slot 0" type="&lt;localized hint=&quot;Damage Control II&quot;&gt;损伤控制 II*&lt;/localized&gt;"/>
+			<hardware qty="5" slot="drone bay" type="&lt;localized hint=&quot;Infiltrator II&quot;&gt;渗透者 II*&lt;/localized&gt;"/>
+			<hardware qty="5" slot="drone bay" type="&lt;localized hint=&quot;Hornet II&quot;&gt;大黄蜂 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 0" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm频射加农炮 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 2" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm频射加农炮 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 4" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm频射加农炮 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 6" type="&lt;localized hint=&quot;800mm Repeating Cannon II&quot;&gt;800mm频射加农炮 II*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 5" type="&lt;localized hint=&quot;Small Tractor Beam II&quot;&gt;小型牵引光束 II*&lt;/localized&gt;"/>
+			<hardware slot="med slot 1" type="&lt;localized hint=&quot;Pithum A-Type Multispectrum Shield Hardener&quot;&gt;皮特姆多谱式护盾增强器 A型*&lt;/localized&gt;"/>
+			<hardware slot="med slot 3" type="&lt;localized hint=&quot;Pithum A-Type Multispectrum Shield Hardener&quot;&gt;皮特姆多谱式护盾增强器 A型*&lt;/localized&gt;"/>
+			<hardware slot="med slot 4" type="&lt;localized hint=&quot;Heavy F-RX Compact Capacitor Booster&quot;&gt;重型F-RX紧凑型电容注电器*&lt;/localized&gt;"/>
+			<hardware slot="low slot 1" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;共和舰队回转稳定器*&lt;/localized&gt;"/>
+			<hardware slot="low slot 2" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;共和舰队回转稳定器*&lt;/localized&gt;"/>
+			<hardware slot="low slot 3" type="&lt;localized hint=&quot;Republic Fleet Gyrostabilizer&quot;&gt;共和舰队回转稳定器*&lt;/localized&gt;"/>
+			<hardware slot="low slot 4" type="&lt;localized hint=&quot;Republic Fleet Tracking Enhancer&quot;&gt;共和舰队索敌增强器*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 1" type="&lt;localized hint=&quot;Heavy Knave Scoped Energy Nosferatu&quot;&gt;重型流氓视野型掠能器*&lt;/localized&gt;"/>
+			<hardware slot="med slot 2" type="&lt;localized hint=&quot;Federation Navy Stasis Webifier&quot;&gt;联邦海军停滞缠绕光束*&lt;/localized&gt;"/>
+			<hardware slot="med slot 5" type="&lt;localized hint=&quot;Pith A-Type X-Large Shield Booster&quot;&gt;皮特超大型护盾回充增量器 A型*&lt;/localized&gt;"/>
+			<hardware slot="med slot 0" type="&lt;localized hint=&quot;Pith X-Type Shield Boost Amplifier&quot;&gt;皮特护盾回充增量增效器 X型*&lt;/localized&gt;"/>
+			<hardware qty="4800" slot="cargo" type="&lt;localized hint=&quot;Republic Fleet EMP L&quot;&gt;共和舰队电磁脉冲弹 L*&lt;/localized&gt;"/>
+			<hardware qty="6240" slot="cargo" type="&lt;localized hint=&quot;Republic Fleet Phased Plasma L&quot;&gt;共和舰队定相等离子弹 L*&lt;/localized&gt;"/>
+			<hardware slot="rig slot 0" type="&lt;localized hint=&quot;Large Core Defense Field Extender II&quot;&gt;大型核心防御力场扩张装置 II*&lt;/localized&gt;"/>
+			<hardware slot="rig slot 1" type="&lt;localized hint=&quot;Large Core Defense Field Extender II&quot;&gt;大型核心防御力场扩张装置 II*&lt;/localized&gt;"/>
+			<hardware qty="23" slot="cargo" type="&lt;localized hint=&quot;Navy Cap Booster 800&quot;&gt;海军电容注电器装料 800*&lt;/localized&gt;"/>
+			<hardware slot="hi slot 3" type="&lt;localized hint=&quot;Bastion Module I&quot;&gt;堡垒装备 I*&lt;/localized&gt;"/>
+		</fitting>
+	</fittings>

@@ -22,9 +22,9 @@ class ItemDescription(wx.Panel):
 
         desc = item.description.replace("\n", "<br>")
         # Strip font tags
-        desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", r"\g<inside>", desc)
+        desc = re.sub(r"<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", r"\g<inside>", desc)
         # Strip URLs
-        desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", r"\g<inside>", desc)
+        desc = re.sub(r"<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", r"\g<inside>", desc)
         desc = "<body bgcolor='{}' text='{}'>{}</body>".format(
                 bgcolor.GetAsString(wx.C2S_HTML_SYNTAX),
                 fgcolor.GetAsString(wx.C2S_HTML_SYNTAX),
