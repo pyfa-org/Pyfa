@@ -19,6 +19,7 @@
 #======================================================================
 
 
+import datetime
 import functools
 import itertools
 import json
@@ -160,10 +161,6 @@ def update_db():
                     "'Krai Veles'" not in row['typeName_en-us'] and
                     "'Krai Perun'" not in row['typeName_en-us'] and
                     "'Krai Svarog'" not in row['typeName_en-us']
-                )
-                # Some draft boosters added to sisi, should be removed later when FC/CCP finishes them
-                or row['typeID'] in (
-                        91916,
                 )
             ):
                 row['published'] = False
@@ -615,6 +612,26 @@ def update_db():
         if 'Mutated Drone Specialization' in item.name:
             continue
         item.published = False
+
+    # Remove boosters which were expired at the time data dump was generated
+    attr = eos.db.gamedata_session.query(eos.gamedata.AttributeInfo).filter(eos.gamedata.AttributeInfo.name == 'boosterLastInjectionDatetime').first()
+    dumpTime = eos.db.gamedata_session.query(eos.gamedata.MetaData).filter(eos.gamedata.MetaData.field_name == 'dump_time').first()
+    if attr is not None and dumpTime is not None and dumpTime.field_value.isdigit():
+        epochDelta = (datetime.datetime.fromtimestamp(timestamp=int(dumpTime.field_value), tz=datetime.timezone.utc)
+                      - datetime.datetime(year=1970, month=1, day=1, tzinfo=datetime.timezone.utc))
+        dumpDatetime = epochDelta.days + epochDelta.seconds / (24 * 60 * 60)
+        query = (
+            eos.db.gamedata_session.query(eos.gamedata.Item)
+            .join(eos.gamedata.Item.group, eos.gamedata.Group.category, eos.gamedata.Attribute)
+            .filter(and_(
+                eos.gamedata.Item.published,
+                eos.gamedata.Category.name == 'Implant',
+                eos.gamedata.Attribute.ID == attr.ID,
+                eos.gamedata.Attribute.value < dumpDatetime)))
+        if query.count() > 0:
+            print(f'Removing {query.count()} expired boosters')
+            for eveType in query:
+                eos.db.gamedata_session.delete(eveType)
 
     for x in [
         30  # Apparel
