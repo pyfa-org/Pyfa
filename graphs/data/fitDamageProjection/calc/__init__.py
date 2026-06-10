@@ -17,15 +17,8 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-
-from . import fitDamageStats
-from . import fitDamageProjection
-from . import fitEwarStats
-from . import fitRemoteReps
-from . import fitShieldRegen
-from . import fitCapacitor
-from . import fitMobility
-from . import fitWarpTime
-from . import fitLockTime
-# Hidden graphs, available via ctrl-alt-g
-from . import fitEcmBurstScanresDamps
+# Import key functions for convenient access
+from .projected import (
+    buildProjectedCache,
+    getProjectedParamsAtDistance,
+)
