@@ -3,6 +3,8 @@ import wx
 # noinspection PyPackageRequirements
 import wx.html
 
+from gui.utils.themes import Themes
+
 _t = wx.GetTranslation
 
 
@@ -14,8 +16,8 @@ class ItemTraits(wx.Panel):
 
         self.traits = wx.html.HtmlWindow(self)
 
-        bgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        fgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        bgcolor = Themes.windowBackground()
+        fgcolor = Themes.text()
         self.traits.SetPage("<body bgcolor='{}' text='{}'>{}</body>".format(
             bgcolor.GetAsString(wx.C2S_HTML_SYNTAX),
             fgcolor.GetAsString(wx.C2S_HTML_SYNTAX), item.traits.display))

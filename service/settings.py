@@ -37,10 +37,9 @@ pyfalog = Logger(__name__)
 
 
 class SettingsProvider:
-    if config.savePath:
-        BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
     _instance = None
+    _base_path = None
 
     @classmethod
     def getInstance(cls):
@@ -49,19 +48,25 @@ class SettingsProvider:
 
         return cls._instance
 
+    @property
+    def BASE_PATH(self):
+        """Lazily compute BASE_PATH to ensure config.savePath is available."""
+        if SettingsProvider._base_path is None and config.savePath:
+            SettingsProvider._base_path = os.path.join(config.savePath, 'settings')
+        return SettingsProvider._base_path
+
     def __init__(self):
-        if hasattr(self, 'BASE_PATH'):
-            if not os.path.exists(self.BASE_PATH):
-                os.mkdir(self.BASE_PATH)
+        if self.BASE_PATH and not os.path.exists(self.BASE_PATH):
+            os.mkdir(self.BASE_PATH)
 
     def getSettings(self, area, defaults=None):
         # type: (basestring, dict) -> service.Settings
         # NOTE: needed to change for tests
         # TODO: Write to memory with mmap -> https://docs.python.org/2/library/mmap.html
         settings_obj = self.settings.get(area)
-        if settings_obj is None:  # and hasattr(self, 'BASE_PATH'):
-            canonical_path = os.path.join(self.BASE_PATH, area) if hasattr(self, 'BASE_PATH') else ""
-            if not os.path.exists(canonical_path):  # path string or empty string.
+        if settings_obj is None:
+            canonical_path = os.path.join(self.BASE_PATH, area) if self.BASE_PATH else ""
+            if not canonical_path or not os.path.exists(canonical_path):
                 info = {}
                 if defaults:
                     info.update(defaults)
@@ -597,4 +602,40 @@ class LocaleSettings:
     def set(self, key, value):
         if key == 'locale' and value not in self.supported_languages():
             self.settings[key] = self.DEFAULT
+        self.settings[key] = value
+
+
+class ThemeSettings:
+    """
+    Settings for application theme/appearance (dark mode).
+    
+    Theme Mode Behavior:
+    - THEME_SYSTEM (0): macOS/Linux use system colors; Windows uses Pyfa Dark if system is dark
+    - THEME_DARK (1): Always use Pyfa's custom dark theme on all platforms
+    - THEME_LIGHT (2): Always use light theme (system colors) on all platforms
+    """
+    _instance = None
+
+    # Theme mode constants - indices match the Choice dropdown in preferences
+    THEME_SYSTEM = 0  # Follow system preference (platform-specific behavior)
+    THEME_DARK = 1    # Always use Pyfa Dark theme
+    THEME_LIGHT = 2   # Always use light theme
+
+    defaults = {
+        'theme_mode': 0  # THEME_SYSTEM
+    }
+
+    def __init__(self):
+        self.settings = SettingsProvider.getInstance().getSettings('pyfaThemeSettings', self.defaults)
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = ThemeSettings()
+        return cls._instance
+
+    def get(self, key):
+        return self.settings[key]
+
+    def set(self, key, value):
         self.settings[key] = value

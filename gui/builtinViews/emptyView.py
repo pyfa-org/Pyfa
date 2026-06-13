@@ -3,6 +3,7 @@ import wx
 import gui.globalEvents as GE
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 import gui.mainFrame
+from gui.utils.themes import Themes
 
 
 class BlankPage(wx.Panel):
@@ -13,7 +14,7 @@ class BlankPage(wx.Panel):
         self.parent = parent
 
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Themes.windowBackground())
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=()))
 

@@ -18,6 +18,7 @@ import copy
 import wx
 
 from gui.utils import anim_effects, color as color_utils, draw
+from gui.utils.themes import Themes
 
 
 _t = wx.GetTranslation
@@ -68,7 +69,7 @@ class PyGauge(wx.Window):
 
         self.font = font
 
-        self.SetBackgroundColour(wx.Colour(51, 51, 51))
+        self.SetBackgroundColour(Themes.gaugeBackground())
 
         self._tooltip = wx.ToolTip("0.00/100.00")
         self.SetToolTip(self._tooltip)

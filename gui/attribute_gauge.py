@@ -3,6 +3,7 @@ import math
 import wx
 
 from gui.utils import anim_effects
+from gui.utils.themes import Themes
 
 
 # todo: clean class up. Took from pyfa gauge, has a bunch of extra shit we don't need
@@ -50,7 +51,7 @@ class AttributeGauge(wx.Window):
         self._old_percentage = 0
         self._show_remaining = False
 
-        self.SetBackgroundColour(wx.Colour(51, 51, 51))
+        self.SetBackgroundColour(Themes.gaugeBackground())
 
         self._tooltip = wx.ToolTip("0.00/100.00")
         self.SetToolTip(self._tooltip)
@@ -169,10 +170,10 @@ class AttributeGauge(wx.Window):
         dc = wx.AutoBufferedPaintDC(self)
         rect = self.GetClientRect()
 
-        dc.SetBackground(wx.Brush(self.GetBackgroundColour()))
+        dc.SetBackground(wx.Brush(Themes.gaugeBackground()))
         dc.Clear()
 
-        colour = self.GetBackgroundColour()
+        colour = Themes.gaugeBackground()
 
         dc.SetBrush(wx.Brush(colour))
         dc.SetPen(wx.Pen(colour))

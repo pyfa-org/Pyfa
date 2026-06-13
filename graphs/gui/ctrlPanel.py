@@ -25,6 +25,7 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
+from gui.utils.themes import ThemedPanel, Themes
 from gui.utils.inputs import FloatBox, FloatRangeBox
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
@@ -37,7 +38,7 @@ CheckBox = namedtuple('CheckBox', ('handle', 'checkBox'))
 _t = wx.GetTranslation
 
 
-class GraphControlPanel(wx.Panel):
+class GraphControlPanel(ThemedPanel):
 
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
@@ -56,6 +57,7 @@ class GraphControlPanel(wx.Panel):
         yText = wx.StaticText(self, wx.ID_ANY, _t('Axis Y:'))
         ySubSelectionSizer.Add(yText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.ySubSelection = wx.Choice(self, wx.ID_ANY)
+        Themes.styleInput(self.ySubSelection)
         self.ySubSelection.Bind(wx.EVT_CHOICE, self.OnYTypeUpdate)
         ySubSelectionSizer.Add(self.ySubSelection, 1, wx.EXPAND | wx.ALL, 0)
         commonOptsSizer.Add(ySubSelectionSizer, 0, wx.EXPAND | wx.ALL, 0)
@@ -64,6 +66,7 @@ class GraphControlPanel(wx.Panel):
         xText = wx.StaticText(self, wx.ID_ANY, _t('Axis X:'))
         xSubSelectionSizer.Add(xText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.xSubSelection = wx.Choice(self, wx.ID_ANY)
+        Themes.styleInput(self.xSubSelection)
         self.xSubSelection.Bind(wx.EVT_CHOICE, self.OnXTypeUpdate)
         xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND | wx.ALL, 0)
         commonOptsSizer.Add(xSubSelectionSizer, 0, wx.EXPAND | wx.TOP, 5)

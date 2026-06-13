@@ -9,6 +9,7 @@ import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
 from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
+from gui.utils.themes import Themes
 from service.market import Market
 
 
@@ -32,7 +33,7 @@ class BaseImplantEditorView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Themes.windowBackground())
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 

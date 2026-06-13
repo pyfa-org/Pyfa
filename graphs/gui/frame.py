@@ -29,6 +29,7 @@ from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
 from gui.auxWindow import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
+from gui.utils.themes import Themes
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from . import canvasPanel
@@ -58,6 +59,7 @@ class GraphFrame(AuxiliaryFrame):
 
         # Layout - graph selector
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
+        Themes.styleInput(self.graphSelection)
         self.graphSelection.Bind(wx.EVT_CHOICE, self.OnGraphSwitched)
         mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
 
