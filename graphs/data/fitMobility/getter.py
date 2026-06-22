@@ -27,15 +27,20 @@ class Time2DistanceGetter(SmoothPointGetter):
 
     def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxSpeed': src.getMaxVelocity(),
             'mass': src.item.ship.getModifiedItemAttr('mass'),
             'agility': src.item.ship.getModifiedItemAttr('agility')}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
-        maxSpeed = commonData['maxSpeed']
-        mass = commonData['mass']
-        agility = commonData['agility']
+        if getattr(src, 'isFit', False):
+            ignore_afflictors = src.item.getInactiveModulesAt(time * 1000)
+            maxSpeed = src.getMaxVelocity(ignoreAfflictors=ignore_afflictors)
+            mass = src.item.ship.getModifiedItemAttrExtended('mass', ignoreAfflictors=ignore_afflictors)
+            agility = src.item.ship.getModifiedItemAttrExtended('agility', ignoreAfflictors=ignore_afflictors)
+        else:
+            maxSpeed = src.getMaxVelocity()
+            mass = commonData['mass']
+            agility = commonData['agility']
         # Definite integral of:
         # https://wiki.eveuniversity.org/Acceleration#Mathematics_and_formulae
         distance_t = maxSpeed * time + (maxSpeed * agility * mass * math.exp((-time * 1000000) / (agility * mass)) / 1000000)
@@ -48,15 +53,20 @@ class Time2SpeedGetter(SmoothPointGetter):
 
     def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxSpeed': src.getMaxVelocity(),
             'mass': src.item.ship.getModifiedItemAttr('mass'),
             'agility': src.item.ship.getModifiedItemAttr('agility')}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
-        maxSpeed = commonData['maxSpeed']
-        mass = commonData['mass']
-        agility = commonData['agility']
+        if getattr(src, 'isFit', False):
+            ignore_afflictors = src.item.getInactiveModulesAt(time * 1000)
+            maxSpeed = src.getMaxVelocity(ignoreAfflictors=ignore_afflictors)
+            mass = src.item.ship.getModifiedItemAttrExtended('mass', ignoreAfflictors=ignore_afflictors)
+            agility = src.item.ship.getModifiedItemAttrExtended('agility', ignoreAfflictors=ignore_afflictors)
+        else:
+            maxSpeed = src.getMaxVelocity()
+            mass = commonData['mass']
+            agility = commonData['agility']
         # https://wiki.eveuniversity.org/Acceleration#Mathematics_and_formulae
         speed = maxSpeed * (1 - math.exp((-time * 1000000) / (agility * mass)))
         return speed

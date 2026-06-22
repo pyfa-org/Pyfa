@@ -175,7 +175,7 @@ class GraphCanvasPanel(wx.Panel):
             except (KeyboardInterrupt, SystemExit):
                 raise
             except Exception:
-                pyfalog.warning('Failed to plot "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
+                pyfalog.exception('Failed to plot "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
                 self.canvas.draw()
                 self.Refresh()
                 return
@@ -250,7 +250,7 @@ class GraphCanvasPanel(wx.Panel):
                         except (KeyboardInterrupt, SystemExit):
                             raise
                         except Exception:
-                            pyfalog.warning('Failed to get X mark for "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
+                            pyfalog.exception('Failed to get X mark for "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
                             # Silently skip this mark, otherwise other marks and legend display will fail
                             continue
                     # Otherwise just do linear interpolation between two points

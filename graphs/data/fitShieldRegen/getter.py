@@ -32,9 +32,20 @@ class Time2ShieldAmountGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
+        if getattr(src, 'isFit', False):
+            ignore_afflictors = src.item.getInactiveModulesAt(time * 1000)
+            maxShieldAmount = src.item.ship.getModifiedItemAttrExtended(
+                'shieldCapacity',
+                ignoreAfflictors=ignore_afflictors)
+            shieldRegenTime = src.item.ship.getModifiedItemAttrExtended(
+                'shieldRechargeRate',
+                ignoreAfflictors=ignore_afflictors) / 1000
+        else:
+            maxShieldAmount = commonData['maxShieldAmount']
+            shieldRegenTime = commonData['shieldRegenTime']
         shieldAmount = calculateShieldAmount(
-            maxShieldAmount=commonData['maxShieldAmount'],
-            shieldRegenTime=commonData['shieldRegenTime'],
+            maxShieldAmount=maxShieldAmount,
+            shieldRegenTime=shieldRegenTime,
             shieldAmountT0=miscParams['shieldAmountT0'] or 0,
             time=time)
         return shieldAmount
@@ -49,14 +60,25 @@ class Time2ShieldRegenGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
+        if getattr(src, 'isFit', False):
+            ignore_afflictors = src.item.getInactiveModulesAt(time * 1000)
+            maxShieldAmount = src.item.ship.getModifiedItemAttrExtended(
+                'shieldCapacity',
+                ignoreAfflictors=ignore_afflictors)
+            shieldRegenTime = src.item.ship.getModifiedItemAttrExtended(
+                'shieldRechargeRate',
+                ignoreAfflictors=ignore_afflictors) / 1000
+        else:
+            maxShieldAmount = commonData['maxShieldAmount']
+            shieldRegenTime = commonData['shieldRegenTime']
         shieldAmount = calculateShieldAmount(
-            maxShieldAmount=commonData['maxShieldAmount'],
-            shieldRegenTime=commonData['shieldRegenTime'],
+            maxShieldAmount=maxShieldAmount,
+            shieldRegenTime=shieldRegenTime,
             shieldAmountT0=miscParams['shieldAmountT0'] or 0,
             time=time)
         shieldRegen = calculateShieldRegen(
-            maxShieldAmount=commonData['maxShieldAmount'],
-            shieldRegenTime=commonData['shieldRegenTime'],
+            maxShieldAmount=maxShieldAmount,
+            shieldRegenTime=shieldRegenTime,
             currentShieldAmount=shieldAmount)
         return shieldRegen
 

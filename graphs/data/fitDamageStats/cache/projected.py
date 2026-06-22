@@ -30,15 +30,22 @@ MobileProjData = namedtuple('MobileProjData', ('boost', 'optimal', 'falloff', 's
 
 class ProjectedDataCache(FitDataCache):
 
-    def getProjModData(self, src):
+    def getProjModData(self, src, timeMs=None):
         try:
-            projectedData = self._data[src.item.ID]['modules']
+            if timeMs is None:
+                projectedData = self._data[src.item.ID]['modules']
+            else:
+                raise KeyError
         except KeyError:
             # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID)
             webMods = []
             tpMods = []
-            projectedData = self._data.setdefault(src.item.ID, {})['modules'] = (webMods, tpMods)
+            projectedData = (webMods, tpMods)
             for mod in src.item.activeModulesIter():
+                if timeMs is not None and mod.pulseInterval is not None:
+                    inactive = src.item.getInactiveModulesAt(timeMs, exclude=())
+                    if mod in inactive:
+                        continue
                 for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
                     if webEffectName in mod.item.effects:
                         webMods.append(ModProjData(
@@ -69,6 +76,8 @@ class ProjectedDataCache(FitDataCache):
                         mod.falloff or 0,
                         'default',
                         getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEPaint'])))
+            if timeMs is None:
+                self._data.setdefault(src.item.ID, {})['modules'] = projectedData
         return projectedData
 
     def getProjDroneData(self, src):

@@ -89,6 +89,7 @@ from gui.builtinViewColumns import (  # noqa: E402, F401
     price,
     projectionRange,
     propertyDisplay,
+    pulse,
     state,
     sideEffects,
     targetResists)
