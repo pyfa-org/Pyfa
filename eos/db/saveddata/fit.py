@@ -35,6 +35,7 @@ from eos.effectHandlerHelpers import HandledDroneCargoList, HandledImplantList, 
 from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.character import Character
+from eos.saveddata.commandLink import CommandLink
 from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
@@ -84,6 +85,17 @@ commandFits_table = Table("commandFits", saveddata_meta,
                           Column("created", DateTime, nullable=True, default=datetime.datetime.now),
                           Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                           )
+
+commandLinks_table = Table("commandLinks", saveddata_meta,
+                           Column("ID", Integer, primary_key=True),
+                           Column("fitID", ForeignKey("fits.ID"), nullable=False, index=True),
+                           Column("linkType", String, nullable=False),
+                           Column("strength", Integer, nullable=False, default=0),
+                           Column("mindlink", Boolean, nullable=False, default=0),
+                           Column("active", Boolean, nullable=False, default=1),
+                           Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                           Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
+                           )
 
 
 class ProjectedFit:
@@ -254,6 +266,10 @@ mapper(es_Fit, fits_table,
                    backref='boosted_fit',
                    collection_class=attribute_mapped_collection('boosterID'),
                    cascade='all, delete, delete-orphan'),
+           "commandLinks": relationship(
+                   CommandLink,
+                   backref='fit',
+                   cascade='all, delete, delete-orphan'),
        }
 )
 
@@ -264,3 +280,5 @@ mapper(ProjectedFit, projectedFits_table,
 )
 
 mapper(CommandFit, commandFits_table)
+
+mapper(CommandLink, commandLinks_table)
