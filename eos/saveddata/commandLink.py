@@ -30,10 +30,17 @@ command fits use.
 
 The numbers below mirror live EVE command burst data (see eve.db):
   - base value of a buff = the command burst CHARGE's warfareBuffXMultiplier
-    (the module's warfareBuffXValue is just a 1.0 T1 / 1.25 T2 tech factor).
-  - real Command Specialist skills give commandStrengthBonus = 10% per level and a
-    Warfare Mindlink gives mindlinkBonus = 25%. We expose a user-chosen 0-5% per
-    level (assuming level V, so multiplier 1 + strength*5/100) plus the 25% mindlink.
+    (the module's warfareBuffXValue is just a 1.0 T1 / 1.25 T2 tech factor; we
+    assume a T2 burst, i.e. x1.25).
+  - command bursts are scaled by four independent, multiplicative factors:
+      * Command Specialist skills: commandStrengthBonus = 10%/level. We ALWAYS
+        assume maximum skills (level V), i.e. x1.5.
+      * T2 command burst module tech factor, i.e. x1.25.
+      * Ship command bonus: 0% to 5% per level (level V assumed), i.e. x1.0 to
+        x1.25. This is the user-chosen strength.
+      * Warfare Mindlink: mindlinkBonus = 25%, i.e. x1.25 (optional).
+    In pyfa these are applied as separate boosts to the charge's
+    warfareBuffXMultiplier, so they stack multiplicatively (see eos.effects).
 """
 
 from logbook import Logger
@@ -42,10 +49,19 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-# Flat bonus contributed by a warfare mindlink (mindlinkBonus = 25 in eve.db).
-MINDLINK_BONUS = 0.25
+# Maximum Command Specialist skills: commandStrengthBonus = 10%/level, level V
+# assumed -> +50% -> x1.5. Generic links always assume max skills.
+SKILL_MULTIPLIER = 1.5
 
-# Per-level strength options offered in the UI (percent per level, level V assumed).
+# T2 command burst module: the module's warfareBuffXValue tech factor is 1.25
+# (vs 1.0 for T1). Generic links assume a T2 burst.
+TECH_MULTIPLIER = 1.25
+
+# Warfare mindlink: mindlinkBonus = 25 in eve.db -> x1.25.
+MINDLINK_MULTIPLIER = 1.25
+
+# Per-level ship command bonus options offered in the UI (percent per level, level
+# V assumed): 0% (no bonus) up to 5%/level (a command ship, -> x1.25).
 STRENGTHS = (5, 4, 3, 2, 1, 0)
 
 
@@ -141,11 +157,17 @@ _CATEGORY_MODULE_TYPE = {
 
 
 def getLinkMultiplier(strength, mindlink):
-    """Strength multiplier applied to a link's base value.
+    """Total strength multiplier applied to a link's base (no-bonus) value.
 
-    strength is the per-level percentage (0-5), level V assumed.
+    Generic links always assume maximum Command Specialist skills (x1.5) and a T2
+    command burst (x1.25). The chosen strength is the ship's command bonus per
+    level (0-5%, level V assumed, so x1.0 to x1.25) and a warfare mindlink adds
+    another x1.25. These factors stack multiplicatively, matching how real
+    command bursts are calculated.
     """
-    return 1.0 + (strength / 100.0) * 5 + (MINDLINK_BONUS if mindlink else 0.0)
+    shipMultiplier = 1.0 + (strength / 100.0) * 5
+    mindlinkMultiplier = MINDLINK_MULTIPLIER if mindlink else 1.0
+    return SKILL_MULTIPLIER * TECH_MULTIPLIER * shipMultiplier * mindlinkMultiplier
 
 
 class _GangEffect:
