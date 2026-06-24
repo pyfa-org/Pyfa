@@ -27,7 +27,6 @@ NAVY_PREFIXES = (
     'Republic Fleet ',
     'Caldari Navy ',
     'Federation Navy ',
-    'Plasma '
 )
 
 # Capital (XL) "navy-tier" faction ammo prefixes
@@ -36,7 +35,6 @@ CAPITAL_NAVY_PREFIXES = (
     'Sansha ',
     'Arch Angel ',
     'Shadow ',
-    'Plasma'
 )
 
 
@@ -55,13 +53,16 @@ def filterChargesByQuality(charges, qualityTier):
     Returns:
         Filtered list of charges
 
-    Tiers are cumulative:
-        - 't1': Tech I (metaGroup 1) + Tech II (metaGroup 2)
-        - 'navy': t1 + Navy faction ammo (Imperial Navy, Republic Fleet, Caldari Navy, Federation Navy)
+    Tiers are cumulative (each tier includes everything below it):
+        - 't1': Tech I only (metaGroup 1)
+        - 'navy': t1 + Tech II (metaGroup 2) + Navy faction ammo (Imperial Navy,
+                  Republic Fleet, Caldari Navy, Federation Navy)
                   For XL (capital) ammo: includes pirate faction (Sansha, Arch Angel, Shadow)
         - 'all': Everything including high-tier faction (Blood, Dark Blood, True Sansha, etc.)
 
-    Tech II ammo is always included as it's a distinct ammo type, not a "better" variant.
+    Charges with no meta group in the game data (metaGroupID is NULL - e.g. all
+    Baryon Exotic Plasma and every XL Triglavian charge) are treated as Tech I.
+    Otherwise they would be filtered out of every tier despite being basic ammo.
     """
     if qualityTier == 'all':
         return charges
@@ -74,29 +75,32 @@ def filterChargesByQuality(charges, qualityTier):
         if mgId is not None:
             classifiable = True
 
-        # Tech I (metaGroup 1) - always included
-        if mgId == 1:
+        # Tech I (metaGroup 1), or unclassified ammo (NULL metaGroup) treated as
+        # Tech I - always included in every tier.
+        if mgId == 1 or mgId is None:
             filtered.append(charge)
             continue
 
-        # Tech II (metaGroup 2) - always included (distinct ammo type like Conflagration, Void, etc.)
-        if mgId == 2:
-            filtered.append(charge)
-            continue
+        # 'navy' tier additionally includes Tech II and Navy faction ammo.
+        if qualityTier == 'navy':
+            # Tech II (metaGroup 2) - distinct ammo type like Conflagration, Void, etc.
+            if mgId == 2:
+                filtered.append(charge)
+                continue
 
-        # For 'navy' tier, include Navy faction ammo
-        if qualityTier == 'navy' and mgId == 4:  # Faction
-            # Check if it's XL (capital) ammo by name suffix
-            isCapital = charge.name.endswith(' XL')
+            # Navy faction ammo (metaGroup 4)
+            if mgId == 4:
+                # Check if it's XL (capital) ammo by name suffix
+                isCapital = charge.name.endswith(' XL')
 
-            if isCapital:
-                # For capital ammo, use pirate faction prefixes as "navy" tier
-                if any(charge.name.startswith(prefix) for prefix in CAPITAL_NAVY_PREFIXES):
-                    filtered.append(charge)
-            else:
-                # For subcap ammo, use empire Navy prefixes
-                if any(charge.name.startswith(prefix) for prefix in NAVY_PREFIXES):
-                    filtered.append(charge)
+                if isCapital:
+                    # For capital ammo, use pirate faction prefixes as "navy" tier
+                    if any(charge.name.startswith(prefix) for prefix in CAPITAL_NAVY_PREFIXES):
+                        filtered.append(charge)
+                else:
+                    # For subcap ammo, use empire Navy prefixes
+                    if any(charge.name.startswith(prefix) for prefix in NAVY_PREFIXES):
+                        filtered.append(charge)
 
     # Honor the user's tier selection even when it excludes every charge (the
     # weapon simply has no ammo in this tier). Only fall back to the full list
