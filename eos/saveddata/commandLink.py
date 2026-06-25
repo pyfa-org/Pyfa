@@ -17,31 +17,12 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-"""
-Generic ("virtual") command links.
-
-Instead of building a full booster fit with command burst modules and charges, a
-fit can carry abstract warfare links at a chosen strength. A CommandLink describes
-one such selection (which link or group of links, at which per-level strength, with
-or without a mindlink) and is applied during fit calculation by injecting the
-relevant warfare buffs straight into the boosted fit's command bonuses - reusing
-the exact same machinery (Fit.addCommandBonus / Fit.__runCommandBoosts) that real
-command fits use.
-
-The numbers below mirror live EVE command burst data (see eve.db):
-  - base value of a buff = the command burst CHARGE's warfareBuffXMultiplier
-    (the module's warfareBuffXValue is just a 1.0 T1 / 1.25 T2 tech factor; we
-    assume a T2 burst, i.e. x1.25).
-  - command bursts are scaled by four independent, multiplicative factors:
-      * Command Specialist skills: commandStrengthBonus = 10%/level. We ALWAYS
-        assume maximum skills (level V), i.e. x1.5.
-      * T2 command burst module tech factor, i.e. x1.25.
-      * Ship command bonus: 0% to 5% per level (level V assumed), i.e. x1.0 to
-        x1.25. This is the user-chosen strength.
-      * Warfare Mindlink: mindlinkBonus = 25%, i.e. x1.25 (optional).
-    In pyfa these are applied as separate boosts to the charge's
-    warfareBuffXMultiplier, so they stack multiplicatively (see eos.effects).
-"""
+# Generic ("virtual") command links: warfare links carried by a fit at a chosen
+# strength instead of a full booster fit with command burst modules and charges.
+# Applied during calc by injecting the buffs into the fit's command bonuses, same
+# path real command fits use (Fit.addCommandBonus / Fit.__runCommandBoosts).
+# Buff base values and the strength multiplier mirror live command burst data
+# (eve.db); see WARFARE_LINK_BASE_VALUES and getLinkMultiplier.
 
 from logbook import Logger
 
@@ -49,19 +30,16 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-# Maximum Command Specialist skills: commandStrengthBonus = 10%/level, level V
-# assumed -> +50% -> x1.5. Generic links always assume max skills.
+# Max Command Specialist skills (commandStrengthBonus 10%/level, level V) -> x1.5
 SKILL_MULTIPLIER = 1.5
 
-# T2 command burst module: the module's warfareBuffXValue tech factor is 1.25
-# (vs 1.0 for T1). Generic links assume a T2 burst.
+# T2 command burst tech factor (module warfareBuffXValue 1.25 vs 1.0 for T1)
 TECH_MULTIPLIER = 1.25
 
-# Warfare mindlink: mindlinkBonus = 25 in eve.db -> x1.25.
+# Warfare mindlink (mindlinkBonus 25 in eve.db) -> x1.25
 MINDLINK_MULTIPLIER = 1.25
 
-# Per-level ship command bonus options offered in the UI (percent per level, level
-# V assumed): 0% (no bonus) up to 5%/level (a command ship, -> x1.25).
+# Ship command bonus options shown in UI: % per level, level V assumed (0-5% -> x1.0-1.25)
 STRENGTHS = (5, 4, 3, 2, 1, 0)
 
 
@@ -157,22 +135,15 @@ _CATEGORY_MODULE_TYPE = {
 
 
 def getLinkMultiplier(strength, mindlink):
-    """Total strength multiplier applied to a link's base (no-bonus) value.
-
-    Generic links always assume maximum Command Specialist skills (x1.5) and a T2
-    command burst (x1.25). The chosen strength is the ship's command bonus per
-    level (0-5%, level V assumed, so x1.0 to x1.25) and a warfare mindlink adds
-    another x1.25. These factors stack multiplicatively, matching how real
-    command bursts are calculated.
-    """
+    # Command burst factors stack multiplicatively: max skills * T2 burst *
+    # ship bonus (strength %/lvl, level V) * mindlink
     shipMultiplier = 1.0 + (strength / 100.0) * 5
     mindlinkMultiplier = MINDLINK_MULTIPLIER if mindlink else 1.0
     return SKILL_MULTIPLIER * TECH_MULTIPLIER * shipMultiplier * mindlinkMultiplier
 
 
 class _GangEffect:
-    """Minimal stand-in so Fit.__runCommandBoosts recognises generic-link bonuses as gang effects."""
-
+    # Stand-in so __runCommandBoosts treats generic-link bonuses as gang effects
     def isType(self, type):
         return type == "gang"
 
@@ -184,7 +155,7 @@ _afflictorCache = {}
 
 
 def _getAfflictor(category):
-    """Return a (cached) real command burst Module to attribute the bonus to in 'Affected by'."""
+    # Cached burst Module to attribute the bonus to in 'Affected by'
     if category not in _afflictorCache:
         import eos.db
         from eos.saveddata.module import Module
@@ -202,7 +173,7 @@ def _getAfflictor(category):
 
 
 def applyCommandLinkToFit(fit, link):
-    """Inject a generic command link's warfare buffs into the fit's command bonuses."""
+    # Inject the link's warfare buffs into the fit's command bonuses
     definition = COMMAND_LINK_DEFS.get(link.linkType)
     if definition is None:
         pyfalog.warning("Unknown command link type {}", link.linkType)
@@ -217,16 +188,14 @@ def applyCommandLinkToFit(fit, link):
 
 
 class _LinkItem:
-    """Lightweight item shim so the command view's columns can render a CommandLink row."""
-
+    # Item shim so the command view's columns can render a CommandLink row
     def __init__(self, name):
         self.name = name
         self.iconID = None
 
 
 class CommandLink:
-    """A generic command link selection stored on a fit. Mapped in eos.db.saveddata.fit."""
-
+    # Generic command link selection stored on a fit (mapped in eos.db.saveddata.fit)
     def __init__(self, linkType, strength, mindlink=False, active=True):
         self.linkType = linkType
         self.strength = strength

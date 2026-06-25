@@ -604,8 +604,7 @@ class Fit:
         self.__ecmProjectedList.append(strength)
 
     def __applyCommandLinks(self):
-        # Generic (virtual) command links inject their warfare buffs straight into
-        # commandBonuses, reusing the same application path as real command fits.
+        # Generic links inject their buffs into commandBonuses, same path as real command fits
         from eos.saveddata.commandLink import applyCommandLinkToFit
         for link in self.commandLinks:
             if link.active:
@@ -1035,7 +1034,7 @@ class Fit:
 
                 commandInfo.booster_fit.calculateModifiedAttributes(self, CalcType.COMMAND)
 
-        # Apply generic (virtual) command links, injecting their warfare buffs directly
+        # Apply generic command links
         if type != CalcType.COMMAND and self.commandLinks and not self.__calculated:
             self.__applyCommandLinks()
 
@@ -1976,7 +1975,7 @@ class Fit:
             copyProjectionInfo.projectionRange = originalProjectionInfo.projectionRange
             forceUpdateSavedata(fit)
 
-        # Generic command links are owned value rows, so copy them directly
+        # Generic command links are owned rows, copy directly
         from eos.saveddata.commandLink import CommandLink
         for link in self.commandLinks:
             fitCopy.commandLinks.append(CommandLink(link.linkType, link.strength, link.mindlink, link.active))
