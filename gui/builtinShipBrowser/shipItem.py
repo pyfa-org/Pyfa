@@ -94,8 +94,6 @@ class ShipItem(SFItem.SFBrowserItem):
         self.baseItem = self.marketInstance.getItem(self.shipID)
 
         self.omegaBmp = None
-        if self.baseItem.getAttribute("cloneGradeRestriction", 0) > 0:
-            self.omegaBmp = BitmapLoader.getBitmap("25874", "icons")
 
         # =====================================================================
         # DISABLED - it will be added as an option in PREFERENCES
@@ -215,9 +213,13 @@ class ShipItem(SFItem.SFBrowserItem):
         self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
         self.raceBmpy = (rect.height - self.raceBmp.GetHeight()) / 2
 
-        self.omegaBmpx = self.raceBmpx + self.raceBmp.GetWidth() + self.padding
+        sFit = Fit.getInstance()
+        self.omegaBmp = None
+        if sFit.serviceFittingOptions["showOmegaIcons"] and self.baseItem.getAttribute("cloneGradeRestriction", 0) > 0:
+            self.omegaBmp = BitmapLoader.getBitmap("25874", "icons")
         omegaWidth = self.omegaBmp.GetWidth() if self.omegaBmp else 0
         omegaHeight = self.omegaBmp.GetHeight() if self.omegaBmp else 0
+        self.omegaBmpx = self.raceBmpx + self.raceBmp.GetWidth() + self.padding
         self.omegaBmpy = (rect.height - omegaHeight) / 2
 
         self.textStartx = self.omegaBmpx + omegaWidth + self.padding

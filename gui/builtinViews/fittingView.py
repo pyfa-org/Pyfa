@@ -35,6 +35,7 @@ from eos.const import FittingSlot
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ITEM_SELECTED
 from gui.builtinShipBrowser.events import EVT_FIT_SELECTED, FitSelected
+from gui.builtinViewColumns.omega import Omega as OmegaCol
 from gui.builtinViewColumns.state import State
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.contextMenu import ContextMenu
@@ -156,6 +157,7 @@ class FittingView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, size=(0, 0), style=wx.BORDER_NONE)
+        self.updateOmegaColumn()
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
@@ -189,6 +191,14 @@ class FittingView(d.Display):
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
         pyfalog.debug("------------------ new fitting view -------------------")
         pyfalog.debug(self)
+
+    def updateOmegaColumn(self):
+        show = Fit.getInstance().serviceFittingOptions["showOmegaIcons"]
+        omega_idx = self.getColIndex(OmegaCol)
+        if show and omega_idx is None:
+            self.insertColumnBySpec(1, "Omega")
+        elif not show and omega_idx is not None:
+            self.removeColumn(self.activeColumns[omega_idx])
 
     def OnLeaveWindow(self, event):
         self._setTooltip(None)
