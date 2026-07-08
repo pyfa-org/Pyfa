@@ -66203,7 +66203,7 @@
       }, 
       {
         "attributeID": 508, 
-        "value": 250.0
+        "value": 600.0
       }, 
       {
         "attributeID": 524, 
@@ -85503,7 +85503,7 @@
       }, 
       {
         "attributeID": 508, 
-        "value": 300.0
+        "value": 700.0
       }, 
       {
         "attributeID": 524, 
@@ -85742,7 +85742,7 @@
       }, 
       {
         "attributeID": 508, 
-        "value": 350.0
+        "value": 800.0
       }, 
       {
         "attributeID": 524, 
@@ -512776,6 +512776,10 @@
       {
         "attributeID": 2711, 
         "value": 1225.0
+      }, 
+      {
+        "attributeID": 3236, 
+        "value": 0.0
       }
     ], 
     "dogmaEffects": []
@@ -829142,6 +829146,10 @@
       {
         "attributeID": 5796, 
         "value": 2147483647000.0
+      }, 
+      {
+        "attributeID": 6270, 
+        "value": 0.0
       }
     ], 
     "dogmaEffects": [
@@ -829163,6 +829171,10 @@
       }, 
       {
         "effectID": 6009, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12924, 
         "isDefault": 0
       }
     ]
@@ -843814,6 +843826,10 @@
       {
         "attributeID": 5796, 
         "value": 2147483647000.0
+      }, 
+      {
+        "attributeID": 6270, 
+        "value": 0.0
       }
     ], 
     "dogmaEffects": [
@@ -843835,6 +843851,10 @@
       }, 
       {
         "effectID": 6038, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12924, 
         "isDefault": 0
       }
     ]
@@ -847081,6 +847101,10 @@
       {
         "attributeID": 5796, 
         "value": 2147483647000.0
+      }, 
+      {
+        "attributeID": 6270, 
+        "value": 0.0
       }
     ], 
     "dogmaEffects": [
@@ -847102,6 +847126,10 @@
       }, 
       {
         "effectID": 6098, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12924, 
         "isDefault": 0
       }
     ]
@@ -849923,6 +849951,10 @@
       {
         "attributeID": 5796, 
         "value": 2147483647000.0
+      }, 
+      {
+        "attributeID": 6270, 
+        "value": 0.0
       }
     ], 
     "dogmaEffects": [
@@ -849944,6 +849976,10 @@
       }, 
       {
         "effectID": 6150, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12924, 
         "isDefault": 0
       }
     ]

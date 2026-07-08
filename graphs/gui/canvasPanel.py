@@ -30,6 +30,7 @@ import wx
 from logbook import Logger
 
 
+from graphs.mpl_fonts import configure_matplotlib_font
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
 from gui.utils.numberFormatter import roundToPrec
 
@@ -43,6 +44,7 @@ try:
     mpl_version = int(mpl.__version__[0]) or -1
     if mpl_version >= 2:
         mpl.use('wxagg')
+        configure_matplotlib_font()
         graphFrame_enabled = True
     else:
         graphFrame_enabled = False

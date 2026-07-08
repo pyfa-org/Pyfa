@@ -5814,12 +5814,26 @@
   }, 
   "2545": {
     "aggregateMode": "Maximum", 
-    "developerDescription": "FW Dungeon Effect 2", 
-    "itemModifiers": [], 
+    "developerDescription": "FW Dungeon Effect 2 - Tactical Destroyer Hitpoints", 
+    "displayName_de": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_en-us": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_es": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_fr": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_it": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_ja": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_ko": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_ru": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayName_zh": "Additional base <b>Shield</b>, <b>Armor</b> and <b>Structure</b> hitpoints for <b>Tactical Destroyers</b>", 
+    "displayNameID": 1047960, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 6270
+      }
+    ], 
     "locationGroupModifiers": [], 
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [], 
-    "operationName": "PreAssignment", 
+    "operationName": "ModAdd", 
     "showOutputValueInUI": "ShowNormal"
   }, 
   "2546": {
@@ -7161,24 +7175,82 @@
   "2599": {
     "aggregateMode": "Maximum", 
     "developerDescription": "AIR Epic Arc - Hull Resistance", 
+    "displayName_de": "Hull Damage Recieved", 
+    "displayName_en-us": "Hull Damage Recieved", 
+    "displayName_es": "Hull Damage Recieved", 
+    "displayName_fr": "Hull Damage Recieved", 
+    "displayName_it": "Hull Damage Recieved", 
+    "displayName_ja": "Hull Damage Recieved", 
+    "displayName_ko": "Hull Damage Recieved", 
+    "displayName_ru": "Hull Damage Recieved", 
+    "displayName_zh": "Hull Damage Recieved", 
+    "displayNameID": 1047372, 
     "itemModifiers": [
       {
-        "dogmaAttributeID": 974
+        "dogmaAttributeID": 109
       }, 
       {
-        "dogmaAttributeID": 975
+        "dogmaAttributeID": 110
       }, 
       {
-        "dogmaAttributeID": 976
+        "dogmaAttributeID": 111
       }, 
       {
-        "dogmaAttributeID": 977
+        "dogmaAttributeID": 113
       }
     ], 
     "locationGroupModifiers": [], 
     "locationModifiers": [], 
     "locationRequiredSkillModifiers": [], 
-    "operationName": "PostAssignment", 
-    "showOutputValueInUI": "Hide"
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2600": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "BPDC Damage Received Percentage", 
+    "displayName_de": "Erhaltener Kapselbrecherschaden", 
+    "displayName_en-us": "Breacher Pod Damage Received", 
+    "displayName_es": "Daño recibido de la cápsula de ataque", 
+    "displayName_fr": "Dégâts infligés par les capsules de brèche", 
+    "displayName_it": "Breacher Pod Damage Received", 
+    "displayName_ja": "ブリーチャーポッド被ダメージ量", 
+    "displayName_ko": "받은 침투 포드 피해", 
+    "displayName_ru": "Полученный урон от внедряющейся капсулы", 
+    "displayName_zh": "分裂者级太空舱伤害承受量", 
+    "displayNameID": 1047249, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 6255
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2601": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "AIR Epic Arc - Capacitor Recharge", 
+    "displayName_de": "Capacitor Recharge Rate", 
+    "displayName_en-us": "Capacitor Recharge Rate", 
+    "displayName_es": "Capacitor Recharge Rate", 
+    "displayName_fr": "Capacitor Recharge Rate", 
+    "displayName_it": "Capacitor Recharge Rate", 
+    "displayName_ja": "Capacitor Recharge Rate", 
+    "displayName_ko": "Capacitor Recharge Rate", 
+    "displayName_ru": "Capacitor Recharge Rate", 
+    "displayName_zh": "Capacitor Recharge Rate", 
+    "displayNameID": 1047373, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 55
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
   }
 }

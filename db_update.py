@@ -174,11 +174,9 @@ def update_db():
                 # Micro Bombs (Fighters)
                 row['typeID'] in (41549, 41548, 41551, 41550) or
                 # Abyssal weather (environment)
-                row['groupID'] in (
-                    1882,
-                    1975,
-                    1971,
-                    1983)  # the "container" for the abyssal environments
+                row['groupID'] in (1882, 1975, 1971, 1983) or
+                # FW-specific proximity beacons
+                row['typeID'] in (92609, 95625)
             ):
                 newData.append(row)
         map = {'typeName_en-us': 'typeName', 'description_en-us': '_description'}
@@ -754,6 +752,25 @@ def update_db():
             _hardcodeEffects(typeID, effectMap, clearEffects=True)
             eos.db.gamedata_session.flush()
 
+    def hardcodeFwProxyEffects():
+        typeBuffMap = {
+            # BC level up
+            92609: ('FW Moderate Site BC Skill Bonus', {
+                'warfareBuff1ID': 2544,
+                'warfareBuff1Value': 20}),
+            # T3D HP
+            95625: ('FW ELT-5 Site T3D HP Bonus', {
+                'warfareBuff1ID': 2545,
+                'warfareBuff1Value': 500})}
+        effectMap = {100003: 'pyfaCustomFwProxyBuffEffect'}
+        for typeID, (name, attrMap) in typeBuffMap.items():
+            item = eos.db.gamedata_session.query(eos.gamedata.Item).filter(eos.gamedata.Item.ID == typeID).one()
+            item.published = True
+            item.name = name
+            _hardcodeAttribs(typeID, attrMap)
+            _hardcodeEffects(typeID, effectMap, clearEffects=True)
+            eos.db.gamedata_session.flush()
+
 
     def hardcodeShapash():
         shapashTypeID = 1000000
@@ -901,6 +918,7 @@ def update_db():
     hardcodeSuppressionTackleRange()
     hardcodeSovUpgradeBuffs()
     hardcodeTrigSystemEffects()
+    hardcodeFwProxyEffects()
 
     eos.db.gamedata_session.commit()
     eos.db.gamedata_engine.execute('VACUUM')

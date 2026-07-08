@@ -125,9 +125,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
             _t('ContextMenu|ProjectedEffectManipulation|Sansha Incursion'))
         data.groups[_t('Drifter Incursion')] = self.getDrifterIncursion()
         data.groups[_t('Triglavian Invasion')] = self.getInvasionBeacons()
-        data.groups[_t('Pirate Insurgency')] = self.getEffectBeacons(
-            _t('ContextMenu|ProjectedEffectManipulation|Insurgency'),
-            extra_garbage=(_t('ContextMenu|ProjectedEffectManipulation|Beacon'),))
+        data.groups[_t('FW/Insurgency')] = self.getFwEffects()
         data.groups[_t('IHub Upgrades')] = self.getIHubEffects()
         return data
 
@@ -239,6 +237,19 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
         data.items.append(Entry(item.ID, item.name, item.name))
         # Turnur weather
         item = Market.getInstance().getItem(74002)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        return data
+
+    def getFwEffects(self):
+        data = Group()
+        # Insurgency suppression buff
+        item = Market.getInstance().getItem(79839)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        # FW BC buff
+        item = Market.getInstance().getItem(92609)
+        data.items.append(Entry(item.ID, item.name, item.name))
+        # FW T3D buff
+        item = Market.getInstance().getItem(95625)
         data.items.append(Entry(item.ID, item.name, item.name))
         return data
 

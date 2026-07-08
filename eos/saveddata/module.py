@@ -67,7 +67,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = (
         "Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object",
-        "Destructible Effect Beacon", "Sovereignty Hub System Effect Generator Upgrades")
+        "Destructible Effect Beacon", "Sovereignty Hub System Effect Generator Upgrades", "Cloud")
 
     def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""

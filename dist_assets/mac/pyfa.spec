@@ -11,6 +11,10 @@ label = subprocess.check_output([
 with open('.version', 'w+') as f:
     f.write(label.decode())
 
+# Use PYFA_VERSION from the environment (set in CI), falling back to the
+# git-describe label so local builds don't crash on a None plist value.
+pyfa_version = os.getenv('PYFA_VERSION') or label.decode()
+
 block_cipher = None
 
 added_files = [
@@ -88,7 +92,7 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='pyfa.app',
-    version=os.getenv('PYFA_VERSION'),
+    version=pyfa_version,
     icon=icon,
     bundle_identifier=None,
     info_plist={
@@ -97,7 +101,7 @@ app = BUNDLE(
         'CFBundleName': 'pyfa',
         'CFBundleDisplayName': 'pyfa',
         'CFBundleIdentifier': 'org.pyfaorg.pyfa',
-        'CFBundleVersion': os.getenv('PYFA_VERSION'),
-        'CFBundleShortVersionString': os.getenv('PYFA_VERSION'),
+        'CFBundleVersion': pyfa_version,
+        'CFBundleShortVersionString': pyfa_version,
     }
 )

@@ -28,8 +28,8 @@ from service.esiAccess import EsiAccess
 
 def renderMutant(mutant, firstPrefix='', prefix=''):
     exportLines = []
-    exportLines.append('{}{}'.format(firstPrefix, mutant.baseItem.name))
-    exportLines.append('{}{}'.format(prefix, mutant.mutaplasmid.item.name))
+    exportLines.append('{}{}'.format(firstPrefix, mutant.baseItem.typeName))
+    exportLines.append('{}{}'.format(prefix, mutant.mutaplasmid.item.typeName))
     exportLines.append('{}{}'.format(prefix, renderMutantAttrs(mutant)))
     return '\n'.join(exportLines)
 

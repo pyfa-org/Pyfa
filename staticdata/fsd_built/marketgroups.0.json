@@ -47299,5 +47299,20 @@
     "name_zh": "米玛塔尔", 
     "nameID": 1043832, 
     "parentGroupID": 3853
+  }, 
+  "3864": {
+    "hasTypes": 1, 
+    "iconID": 24819, 
+    "name_de": "Besitz von Operation Avalon", 
+    "name_en-us": "Operation Avalon Assets", 
+    "name_es": "Bienes de Operación Avalon", 
+    "name_fr": "Ressources de l'opération Avalon", 
+    "name_it": "Operation Avalon Assets", 
+    "name_ja": "「Operation Avalon」資産", 
+    "name_ko": "아발론 작전 자산", 
+    "name_ru": "Активы Operation Avalon", 
+    "name_zh": "阿瓦隆行动资产", 
+    "nameID": 1048151, 
+    "parentGroupID": 3834
   }
 }

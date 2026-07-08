@@ -286,7 +286,6 @@ class Market:
             "Megathron Federate Issue"    : self.les_grp,  # Reward during Crielere event
             "Raven State Issue"           : self.les_grp,  # AT4 prize
             "Tempest Tribal Issue"        : self.les_grp,  # AT4 prize
-            "Apotheosis"                  : self.les_grp,  # 5th EVE anniversary present
             "Zephyr"                      : self.les_grp,  # 2010 new year gift
             "Primae"                      : self.les_grp,  # Promotion of planetary interaction
             "Council Diplomatic Shuttle"  : self.les_grp,  # CSM X celebration
@@ -321,7 +320,6 @@ class Market:
             "Boobook"                     : self.les_grp,  # 19th EVE anniversary gift
             "Geri"                        : self.les_grp,  # AT18 prize
             "Bestla"                      : self.les_grp,  # AT18 prize
-            "Metamorphosis"               : self.les_grp,  # Seems to be anniversary gift
             "Shapash"                     : self.les_grp,  # AT19 prize
             "Cybele"                      : self.les_grp,  # AT19 prize
             "Sidewinder"                  : self.les_grp,  # AT20 prize
@@ -997,7 +995,7 @@ class Market:
         def handleMg(marketGroup, path=()):
             marketGroup = self.getMarketGroup(marketGroup, eager=("items", "items.metaGroup", "children"))
             path = path + (marketGroup.name,)
-            print(' > '.join(path))
+            # print(' > '.join(path))
             for item in self.getItemsByMarketGroup(marketGroup):
                 items.add(item.ID)
             for mgc in self.getMarketGroupChildren(marketGroup):
@@ -1005,6 +1003,8 @@ class Market:
 
         for mg in self.ROOT_MARKET_GROUPS:
             handleMg(mg)
-        print(sorted(items))
+        print('---')
+        for i in sorted(items):
+            print(i)
 
 

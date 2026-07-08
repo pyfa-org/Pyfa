@@ -269,6 +269,7 @@ bcs:
 bcu:
   - 'bcu'
   - 'ballistic control system'
+  - 'breach control'
 vts:
   - 'vts'
   - 'vorton tuning system'
@@ -659,6 +660,15 @@ adc:
 adcu:
   - 'adcu'
   - 'assault damage control'
+bc:
+  - 'bc'
+  - 'breach control'
+bdc:
+  - 'bdc'
+  - 'breach control'
+bdcu:
+  - 'bdcu'
+  - 'breach control'
 ehe:
   - 'ehe'
   - 'emergency hull energizer'
