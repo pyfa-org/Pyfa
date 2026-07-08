@@ -4,6 +4,7 @@ import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
 
+from service.discord import Discord
 from service.settings import DiscordSettings
 
 _t = wx.GetTranslation
@@ -50,7 +51,17 @@ class PFDiscordPref(PreferenceView):
 
         mainSizer.Add(webhookSizer, 0, wx.ALL | wx.EXPAND, 0)
 
+        self.stWebhookValidation = wx.StaticText(panel, wx.ID_ANY, _t("Webhook URL format is invalid."), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stWebhookValidation.SetForegroundColour(wx.Colour(180, 40, 40))
+        mainSizer.Add(self.stWebhookValidation, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+
+        self.cbConfirmBeforeSend = wx.CheckBox(panel, wx.ID_ANY, _t("Confirm before sending fit to Discord"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbConfirmBeforeSend.SetValue(bool(self.settings.get('confirmBeforeSend')))
+        self.cbConfirmBeforeSend.Bind(wx.EVT_CHECKBOX, self.OnConfirmBeforeSendChange)
+        mainSizer.Add(self.cbConfirmBeforeSend, 0, wx.ALL | wx.EXPAND, 5)
+
         self.ToggleWebhookSettings(self.cbEnableDiscord.GetValue())
+        self.UpdateWebhookValidationState()
 
         panel.SetSizer(mainSizer)
         panel.Layout()
@@ -62,10 +73,20 @@ class PFDiscordPref(PreferenceView):
 
     def OnWebhookUrlText(self, event):
         self.settings.set('webhookUrl', self.editWebhookURL.GetValue().strip())
+        self.UpdateWebhookValidationState()
+
+    def OnConfirmBeforeSendChange(self, event):
+        self.settings.set('confirmBeforeSend', self.cbConfirmBeforeSend.GetValue())
 
     def ToggleWebhookSettings(self, enable):
         self.stWebhookURL.Enable(enable)
         self.editWebhookURL.Enable(enable)
+        self.cbConfirmBeforeSend.Enable(enable)
+
+    def UpdateWebhookValidationState(self):
+        webhookValue = self.editWebhookURL.GetValue().strip()
+        isValid = webhookValue == '' or Discord.isValidWebhookUrl(webhookValue)
+        self.stWebhookValidation.Show(not isValid)
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_discord", "gui")

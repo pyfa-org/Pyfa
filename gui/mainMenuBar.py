@@ -26,6 +26,7 @@ from service.character import Character
 from service.fit import Fit
 from service.settings import DiscordSettings
 import gui.globalEvents as GE
+from gui.menu_utils import syncDiscordShareMenuVisibility
 from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
@@ -33,6 +34,8 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 _t = wx.GetTranslation
+
+
 class MainMenuBar(wx.MenuBar):
     def __init__(self, mainFrame):
         pyfalog.debug("Initialize MainMenuBar")
@@ -175,15 +178,13 @@ class MainMenuBar(wx.MenuBar):
 
     def refreshDiscordMenuVisibility(self):
         discordEnabled = bool(DiscordSettings.getInstance().get('enableDiscord'))
-        existingItem = self.fitMenu.FindItemById(self.shareToDiscordId)
-
-        if discordEnabled and existingItem is None:
-            optimizeItem = self.fitMenu.FindItemById(self.optimizeFitPrice)
-            menuItems = self.fitMenu.GetMenuItems()
-            insertPos = menuItems.index(optimizeItem) if optimizeItem in menuItems else len(menuItems)
-            self.fitMenu.Insert(insertPos, self.shareToDiscordId, _t("Share Fit to &Discord"), _t("Share active fit to Discord webhook"))
-        elif not discordEnabled and existingItem is not None:
-            self.fitMenu.Remove(existingItem)
+        syncDiscordShareMenuVisibility(
+            fitMenu=self.fitMenu,
+            shareToDiscordId=self.shareToDiscordId,
+            optimizeFitPriceId=self.optimizeFitPrice,
+            discordEnabled=discordEnabled,
+            menuText=_t("Share Fit to &Discord"),
+            menuHelp=_t("Share active fit to Discord webhook"))
 
     def fitChanged(self, event):
         event.Skip()

@@ -68,7 +68,7 @@ from service.esi import Esi
 from service.fit import Fit
 from service.port import Port
 from service.price import Price
-from service.settings import HTMLExportSettings, SettingsProvider
+from service.settings import DiscordSettings, HTMLExportSettings, SettingsProvider
 from service.update import Update
 
 _t = wx.GetTranslation
@@ -816,6 +816,13 @@ class MainFrame(wx.Frame):
             with wx.MessageDialog(self, _t("No active fit found."), _t("Discord Webhook"), wx.ICON_ERROR) as dlg:
                 dlg.ShowModal()
             return
+
+        dSettings = DiscordSettings.getInstance()
+        if dSettings.get('confirmBeforeSend'):
+            preview = _t("Send this fit to Discord?\n\n{0} ({1})").format(fit.name, fit.ship.item.typeName)
+            with wx.MessageDialog(self, preview, _t("Confirm Discord Share"), wx.YES_NO | wx.ICON_QUESTION) as dlg:
+                if dlg.ShowModal() != wx.ID_YES:
+                    return
 
         try:
             Discord.getInstance().sendFit(fit)

@@ -18,10 +18,10 @@
 # =============================================================================
 
 import requests
+from urllib.parse import urlparse
 from logbook import Logger
 
 from service.const import PortEftOptions
-from service.port.eft import exportEft
 from service.settings import DiscordSettings, NetworkSettings
 
 
@@ -53,6 +53,8 @@ class Discord:
         webhookUrl = (self.settings.get('webhookUrl') or '').strip()
         if not webhookUrl:
             raise DiscordWebhookError('Discord webhook URL is empty. Set it in Preferences > Discord.')
+        if not self.isValidWebhookUrl(webhookUrl):
+            raise DiscordWebhookError('Discord webhook URL format is invalid. Set a valid Discord webhook URL in Preferences > Discord.')
 
         payload = self._buildWebhookPayload(fit)
         proxies = self.networkSettings.getProxySettingsInRequestsFormat()
@@ -65,6 +67,8 @@ class Discord:
             raise DiscordWebhookError('Failed to send fit to Discord webhook. Check webhook URL and network settings.')
 
     def _buildWebhookPayload(self, fit):
+        from service.port.eft import exportEft
+
         shipTypeId = fit.ship.item.ID
 
         options = {
@@ -95,6 +99,36 @@ class Discord:
     @staticmethod
     def _getShipImageUrl(typeId):
         return 'https://images.evetech.net/types/{}/render?size=64'.format(typeId)
+
+    @staticmethod
+    def isValidWebhookUrl(url):
+        if not url:
+            return False
+
+        parsed = urlparse(url.strip())
+        if parsed.scheme != 'https' or not parsed.hostname:
+            return False
+
+        validHosts = {
+            'discord.com',
+            'ptb.discord.com',
+            'canary.discord.com',
+            'discordapp.com',
+            'ptb.discordapp.com',
+            'canary.discordapp.com'
+        }
+        if parsed.hostname.lower() not in validHosts:
+            return False
+
+        if not parsed.path.startswith('/api/webhooks/'):
+            return False
+
+        webhookPathPart = parsed.path[len('/api/webhooks/'):].strip('/')
+        pathParts = webhookPathPart.split('/')
+        if len(pathParts) < 2:
+            return False
+
+        return True
 
     @staticmethod
     def _wrapCodeBlock(text, maxLength):

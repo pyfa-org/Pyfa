@@ -614,7 +614,8 @@ class DiscordSettings:
     def __init__(self):
         defaults = {
             'enableDiscord': False,
-            'webhookUrl': ''}
+            'webhookUrl': '',
+            'confirmBeforeSend': False}
         self.settings = SettingsProvider.getInstance().getSettings('discordSettings', defaults)
 
     def get(self, type):
@@ -627,5 +628,6 @@ class DiscordSettings:
     def getRedacted(self):
         return {
             'enableDiscord': bool(self.settings['enableDiscord']),
-            'webhookUrl': '<redacted>' if self.settings['webhookUrl'] else ''
+            'webhookUrl': '<redacted>' if self.settings['webhookUrl'] else '',
+            'confirmBeforeSend': bool(self.settings['confirmBeforeSend'])
         }
