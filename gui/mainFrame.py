@@ -570,6 +570,8 @@ class MainFrame(wx.Frame):
         # Graphs
         self.Bind(wx.EVT_MENU, self.OnShowGraphFrame, id=menuBar.graphFrameId)
         self.Bind(wx.EVT_MENU, self.OnShowGraphFrameHidden, id=self.hiddenGraphsId)
+        # Keep dynamic menu entries synchronized with current settings.
+        self.Bind(wx.EVT_MENU_OPEN, self.OnMenuOpen)
 
         toggleSearchBoxId = wx.NewId()
         toggleShipMarketId = wx.NewId()
@@ -743,6 +745,12 @@ class MainFrame(wx.Frame):
 
     def CTabPrev(self, event):
         self.fitMultiSwitch.PrevPage()
+
+    def OnMenuOpen(self, event):
+        menuBar = self.GetMenuBar()
+        if event.GetMenu() == menuBar.fitMenu:
+            menuBar.refreshDiscordMenuVisibility()
+        event.Skip()
 
     def HAddPage(self, event):
         self.fitMultiSwitch.AddPage()

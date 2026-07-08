@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import datetime
+import re
 import sys
 import traceback
 
@@ -37,18 +38,24 @@ pyfalog = Logger(__name__)
 class ErrorHandler:
     __parent = None
     __frame = None
+    WEBHOOK_RE = re.compile(r'https://(?:ptb\\.|canary\\.)?(?:discord(?:app)?\\.com)/api/webhooks/\\S+', re.IGNORECASE)
+
+    @classmethod
+    def _sanitizeSensitiveData(cls, text):
+        return cls.WEBHOOK_RE.sub('<redacted-discord-webhook>', text)
 
     @classmethod
     def HandleException(cls, exc_type, exc_value, exc_traceback):
         with config.logging_setup.threadbound():
             # Print the base level traceback
             t = traceback.format_exception(exc_type, exc_value, exc_traceback)
-            pyfalog.critical("\n\n" + "".join(t))
+            safeText = cls._sanitizeSensitiveData("".join(t))
+            pyfalog.critical("\n\n" + safeText)
 
             if cls.__parent is None:
                 app = wx.App(False)
                 cls.__frame = ErrorFrame(None)
-                cls.__frame.addException("".join(t))
+                cls.__frame.addException(safeText)
                 cls.__frame.Show()
                 app.MainLoop()
                 sys.exit()
@@ -56,7 +63,7 @@ class ErrorHandler:
                 if not cls.__frame:
                     cls.__frame = ErrorFrame(cls.__parent)
                 cls.__frame.Show()
-                cls.__frame.addException("".join(t))
+                cls.__frame.addException(safeText)
 
     @classmethod
     def SetParent(cls, parent):

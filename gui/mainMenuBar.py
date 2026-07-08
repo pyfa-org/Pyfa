@@ -23,6 +23,7 @@ import wx
 import config
 import graphs
 from service.character import Character
+from service.discord import Discord
 from service.fit import Fit
 from service.settings import DiscordSettings
 import gui.globalEvents as GE
@@ -177,7 +178,9 @@ class MainMenuBar(wx.MenuBar):
         self.refreshDiscordMenuVisibility()
 
     def refreshDiscordMenuVisibility(self):
-        discordEnabled = bool(DiscordSettings.getInstance().get('enableDiscord'))
+        settings = DiscordSettings.getInstance()
+        webhookUrl = (settings.get('webhookUrl') or '').strip()
+        discordEnabled = bool(settings.get('enableDiscord')) and Discord.isValidWebhookUrl(webhookUrl)
         syncDiscordShareMenuVisibility(
             fitMenu=self.fitMenu,
             shareToDiscordId=self.shareToDiscordId,
