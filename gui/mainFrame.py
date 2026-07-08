@@ -63,6 +63,7 @@ from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard
 from gui.utils.progressHelper import ProgressHelper
 from service.character import Character
+from service.discord import Discord, DiscordWebhookError
 from service.esi import Esi
 from service.fit import Fit
 from service.port import Port
@@ -485,6 +486,7 @@ class MainFrame(wx.Frame):
     def OnShowPreferenceDialog(self, event):
         with PreferenceDialog(self) as dlg:
             dlg.ShowModal()
+        self.GetMenuBar().refreshDiscordMenuVisibility()
 
     @staticmethod
     def goWiki(event):
@@ -516,6 +518,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.fileImportDialog, id=wx.ID_OPEN)
         # Export dialog
         self.Bind(wx.EVT_MENU, self.OnShowExportDialog, id=wx.ID_SAVEAS)
+        # Share active fit to Discord webhook
+        self.Bind(wx.EVT_MENU, self.shareFitToDiscord, id=menuBar.shareToDiscordId)
         # Import from Clipboard
         self.Bind(wx.EVT_MENU, self.importFromClipboard, id=wx.ID_PASTE)
         # Backup fits
@@ -800,6 +804,27 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         with CopySelectDialog(self) as dlg:
+            dlg.ShowModal()
+
+    def shareFitToDiscord(self, event):
+        activeFitID = self.getActiveFit()
+        if activeFitID is None:
+            return
+
+        fit = Fit.getInstance().getFit(activeFitID)
+        if fit is None:
+            with wx.MessageDialog(self, _t("No active fit found."), _t("Discord Webhook"), wx.ICON_ERROR) as dlg:
+                dlg.ShowModal()
+            return
+
+        try:
+            Discord.getInstance().sendFit(fit)
+        except DiscordWebhookError as e:
+            with wx.MessageDialog(self, str(e), _t("Discord Webhook"), wx.ICON_ERROR) as dlg:
+                dlg.ShowModal()
+            return
+
+        with wx.MessageDialog(self, _t("Fit sent to Discord webhook."), _t("Discord Webhook"), wx.ICON_INFORMATION) as dlg:
             dlg.ShowModal()
 
     def exportSkillsNeeded(self, event):
