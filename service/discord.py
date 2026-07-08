@@ -19,6 +19,8 @@
 
 import requests
 from urllib.parse import urlparse
+# noinspection PyPackageRequirements
+import wx
 from logbook import Logger
 
 from service.const import PortEftOptions
@@ -26,6 +28,7 @@ from service.settings import DiscordSettings, NetworkSettings
 
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class DiscordWebhookError(Exception):
@@ -48,13 +51,13 @@ class Discord:
 
     def sendFit(self, fit):
         if not self.settings.get('enableDiscord'):
-            raise DiscordWebhookError('Discord integration is disabled. Enable it in Preferences > Discord.')
+            raise DiscordWebhookError(_t('Discord integration is disabled. Enable it in Preferences > Discord.'))
 
         webhookUrl = (self.settings.get('webhookUrl') or '').strip()
         if not webhookUrl:
-            raise DiscordWebhookError('Discord webhook URL is empty. Set it in Preferences > Discord.')
+            raise DiscordWebhookError(_t('Discord webhook URL is empty. Set it in Preferences > Discord.'))
         if not self.isValidWebhookUrl(webhookUrl):
-            raise DiscordWebhookError('Discord webhook URL format is invalid. Set a valid Discord webhook URL in Preferences > Discord.')
+            raise DiscordWebhookError(_t('Discord webhook URL format is invalid. Set a valid Discord webhook URL in Preferences > Discord.'))
 
         payload = self._buildWebhookPayload(fit)
         proxies = self.networkSettings.getProxySettingsInRequestsFormat()
@@ -64,7 +67,27 @@ class Discord:
             response.raise_for_status()
         except requests.exceptions.RequestException:
             pyfalog.warning('Discord webhook request failed.')
-            raise DiscordWebhookError('Failed to send fit to Discord webhook. Check webhook URL and network settings.')
+            raise DiscordWebhookError(_t('Failed to send fit to Discord webhook. Check webhook URL and network settings.'))
+
+    def sendTestMessage(self):
+        if not self.settings.get('enableDiscord'):
+            raise DiscordWebhookError(_t('Discord integration is disabled. Enable it in Preferences > Discord.'))
+
+        webhookUrl = (self.settings.get('webhookUrl') or '').strip()
+        if not webhookUrl:
+            raise DiscordWebhookError(_t('Discord webhook URL is empty. Set it in Preferences > Discord.'))
+        if not self.isValidWebhookUrl(webhookUrl):
+            raise DiscordWebhookError(_t('Discord webhook URL format is invalid. Set a valid Discord webhook URL in Preferences > Discord.'))
+
+        payload = {'content': _t('pyfa webhook test message')}
+        proxies = self.networkSettings.getProxySettingsInRequestsFormat()
+
+        try:
+            response = requests.post(webhookUrl, json=payload, proxies=proxies, timeout=5)
+            response.raise_for_status()
+        except requests.exceptions.RequestException:
+            pyfalog.warning('Discord webhook test request failed.')
+            raise DiscordWebhookError(_t('Failed to send test message to Discord webhook. Check webhook URL and network settings.'))
 
     def _buildWebhookPayload(self, fit):
         from service.port.eft import exportEft

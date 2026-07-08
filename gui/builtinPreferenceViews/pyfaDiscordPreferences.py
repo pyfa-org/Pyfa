@@ -4,7 +4,7 @@ import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
 
-from service.discord import Discord
+from service.discord import Discord, DiscordWebhookError
 from service.settings import DiscordSettings
 
 _t = wx.GetTranslation
@@ -60,6 +60,12 @@ class PFDiscordPref(PreferenceView):
         self.cbConfirmBeforeSend.Bind(wx.EVT_CHECKBOX, self.OnConfirmBeforeSendChange)
         mainSizer.Add(self.cbConfirmBeforeSend, 0, wx.ALL | wx.EXPAND, 5)
 
+        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.btnTestWebhook = wx.Button(panel, wx.ID_ANY, _t("Test Webhook"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnTestWebhook.Bind(wx.EVT_BUTTON, self.OnTestWebhook)
+        btnSizer.Add(self.btnTestWebhook, 0, wx.ALL, 5)
+        mainSizer.Add(btnSizer, 0, wx.ALL | wx.EXPAND, 0)
+
         self.ToggleWebhookSettings(self.cbEnableDiscord.GetValue())
         self.UpdateWebhookValidationState()
 
@@ -70,6 +76,7 @@ class PFDiscordPref(PreferenceView):
     def OnCBEnableChange(self, event):
         self.settings.set('enableDiscord', self.cbEnableDiscord.GetValue())
         self.ToggleWebhookSettings(self.cbEnableDiscord.GetValue())
+        self.UpdateWebhookValidationState()
 
     def OnWebhookUrlText(self, event):
         self.settings.set('webhookUrl', self.editWebhookURL.GetValue().strip())
@@ -82,11 +89,23 @@ class PFDiscordPref(PreferenceView):
         self.stWebhookURL.Enable(enable)
         self.editWebhookURL.Enable(enable)
         self.cbConfirmBeforeSend.Enable(enable)
+        self.btnTestWebhook.Enable(enable)
 
     def UpdateWebhookValidationState(self):
         webhookValue = self.editWebhookURL.GetValue().strip()
         isValid = webhookValue == '' or Discord.isValidWebhookUrl(webhookValue)
         self.stWebhookValidation.Show(not isValid)
+        canTest = self.cbEnableDiscord.GetValue() and Discord.isValidWebhookUrl(webhookValue)
+        self.btnTestWebhook.Enable(canTest)
+
+    def OnTestWebhook(self, event):
+        try:
+            Discord.getInstance().sendTestMessage()
+        except DiscordWebhookError as e:
+            wx.MessageBox(str(e), _t("Discord Webhook"), wx.OK | wx.ICON_ERROR)
+            return
+
+        wx.MessageBox(_t("Discord webhook test message sent successfully."), _t("Discord Webhook"), wx.OK | wx.ICON_INFORMATION)
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_discord", "gui")
