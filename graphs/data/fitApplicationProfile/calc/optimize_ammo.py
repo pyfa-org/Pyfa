@@ -22,7 +22,7 @@ from bisect import bisect_right
 from logbook import Logger
 
 from .turret import calculateAppliedVolley
-from .projected import getProjectedParamsAtDistance
+from .projected import getProjectedParamsAtDistance, getSampleStep
 
 
 pyfalog = Logger(__name__)
@@ -111,7 +111,7 @@ def _updateTrackingWithCache(baseTrackingParams, projectedCache, distance):
 
 def calculateTransitions(chargeData, turretBase, baseTrackingParams,
                          projectedCache,
-                         maxDistance=300000, resolution=100):
+                         maxDistance=300000, resolution=None):
     """
     Calculate distances where optimal ammo changes.
 
@@ -134,6 +134,11 @@ def calculateTransitions(chargeData, turretBase, baseTrackingParams,
     """
     if not chargeData:
         return []
+
+    # Scale the scan step with range so long-range fits don't do 25x the work
+    # for no extra fidelity (falls back to the fine 100m step for short ranges).
+    if resolution is None:
+        resolution = getSampleStep(maxDistance)
 
     transitions = []
     currentCharge = None

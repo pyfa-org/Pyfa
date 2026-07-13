@@ -42,7 +42,8 @@ from .calc.optimize_ammo import (
     getVolleyAtDistance
 )
 from .calc.projected import (
-    buildProjectedCache
+    buildProjectedCache,
+    getSampleStep
 )
 from .calc.launcher import (
     getAllMultipliers as getLauncherMultipliers,
@@ -747,7 +748,7 @@ class XDistanceMixin(SmoothPointGetter):
             baseTgtSpeed=tgtSpeed,
             baseTgtSigRadius=tgtSigRadius,
             maxDistance=maxEffectiveRange,
-            resolution=100,  # 100m intervals
+            resolution=getSampleStep(maxEffectiveRange),
             existingCache=existingCache
         )
 
@@ -908,6 +909,10 @@ class XDistanceMixin(SmoothPointGetter):
         # Generate segments
         segments = []
 
+        # Scale plotting resolution with the visible range so long-range fits
+        # don't sample thousands of points (falls back to 100m for short ranges).
+        step = getSampleStep(maxX - minX)
+
         for i, transition in enumerate(validTransitions):
             transDist, _, ammoName, _ = transition
             segStart = max(transDist, minX)
@@ -921,8 +926,7 @@ class XDistanceMixin(SmoothPointGetter):
             if segStart >= segEnd:
                 continue
 
-            # Generate points at fixed 100m resolution for performance
-            step = 100
+            # Generate points at the range-scaled resolution for performance
             xs, ys = [], []
             x = segStart
             while x <= segEnd:

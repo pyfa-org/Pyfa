@@ -32,6 +32,7 @@ defaultValuesCache = {}
 minLimitAttrKeyCache = {}
 maxLimitAttrKeyCache = {}
 resistanceCache = {}
+resAttrNameCache = {}
 
 
 def getAttrDefault(key, fallback=None):
@@ -46,6 +47,19 @@ def getAttrDefault(key, fallback=None):
     if default is None:
         default = fallback
     return default
+
+
+def getAttrNameByID(attrID):
+    # Resolve a resistance attribute ID to its name. Attribute metadata is
+    # immutable gamedata, so memoize it: gamedata query caching is disabled
+    # globally, and this runs in the hot getExtended() loop used by the graph
+    # projected-effect calculations (see minLimitAttrKeyCache above).
+    try:
+        return resAttrNameCache[attrID]
+    except KeyError:
+        attrInfo = getAttributeInfo(attrID)
+        name = resAttrNameCache[attrID] = None if attrInfo is None else attrInfo.attributeName
+        return name
 
 
 def getResistanceAttrID(modifyingItem, effect):
@@ -314,16 +328,16 @@ class ModifiedAttributeDict(MutableMapping):
             minLimitKey = minLimitAttrKeyCache[key]
         except KeyError:
             attrInfo = getAttributeInfo(key)
-            if attrInfo is None:
-                cappingId = minLimitAttrKeyCache[key] = None
-            else:
-                cappingId = attrInfo.minAttributeID
+            cappingId = None if attrInfo is None else attrInfo.minAttributeID
             if cappingId is None:
                 minLimitKey = None
             else:
                 cappingAttrInfo = getAttributeInfo(cappingId)
                 minLimitKey = None if cappingAttrInfo is None else cappingAttrInfo.name
-                minLimitAttrKeyCache[key] = minLimitKey
+            # Always memoize the result (including None): attribute metadata is
+            # immutable, and getExtended() recomputes this in a hot loop. Missing
+            # the None case here re-queried the DB on every extended attr lookup.
+            minLimitAttrKeyCache[key] = minLimitKey
         if minLimitKey:
             minLimitValue = self[minLimitKey]
             minLimitValue = minLimitValue.value if hasattr(minLimitValue, "value") else minLimitValue
@@ -334,16 +348,13 @@ class ModifiedAttributeDict(MutableMapping):
             maxLimitKey = maxLimitAttrKeyCache[key]
         except KeyError:
             attrInfo = getAttributeInfo(key)
-            if attrInfo is None:
-                cappingId = maxLimitAttrKeyCache[key] = None
-            else:
-                cappingId = attrInfo.maxAttributeID
+            cappingId = None if attrInfo is None else attrInfo.maxAttributeID
             if cappingId is None:
                 maxLimitKey = None
             else:
                 cappingAttrInfo = getAttributeInfo(cappingId)
                 maxLimitKey = None if cappingAttrInfo is None else cappingAttrInfo.name
-                maxLimitAttrKeyCache[key] = maxLimitKey
+            maxLimitAttrKeyCache[key] = maxLimitKey
 
         if maxLimitKey:
             maxLimitValue = self[maxLimitKey]
@@ -375,11 +386,11 @@ class ModifiedAttributeDict(MutableMapping):
                     if not resAttrID:
                         multipliers.append(mult)
                         continue
-                    resAttrInfo = getAttributeInfo(resAttrID)
-                    if not resAttrInfo:
+                    resAttrName = getAttrNameByID(resAttrID)
+                    if not resAttrName:
                         multipliers.append(mult)
                         continue
-                    resMult = self.fit.ship.itemModifiedAttributes[resAttrInfo.attributeName]
+                    resMult = self.fit.ship.itemModifiedAttributes[resAttrName]
                     if resMult is None or resMult == 1:
                         multipliers.append(mult)
                         continue
