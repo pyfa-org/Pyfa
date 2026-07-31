@@ -145,6 +145,11 @@ if __name__ == "__main__":
 
         pyfa = PyfaApp(False)
 
+        # Apply the configured colour theme before any window is created, so
+        # native controls are built with the right appearance from the start.
+        from gui.utils.dark import applyTheme
+        applyTheme(pyfa)
+
         from gui.mainFrame import MainFrame
 
         mf = MainFrame(options.title)

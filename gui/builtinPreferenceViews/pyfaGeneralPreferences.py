@@ -6,7 +6,8 @@ import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.fit import Fit
-from service.settings import SettingsProvider, LocaleSettings
+from service.settings import SettingsProvider, LocaleSettings, ThemeSettings
+from gui.utils.dark import applyTheme
 import eos.config
 import wx.lib.agw.hyperlink as hl
 
@@ -94,6 +95,26 @@ class PFGeneralPref(PreferenceView):
                                   _t("Auto will use the same language pyfa uses if available, otherwise English"),
                                   wx.DefaultPosition,
                                   wx.DefaultSize, 0), 0, wx.LEFT, 15)
+
+        self.themeSettings = ThemeSettings.getInstance()
+        themeSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.stTheme = wx.StaticText(panel, wx.ID_ANY, _t("Theme:"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stTheme.Wrap(-1)
+        themeSizer.Add(self.stTheme, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.themeChoices = [
+            (ThemeSettings.SYSTEM, _t("Use system default")),
+            (ThemeSettings.BRIGHT, _t("Bright")),
+            (ThemeSettings.DARK, _t("Dark")),
+        ]
+        self.chTheme = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
+                                 [label for _, label in self.themeChoices], 0)
+        current = self.themeSettings.get("theme")
+        self.chTheme.SetSelection(next(
+            (i for i, (value, _) in enumerate(self.themeChoices) if value == current), 1))
+        self.chTheme.Bind(wx.EVT_CHOICE, self.onThemeSelection)
+        themeSizer.Add(self.chTheme, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(themeSizer, 0, wx.EXPAND, 0)
 
         self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, _t("Use global character"), wx.DefaultPosition, wx.DefaultSize,
                                         0)
@@ -204,6 +225,24 @@ class PFGeneralPref(PreferenceView):
         selection = self.chLang.GetSelection()
         locale = self.langChoices[selection]
         self.localeSettings.set('locale', locale.CanonicalName)
+
+    def onThemeSelection(self, event):
+        value = self.themeChoices[self.chTheme.GetSelection()][0]
+        self.themeSettings.set("theme", value)
+        applyTheme()
+        self.refreshThemedViews()
+
+    def refreshThemedViews(self):
+        """Redraw the views that pick their colours from gui.utils.dark.isDark()."""
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+
+        iView = self.mainFrame.marketBrowser.itemView
+        if iView.active:
+            iView.update(iView.active)
+
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
+        self.mainFrame.Refresh()
 
     def onEosLangSelection(self, event):
         selection = self.chEosLang.GetSelection()

@@ -600,3 +600,37 @@ class LocaleSettings:
         if key == 'locale' and value not in self.supported_languages():
             self.settings[key] = self.DEFAULT
         self.settings[key] = value
+
+
+class ThemeSettings:
+    """Which colour theme the application should use.
+
+    SYSTEM follows whatever the desktop reports via wxSystemAppearance; BRIGHT
+    and DARK override it. BRIGHT is the default so that existing installs keep
+    looking exactly as they did.
+    """
+
+    _instance = None
+
+    SYSTEM = 0
+    BRIGHT = 1
+    DARK = 2
+
+    defaults = {
+        'theme': BRIGHT,
+    }
+
+    def __init__(self):
+        self.settings = SettingsProvider.getInstance().getSettings('pyfaThemeSettings', self.defaults)
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = ThemeSettings()
+        return cls._instance
+
+    def get(self, key):
+        return self.settings[key]
+
+    def set(self, key, value):
+        self.settings[key] = value
