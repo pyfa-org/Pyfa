@@ -20,7 +20,6 @@
 # noinspection PyPackageRequirements
 import wx
 
-import gui.mainFrame
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from gui.viewColumn import ViewColumn
@@ -35,6 +34,8 @@ class DroneRegenColumn(ViewColumn):
     name = "Drone Regen"
 
     def __init__(self, fittingView, params=None):
+        import gui.mainFrame
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         if params is None:
             params = {"showIcon": True, "displayName": False}

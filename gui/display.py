@@ -19,8 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-import gui.mainFrame
-from gui.viewColumn import ViewColumn
+
 from gui.cachingImageList import CachingImageList
 
 
@@ -38,6 +37,11 @@ class Display(wx.ListCtrl):
         self.columnsMinWidth = []
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
+
+        # Imported here rather than at module scope: gui.mainFrame pulls in the
+        # addition panes, which subclass Display, so importing it at the top makes
+        # this module unimportable unless mainFrame happens to be loaded first.
+        import gui.mainFrame
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -106,6 +110,8 @@ class Display(wx.ListCtrl):
         self.insertColumnBySpec(len(self.activeColumns), colSpec)
 
     def insertColumnBySpec(self, i, colSpec):
+        from gui.viewColumn import ViewColumn
+
         if ":" in colSpec:
             colSpec, params = colSpec.split(":", 1)
             params = params.split(",")

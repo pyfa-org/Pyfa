@@ -37,7 +37,7 @@ import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
 from eos.modifiedAttributeDict import ModifiedAttributeDict
-from graphs import GraphFrame
+import graphs
 from gui.additionsPane import AdditionsPane
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ItemSelected
@@ -440,10 +440,10 @@ class MainFrame(wx.Frame):
         wx.adv.AboutBox(info)
 
     def OnShowGraphFrame(self, event):
-        GraphFrame.openOne(self)
+        graphs.GraphFrame.openOne(self)
 
     def OnShowGraphFrameHidden(self, event):
-        GraphFrame.openOne(self, includeHidden=True)
+        graphs.GraphFrame.openOne(self, includeHidden=True)
 
     def OnShowDevTools(self, event):
         DevTools.openOne(parent=self)

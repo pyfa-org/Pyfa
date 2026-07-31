@@ -20,7 +20,6 @@
 # noinspection PyPackageRequirements
 import wx
 
-import gui.mainFrame
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from service.attribute import Attribute
@@ -36,6 +35,8 @@ class DroneEhpColumn(ViewColumn):
     name = "Drone HP"
 
     def __init__(self, fittingView, params=None):
+        import gui.mainFrame
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         if params is None:
             params = {"showIcon": True, "displayName": False}

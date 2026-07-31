@@ -22,7 +22,6 @@ import wx
 
 from service.fit import Fit
 from service.market import Market
-import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -50,6 +49,8 @@ class Miscellanea(ViewColumn):
         if params["displayName"] or self.imageId == -1:
             self.columnText = _("Misc data")
             self.mask |= wx.LIST_MASK_TEXT
+        import gui.mainFrame
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.fittingView = fittingView
 

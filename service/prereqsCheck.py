@@ -31,8 +31,8 @@ def version_precheck():
     version_block += "\nOS version: {}".format(platform.platform())
     version_block += "\nPython version: {}".format(sys.version)
 
-    if sys.version_info < (3, 11):
-        msg = "pyfa requires python 3.11"
+    if sys.version_info < (3, 12):
+        msg = "pyfa requires python 3.12"
         raise PreCheckException(msg)
 
     try:

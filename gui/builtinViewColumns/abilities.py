@@ -22,7 +22,6 @@
 import wx
 from eos.saveddata.fighter import Fighter
 from gui.viewColumn import ViewColumn
-import gui.mainFrame
 
 _t = wx.GetTranslation
 
@@ -32,6 +31,8 @@ class Abilities(ViewColumn):
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+
+        import gui.mainFrame
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.columnText = _t("Active Abilities")

@@ -4,14 +4,14 @@ version = "2.68.0"  # TODO: make scripts read this instead of version.yml
 description = "Python fitting assistant, a ship fitting tool for EVE Online"
 readme = "README.md"
 license = "GPL-3.0-or-later"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 
 # wxpython has special handling, to resolve conflicts between needs of having binary build in CI
 # and building from source locally (to link to proper system libs instead of ubuntu-specific ones)
 dependencies = [
     "logbook==1.7.0.post0",
-    "numpy==1.26.2",
-    "matplotlib==3.8.2",
+    "numpy==2.5.1",
+    "matplotlib==3.11.1",
     "python-dateutil==2.8.2",
     "requests==2.31.0",
     "sqlalchemy==2.0.51",
