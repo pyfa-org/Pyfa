@@ -20,7 +20,7 @@
 import math
 from bisect import bisect_right
 
-from .projected import getProjectedParamsAtDistance
+from .projected import getProjectedParamsAtDistance, getSampleStep
 
 
 # =============================================================================
@@ -577,7 +577,7 @@ def _updateParamsWithCache(baseTgtSpeed, baseTgtSigRadius, projectedCache, dista
 
 
 def calculateTransitions(chargeData, baseTgtSpeed, baseTgtSigRadius,
-                         projectedCache, maxDistance=300000, resolution=100):
+                         projectedCache, maxDistance=300000, resolution=None):
     """
     Calculate distances where optimal missile ammo changes.
 
@@ -594,6 +594,11 @@ def calculateTransitions(chargeData, baseTgtSpeed, baseTgtSigRadius,
     """
     if not chargeData:
         return []
+
+    # Scale the scan step with range so long-range fits don't do 25x the work
+    # for no extra fidelity (falls back to the fine 100m step for short ranges).
+    if resolution is None:
+        resolution = getSampleStep(maxDistance)
 
     transitions = []
     currentCharge = None

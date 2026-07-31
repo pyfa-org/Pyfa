@@ -40,6 +40,40 @@ from graphs.data.fitDamageStats.calc.projected import (
 
 
 # =============================================================================
+# Distance Sample Step
+# =============================================================================
+
+def getSampleStep(maxDistance, minStep=100, targetPoints=300):
+    """
+    Pick a distance-scan step that scales with the range being scanned.
+
+    Several hot loops (ammo transition scanning, segment plotting) sample the
+    curve at a fixed interval from 0 to the fit's max effective range. With a
+    hardcoded step, cost grows linearly with range - a 250km fit does 25x the
+    work of a 10km fit for no extra visual fidelity.
+
+    This keeps the fine step for short-range fits (no accuracy change for the
+    common case) and coarsens it for long-range fits so the number of sampled
+    points stays roughly bounded by targetPoints.
+
+    Args:
+        maxDistance: Range to be scanned (m)
+        minStep: Finest step; also the step used for short ranges (m)
+        targetPoints: Approximate upper bound on the number of scan points
+
+    Returns:
+        Step size in meters (always a multiple of minStep, >= minStep)
+    """
+    if not maxDistance or maxDistance <= 0:
+        return minStep
+    step = maxDistance / targetPoints
+    if step <= minStep:
+        return minStep
+    # Round up to a multiple of minStep so steps stay on tidy boundaries
+    return int(math.ceil(step / minStep) * minStep)
+
+
+# =============================================================================
 # Distance-Keyed Projected Cache
 # =============================================================================
 
