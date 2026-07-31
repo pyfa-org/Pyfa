@@ -96,11 +96,18 @@ class ItemCompare(wx.Panel):
 
     def OnSysColorChanged(self, event):
         self.HighlightOn = highlightColor()
+        wx.CallAfter(self.RepopulateForTheme)
+        event.Skip()
+
+    def RepopulateForTheme(self):
+        if not self:
+            return
+        sort, reverse = self.currentSort, self.sortReverse
         self.Freeze()
         self.paramList.ClearAll()
-        self.PopulateList(self.currentSort)
+        self.PopulateList()
+        self.currentSort, self.sortReverse = sort, reverse
         self.Thaw()
-        event.Skip()
 
     def HighlightRow(self, event):
         itemIdx = event.GetIndex()
