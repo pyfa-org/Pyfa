@@ -1,6 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
-from gui.utils.dark import highlightColor
+from gui.utils.dark import bindBackgroundToTheme, highlightColor
 
 from .helpers import AutoListCtrl
 from service.price import Price as ServicePrice
@@ -22,7 +22,7 @@ class ItemCompare(wx.Panel):
         sPrice.getPrices(items, self.UpdateList, fetchTimeout=90)
 
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        bindBackgroundToTheme(self, wx.SYS_COLOUR_BTNFACE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
@@ -92,6 +92,15 @@ class ItemCompare(wx.Panel):
         self.Bind(wx.EVT_LIST_COL_CLICK, self.SortCompareCols)
 
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.HighlightRow)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
+
+    def OnSysColorChanged(self, event):
+        self.HighlightOn = highlightColor()
+        self.Freeze()
+        self.paramList.ClearAll()
+        self.PopulateList(self.currentSort)
+        self.Thaw()
+        event.Skip()
 
     def HighlightRow(self, event):
         itemIdx = event.GetIndex()
