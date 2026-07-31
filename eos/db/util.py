@@ -35,6 +35,7 @@ replace = {
 
 
 def processEager(eager):
+    # type: (list[str]) -> str
     if eager is None:
         return tuple()
     else:
@@ -49,6 +50,7 @@ def processEager(eager):
 
 
 def _replacements(eagerString):
+    # type: (str) -> str
     splitEager = eagerString.split(".")
     for i in range(len(splitEager)):
         part = splitEager[i]

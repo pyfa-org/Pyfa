@@ -72,6 +72,7 @@ def parseMutant(lines):
 
 
 def parseMutantAttrs(line):
+    # type: (str) -> dict[int, float]
     mutations = {}
     pairs = [p.strip() for p in line.split(',')]
     for pair in pairs:

@@ -68,6 +68,7 @@ class Fit:
     PEAK_RECHARGE = 0.25
 
     def __init__(self, ship=None, name=""):
+        # type: (Ship, str) -> Fit
         """Initialize a fit from the program"""
         self.__ship = None
         self.__mode = None
