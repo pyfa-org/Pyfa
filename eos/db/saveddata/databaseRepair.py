@@ -23,6 +23,21 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
+class _QueryResult:
+    def __init__(self, rows, rowcount):
+        self._rows = rows
+        self.rowcount = rowcount
+
+    def __iter__(self):
+        return iter(self._rows)
+
+    def fetchall(self):
+        return self._rows
+
+    def first(self):
+        return self._rows[0] if self._rows else None
+
+
 class DatabaseCleanup:
     def __init__(self):
         pass
@@ -30,8 +45,10 @@ class DatabaseCleanup:
     @staticmethod
     def ExecuteSQLQuery(saveddata_engine, query):
         try:
-            results = saveddata_engine.execute(query)
-            return results
+            with saveddata_engine.begin() as connection:
+                result = connection.exec_driver_sql(query)
+                rows = result.fetchall() if result.returns_rows else []
+                return _QueryResult(rows, result.rowcount)
         except DatabaseError:
             pyfalog.error("Failed to connect to database or error executing query:\n{0}", query)
             return None
@@ -50,7 +67,7 @@ class DatabaseCleanup:
 
         row = results.first()
 
-        if row and row['num']:
+        if row and row.num:
             query = "DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)"
             delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
             pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
@@ -69,7 +86,7 @@ class DatabaseCleanup:
 
         row = results.first()
 
-        if row and row['num']:
+        if row and row.num:
             # Get Uniform damage pattern ID
             uniform_query = "SELECT ID FROM damagePatterns WHERE name = 'Uniform'"
             uniform_results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, uniform_query)
@@ -84,7 +101,7 @@ class DatabaseCleanup:
             elif len(rows) > 1:
                 pyfalog.error("More than one uniform damage pattern found.")
             else:
-                uniform_damage_pattern_id = rows[0]['ID']
+                uniform_damage_pattern_id = rows[0].ID
                 update_query = "UPDATE 'fits' SET 'damagePatternID' = {} " \
                                "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL".format(uniform_damage_pattern_id)
                 update_results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, update_query)
@@ -102,7 +119,7 @@ class DatabaseCleanup:
 
         row = results.first()
 
-        if row and row['num']:
+        if row and row.num:
             # Get All 5 character ID
             all5_query = "SELECT ID FROM characters WHERE name = 'All 5'"
             all5_results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, all5_query)
@@ -117,7 +134,7 @@ class DatabaseCleanup:
             elif len(rows) > 1:
                 pyfalog.error("More than one 'All 5' character found.")
             else:
-                all5_id = rows[0]['ID']
+                all5_id = rows[0].ID
                 update_query = "UPDATE 'fits' SET 'characterID' = " + str(all5_id) + \
                                " WHERE characterID not in (select ID from characters) OR characterID IS NULL"
                 update_results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, update_query)
@@ -137,7 +154,7 @@ class DatabaseCleanup:
 
         row = results.first()
 
-        if row and row['num']:
+        if row and row.num:
             query = "DELETE FROM damagePatterns WHERE name IS NULL OR name = ''"
             delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
             pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
@@ -156,7 +173,7 @@ class DatabaseCleanup:
 
         row = results.first()
 
-        if row and row['num']:
+        if row and row.num:
             query = "DELETE FROM targetResists WHERE name IS NULL OR name = ''"
             delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
             pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
@@ -176,7 +193,7 @@ class DatabaseCleanup:
 
             row = results.first()
 
-            if row and row['num']:
+            if row and row.num:
                 query = "DELETE FROM {} WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(
                         table)
                 delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
@@ -193,7 +210,7 @@ class DatabaseCleanup:
 
             row = results.first()
 
-            if row and row['num']:
+            if row and row.num:
                 query = "DELETE FROM {} WHERE itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(table)
                 delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                 pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
@@ -214,7 +231,7 @@ class DatabaseCleanup:
 
                 row = results.first()
 
-                if row and row['num']:
+                if row and row.num:
                     query = "UPDATE '{0}' SET '{1}Amount' = '0' WHERE {1}Amount IS NULL OR {1}Amount = ''".format(profileType,
                                                                                                                   damageType)
                     delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
@@ -233,7 +250,7 @@ class DatabaseCleanup:
 
         row = results.first()
 
-        if row and row['num'] > 1:
+        if row and row.num > 1:
             query = "DELETE FROM damagePatterns WHERE name = 'Selected Ammo'"
             delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
             pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)

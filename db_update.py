@@ -94,7 +94,7 @@ def update_db():
     import eos.config
 
     # Create the database tables
-    eos.db.gamedata_meta.create_all()
+    eos.db.gamedata_meta.create_all(eos.db.gamedata_engine)
 
     def _readData(minerName, jsonName, keyIdName=None):
         compiled_data = None
@@ -921,7 +921,8 @@ def update_db():
     hardcodeFwProxyEffects()
 
     eos.db.gamedata_session.commit()
-    eos.db.gamedata_engine.execute('VACUUM')
+    with eos.db.gamedata_engine.begin() as connection:
+        connection.exec_driver_sql('VACUUM')
 
     print('done')
 

@@ -19,9 +19,9 @@
 
 
 from sqlalchemy import Table, Column, Float, Integer
-from sqlalchemy.orm import mapper
 
-from eos.db import saveddata_meta
+
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.price import Price
 
 

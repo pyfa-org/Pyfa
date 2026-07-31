@@ -136,7 +136,7 @@ if __name__ == "__main__":
         if not os.path.exists(config.savePath):
             os.mkdir(config.savePath)
 
-        eos.db.saveddata_meta.create_all()
+        eos.db.saveddata_meta.create_all(eos.db.saveddata_engine)
         from gui.app import PyfaApp
 
         # set title if it wasn't supplied by argument

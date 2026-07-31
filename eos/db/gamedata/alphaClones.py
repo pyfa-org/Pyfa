@@ -18,9 +18,9 @@
 # ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Table, ForeignKey
-from sqlalchemy.orm import relation, mapper, synonym
+from sqlalchemy.orm import relationship, synonym
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import AlphaClone, AlphaCloneSkill
 
 alphaclones_table = Table(
@@ -41,7 +41,7 @@ alphacloneskskills_table = Table(
 mapper(AlphaClone, alphaclones_table,
        properties={
            "ID"    : synonym("alphaCloneID"),
-           "skills": relation(
+           "skills": relationship(
                    AlphaCloneSkill,
                    cascade="all,delete-orphan",
                    backref="clone")

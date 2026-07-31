@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, ForeignKey, Integer, Boolean, DateTime
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy.orm import relationship
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.booster import Booster
 from eos.saveddata.boosterSideEffect import BoosterSideEffect
 from eos.saveddata.fit import Fit
@@ -45,8 +45,8 @@ booster_side_effect_table = Table("boosterSideEffects", saveddata_meta,
 
 mapper(Booster, boosters_table,
        properties={
-        "owner": relation(Fit),
-        "_Booster__sideEffects": relation(
+        "owner": relationship(Fit),
+        "_Booster__sideEffects": relationship(
             BoosterSideEffect,
             backref="booster",
             cascade='all, delete, delete-orphan'),

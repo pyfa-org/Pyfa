@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, Boolean, DateTime
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy.orm import relationship
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.fighterAbility import FighterAbility
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
@@ -46,9 +46,9 @@ fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
 
 mapper(Fighter, fighters_table,
        properties={
-           "owner"              : relation(Fit),
+           "owner"              : relationship(Fit),
            "_amount"            : fighters_table.c.amount,
-           "_Fighter__abilities": relation(
+           "_Fighter__abilities": relationship(
                    FighterAbility,
                    backref="fighter",
                    cascade='all, delete, delete-orphan'),

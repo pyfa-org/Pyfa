@@ -18,9 +18,9 @@
 # ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, Table, ForeignKey
-from sqlalchemy.orm import mapper, synonym, deferred
+from sqlalchemy.orm import synonym, deferred
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import Effect, ItemEffect
 
 typeeffects_table = Table("dgmtypeeffects", gamedata_meta,

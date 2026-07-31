@@ -21,11 +21,11 @@ import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, Float, String, Table
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import mapper, reconstructor, relation, relationship
-from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.orm import reconstructor, relationship
+from sqlalchemy.orm.collections import attribute_keyed_dict
 from sqlalchemy.sql import and_
 
-from eos.db import saveddata_meta, saveddata_session
+from eos.db import saveddata_meta, saveddata_session, mapper
 from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.fighter import fighters_table
@@ -158,7 +158,7 @@ projectedFitSourceRel = relationship(
    ProjectedFit,
    primaryjoin=projectedFits_table.c.sourceID == fits_table.c.ID,
    backref='source_fit',
-   collection_class=attribute_mapped_collection('victimID'),
+   collection_class=attribute_keyed_dict('victimID'),
    cascade='all, delete, delete-orphan')
 
 
@@ -166,65 +166,65 @@ boostedOntoRel = relationship(
    CommandFit,
    primaryjoin=commandFits_table.c.boosterID == fits_table.c.ID,
    backref='booster_fit',
-   collection_class=attribute_mapped_collection('boostedID'),
+   collection_class=attribute_keyed_dict('boostedID'),
    cascade='all, delete, delete-orphan')
 
 mapper(es_Fit, fits_table,
        properties={
-           "_Fit__modules": relation(
+           "_Fit__modules": relationship(
                    Module,
                    collection_class=HandledModuleList,
                    primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False),  # noqa
                    order_by=modules_table.c.position,
                    overlaps='owner',
                    cascade='all, delete, delete-orphan'),
-           "_Fit__projectedModules": relation(
+           "_Fit__projectedModules": relationship(
                    Module,
                    collection_class=HandledProjectedModList,
                    overlaps='owner, _Fit__modules',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),  # noqa
-           "owner": relation(
+           "owner": relationship(
                    User,
                    backref="fits"),
            "itemID": fits_table.c.shipID,
            "shipID": fits_table.c.shipID,
-           "_Fit__boosters": relation(
+           "_Fit__boosters": relationship(
                    Booster,
                    collection_class=HandledBoosterList,
                    overlaps='owner',
                    cascade='all, delete, delete-orphan'),
-           "_Fit__drones": relation(
+           "_Fit__drones": relationship(
                    Drone,
                    collection_class=HandledDroneCargoList,
                    overlaps='owner',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)),  # noqa
-           "_Fit__fighters": relation(
+           "_Fit__fighters": relationship(
                    Fighter,
                    collection_class=HandledDroneCargoList,
                    overlaps='owner',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == False)),  # noqa
-           "_Fit__cargo": relation(
+           "_Fit__cargo": relationship(
                    Cargo,
                    collection_class=HandledDroneCargoList,
                    overlaps='owner',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(cargo_table.c.fitID == fits_table.c.ID)),
-           "_Fit__projectedDrones": relation(
+           "_Fit__projectedDrones": relationship(
                    Drone,
                    collection_class=HandledProjectedDroneList,
                    overlaps='owner, _Fit__drones',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),  # noqa
-           "_Fit__projectedFighters": relation(
+           "_Fit__projectedFighters": relationship(
                    Fighter,
                    collection_class=HandledProjectedDroneList,
                    overlaps='owner, _Fit__fighters',
                    cascade='all, delete, delete-orphan',
                    primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)),  # noqa
-           "_Fit__implants": relation(
+           "_Fit__implants": relationship(
                    Implant,
                    collection_class=HandledImplantList,
                    cascade='all, delete, delete-orphan',
@@ -233,26 +233,26 @@ mapper(es_Fit, fits_table,
                    primaryjoin=fitImplants_table.c.fitID == fits_table.c.ID,
                    secondaryjoin=fitImplants_table.c.implantID == Implant.ID,
                    secondary=fitImplants_table),
-           "_Fit__character": relation(
+           "_Fit__character": relationship(
                    Character,
                    backref="fits"),
-           "_Fit__userDamagePattern": relation(DamagePattern),
+           "_Fit__userDamagePattern": relationship(DamagePattern),
            "_Fit__builtinDamagePatternID": fits_table.c.builtinDamagePatternID,
-           "_Fit__userTargetProfile": relation(TargetProfile),
+           "_Fit__userTargetProfile": relationship(TargetProfile),
            "_Fit__builtinTargetProfileID": fits_table.c.builtinTargetResistsID,
            "projectedOnto": projectedFitSourceRel,
            "victimOf": relationship(
                    ProjectedFit,
                    primaryjoin=fits_table.c.ID == projectedFits_table.c.victimID,
                    backref='victim_fit',
-                   collection_class=attribute_mapped_collection('sourceID'),
+                   collection_class=attribute_keyed_dict('sourceID'),
                    cascade='all, delete, delete-orphan'),
            "boostedOnto": boostedOntoRel,
            "boostedOf": relationship(
                    CommandFit,
                    primaryjoin=fits_table.c.ID == commandFits_table.c.boostedID,
                    backref='boosted_fit',
-                   collection_class=attribute_mapped_collection('boosterID'),
+                   collection_class=attribute_keyed_dict('boosterID'),
                    cascade='all, delete, delete-orphan'),
        }
 )

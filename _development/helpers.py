@@ -78,7 +78,7 @@ def DBInMemory_test():
 
     # If using in memory saveddata, you'll want to reflect it so the data structure is good.
     if saveddata_connectionstring == "sqlite:///:memory:":
-        saveddata_meta.create_all()
+        saveddata_meta.create_all(saveddata_engine)
 
     # Output debug info to help us troubleshoot Travis
     print(saveddata_engine)

@@ -18,9 +18,9 @@
 # ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Table
-from sqlalchemy.orm import mapper, synonym
+from sqlalchemy.orm import synonym
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import ImplantSet
 
 implant_set_table = Table("implantsets", gamedata_meta,

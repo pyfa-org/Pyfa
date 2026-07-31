@@ -18,9 +18,9 @@
 # ===============================================================================
 
 from sqlalchemy import Column, Table, String
-from sqlalchemy.orm import mapper
 
-from eos.db import saveddata_meta
+
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.miscData import MiscData
 
 miscdata_table = Table("miscdata", saveddata_meta,

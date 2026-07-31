@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
-from sqlalchemy.orm import mapper
+
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.implant import Implant
 
 implants_table = Table("implants", saveddata_meta,
