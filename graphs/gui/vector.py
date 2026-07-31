@@ -38,7 +38,7 @@ class VectorPicker(wx.Window):
         self._size = max(0, float(kwargs.pop('size', 50)))
         self._directionOnly = kwargs.pop('directionOnly', False)
         super().__init__(*args, **kwargs)
-        self._fontsize = max(1, float(kwargs.pop('fontsize', 8 / self.GetContentScaleFactor())))
+        self._fontsize = max(1, float(kwargs.pop('fontsize', 8 / self._drawScaleFactor())))
         self._font = wx.Font(round(self._fontsize), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self._angle = 0
         self.__length = 1
@@ -107,8 +107,13 @@ class VectorPicker(wx.Window):
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
 
+    def _drawScaleFactor(self):
+        if 'wxGTK' in wx.PlatformInfo:
+            return 1.0
+        return self.GetContentScaleFactor()
+
     def GetScaledClientSize(self):
-        return tuple([dim / self.GetContentScaleFactor() for dim in self.GetClientSize()])
+        return tuple([dim / self._drawScaleFactor() for dim in self.GetClientSize()])
 
     def Draw(self, dc):
         width, height = self.GetScaledClientSize()
@@ -128,7 +133,7 @@ class VectorPicker(wx.Window):
         x = math.cos(a) * radius
         y = math.sin(a) * radius
         # See PR #2260 on why this is needed
-        pointRadius = 2 / self.GetContentScaleFactor() if 'wxGTK' in wx.PlatformInfo else 2
+        pointRadius = 2
         dc.DrawLine(
             round(radius + 2), round(radius + 2),
             round(radius + 2 + x * self._length), round(radius + 2 - y * self._length))
