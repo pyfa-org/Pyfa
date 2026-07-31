@@ -10,6 +10,7 @@ class PFStaticText(wx.Panel):
     def __init__(self, parent, label=wx.EmptyString):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=parent.GetSize())
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         text = wx.StaticText(self, wx.ID_ANY, label, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
@@ -21,3 +22,8 @@ class PFStaticText(wx.Panel):
     @staticmethod
     def GetType():
         return -1
+
+    def OnSysColorChanged(self, event):
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.Refresh()
+        event.Skip()

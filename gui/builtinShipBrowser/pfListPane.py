@@ -31,6 +31,7 @@ class PFListPane(wx.ScrolledWindow):
         self.itemsHeight = 1
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
 
         self.SetVirtualSize((1, 1))
         self.SetScrollRate(0, 1)
@@ -170,3 +171,8 @@ class PFListPane(wx.ScrolledWindow):
 
         self.Scroll(0, 0)
         self._wList = []
+
+    def OnSysColorChanged(self, event):
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        self.Refresh()
+        event.Skip()
