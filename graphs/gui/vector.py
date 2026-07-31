@@ -116,11 +116,13 @@ class VectorPicker(wx.Window):
             return
         dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.BRUSHSTYLE_SOLID))
         dc.Clear()
-        dc.SetTextForeground(wx.Colour(0))
+        fg = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        dc.SetTextForeground(fg)
+        dc.SetPen(wx.Pen(fg))
         dc.SetFont(self._font)
 
         radius = min(width, height) / 2 - 2
-        dc.SetBrush(wx.WHITE_BRUSH)
+        dc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
         dc.DrawCircle(round(radius + 2), round(radius + 2), round(radius))
         a = math.radians(self._angle + self._offset)
         x = math.cos(a) * radius
@@ -130,7 +132,7 @@ class VectorPicker(wx.Window):
         dc.DrawLine(
             round(radius + 2), round(radius + 2),
             round(radius + 2 + x * self._length), round(radius + 2 - y * self._length))
-        dc.SetBrush(wx.BLACK_BRUSH)
+        dc.SetBrush(wx.Brush(fg))
         dc.DrawCircle(round(radius + 2 + x * self._length), round(radius + 2 - y * self._length), round(pointRadius))
 
         if self._label:

@@ -603,7 +603,7 @@ class LocaleSettings:
 
 
 class ThemeSettings:
-    """Which colour theme the application should use.
+    """Which color theme the application should use.
 
     SYSTEM follows whatever the desktop reports via wxSystemAppearance; BRIGHT
     and DARK override it. BRIGHT is the default so that existing installs keep

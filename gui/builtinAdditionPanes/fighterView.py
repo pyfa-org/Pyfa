@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import warningTextColor
 
 import gui.display as d
 import gui.fitCommands as cmd
@@ -115,7 +116,7 @@ class FighterView(wx.Panel):
                     slot = getattr(FittingSlot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
-                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings.GetColour(
+                color = warningTextColor() if used > total else wx.SystemSettings.GetColour(
                     wx.SYS_COLOUR_WINDOWTEXT)
 
                 lbl = getattr(self, "label%sUsed" % x.capitalize())

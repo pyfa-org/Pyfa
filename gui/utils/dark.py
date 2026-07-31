@@ -19,9 +19,9 @@ def systemIsDark():
 
 
 def isDark():
-    """Whether pyfa should be drawing itself with dark colours.
+    """Whether pyfa should be drawing itself with dark colors.
 
-    Used to pick between the light and dark colour maps. wxMSW used to be
+    Used to pick between the light and dark color maps. wxMSW used to be
     excluded here because wxWidgets 3.2 could not do dark mode on Windows at
     all; 3.3 can, so the platform is no longer special-cased.
     """
@@ -64,3 +64,18 @@ def applyTheme(app=None):
         pyfalog.info('wx did not apply the requested appearance (result {0})', int(result))
         return False
     return True
+
+def themedColor(light, dark):
+    return wx.Colour(*(dark if isDark() else light))
+
+
+def warningTextColor():
+    return themedColor((204, 51, 51), (255, 111, 111))
+
+
+def errorTextColor():
+    return themedColor((255, 0, 0), (255, 122, 122))
+
+
+def highlightColor():
+    return themedColor((255, 255, 0), (112, 96, 0))

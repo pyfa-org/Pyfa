@@ -3,7 +3,7 @@ from logbook import Logger
 
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.globalEvents as GE
-from config import slotColourMap, slotColourMapDark
+from config import slotColorMap, slotColorMapDark
 from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES, CHARGES_FOR_FIT
 from gui.contextMenu import ContextMenu
@@ -288,7 +288,7 @@ class ItemView(Display):
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
-            colorMap = slotColourMapDark if isDark() else slotColourMap
+            colorMap = slotColorMapDark if isDark() else slotColorMap
             return colorMap.get(Module.calculateSlot(item)) or self.GetBackgroundColour()
         else:
             return self.GetBackgroundColour()

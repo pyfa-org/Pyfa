@@ -778,11 +778,11 @@ class _TabsContainer(wx.Panel):
         self.Bind(wx.EVT_MIDDLE_UP, self.OnMiddleUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SIZE, self.OnSize)
-        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
 
         self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
-    def OnSysColourChanged(self, event):
+    def OnSysColorChanged(self, event):
         for tab in self.tabs:
             tab.InitTab()
         self.Refresh()

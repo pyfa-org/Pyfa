@@ -1,5 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import highlightColor
 
 from .helpers import AutoListCtrl
 from service.price import Price as ServicePrice
@@ -36,7 +37,7 @@ class ItemCompare(wx.Panel):
         self.item = item
         self.items = sorted(items, key=defaultSort)
         self.attrs = {}
-        self.HighlightOn = wx.Colour(255, 255, 0, wx.ALPHA_OPAQUE)
+        self.HighlightOn = highlightColor()
         self.highlightedNames = []
 
         # get a dict of attrName: attrInfo of all unique attributes across all items

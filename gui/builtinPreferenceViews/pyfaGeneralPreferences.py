@@ -233,7 +233,7 @@ class PFGeneralPref(PreferenceView):
         self.refreshThemedViews()
 
     def refreshThemedViews(self):
-        """Redraw the views that pick their colours from gui.utils.dark.isDark()."""
+        """Redraw the views that pick their colors from gui.utils.dark.isDark()."""
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
 

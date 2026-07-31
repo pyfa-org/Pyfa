@@ -87,14 +87,10 @@ class GraphCanvasPanel(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.figure = Figure(figsize=(5, 3), tight_layout={'pad': 1.08})
-        rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
-        clr = [c / 255. for c in rgbtuple]
-        self.figure.set_facecolor(clr)
-        self.figure.set_edgecolor(clr)
         self.canvas = Canvas(self, -1, self.figure)
-        self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
         self.canvas.mpl_connect('button_press_event', self.OnMplCanvasClick)
         self.subplot = self.figure.add_subplot(111)
+        self.applyThemeToFigure()
         self.subplot.grid(True)
         mainSizer.Add(self.canvas, 1, wx.EXPAND | wx.ALL, 0)
 
@@ -132,10 +128,55 @@ class GraphCanvasPanel(wx.Panel):
         self._defaultInputRange = None
         self._userModifiedInput = False
 
+    @staticmethod
+    def _sysColor(which):
+        return tuple(c / 255. for c in wx.SystemSettings.GetColour(which).Get()[:3])
+
+    def applyThemeToFigure(self):
+        faceClr = self._sysColor(wx.SYS_COLOUR_BTNFACE)
+        axesClr = self._sysColor(wx.SYS_COLOUR_WINDOW)
+        textClr = self._sysColor(wx.SYS_COLOUR_WINDOWTEXT)
+
+        mpl.rcParams.update({
+            'text.color': textClr,
+            'axes.labelcolor': textClr,
+            'axes.edgecolor': textClr,
+            'axes.facecolor': axesClr,
+            'axes.titlecolor': textClr,
+            'xtick.color': textClr,
+            'ytick.color': textClr,
+            'xtick.labelcolor': textClr,
+            'ytick.labelcolor': textClr,
+            'grid.color': textClr,
+            'grid.alpha': 0.25,
+            'figure.facecolor': faceClr,
+            'figure.edgecolor': faceClr,
+            'legend.facecolor': axesClr,
+            'legend.edgecolor': textClr,
+            'legend.labelcolor': textClr,
+        })
+
+        self.figure.set_facecolor(faceClr)
+        self.figure.set_edgecolor(faceClr)
+        self.canvas.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.subplot.set_facecolor(axesClr)
+        self.subplot.tick_params(colors=textClr, which='both')
+        self.subplot.xaxis.label.set_color(textClr)
+        self.subplot.yaxis.label.set_color(textClr)
+        for spine in self.subplot.spines.values():
+            spine.set_color(textClr)
+
+    def markerColor(self):
+        return self._sysColor(wx.SYS_COLOUR_WINDOWTEXT)
+
+    def annotationOutlineColor(self):
+        return self._sysColor(wx.SYS_COLOUR_WINDOW)
+
     def draw(self, accurateMarks=True):
         # Invalidate blit cache at the start of every draw
         self._blitBackground = None
         self.subplot.clear()
+        self.applyThemeToFigure()
         self.subplot.grid(True)
         allXs = set()
         allYs = set()
@@ -413,7 +454,7 @@ class GraphCanvasPanel(wx.Panel):
                 xMark = max(min(self.xMark, maxX), minX)
 
                 # Draw line first
-                self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=(0, 0, 0))
+                self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=self.markerColor())
 
                 # Prepare X label text (without prefix/suffix yet)
                 if chosenX.unit is None:
@@ -422,7 +463,7 @@ class GraphCanvasPanel(wx.Panel):
                     xLabelCore = '{} {}'.format(roundToPrec(xMark, 4), chosenX.unit)
 
                 # Text outline effect for better visibility
-                textOutline = [PathEffects.withStroke(linewidth=3, foreground='white')]
+                textOutline = [PathEffects.withStroke(linewidth=3, foreground=self.annotationOutlineColor())]
 
                 # Get Y values with optional extra info (like ammo name)
                 yMarks = {}  # {rounded_value: extra_info_str}
@@ -555,7 +596,7 @@ class GraphCanvasPanel(wx.Panel):
                     labelSuffix = ''
 
                 # Unify Y label offsetting logic with blit path
-                textOutline = [PathEffects.withStroke(linewidth=3, foreground='white')]
+                textOutline = [PathEffects.withStroke(linewidth=3, foreground=self.annotationOutlineColor())]
 
                 # Draw X label
                 xLabel = '{}{}{}'.format(labelPrefix, xLabelCore, labelSuffix)
@@ -654,7 +695,7 @@ class GraphCanvasPanel(wx.Panel):
         self._xMarkerArtists = []
 
         # Draw new X marker line
-        line = self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=(0, 0, 0), animated=True)
+        line = self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=self.markerColor(), animated=True)
         self._xMarkerArtists.append(line)
 
         # Prepare X label
@@ -754,7 +795,7 @@ class GraphCanvasPanel(wx.Panel):
             labelPrefix = ' '
             labelSuffix = ''
 
-        textOutline = [PathEffects.withStroke(linewidth=3, foreground='white')]
+        textOutline = [PathEffects.withStroke(linewidth=3, foreground=self.annotationOutlineColor())]
 
         # Draw X label
         xLabel = '{}{}{}'.format(labelPrefix, xLabelCore, labelSuffix)
