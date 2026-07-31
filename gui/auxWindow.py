@@ -20,6 +20,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 
 
 class AuxiliaryMixin:
@@ -52,7 +53,7 @@ class AuxiliaryMixin:
             self.Bind(wx.EVT_MENU, self.OnSuppressedAction, id=wx.ID_COPY)
             self.Bind(wx.EVT_MENU, self.OnSuppressedAction, id=wx.ID_PASTE)
         if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+            bindBackgroundToTheme(self, wx.SYS_COLOUR_BTNFACE)
 
     @classmethod
     def openOne(cls, parent, *args, forceReopen=False, **kwargs):

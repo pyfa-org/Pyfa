@@ -79,3 +79,17 @@ def errorTextColor():
 
 def highlightColor():
     return themedColor((255, 255, 0), (112, 96, 0))
+
+
+def bindBackgroundToTheme(window, sysColor=wx.SYS_COLOUR_WINDOW):
+
+    def apply():
+        window.SetBackgroundColour(wx.SystemSettings.GetColour(sysColor))
+
+    def onSysColorChanged(event):
+        apply()
+        window.Refresh()
+        event.Skip()
+
+    apply()
+    window.Bind(wx.EVT_SYS_COLOUR_CHANGED, onSysColorChanged)

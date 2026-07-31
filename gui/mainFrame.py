@@ -27,6 +27,7 @@ from time import gmtime, strftime
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 import wx.adv
 from logbook import Logger
 # noinspection PyPackageRequirements
@@ -154,7 +155,7 @@ class MainFrame(wx.Frame):
 
         # Fix for msw (have the frame background color match panel color
         if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+            bindBackgroundToTheme(self, wx.SYS_COLOUR_BTNFACE)
 
         # Load and set the icon for pyfa main window
         i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))

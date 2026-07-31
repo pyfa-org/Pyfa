@@ -23,6 +23,7 @@ import traceback
 import roman
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 import wx.dataview
 import wx.lib.agw.hyperlink
 # noinspection PyPackageRequirements
@@ -297,7 +298,7 @@ class SkillTreeView(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        bindBackgroundToTheme(self)
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -780,7 +781,7 @@ class APIView(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300),
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        bindBackgroundToTheme(self)
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 

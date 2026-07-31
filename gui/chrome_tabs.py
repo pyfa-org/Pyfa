@@ -18,6 +18,7 @@ import math
 from functools import lru_cache
 
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 import wx.lib.newevent
 
 from gui.bitmap_loader import BitmapLoader
@@ -123,6 +124,7 @@ class ChromeNotebook(wx.Panel):
         content_sizer = wx.BoxSizer(wx.VERTICAL)
         self.page_container = wx.Panel(self, style=style)
         self.page_container.SetBackgroundColour(back_color)
+        bindBackgroundToTheme(self.page_container)
         content_sizer.Add(self.page_container, 1, wx.EXPAND, 5)
 
         main_sizer.Add(tabs_sizer, 0, wx.EXPAND, 5)
