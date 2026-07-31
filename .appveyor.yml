@@ -1,7 +1,7 @@
 image:
   - Ubuntu2204
   - Visual Studio 2022
-  - macos-sonoma
+  - macos-monterey
 for:
   -
     matrix:
@@ -13,16 +13,19 @@ for:
       DEPLOY_DIR: AppDir/opt/pyfa
       # APPVEYOR_SSH_BLOCK: true
     cache:
-      - /home/appveyor/.cache/pip -> requirements.txt
+      - /home/appveyor/.cache/uv -> uv.lock
     # init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
     install:
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update --allow-releaseinfo-change
       # AppImage dependencies
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
-      # Preparation script dependencies
+      # Preparation script dependencies (TODO: merge with pyfa dependencies?)
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0 python3-sqlalchemy python3-logbook
+      - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - sh: export PATH="$HOME/.local/bin:$PATH"
     before_build:
+      - sh: uv export --frozen --no-dev --no-hashes --format requirements-txt -o requirements-appimage.txt
       # Prepare pyfa data
       - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
       - sh: pyenv global system
@@ -66,7 +69,7 @@ for:
     # init:
     #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     cache:
-      - C:\users\appveyor\appdata\local\pip\cache\ -> requirements.txt
+      - C:\users\appveyor\appdata\local\uv\cache\ -> uv.lock
     install:
       - ps: echo("OS version:")
       - ps: "[System.Environment]::OSVersion.Version"
@@ -94,37 +97,31 @@ for:
       - cmd: "python --version"
       - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
-      # Upgrade to the latest version of pip to avoid it displaying warnings
-      # about it being out of date.
-      - cmd: "python -m pip install --upgrade pip"
+      - ps: "irm https://astral.sh/uv/install.ps1 | iex"
+      - cmd: "SET PATH=%USERPROFILE%\\.local\\bin;%PATH%"
 
-      # Install the build dependencies of the project. If some dependencies contain
-      # compiled extensions and are not provided as pre-built wheel packages,
-      # pip will build them from source using the MSVC compiler matching the
-      # target Python version and architecture
-      - ps: echo("Install pip requirements:")
-      - cmd: "python -m pip install -r requirements.txt"
-      - cmd: "python -m pip install PyInstaller==6.21.0"
+      - ps: echo("Sync locked dependencies:")
+      - cmd: "uv sync --frozen --no-dev --group packaging --python \"%PYTHON%\\python.exe\""
     before_build:
         # directory that will contain the built files
       - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
-      - ps: $env:PYFA_VERSION = (python ./scripts/dump_version.py)
+      - ps: $env:PYFA_VERSION = (uv run python ./scripts/dump_version.py)
       - ps: echo("pyfa version $env:PYFA_VERSION")
     build_script:
       - ps: echo("Build pyfa:")
       - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
         # Build language files
-      - cmd: "python scripts/compile_lang.py"
+      - cmd: "uv run python scripts/compile_lang.py"
         # Dump language progress
-      - cmd: "python scripts/dump_crowdin_progress.py"
+      - cmd: "uv run python scripts/dump_crowdin_progress.py"
         # Build gamedata DB
-      - cmd: "python db_update.py"
+      - cmd: "uv run python db_update.py"
       # Build command for PyInstaller
-      - cmd: "python -m PyInstaller --clean -y pyfa.spec"
+      - cmd: "uv run --group packaging python -m PyInstaller --clean -y pyfa.spec"
       # Copy over manifest (See pyfa-org/pyfa#1622)
       - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
       # InnoScript EXE building. This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
-      - cmd: "python dist_assets/win/dist.py"
+      - cmd: "uv run python dist_assets/win/dist.py"
       - ps: dir $env:PYFA_DIST_DIR/
     after_build:
       - ps: "ls \"./\""
@@ -147,26 +144,24 @@ for:
   -
     matrix:
       only:
-        - image: macos-sonoma
+        - image: macos-monterey
     environment:
       APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJDW/+oYNGOiPvwuwAL9tc/LQgg58aosIVpMYfepQZ20V+VZnHpZh8IRDA8Jo5xht19p2PksA+hFgqA0kpKtrSkuiWdE8rATQItfk4gf7yB0yGasJGGQZYazy9k/9XtmYkq2HHOOeEqdxvrICddJQ88MLCLT9lJENSUP/YS/yGcjZFXVxE11pTeIcqlCRU+3eYa1v7BeNvXIKNhZoK5orXWrtuH3cy8jrSns/u70aYfJ6B2jA8CnWnDbuvpeQtEY61SQqlKUsSArNa8NAsXj41wr3Ar9gAG9330w7EMTqlutk8HZO35uHI0q5qinUhaQYufPPrVkb2L/N+ZCfu0fnh appveyor"
     cache:
-      - /Users/appveyor/Library/Caches/pip/ -> requirements.txt
+      - /Users/appveyor/.cache/uv -> uv.lock
     init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-      # AppVeyor macOS images ship no Python 3.14, so it has to be provisioned from Homebrew
-      - sh: brew install python@3.14
-      - sh: "$(brew --prefix python@3.14)/bin/python3.14 -m venv ~/venv3.14"
-      - sh: source ~/venv3.14/bin/activate
+      - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - sh: export PATH="$HOME/.local/bin:$PATH"
     install:
       - sh: bash scripts/osx-setup.sh
     build_script:
       - sh: bash scripts/osx-translations.sh
-      - sh: python3 scripts/compile_lang.py
-      - sh: python3 scripts/dump_crowdin_progress.py
-      - sh: python3 db_update.py
+      - sh: uv run python scripts/compile_lang.py
+      - sh: uv run python scripts/dump_crowdin_progress.py
+      - sh: uv run python db_update.py
     after_build:
-      - sh: export PYFA_VERSION="$(python3 scripts/dump_version.py)"
+      - sh: export PYFA_VERSION="$(uv run python scripts/dump_version.py)"
       - sh: bash scripts/osx-package.sh
 #    on_finish:
 #      - sh: export APPVEYOR_SSH_BLOCK=true

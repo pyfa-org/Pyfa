@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+echo "Syncing locked dependencies..."
+uv sync --frozen --no-dev --group packaging
 echo "Python version:"
-python3 --version
-echo "Upgrading pip..."
-python3 -m pip install --upgrade pip
-echo "Installing app requirements..."
-python3 -m pip install -r requirements.txt
-echo "Installing packaging tools..."
-python3 -m pip install PyInstaller==6.21.0
+uv run python --version

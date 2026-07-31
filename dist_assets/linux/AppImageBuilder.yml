@@ -40,14 +40,12 @@ AppDir:
       - ubuntu-mono
 
   after_bundle:
-    # Install python dependencies to bundled interpreter
+    # Install python dependencies
     - export PYTHONHOME="AppDir/usr"
     - export PYTHONPATH="AppDir/usr/lib/python3.14/site-packages"
-    - curl -L https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    - AppDir/usr/bin/python3.14 get-pip.py
     # Just to bundle certificates with AppImage
-    - AppDir/usr/bin/python3.14 -s -m pip install certifi
-    - AppDir/usr/bin/python3.14 -s -m pip --timeout 300 install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+    - uv pip install --python AppDir/usr/bin/python3.14 --target "$PYTHONPATH" certifi
+    - uv pip install --python AppDir/usr/bin/python3.14 --target "$PYTHONPATH" --find-links https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements-appimage.txt
 
   files:
     exclude:
@@ -63,7 +61,7 @@ AppDir:
     env:
       PYTHONHOME: '${APPDIR}/usr'
       PYTHONPATH: '${APPDIR}/usr/lib/python3.14/site-packages'
-      SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.14/dist-packages/certifi/cacert.pem'
+      SSL_CERT_FILE: '${APPDIR}/usr/lib/python3.14/site-packages/certifi/cacert.pem'
       # Workaround for https://github.com/AppImageCrafters/appimage-builder/issues/336
       XDG_DATA_DIRS: '${APPDIR}/usr/local/share:${APPDIR}/usr/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS'
 

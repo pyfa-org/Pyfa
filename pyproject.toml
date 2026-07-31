@@ -1,0 +1,65 @@
+[project]
+name = "pyfa"
+version = "2.68.0"  # TODO: make scripts read this instead of version.yml
+description = "Python fitting assistant, a ship fitting tool for EVE Online"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.11"
+
+dependencies = [
+    "wxPython==4.2.1",
+    "logbook==1.7.0.post0",
+    "numpy==1.26.2",
+    "matplotlib==3.8.2",
+    "python-dateutil==2.8.2",
+    "requests==2.31.0",
+    "sqlalchemy==1.4.50",
+    "cryptography==42.0.4",
+    "markdown2==2.4.11",
+    "packaging==23.2",
+    "roman==4.1",
+    "beautifulsoup4==4.12.2",
+    "pyyaml==6.0.1",
+    "python-jose==3.3.0",
+    "requests-cache==1.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.15.5",
+]
+packaging = [
+    "pyinstaller==6.21.0",
+]
+
+[tool.uv]
+package = false
+default-groups = ["dev"]
+
+# no linux wheels on pypi, but they are stored here; use it not to build wx ourselves
+[[tool.uv.index]]
+name = "wxpython-linux"
+url = "https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04"
+format = "flat"
+explicit = true
+
+[tool.uv.sources]
+wxpython = [{ index = "wxpython-linux", marker = "sys_platform == 'linux'" }]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["E", "W", "F"]
+ignore = [
+    "E203",
+    "E731",
+    "F401",
+    "E722",
+    "E741",
+]
+
+[tool.ruff.format]
+# Not using formatting yet (and unsure if ever will)
+exclude = ["*"]

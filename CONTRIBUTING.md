@@ -2,11 +2,9 @@
 
 ## Requirements
 
-- Python 3.14 (earlier versions down to 3.11 should work, later versions may not)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) installed
 - Git CLI installed
-- Python, pip and git are all available as command-line commands (add to the path if needed)
 
-Virtual environment will be created in *PyfaEnv* folder. Project will be cloned and run from the *PyfaDEV* folder. Separate virtual environment will be created so required libraries won't clutter the main python installation.
 
 > Commands and screens were created on Windows 10. Please, update all the paths according to your OS.
 
@@ -14,47 +12,33 @@ Virtual environment will be created in *PyfaEnv* folder. Project will be cloned 
 
 Clone the repository
 ```
-git clone <repo> PyfaDEV
+git clone <repo> pyfa
 ```
 
-Create the virtual environment
+Install the locked dependencies. This creates `.venv` and downloads interpreter and necessary packages.
 ```
-python -m venv PyfaEnv
+cd pyfa
+uv sync
 ```
 
-Activate the virtual environment
-
+Check what was installed
 ```
-For cmd.exe: PyfaEnv\scripts\activate.bat
-For PowerShell: PyfaEnv\Scripts\Activate.ps1
-For bash: source <venv>/Scripts/activate
-```
-> For other OS check [Python documentation](https://docs.python.org/3/library/venv.html)
-
-Install requirements for the project from *requirements.txt*
-```
-pip install -r PyfaDEV\requirements.txt
-```
-> For some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`
-
-> You may need to [install a C compiler](https://mesonbuild.com/SimpleStart.html#installing-a-compiler-toolchain)
-
-Check that the libs from *requirements.txt* are installed
-```
-pip list
+uv pip list
 ```
 
 Build translations and database:
 ```
-python PyfaDEV\scripts\compile_lang.py
-python PyfaDEV\db_update.py
+uv run python scripts/compile_lang.py
+uv run python db_update.py
 ```
 
 Test that the project is starting properly
 ```
-python PyfaDEV\pyfa.py
+uv run python pyfa.py
 ```
 
+`uv run` syncs the environment before each command, so there is no virtualenv to
+activate manually. If you prefer an activated shell, the venv is at `.venv`.
 
 ## Setting up the project with PyCharm/IntelliJ
 
@@ -68,17 +52,17 @@ Login to GitHub, paste the repo URL and select the folder to which to clone the 
 
 ![Clone](https://user-images.githubusercontent.com/54093496/66862748-38e45180-ef9a-11e9-9f68-4903baf47385.png)
 
-After process is complete, open *File* -> *Settings* -> *Project* -> *Project Interpreter*. 
+After the process is complete, run `uv sync` in a terminal at the project root to
+create `.venv`.
+
+Then open `File` -> `Settings` -> `Project` -> `Project Interpreter`.
 
 ![Settings](https://user-images.githubusercontent.com/54093496/66862792-544f5c80-ef9a-11e9-9e0f-f64767f3f1b0.png)
 
-Press on options and add new virtual environment.
+Press on options and add an existing virtual environment, pointing it at the
+`.venv` folder uv created.
 
 ![venv](https://user-images.githubusercontent.com/54093496/66862833-67622c80-ef9a-11e9-94fa-47cca0158d29.png)
-
-Open project tree view and double-click on the *requirements.txt*. Press *Install requirements*. Install all requirements.
-
-![Reqs](https://user-images.githubusercontent.com/54093496/66862870-7a74fc80-ef9a-11e9-9b18-e64be42c49b8.png)
 
 Create new *Run Configuration*. Set correct *Script path* and *Python interpreter*.
 
@@ -88,24 +72,9 @@ Check that the project is starting properly.
 
 ## Running tests
 
-Switch to the proper virtual environment
+pytest is not a project dependency, so pull it in for the run:
 ```
-For cmd.exe: PyfaEnv\scripts\activate.bat
-For PowerShell: PyfaEnv\Scripts\Activate.ps1
-For bash: source <venv>/Scripts/activate
-```
-
-Install pytest 
-```
-pip install pytest  
-```
-
-Switch to pyfa directory.
-
-Run tests (any will do)
-```
-python -m pytest
-py.test
+uv run --with pytest python -m pytest
 ```
 
 More information on tests can be found on appropriate [Wiki page](https://github.com/pyfa-org/Pyfa/wiki/Developers:-Writing-Tests-for-Pyfa).
