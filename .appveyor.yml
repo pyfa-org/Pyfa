@@ -1,7 +1,7 @@
 image:
   - Ubuntu2204
   - Visual Studio 2022
-  - macos-monterey
+  - macos-sonoma
 for:
   -
     matrix:
@@ -61,7 +61,7 @@ for:
       only:
         - image: Visual Studio 2022
     environment:
-      PYTHON: "C:\\Python311-x64"
+      PYTHON: "C:\\Python314-x64"
     # Should be enabled only for build process debugging
     # init:
     #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -104,7 +104,7 @@ for:
       # target Python version and architecture
       - ps: echo("Install pip requirements:")
       - cmd: "python -m pip install -r requirements.txt"
-      - cmd: "python -m pip install PyInstaller==6.0.0"
+      - cmd: "python -m pip install PyInstaller==6.21.0"
     before_build:
         # directory that will contain the built files
       - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
@@ -147,14 +147,17 @@ for:
   -
     matrix:
       only:
-        - image: macos-monterey
+        - image: macos-sonoma
     environment:
       APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJDW/+oYNGOiPvwuwAL9tc/LQgg58aosIVpMYfepQZ20V+VZnHpZh8IRDA8Jo5xht19p2PksA+hFgqA0kpKtrSkuiWdE8rATQItfk4gf7yB0yGasJGGQZYazy9k/9XtmYkq2HHOOeEqdxvrICddJQ88MLCLT9lJENSUP/YS/yGcjZFXVxE11pTeIcqlCRU+3eYa1v7BeNvXIKNhZoK5orXWrtuH3cy8jrSns/u70aYfJ6B2jA8CnWnDbuvpeQtEY61SQqlKUsSArNa8NAsXj41wr3Ar9gAG9330w7EMTqlutk8HZO35uHI0q5qinUhaQYufPPrVkb2L/N+ZCfu0fnh appveyor"
     cache:
       - /Users/appveyor/Library/Caches/pip/ -> requirements.txt
     init:
     #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-      - sh: source ~/venv3.11/bin/activate
+      # AppVeyor macOS images ship no Python 3.14, so it has to be provisioned from Homebrew
+      - sh: brew install python@3.14
+      - sh: "$(brew --prefix python@3.14)/bin/python3.14 -m venv ~/venv3.14"
+      - sh: source ~/venv3.14/bin/activate
     install:
       - sh: bash scripts/osx-setup.sh
     build_script:

@@ -8,7 +8,7 @@ AppDir:
     name: pyfa
     icon: pyfa
     version: '{{PYFA_VERSION}}'
-    exec: usr/bin/python3.11
+    exec: usr/bin/python3.14
     exec_args: "-s $APPDIR/opt/pyfa/pyfa.py $@"
 
   apt:
@@ -26,7 +26,7 @@ AppDir:
       key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf23c5a6cf475977595c89f51ba6932366a755776'
 
     include:
-      - python3.11
+      - python3.14
       # wx dependencies
       - libgtk-3-0
       - librsvg2-common  # GTK3 recommendation; without it, search in char editor crashes
@@ -42,12 +42,12 @@ AppDir:
   after_bundle:
     # Install python dependencies to bundled interpreter
     - export PYTHONHOME="AppDir/usr"
-    - export PYTHONPATH="AppDir/usr/lib/python3.11/site-packages"
+    - export PYTHONPATH="AppDir/usr/lib/python3.14/site-packages"
     - curl -L https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    - AppDir/usr/bin/python3.11 get-pip.py
+    - AppDir/usr/bin/python3.14 get-pip.py
     # Just to bundle certificates with AppImage
-    - AppDir/usr/bin/python3.11 -s -m pip install certifi
-    - AppDir/usr/bin/python3.11 -s -m pip --timeout 300 install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+    - AppDir/usr/bin/python3.14 -s -m pip install certifi
+    - AppDir/usr/bin/python3.14 -s -m pip --timeout 300 install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
 
   files:
     exclude:
@@ -62,8 +62,8 @@ AppDir:
   runtime:
     env:
       PYTHONHOME: '${APPDIR}/usr'
-      PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
-      SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.11/dist-packages/certifi/cacert.pem'
+      PYTHONPATH: '${APPDIR}/usr/lib/python3.14/site-packages'
+      SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.14/dist-packages/certifi/cacert.pem'
       # Workaround for https://github.com/AppImageCrafters/appimage-builder/issues/336
       XDG_DATA_DIRS: '${APPDIR}/usr/local/share:${APPDIR}/usr/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS'
 

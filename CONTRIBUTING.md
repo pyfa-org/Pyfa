@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.11 (later versions may not work)
+- Python 3.14 (earlier versions down to 3.11 should work, later versions may not)
 - Git CLI installed
 - Python, pip and git are all available as command-line commands (add to the path if needed)
 
