@@ -26,6 +26,16 @@ Check what was installed
 uv pip list
 ```
 
+### wxPython on linux
+
+On Windows and macOS wxPython installs binary package. On linux there is no binary package in pypi, which leads us to two options:
+
+- build from source (needs extra dependencies, slow)
+- install wheels from github release page (fast, but high chance they are linked to libraries which do not exist on your system)
+
+First is executed with regular `uv sync` command. The second needs `uv sync --no-default-groups --group dev --group wx-binary`; 
+it grabs binary package built for Ubuntu 22.04. If you need wxPython for different Ubuntu version, you will have to edit `pyproject.toml`.
+
 Build translations and database:
 ```
 uv run python scripts/compile_lang.py

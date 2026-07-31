@@ -6,8 +6,9 @@ readme = "README.md"
 license = "GPL-3.0-or-later"
 requires-python = ">=3.11"
 
+# wxpython has special handling, to resolve conflicts between needs of having binary build in CI
+# and building from source locally (to link to proper system libs instead of ubuntu-specific ones)
 dependencies = [
-    "wxPython==4.2.5",
     "logbook==1.7.0.post0",
     "numpy==1.26.2",
     "matplotlib==3.8.2",
@@ -32,19 +33,27 @@ packaging = [
     "pyinstaller==6.21.0",
 ]
 
+wx-binary = [
+    "wxPython==4.3.1+ubuntu2204 ; sys_platform == 'linux'",
+    "wxPython==4.3.1 ; sys_platform != 'linux'",
+]
+wx-source = [
+    "wxPython==4.3.1",
+]
+
 [tool.uv]
 package = false
-default-groups = ["dev"]
+default-groups = ["dev", "wx-source"]
+conflicts = [[{ group = "wx-binary" }, { group = "wx-source" }]]
 
-# no linux wheels on pypi, but they are stored here; use it not to build wx ourselves
 [[tool.uv.index]]
 name = "wxpython-linux"
-url = "https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04"
+url = "https://github.com/wxWidgets/Phoenix/releases/expanded_assets/wxPython-4.3.1"
 format = "flat"
 explicit = true
 
 [tool.uv.sources]
-wxpython = [{ index = "wxpython-linux", marker = "sys_platform == 'linux'" }]
+wxpython = [{ index = "wxpython-linux", group = "wx-binary", marker = "sys_platform == 'linux'" }]
 
 [tool.ruff]
 line-length = 120

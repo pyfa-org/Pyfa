@@ -45,7 +45,7 @@ AppDir:
     - export PYTHONPATH="AppDir/usr/lib/python3.14/site-packages"
     # Just to bundle certificates with AppImage
     - uv pip install --python AppDir/usr/bin/python3.14 --target "$PYTHONPATH" certifi
-    - uv pip install --python AppDir/usr/bin/python3.14 --target "$PYTHONPATH" --find-links https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements-appimage.txt
+    - uv pip install --python AppDir/usr/bin/python3.14 --target "$PYTHONPATH" --find-links https://github.com/wxWidgets/Phoenix/releases/expanded_assets/wxPython-4.3.1 -r requirements-appimage.txt
 
   files:
     exclude:

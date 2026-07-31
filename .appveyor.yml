@@ -25,7 +25,7 @@ for:
       - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
       - sh: export PATH="$HOME/.local/bin:$PATH"
     before_build:
-      - sh: uv export --frozen --no-dev --no-hashes --format requirements-txt -o requirements-appimage.txt
+      - sh: uv export --frozen --no-default-groups --group wx-binary --no-hashes --format requirements-txt -o requirements-appimage.txt
       # Prepare pyfa data
       - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
       - sh: pyenv global system
@@ -101,27 +101,27 @@ for:
       - cmd: "SET PATH=%USERPROFILE%\\.local\\bin;%PATH%"
 
       - ps: echo("Sync locked dependencies:")
-      - cmd: "uv sync --frozen --no-dev --group packaging --python \"%PYTHON%\\python.exe\""
+      - cmd: "uv sync --frozen --no-default-groups --group packaging --group wx-binary --python \"%PYTHON%\\python.exe\""
     before_build:
         # directory that will contain the built files
       - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
-      - ps: $env:PYFA_VERSION = (uv run python ./scripts/dump_version.py)
+      - ps: $env:PYFA_VERSION = (uv run --no-sync python ./scripts/dump_version.py)
       - ps: echo("pyfa version $env:PYFA_VERSION")
     build_script:
       - ps: echo("Build pyfa:")
       - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
         # Build language files
-      - cmd: "uv run python scripts/compile_lang.py"
+      - cmd: "uv run --no-sync python scripts/compile_lang.py"
         # Dump language progress
-      - cmd: "uv run python scripts/dump_crowdin_progress.py"
+      - cmd: "uv run --no-sync python scripts/dump_crowdin_progress.py"
         # Build gamedata DB
-      - cmd: "uv run python db_update.py"
+      - cmd: "uv run --no-sync python db_update.py"
       # Build command for PyInstaller
-      - cmd: "uv run --group packaging python -m PyInstaller --clean -y pyfa.spec"
+      - cmd: "uv run --no-sync python -m PyInstaller --clean -y pyfa.spec"
       # Copy over manifest (See pyfa-org/pyfa#1622)
       - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
       # InnoScript EXE building. This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
-      - cmd: "uv run python dist_assets/win/dist.py"
+      - cmd: "uv run --no-sync python dist_assets/win/dist.py"
       - ps: dir $env:PYFA_DIST_DIR/
     after_build:
       - ps: "ls \"./\""
@@ -157,11 +157,11 @@ for:
       - sh: bash scripts/osx-setup.sh
     build_script:
       - sh: bash scripts/osx-translations.sh
-      - sh: uv run python scripts/compile_lang.py
-      - sh: uv run python scripts/dump_crowdin_progress.py
-      - sh: uv run python db_update.py
+      - sh: uv run --no-sync python scripts/compile_lang.py
+      - sh: uv run --no-sync python scripts/dump_crowdin_progress.py
+      - sh: uv run --no-sync python db_update.py
     after_build:
-      - sh: export PYFA_VERSION="$(uv run python scripts/dump_version.py)"
+      - sh: export PYFA_VERSION="$(uv run --no-sync python scripts/dump_version.py)"
       - sh: bash scripts/osx-package.sh
 #    on_finish:
 #      - sh: export APPVEYOR_SSH_BLOCK=true
