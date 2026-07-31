@@ -9,25 +9,25 @@ requires-python = ">=3.12"
 # wxpython has special handling, to resolve conflicts between needs of having binary build in CI
 # and building from source locally (to link to proper system libs instead of ubuntu-specific ones)
 dependencies = [
-    "logbook==1.7.0.post0",
+    "logbook==1.9.2",
     "numpy==2.5.1",
     "matplotlib==3.11.1",
-    "python-dateutil==2.8.2",
-    "requests==2.31.0",
+    "python-dateutil==2.9.0.post0",
+    "requests==2.34.2",
     "sqlalchemy==2.0.51",
-    "cryptography==42.0.4",
-    "markdown2==2.4.11",
-    "packaging==23.2",
-    "roman==4.1",
-    "beautifulsoup4==4.12.2",
-    "pyyaml==6.0.1",
-    "python-jose==3.3.0",
-    "requests-cache==1.1.1",
+    "cryptography==50.0.0",
+    "markdown2==2.5.5",
+    "packaging==26.2",
+    "roman==5.2",
+    "beautifulsoup4==4.15.0",
+    "pyyaml==6.0.3",
+    "python-jose==3.5.0",
+    "requests-cache==1.3.3",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff==0.15.5",
+    "ruff==0.16.1",
 ]
 packaging = [
     "pyinstaller==6.21.0",
