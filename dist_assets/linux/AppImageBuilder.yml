@@ -30,6 +30,11 @@ AppDir:
       # wx dependencies
       - libgtk-3-0
       - librsvg2-common  # GTK3 recommendation; without it, search in char editor crashes
+      - libcurl4
+      - libsdl2-2.0-0  # wxSound; unused by pyfa but still linked by libwx_gtk3u_core
+      - libsm6
+      - libxtst6
+      - libxxf86vm1
       # Unknown
       - libpcre2-32-0  # https://github.com/pyfa-org/Pyfa/issues/2572
       - libnotify4  # https://github.com/pyfa-org/Pyfa/issues/2598
