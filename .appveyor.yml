@@ -32,11 +32,18 @@ for:
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update --allow-releaseinfo-change
       # AppImage dependencies
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
-      # Pulls all the dependencies binary wx package uses
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0
+      # wx dependencies
+      - sh: >-
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install
+          libgtk-3-0 libsdl2-2.0-0 libwebkit2gtk-4.0-37
+          libgstreamer1.0-0 libgstreamer-plugins-base1.0-0
+          libnotify4 libtiff5 libjpeg-turbo8 libpcre2-32-0
+          libsm6 libxtst6 libxxf86vm1 libcurl4 libegl1 libgl1
       - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
       - sh: export PATH="$HOME/.local/bin:$PATH"
       - sh: uv sync --frozen --no-default-groups --group wx-binary
+      # wx dependency test
+      - sh: uv run --no-sync python -c "import wx; print(wx.version())"
     before_build:
       - sh: uv export --frozen --no-default-groups --group wx-binary --no-hashes --format requirements-txt -o requirements-appimage.txt
       # Prepare pyfa data
