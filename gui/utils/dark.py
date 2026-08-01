@@ -52,7 +52,9 @@ def applyTheme(app=None):
 
     try:
         if 'wxMSW' in wx.PlatformInfo and theme != ThemeSettings.BRIGHT:
-            app.MSWEnableDarkMode()
+            flags = wx.App.DarkMode_Always if theme == ThemeSettings.DARK else wx.App.DarkMode_Auto
+            if not app.MSWEnableDarkMode(flags):
+                pyfalog.info('wx could not enable dark mode, it needs Windows 10 20H1 or later')
         result = app.SetAppearance(appearance)
     except (KeyboardInterrupt, SystemExit):
         raise
@@ -60,6 +62,9 @@ def applyTheme(app=None):
         pyfalog.warning('Could not apply theme: {0}', e)
         return False
 
+    if result == wx.App.AppearanceResult.CannotChange:
+        pyfalog.info('Appearance can no longer be changed, pyfa has to be restarted to apply it')
+        return False
     if result != wx.App.AppearanceResult.Ok:
         pyfalog.info('wx did not apply the requested appearance (result {0})', int(result))
         return False
