@@ -1,6 +1,7 @@
 [project]
 name = "pyfa"
-version = "2.68.0"  # TODO: make scripts read this instead of version.yml
+# "fake" version; tools read version.yml, so make sure to keep that one updated. This one ultimately doesn't matter
+version = "2.68.0"
 description = "Python fitting assistant, a ship fitting tool for EVE Online"
 readme = "README.md"
 license = "GPL-3.0-or-later"
