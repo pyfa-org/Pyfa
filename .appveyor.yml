@@ -1,138 +1,55 @@
 image:
-  - Ubuntu2204
-  # - Visual Studio 2022
+  # - Ubuntu2204
+  - Visual Studio 2022
   # - macos-monterey
 for:
-  -
-    matrix:
-      only:
-        - image: Ubuntu2204
-    environment:
-      APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDhb96UEXy8yOy/f+riX/8kKbNx/lOfIZ4pP4Cw3Gj3DmnTwEnxtRtyc+xtaxOsKbt+7+EAXFpCzYX+jHMhtd0QtWB7dbey8DBg31g0f8C5EPquqROibVbhzr/F3f6/d52FFfq6Y/CWaAvLjezvipr+zOOsIFcVusqtXdPJQ/LtUJ0LS5d4lFiw5ELHSxHIpqwGwyb7PbR3ufEFoqbr8eYiCH+vlBob72ArPfo2f3u0sMvpGYmjVVu2jj4FEY2h89sLrGyFdNWBoyumRhkb38+WSAuyPa/Y21+g+S8sRzIlkwbxicGNMtrMIi6zHEIGAgA06Sw2psP807h730PPOVaWjUcU3ojNW8hH3nPizF74pT82+iP7/fFC4PXLP+tBa+8OoHC5yiO7QKUKprMSqVa1qOm8fHbrzglplKJXfzSfUtSE+AQ+HtHhuUWKI+0LBLDrsOJwI5hbsPOAuiZ5I3VfqfAOck6SH9TcmlapVmQEypc7d7oeeUtZSOuIWKXp068= dfx@aw"
-      APPIMAGE_TOOL: appimage-builder-x86_64.AppImage
-      DEPLOY_DIR: AppDir/opt/pyfa
-      # APPVEYOR_SSH_BLOCK: true
-    cache:
-      - /home/appveyor/.cache/uv -> uv.lock
-    # init:
-    #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-    install:
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update --allow-releaseinfo-change
-      # AppImage dependencies
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
-      # Preparation script dependencies (TODO: merge with pyfa dependencies?)
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0 python3-sqlalchemy python3-logbook
-      - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
-      - sh: export PATH="$HOME/.local/bin:$PATH"
-    before_build:
-      - sh: uv export --frozen --no-default-groups --group wx-binary --no-hashes --format requirements-txt -o requirements-appimage.txt
-      # Prepare pyfa data
-      - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
-      - sh: pyenv global system
-      - sh: python3 -B scripts/compile_lang.py
-      - sh: python3 -B scripts/dump_crowdin_progress.py
-      - sh: python3 -B db_update.py
-      - sh: export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
-      - sh: mkdir build
-      # Download packaging tool
-      - sh: curl --fail-with-body -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
-      - sh: chmod +x $APPIMAGE_TOOL
-    build_script:
-      - sh: mkdir -p AppDir/opt/pyfa
-      - sh: cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/opt/pyfa/
-      - sh: mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps/
-      - sh: cp imgs/gui/pyfa64.png AppDir/usr/share/icons/hicolor/64x64/apps/pyfa.png
-      - sh: ./$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml
-    after_build:
-      - sh: ls -la
-    artifacts:
-      - path: pyfa-$PYFA_VERSION-linux.AppImage
-    deploy:
-      tag: $PYFA_VERSION
-      release: pyfa $PYFA_VERSION
-      description: 'Release description'
-      provider: GitHub
-      auth_token:
-        secure: M94o0xMtzxrvlKpqMcXU2KfbJdd3aYJ3UxWzePUz/pkT1/Ojiis052CiLsLVyzJg
-      draft: true
-      force_update: false
-      # deploy on tag push only
-      on:
-        APPVEYOR_REPO_TAG: true
 #  -
 #    matrix:
 #      only:
-#        - image: Visual Studio 2022
+#        - image: Ubuntu2204
 #    environment:
-#      PYTHON: "C:\\Python314-x64"
-#    # Should be enabled only for build process debugging
-#    # init:
-#    #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#      APPVEYOR_SSH_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDhb96UEXy8yOy/f+riX/8kKbNx/lOfIZ4pP4Cw3Gj3DmnTwEnxtRtyc+xtaxOsKbt+7+EAXFpCzYX+jHMhtd0QtWB7dbey8DBg31g0f8C5EPquqROibVbhzr/F3f6/d52FFfq6Y/CWaAvLjezvipr+zOOsIFcVusqtXdPJQ/LtUJ0LS5d4lFiw5ELHSxHIpqwGwyb7PbR3ufEFoqbr8eYiCH+vlBob72ArPfo2f3u0sMvpGYmjVVu2jj4FEY2h89sLrGyFdNWBoyumRhkb38+WSAuyPa/Y21+g+S8sRzIlkwbxicGNMtrMIi6zHEIGAgA06Sw2psP807h730PPOVaWjUcU3ojNW8hH3nPizF74pT82+iP7/fFC4PXLP+tBa+8OoHC5yiO7QKUKprMSqVa1qOm8fHbrzglplKJXfzSfUtSE+AQ+HtHhuUWKI+0LBLDrsOJwI5hbsPOAuiZ5I3VfqfAOck6SH9TcmlapVmQEypc7d7oeeUtZSOuIWKXp068= dfx@aw"
+#      APPIMAGE_TOOL: appimage-builder-x86_64.AppImage
+#      DEPLOY_DIR: AppDir/opt/pyfa
+#      # APPVEYOR_SSH_BLOCK: true
 #    cache:
-#      - C:\users\appveyor\appdata\local\uv\cache\ -> uv.lock
+#      - /home/appveyor/.cache/uv -> uv.lock
+#    # init:
+#    #   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 #    install:
-#      - ps: echo("OS version:")
-#      - ps: "[System.Environment]::OSVersion.Version"
-#
-#      - ps: echo("Filesystem - root:")
-#      - ps: "ls \"C:\\\""
-#
-#      - ps: echo("Filesystem - projects root:")
-#      - ps: "ls \"C:\\projects\\\""
-#
-#      - ps: echo("Filesystem - pyfa root:")
-#      - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
-#
-#      - ps: echo("Filesystem - installed SDKs:")
-#      - ps: "ls \"C:\\Program Files (x86)\\Windows Kits\\\""
-#
-#      # Prepend newly installed Python to the PATH of this build (this cannot be
-#      # done from inside the powershell script as it would require to restart
-#      # the parent CMD process).
-#      - cmd: "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-#      - cmd: "appveyor DownloadFile https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip"
-#      - cmd: "7z x gettext0.20.2-iconv1.16-shared-64.zip -ogettext"
-#      - cmd: "SET PATH=gettext;%PATH%"
-#
-#      - cmd: "python --version"
-#      - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-#
-#      - ps: "irm https://astral.sh/uv/install.ps1 | iex"
-#      - cmd: "SET PATH=%USERPROFILE%\\.local\\bin;%PATH%"
-#
-#      - ps: echo("Sync locked dependencies:")
-#      - cmd: "uv sync --frozen --no-default-groups --group packaging --group wx-binary --python \"%PYTHON%\\python.exe\""
+#      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update --allow-releaseinfo-change
+#      # AppImage dependencies
+#      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
+#      # Preparation script dependencies (TODO: merge with pyfa dependencies?)
+#      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0 python3-sqlalchemy python3-logbook
+#      - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
+#      - sh: export PATH="$HOME/.local/bin:$PATH"
 #    before_build:
-#        # directory that will contain the built files
-#      - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
-#      - ps: $env:PYFA_VERSION = (uv run --no-sync python ./scripts/dump_version.py)
-#      - ps: echo("pyfa version $env:PYFA_VERSION")
+#      - sh: uv export --frozen --no-default-groups --group wx-binary --no-hashes --format requirements-txt -o requirements-appimage.txt
+#      # Prepare pyfa data
+#      - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
+#      - sh: pyenv global system
+#      - sh: python3 -B scripts/compile_lang.py
+#      - sh: python3 -B scripts/dump_crowdin_progress.py
+#      - sh: python3 -B db_update.py
+#      - sh: export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
+#      - sh: mkdir build
+#      # Download packaging tool
+#      - sh: curl --fail-with-body -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+#      - sh: chmod +x $APPIMAGE_TOOL
 #    build_script:
-#      - ps: echo("Build pyfa:")
-#      - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
-#        # Build language files
-#      - cmd: "uv run --no-sync python scripts/compile_lang.py"
-#        # Dump language progress
-#      - cmd: "uv run --no-sync python scripts/dump_crowdin_progress.py"
-#        # Build gamedata DB
-#      - cmd: "uv run --no-sync python db_update.py"
-#      # Build command for PyInstaller
-#      - cmd: "uv run --no-sync python -m PyInstaller --clean -y pyfa.spec"
-#      # Copy over manifest (See pyfa-org/pyfa#1622)
-#      - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
-#      - ps: "$env:PYFA_APP_VERSION = (uv run --no-sync python -c \"from packaging.version import Version; import yaml; print(Version(yaml.safe_load(open('version.yml'))['version']))\")"
-#      - ps: echo("Compiling EXE $env:PYFA_APP_VERSION")
-#      - ps: "& \"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe\" \"dist_assets\\win\\pyfa-setup.iss\" \"/dMyAppVersion=$env:PYFA_APP_VERSION\" \"/dMyAppDir=$env:PYFA_DIST_DIR\\pyfa\" \"/dMyOutputDir=$env:APPVEYOR_BUILD_FOLDER\" \"/dMyOutputFile=pyfa-$env:PYFA_VERSION-win\""
-#      - ps: dir $env:PYFA_DIST_DIR/
+#      - sh: mkdir -p AppDir/opt/pyfa
+#      - sh: cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/opt/pyfa/
+#      - sh: mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps/
+#      - sh: cp imgs/gui/pyfa64.png AppDir/usr/share/icons/hicolor/64x64/apps/pyfa.png
+#      - sh: ./$APPIMAGE_TOOL --recipe dist_assets/linux/AppImageBuilder.yml
 #    after_build:
-#      - ps: "ls \"./\""
-#      - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*"
+#      - sh: ls -la
 #    artifacts:
-#      - path: pyfa*-win.zip
-#      - path: pyfa*-win.exe
+#      - path: pyfa-$PYFA_VERSION-linux.AppImage
 #    deploy:
-#      tag: $(pyfa_version)
-#      release: pyfa $(pyfa_version)
+#      tag: $PYFA_VERSION
+#      release: pyfa $PYFA_VERSION
 #      description: 'Release description'
 #      provider: GitHub
 #      auth_token:
@@ -142,6 +59,89 @@ for:
 #      # deploy on tag push only
 #      on:
 #        APPVEYOR_REPO_TAG: true
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2022
+    environment:
+      PYTHON: "C:\\Python314-x64"
+    # Should be enabled only for build process debugging
+    # init:
+    #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    cache:
+      - C:\users\appveyor\appdata\local\uv\cache\ -> uv.lock
+    install:
+      - ps: echo("OS version:")
+      - ps: "[System.Environment]::OSVersion.Version"
+
+      - ps: echo("Filesystem - root:")
+      - ps: "ls \"C:\\\""
+
+      - ps: echo("Filesystem - projects root:")
+      - ps: "ls \"C:\\projects\\\""
+
+      - ps: echo("Filesystem - pyfa root:")
+      - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\\""
+
+      - ps: echo("Filesystem - installed SDKs:")
+      - ps: "ls \"C:\\Program Files (x86)\\Windows Kits\\\""
+
+      # Prepend newly installed Python to the PATH of this build (this cannot be
+      # done from inside the powershell script as it would require to restart
+      # the parent CMD process).
+      - cmd: "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+      - cmd: "appveyor DownloadFile https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip"
+      - cmd: "7z x gettext0.20.2-iconv1.16-shared-64.zip -ogettext"
+      - cmd: "SET PATH=gettext;%PATH%"
+
+      - cmd: "python --version"
+      - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+
+      - ps: "irm https://astral.sh/uv/install.ps1 | iex"
+      - cmd: "SET PATH=%USERPROFILE%\\.local\\bin;%PATH%"
+
+      - ps: echo("Sync locked dependencies:")
+      - cmd: "uv sync --frozen --no-default-groups --group packaging --group wx-binary --python \"%PYTHON%\\python.exe\""
+    before_build:
+        # directory that will contain the built files
+      - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
+      - ps: $env:PYFA_VERSION = (uv run --no-sync python ./scripts/dump_version.py)
+      - ps: echo("pyfa version $env:PYFA_VERSION")
+    build_script:
+      - ps: echo("Build pyfa:")
+      - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
+        # Build language files
+      - cmd: "uv run --no-sync python scripts/compile_lang.py"
+        # Dump language progress
+      - cmd: "uv run --no-sync python scripts/dump_crowdin_progress.py"
+        # Build gamedata DB
+      - cmd: "uv run --no-sync python db_update.py"
+      # Build command for PyInstaller
+      - cmd: "uv run --no-sync python -m PyInstaller --clean -y pyfa.spec"
+      # Copy over manifest (See pyfa-org/pyfa#1622)
+      - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
+      - ps: "$env:PYFA_APP_VERSION = (uv run --no-sync python -c \"from packaging.version import Version; import yaml; print(Version(yaml.safe_load(open('version.yml'))['version']))\")"
+      - ps: echo("Compiling EXE $env:PYFA_APP_VERSION")
+      - ps: "& \"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe\" \"dist_assets\\win\\pyfa-setup.iss\" \"/dMyAppVersion=$env:PYFA_APP_VERSION\" \"/dMyAppDir=$env:PYFA_DIST_DIR\\pyfa\" \"/dMyOutputDir=$env:APPVEYOR_BUILD_FOLDER\" \"/dMyOutputFile=pyfa-$env:PYFA_VERSION-win\""
+      - ps: dir $env:PYFA_DIST_DIR/
+    after_build:
+      - ps: "ls \"./\""
+      - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*"
+    artifacts:
+      - path: pyfa*-win.zip
+      - path: pyfa*-win.exe
+    deploy:
+      tag: $(pyfa_version)
+      release: pyfa $(pyfa_version)
+      description: 'Release description'
+      provider: GitHub
+      auth_token:
+        secure: M94o0xMtzxrvlKpqMcXU2KfbJdd3aYJ3UxWzePUz/pkT1/Ojiis052CiLsLVyzJg
+      draft: true
+      force_update: false
+      # deploy on tag push only
+      on:
+        APPVEYOR_REPO_TAG: true
 #  -
 #    matrix:
 #      only:
