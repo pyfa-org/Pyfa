@@ -26,9 +26,10 @@ _t = wx.GetTranslation
 
 
 class EsiTokenValidationThread(threading.Thread):
-    def __init__(self, callback=None):
+    def __init__(self, chars, callback=None):
         threading.Thread.__init__(self)
         self.name = "EsiTokenValidation"
+        self.chars = chars
         self.callback = callback
         self.running = True
 
@@ -36,22 +37,18 @@ class EsiTokenValidationThread(threading.Thread):
         with config.logging_setup.threadbound():
             try:
                 esi = Esi.getInstance()
-                chars = esi.getSsoCharacters()
 
-                for char in chars:
+                for char in self.chars:
                     if not self.running:
                         return
 
-                    if char.is_token_expired():
-                        pyfalog.info(f"Token expired for {char.characterName}, attempting refresh")
-                        try:
-                            esi.refresh(char)
-                            eos.db.save(char)
-                            pyfalog.info(f"Successfully refreshed token for {char.characterName}")
-                        except Exception as e:
-                            pyfalog.error(f"Failed to refresh token for {char.characterName}: {e}")
-                    else:
-                        pyfalog.debug(f"Token valid for {char.characterName}")
+                    pyfalog.info(f"Token expired for {char.characterName}, attempting refresh")
+                    try:
+                        esi.refresh(char)
+                        wx.CallAfter(eos.db.save, char)
+                        pyfalog.info(f"Successfully refreshed token for {char.characterName}")
+                    except Exception as e:
+                        pyfalog.error(f"Failed to refresh token for {char.characterName}: {e}")
 
             except Exception as e:
                 pyfalog.error(f"Error validating ESI tokens: {e}")
@@ -234,7 +231,17 @@ class Esi(EsiAccess):
         self.handleLogin(message['code'])
 
     def startTokenValidation(self):
+        expiredChars = []
+        for char in self.getSsoCharacters():
+            if char.is_token_expired():
+                expiredChars.append(char)
+            else:
+                pyfalog.debug(f"Token valid for {char.characterName}")
+
+        if not expiredChars:
+            return
+
         pyfalog.debug("Starting ESI token validation thread")
-        tokenValidationThread = EsiTokenValidationThread()
+        tokenValidationThread = EsiTokenValidationThread(expiredChars)
         tokenValidationThread.daemon = True
         tokenValidationThread.start()
