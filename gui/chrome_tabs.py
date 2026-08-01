@@ -18,7 +18,7 @@ import math
 from functools import lru_cache
 
 import wx
-from gui.utils.dark import bindBackgroundToTheme
+from gui.utils.dark import bindBackgroundToTheme, borderColor
 import wx.lib.newevent
 
 from gui.bitmap_loader import BitmapLoader
@@ -116,15 +116,17 @@ class ChromeNotebook(wx.Panel):
 
         if 'wxMSW' in wx.PlatformInfo:
             style = wx.DOUBLE_BORDER
+            pageBorder = 0
         else:
-            style = wx.SIMPLE_BORDER
+            style = wx.BORDER_NONE
+            pageBorder = 1
 
         back_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
 
         content_sizer = wx.BoxSizer(wx.VERTICAL)
         self.page_container = wx.Panel(self, style=style)
-        self.page_container.SetBackgroundColour(back_color)
-        bindBackgroundToTheme(self.page_container)
+        self._page_inset = pageBorder
+        bindBackgroundToTheme(self.page_container, borderColor)
         content_sizer.Add(self.page_container, 1, wx.EXPAND, 5)
 
         main_sizer.Add(tabs_sizer, 0, wx.EXPAND, 5)
@@ -290,11 +292,15 @@ class ChromeNotebook(wx.Panel):
         """
 
         ww, wh = self.page_container.GetSize()
-        bx, by = self.GetBorders()
-        ww -= bx * 4
-        wh -= by * 4
+        if self._page_inset:
+            ww -= self._page_inset * 2
+            wh -= self._page_inset * 2
+        else:
+            bx, by = self.GetBorders()
+            ww -= bx * 4
+            wh -= by * 4
         self._active_page.SetSize((max(ww, -1), max(wh, -1)))
-        self._active_page.SetPosition((0, 0))
+        self._active_page.SetPosition((self._page_inset, self._page_inset))
 
         if not resize_only:
             self._active_page.Show()

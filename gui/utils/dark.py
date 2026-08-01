@@ -84,7 +84,8 @@ def highlightColor():
 def bindBackgroundToTheme(window, sysColor=wx.SYS_COLOUR_WINDOW):
 
     def apply():
-        window.SetBackgroundColour(wx.SystemSettings.GetColour(sysColor))
+        color = sysColor() if callable(sysColor) else wx.SystemSettings.GetColour(sysColor)
+        window.SetBackgroundColour(color)
 
     def onSysColorChanged(event):
         apply()
@@ -93,3 +94,6 @@ def bindBackgroundToTheme(window, sysColor=wx.SYS_COLOUR_WINDOW):
 
     apply()
     window.Bind(wx.EVT_SYS_COLOUR_CHANGED, onSysColorChanged)
+
+def borderColor():
+    return themedColor((64, 64, 64), (191, 191, 191))

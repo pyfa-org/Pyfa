@@ -56,7 +56,7 @@ class AttributeEditor(AuxiliaryFrame):
 
         leftSizer = wx.BoxSizer(wx.VERTICAL)
         leftPanel = wx.Panel(panel, wx.ID_ANY,
-                             style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
+                             style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.BORDER_NONE)
 
         self.searchBox = SearchBox(leftPanel)
         self.itemView = ItemView(leftPanel)
