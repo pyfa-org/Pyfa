@@ -120,8 +120,9 @@ for:
       - cmd: "uv run --no-sync python -m PyInstaller --clean -y pyfa.spec"
       # Copy over manifest (See pyfa-org/pyfa#1622)
       - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
-      # InnoScript EXE building. This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
-      - cmd: "uv run --no-sync python dist_assets/win/dist.py"
+      - ps: "$env:PYFA_APP_VERSION = (uv run --no-sync python -c \"from packaging.version import Version; import yaml; print(Version(yaml.safe_load(open('version.yml'))['version']))\")"
+      - ps: echo("Compiling EXE $env:PYFA_APP_VERSION")
+      - ps: "& \"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe\" \"dist_assets\\win\\pyfa-setup.iss\" \"/dMyAppVersion=$env:PYFA_APP_VERSION\" \"/dMyAppDir=$env:PYFA_DIST_DIR\\pyfa\" \"/dMyOutputDir=$env:APPVEYOR_BUILD_FOLDER\" \"/dMyOutputFile=pyfa-$env:PYFA_VERSION-win\""
       - ps: dir $env:PYFA_DIST_DIR/
     after_build:
       - ps: "ls \"./\""
@@ -154,15 +155,25 @@ for:
       - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
       - sh: export PATH="$HOME/.local/bin:$PATH"
     install:
-      - sh: bash scripts/osx-setup.sh
+      # Create .venv from the lockfile; uv also provisions the interpreter named
+      # in .python-version, which no macOS image ships.
+      - sh: uv sync --frozen --no-default-groups --group packaging --group wx-binary
+      - sh: uv run --no-sync python --version
+    before_build:
+      # Fill untranslated msgids so every locale has complete .po files
+      - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
     build_script:
-      - sh: bash scripts/osx-translations.sh
       - sh: uv run --no-sync python scripts/compile_lang.py
       - sh: uv run --no-sync python scripts/dump_crowdin_progress.py
       - sh: uv run --no-sync python db_update.py
-    after_build:
+      # dump_version.py rewrites version.yml, so it has to run before packaging
       - sh: export PYFA_VERSION="$(uv run --no-sync python scripts/dump_version.py)"
-      - sh: bash scripts/osx-package.sh
+      - sh: echo "pyfa version $PYFA_VERSION"
+    after_build:
+      - sh: uv run --no-sync python -m PyInstaller -y --clean dist_assets/mac/pyfa.spec
+      # subshell: a bare cd would leak into the following steps
+      - sh: (cd dist && zip -yr "pyfa-$PYFA_VERSION-mac.zip" pyfa.app)
+      - sh: md5 -r "dist/pyfa-$PYFA_VERSION-mac.zip"
 #    on_finish:
 #      - sh: export APPVEYOR_SSH_BLOCK=true
 #      - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
