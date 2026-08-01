@@ -32,19 +32,19 @@ for:
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y update --allow-releaseinfo-change
       # AppImage dependencies
       - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libfuse2
-      # Preparation script dependencies (TODO: merge with pyfa dependencies?)
-      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0 python3-sqlalchemy python3-logbook
+      # Pulls all the dependencies binary wx package uses
+      - sh: sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-wxgtk4.0
       - sh: curl -LsSf https://astral.sh/uv/install.sh | sh
       - sh: export PATH="$HOME/.local/bin:$PATH"
+      - sh: uv sync --frozen --no-default-groups --group wx-binary
     before_build:
       - sh: uv export --frozen --no-default-groups --group wx-binary --no-hashes --format requirements-txt -o requirements-appimage.txt
       # Prepare pyfa data
       - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
-      - sh: pyenv global system
-      - sh: python3 -B scripts/compile_lang.py
-      - sh: python3 -B scripts/dump_crowdin_progress.py
-      - sh: python3 -B db_update.py
-      - sh: export PYFA_VERSION="$(python3 -B scripts/dump_version.py)"
+      - sh: uv run --no-sync python -B scripts/compile_lang.py
+      - sh: uv run --no-sync python -B scripts/dump_crowdin_progress.py
+      - sh: uv run --no-sync python -B db_update.py
+      - sh: export PYFA_VERSION="$(uv run --no-sync python -B scripts/dump_version.py)"
       - sh: mkdir build
       # Download packaging tool
       - sh: curl --fail-with-body -o $APPIMAGE_TOOL -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
