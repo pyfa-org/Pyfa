@@ -13,15 +13,6 @@ clone_script:
       else
         git checkout -qf "$APPVEYOR_REPO_COMMIT"
       fi
-  - ps: |
-      git clone -q --filter=blob:none "https://github.com/$env:APPVEYOR_REPO_NAME.git" "$env:APPVEYOR_BUILD_FOLDER"
-      cd $env:APPVEYOR_BUILD_FOLDER
-      if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
-        git fetch -q origin "+refs/pull/$env:APPVEYOR_PULL_REQUEST_NUMBER/merge:"
-        git checkout -qf FETCH_HEAD
-      } else {
-        git checkout -qf $env:APPVEYOR_REPO_COMMIT
-      }
 
 for:
   -
