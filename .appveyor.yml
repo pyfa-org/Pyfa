@@ -2,6 +2,27 @@ image:
   # - Ubuntu2204
   - Visual Studio 2022
   # - macos-monterey
+
+clone_script:
+  - sh: |
+      git clone -q --filter=blob:none "https://github.com/$APPVEYOR_REPO_NAME.git" "$APPVEYOR_BUILD_FOLDER"
+      cd "$APPVEYOR_BUILD_FOLDER"
+      if [ -n "$APPVEYOR_PULL_REQUEST_NUMBER" ]; then
+        git fetch -q origin "+refs/pull/$APPVEYOR_PULL_REQUEST_NUMBER/merge:"
+        git checkout -qf FETCH_HEAD
+      else
+        git checkout -qf "$APPVEYOR_REPO_COMMIT"
+      fi
+  - ps: |
+      git clone -q --filter=blob:none "https://github.com/$env:APPVEYOR_REPO_NAME.git" "$env:APPVEYOR_BUILD_FOLDER"
+      cd $env:APPVEYOR_BUILD_FOLDER
+      if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+        git fetch -q origin "+refs/pull/$env:APPVEYOR_PULL_REQUEST_NUMBER/merge:"
+        git checkout -qf FETCH_HEAD
+      } else {
+        git checkout -qf $env:APPVEYOR_REPO_COMMIT
+      }
+
 for:
 #  -
 #    matrix:
