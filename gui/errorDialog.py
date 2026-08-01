@@ -40,7 +40,7 @@ class ErrorHandler:
 
     @classmethod
     def HandleException(cls, exc_type, exc_value, exc_traceback):
-        with config.logging_setup.threadbound():
+        with config.logging_setup:
             # Print the base level traceback
             t = traceback.format_exception(exc_type, exc_value, exc_traceback)
             pyfalog.critical("\n\n" + "".join(t))

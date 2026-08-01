@@ -34,7 +34,7 @@ class EsiTokenValidationThread(threading.Thread):
         self.running = True
 
     def run(self):
-        with config.logging_setup.threadbound():
+        with config.logging_setup:
             try:
                 esi = Esi.getInstance()
 
