@@ -53,6 +53,7 @@ class ItemView(Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
 
         # the "charges for active fitting" needs to listen to fitting changes
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
@@ -285,6 +286,14 @@ class ItemView(Display):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
         Display.refresh(self, items)
+
+    def OnSysColorChanged(self, event):
+        try:
+            if self.active:
+                self.update(self.active)
+        except RuntimeError:
+            pass
+        event.Skip()
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
