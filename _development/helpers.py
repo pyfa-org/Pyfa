@@ -40,7 +40,6 @@ def DBInMemory_test():
         gamedata_engine = create_engine(gamedata_connectionstring, echo=debug)
 
     gamedata_meta = MetaData()
-    gamedata_meta.bind = gamedata_engine
     gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False)()
 
     # This should be moved elsewhere, maybe as an actual query. Current, without try-except, it breaks when making a new
@@ -62,7 +61,6 @@ def DBInMemory_test():
             saveddata_engine = create_engine(saveddata_connectionstring, echo=debug)
 
         saveddata_meta = MetaData()
-        saveddata_meta.bind = saveddata_engine
         saveddata_session = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)()
     else:
         saveddata_meta = None

@@ -620,7 +620,9 @@ def update_db():
         dumpDatetime = epochDelta.days + epochDelta.seconds / (24 * 60 * 60)
         query = (
             eos.db.gamedata_session.query(eos.gamedata.Item)
-            .join(eos.gamedata.Item.group, eos.gamedata.Group.category, eos.gamedata.Attribute)
+            .join(eos.gamedata.Item.group)
+            .join(eos.gamedata.Group.category)
+            .join(eos.gamedata.Item._Item__attributes)
             .filter(and_(
                 eos.gamedata.Item.published,
                 eos.gamedata.Category.name == 'Implant',
