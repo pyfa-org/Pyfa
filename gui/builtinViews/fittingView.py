@@ -180,6 +180,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
         pyfalog.debug("------------------ new fitting view -------------------")
         pyfalog.debug(self)
@@ -744,6 +745,16 @@ class FittingView(d.Display):
 
         else:
             event.Skip()
+
+    def OnSysColorChanged(self, event):
+        mods = getattr(self, 'mods', None)
+        try:
+            if self.activeFitID is not None and mods:
+                self.refresh(mods)
+                self.Refresh()
+        except RuntimeError:
+            pass
+        event.Skip()
 
     def slotColor(self, slot):
         if isDark():
