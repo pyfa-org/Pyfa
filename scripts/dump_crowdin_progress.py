@@ -59,11 +59,36 @@ if not projectId:
         print("Cannot find Crowdin project {!r}, is the API token scoped to it?".format(PROJECT_IDENTIFIER))
         sys.exit()
 
+def availableLocales():
+    localePath = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'locale')
+    found = {}
+    for name in sorted(os.listdir(localePath)):
+        if not os.path.isdir(os.path.join(localePath, name)):
+            continue
+        info = wx.Locale.FindLanguageInfo(name)
+        if info is not None:
+            found[info.CanonicalName] = info
+    return found
+
+
+def matchLocale(code, locales):
+    info = wx.Locale.FindLanguageInfo(code)
+    if info is None:
+        return None
+    if info.CanonicalName in locales:
+        return locales[info.CanonicalName]
+    if '_' in info.CanonicalName:
+        return None
+    candidates = [x for name, x in locales.items() if name.split('_')[0] == info.CanonicalName]
+    return candidates[0] if len(candidates) == 1 else None
+
+
+locales = availableLocales()
 data = []
 
 for entry in fetch('projects/{}/languages/progress'.format(projectId)):
     code = entry['languageId'].replace('-', '_')
-    lang = wx.Locale.FindLanguageInfo(code)
+    lang = matchLocale(code, locales)
     if lang is None:
         print('Cannot find a match for ' + code)
         continue
