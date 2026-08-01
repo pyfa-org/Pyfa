@@ -56,6 +56,21 @@ AppDir:
       - usr/share/doc/*/NEWS.*
       - usr/share/doc/*/TODO.*
       - usr/include
+      - usr/share/bug
+      - usr/share/lintian
+      - usr/share/menu
+      - usr/share/info
+      - usr/lib/kernel
+      - usr/lib/mime
+      - usr/lib/systemd
+      - lib/systemd
+      - etc/init.d
+      - usr/bin/kernel-install
+      - usr/bin/perldoc
+      - usr/bin/cautious-launcher
+      - usr/sbin/tzconfig
+      - usr/sbin/update-icon-caches
+      - usr/share/glib-2.0/clean-up-unmanaged-libraries
 
   runtime:
     env:
