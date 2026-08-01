@@ -57,7 +57,7 @@ import_these = [
 ]
 
 # Walk directories that do dynamic importing
-paths = ('eos/db/migrations', 'service/conversions')
+paths = ('eos/db/migrations', 'service/conversions', 'graphs/gui')
 for root, folders, files in chain.from_iterable(os.walk(path) for path in paths):
     for file_ in files:
         if file_.endswith(".py") and not file_.startswith("_"):
