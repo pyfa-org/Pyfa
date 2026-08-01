@@ -48,7 +48,6 @@ for:
     before_build:
       - sh: uv export --frozen --no-default-groups --group wx-binary --no-hashes --format requirements-txt -o requirements-appimage.txt
       # Prepare pyfa data
-      - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
       - sh: uv run --no-sync python -B scripts/compile_lang.py
       - sh: uv run --no-sync python -B scripts/dump_crowdin_progress.py
       - sh: uv run --no-sync python -B db_update.py
@@ -125,10 +124,6 @@ for:
       # done from inside the powershell script as it would require to restart
       # the parent CMD process).
       - cmd: "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-      - cmd: "appveyor DownloadFile https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.20.2-v1.16/gettext0.20.2-iconv1.16-shared-64.zip"
-      - cmd: "7z x gettext0.20.2-iconv1.16-shared-64.zip -ogettext"
-      - cmd: "SET PATH=gettext;%PATH%"
-
       - cmd: "python --version"
       - cmd: "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
@@ -144,7 +139,6 @@ for:
       - ps: echo("pyfa version $env:PYFA_VERSION")
     build_script:
       - ps: echo("Build pyfa:")
-      - ps: Get-ChildItem locale/*.po -Recurse -File| Foreach {msgen $_.fullname -o $_.fullname}
         # Build language files
       - cmd: "uv run --no-sync python scripts/compile_lang.py"
         # Dump language progress
@@ -206,9 +200,6 @@ for:
       # in .python-version, which no macOS image ships.
       - sh: uv sync --frozen --no-default-groups --group packaging --group wx-binary
       - sh: uv run --no-sync python --version
-    before_build:
-      # Fill untranslated msgids so every locale has complete .po files
-      - sh: find locale/ -type f -name "*.po" -exec msgen "{}" -o "{}" \;
     build_script:
       - sh: uv run --no-sync python scripts/compile_lang.py
       - sh: uv run --no-sync python scripts/dump_crowdin_progress.py
