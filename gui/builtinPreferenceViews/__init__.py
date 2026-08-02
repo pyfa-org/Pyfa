@@ -8,5 +8,5 @@ __all__ = [
     "pyfaEnginePreferences",
     "pyfaEsiPreferences",
     "pyfaStatViewPreferences",
-    "pyfaMarketPreferences"]
-
+    "pyfaMarketPreferences",
+    "pyfaDiscordPreferences"]

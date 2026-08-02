@@ -600,3 +600,34 @@ class LocaleSettings:
         if key == 'locale' and value not in self.supported_languages():
             self.settings[key] = self.DEFAULT
         self.settings[key] = value
+
+class DiscordSettings:
+
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = DiscordSettings()
+        return cls._instance
+
+    def __init__(self):
+        defaults = {
+            'enableDiscord': False,
+            'webhookUrl': '',
+            'confirmBeforeSend': False}
+        self.settings = SettingsProvider.getInstance().getSettings('discordSettings', defaults)
+
+    def get(self, type):
+        return self.settings[type]
+
+    def set(self, type, value):
+        self.settings[type] = value
+        self.settings.save()
+
+    def getRedacted(self):
+        return {
+            'enableDiscord': bool(self.settings['enableDiscord']),
+            'webhookUrl': '<redacted>' if self.settings['webhookUrl'] else '',
+            'confirmBeforeSend': bool(self.settings['confirmBeforeSend'])
+        }

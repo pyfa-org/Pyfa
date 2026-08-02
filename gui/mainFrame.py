@@ -63,11 +63,12 @@ from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard
 from gui.utils.progressHelper import ProgressHelper
 from service.character import Character
+from service.discord import Discord, DiscordWebhookError
 from service.esi import Esi
 from service.fit import Fit
 from service.port import Port
 from service.price import Price
-from service.settings import HTMLExportSettings, SettingsProvider
+from service.settings import DiscordSettings, HTMLExportSettings, SettingsProvider
 from service.update import Update
 
 _t = wx.GetTranslation
@@ -493,6 +494,7 @@ class MainFrame(wx.Frame):
     def OnShowPreferenceDialog(self, event):
         with PreferenceDialog(self) as dlg:
             dlg.ShowModal()
+        self.GetMenuBar().refreshDiscordMenuVisibility()
 
     @staticmethod
     def goWiki(event):
@@ -524,6 +526,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.fileImportDialog, id=wx.ID_OPEN)
         # Export dialog
         self.Bind(wx.EVT_MENU, self.OnShowExportDialog, id=wx.ID_SAVEAS)
+        # Share active fit to Discord webhook
+        self.Bind(wx.EVT_MENU, self.shareFitToDiscord, id=menuBar.shareToDiscordId)
         # Import from Clipboard
         self.Bind(wx.EVT_MENU, self.importFromClipboard, id=wx.ID_PASTE)
         # Backup fits
@@ -574,6 +578,8 @@ class MainFrame(wx.Frame):
         # Graphs
         self.Bind(wx.EVT_MENU, self.OnShowGraphFrame, id=menuBar.graphFrameId)
         self.Bind(wx.EVT_MENU, self.OnShowGraphFrameHidden, id=self.hiddenGraphsId)
+        # Keep dynamic menu entries synchronized with current settings.
+        self.Bind(wx.EVT_MENU_OPEN, self.OnMenuOpen)
 
         toggleSearchBoxId = wx.NewId()
         toggleShipMarketId = wx.NewId()
@@ -748,6 +754,12 @@ class MainFrame(wx.Frame):
     def CTabPrev(self, event):
         self.fitMultiSwitch.PrevPage()
 
+    def OnMenuOpen(self, event):
+        menuBar = self.GetMenuBar()
+        if event.GetMenu() == menuBar.fitMenu:
+            menuBar.refreshDiscordMenuVisibility()
+        event.Skip()
+
     def HAddPage(self, event):
         self.fitMultiSwitch.AddPage()
 
@@ -808,6 +820,34 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         with CopySelectDialog(self) as dlg:
+            dlg.ShowModal()
+
+    def shareFitToDiscord(self, event):
+        activeFitID = self.getActiveFit()
+        if activeFitID is None:
+            return
+
+        fit = Fit.getInstance().getFit(activeFitID)
+        if fit is None:
+            with wx.MessageDialog(self, _t("No active fit found."), _t("Discord Webhook"), wx.ICON_ERROR) as dlg:
+                dlg.ShowModal()
+            return
+
+        dSettings = DiscordSettings.getInstance()
+        if dSettings.get('confirmBeforeSend'):
+            preview = _t("Send this fit to Discord?\n\n{0} ({1})").format(fit.name, fit.ship.item.typeName)
+            with wx.MessageDialog(self, preview, _t("Confirm Discord Share"), wx.YES_NO | wx.ICON_QUESTION) as dlg:
+                if dlg.ShowModal() != wx.ID_YES:
+                    return
+
+        try:
+            Discord.getInstance().sendFit(fit)
+        except DiscordWebhookError as e:
+            with wx.MessageDialog(self, str(e), _t("Discord Webhook"), wx.ICON_ERROR) as dlg:
+                dlg.ShowModal()
+            return
+
+        with wx.MessageDialog(self, _t("Fit sent to Discord webhook."), _t("Discord Webhook"), wx.ICON_INFORMATION) as dlg:
             dlg.ShowModal()
 
     def exportSkillsNeeded(self, event):

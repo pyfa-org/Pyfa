@@ -23,8 +23,11 @@ import wx
 import config
 import graphs
 from service.character import Character
+from service.discord import Discord
 from service.fit import Fit
+from service.settings import DiscordSettings
 import gui.globalEvents as GE
+from gui.menu_utils import syncDiscordShareMenuVisibility
 from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
@@ -32,6 +35,8 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 _t = wx.GetTranslation
+
+
 class MainMenuBar(wx.MenuBar):
     def __init__(self, mainFrame):
         pyfalog.debug("Initialize MainMenuBar")
@@ -57,6 +62,7 @@ class MainMenuBar(wx.MenuBar):
         self.toggleIgnoreRestrictionID = wx.NewId()
         self.devToolsId = wx.NewId()
         self.optimizeFitPrice = wx.NewId()
+        self.shareToDiscordId = wx.NewId()
 
         self.mainFrame = mainFrame
         wx.MenuBar.__init__(self)
@@ -78,6 +84,7 @@ class MainMenuBar(wx.MenuBar):
 
         # Fit menu
         fitMenu = wx.Menu()
+        self.fitMenu = fitMenu
         self.Append(fitMenu, _t("Fi&t"))
 
         fitMenu.Append(wx.ID_UNDO, _t("&Undo") + "\tCTRL+Z", _t("Undo the most recent action"))
@@ -168,6 +175,19 @@ class MainMenuBar(wx.MenuBar):
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(GE.FIT_RENAMED, self.fitRenamed)
+        self.refreshDiscordMenuVisibility()
+
+    def refreshDiscordMenuVisibility(self):
+        settings = DiscordSettings.getInstance()
+        webhookUrl = (settings.get('webhookUrl') or '').strip()
+        discordEnabled = bool(settings.get('enableDiscord')) and Discord.isValidWebhookUrl(webhookUrl)
+        syncDiscordShareMenuVisibility(
+            fitMenu=self.fitMenu,
+            shareToDiscordId=self.shareToDiscordId,
+            optimizeFitPriceId=self.optimizeFitPrice,
+            discordEnabled=discordEnabled,
+            menuText=_t("Share Fit to &Discord"),
+            menuHelp=_t("Share active fit to Discord webhook"))
 
     def fitChanged(self, event):
         event.Skip()
@@ -177,6 +197,8 @@ class MainMenuBar(wx.MenuBar):
         enable = activeFitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
+        if self.fitMenu.FindItemById(self.shareToDiscordId) is not None:
+            self.Enable(self.shareToDiscordId, enable)
         self.Enable(self.exportSkillsNeededId, enable)
 
         self.refreshUndo()
