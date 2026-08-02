@@ -263,6 +263,19 @@ class Fit:
         self.__character = char
 
     @property
+    def vault(self):
+        return getattr(self, '_Fit__vault', None)
+
+    @vault.setter
+    def vault(self, v):
+        if hasattr(self, '_Fit__vault'):
+            object.__setattr__(self, '_Fit__vault', v)
+        if v is not None:
+            self.vaultID = v.ID
+        else:
+            self.vaultID = None
+
+    @property
     def calculated(self):
         return self.__calculated
 

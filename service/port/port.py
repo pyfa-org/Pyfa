@@ -31,6 +31,7 @@ from logbook import Logger
 from eos import db
 from eos.const import ImplantLocation
 from service.fit import Fit as svcFit
+from service.vault import Vault as VaultService
 from service.port.dna import exportDna, importDna, importDnaAlt
 from service.port.eft import (
     exportEft, importEft, importEftCfg,
@@ -168,6 +169,9 @@ class Port:
                 else:
                     useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
                     fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
+                current_vault_id = VaultService.getInstance().getCurrentVaultID()
+                if current_vault_id is not None:
+                    fit.vaultID = current_vault_id
                 db.save(fit)
                 # IDs.append(fit.ID)
                 if progress:
@@ -207,6 +211,9 @@ class Port:
                 else:
                     useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
                     fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
+                current_vault_id = VaultService.getInstance().getCurrentVaultID()
+                if current_vault_id is not None:
+                    fit.vaultID = current_vault_id
                 db.save(fit)
         return importType, importData
 

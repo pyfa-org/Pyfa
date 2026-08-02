@@ -35,6 +35,7 @@ from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
+from service.vault import Vault as VaultService
 
 
 pyfalog = Logger(__name__)
@@ -100,14 +101,22 @@ class Fit:
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
     @staticmethod
-    def getAllFits():
+    def getAllFits(vaultID=None):
         pyfalog.debug("Fetching all fits")
-        fits = eos.db.getFitList()
+        if vaultID is None:
+            vaultID = VaultService.getInstance().getCurrentVaultID()
+        if vaultID is None:
+            return []
+        fits = eos.db.getFitList(vaultID=vaultID)
         return fits
 
     @staticmethod
-    def getAllFitsLite():
-        fits = eos.db.getFitListLite()
+    def getAllFitsLite(vaultID=None):
+        if vaultID is None:
+            vaultID = VaultService.getInstance().getCurrentVaultID()
+        if vaultID is None:
+            return []
+        fits = eos.db.getFitListLite(vaultID=vaultID)
         shipMap = {f.shipID: None for f in fits}
         for shipID in shipMap:
             ship = eos.db.getItem(shipID)
@@ -124,10 +133,14 @@ class Fit:
         return fits
 
     @staticmethod
-    def getFitsWithShip(shipID):
+    def getFitsWithShip(shipID, vaultID=None):
         """ Lists fits of shipID, used with shipBrowser """
         pyfalog.debug("Fetching all fits for ship ID: {0}", shipID)
-        fits = eos.db.getFitsWithShip(shipID)
+        if vaultID is None:
+            vaultID = VaultService.getInstance().getCurrentVaultID()
+        if vaultID is None:
+            return []
+        fits = eos.db.getFitsWithShip(shipID, vaultID=vaultID)
         names = []
         for fit in fits:
             names.append((fit.ID,
@@ -141,9 +154,12 @@ class Fit:
 
     @staticmethod
     def getRecentFits():
-        """ Fetches recently modified fits, used with shipBrowser """
+        """ Fetches recently modified fits in current vault, used with shipBrowser """
         pyfalog.debug("Fetching recent fits")
-        fits = eos.db.getRecentFits()
+        vaultID = VaultService.getInstance().getCurrentVaultID()
+        if vaultID is None:
+            return []
+        fits = eos.db.getRecentFits(vaultID=vaultID)
         returnInfo = []
 
         for fit in fits:
@@ -166,14 +182,22 @@ class Fit:
         return eos.db.countAllFits()
 
     @staticmethod
-    def countAllFitsGroupedByShip():
-        count = eos.db.countFitGroupedByShip()
+    def countAllFitsGroupedByShip(vaultID=None):
+        if vaultID is None:
+            vaultID = VaultService.getInstance().getCurrentVaultID()
+        if vaultID is None:
+            return []
+        count = eos.db.countFitGroupedByShip(vaultID=vaultID)
         return count
 
     @staticmethod
-    def countFitsWithShip(stuff):
+    def countFitsWithShip(stuff, vaultID=None):
         pyfalog.debug("Getting count of all fits for: {0}", stuff)
-        count = eos.db.countFitsWithShip(stuff)
+        if vaultID is None:
+            vaultID = VaultService.getInstance().getCurrentVaultID()
+        if vaultID is None:
+            return 0
+        count = eos.db.countFitsWithShip(stuff, vaultID=vaultID)
         return count
 
     @staticmethod
@@ -195,6 +219,9 @@ class Fit:
         fit.booster = self.booster
         useCharImplants = self.serviceFittingOptions["useCharacterImplantsByDefault"]
         fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
+        current_vault_id = VaultService.getInstance().getCurrentVaultID()
+        if current_vault_id is not None:
+            fit.vaultID = current_vault_id
         eos.db.save(fit)
         self.recalc(fit)
         self.fill(fit)
@@ -243,6 +270,9 @@ class Fit:
         pyfalog.debug("Creating copy of fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
         newFit = copy.deepcopy(fit)
+        current_vault_id = VaultService.getInstance().getCurrentVaultID()
+        if current_vault_id is not None:
+            newFit.vaultID = current_vault_id
         eos.db.save(newFit)
         return newFit.ID
 
@@ -365,7 +395,10 @@ class Fit:
     @staticmethod
     def searchFits(name):
         pyfalog.debug("Searching for fit: {0}", name)
-        results = eos.db.searchFits(name)
+        vaultID = VaultService.getInstance().getCurrentVaultID()
+        if vaultID is None:
+            return []
+        results = eos.db.searchFits(name, vaultID=vaultID)
         fits = []
 
         for fit in sorted(results, key=lambda f: (f.ship.item.group.name, f.ship.item.name, f.name)):

@@ -9,6 +9,7 @@ from gui.builtinShipBrowser.fitItem import FitItem
 from gui.builtinShipBrowser.shipItem import ShipItem
 from service.fit import Fit
 from service.market import Market
+from service.vault import Vault as VaultService
 
 from gui.builtinShipBrowser.events import EVT_SB_IMPORT_SEL, EVT_SB_STAGE1_SEL, EVT_SB_STAGE2_SEL, EVT_SB_STAGE3_SEL, EVT_SB_SEARCH_SEL
 from gui.builtinShipBrowser.pfWidgetContainer import PFWidgetsContainer
@@ -17,6 +18,7 @@ from gui.builtinShipBrowser.raceSelector import RaceSelector
 from gui.builtinShipBrowser.pfStaticText import PFStaticText
 
 pyfalog = Logger(__name__)
+_t = wx.GetTranslation
 
 
 class ShipBrowser(wx.Panel):
@@ -53,6 +55,24 @@ class ShipBrowser(wx.Panel):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        # Vault selector row
+        self.vaultSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.vaultLabel = wx.StaticText(self, wx.ID_ANY, _t("Vault:"))
+        self.vaultChoice = wx.Choice(self, wx.ID_ANY, size=(180, -1))
+        self.vaultChoice.Bind(wx.EVT_CHOICE, self.OnVaultChoice)
+        self.vaultUpBtn = wx.Button(self, wx.ID_ANY, _t("\u2191"), size=(26, -1))
+        self.vaultUpBtn.Bind(wx.EVT_BUTTON, self.OnVaultMoveUp)
+        self.vaultDownBtn = wx.Button(self, wx.ID_ANY, _t("\u2193"), size=(26, -1))
+        self.vaultDownBtn.Bind(wx.EVT_BUTTON, self.OnVaultMoveDown)
+        self.vaultMenuBtn = wx.Button(self, wx.ID_ANY, _t("..."), size=(28, -1))
+        self.vaultMenuBtn.Bind(wx.EVT_BUTTON, self.OnVaultMenuButton)
+        self.vaultSizer.Add(self.vaultLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        self.vaultSizer.Add(self.vaultChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 2)
+        self.vaultSizer.Add(self.vaultUpBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 1)
+        self.vaultSizer.Add(self.vaultDownBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        self.vaultSizer.Add(self.vaultMenuBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        mainSizer.Add(self.vaultSizer, 0, wx.EXPAND | wx.ALL, 5)
+
         self.navpanel = NavigationPanel(self)
         mainSizer.Add(self.navpanel, 0, wx.EXPAND)
 
@@ -83,10 +103,125 @@ class ShipBrowser(wx.Panel):
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.RefreshList)
 
+        self.PopulateVaultChoice()
         self.stage1(None)
 
     def GetBrowserContainer(self):
         return self.lpane
+
+    def PopulateVaultChoice(self):
+        sVault = VaultService.getInstance()
+        vaults = sVault.getVaultList()
+        self.vaultChoice.Clear()
+        self._vaultIDs = []
+        for v in vaults:
+            self.vaultChoice.Append(v.name)
+            self._vaultIDs.append(v.ID)
+        current = sVault.getCurrentVaultID()
+        if current is not None and current in self._vaultIDs:
+            idx = self._vaultIDs.index(current)
+            self.vaultChoice.SetSelection(idx)
+        elif self._vaultIDs:
+            self.vaultChoice.SetSelection(0)
+            sVault.setCurrentVaultID(self._vaultIDs[0])
+
+    def OnVaultChoice(self, event):
+        idx = self.vaultChoice.GetSelection()
+        if idx >= 0 and idx < len(self._vaultIDs):
+            VaultService.getInstance().setCurrentVaultID(self._vaultIDs[idx])
+            self.stage1(None)
+
+    def OnVaultMenuButton(self, event):
+        menu = wx.Menu()
+        newId = wx.NewIdRef()
+        renameId = wx.NewIdRef()
+        deleteId = wx.NewIdRef()
+        menu.Append(newId, _t("New vault..."))
+        menu.Append(renameId, _t("Rename vault"))
+        menu.Append(deleteId, _t("Delete vault"))
+        self.Bind(wx.EVT_MENU, self.OnVaultNew, id=newId)
+        self.Bind(wx.EVT_MENU, self.OnVaultRename, id=renameId)
+        self.Bind(wx.EVT_MENU, self.OnVaultDelete, id=deleteId)
+        self.PopupMenu(menu)
+        menu.Destroy()
+
+    def OnVaultNew(self, event):
+        dlg = wx.TextEntryDialog(self, _t("Enter name for new vault:"), _t("New vault"), _t("New vault"))
+        if dlg.ShowModal() != wx.ID_OK:
+            dlg.Destroy()
+            return
+        name = dlg.GetValue().strip()
+        dlg.Destroy()
+        if not name:
+            return
+        sVault = VaultService.getInstance()
+        vid = sVault.createVault(name)
+        if vid is not None:
+            sVault.setCurrentVaultID(vid)
+            self.PopulateVaultChoice()
+            self.stage1(None)
+
+    def OnVaultRename(self, event):
+        idx = self.vaultChoice.GetSelection()
+        if idx < 0 or idx >= len(self._vaultIDs):
+            return
+        vid = self._vaultIDs[idx]
+        sVault = VaultService.getInstance()
+        v = sVault.getVault(vid)
+        if v is None:
+            return
+        dlg = wx.TextEntryDialog(self, _t("Rename vault:"), _t("Rename vault"), v.name)
+        if dlg.ShowModal() != wx.ID_OK:
+            dlg.Destroy()
+            return
+        name = dlg.GetValue().strip()
+        dlg.Destroy()
+        if not name:
+            return
+        sVault.renameVault(vid, name)
+        self.PopulateVaultChoice()
+        self.stage1(None)
+
+    def OnVaultDelete(self, event):
+        idx = self.vaultChoice.GetSelection()
+        if idx < 0 or idx >= len(self._vaultIDs):
+            return
+        vid = self._vaultIDs[idx]
+        sVault = VaultService.getInstance()
+        v = sVault.getVault(vid)
+        if v is None:
+            return
+        count = sVault.countFitsInVault(vid)
+        vaults = sVault.getVaultList()
+        if len(vaults) <= 1:
+            wx.MessageBox(_t("Cannot delete the only vault."), _t("Delete vault"), wx.OK | wx.ICON_INFORMATION)
+            return
+        msg = _t("You are about to delete the vault \"%s\".\n\nIt contains %d fitting(s). They will be moved to another vault.\n\nContinue?") % (v.name, count)
+        if wx.MessageBox(msg, _t("Delete vault"), wx.YES_NO | wx.ICON_QUESTION) != wx.YES:
+            return
+        sVault.deleteVault(vid)
+        self.PopulateVaultChoice()
+        self.stage1(None)
+
+    def OnVaultMoveUp(self, event):
+        idx = self.vaultChoice.GetSelection()
+        if idx <= 0 or idx >= len(self._vaultIDs):
+            return
+        ids = list(self._vaultIDs)
+        ids[idx], ids[idx - 1] = ids[idx - 1], ids[idx]
+        VaultService.getInstance().reorderVaults(ids)
+        self.PopulateVaultChoice()
+        self.vaultChoice.SetSelection(idx - 1)
+
+    def OnVaultMoveDown(self, event):
+        idx = self.vaultChoice.GetSelection()
+        if idx < 0 or idx >= len(self._vaultIDs) - 1:
+            return
+        ids = list(self._vaultIDs)
+        ids[idx], ids[idx + 1] = ids[idx + 1], ids[idx]
+        VaultService.getInstance().reorderVaults(ids)
+        self.PopulateVaultChoice()
+        self.vaultChoice.SetSelection(idx + 1)
 
     def RefreshContent(self):
         stage = self.GetActiveStage()

@@ -93,6 +93,14 @@ msgstr ""
 msgid "&Global"
 msgstr ""
 
+#: gui/mainMenuBar.py:97
+msgid "Ammo Break&down"
+msgstr ""
+
+#: gui/mainMenuBar.py:97
+msgid "Cargo ammo stats and export"
+msgstr ""
+
 #: gui/mainMenuBar.py:96
 msgid "&Graphs"
 msgstr ""
@@ -1754,6 +1762,46 @@ msgstr ""
 
 #: gui/mainFrame.py:832
 msgid "Exporting skills needed..."
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Ammo Breakdown"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Ammo Name"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Optimal"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Falloff"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Alpha"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "DPS"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "No ammo in cargo usable by fitted weapons."
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Export…"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Copy to clipboard"
+msgstr ""
+
+#: gui/ammoBreakdown/frame.py
+msgid "Export ammo breakdown"
 msgstr ""
 
 #: gui/builtinPreferenceViews/pyfaGeneralPreferences.py:160
