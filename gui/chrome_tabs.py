@@ -121,12 +121,12 @@ class ChromeNotebook(wx.Panel):
             style = wx.BORDER_NONE
             pageBorder = 1
 
-        back_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-
         content_sizer = wx.BoxSizer(wx.VERTICAL)
         self.page_container = wx.Panel(self, style=style)
         self._page_inset = pageBorder
-        bindBackgroundToTheme(self.page_container, borderColor)
+        bindBackgroundToTheme(self.page_container)
+        if pageBorder:
+            self.page_container.Bind(wx.EVT_PAINT, self.OnPageContainerPaint)
         content_sizer.Add(self.page_container, 1, wx.EXPAND, 5)
 
         main_sizer.Add(tabs_sizer, 0, wx.EXPAND, 5)
@@ -339,6 +339,13 @@ class ChromeNotebook(wx.Panel):
 
     def Refresh(self):
         self.tabs_container.Refresh()
+
+    def OnPageContainerPaint(self, event):
+        dc = wx.PaintDC(self.page_container)
+        dc.SetPen(wx.Pen(borderColor(), self._page_inset))
+        dc.SetBrush(wx.TRANSPARENT_BRUSH)
+        width, height = self.page_container.GetSize()
+        dc.DrawRectangle(0, 0, width, height)
 
     def OnSize(self, event):
         w, h = self.GetSize()
