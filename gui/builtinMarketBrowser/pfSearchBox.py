@@ -22,6 +22,7 @@ class PFSearchBox(wx.Window):
         self.searchBitmap = None
         self.cancelBitmap = None
         self.bkBitmap = None
+        self.bkColor = None
 
         self.resized = True
 
@@ -48,6 +49,7 @@ class PFSearchBox(wx.Window):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
         self.Bind(wx.EVT_SIZE, self.OnSize)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
 
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
@@ -196,6 +198,10 @@ class PFSearchBox(wx.Window):
         self.resized = True
         self.Refresh()
 
+    def OnSysColorChanged(self, event):
+        self.Refresh()
+        event.Skip()
+
     def OnEraseBk(self, event):
         pass
 
@@ -239,8 +245,9 @@ class PFSearchBox(wx.Window):
         sepColor = colorUtils.GetSuitable(bkColor, 0.2)
         rect = self.GetRect()
 
-        if self.resized:
+        if self.resized or bkColor != self.bkColor:
             self.bkBitmap = drawUtils.RenderGradientBar(bkColor, rect.width, rect.height, 0.1, 0.1, 0.2, 2)
+            self.bkColor = bkColor
             self.UpdateElementsPos(dc)
             self.resized = False
 
