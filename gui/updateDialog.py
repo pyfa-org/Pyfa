@@ -21,11 +21,13 @@
 import wx
 # noinspection PyPackageRequirements
 import dateutil.parser
+from logbook import Logger
 from service.settings import UpdateSettings as svc_UpdateSettings
-import wx.html2
 import webbrowser
 import re
 import markdown2
+
+pyfalog = Logger(__name__)
 
 _t = wx.GetTranslation
 
@@ -51,8 +53,8 @@ class UpdateDialog(wx.Dialog):
 
     def __init__(self, parent, release, version):
         super().__init__(
-            parent, id=wx.ID_ANY, title="pyfa {}" + _t("Update Available"), pos=wx.DefaultPosition,
-            size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
+            parent, id=wx.ID_ANY, title="pyfa {} - {}".format(release['tag_name'], _t("Update Available")),
+            pos=wx.DefaultPosition, size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.UpdateSettings = svc_UpdateSettings.getInstance()
         self.releaseInfo = release
@@ -61,42 +63,22 @@ class UpdateDialog(wx.Dialog):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         releaseDate = dateutil.parser.parse(self.releaseInfo['published_at'])
+        releaseNotes = self.releaseInfo.get('body') or ''
         notesSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.browser = wx.html2.WebView.New(self)
-        self.browser.Bind(wx.html2.EVT_WEBVIEW_NEWWINDOW, self.OnNewWindow)
 
-        link_patterns = [
-            (re.compile(r"#(\d+)", re.I), r"https://github.com/pyfa-org/Pyfa/issues/\1"),
-            (re.compile(r"@(\w+)", re.I), r"https://github.com/\1")
-        ]
-
-        markdowner = markdown2.Markdown(
-            extras=['cuddled-lists', 'fenced-code-blocks', 'target-blank-links', 'toc', 'link-patterns'],
-            link_patterns=link_patterns)
-
-        release_markup = markdowner.convert(self.releaseInfo['body'])
-
-        # run the text through markup again, this time with the hashing pattern. This is required due to bugs in markdown2:
-        # https://github.com/trentm/python-markdown2/issues/287
-        link_patterns = [
-            (re.compile("([0-9a-f]{6,40})", re.I), r"https://github.com/pyfa-org/Pyfa/commit/\1"),
-        ]
-
-        markdowner = markdown2.Markdown(
-            extras=['cuddled-lists', 'fenced-code-blocks', 'target-blank-links', 'toc', 'link-patterns'],
-            link_patterns=link_patterns)
-
-        # The space here is required, again, due to bug. Again, see https://github.com/trentm/python-markdown2/issues/287
-        release_markup = markdowner.convert(' ' + release_markup)
-
-        self.browser.SetPage(html_tmpl.format(
-            self.releaseInfo['tag_name'],
-            releaseDate.strftime('%B %d, %Y'),
-            "<p class='text-danger'><b>This is a pre-release, be prepared for unstable features</b></p>" if version.is_prerelease else "",
-            release_markup
-        ), "")
-
-        notesSizer.Add(self.browser, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 5)
+        self.browser = self.createNotesBrowser(releaseDate, releaseNotes, version)
+        if self.browser is None:
+            header = "pyfa {} ({})".format(self.releaseInfo['tag_name'], releaseDate.strftime('%B %d, %Y'))
+            lines = [header, '=' * len(header), '']
+            if version.is_prerelease:
+                lines += [_t("This is a pre-release, be prepared for unstable features"), '']
+            lines.append(releaseNotes)
+            self.notesText = wx.TextCtrl(
+                self, wx.ID_ANY, '\n'.join(lines), wx.DefaultPosition, wx.DefaultSize,
+                wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_WORDWRAP)
+            notesSizer.Add(self.notesText, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 5)
+        else:
+            notesSizer.Add(self.browser, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 5)
         mainSizer.Add(notesSizer, 1, wx.EXPAND, 5)
 
         self.supressCheckbox = wx.CheckBox(self, wx.ID_ANY, _t("Don't remind me again for this release"),
@@ -130,6 +112,86 @@ class UpdateDialog(wx.Dialog):
         self.UpdateSettings.set('version', None)
 
         self.Centre(wx.BOTH)
+
+    @staticmethod
+    def webViewAvailable():
+        """
+        On wxGTK the wx.html2.WebView widget is backed by WebKitGTK, which cannot
+        be instantiated reliably on every Linux setup. In particular, the AppImage
+        bundles an Ubuntu build of WebKitGTK that fails to spawn its helper
+        processes on other distributions, aborting the whole application
+        (see https://github.com/pyfa-org/Pyfa/issues/2740). Never use the WebView
+        there; on other platforms make sure a backend can be loaded at all.
+        """
+        if 'wxGTK' in wx.PlatformInfo:
+            return False
+        try:
+            from wx import html2
+            return html2.WebView.IsBackendAvailable(html2.WebViewBackendDefault)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as e:
+            pyfalog.warning("Could not check WebView backend availability: {}", e)
+            return False
+
+    def createNotesBrowser(self, releaseDate, releaseNotes, version):
+        """
+        Build the WebView displaying the release notes. Returns None when the
+        WebView cannot be used, so the caller can fall back to plain text.
+        """
+        if not self.webViewAvailable():
+            return None
+
+        from wx import html2
+        try:
+            browser = html2.WebView.New(self)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as e:
+            pyfalog.warning("Could not create WebView for the update dialog: {}", e)
+            return None
+
+        browser.Bind(html2.EVT_WEBVIEW_NEWWINDOW, self.OnNewWindow)
+
+        link_patterns = [
+            (re.compile(r"#(\d+)", re.I), r"https://github.com/pyfa-org/Pyfa/issues/\1"),
+            (re.compile(r"@(\w+)", re.I), r"https://github.com/\1")
+        ]
+
+        markdowner = markdown2.Markdown(
+            extras=['cuddled-lists', 'fenced-code-blocks', 'target-blank-links', 'toc', 'link-patterns'],
+            link_patterns=link_patterns)
+
+        release_markup = markdowner.convert(releaseNotes)
+
+        # run the text through markup again, this time with the hashing pattern. This is required due to bugs in markdown2:
+        # https://github.com/trentm/python-markdown2/issues/287
+        link_patterns = [
+            (re.compile("([0-9a-f]{6,40})", re.I), r"https://github.com/pyfa-org/Pyfa/commit/\1"),
+        ]
+
+        markdowner = markdown2.Markdown(
+            extras=['cuddled-lists', 'fenced-code-blocks', 'target-blank-links', 'toc', 'link-patterns'],
+            link_patterns=link_patterns)
+
+        # The space here is required, again, due to bug. Again, see https://github.com/trentm/python-markdown2/issues/287
+        release_markup = markdowner.convert(' ' + release_markup)
+
+        try:
+            browser.SetPage(html_tmpl.format(
+                self.releaseInfo['tag_name'],
+                releaseDate.strftime('%B %d, %Y'),
+                "<p class='text-danger'><b>This is a pre-release, be prepared for unstable features</b></p>" if version.is_prerelease else "",
+                release_markup
+            ), "")
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as e:
+            pyfalog.warning("Could not load release notes into WebView: {}", e)
+            browser.Destroy()
+            return None
+
+        return browser
 
     def OnClose(self, e):
         self.Close()

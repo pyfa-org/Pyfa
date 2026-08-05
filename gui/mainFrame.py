@@ -242,8 +242,16 @@ class MainFrame(wx.Frame):
         return Fit.getCommandProcessor(fitID)
 
     def ShowUpdateBox(self, release, version):
-        with UpdateDialog(self, release, version) as dlg:
-            dlg.ShowModal()
+        # This runs right after startup, so any failure here must not be able
+        # to take the whole application down with it
+        try:
+            with UpdateDialog(self, release, version) as dlg:
+                dlg.ShowModal()
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as e:
+            pyfalog.error("Caught exception while showing the update notification dialog")
+            pyfalog.error(e)
 
     def LoadPreviousOpenFits(self):
         sFit = Fit.getInstance()
