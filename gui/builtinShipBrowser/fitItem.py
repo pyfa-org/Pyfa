@@ -16,6 +16,7 @@ import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
+from gui.utils.helpers_wxPython import isWayland
 from service.fit import Fit
 from .events import BoosterListUpdated, FitSelected, ImportSelected, SearchSelected, Stage3Selected
 
@@ -195,8 +196,9 @@ class FitItem(SFItem.SFBrowserItem):
             self.dragged = False
             if self.HasCapture():
                 self.ReleaseMouse()
-            self.dragWindow.Show(False)
-            self.dragWindow = None
+            if self.dragWindow:
+                self.dragWindow.Show(False)
+                self.dragWindow = None
 
     def OnContextMenu(self, event):
         """ Handles context menu for fit. Dragging is handled by MouseLeftUp() """
@@ -427,8 +429,12 @@ class FitItem(SFItem.SFBrowserItem):
                         tdc.SelectObject(wx.NullBitmap)
                     if not self.HasCapture():
                         self.CaptureMouse()
-                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)  
-                    self.dragWindow.Show()
+                    # Wayland does not let us place the image under the cursor or move it along
+                    # with it, so the drag goes without one there rather than leaving a picture
+                    # stuck where it first appeared
+                    if not isWayland():
+                        self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                        self.dragWindow.Show()
                     self.dragged = True
                     self.dragMotionTrigger = self.dragMotionTrail
                 else:

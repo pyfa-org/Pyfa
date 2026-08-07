@@ -1,4 +1,22 @@
+import os
+
 import wx
+
+
+def isWayland():
+    """
+    Whether we are drawing through wayland rather than X.
+
+    Worth knowing because wayland does not let a client place its own windows on screen, so
+    anything which relies on positioning a window under the cursor cannot work there.
+    """
+    if 'wxGTK' not in wx.PlatformInfo:
+        return False
+    # an explicit choice wins, including "x11" while sitting in a wayland session
+    backend = os.environ.get('GDK_BACKEND', '')
+    if backend:
+        return backend.split(',')[0].strip().lower() == 'wayland'
+    return bool(os.environ.get('WAYLAND_DISPLAY'))
 
 
 def YesNoDialog(question='Are you sure you want to do this?', caption='Yes or no?'):
