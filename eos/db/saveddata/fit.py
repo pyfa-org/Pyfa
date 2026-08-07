@@ -158,7 +158,7 @@ projectedFitSourceRel = relationship(
    ProjectedFit,
    primaryjoin=projectedFits_table.c.sourceID == fits_table.c.ID,
    backref='source_fit',
-   collection_class=attribute_keyed_dict('victimID'),
+   collection_class=attribute_keyed_dict('victimID', ignore_unpopulated_attribute=True),
    cascade='all, delete, delete-orphan')
 
 
@@ -166,7 +166,7 @@ boostedOntoRel = relationship(
    CommandFit,
    primaryjoin=commandFits_table.c.boosterID == fits_table.c.ID,
    backref='booster_fit',
-   collection_class=attribute_keyed_dict('boostedID'),
+   collection_class=attribute_keyed_dict('boostedID', ignore_unpopulated_attribute=True),
    cascade='all, delete, delete-orphan')
 
 mapper(es_Fit, fits_table,
