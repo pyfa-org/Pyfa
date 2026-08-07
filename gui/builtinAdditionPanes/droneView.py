@@ -49,15 +49,18 @@ class DroneViewDrop(wx.DropTarget):
         self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
+    def OnDrop(self, x, y):
+        # What is dragged travels through DragDropHelper rather than the wx data object, so act on
+        # the drop here: wxGTK under wayland regularly abandons the data negotiation and never
+        # reaches OnData, but it always gets this far
+        dragged_data = DragDropHelper.consume()
+        if dragged_data is None:
+            return False
+        self.dropFn(x, y, dragged_data.split(':'))
+        return True
+
     def OnData(self, x, y, t):
-        if self.GetData():
-            dragged_data = DragDropHelper.data
-
-            if dragged_data is None:
-                return t
-
-            data = dragged_data.split(':')
-            self.dropFn(x, y, data)
+        # the drop itself is handled in OnDrop
         return t
 
 
@@ -151,7 +154,7 @@ class DroneView(Display):
             dataStr = "drone:" + str(row)
             data.SetText(dataStr)
 
-            dropSource = wx.DropSource(self)
+            dropSource = wx.DropSource(self.getDragSourceWindow())
             dropSource.SetData(data)
             DragDropHelper.data = dataStr
             dropSource.DoDragDrop()

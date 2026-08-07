@@ -51,6 +51,16 @@ class Display(wx.ListCtrl):
         self.imageListBase = self.imageList.ImageCount
 
 
+    def getDragSourceWindow(self):
+        """
+        Window a drag should be started from.
+
+        wxGTK's list control does its mouse handling on an inner window, and Wayland only lets a
+        drag start from the surface which holds the pointer grab, so handing it the control
+        itself gets the drag silently refused. Returns the control itself where it is native.
+        """
+        return getattr(self, 'GetMainWindow', lambda: self)()
+
     # Override native HitTestSubItem (doesn't work as it should on GTK)
     # Source: ObjectListView
 

@@ -123,16 +123,18 @@ class FittingViewDrop(wx.DropTarget):
         self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
+    def OnDrop(self, x, y):
+        # What is dragged travels through DragDropHelper rather than the wx data object, so act on
+        # the drop here: wxGTK under wayland regularly abandons the data negotiation and never
+        # reaches OnData, but it always gets this far
+        dragged_data = DragDropHelper.consume()
+        if dragged_data is None:
+            return False
+        self.dropFn(x, y, dragged_data.split(':'))
+        return True
+
     def OnData(self, x, y, t):
-        if self.GetData():
-            dragged_data = DragDropHelper.data
-            # pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
-
-            if dragged_data is None:
-                return t
-
-            data = dragged_data.split(':')
-            self.dropFn(x, y, data)
+        # the drop itself is handled in OnDrop
         return t
 
 
@@ -272,7 +274,7 @@ class FittingView(d.Display):
         dataStr = "fitting:" + str(fit.modules.index(mod))
         data.SetText(dataStr)
 
-        dropSource = wx.DropSource(self)
+        dropSource = wx.DropSource(self.getDragSourceWindow())
         dropSource.SetData(data)
         DragDropHelper.data = dataStr
         dropSource.DoDragDrop()
@@ -511,7 +513,6 @@ class FittingView(d.Display):
         fit = sFit.getFit(self.activeFitID)
 
         dstRow, _ = self.HitTest((x, y))
-
         if dstRow != -1 and dstRow not in self.blanks:
             try:
                 mod1 = fit.modules[srcIdx]

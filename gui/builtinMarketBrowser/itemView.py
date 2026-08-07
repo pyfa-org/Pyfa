@@ -74,7 +74,7 @@ class ItemView(Display):
             pyfalog.debug("Dragging from market: " + dataStr)
 
             data.SetText(dataStr)
-            dropSource = wx.DropSource(self)
+            dropSource = wx.DropSource(self.getDragSourceWindow())
             dropSource.SetData(data)
             DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
