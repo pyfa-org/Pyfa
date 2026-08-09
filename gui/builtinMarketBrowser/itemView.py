@@ -23,7 +23,8 @@ class ItemView(Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
                     "attr:power,,,True",
-                    "attr:cpu,,,True"]
+                    "attr:cpu,,,True",
+                    "Price"]
 
     def __init__(self, parent, marketBrowser):
         Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
