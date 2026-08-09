@@ -12,6 +12,9 @@ from .gui.cargo.remove import GuiRemoveCargosCommand
 from .gui.commandFit.add import GuiAddCommandFitsCommand
 from .gui.commandFit.remove import GuiRemoveCommandFitsCommand
 from .gui.commandFit.toggleStates import GuiToggleCommandFitStatesCommand
+from .gui.commandLink.add import GuiAddCommandLinkCommand
+from .gui.commandLink.remove import GuiRemoveCommandLinksCommand
+from .gui.commandLink.toggleStates import GuiToggleCommandLinkStatesCommand
 from .gui.fitPilotSecurity import GuiChangeFitPilotSecurityCommand
 from .gui.fitRename import GuiRenameFitCommand
 from .gui.fitRestrictionToggle import GuiToggleFittingRestrictionsCommand
