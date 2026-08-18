@@ -141,6 +141,14 @@ class PFGeneralPref(PreferenceView):
                                                     wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowShipBrowserTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.cbShowOmegaIcons = wx.CheckBox(panel, wx.ID_ANY, _t("Show Omega icons for hulls and modules"),
+                                            wx.DefaultPosition, wx.DefaultSize, 0)
+        if "wxGTK" not in wx.PlatformInfo:
+            self.cbShowOmegaIcons.SetCursor(helpCursor)
+        self.cbShowOmegaIcons.SetToolTip(wx.ToolTip(
+                _t('Shows icons for items that require Omega clone access.')))
+        mainSizer.Add(self.cbShowOmegaIcons, 0, wx.ALL | wx.EXPAND, 5)
+
         self.cbReloadAll = wx.CheckBox(panel, wx.ID_ANY, _t("Change charge in all modules of the same type"),
                                        wx.DefaultPosition, wx.DefaultSize, 0)
         if "wxGTK" not in wx.PlatformInfo:
@@ -176,6 +184,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
+        self.cbShowOmegaIcons.SetValue(self.sFit.serviceFittingOptions["showOmegaIcons"])
         self.cbReloadAll.SetValue(self.sFit.serviceFittingOptions["ammoChangeAll"])
         self.cbExpMutants.SetValue(self.sFit.serviceFittingOptions["expandedMutantNames"])
         self.rbAddLabels.SetSelection(self.sFit.serviceFittingOptions["additionsLabels"])
@@ -192,6 +201,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
+        self.cbShowOmegaIcons.Bind(wx.EVT_CHECKBOX, self.onCBShowOmegaIcons)
         self.cbReloadAll.Bind(wx.EVT_CHECKBOX, self.onCBReloadAll)
         self.cbExpMutants.Bind(wx.EVT_CHECKBOX, self.onCBExpMutants)
 
@@ -272,6 +282,25 @@ class PFGeneralPref(PreferenceView):
 
     def onCBShowShipBrowserTooltip(self, event):
         self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowShipBrowserTooltip.GetValue()
+
+    def onCBShowOmegaIcons(self, event):
+        self.sFit.serviceFittingOptions["showOmegaIcons"] = self.cbShowOmegaIcons.GetValue()
+
+        from gui.builtinViews.fittingView import FittingView
+        for page in self.mainFrame.fitMultiSwitch._pages:
+            if isinstance(page, FittingView):
+                page.updateOmegaColumn()
+
+        iView = self.mainFrame.marketBrowser.itemView
+        iView.updateOmegaColumn()
+        if iView.active:
+            iView.update(iView.active)
+
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is not None:
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
+
+        event.Skip()
 
     def onCBReloadAll(self, event):
         self.sFit.serviceFittingOptions["ammoChangeAll"] = self.cbReloadAll.GetValue()

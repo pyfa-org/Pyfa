@@ -6,6 +6,7 @@ import gui.globalEvents as GE
 from config import slotColourMap, slotColourMapDark
 from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES, CHARGES_FOR_FIT
+from gui.builtinViewColumns.omega import Omega as OmegaCol
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
@@ -20,7 +21,8 @@ pyfalog = Logger(__name__)
 
 class ItemView(Display):
 
-    DEFAULT_COLS = ["Base Icon",
+    DEFAULT_COLS = ["Omega",
+                    "Base Icon",
                     "Base Name",
                     "attr:power,,,True",
                     "attr:cpu,,,True"]
@@ -58,6 +60,15 @@ class ItemView(Display):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
         self.active = []
+        self.updateOmegaColumn()
+
+    def updateOmegaColumn(self):
+        show = Fit.getInstance().serviceFittingOptions["showOmegaIcons"]
+        omega_idx = self.getColIndex(OmegaCol)
+        if show and omega_idx is None:
+            self.insertColumnBySpec(0, "Omega")
+        elif not show and omega_idx is not None:
+            self.removeColumn(self.activeColumns[omega_idx])
 
     def delaySearch(self, evt):
         sFit = Fit.getInstance()

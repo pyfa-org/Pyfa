@@ -86,6 +86,7 @@ from gui.builtinViewColumns import (  # noqa: E402, F401
     heat,
     maxRange,
     misc,
+    omega,
     price,
     projectionRange,
     propertyDisplay,

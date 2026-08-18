@@ -94,6 +94,7 @@ class Fit:
             "ammoChangeAll": False,
             "additionsLabels": 1,
             "expandedMutantNames": False,
+            "showOmegaIcons": False,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
