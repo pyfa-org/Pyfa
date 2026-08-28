@@ -11,12 +11,17 @@ from service.fit import Fit
 
 class GuiSplitLocalDroneStackCommand(wx.Command):
 
-    def __init__(self, fitID, position, amount):
+    def __init__(self, fitID, position, amount, deactivate=False):
+        """
+        Deactivate argument is only True when splitting drone stacks to match
+        ship's available bandwidth.
+        """
         wx.Command.__init__(self, True, 'Split Local Drone Stack')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.position = position
         self.amount = amount
+        self.deactivate = deactivate
 
     def Do(self):
         sFit = Fit.getInstance()
@@ -31,7 +36,8 @@ class GuiSplitLocalDroneStackCommand(wx.Command):
         commands.append(CalcRemoveLocalDroneCommand(
             fitID=self.fitID,
             position=self.position,
-            amount=self.amount))
+            amount=self.amount,
+            deactivate=self.deactivate))
         commands.append(CalcAddLocalDroneCommand(
             fitID=self.fitID,
             droneInfo=info,
