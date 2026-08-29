@@ -1320,7 +1320,8 @@ class Fit:
     def fighterBayUsed(self):
         amount = 0
         for f in self.fighters:
-            amount += f.item.attributes['volume'].value * f.amount
+            if not f.active:
+                amount += f.item.attributes['volume'].value * f.amount
 
         return amount
 
