@@ -1952,6 +1952,11 @@ class Fit:
             eos.db.saveddata_session.flush()
             eos.db.saveddata_session.refresh(fit)
 
+        # Both associations below are keyed by the copy's id, so it has to be in the database
+        # before they can be set up: until it is saved there is no id to key them on
+        eos.db.saveddata_session.add(fitCopy)
+        eos.db.saveddata_session.flush()
+
         for fit in self.commandFits:
             fitCopy.commandFitDict[fit.ID] = fit
             forceUpdateSavedata(fit)
