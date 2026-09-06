@@ -133,3 +133,6 @@ eve.db
 
 # vscode settings
 .vscode
+
+# Local launcher (not for upstream)
+run.ps1

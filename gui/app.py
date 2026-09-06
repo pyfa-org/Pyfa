@@ -4,7 +4,7 @@ import os
 import sys
 from logbook import Logger
 pyfalog = Logger(__name__)
-from service.settings import LocaleSettings
+from service.settings import LocaleSettings, ThemeSettings
 
 
 class PyfaApp(wx.App):
@@ -15,6 +15,9 @@ class PyfaApp(wx.App):
 
         # Name for my application.
         self.appName = "pyfa"
+
+        # Windows can only apply appearance before any windows exist.
+        self.ApplyAppearance()
 
         #------------
 
@@ -75,3 +78,24 @@ class PyfaApp(wx.App):
         else:
             pyfalog.debug("Cannot find langauge: " + lang)
             self.locale = wx.Locale(wx.Locale.FindLanguageInfo(LocaleSettings.defaults['locale']).Language)
+
+    def ApplyAppearance(self):
+        try:
+            appearance_map = {
+                ThemeSettings.SYSTEM: wx.App.Appearance.System,
+                ThemeSettings.LIGHT: wx.App.Appearance.Light,
+                ThemeSettings.DARK: wx.App.Appearance.Dark,
+            }
+        except AttributeError:
+            pyfalog.debug("wx.App.Appearance is not available; skipping theme setup")
+            return
+
+        mode = ThemeSettings.getInstance().get('appearance')
+        target = appearance_map.get(mode, wx.App.Appearance.System)
+        try:
+            result = self.SetAppearance(target)
+            pyfalog.info("Set appearance to {0} (result {1})", mode, result)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as e:
+            pyfalog.warning("Failed to set application appearance: {0}", e)

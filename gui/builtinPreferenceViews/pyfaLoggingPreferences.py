@@ -40,7 +40,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.stLogPath, 0, wx.ALL, 5)
         self.inputLogPath = wx.TextCtrl(panel, wx.ID_ANY, config.logPath, wx.DefaultPosition, wx.DefaultSize, 0)
         self.inputLogPath.SetEditable(False)
-        self.inputLogPath.SetBackgroundColour((200, 200, 200))
+        self.inputLogPath.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
         mainSizer.Add(self.inputLogPath, 0, wx.ALL | wx.EXPAND, 5)
 
         import requests
@@ -49,7 +49,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.certPath, 0, wx.ALL, 5)
         self.certPathCtrl = wx.TextCtrl(panel, wx.ID_ANY, requests.certs.where(), wx.DefaultPosition, wx.DefaultSize, 0)
         self.certPathCtrl.SetEditable(False)
-        self.certPathCtrl.SetBackgroundColour((200, 200, 200))
+        self.certPathCtrl.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
         mainSizer.Add(self.certPathCtrl, 0, wx.ALL | wx.EXPAND, 5)
 
         # Debug Logging
