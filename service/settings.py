@@ -600,3 +600,36 @@ class LocaleSettings:
         if key == 'locale' and value not in self.supported_languages():
             self.settings[key] = self.DEFAULT
         self.settings[key] = value
+
+
+class ThemeSettings:
+    _instance = None
+
+    SYSTEM = "system"
+    LIGHT = "light"
+    DARK = "dark"
+    VALUES = (SYSTEM, LIGHT, DARK)
+
+    defaults = {
+        'appearance': SYSTEM,
+    }
+
+    def __init__(self):
+        self.settings = SettingsProvider.getInstance().getSettings('pyfaTheme', self.defaults)
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = ThemeSettings()
+        return cls._instance
+
+    def get(self, key):
+        value = self.settings[key]
+        if key == 'appearance' and value not in self.VALUES:
+            return self.defaults['appearance']
+        return value
+
+    def set(self, key, value):
+        if key == 'appearance' and value not in self.VALUES:
+            value = self.defaults['appearance']
+        self.settings[key] = value

@@ -6,7 +6,7 @@ import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.fit import Fit
-from service.settings import SettingsProvider, LocaleSettings
+from service.settings import SettingsProvider, LocaleSettings, ThemeSettings
 import eos.config
 import wx.lib.agw.hyperlink as hl
 
@@ -23,6 +23,7 @@ class PFGeneralPref(PreferenceView):
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
                                                                            {"enabled": False, "pyfaOpenFits": []})
         self.localeSettings = LocaleSettings.getInstance()
+        self.themeSettings = ThemeSettings.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -94,6 +95,17 @@ class PFGeneralPref(PreferenceView):
                                   _t("Auto will use the same language pyfa uses if available, otherwise English"),
                                   wx.DefaultPosition,
                                   wx.DefaultSize, 0), 0, wx.LEFT, 15)
+
+        self.appearanceChoices = [ThemeSettings.SYSTEM, ThemeSettings.LIGHT, ThemeSettings.DARK]
+        self.rbAppearance = wx.RadioBox(panel, -1, _t("Appearance (requires restart)"), wx.DefaultPosition, wx.DefaultSize,
+                                        [_t("System"), _t("Light"), _t("Dark")], 1, wx.RA_SPECIFY_COLS)
+        mainSizer.Add(self.rbAppearance, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
+        appearance = self.themeSettings.get('appearance')
+        try:
+            self.rbAppearance.SetSelection(self.appearanceChoices.index(appearance))
+        except ValueError:
+            self.rbAppearance.SetSelection(0)
+        self.rbAppearance.Bind(wx.EVT_RADIOBOX, self.OnAppearanceChange)
 
         self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, _t("Use global character"), wx.DefaultPosition, wx.DefaultSize,
                                         0)
@@ -280,6 +292,10 @@ class PFGeneralPref(PreferenceView):
         self.sFit.serviceFittingOptions["expandedMutantNames"] = self.cbExpMutants.GetValue()
         fitID = self.mainFrame.getActiveFit()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
+
+    def OnAppearanceChange(self, event):
+        self.themeSettings.set('appearance', self.appearanceChoices[event.GetInt()])
+        event.Skip()
 
     def OnAddLabelsChange(self, event):
         self.sFit.serviceFittingOptions["additionsLabels"] = event.GetInt()
