@@ -104,10 +104,16 @@ class GraphControlPanel(wx.Panel):
         self.showLegendCb.SetValue(True)
         self.showLegendCb.Bind(wx.EVT_CHECKBOX, self.OnShowLegendChange)
         commonOptsSizer.Add(self.showLegendCb, 0, wx.TOP, 5)
+        # & Always show Y = 0 checkbox
         self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, _t('Always show Y = 0'), wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(True)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
         commonOptsSizer.Add(self.showY0Cb, 0, wx.EXPAND | wx.TOP, 5)
+        # & Combine Application checkbox
+        self.combineApplicationCb = wx.CheckBox(self, wx.ID_ANY, _t('Combine Application'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.combineApplicationCb.SetValue(False)
+        self.combineApplicationCb.Bind(wx.EVT_CHECKBOX, self.OnCombineApplication)
+        commonOptsSizer.Add(self.combineApplicationCb, 0, wx.EXPAND | wx.TOP, 5)
 
         optsSizer.Add(commonOptsSizer, 0, wx.EXPAND | wx.RIGHT, 10)
 
@@ -404,6 +410,10 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame.draw()
 
     def OnShowY0Change(self, event):
+        event.Skip()
+        self.graphFrame.draw()
+
+    def OnCombineApplication(self, event):
         event.Skip()
         self.graphFrame.draw()
 
