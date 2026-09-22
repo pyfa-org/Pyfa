@@ -18,11 +18,11 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, CheckConstraint, Boolean, DateTime
-from sqlalchemy.orm import relation, mapper
-from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.collections import attribute_keyed_dict
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.module import Module
 from eos.saveddata.fit import Fit
 from eos.saveddata.mutator import MutatorModule
@@ -48,9 +48,9 @@ modules_table = Table("modules", saveddata_meta,
 
 mapper(Module, modules_table,
        properties={
-           "owner": relation(Fit),
-           "mutators": relation(
+           "owner": relationship(Fit),
+           "mutators": relationship(
                    MutatorModule,
                    backref="item",
                    cascade="all,delete-orphan",
-                   collection_class=attribute_mapped_collection('attrID'))})
+                   collection_class=attribute_keyed_dict('attrID'))})

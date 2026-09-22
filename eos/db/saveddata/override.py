@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, DateTime
-from sqlalchemy.orm import mapper
+
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.override import Override
 
 overrides_table = Table("overrides", saveddata_meta,

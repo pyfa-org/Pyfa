@@ -20,9 +20,9 @@
 import datetime
 
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, Table
-from sqlalchemy.orm import mapper
 
-from eos.db import saveddata_meta
+
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.mutator import MutatorDrone
 
 mutatorDrones_table = Table(

@@ -110,7 +110,7 @@ if __name__ == "__main__":
     config.defPaths(options.savepath)
     config.defLogging()
 
-    with config.logging_setup.threadbound():
+    with config.logging_setup:
 
         pyfalog.info("Starting Pyfa")
         pyfalog.info(version_block)
@@ -136,7 +136,7 @@ if __name__ == "__main__":
         if not os.path.exists(config.savePath):
             os.mkdir(config.savePath)
 
-        eos.db.saveddata_meta.create_all()
+        eos.db.saveddata_meta.create_all(eos.db.saveddata_engine)
         from gui.app import PyfaApp
 
         # set title if it wasn't supplied by argument
@@ -144,6 +144,11 @@ if __name__ == "__main__":
             options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
         pyfa = PyfaApp(False)
+
+        # Apply the configured color theme before any window is created, so
+        # native controls are built with the right appearance from the start.
+        from gui.utils.dark import applyTheme
+        applyTheme(pyfa)
 
         from gui.mainFrame import MainFrame
 

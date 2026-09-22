@@ -42,7 +42,7 @@ from gui.utils.staticHelpers import DragDropHelper
 from gui.utils.dark import isDark
 from service.fit import Fit
 from service.market import Market
-from config import slotColourMap, slotColourMapDark, errColor, errColorDark
+from config import slotColorMap, slotColorMapDark, errColor, errColorDark
 from gui.fitCommands.helpers import getSimilarModPositions
 
 pyfalog = Logger(__name__)
@@ -123,16 +123,18 @@ class FittingViewDrop(wx.DropTarget):
         self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
+    def OnDrop(self, x, y):
+        # What is dragged travels through DragDropHelper rather than the wx data object, so act on
+        # the drop here: wxGTK under wayland regularly abandons the data negotiation and never
+        # reaches OnData, but it always gets this far
+        dragged_data = DragDropHelper.consume()
+        if dragged_data is None:
+            return False
+        self.dropFn(x, y, dragged_data.split(':'))
+        return True
+
     def OnData(self, x, y, t):
-        if self.GetData():
-            dragged_data = DragDropHelper.data
-            # pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
-
-            if dragged_data is None:
-                return t
-
-            data = dragged_data.split(':')
-            self.dropFn(x, y, data)
+        # the drop itself is handled in OnDrop
         return t
 
 
@@ -180,6 +182,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
         pyfalog.debug("------------------ new fitting view -------------------")
         pyfalog.debug(self)
@@ -271,7 +274,7 @@ class FittingView(d.Display):
         dataStr = "fitting:" + str(fit.modules.index(mod))
         data.SetText(dataStr)
 
-        dropSource = wx.DropSource(self)
+        dropSource = wx.DropSource(self.getDragSourceWindow())
         dropSource.SetData(data)
         DragDropHelper.data = dataStr
         dropSource.DoDragDrop()
@@ -510,7 +513,6 @@ class FittingView(d.Display):
         fit = sFit.getFit(self.activeFitID)
 
         dstRow, _ = self.HitTest((x, y))
-
         if dstRow != -1 and dstRow not in self.blanks:
             try:
                 mod1 = fit.modules[srcIdx]
@@ -745,11 +747,21 @@ class FittingView(d.Display):
         else:
             event.Skip()
 
-    def slotColour(self, slot):
+    def OnSysColorChanged(self, event):
+        mods = getattr(self, 'mods', None)
+        try:
+            if self.activeFitID is not None and mods:
+                self.refresh(mods)
+                self.Refresh()
+        except RuntimeError:
+            pass
+        event.Skip()
+
+    def slotColor(self, slot):
         if isDark():
-            return slotColourMapDark.get(slot) or self.GetBackgroundColour()
+            return slotColorMapDark.get(slot) or self.GetBackgroundColour()
         else:
-            return slotColourMap.get(slot) or self.GetBackgroundColour()
+            return slotColorMap.get(slot) or self.GetBackgroundColour()
 
     def refresh(self, stuff):
         """
@@ -796,7 +808,7 @@ class FittingView(d.Display):
                 if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
                     self.SetItemBackgroundColour(i, errColorDark if isDark() else errColor)
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
-                    self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
+                    self.SetItemBackgroundColour(i, self.slotColor(mod.slot))
 
             # Set rack face to bold
             if isinstance(mod, Rack) and \

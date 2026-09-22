@@ -22,6 +22,7 @@ import re
 from abc import ABCMeta, abstractmethod
 
 import wx
+from gui.utils.dark import errorTextColor
 
 from eos.utils.float import floatUnerr
 
@@ -79,7 +80,7 @@ class FloatBox(wx.TextCtrl):
         if self.isValid():
             self.SetForegroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
         else:
-            self.SetForegroundColour(wx.RED)
+            self.SetForegroundColour(errorTextColor())
 
     def isValid(self):
         if self._validator is None:

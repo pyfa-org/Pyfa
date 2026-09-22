@@ -28,7 +28,6 @@ from eos.saveddata.module import Module, Rack
 from eos.const import FittingModuleState as State_
 from gui.viewColumn import ViewColumn
 
-import gui.mainFrame
 
 
 class State(ViewColumn):
@@ -36,6 +35,9 @@ class State(ViewColumn):
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+
+        import gui.mainFrame
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.resizable = False
         self.size = 16
