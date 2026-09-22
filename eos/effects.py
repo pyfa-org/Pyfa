@@ -43715,6 +43715,18 @@ class Effect12975(BaseEffect):
             skill='Capital Jump Portal Generation', **kwargs)
 
 
+class Effect13021(BaseEffect):
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, container, context, projectionRange, **kwargs):
+        level = container.level if 'skill' in context else 1
+        fit.drones.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Advanced Drone Avionics'), 'damageMultiplier',
+            container.getModifiedItemAttr('damageMultiplierBonus') * level, **kwargs)
+
+
 class Effect13024(BaseEffect):
     """
     eliteBonusGunshipHybridTracking1

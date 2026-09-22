@@ -36,9 +36,11 @@ import gui.fitCommands as cmd
 from gui.fitCommands.helpers import droneStackLimit
 
 
-DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
-               'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
-               'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
+DRONE_ORDER = ('Light Scout Drones', 'Light Hybrid Drones',
+               'Medium Scout Drones', 'Medium Hybrid Drones',
+               'Heavy Attack Drones', 'Heavy Hybrid Drones',
+               'Sentry Drones', 'Combat Utility Drones', 'Electronic Warfare Drones',
+               'Logistic Drones', 'Mining Drones', 'Salvage Drones')
 
 
 class DroneViewDrop(wx.DropTarget):
