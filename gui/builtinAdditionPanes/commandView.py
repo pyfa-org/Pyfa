@@ -24,6 +24,7 @@ import gui.builtinAdditionPanes.droneView
 import gui.display as d
 import gui.fitCommands as cmd
 import gui.globalEvents as GE
+from eos.saveddata.commandLink import CommandLink
 from gui.builtinContextMenus.commandFitAdd import AddCommandFit
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
@@ -73,6 +74,8 @@ class CommandView(d.Display):
         d.Display.__init__(self, parent, style=wx.BORDER_NONE)
 
         self.lastFitId = None
+        self.fits = []
+        self.commandLinks = []
 
         self.mainFrame.Bind(GE.FIT_CHANGED, AddCommandFit.fitChanged)
         self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
@@ -113,8 +116,8 @@ class CommandView(d.Display):
         elif keycode == 65 and modifiers == wx.MOD_CONTROL:
             self.selectAll()
         elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and modifiers == wx.MOD_NONE:
-            commandFits = self.getSelectedCommandFits()
-            self.removeCommandFits(commandFits)
+            self.removeCommandFits(self.getSelectedCommandFits())
+            self.removeCommandLinks(self.getSelectedCommandLinks())
         event.Skip()
 
     def handleDrag(self, type, fitID):
@@ -159,13 +162,25 @@ class CommandView(d.Display):
 
     def refreshContents(self, fit):
         stuff = []
+        self.fits = []
+        self.commandLinks = []
         if fit is not None:
             self.fits = fit.commandFits[:]
             self.fits.sort(key=self.fitSort)
+            self.commandLinks = fit.commandLinks[:]
+            self.commandLinks.sort(key=lambda link: link.name)
             stuff.extend(self.fits)
+            stuff.extend(self.commandLinks)
         if not stuff:
             stuff = [DummyEntry(_t("Drag a fit to this area"))]
         self.update(stuff)
+
+    def getRowObject(self, row):
+        combined = self.fits + self.commandLinks
+        try:
+            return combined[row]
+        except IndexError:
+            return None
 
     def click(self, event):
         mainRow, _ = self.HitTest(event.Position)
@@ -173,20 +188,29 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                try:
-                    mainCommandFitID = self.fits[mainRow].ID
-                except IndexError:
+                mainObj = self.getRowObject(mainRow)
+                if isinstance(mainObj, CommandLink):
+                    mainLinkID = mainObj.ID
+                    linkIDs = [link.ID for link in self.getSelectedCommandLinks()]
+                    if mainLinkID not in linkIDs:
+                        linkIDs = [mainLinkID]
+                    self.mainFrame.command.Submit(cmd.GuiToggleCommandLinkStatesCommand(
+                        fitID=fitID,
+                        mainLinkID=mainLinkID,
+                        linkIDs=linkIDs))
                     return
-                commandFitIDs = []
-                for commandFit in self.getSelectedCommandFits():
-                    commandFitIDs.append(commandFit.ID)
-                if mainCommandFitID not in commandFitIDs:
-                    commandFitIDs = [mainCommandFitID]
-                self.mainFrame.command.Submit(cmd.GuiToggleCommandFitStatesCommand(
-                    fitID=fitID,
-                    mainCommandFitID=mainCommandFitID,
-                    commandFitIDs=commandFitIDs))
-                return
+                elif mainObj is not None:
+                    mainCommandFitID = mainObj.ID
+                    commandFitIDs = []
+                    for commandFit in self.getSelectedCommandFits():
+                        commandFitIDs.append(commandFit.ID)
+                    if mainCommandFitID not in commandFitIDs:
+                        commandFitIDs = [mainCommandFitID]
+                    self.mainFrame.command.Submit(cmd.GuiToggleCommandFitStatesCommand(
+                        fitID=fitID,
+                        mainCommandFitID=mainCommandFitID,
+                        commandFitIDs=commandFitIDs))
+                    return
         event.Skip()
 
     def spawnMenu(self, event):
@@ -196,10 +220,9 @@ class CommandView(d.Display):
         selection = self.getSelectedCommandFits()
         mainCommandFit = None
         if clickedPos != -1:
-            try:
-                mainCommandFit = self.fits[clickedPos]
-            except IndexError:
-                pass
+            obj = self.getRowObject(clickedPos)
+            if not isinstance(obj, CommandLink):
+                mainCommandFit = obj
         contexts = []
         if mainCommandFit is not None:
             contexts.append(('commandFit', _t('Command Fit')))
@@ -211,29 +234,46 @@ class CommandView(d.Display):
     def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
-            try:
-                commandFit = self.fits[row]
-            except IndexError:
-                return
-            self.removeCommandFits([commandFit])
+            obj = self.getRowObject(row)
+            if isinstance(obj, CommandLink):
+                self.removeCommandLinks([obj])
+            elif obj is not None:
+                self.removeCommandFits([obj])
 
     def removeCommandFits(self, commandFits):
+        if not commandFits:
+            return
         fitID = self.mainFrame.getActiveFit()
         commandFitIDs = []
         for commandFit in commandFits:
             if commandFit in self.fits:
                 commandFitIDs.append(commandFit.ID)
+        if not commandFitIDs:
+            return
         self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(fitID=fitID, commandFitIDs=commandFitIDs))
 
+    def removeCommandLinks(self, commandLinks):
+        if not commandLinks:
+            return
+        fitID = self.mainFrame.getActiveFit()
+        linkIDs = [link.ID for link in commandLinks if link in self.commandLinks]
+        if not linkIDs:
+            return
+        self.mainFrame.command.Submit(cmd.GuiRemoveCommandLinksCommand(fitID=fitID, linkIDs=linkIDs))
+
     def getSelectedCommandFits(self):
-        commandFits = []
+        return [obj for obj in self.getSelectedRowObjects() if not isinstance(obj, CommandLink)]
+
+    def getSelectedCommandLinks(self):
+        return [obj for obj in self.getSelectedRowObjects() if isinstance(obj, CommandLink)]
+
+    def getSelectedRowObjects(self):
+        objs = []
         for row in self.getSelectedRows():
-            try:
-                commandFit = self.fits[row]
-            except IndexError:
-                continue
-            commandFits.append(commandFit)
-        return commandFits
+            obj = self.getRowObject(row)
+            if obj is not None:
+                objs.append(obj)
+        return objs
 
     # Context menu handlers
     def addFit(self, fit):
@@ -262,17 +302,20 @@ class CommandView(d.Display):
         if fit is None:
             return None
         opt = sFit.serviceFittingOptions["additionsLabels"]
-        # Amount of active command fits
+        # Amount of active command fits and links
         if opt == 1:
             amount = 0
             for commandFit in fit.commandFits:
                 info = commandFit.getCommandInfo(fitID)
                 if info is not None and info.active:
                     amount += 1
+            for commandLink in fit.commandLinks:
+                if commandLink.active:
+                    amount += 1
             return ' ({})'.format(amount) if amount else None
-        # Total amount of command fits
+        # Total amount of command fits and links
         elif opt == 2:
-            amount = len(fit.commandFits)
+            amount = len(fit.commandFits) + len(fit.commandLinks)
             return ' ({})'.format(amount) if amount else None
         else:
             return None

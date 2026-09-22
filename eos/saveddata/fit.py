@@ -603,6 +603,13 @@ class Fit:
     def addProjectedEcm(self, strength):
         self.__ecmProjectedList.append(strength)
 
+    def __applyCommandLinks(self):
+        # Generic links inject their buffs into commandBonuses, same path as real command fits
+        from eos.saveddata.commandLink import applyCommandLinkToFit
+        for link in self.commandLinks:
+            if link.active:
+                applyCommandLinkToFit(self, link)
+
     def __runCommandBoosts(self, runTime="normal"):
         pyfalog.debug("Applying gang boosts for {0}", repr(self))
         for warfareBuffID in list(self.commandBonuses.keys()):
@@ -1032,6 +1039,10 @@ class Fit:
                     continue
 
                 commandInfo.booster_fit.calculateModifiedAttributes(self, CalcType.COMMAND)
+
+        # Apply generic command links
+        if type != CalcType.COMMAND and self.commandLinks and not self.__calculated:
+            self.__applyCommandLinks()
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
@@ -1969,6 +1980,11 @@ class Fit:
             copyProjectionInfo.amount = originalProjectionInfo.amount
             copyProjectionInfo.projectionRange = originalProjectionInfo.projectionRange
             forceUpdateSavedata(fit)
+
+        # Generic command links are owned rows, copy directly
+        from eos.saveddata.commandLink import CommandLink
+        for link in self.commandLinks:
+            fitCopy.commandLinks.append(CommandLink(link.linkType, link.strength, link.mindlink, link.active))
 
         return fitCopy
 
