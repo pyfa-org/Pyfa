@@ -138,7 +138,8 @@ class Effect10(BaseEffect):
 
     Used by:
     Celestials from group: Destructible Effect Beacon (10 of 10)
-    Drones from group: Combat Drone (98 of 98)
+    Drones from group: Combat Drone (80 of 80)
+    Drones from group: Hybrid Drone (18 of 18)
     Modules from group: Energy Weapon (216 of 220)
     Celestial: BH Sentry Gun
     Celestial: EDENCOM Stockpile Non-Interactable (Do not translate)
@@ -1005,7 +1006,6 @@ class Effect271(BaseEffect):
 
     Used by:
     Implants named like: Halcyon G Booster (5 of 5)
-    Implants named like: Haven Booster (2 of 2)
     Implants named like: grade Amulet (15 of 18)
     Modules named like: Trimark Armor Pump (8 of 8)
     Implant: Low-grade Snake Epsilon
@@ -1141,7 +1141,6 @@ class Effect298(BaseEffect):
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Sooth Sayer Booster (4 of 4)
-    Implants named like: Strokar Booster (2 of 2)
     Implants named like: Zainou 'Deadeye' Trajectory Analysis TA (6 of 6)
     Skill: Trajectory Analysis
     """
@@ -1202,7 +1201,6 @@ class Effect392(BaseEffect):
     Used by:
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
     Implants named like: Festival only 'Rock' HH Dose (3 of 3)
-    Implants named like: Free Zone Booster (2 of 2)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
@@ -1228,7 +1226,6 @@ class Effect394(BaseEffect):
     Implants named like: Halcyon R Booster (5 of 5)
     Implants named like: Imperial Mobility Booster (3 of 3)
     Implants named like: Republic Mobility Booster (3 of 3)
-    Implants named like: Strokar Booster (2 of 2)
     Implants named like: grade Snake (16 of 18)
     Modules named like: Auxiliary Thrusters (8 of 8)
     Implant: AIR Overclocker Booster II
@@ -1257,7 +1254,6 @@ class Effect395(BaseEffect):
     Modules from group: Rig Anchor (4 of 4)
     Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
     Implants named like: Federation Mobility Booster (3 of 3)
-    Implants named like: Free Zone Booster (2 of 2)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: State Mobility Booster (3 of 3)
@@ -1265,7 +1261,6 @@ class Effect395(BaseEffect):
     Modules named like: Low Friction Nozzle Joints (8 of 8)
     Implant: AIR Agility Booster II
     Implant: AIR Overclocker Booster III
-    Implant: Cavalry Clash Booster
     Implant: Genolution Core Augmentation CA-4
     Implant: Quafe Zero Green Apple
     Implant: Starsi Blast! Classic
@@ -1368,11 +1363,9 @@ class Effect446(BaseEffect):
 
     Used by:
     Implants named like: Capsuleer Defense Augmentation Chip (3 of 3)
-    Implants named like: Crucible Booster (2 of 2)
     Implants named like: Festival only 'Rock' SH Dose (3 of 3)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Serenity Limited 'Hardshell' Dose (3 of 3)
-    Implants named like: Strokar Booster (2 of 2)
     Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
     Modules named like: Core Defense Field Extender (8 of 8)
     Implant: AIR Nirvana Booster II
@@ -1479,7 +1472,6 @@ class Effect504(BaseEffect):
     scoutDroneOperationDroneRangeBonusModAddDroneControlDistanceChar
 
     Used by:
-    Implants named like: Free Zone Booster (2 of 2)
     Implants named like: Halcyon Y Booster (5 of 5)
     Modules named like: Drone Control Range Augmentor (8 of 8)
     Skills named like: Drone Avionics (2 of 2)
@@ -1516,7 +1508,6 @@ class Effect507(BaseEffect):
     longRangeTargetingMaxTargetRangeBonusPostPercentMaxTargetRangeLocationShipGroupElectronic
 
     Used by:
-    Implants named like: Crucible Booster (2 of 2)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Imperial Electronics Booster (3 of 3)
@@ -2228,7 +2219,6 @@ class Effect699(BaseEffect):
     Implants named like: Republic Electronics Booster (3 of 3)
     Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
     Modules named like: Targeting System Subcontroller (8 of 8)
-    Implant: Astrograph Clash Booster
     Implant: Quafe Zero Classic
     Implant: Starsi Blast! Orange
     Skill: Signature Analysis
@@ -2486,7 +2476,6 @@ class Effect784(BaseEffect):
     Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
     Modules named like: Rocket Fuel Cache Partition (8 of 8)
     Implant: Antipharmakon Toxot
-    Implant: Soaring Volatile Booster
     Skill: Missile Bombardment
     """
 
@@ -2578,10 +2567,8 @@ class Effect856(BaseEffect):
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Mobility Booster (12 of 12)
     Implants named like: Serenity Limited 'Overclocker' Dose (3 of 3)
-    Implants named like: Strokar Booster (2 of 2)
     Implants named like: grade Ascendancy (10 of 12)
     Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
-    Implant: Cavalry Clash Booster
     Implant: Eifyr and Co. 'Rogue' Agility ZhenNiu
     """
 
@@ -2714,7 +2701,6 @@ class Effect898(BaseEffect):
 
     Used by:
     Ship: Condor
-    Ship: Hawk
     """
 
     type = 'passive'
@@ -2938,7 +2924,6 @@ class Effect989(BaseEffect):
 
     Used by:
     Ship: Enyo
-    Ship: Harpy
     Ship: Ishkur
     """
 
@@ -3764,7 +3749,6 @@ class Effect1185(BaseEffect):
 
     Used by:
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: Haven Booster (2 of 2)
     Implants named like: X Instinct Booster (4 of 4)
     Implants named like: grade Halo (15 of 18)
     """
@@ -4759,7 +4743,7 @@ class Effect1588(BaseEffect):
     capitalLauncherSkillCitadelKineticDamage
 
     Used by:
-    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Implants named like: Zainou 'Snapshot' XL Torpedoes XT (6 of 6)
     Skill: XL Torpedoes
     """
 
@@ -4799,7 +4783,7 @@ class Effect1592(BaseEffect):
     capitalLauncherSkillCitadelEmDamage
 
     Used by:
-    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Implants named like: Zainou 'Snapshot' XL Torpedoes XT (6 of 6)
     Skill: XL Torpedoes
     """
 
@@ -4817,7 +4801,7 @@ class Effect1593(BaseEffect):
     capitalLauncherSkillCitadelExplosiveDamage
 
     Used by:
-    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Implants named like: Zainou 'Snapshot' XL Torpedoes XT (6 of 6)
     Skill: XL Torpedoes
     """
 
@@ -4835,7 +4819,7 @@ class Effect1594(BaseEffect):
     capitalLauncherSkillCitadelThermalDamage
 
     Used by:
-    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Implants named like: Zainou 'Snapshot' XL Torpedoes XT (6 of 6)
     Skill: XL Torpedoes
     """
 
@@ -5308,7 +5292,7 @@ class Effect1730(BaseEffect):
     droneDmgBonus
 
     Used by:
-    Skills from group: Drones (9 of 32)
+    Skills from group: Drones (9 of 33)
     """
 
     type = 'passive'
@@ -5967,7 +5951,7 @@ class Effect2000(BaseEffect):
     droneRangeBonusAdd
 
     Used by:
-    Modules from group: Drone Control Range Module (7 of 7)
+    Modules from group: Drone Control Range Module (8 of 8)
     """
 
     type = 'passive'
@@ -6932,7 +6916,6 @@ class Effect2298(BaseEffect):
     scanStrengthBonusPercentPassive
 
     Used by:
-    Implants named like: Crucible Booster (2 of 2)
     Implants named like: Federation Electronics Booster (3 of 3)
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon G Booster (5 of 5)
@@ -7087,7 +7070,6 @@ class Effect2432(BaseEffect):
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
     Implants named like: Halcyon Y Booster (5 of 5)
-    Implants named like: Haven Booster (2 of 2)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
@@ -8407,7 +8389,6 @@ class Effect2798(BaseEffect):
 
     Used by:
     Implants named like: Republic Hardpoint Booster (3 of 3)
-    Implants named like: Strokar Booster (2 of 2)
     Modules named like: Projectile Collision Accelerator (8 of 8)
     """
 
@@ -8461,7 +8442,6 @@ class Effect2802(BaseEffect):
 
     Used by:
     Implants named like: Federation Hardpoint Booster (3 of 3)
-    Implants named like: Free Zone Booster (2 of 2)
     Implants named like: State Hardpoint Booster (3 of 3)
     Modules named like: Hybrid Collision Accelerator (8 of 8)
     """
@@ -8481,7 +8461,6 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
-    Implants named like: Haven Booster (2 of 2)
     Implants named like: Imperial Hardpoint Booster (3 of 3)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
@@ -8593,7 +8572,6 @@ class Effect2847(BaseEffect):
     Implants named like: Halcyon G Booster (5 of 5)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
-    Implant: Zero-In Volatile Booster
     Skill: Motion Prediction
     """
 
@@ -8667,7 +8645,6 @@ class Effect2851(BaseEffect):
     missileDMGBonusPassive
 
     Used by:
-    Implants named like: Crucible Booster (2 of 2)
     Modules named like: Warhead Calefaction Catalyst (8 of 8)
     Implant: Guristas Damage Booster III
     """
@@ -9808,74 +9785,6 @@ class Effect3212(BaseEffect):
         level = container.level if 'skill' in context else 1
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Auto-Targeting Missiles'),
                                         'aoeCloudSize', container.getModifiedItemAttr('aoeCloudSizeBonus') * level, **kwargs)
-
-
-class Effect3234(BaseEffect):
-    """
-    shipRocketExplosiveDmgAF
-
-    Used by:
-    Ship: Vengeance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
-                                        'explosiveDamage', ship.getModifiedItemAttr('shipBonusAF'),
-                                        skill='Amarr Frigate', **kwargs)
-
-
-class Effect3235(BaseEffect):
-    """
-    shipRocketKineticDmgAF
-
-    Used by:
-    Ship: Vengeance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
-                                        'kineticDamage', ship.getModifiedItemAttr('shipBonusAF'),
-                                        skill='Amarr Frigate', **kwargs)
-
-
-class Effect3236(BaseEffect):
-    """
-    shipRocketThermalDmgAF
-
-    Used by:
-    Ship: Vengeance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
-                                        'thermalDamage', ship.getModifiedItemAttr('shipBonusAF'),
-                                        skill='Amarr Frigate', **kwargs)
-
-
-class Effect3237(BaseEffect):
-    """
-    shipRocketEmDmgAF
-
-    Used by:
-    Ship: Vengeance
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, projectionRange, **kwargs):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Rockets'),
-                                        'emDamage', ship.getModifiedItemAttr('shipBonusAF'),
-                                        skill='Amarr Frigate', **kwargs)
 
 
 class Effect3241(BaseEffect):
@@ -13555,7 +13464,6 @@ class Effect4162(BaseEffect):
     Implants named like: grade Virtue (10 of 12)
     Modules named like: Gravity Capacitor Upgrade (8 of 8)
     Implant: AIR Astro-Rangefinding II Booster
-    Implant: Astrograph Clash Booster
     Implant: Poteque 'Prospector' Sharpeye ZhenNiu
     Skill: Astrometric Rangefinding
     Skill: Astrometrics
@@ -16086,7 +15994,6 @@ class Effect4817(BaseEffect):
     Used by:
     Implants named like: Hardpoint Booster (12 of 12)
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
-    Implant: Upcycle Volatile Booster
     """
 
     type = 'passive'
@@ -16348,7 +16255,7 @@ class Effect4898(BaseEffect):
 
 class Effect4901(BaseEffect):
     """
-    shipMissileSpeedBonusAF
+    shipMissileSpeedBonusAF2
 
     Used by:
     Ship: Vengeance
@@ -16663,11 +16570,9 @@ class Effect4951(BaseEffect):
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
     Implants named like: Blue Pill Booster (5 of 5)
-    Implants named like: Crucible Booster (2 of 2)
     Implants named like: Halcyon R Booster (5 of 5)
     Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Thureo
-    Implant: Hallowed Volatile Booster
     """
 
     type = 'passive'
@@ -19697,12 +19602,9 @@ class Effect5364(BaseEffect):
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
     Implants named like: Exile Booster (4 of 4)
-    Implants named like: Free Zone Booster (2 of 2)
     Implants named like: Halcyon R Booster (5 of 5)
-    Implants named like: Haven Booster (2 of 2)
     Implant: AIR Hardshell Booster II
     Implant: Antipharmakon Kosybo
-    Implant: Tenacious Volatile Booster
     Implant: Wisdom of Gheinok
     """
 
@@ -19856,6 +19758,7 @@ class Effect5383(BaseEffect):
     shipMissileEMDamageCC
 
     Used by:
+    Ship: Cerberus
     Ship: Laelaps
     Ship: Orthrus
     Ship: Osprey Navy Issue
@@ -19874,6 +19777,7 @@ class Effect5384(BaseEffect):
     shipMissileThermDamageCC
 
     Used by:
+    Ship: Cerberus
     Ship: Laelaps
     Ship: Orthrus
     Ship: Osprey Navy Issue
@@ -19892,6 +19796,7 @@ class Effect5385(BaseEffect):
     shipMissileExpDamageCC
 
     Used by:
+    Ship: Cerberus
     Ship: Laelaps
     Ship: Orthrus
     Ship: Osprey Navy Issue
@@ -20227,7 +20132,6 @@ class Effect5433(BaseEffect):
     Used by:
     Implants named like: Halcyon B Booster (5 of 5)
     Modules named like: Memetic Algorithm Bank (8 of 8)
-    Implant: Coherence Volatile Booster
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
     Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
@@ -20251,7 +20155,6 @@ class Effect5437(BaseEffect):
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
     Modules named like: Emission Scope Sharpener (8 of 8)
-    Implant: Coherence Volatile Booster
     Implant: Poteque 'Prospector' Archaeology AC-905
     Implant: Poteque 'Prospector' Environmental Analysis EY-1005
     Skill: Archaeology
@@ -20353,7 +20256,6 @@ class Effect5459(BaseEffect):
     hackingVirusStrengthBonus
 
     Used by:
-    Implant: Coherence Volatile Booster
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
     Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     """
@@ -28110,7 +28012,7 @@ class Effect6555(BaseEffect):
     moduleBonusDroneNavigationComputer
 
     Used by:
-    Modules from group: Drone Navigation Computer (8 of 8)
+    Modules from group: Drone Navigation Computer (9 of 9)
     """
 
     type = 'passive'
@@ -28161,7 +28063,7 @@ class Effect6557(BaseEffect):
     moduleBonusOmnidirectionalTrackingLink
 
     Used by:
-    Modules from group: Drone Tracking Modules (10 of 10)
+    Modules from group: Drone Tracking Modules (11 of 11)
     """
 
     type = 'active'
@@ -28210,7 +28112,7 @@ class Effect6558(BaseEffect):
     moduleBonusOmnidirectionalTrackingLinkOverload
 
     Used by:
-    Modules from group: Drone Tracking Modules (10 of 10)
+    Modules from group: Drone Tracking Modules (11 of 11)
     """
 
     type = 'overheat'
@@ -28230,7 +28132,7 @@ class Effect6559(BaseEffect):
     moduleBonusOmnidirectionalTrackingEnhancer
 
     Used by:
-    Modules from group: Drone Tracking Enhancer (10 of 10)
+    Modules from group: Drone Tracking Enhancer (11 of 11)
     """
 
     type = 'passive'
@@ -35270,7 +35172,6 @@ class Effect7183(BaseEffect):
 
     Used by:
     Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
-    Implant: Requisition Volatile Booster
     """
 
     type = 'passive'
@@ -38077,23 +37978,6 @@ class Effect8323(BaseEffect):
             skill='Gallente Hauler', **kwargs)
 
 
-class Effect8328(BaseEffect):
-    """
-    relicVirusStrengthBonusPassive
-
-    Used by:
-    Implant: Coherence Volatile Booster
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.modules.filteredItemIncrease(
-            lambda mod: mod.item.requiresSkill('Archaeology'), 'virusStrength',
-            src.getModifiedItemAttr('virusStrengthBonus'), **kwargs)
-
-
 class Effect8360(BaseEffect):
     """
     shipBonusMissileReloadTimeGC2
@@ -40810,7 +40694,7 @@ class Effect12072(BaseEffect):
 
 class Effect12098(BaseEffect):
     """
-    jumpPortalPassengerBonusPercentSkill
+    jumpPortalPassengerBonusModAddSkill
 
     Used by:
     Ships from group: Carrier (4 of 4)
@@ -40822,8 +40706,8 @@ class Effect12098(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'conduitJumpPassengerCount', src.getModifiedItemAttr('conduitPassengerBonusPercent'),
+        fit.ship.increaseItemAttr(
+            'conduitJumpPassengerCount', src.getModifiedItemAttr('conduitPassengerBonusModAdd'),
             skill='Capital Jump Portal Generation', **kwargs)
 
 
@@ -43381,6 +43265,35 @@ class Effect12862(BaseEffect):
             'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level, **kwargs)
 
 
+class Effect12869(BaseEffect):
+    """
+    fighterGenericModifiers
+
+    Used by:
+    Ships from group: Carrier (4 of 4)
+    Ships from group: Command Carrier (4 of 4)
+    Ships from group: Supercarrier (6 of 6)
+    Ship: Caiman
+    Ship: Komodo
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in (
+                'fighterAbilityAttackMissileDamageMultiplier',
+                'fighterAbilityAttackTurretDamageMultiplier',
+                'fighterAbilityMissilesDamageMultiplier',
+        ):
+            fit.fighters.filteredItemMultiply(
+                lambda drone: drone.item.requiresSkill('Light Fighters'), attr,
+                ship.getModifiedItemAttr('fighterLightDamageMultiplier'), **kwargs)
+        fit.fighters.filteredItemMultiply(
+            lambda drone: drone.item.requiresSkill('Fighters'), 'maxVelocity',
+            ship.getModifiedItemAttr('fighterMaxVelocityMultiplier'), **kwargs)
+
+
 class Effect12872(BaseEffect):
     """
     shipBonusCarrierA3SupportFighterShieldBonusEffect
@@ -43753,21 +43666,6 @@ class Effect12916(BaseEffect):
         fit.ship.boostItemAttr('breacherPodDamageResistance', src.getModifiedItemAttr('breacherPodActivatedDamageReceivedPercentage'), **kwargs)
 
 
-class Effect12923(BaseEffect):
-    """
-    dScanRangeBonus
-
-    Used by:
-    Implant: SITREP Clash Booster
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr('maxDirectionalScanRange', src.getModifiedItemAttr('dScanRangeBonus'), **kwargs)
-
-
 class Effect12924(BaseEffect):
     """
     proximityDbuffTacticalDestroyerHPAddEffect
@@ -43798,3 +43696,90 @@ class Effect12940(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'capacitorNeed', module.getModifiedItemAttr('capNeedBonus'), **kwargs)
+
+
+class Effect12975(BaseEffect):
+    """
+    skillConduitPassengerBonusModAddPassive
+
+    Used by:
+    Skill: Capital Jump Portal Generation
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.ship.increaseItemAttr(
+            'conduitPassengerBonusModAdd', src.getModifiedItemAttr('conduitPassengerBonusModAddSkill'),
+            skill='Capital Jump Portal Generation', **kwargs)
+
+
+class Effect13024(BaseEffect):
+    """
+    eliteBonusGunshipHybridTracking1
+
+    Used by:
+    Ship: Harpy
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Hybrid Turret'), 'trackingSpeed',
+            ship.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates', **kwargs)
+
+
+class Effect13025(BaseEffect):
+    """
+    shipMissileDamageCF
+
+    Used by:
+    Ship: Hawk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), f'{dmgType}Damage',
+                ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
+
+
+class Effect13026(BaseEffect):
+    """
+    shipBonusDroneTrackingGF2
+
+    Used by:
+    Ship: Ishkur
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'), 'trackingSpeed',
+            ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate', **kwargs)
+
+
+class Effect13027(BaseEffect):
+    """
+    shipMissileDamageAF
+
+    Used by:
+    Ship: Vengeance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), f'{dmgType}Damage',
+                ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
