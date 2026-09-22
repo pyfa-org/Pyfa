@@ -43716,6 +43716,12 @@ class Effect12975(BaseEffect):
 
 
 class Effect13021(BaseEffect):
+    """
+    hybridDroneDamageMultiplierBonus
+
+    Used by:
+    Skill: Hybrid Drone Specialization
+    """
 
     type = 'passive'
 
