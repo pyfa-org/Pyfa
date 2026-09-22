@@ -8,7 +8,7 @@ AppDir:
     name: pyfa
     icon: pyfa
     version: '{{PYFA_VERSION}}'
-    exec: usr/bin/python3.11
+    exec: usr/bin/python3.14
     exec_args: "-s $APPDIR/opt/pyfa/pyfa.py $@"
 
   apt:
@@ -26,10 +26,15 @@ AppDir:
       key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf23c5a6cf475977595c89f51ba6932366a755776'
 
     include:
-      - python3.11
+      - python3.14
       # wx dependencies
       - libgtk-3-0
       - librsvg2-common  # GTK3 recommendation; without it, search in char editor crashes
+      - libcurl4
+      - libsdl2-2.0-0  # wxSound; unused by pyfa but still linked by libwx_gtk3u_core
+      - libsm6
+      - libxtst6
+      - libxxf86vm1
       # Unknown
       - libpcre2-32-0  # https://github.com/pyfa-org/Pyfa/issues/2572
       - libnotify4  # https://github.com/pyfa-org/Pyfa/issues/2598
@@ -40,14 +45,12 @@ AppDir:
       - ubuntu-mono
 
   after_bundle:
-    # Install python dependencies to bundled interpreter
+    # Install python dependencies
     - export PYTHONHOME="AppDir/usr"
-    - export PYTHONPATH="AppDir/usr/lib/python3.11/site-packages"
-    - curl -L https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    - AppDir/usr/bin/python3.11 get-pip.py
+    - export PYTHONPATH="AppDir/usr/lib/python3.14/site-packages"
     # Just to bundle certificates with AppImage
-    - AppDir/usr/bin/python3.11 -s -m pip install certifi
-    - AppDir/usr/bin/python3.11 -s -m pip --timeout 300 install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 -r requirements.txt
+    - uv pip install --python AppDir/usr/bin/python3.14 --target "$PYTHONPATH" certifi
+    - uv pip install --python AppDir/usr/bin/python3.14 --target "$PYTHONPATH" --find-links https://github.com/wxWidgets/Phoenix/releases/expanded_assets/wxPython-4.3.1 -r requirements-appimage.txt
 
   files:
     exclude:
@@ -58,12 +61,27 @@ AppDir:
       - usr/share/doc/*/NEWS.*
       - usr/share/doc/*/TODO.*
       - usr/include
+      - usr/share/bug
+      - usr/share/lintian
+      - usr/share/menu
+      - usr/share/info
+      - usr/lib/kernel
+      - usr/lib/mime
+      - usr/lib/systemd
+      - lib/systemd
+      - etc/init.d
+      - usr/bin/kernel-install
+      - usr/bin/perldoc
+      - usr/bin/cautious-launcher
+      - usr/sbin/tzconfig
+      - usr/sbin/update-icon-caches
+      - usr/share/glib-2.0/clean-up-unmanaged-libraries
 
   runtime:
     env:
       PYTHONHOME: '${APPDIR}/usr'
-      PYTHONPATH: '${APPDIR}/usr/lib/python3.11/site-packages'
-      SSL_CERT_FILE: '${APPDIR}/usr/local/lib/python3.11/dist-packages/certifi/cacert.pem'
+      PYTHONPATH: '${APPDIR}/usr/lib/python3.14/site-packages'
+      SSL_CERT_FILE: '${APPDIR}/usr/lib/python3.14/site-packages/certifi/cacert.pem'
       # Workaround for https://github.com/AppImageCrafters/appimage-builder/issues/336
       XDG_DATA_DIRS: '${APPDIR}/usr/local/share:${APPDIR}/usr/share:/usr/local/share:/usr/share:$XDG_DATA_DIRS'
 

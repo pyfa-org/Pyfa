@@ -35,7 +35,7 @@ if config.savePath and not os.path.exists(config.savePath):
 if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
     pyfalog.debug("Run database migration.")
-    db.saveddata_meta.create_all()
+    db.saveddata_meta.create_all(db.saveddata_engine)
     migration.update(db.saveddata_engine)
 
     # Finds and fixes database corruption issues.
@@ -55,5 +55,6 @@ else:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
     pyfalog.debug("Existing database not found, creating new database.")
-    db.saveddata_meta.create_all()
-    db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
+    db.saveddata_meta.create_all(db.saveddata_engine)
+    with db.saveddata_engine.begin() as connection:
+        connection.exec_driver_sql('PRAGMA user_version = {}'.format(migration.getAppVersion()))

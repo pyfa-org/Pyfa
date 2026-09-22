@@ -18,11 +18,11 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, Boolean, DateTime
-from sqlalchemy.orm import mapper, relation, synonym
-from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.orm import relationship, synonym
+from sqlalchemy.orm.collections import attribute_keyed_dict
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.drone import Drone
 from eos.saveddata.fit import Fit
 from eos.saveddata.mutator import MutatorDrone
@@ -44,9 +44,9 @@ drones_table = Table("drones", saveddata_meta,
 mapper(Drone, drones_table,
    properties={
        "ID": synonym("groupID"),
-       "owner": relation(Fit),
-       "mutators": relation(
+       "owner": relationship(Fit),
+       "mutators": relationship(
                MutatorDrone,
                backref="item",
                cascade="all,delete-orphan",
-               collection_class=attribute_mapped_collection('attrID'))})
+               collection_class=attribute_keyed_dict('attrID'))})

@@ -20,8 +20,8 @@
 import re
 import threading
 
-from sqlalchemy import MetaData, create_engine, event
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy import MetaData, create_engine, event, text
+from sqlalchemy.orm import registry, sessionmaker, scoped_session
 
 from . import migration
 from eos import config
@@ -62,7 +62,6 @@ def create_functions(dbapi_connection, connection_record):
 
 
 gamedata_meta = MetaData()
-gamedata_meta.bind = gamedata_engine
 GamedataSession = scoped_session(sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False))
 gamedata_session = GamedataSession()
 
@@ -81,10 +80,10 @@ pyfalog.debug('Getting gamedata version')
 # game db because we haven't reached gamedata_meta.create_all()
 try:
     config.gamedata_version = gamedata_session.execute(
-            "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
+            text("SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'")
     ).fetchone()[0]
     config.gamedata_date = gamedata_session.execute(
-        "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'dump_time'"
+        text("SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'dump_time'")
     ).fetchone()[0]
 except (KeyboardInterrupt, SystemExit):
     raise
@@ -103,10 +102,13 @@ if saveddata_connectionstring is not None:
         saveddata_engine = create_engine(saveddata_connectionstring, echo=config.debug)
 
     saveddata_meta = MetaData()
-    saveddata_meta.bind = saveddata_engine
     saveddata_session = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)()
 else:
     saveddata_meta = None
+
+# a "hack" to use legacy schema declaration - now need to go explicitly through registry
+mapper_registry = registry()
+mapper = mapper_registry.map_imperatively
 
 # Lock controlling any changes introduced to session
 sd_lock = threading.RLock()
@@ -129,7 +131,7 @@ from eos.db.saveddata.queries import *
 
 # If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":
-    saveddata_meta.create_all()
+    saveddata_meta.create_all(saveddata_engine)
     pyfalog.info("Running database out of memory.")
 
 

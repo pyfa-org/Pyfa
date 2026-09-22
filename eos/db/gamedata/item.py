@@ -19,10 +19,10 @@
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Table
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import backref, deferred, mapper, relation, synonym
-from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.orm import backref, deferred, relationship, synonym
+from sqlalchemy.orm.collections import attribute_keyed_dict
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table
 from eos.db.gamedata.effect import typeeffects_table
 from eos.gamedata import Attribute, DynamicItem, Effect, Group, Item, Traits, MetaGroup
@@ -51,20 +51,20 @@ items_table = Table("invtypes", gamedata_meta,
 from .traits import traits_table  # noqa
 
 props = {
-           "group": relation(Group, backref=backref("items", cascade="all,delete")),
-           "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
-           "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
-           "metaGroup": relation(MetaGroup, backref=backref("items", cascade="all,delete")),
-           "varParent": relation(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
+           "group": relationship(Group, backref=backref("items", cascade="all,delete")),
+           "_Item__attributes": relationship(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_keyed_dict('name')),
+           "effects": relationship(Effect, secondary=typeeffects_table, collection_class=attribute_keyed_dict('name')),
+           "metaGroup": relationship(MetaGroup, backref=backref("items", cascade="all,delete")),
+           "varParent": relationship(Item, backref=backref("varChildren", cascade="all,delete"), remote_side=items_table.c.typeID),
            "ID": synonym("typeID"),
            "name": synonym("typeName{}".format(eos.config.lang)),
            "description" : synonym("_description{}".format(eos.config.lang)),
-           "traits": relation(
+           "traits": relationship(
                Traits,
                primaryjoin=traits_table.c.typeID == items_table.c.typeID,
                uselist=False
            ),
-           "mutaplasmids": relation(
+           "mutaplasmids": relationship(
                DynamicItem,
                primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
                secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,

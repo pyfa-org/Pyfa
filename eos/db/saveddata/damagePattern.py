@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, String, DateTime
-from sqlalchemy.orm import mapper
+
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.damagePattern import DamagePattern
 
 damagePatterns_table = Table(

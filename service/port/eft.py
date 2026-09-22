@@ -166,9 +166,11 @@ def exportModules(modules, options, mutaData=None):
 def exportDrones(drones, exportMutants=True, mutaData=None, standAlone=True):
 
     # Same as in drone additions panel
-    DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
-                   'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
-                   'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
+    DRONE_ORDER = ('Light Scout Drones', 'Light Hybrid Drones',
+                   'Medium Scout Drones', 'Medium Hybrid Drones',
+                   'Heavy Attack Drones', 'Heavy Hybrid Drones',
+                   'Sentry Drones', 'Combat Utility Drones', 'Electronic Warfare Drones',
+                   'Logistic Drones', 'Mining Drones', 'Salvage Drones')
 
     def getDroneName(drone):
         if drone.isMutated:

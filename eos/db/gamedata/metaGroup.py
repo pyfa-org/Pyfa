@@ -18,9 +18,9 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, String
-from sqlalchemy.orm import mapper, synonym
+from sqlalchemy.orm import synonym
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import MetaGroup
 import eos.config
 

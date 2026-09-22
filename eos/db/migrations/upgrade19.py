@@ -3,6 +3,7 @@ Migration 19
 
 - Deletes broken references to fits from the commandFits table (see GH issue #844)
 """
+from sqlalchemy import text
 
 
 def upgrade(saveddata_engine):
@@ -14,5 +15,5 @@ def upgrade(saveddata_engine):
         OR boostedID NOT IN (select ID from fits)
         """
 
-    saveddata_session.execute(sql)
+    saveddata_session.execute(text(sql))
     saveddata_session.commit()
