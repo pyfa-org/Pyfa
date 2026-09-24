@@ -94,7 +94,7 @@ def update_db():
     import eos.config
 
     # Create the database tables
-    eos.db.gamedata_meta.create_all()
+    eos.db.gamedata_meta.create_all(eos.db.gamedata_engine)
 
     def _readData(minerName, jsonName, keyIdName=None):
         compiled_data = None
@@ -122,12 +122,36 @@ def update_db():
             data.append(row)
         return data
 
-    def _addRows(data, cls, fieldMap=None):
+    def _translate(translations, lang):
+        if not translations:
+            return None
+        text = translations.get('en-us' if lang == 'en' else lang)
+        if text is None:
+            text = translations.get('en-us')
+        return text
+
+    def _addRows(data, cls, fieldMap=None, translatedMap=None):
+        """
+        Translated fields come as {language code: text} maps; translatedMap tells which column
+        prefix each of them goes to (the language suffix is appended), or None to skip it.
+        """
         if fieldMap is None:
             fieldMap = {}
+        if translatedMap is None:
+            translatedMap = {}
         for row in data:
             instance = cls()
             for k, v in row.items():
+                if k in translatedMap:
+                    prefix = translatedMap[k]
+                    if prefix is None:
+                        continue
+                    for lang, suffix in eos.config.translation_mapping.items():
+                        text = _translate(v, lang)
+                        if isinstance(text, str):
+                            text = text.strip()
+                        setattr(instance, prefix + suffix, text)
+                    continue
                 if isinstance(v, str):
                     v = v.strip()
                 setattr(instance, fieldMap.get(k, k), v)
@@ -137,30 +161,31 @@ def update_db():
         print('processing evetypes')
         data = _readData('fsd_built', 'types', keyIdName='typeID')
         for row in data:
+            name = _translate(row['typeName'], 'en') or ''
             if (
                 # Apparently people really want Civilian modules available
-                (row['typeName_en-us'].startswith('Civilian') and "Shuttle" not in row['typeName_en-us'])
-                or row['typeName_en-us'] == 'Capsule'
+                (name.startswith('Civilian') and "Shuttle" not in name)
+                or name == 'Capsule'
                 or row['groupID'] == 4033  # destructible effect beacons
                 or row['typeID'] == 82941  # Metenox service
                 or row['typeID'] in (87164, 87177)  # Trig buff carriers
-                or re.match(r'AIR .+Booster.*', row['typeName_en-us'])
+                or re.match(r'AIR .+Booster.*', name)
             ):
                 row['published'] = True
             # Nearly useless and clutter search results too much
             elif (
-                row['typeName_en-us'].startswith('Limited Synth ')
-                or row['typeName_en-us'].startswith('Expired ')
-                or re.match(r'Grand Prix .*Booster', row['typeName_en-us'])
-                or re.match(r'Mining Blitz .+ Booster Dose .+', row['typeName_en-us'])
-                or row['typeName_en-us'].endswith(' Filament') and (
-                    "'Needlejack'" not in row['typeName_en-us'] and
-                    "'Devana'" not in row['typeName_en-us'] and
-                    "'Pochven'" not in row['typeName_en-us'] and
-                    "'Extraction'" not in row['typeName_en-us'] and
-                    "'Krai Veles'" not in row['typeName_en-us'] and
-                    "'Krai Perun'" not in row['typeName_en-us'] and
-                    "'Krai Svarog'" not in row['typeName_en-us']
+                name.startswith('Limited Synth ')
+                or name.startswith('Expired ')
+                or re.match(r'Grand Prix .*Booster', name)
+                or re.match(r'Mining Blitz .+ Booster Dose .+', name)
+                or name.endswith(' Filament') and (
+                    "'Needlejack'" not in name and
+                    "'Devana'" not in name and
+                    "'Pochven'" not in name and
+                    "'Extraction'" not in name and
+                    "'Krai Veles'" not in name and
+                    "'Krai Perun'" not in name and
+                    "'Krai Svarog'" not in name
                 )
             ):
                 row['published'] = False
@@ -179,34 +204,26 @@ def update_db():
                 row['typeID'] in (92609, 95625)
             ):
                 newData.append(row)
-        map = {'typeName_en-us': 'typeName', 'description_en-us': '_description'}
-        map.update({'description'+v: '_description'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
-        _addRows(newData, eos.gamedata.Item, fieldMap=map)
+        _addRows(newData, eos.gamedata.Item, translatedMap={'typeName': 'typeName', 'description': '_description'})
         return newData
 
     def processEveGroups():
         print('processing evegroups')
         data = _readData('fsd_built', 'groups', keyIdName='groupID')
-        map = {'groupName_en-us': 'name'}
-        map.update({'groupName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
-        _addRows(data, eos.gamedata.Group, fieldMap=map)
+        _addRows(data, eos.gamedata.Group, translatedMap={'groupName': 'name'})
         return data
 
     def processEveCategories():
         print('processing evecategories')
         data = _readData('fsd_built', 'categories', keyIdName='categoryID')
-        map = { 'categoryName_en-us': 'name' }
-        map.update({'categoryName'+v: 'name'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
-        _addRows(data, eos.gamedata.Category, fieldMap=map)
+        _addRows(data, eos.gamedata.Category, translatedMap={'categoryName': 'name'})
 
     def processDogmaAttributes():
         print('processing dogmaattributes')
         data = _readData('fsd_built', 'dogmaattributes', keyIdName='attributeID')
-        map = {
-            'displayName_en-us': 'displayName',
-            # 'tooltipDescription_en-us': 'tooltipDescription'
-        }
-        _addRows(data, eos.gamedata.AttributeInfo, fieldMap=map)
+        _addRows(data, eos.gamedata.AttributeInfo, translatedMap={
+            'displayName': 'displayName',
+            'tooltipDescription': None})
 
     def processDogmaTypeAttributes(eveTypesData):
         print('processing dogmatypeattributes')
@@ -262,7 +279,10 @@ def update_db():
     def processDogmaEffects():
         print('processing dogmaeffects')
         data = _readData('fsd_built', 'dogmaeffects', keyIdName='effectID')
-        _addRows(data, eos.gamedata.Effect, fieldMap={'resistanceAttributeID': 'resistanceID'})
+        _addRows(
+            data, eos.gamedata.Effect,
+            fieldMap={'resistanceAttributeID': 'resistanceID'},
+            translatedMap={'displayName': None, 'description': None})
 
     def processDogmaTypeEffects(eveTypesData):
         print('processing dogmatypeeffects')
@@ -281,28 +301,24 @@ def update_db():
     def processDogmaUnits():
         print('processing dogmaunits')
         data = _readData('fsd_built', 'dogmaunits', keyIdName='unitID')
-        _addRows(data, eos.gamedata.Unit, fieldMap={
-            'name': 'unitName',
-            'displayName_en-us': 'displayName'
-        })
+        _addRows(
+            data, eos.gamedata.Unit,
+            fieldMap={'name': 'unitName'},
+            translatedMap={'displayName': 'displayName', 'description': None})
 
     def processMarketGroups():
         print('processing marketgroups')
         data = _readData('fsd_built', 'marketgroups', keyIdName='marketGroupID')
-        map = {
-            'name_en-us': 'marketGroupName',
-            'description_en-us': '_description',
-        }
-        map.update({'name'+v: 'marketGroupName'+v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
-        map.update({'description' + v: '_description' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
-        _addRows(data, eos.gamedata.MarketGroup, fieldMap=map)
+        _addRows(data, eos.gamedata.MarketGroup, translatedMap={
+            'name': 'marketGroupName',
+            'description': '_description'})
 
     def processMetaGroups():
         print('processing metagroups')
         data = _readData('fsd_built', 'metagroups', keyIdName='metaGroupID')
-        map = {'name_en-us': 'metaGroupName'}
-        map.update({'name' + v: 'metaGroupName' + v for (k, v) in eos.config.translation_mapping.items() if k != 'en'})
-        _addRows(data, eos.gamedata.MetaGroup, fieldMap=map)
+        _addRows(data, eos.gamedata.MetaGroup, translatedMap={
+            'name': 'metaGroupName',
+            'description': None})
 
     def processCloneGrades():
         print('processing clonegrades')
@@ -361,10 +377,8 @@ def update_db():
                     'typeID': row['typeID'],
                 }
                 for (k, v) in eos.config.translation_mapping.items():
-                    if v == '':
-                        v = '_en-us'
                     typeLines = []
-                    traitData = row['traits{}'.format(v)]
+                    traitData = _translate(row['traits'], k)
                     for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
                         typeLines.append(convertSection(skillData))
                     if 'role' in traitData:
@@ -377,7 +391,7 @@ def update_db():
                 newData.append(newRow)
             except:
                 pass
-        _addRows(newData, eos.gamedata.Traits, fieldMap={'traitText_en-us': 'traitText'})
+        _addRows(newData, eos.gamedata.Traits)
 
     def processMetadata():
         print('processing metadata')
@@ -544,7 +558,7 @@ def update_db():
                 continue
             if row.get('groupID') not in implant_groups:
                 continue
-            typeName = row.get('typeName_en-us', '')
+            typeName = _translate(row['typeName'], 'en') or ''
             # Regular sets matching
             m = re.match(r'(?P<grade>(High|Mid|Low)-grade) (?P<set>\w+) (?P<implant>(Alpha|Beta|Gamma|Delta|Epsilon|Omega))', typeName, re.IGNORECASE)
             if m:
@@ -620,7 +634,9 @@ def update_db():
         dumpDatetime = epochDelta.days + epochDelta.seconds / (24 * 60 * 60)
         query = (
             eos.db.gamedata_session.query(eos.gamedata.Item)
-            .join(eos.gamedata.Item.group, eos.gamedata.Group.category, eos.gamedata.Attribute)
+            .join(eos.gamedata.Item.group)
+            .join(eos.gamedata.Group.category)
+            .join(eos.gamedata.Item._Item__attributes)
             .filter(and_(
                 eos.gamedata.Item.published,
                 eos.gamedata.Category.name == 'Implant',
@@ -942,7 +958,8 @@ def update_db():
     hardcodeFwProxyEffects()
 
     eos.db.gamedata_session.commit()
-    eos.db.gamedata_engine.execute('VACUUM')
+    with eos.db.gamedata_engine.begin() as connection:
+        connection.exec_driver_sql('VACUUM')
 
     print('done')
 

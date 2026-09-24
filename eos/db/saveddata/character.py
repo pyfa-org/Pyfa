@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Float, UniqueConstraint
-from sqlalchemy.orm import relation, mapper
+from sqlalchemy.orm import relationship
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.db.saveddata.implant import charImplants_table
 from eos.effectHandlerHelpers import HandledImplantList, HandledSsoCharacterList
 from eos.saveddata.implant import Implant
@@ -66,14 +66,14 @@ mapper(Character, characters_table,
            "_Character__alphaCloneID": characters_table.c.alphaCloneID,
            "savedName"               : characters_table.c.name,
            "_Character__secStatus": characters_table.c.secStatus,
-           "_Character__owner"       : relation(
+           "_Character__owner"       : relationship(
                    User,
                    backref="characters"),
-           "_Character__skills"      : relation(
+           "_Character__skills"      : relationship(
                    Skill,
                    backref="character",
                    cascade="all,delete-orphan"),
-           "_Character__implants"    : relation(
+           "_Character__implants"    : relationship(
                    Implant,
                    collection_class=HandledImplantList,
                    cascade='all,delete-orphan',
@@ -82,7 +82,7 @@ mapper(Character, characters_table,
                    primaryjoin=charImplants_table.c.charID == characters_table.c.ID,
                    secondaryjoin=charImplants_table.c.implantID == Implant.ID,
                    secondary=charImplants_table),
-           "_Character__ssoCharacters"    : relation(
+           "_Character__ssoCharacters"    : relationship(
                    SsoCharacter,
                    collection_class=HandledSsoCharacterList,
                    backref='characters',

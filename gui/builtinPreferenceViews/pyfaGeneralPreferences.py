@@ -6,7 +6,8 @@ import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.fit import Fit
-from service.settings import SettingsProvider, LocaleSettings
+from service.settings import SettingsProvider, LocaleSettings, ThemeSettings
+from gui.utils.dark import applyTheme
 import eos.config
 import wx.lib.agw.hyperlink as hl
 
@@ -38,13 +39,14 @@ class PFGeneralPref(PreferenceView):
         langBox = wx.StaticBoxSizer(wx.VERTICAL, panel, _t("Language (requires restart)"))
         mainSizer.Add(langBox, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.BOTTOM, 10)
 
+        langPanel = langBox.GetStaticBox()
         langSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.langChoices = sorted([langInfo for lang, langInfo in LocaleSettings.supported_languages().items()], key=lambda x: x.Description)
         pyfaLangsEnabled = bool(self.langChoices)
 
         if pyfaLangsEnabled:
-            self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("pyfa:"), wx.DefaultPosition, wx.DefaultSize, 0)
+            self.stLangLabel = wx.StaticText(langPanel, wx.ID_ANY, _t("pyfa:"), wx.DefaultPosition, wx.DefaultSize, 0)
             self.stLangLabel.Wrap(-1)
             langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -53,7 +55,7 @@ class PFGeneralPref(PreferenceView):
                 progress_display = (" ({}%)".format(progress['translated_progress']) if progress is not None else "")
                 return langInfo.Description + progress_display
 
-            self.chLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [langDisplay(x) for x in self.langChoices], 0)
+            self.chLang = wx.Choice(langPanel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [langDisplay(x) for x in self.langChoices], 0)
             self.chLang.Bind(wx.EVT_CHOICE, self.onLangSelection)
 
             selectedIndex = self.langChoices.index(next((x for x in self.langChoices if x.CanonicalName == self.localeSettings.get('locale')), None))
@@ -61,26 +63,27 @@ class PFGeneralPref(PreferenceView):
 
             langSizer.Add(self.chLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
             langBox.Add(langSizer)
-            langBox.Add(hl.HyperLinkCtrl(panel, -1,
+            langBox.Add(hl.HyperLinkCtrl(langPanel, -1,
                                          _t("Interested in helping with translations?"),
                                          URL="https://github.com/pyfa-org/Pyfa/blob/master/locale/README.md"
                                          ), 0, wx.LEFT, 15)
         else:
-            self.stLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("Pyfa language selection disabled. Please check if .mo files have been generated.\nRefer to locale/README.md for info."), wx.DefaultPosition, wx.DefaultSize, 0)
+            self.stLangLabel = wx.StaticText(langPanel, wx.ID_ANY, _t("Pyfa language selection disabled. Please check if .mo files have been generated.\nRefer to locale/README.md for info."), wx.DefaultPosition, wx.DefaultSize, 0)
             self.stLangLabel.Wrap(-1)
             langSizer.Add(self.stLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
             langBox.Add(langSizer)
 
         eosLangSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stEosLangLabel = wx.StaticText(panel, wx.ID_ANY, _t("EVE Data:"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stEosLangLabel = wx.StaticText(langPanel, wx.ID_ANY, _t("EVE Data:"), wx.DefaultPosition,
+                                            wx.DefaultSize, 0)
         self.stEosLangLabel.Wrap(-1)
         eosLangSizer.Add(self.stEosLangLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.eosLangChoices = [(LocaleSettings.defaults['eos_locale'], LocaleSettings.defaults['eos_locale'])] + \
                               sorted([(wx.Locale.FindLanguageInfo(x).Description, x) for x in eos.config.translation_mapping.keys()], key=lambda x: x[0])
 
-        self.chEosLang = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x[0] for x in self.eosLangChoices], 0)
+        self.chEosLang = wx.Choice(langPanel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [x[0] for x in self.eosLangChoices], 0)
         self.chEosLang.Bind(wx.EVT_CHOICE, self.onEosLangSelection)
 
         selectedIndex = self.eosLangChoices.index(
@@ -90,10 +93,30 @@ class PFGeneralPref(PreferenceView):
         eosLangSizer.Add(self.chEosLang, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         langBox.Add(eosLangSizer)
-        langBox.Add(wx.StaticText(panel, wx.ID_ANY,
+        langBox.Add(wx.StaticText(langPanel, wx.ID_ANY,
                                   _t("Auto will use the same language pyfa uses if available, otherwise English"),
                                   wx.DefaultPosition,
                                   wx.DefaultSize, 0), 0, wx.LEFT, 15)
+
+        self.themeSettings = ThemeSettings.getInstance()
+        themeSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.stTheme = wx.StaticText(panel, wx.ID_ANY, _t("Theme:"), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stTheme.Wrap(-1)
+        themeSizer.Add(self.stTheme, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.themeChoices = [
+            (ThemeSettings.SYSTEM, _t("Use system default")),
+            (ThemeSettings.BRIGHT, _t("Bright")),
+            (ThemeSettings.DARK, _t("Dark")),
+        ]
+        self.chTheme = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
+                                 [label for _, label in self.themeChoices], 0)
+        current = self.themeSettings.get("theme")
+        self.chTheme.SetSelection(next(
+            (i for i, (value, _) in enumerate(self.themeChoices) if value == current), 1))
+        self.chTheme.Bind(wx.EVT_CHOICE, self.onThemeSelection)
+        themeSizer.Add(self.chTheme, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(themeSizer, 0, wx.EXPAND, 0)
 
         self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, _t("Use global character"), wx.DefaultPosition, wx.DefaultSize,
                                         0)
@@ -214,6 +237,24 @@ class PFGeneralPref(PreferenceView):
         selection = self.chLang.GetSelection()
         locale = self.langChoices[selection]
         self.localeSettings.set('locale', locale.CanonicalName)
+
+    def onThemeSelection(self, event):
+        value = self.themeChoices[self.chTheme.GetSelection()][0]
+        self.themeSettings.set("theme", value)
+        applyTheme()
+        self.refreshThemedViews()
+
+    def refreshThemedViews(self):
+        """Redraw the views that pick their colors from gui.utils.dark.isDark()."""
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+
+        iView = self.mainFrame.marketBrowser.itemView
+        if iView.active:
+            iView.update(iView.active)
+
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
+        self.mainFrame.Refresh()
 
     def onEosLangSelection(self, event):
         selection = self.chEosLang.GetSelection()

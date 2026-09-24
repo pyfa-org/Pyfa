@@ -3,7 +3,7 @@ from logbook import Logger
 
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.globalEvents as GE
-from config import slotColourMap, slotColourMapDark
+from config import slotColorMap, slotColorMapDark
 from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES, CHARGES_FOR_FIT
 from gui.builtinViewColumns.omega import Omega as OmegaCol
@@ -55,6 +55,7 @@ class ItemView(Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
 
         # the "charges for active fitting" needs to listen to fitting changes
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
@@ -84,7 +85,7 @@ class ItemView(Display):
             pyfalog.debug("Dragging from market: " + dataStr)
 
             data.SetText(dataStr)
-            dropSource = wx.DropSource(self)
+            dropSource = wx.DropSource(self.getDragSourceWindow())
             dropSource.SetData(data)
             DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
@@ -297,9 +298,17 @@ class ItemView(Display):
             item.marketShortcut = i + 1
         Display.refresh(self, items)
 
+    def OnSysColorChanged(self, event):
+        try:
+            if self.active:
+                self.update(self.active)
+        except RuntimeError:
+            pass
+        event.Skip()
+
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
-            colorMap = slotColourMapDark if isDark() else slotColourMap
+            colorMap = slotColorMapDark if isDark() else slotColorMap
             return colorMap.get(Module.calculateSlot(item)) or self.GetBackgroundColour()
         else:
             return self.GetBackgroundColour()

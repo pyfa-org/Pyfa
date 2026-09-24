@@ -28,7 +28,6 @@ from eos.saveddata.module import Module
 from gui.viewColumn import ViewColumn
 from service.fit import Fit
 
-import gui.mainFrame
 
 class Thermodynamics():
     def __init__(self, fit):
@@ -137,6 +136,8 @@ class Heat(ViewColumn):
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+        import gui.mainFrame
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.resizable = False
         self.size = 54

@@ -478,7 +478,10 @@ class EfsPort:
             # Used to obtain a smaller subset of items while still containing examples of each group.
             T2_META_LEVEL = 5
             categoryID = getCategory(category).categoryID
-            result = gamedata_session.query(Item).join(ItemEffect, Group, Attribute).\
+            result = gamedata_session.query(Item) \
+                      .join(ItemEffect, ItemEffect.typeID == Item.typeID) \
+                      .join(Item.group) \
+                      .join(Item._Item__attributes).\
                       filter(
                           additionalFilter,
                           Item.metaLevel == T2_META_LEVEL,
