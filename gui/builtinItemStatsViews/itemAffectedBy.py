@@ -1,6 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
-from gui.utils.dark import bindBackgroundToTheme
+from gui.utils.dark import bindBackgroundToTheme, bindNativeTheme
 
 from eos.const import Operator
 from eos.saveddata.mode import Mode
@@ -57,6 +57,7 @@ class ItemAffectedBy(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.affectedBy = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+        bindNativeTheme(self.affectedBy)
         bindBackgroundToTheme(self.affectedBy)
         mainSizer.Add(self.affectedBy, 1, wx.ALL | wx.EXPAND, 0)
 

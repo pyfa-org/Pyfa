@@ -12,6 +12,7 @@ from eos.saveddata.cargo import Cargo
 import gui.mainFrame
 from gui.auxWindow import AuxiliaryFrame
 from gui.display import Display
+from gui.utils.dark import bindNativeTheme
 from gui.characterEditor import APIView
 from service.character import Character
 from service.esi import Esi
@@ -511,6 +512,7 @@ class FittingsTreeView(wx.Panel):
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
         tree = self.fittingsTreeCtrl = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        bindNativeTheme(tree)
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 0)
 
         self.root = tree.AddRoot("Fits")

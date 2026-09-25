@@ -2,7 +2,7 @@ import re
 
 # noinspection PyPackageRequirements
 import wx
-from gui.utils.dark import bindBackgroundToTheme
+from gui.utils.dark import bindBackgroundToTheme, bindNativeTheme
 # noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
@@ -48,6 +48,7 @@ class BaseImplantEditorView(wx.Panel):
         availableSizer.Add(self.itemView, 1, wx.EXPAND)
 
         self.availableImplantsTree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        bindNativeTheme(self.availableImplantsTree)
         root = self.availableRoot = self.availableImplantsTree.AddRoot("Available")
         self.availableImplantsImageList = wx.ImageList(16, 16)
         self.availableImplantsTree.SetImageList(self.availableImplantsImageList)

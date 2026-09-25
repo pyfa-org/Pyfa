@@ -1,3 +1,5 @@
+import ctypes
+
 import wx
 
 from logbook import Logger
@@ -102,3 +104,37 @@ def bindBackgroundToTheme(window, sysColor=wx.SYS_COLOUR_WINDOW):
 
 def borderColor():
     return themedColor((64, 64, 64), (191, 191, 191))
+
+
+def bindNativeTheme(window):
+    """Keep a native wxMSW control's visual style in step with the theme.
+
+    Windows draws parts of native controls itself, off the window's visual style rather than off
+    any color we set. wxWindowMSW::MSWGetDarkModeSupport() asks for the Explorer style, and no
+    control overrides that, so in dark mode the tree still gets the light style, whose expander
+    glyph for an opened item is nearly black and vanishes against the dark background. Asking for
+    the dark variant of the same style gets the light glyphs (and dark scrollbars) instead. The
+    style is only available from Windows 10, and elsewhere this does nothing.
+    """
+    if 'wxMSW' not in wx.PlatformInfo:
+        return
+
+    def apply():
+        handle = window.GetHandle()
+        if not handle:
+            return
+        theme = 'DarkMode_Explorer' if isDark() else 'Explorer'
+        try:
+            ctypes.windll.uxtheme.SetWindowTheme(ctypes.c_void_p(handle), ctypes.c_wchar_p(theme), None)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as e:
+            pyfalog.info('Could not apply the {0} visual style: {1}', theme, e)
+
+    def onSysColorChanged(event):
+        apply()
+        window.Refresh()
+        event.Skip()
+
+    apply()
+    window.Bind(wx.EVT_SYS_COLOUR_CHANGED, onSysColorChanged)
