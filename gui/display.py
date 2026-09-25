@@ -107,7 +107,7 @@ class Display(wx.ListCtrl):
 
     # noinspection PyPropertyAccess
     def addColumn(self, i, col):
-        self.activeColumns.append(col)
+        self.activeColumns.insert(i, col)
         info = wx.ListItem()
         info.SetMask(col.mask | wx.LIST_MASK_FORMAT)
         if col.imageId not in (None, -1):
@@ -145,7 +145,7 @@ class Display(wx.ListCtrl):
             col = ViewColumn.getColumn(colSpec)(self, None)
 
         self.addColumn(i, col)
-        self.columnsMinWidth.append(self.GetColumnWidth(i))
+        self.columnsMinWidth.insert(i, self.GetColumnWidth(i))
         self.invalidateColumnWidths()
 
     def invalidateColumnWidths(self):
