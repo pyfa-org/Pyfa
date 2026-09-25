@@ -395,12 +395,6 @@ class Market:
             "Civilian Scourge Light Missile"            : 920,  # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Small Remote Armor Repairer"      : 1059,  # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
             "Civilian Small Remote Shield Booster"      : 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
-            "Hardwiring - Zainou 'Sharpshooter' ZMX10"  : 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX100" : 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX11"  : 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX110" : 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Prototype Cerebral Accelerator"            : 2487,  # Implants & Boosters > Booster > Cerebral Accelerators
             "Prototype Iris Probe Launcher"             : 712,  # Ship Equipment > Scanning Equipment > Scan Probe Launchers
             "Standard Cerebral Accelerator"             : 2487,  # Implants & Boosters > Booster > Cerebral Accelerators
@@ -761,7 +755,7 @@ class Market:
         # Add hardcoded items to set
         if mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
             forceditms = set(self.getItem(itmn) for itmn in self.ITEMS_FORCEDMARKETGROUP_R[mg.ID])
-            baseitms.update(forceditms)
+            baseitms.update(i for i in forceditms if i is not None)
         if vars_:
             parents = set()
             for item in baseitms:
