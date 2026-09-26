@@ -9,6 +9,8 @@ from service.settings import ThemeSettings
 
 pyfalog = Logger(__name__)
 
+WM_THEMECHANGED = 0x031A
+
 
 def systemIsDark():
     """Whether the desktop itself is currently using a dark appearance."""
@@ -125,13 +127,21 @@ def bindNativeTheme(window):
             return
         theme = 'DarkMode_Explorer' if isDark() else 'Explorer'
         try:
-            ctypes.windll.uxtheme.SetWindowTheme(ctypes.c_void_p(handle), ctypes.c_wchar_p(theme), None)
+            result = ctypes.WinDLL('uxtheme').SetWindowTheme(
+                ctypes.c_void_p(handle), ctypes.c_wchar_p(theme), None)
+            if result:
+                pyfalog.warning('Requesting the {0} visual style failed with 0x{1:08x}', theme, result & 0xffffffff)
+                return
+            # native controls hold on to the style they opened and only pick up a new one when
+            # they are told it changed, which is what wx does after setting a theme itself
+            ctypes.WinDLL('user32').SendMessageW(ctypes.c_void_p(handle), WM_THEMECHANGED, 0, 0)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as e:
-            pyfalog.info('Could not apply the {0} visual style: {1}', theme, e)
+            pyfalog.warning('Could not apply the {0} visual style: {1}', theme, e)
 
     def onSysColorChanged(event):
+        # wx puts the light style back when the mode changes, so ours has to go on after it
         apply()
         window.Refresh()
         event.Skip()
