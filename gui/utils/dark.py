@@ -1,5 +1,3 @@
-import ctypes
-
 import wx
 
 from logbook import Logger
@@ -8,8 +6,6 @@ from service.settings import ThemeSettings
 
 
 pyfalog = Logger(__name__)
-
-WM_THEMECHANGED = 0x031A
 
 
 def systemIsDark():
@@ -106,45 +102,3 @@ def bindBackgroundToTheme(window, sysColor=wx.SYS_COLOUR_WINDOW):
 
 def borderColor():
     return themedColor((64, 64, 64), (191, 191, 191))
-
-
-def bindNativeTheme(window):
-    """Keep a native wxMSW control's visual style in step with the theme.
-
-    Windows draws parts of native controls itself, off the window's visual style rather than off
-    any color we set. wxWindowMSW::MSWGetDarkModeSupport() asks for the Explorer style, and no
-    control overrides that, so in dark mode the tree still gets the light style, whose expander
-    glyph for an opened item is nearly black and vanishes against the dark background. Asking for
-    the dark variant of the same style gets the light glyphs (and dark scrollbars) instead. The
-    style is only available from Windows 10, and elsewhere this does nothing.
-    """
-    if 'wxMSW' not in wx.PlatformInfo:
-        return
-
-    def apply():
-        handle = window.GetHandle()
-        if not handle:
-            return
-        theme = 'DarkMode_Explorer' if isDark() else 'Explorer'
-        try:
-            result = ctypes.WinDLL('uxtheme').SetWindowTheme(
-                ctypes.c_void_p(handle), ctypes.c_wchar_p(theme), None)
-            if result:
-                pyfalog.warning('Requesting the {0} visual style failed with 0x{1:08x}', theme, result & 0xffffffff)
-                return
-            # native controls hold on to the style they opened and only pick up a new one when
-            # they are told it changed, which is what wx does after setting a theme itself
-            ctypes.WinDLL('user32').SendMessageW(ctypes.c_void_p(handle), WM_THEMECHANGED, 0, 0)
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except Exception as e:
-            pyfalog.warning('Could not apply the {0} visual style: {1}', theme, e)
-
-    def onSysColorChanged(event):
-        # wx puts the light style back when the mode changes, so ours has to go on after it
-        apply()
-        window.Refresh()
-        event.Skip()
-
-    apply()
-    window.Bind(wx.EVT_SYS_COLOUR_CHANGED, onSysColorChanged)

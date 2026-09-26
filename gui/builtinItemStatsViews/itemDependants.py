@@ -2,7 +2,6 @@
 import wx
 
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.dark import bindNativeTheme
 
 _t = wx.GetTranslation
 
@@ -17,7 +16,6 @@ class ItemDependents(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.reqTree = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
-        bindNativeTheme(self.reqTree)
 
         mainSizer.Add(self.reqTree, 1, wx.ALL | wx.EXPAND, 0)
 
