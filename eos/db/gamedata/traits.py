@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Table, Integer, String, ForeignKey
-from sqlalchemy.orm import mapper, synonym
+from sqlalchemy.orm import synonym
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import Traits
 import eos.config
 

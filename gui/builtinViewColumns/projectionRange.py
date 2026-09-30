@@ -22,7 +22,6 @@
 import wx
 from logbook import Logger
 
-import gui.mainFrame
 from eos.saveddata.fit import Fit
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -38,6 +37,9 @@ class ProjectionRangeColumn(ViewColumn):
 
     def __init__(self, fittingView, params):
         super().__init__(fittingView)
+
+        import gui.mainFrame
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.imageId = fittingView.imageList.GetImageIndex(1391, "icons")
         self.bitmap = BitmapLoader.getBitmap(1391, "icons")

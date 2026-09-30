@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 from logbook import Logger
 
 from gui.auxWindow import AuxiliaryFrame
@@ -90,7 +91,7 @@ class ImplantSetEditorView(BaseImplantEditorView):
     def __init__(self, parent):
         BaseImplantEditorView.__init__(self, parent)
         if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+            bindBackgroundToTheme(self, wx.SYS_COLOUR_BTNFACE)
 
     def bindContext(self):
         self.Parent.entityEditor.Bind(wx.EVT_CHOICE, self.contextChanged)

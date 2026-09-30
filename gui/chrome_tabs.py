@@ -18,6 +18,7 @@ import math
 from functools import lru_cache
 
 import wx
+from gui.utils.dark import bindBackgroundToTheme, borderColor
 import wx.lib.newevent
 
 from gui.bitmap_loader import BitmapLoader
@@ -115,14 +116,17 @@ class ChromeNotebook(wx.Panel):
 
         if 'wxMSW' in wx.PlatformInfo:
             style = wx.DOUBLE_BORDER
+            pageBorder = 0
         else:
-            style = wx.SIMPLE_BORDER
-
-        back_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+            style = wx.BORDER_NONE
+            pageBorder = 1
 
         content_sizer = wx.BoxSizer(wx.VERTICAL)
         self.page_container = wx.Panel(self, style=style)
-        self.page_container.SetBackgroundColour(back_color)
+        self._page_inset = pageBorder
+        bindBackgroundToTheme(self.page_container)
+        if pageBorder:
+            self.page_container.Bind(wx.EVT_PAINT, self.OnPageContainerPaint)
         content_sizer.Add(self.page_container, 1, wx.EXPAND, 5)
 
         main_sizer.Add(tabs_sizer, 0, wx.EXPAND, 5)
@@ -288,11 +292,15 @@ class ChromeNotebook(wx.Panel):
         """
 
         ww, wh = self.page_container.GetSize()
-        bx, by = self.GetBorders()
-        ww -= bx * 4
-        wh -= by * 4
+        if self._page_inset:
+            ww -= self._page_inset * 2
+            wh -= self._page_inset * 2
+        else:
+            bx, by = self.GetBorders()
+            ww -= bx * 4
+            wh -= by * 4
         self._active_page.SetSize((max(ww, -1), max(wh, -1)))
-        self._active_page.SetPosition((0, 0))
+        self._active_page.SetPosition((self._page_inset, self._page_inset))
 
         if not resize_only:
             self._active_page.Show()
@@ -331,6 +339,13 @@ class ChromeNotebook(wx.Panel):
 
     def Refresh(self):
         self.tabs_container.Refresh()
+
+    def OnPageContainerPaint(self, event):
+        dc = wx.PaintDC(self.page_container)
+        dc.SetPen(wx.Pen(borderColor(), self._page_inset))
+        dc.SetBrush(wx.TRANSPARENT_BRUSH)
+        width, height = self.page_container.GetSize()
+        dc.DrawRectangle(0, 0, width, height)
 
     def OnSize(self, event):
         w, h = self.GetSize()
@@ -778,11 +793,11 @@ class _TabsContainer(wx.Panel):
         self.Bind(wx.EVT_MIDDLE_UP, self.OnMiddleUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SIZE, self.OnSize)
-        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
 
         self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
-    def OnSysColourChanged(self, event):
+    def OnSysColorChanged(self, event):
         for tab in self.tabs:
             tab.InitTab()
         self.Refresh()

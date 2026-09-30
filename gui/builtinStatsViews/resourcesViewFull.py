@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import warningTextColor
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.pyfa_gauge import PyGauge
@@ -303,7 +304,7 @@ class ResourcesViewFull(StatsView):
             # See issue #1877
             label.InvalidateBestSize()
 
-        colorWarn = wx.Colour(204, 51, 51)
+        colorWarn = warningTextColor()
         colorNormal = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         if usedTurretHardpoints > totalTurretHardpoints:

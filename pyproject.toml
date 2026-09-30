@@ -1,0 +1,75 @@
+[project]
+name = "pyfa"
+# "fake" version; tools read version.yml, so make sure to keep that one updated. This one ultimately doesn't matter
+version = "2.68.0"
+description = "Python fitting assistant, a ship fitting tool for EVE Online"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.12"
+
+# wxpython has special handling, to resolve conflicts between needs of having binary build in CI
+# and building from source locally (to link to proper system libs instead of ubuntu-specific ones)
+dependencies = [
+    "logbook==1.9.2",
+    "numpy==2.5.1",
+    "matplotlib==3.11.1",
+    "python-dateutil==2.9.0.post0",
+    "requests==2.34.2",
+    "sqlalchemy==2.0.51",
+    "cryptography==50.0.0",
+    "markdown2==2.5.5",
+    "packaging==26.2",
+    "roman==5.2",
+    "beautifulsoup4==4.15.0",
+    "pyyaml==6.0.3",
+    "python-jose==3.5.0",
+    "requests-cache==1.3.3",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.16.1",
+]
+packaging = [
+    "pyinstaller==6.21.0",
+]
+
+wx-binary = [
+    "wxPython==4.3.1+ubuntu2204 ; sys_platform == 'linux'",
+    "wxPython==4.3.1 ; sys_platform != 'linux'",
+]
+wx-source = [
+    "wxPython==4.3.1",
+]
+
+[tool.uv]
+package = false
+default-groups = ["dev", "wx-source"]
+conflicts = [[{ group = "wx-binary" }, { group = "wx-source" }]]
+
+[[tool.uv.index]]
+name = "wxpython-linux"
+url = "https://github.com/wxWidgets/Phoenix/releases/expanded_assets/wxPython-4.3.1"
+format = "flat"
+explicit = true
+
+[tool.uv.sources]
+wxpython = [{ index = "wxpython-linux", group = "wx-binary", marker = "sys_platform == 'linux'" }]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["E", "W", "F"]
+ignore = [
+    "E203",
+    "E731",
+    "F401",
+    "E722",
+    "E741",
+]
+
+[tool.ruff.format]
+# Not using formatting yet (and unsure if ever will)
+exclude = ["*"]

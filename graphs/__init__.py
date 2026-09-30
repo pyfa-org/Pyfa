@@ -18,5 +18,22 @@
 # =============================================================================
 
 
-from .gui.canvasPanel import graphFrame_enabled
-from .gui.frame import GraphFrame
+# One BIG HACK to resolve circular imports the easy way
+_LAZY = {
+    'GraphFrame': ('.gui.frame', 'GraphFrame'),
+    'graphFrame_enabled': ('.gui.canvasPanel', 'graphFrame_enabled')}
+
+
+def __getattr__(name):
+    try:
+        moduleName, attrName = _LAZY[name]
+    except KeyError:
+        raise AttributeError('module {!r} has no attribute {!r}'.format(__name__, name)) from None
+    from importlib import import_module
+    value = getattr(import_module(moduleName, __name__), attrName)
+    globals()[name] = value  # cache so __getattr__ runs once per name
+    return value
+
+
+def __dir__():
+    return sorted(set(globals()) | set(_LAZY))

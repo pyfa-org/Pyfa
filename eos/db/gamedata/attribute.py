@@ -19,9 +19,9 @@
 
 from sqlalchemy import Table, Column, Integer, Float, Unicode, ForeignKey, String, Boolean
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import relation, mapper, synonym, deferred
+from sqlalchemy.orm import relationship, synonym, deferred
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import Attribute, AttributeInfo, Unit
 import eos.config
 typeattributes_table = Table("dgmtypeattribs", gamedata_meta,
@@ -45,11 +45,11 @@ attributes_table = Table("dgmattribs", gamedata_meta,
                          Column("unitID", Integer, ForeignKey("dgmunits.unitID")))
 
 mapper(Attribute, typeattributes_table,
-       properties={"info": relation(AttributeInfo, lazy=False)})
+       properties={"info": relationship(AttributeInfo, lazy=False)})
 
 mapper(AttributeInfo, attributes_table,
        properties={
-           "unit"       : relation(Unit),
+           "unit"       : relationship(Unit),
            "ID"         : synonym("attributeID"),
            "name"       : synonym("attributeName"),
            "description": deferred(attributes_table.c.description),

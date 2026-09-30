@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Column, Float, Integer, Table, ForeignKey
-from sqlalchemy.orm import mapper, relation, synonym
+from sqlalchemy.orm import relationship, synonym
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import DynamicItem, DynamicItemAttribute, DynamicItemItem, Item
 
 from eos.gamedata import AttributeInfo
@@ -41,17 +41,17 @@ dynamicApplicable_table = Table("mutaplasmidItems", gamedata_meta,
                       Column("applicableTypeID", ForeignKey("invtypes.typeID"), primary_key=True),)
 
 mapper(DynamicItem, dynamic_table, properties={
-           "attributes": relation(DynamicItemAttribute),
-           "item": relation(Item, foreign_keys=[dynamic_table.c.typeID]),
-           "resultingItem": relation(Item, foreign_keys=[dynamic_table.c.resultingTypeID]),
+           "attributes": relationship(DynamicItemAttribute),
+           "item": relationship(Item, foreign_keys=[dynamic_table.c.typeID]),
+           "resultingItem": relationship(Item, foreign_keys=[dynamic_table.c.resultingTypeID]),
            "ID": synonym("typeID"),
 })
 
 mapper(DynamicItemAttribute, dynamicAttributes_table,
-       properties={"info": relation(AttributeInfo, lazy=False)})
+       properties={"info": relationship(AttributeInfo, lazy=False)})
 
 mapper(DynamicItemItem, dynamicApplicable_table, properties={
-           "mutaplasmid": relation(DynamicItem, viewonly=True),
+           "mutaplasmid": relationship(DynamicItem, viewonly=True),
        })
 
 DynamicItemAttribute.ID = association_proxy("info", "attributeID")

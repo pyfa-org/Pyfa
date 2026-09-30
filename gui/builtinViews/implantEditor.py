@@ -2,6 +2,7 @@ import re
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 # noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
@@ -32,7 +33,7 @@ class BaseImplantEditorView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        bindBackgroundToTheme(self)
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 

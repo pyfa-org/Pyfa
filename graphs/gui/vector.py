@@ -38,7 +38,7 @@ class VectorPicker(wx.Window):
         self._size = max(0, float(kwargs.pop('size', 50)))
         self._directionOnly = kwargs.pop('directionOnly', False)
         super().__init__(*args, **kwargs)
-        self._fontsize = max(1, float(kwargs.pop('fontsize', 8 / self.GetContentScaleFactor())))
+        self._fontsize = max(1, float(kwargs.pop('fontsize', 8 / self._drawScaleFactor())))
         self._font = wx.Font(round(self._fontsize), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self._angle = 0
         self.__length = 1
@@ -107,8 +107,13 @@ class VectorPicker(wx.Window):
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
 
+    def _drawScaleFactor(self):
+        if 'wxGTK' in wx.PlatformInfo:
+            return 1.0
+        return self.GetContentScaleFactor()
+
     def GetScaledClientSize(self):
-        return tuple([dim / self.GetContentScaleFactor() for dim in self.GetClientSize()])
+        return tuple([dim / self._drawScaleFactor() for dim in self.GetClientSize()])
 
     def Draw(self, dc):
         width, height = self.GetScaledClientSize()
@@ -116,21 +121,23 @@ class VectorPicker(wx.Window):
             return
         dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.BRUSHSTYLE_SOLID))
         dc.Clear()
-        dc.SetTextForeground(wx.Colour(0))
+        fg = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        dc.SetTextForeground(fg)
+        dc.SetPen(wx.Pen(fg))
         dc.SetFont(self._font)
 
         radius = min(width, height) / 2 - 2
-        dc.SetBrush(wx.WHITE_BRUSH)
+        dc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
         dc.DrawCircle(round(radius + 2), round(radius + 2), round(radius))
         a = math.radians(self._angle + self._offset)
         x = math.cos(a) * radius
         y = math.sin(a) * radius
         # See PR #2260 on why this is needed
-        pointRadius = 2 / self.GetContentScaleFactor() if 'wxGTK' in wx.PlatformInfo else 2
+        pointRadius = 2
         dc.DrawLine(
             round(radius + 2), round(radius + 2),
             round(radius + 2 + x * self._length), round(radius + 2 - y * self._length))
-        dc.SetBrush(wx.BLACK_BRUSH)
+        dc.SetBrush(wx.Brush(fg))
         dc.DrawCircle(round(radius + 2 + x * self._length), round(radius + 2 - y * self._length), round(pointRadius))
 
         if self._label:

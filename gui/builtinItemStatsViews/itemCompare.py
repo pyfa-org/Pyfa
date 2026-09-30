@@ -1,5 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import bindBackgroundToTheme, highlightColor
 
 from .helpers import AutoListCtrl
 from service.price import Price as ServicePrice
@@ -21,7 +22,7 @@ class ItemCompare(wx.Panel):
         sPrice.getPrices(items, self.UpdateList, fetchTimeout=90)
 
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        bindBackgroundToTheme(self, wx.SYS_COLOUR_BTNFACE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
@@ -36,7 +37,7 @@ class ItemCompare(wx.Panel):
         self.item = item
         self.items = sorted(items, key=defaultSort)
         self.attrs = {}
-        self.HighlightOn = wx.Colour(255, 255, 0, wx.ALPHA_OPAQUE)
+        self.HighlightOn = highlightColor()
         self.highlightedNames = []
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
@@ -91,6 +92,22 @@ class ItemCompare(wx.Panel):
         self.Bind(wx.EVT_LIST_COL_CLICK, self.SortCompareCols)
 
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.HighlightRow)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
+
+    def OnSysColorChanged(self, event):
+        self.HighlightOn = highlightColor()
+        wx.CallAfter(self.RepopulateForTheme)
+        event.Skip()
+
+    def RepopulateForTheme(self):
+        if not self:
+            return
+        sort, reverse = self.currentSort, self.sortReverse
+        self.Freeze()
+        self.paramList.ClearAll()
+        self.PopulateList()
+        self.currentSort, self.sortReverse = sort, reverse
+        self.Thaw()
 
     def HighlightRow(self, event):
         itemIdx = event.GetIndex()

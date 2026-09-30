@@ -87,7 +87,10 @@ class MutatedMixin:
                 attr = self.item.attributes[x.name]
                 id = attr.ID
                 if id not in self.mutators:  # create the mutator
-                    mutatorClass(self, attr, attr.value)
+                    # Start from the base item's value: some mutated types carry values of their own for
+                    # the mutated attributes, and those take precedence in the merged item attributes
+                    baseAttr = self.__baseItem.attributes.get(x.name)
+                    mutatorClass(self, attr, baseAttr.value if baseAttr is not None else attr.value)
             # @todo: remove attributes that are no longer part of the mutaplasmid.
 
     @property

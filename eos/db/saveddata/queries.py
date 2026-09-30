@@ -17,8 +17,6 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import sys
-
 from sqlalchemy.sql import and_
 from sqlalchemy import desc, select
 from sqlalchemy import func
@@ -152,13 +150,13 @@ def getUser(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                user = saveddata_session.query(User).get(lookfor)
+                user = saveddata_session.get(User, lookfor)
         else:
-            eager = processEager(eager)
+            eager = processEager(User, eager)
             with sd_lock:
                 user = saveddata_session.query(User).options(*eager).filter(User.ID == lookfor).first()
     elif isinstance(lookfor, str):
-        eager = processEager(eager)
+        eager = processEager(User, eager)
         with sd_lock:
             user = saveddata_session.query(User).options(*eager).filter(User.username == lookfor).first()
     else:
@@ -171,13 +169,13 @@ def getCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                character = saveddata_session.query(Character).get(lookfor)
+                character = saveddata_session.get(Character, lookfor)
         else:
-            eager = processEager(eager)
+            eager = processEager(Character, eager)
             with sd_lock:
                 character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
     elif isinstance(lookfor, str):
-        eager = processEager(eager)
+        eager = processEager(Character, eager)
         with sd_lock:
             character = saveddata_session.query(Character).options(*eager).filter(
                     Character.savedName == lookfor).first()
@@ -187,7 +185,7 @@ def getCharacter(lookfor, eager=None):
 
 
 def getCharacterList(eager=None):
-    eager = processEager(eager)
+    eager = processEager(Character, eager)
     with sd_lock:
         characters = saveddata_session.query(Character).options(*eager).all()
     return characters
@@ -195,7 +193,7 @@ def getCharacterList(eager=None):
 
 def getCharactersForUser(lookfor, eager=None):
     if isinstance(lookfor, int):
-        eager = processEager(eager)
+        eager = processEager(Character, eager)
         with sd_lock:
             characters = saveddata_session.query(Character).options(*eager).filter(Character.ownerID == lookfor).all()
     else:
@@ -208,9 +206,9 @@ def getFit(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                fit = saveddata_session.query(Fit).get(lookfor)
+                fit = saveddata_session.get(Fit, lookfor)
         else:
-            eager = processEager(eager)
+            eager = processEager(Fit, eager)
             with sd_lock:
                 fit = saveddata_session.query(Fit).options(*eager).filter(Fit.ID == lookfor).first()
     else:
@@ -237,7 +235,7 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
             filter = and_(filter, Fit.ownerID == ownerID)
 
         filter = processWhere(filter, where)
-        eager = processEager(eager)
+        eager = processEager(Fit, eager)
         with sd_lock:
             fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
     else:
@@ -247,9 +245,9 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
 
 
 def getRecentFits(ownerID=None, where=None, eager=None):
-    eager = processEager(eager)
+    eager = processEager(Fit, eager)
     with sd_lock:
-        q = select((
+        q = select(
             Fit.ID,
             Fit.shipID,
             Fit.name,
@@ -257,7 +255,7 @@ def getRecentFits(ownerID=None, where=None, eager=None):
             Fit.created,
             Fit.timestamp,
             Fit.notes
-        )).order_by(desc(Fit.modified), desc(Fit.timestamp)).limit(50)
+        ).order_by(desc(Fit.modified), desc(Fit.timestamp)).limit(50)
         fits = eos.db.saveddata_session.execute(q).fetchall()
 
     return fits
@@ -271,7 +269,7 @@ def getFitsWithModules(typeIDs, eager=None):
     if not hasattr(typeIDs, "__iter__"):
         typeIDs = (typeIDs,)
 
-    eager = processEager(eager)
+    eager = processEager(Fit, eager)
     with sd_lock:
         fits = removeInvalid(saveddata_session.query(Fit).join(Module).options(*eager).filter(Module.itemID.in_(typeIDs)).all())
 
@@ -311,7 +309,7 @@ def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
         filter = and_(filter, Fit.ownerID == ownerID)
 
     filter = processWhere(filter, where)
-    eager = processEager(eager)
+    eager = processEager(Fit, eager)
     with sd_lock:
         count = saveddata_session.query(Fit).options(*eager).filter(filter).count()
 
@@ -319,7 +317,7 @@ def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
 
 
 def getFitList(eager=None):
-    eager = processEager(eager)
+    eager = processEager(Fit, eager)
     with sd_lock:
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
 
@@ -328,7 +326,7 @@ def getFitList(eager=None):
 
 def getFitListLite():
     with sd_lock:
-        stmt = select([fits_table.c.ID, fits_table.c.name, fits_table.c.shipID])
+        stmt = select(fits_table.c.ID, fits_table.c.name, fits_table.c.shipID)
         data = eos.db.saveddata_session.execute(stmt).fetchall()
     fits = []
     for fitID, fitName, shipID in data:
@@ -341,7 +339,7 @@ def getFitListLite():
 def getPrice(typeID):
     if isinstance(typeID, int):
         with sd_lock:
-            price = saveddata_session.query(Price).get(typeID)
+            price = saveddata_session.get(Price, typeID)
     else:
         raise TypeError("Need integer as argument")
     return price
@@ -357,14 +355,14 @@ def clearPrices():
 def getMiscData(field):
     if isinstance(field, str):
         with sd_lock:
-            data = saveddata_session.query(MiscData).get(field)
+            data = saveddata_session.get(MiscData, field)
     else:
         raise TypeError("Need string as argument")
     return data
 
 
 def getDamagePatternList(eager=None):
-    eager = processEager(eager)
+    eager = processEager(DamagePattern, eager)
     with sd_lock:
         patterns = saveddata_session.query(DamagePattern).options(*eager).all()
     return patterns
@@ -378,7 +376,7 @@ def clearDamagePatterns():
 
 
 def getTargetProfileList(eager=None):
-    eager = processEager(eager)
+    eager = processEager(TargetProfile, eager)
     with sd_lock:
         patterns = saveddata_session.query(TargetProfile).options(*eager).all()
     return patterns
@@ -392,7 +390,7 @@ def clearTargetProfiles():
 
 
 def getImplantSetList(eager=None):
-    eager = processEager(eager)
+    eager = processEager(ImplantSet, eager)
     with sd_lock:
         sets = saveddata_session.query(ImplantSet).options(*eager).all()
     return sets
@@ -403,14 +401,14 @@ def getDamagePattern(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                pattern = saveddata_session.query(DamagePattern).get(lookfor)
+                pattern = saveddata_session.get(DamagePattern, lookfor)
         else:
-            eager = processEager(eager)
+            eager = processEager(DamagePattern, eager)
             with sd_lock:
                 pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
                         DamagePattern.ID == lookfor).first()
     elif isinstance(lookfor, str):
-        eager = processEager(eager)
+        eager = processEager(DamagePattern, eager)
         with sd_lock:
             pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
                     DamagePattern.rawName == lookfor).first()
@@ -424,14 +422,14 @@ def getTargetProfile(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                pattern = saveddata_session.query(TargetProfile).get(lookfor)
+                pattern = saveddata_session.get(TargetProfile, lookfor)
         else:
-            eager = processEager(eager)
+            eager = processEager(TargetProfile, eager)
             with sd_lock:
                 pattern = saveddata_session.query(TargetProfile).options(*eager).filter(
                     TargetProfile.ID == lookfor).first()
     elif isinstance(lookfor, str):
-        eager = processEager(eager)
+        eager = processEager(TargetProfile, eager)
         with sd_lock:
             pattern = saveddata_session.query(TargetProfile).options(*eager).filter(
                 TargetProfile.rawName == lookfor).first()
@@ -445,14 +443,14 @@ def getImplantSet(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                pattern = saveddata_session.query(ImplantSet).get(lookfor)
+                pattern = saveddata_session.get(ImplantSet, lookfor)
         else:
-            eager = processEager(eager)
+            eager = processEager(ImplantSet, eager)
             with sd_lock:
                 pattern = saveddata_session.query(ImplantSet).options(*eager).filter(
                     TargetProfile.ID == lookfor).first()
     elif isinstance(lookfor, str):
-        eager = processEager(eager)
+        eager = processEager(ImplantSet, eager)
         with sd_lock:
             pattern = saveddata_session.query(ImplantSet).options(*eager).filter(TargetProfile.name == lookfor).first()
     else:
@@ -468,7 +466,7 @@ def searchFits(nameLike, where=None, eager=None):
 
     # Add any extra components to the search to our where clause
     filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
-    eager = processEager(eager)
+    eager = processEager(Fit, eager)
     with sd_lock:
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).limit(100).all())
 
@@ -486,7 +484,7 @@ def getProjectedFits(fitID):
 
 
 def getSsoCharacters(clientHash, eager=None):
-    eager = processEager(eager)
+    eager = processEager(SsoCharacter, eager)
     with sd_lock:
         characters = saveddata_session.query(SsoCharacter).filter(SsoCharacter.client == clientHash).options(*eager).all()
     return characters
@@ -506,7 +504,7 @@ def getSsoCharacter(lookfor, clientHash, server=None, eager=None):
     else:
         raise TypeError("Need integer or string as argument")
 
-    eager = processEager(eager)
+    eager = processEager(SsoCharacter, eager)
     with sd_lock:
         character = saveddata_session.query(SsoCharacter).options(*eager).filter(filter).first()
 
@@ -567,8 +565,7 @@ def commit():
             raise
         except Exception:
             saveddata_session.rollback()
-            exc_info = sys.exc_info()
-            raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])
+            raise
 
 
 def flush():
@@ -579,5 +576,4 @@ def flush():
             raise
         except Exception:
             saveddata_session.rollback()
-            exc_info = sys.exc_info()
-            raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])
+            raise

@@ -43,6 +43,15 @@ class SettingsProvider:
     _instance = None
 
     @classmethod
+    def getBasePath(cls):
+        basePath = getattr(cls, 'BASE_PATH', None)
+        if not basePath and config.savePath:
+            basePath = cls.BASE_PATH = os.path.join(config.savePath, 'settings')
+        if basePath and not os.path.exists(basePath):
+            os.makedirs(basePath, exist_ok=True)
+        return basePath
+
+    @classmethod
     def getInstance(cls):
         if cls._instance is None:
             cls._instance = SettingsProvider()
@@ -59,8 +68,9 @@ class SettingsProvider:
         # NOTE: needed to change for tests
         # TODO: Write to memory with mmap -> https://docs.python.org/2/library/mmap.html
         settings_obj = self.settings.get(area)
-        if settings_obj is None:  # and hasattr(self, 'BASE_PATH'):
-            canonical_path = os.path.join(self.BASE_PATH, area) if hasattr(self, 'BASE_PATH') else ""
+        if settings_obj is None:
+            basePath = self.getBasePath()
+            canonical_path = os.path.join(basePath, area) if basePath else ""
             if not os.path.exists(canonical_path):  # path string or empty string.
                 info = {}
                 if defaults:
@@ -599,4 +609,38 @@ class LocaleSettings:
     def set(self, key, value):
         if key == 'locale' and value not in self.supported_languages():
             self.settings[key] = self.DEFAULT
+        self.settings[key] = value
+
+
+class ThemeSettings:
+    """Which color theme the application should use.
+
+    SYSTEM follows whatever the desktop reports via wxSystemAppearance; BRIGHT
+    and DARK override it. BRIGHT is the default so that existing installs keep
+    looking exactly as they did.
+    """
+
+    _instance = None
+
+    SYSTEM = 0
+    BRIGHT = 1
+    DARK = 2
+
+    defaults = {
+        'theme': BRIGHT,
+    }
+
+    def __init__(self):
+        self.settings = SettingsProvider.getInstance().getSettings('pyfaThemeSettings', self.defaults)
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = ThemeSettings()
+        return cls._instance
+
+    def get(self, key):
+        return self.settings[key]
+
+    def set(self, key, value):
         self.settings[key] = value

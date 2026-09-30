@@ -254,6 +254,7 @@ class SFBrowserItem(wx.Window):
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColorChanged)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
 
@@ -401,6 +402,11 @@ class SFBrowserItem(wx.Window):
             state = SB_ITEM_NORMAL
 
         return state
+
+    def OnSysColorChanged(self, event):
+        self.bkBitmap = None
+        self.Refresh()
+        event.Skip()
 
     def RenderBackground(self):
         rect = self.GetRect()

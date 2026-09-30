@@ -3,6 +3,7 @@ Migration 17
 
 - Moves all fleet boosters to the new schema
 """
+from sqlalchemy import text
 
 
 def upgrade(saveddata_engine):
@@ -17,15 +18,15 @@ def upgrade(saveddata_engine):
           JOIN gangs g on g.ID = w.gangID
           """
     try:
-        results = saveddata_session.execute(sql)
+        results = saveddata_session.execute(text(sql))
 
         inserts = []
 
         for row in results:
-            boosted = row["boostedFit"]
+            boosted = row.boostedFit
             types = ("squad", "wing", "gang")
             for x in types:
-                value = row["{}Boost".format(x)]
+                value = row._mapping["{}Boost".format(x)]
                 if value is None:
                     continue
 

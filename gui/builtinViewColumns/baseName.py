@@ -22,7 +22,6 @@
 import wx
 from logbook import Logger
 
-import gui.mainFrame
 from eos.const import FittingSlot
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
@@ -50,6 +49,8 @@ class BaseName(ViewColumn):
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+
+        import gui.mainFrame
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.columnText = _t("Name")

@@ -18,9 +18,9 @@
 # ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table
-from sqlalchemy.orm import relation, mapper, synonym, deferred
+from sqlalchemy.orm import relationship, synonym, deferred
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import Item, MarketGroup
 import eos.config
 
@@ -34,8 +34,8 @@ marketgroups_table = Table("invmarketgroups", gamedata_meta,
                            Column("iconID", Integer))
 
 props = {
-    "items": relation(Item, backref="marketGroup"),
-    "parent": relation(MarketGroup, backref="children", remote_side=[marketgroups_table.c.marketGroupID]),
+    "items": relationship(Item, backref="marketGroup"),
+    "parent": relationship(MarketGroup, backref="children", remote_side=[marketgroups_table.c.marketGroupID]),
     "ID": synonym("marketGroupID"),
     "name": synonym("marketGroupName{}".format(eos.config.lang)),
     "description": synonym("_description{}".format(eos.config.lang)),

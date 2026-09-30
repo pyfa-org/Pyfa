@@ -61,12 +61,12 @@ class RaceSelector(wx.Window):
 
         # Make the bitmaps have the same color as window text
 
-        sysTextColour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        sysTextColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         img = self.bmpArrow.ConvertToImage()
         if layout == wx.VERTICAL:
             img = img.Rotate90(False)
-        img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
+        img.Replace(0, 0, 0, sysTextColor[0], sysTextColor[1], sysTextColor[2])
         if layout == wx.VERTICAL:
             img = img.Scale(round(self.minWidth), 8, wx.IMAGE_QUALITY_HIGH)
 

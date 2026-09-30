@@ -3,7 +3,7 @@
 # Fitting Assistant). It uses the easeOutQuad equation from
 # caurina.transitions.Tweener to do animations
 #
-# ToDo: make SetGradient(<value, colour start, colour end)
+# ToDo: make SetGradient(<value, color start, color end)
 # ToDo: make a solid gradient (not to->from and not dependant on value)
 # ToDo: fix 0 range (currently resets range to 0.01, but this causes problems if
 #       we really set range at 0.01). Perhaps make it -1 and test percentage as
@@ -30,8 +30,8 @@ class PyGauge(wx.Window):
 
         self._size = size
 
-        self._border_colour = wx.BLACK
-        self._bar_colour = None
+        self._border_color = wx.BLACK
+        self._bar_color = None
         self._bar_gradient = None
 
         self._border_padding = 0
@@ -90,17 +90,17 @@ class PyGauge(wx.Window):
         self._show_remaining = False
         self.Refresh()
 
-    def GetBorderColour(self):
-        return self._border_colour
+    def GetBorderColor(self):
+        return self._border_color
 
-    def SetBorderColour(self, colour):
-        self._border_colour = colour
+    def SetBorderColor(self, color):
+        self._border_color = color
 
-    def GetBarColour(self):
-        return self._bar_colour
+    def GetBarColor(self):
+        return self._bar_color
 
-    def SetBarColour(self, colour):
-        self._bar_colour = colour
+    def SetBarColor(self, color):
+        self._bar_color = color
 
     def SetFractionDigits(self, digits):
         self._fraction_digits = digits
@@ -225,10 +225,10 @@ class PyGauge(wx.Window):
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))
         dc.Clear()
 
-        colour = self.GetBackgroundColour()
+        color = self.GetBackgroundColour()
 
-        dc.SetBrush(wx.Brush(colour))
-        dc.SetPen(wx.Pen(colour))
+        dc.SetBrush(wx.Brush(color))
+        dc.SetPen(wx.Pen(color))
 
         dc.DrawRectangle(rect)
 
@@ -238,18 +238,18 @@ class PyGauge(wx.Window):
             if self._timer.IsRunning():
                 value = self._anim_value
 
-        if self._border_colour:
-            dc.SetPen(wx.Pen(self.GetBorderColour()))
+        if self._border_color:
+            dc.SetPen(wx.Pen(self.GetBorderColor()))
             dc.DrawRectangle(rect)
             pad = 1 + self.GetBorderPadding()
             rect.Deflate(pad, pad)
 
-        if self.GetBarColour():
+        if self.GetBarColor():
             # if we have a bar color set, then we will use this
 
-            colour = self.GetBarColour()
-            dc.SetBrush(wx.Brush(colour))
-            dc.SetPen(wx.Pen(colour))
+            color = self.GetBarColor()
+            dc.SetBrush(wx.Brush(color))
+            dc.SetPen(wx.Pen(color))
 
             # calculate width of bar and draw it
             if value > 100:
@@ -336,7 +336,7 @@ class PyGauge(wx.Window):
             dc.SetTextForeground(wx.WHITE)
             dc.DrawLabel(format_, rect, wx.ALIGN_CENTER)
         else:
-            if not self.GetBarColour() and self._show_remaining:
+            if not self.GetBarColor() and self._show_remaining:
                 # we only do these for gradients with mouse over
                 range_ = self._max_range if self._max_range > 0.01 else 0
                 value = range_ - self._value

@@ -105,7 +105,7 @@ class ResistancesViewFull(StatsView):
         col = 0
         row += 1
 
-        gaugeColours = (((38, 133, 198), (52, 86, 98)), ((198, 38, 38), (83, 65, 67)), ((163, 163, 163), (74, 90, 93)),
+        gaugeColors = (((38, 133, 198), (52, 86, 98)), ((198, 38, 38), (83, 65, 67)), ((163, 163, 163), (74, 90, 93)),
                         ((198, 133, 38), (81, 83, 67)))
 
         toolTipText = {
@@ -129,7 +129,7 @@ class ResistancesViewFull(StatsView):
                 col = 0
 
                 continue
-            currGColour = 0
+            currGColor = 0
 
             font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
@@ -139,15 +139,15 @@ class ResistancesViewFull(StatsView):
 
                 # Fancy gauges addon
 
-                pgColour = gaugeColours[currGColour]
-                fc = pgColour[0]
-                bc = pgColour[1]
-                currGColour += 1
+                pgColor = gaugeColors[currGColor]
+                fc = pgColor[0]
+                bc = pgColor[1]
+                currGColor += 1
 
                 lbl = PyGauge(contentPanel, font, 100)
                 lbl.SetMinSize((48, 16))
                 lbl.SetBackgroundColour(wx.Colour(round(bc[0]), round(bc[1]), round(bc[2])))
-                lbl.SetBarColour(wx.Colour(round(fc[0]), round(fc[1]), round(fc[2])))
+                lbl.SetBarColor(wx.Colour(round(fc[0]), round(fc[1]), round(fc[2])))
                 lbl.SetBarGradient()
                 lbl.SetFractionDigits(1)
 

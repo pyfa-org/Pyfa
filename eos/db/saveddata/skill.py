@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime
-from sqlalchemy.orm import mapper
+
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.saveddata.character import Skill
 
 

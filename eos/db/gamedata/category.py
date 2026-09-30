@@ -18,9 +18,9 @@
 # ===============================================================================
 
 from sqlalchemy import Boolean, Column, Integer, String, Table
-from sqlalchemy.orm import deferred, mapper, synonym
+from sqlalchemy.orm import deferred, synonym
 
-from eos.db import gamedata_meta
+from eos.db import gamedata_meta, mapper
 from eos.gamedata import Category
 import eos.config
 

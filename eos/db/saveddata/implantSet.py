@@ -18,10 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, String, DateTime
-from sqlalchemy.orm import relation, mapper
+from sqlalchemy.orm import relationship
 import datetime
 
-from eos.db import saveddata_meta
+from eos.db import saveddata_meta, mapper
 from eos.db.saveddata.implant import implantsSetMap_table
 from eos.effectHandlerHelpers import HandledImplantList
 from eos.saveddata.implant import Implant
@@ -36,7 +36,7 @@ implant_set_table = Table("implantSets", saveddata_meta,
 
 mapper(ImplantSet, implant_set_table,
        properties={
-           "_ImplantSet__implants": relation(
+           "_ImplantSet__implants": relationship(
                    Implant,
                    collection_class=HandledImplantList,
                    cascade='all, delete, delete-orphan',

@@ -17,7 +17,8 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy.orm import eagerload
+from sqlalchemy import inspect
+from sqlalchemy.orm import joinedload
 from sqlalchemy.sql import and_
 
 replace = {
@@ -34,18 +35,30 @@ replace = {
 }
 
 
-def processEager(eager):
+def processEager(entity, eager):
+    """
+    Compatibility layer to accept strings as eager options
+    """
     if eager is None:
         return tuple()
-    else:
-        l = []
-        if isinstance(eager, str):
-            eager = (eager,)
 
-        for e in eager:
-            l.append(eagerload(_replacements(e)))
+    if isinstance(eager, str):
+        eager = (eager,)
 
-        return l
+    options = []
+    for e in eager:
+        option = None
+        cls = entity
+        for part in _replacements(e).split("."):
+            if cls is None:
+                raise ValueError("cannot resolve eager path {!r} on {}".format(e, entity))
+            option = joinedload(getattr(cls, part)) if option is None else option.joinedload(getattr(cls, part))
+            relationship = inspect(cls).relationships.get(part)
+            cls = relationship.mapper.class_ if relationship is not None else None
+        if option is not None:
+            options.append(option)
+
+    return options
 
 
 def _replacements(eagerString):

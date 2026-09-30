@@ -19,7 +19,7 @@ class AttributeGauge(wx.Window):
 
         self.guide_lines = guide_lines
 
-        self._border_colour = wx.BLACK
+        self._border_color = wx.BLACK
 
         self.leading_edge = leading_edge
         self.edge_on_neutral = edge_on_neutral
@@ -62,11 +62,11 @@ class AttributeGauge(wx.Window):
     def OnEraseBackground(self, event):
         pass
 
-    def GetBorderColour(self):
-        return self._border_colour
+    def GetBorderColor(self):
+        return self._border_color
 
-    def SetBorderColour(self, colour):
-        self._border_colour = colour
+    def SetBorderColor(self, color):
+        self._border_color = color
 
     def GetBorderPadding(self):
         return self._border_padding
@@ -172,10 +172,10 @@ class AttributeGauge(wx.Window):
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))
         dc.Clear()
 
-        colour = self.GetBackgroundColour()
+        color = self.GetBackgroundColour()
 
-        dc.SetBrush(wx.Brush(colour))
-        dc.SetPen(wx.Pen(colour))
+        dc.SetBrush(wx.Brush(color))
+        dc.SetPen(wx.Pen(color))
 
         dc.DrawRectangle(rect)
 
@@ -185,14 +185,14 @@ class AttributeGauge(wx.Window):
             if self._timer.IsRunning():
                 value = self._anim_value
 
-        if self._border_colour:
-            dc.SetPen(wx.Pen(self.GetBorderColour()))
+        if self._border_color:
+            dc.SetPen(wx.Pen(self.GetBorderColor()))
             dc.DrawRectangle(rect)
             pad = 1 + self.GetBorderPadding()
             rect.Deflate(pad, pad)
 
         # if we have a bar color set, then we will use this
-        colour = self.goodColor if value >= 0 else self.badColor
+        color = self.goodColor if value >= 0 else self.badColor
 
         is_even = rect.width % 2 == 0
 
@@ -214,8 +214,8 @@ class AttributeGauge(wx.Window):
                 dc.SetPen(wx.Pen(wx.LIGHT_GREY))
                 dc.DrawRectangle(round(x * 10), 1, 1, round(rect.height))
 
-        dc.SetBrush(wx.Brush(colour))
-        dc.SetPen(wx.Pen(colour))
+        dc.SetBrush(wx.Brush(color))
+        dc.SetPen(wx.Pen(color))
 
         # If we have an  even width, we can simply dedicate the middle-most pixels to both sides
         # However, if there is an odd width, the middle pixel is shared between the left and right gauge

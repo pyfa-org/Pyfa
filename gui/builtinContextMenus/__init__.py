@@ -5,6 +5,7 @@ from gui.builtinContextMenus import fitAddBrowse
 from gui.builtinContextMenus import fitAddCurrentlyOpen
 from gui.builtinContextMenus import envEffectAdd
 from gui.builtinContextMenus import commandFitAdd
+from gui.builtinContextMenus import commandLinkAdd
 from gui.builtinContextMenus.targetProfile import adder
 from gui.builtinContextMenus import graphFitAmmoPicker
 # Often-used item manipulations

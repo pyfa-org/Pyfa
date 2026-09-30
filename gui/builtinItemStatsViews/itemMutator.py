@@ -2,6 +2,7 @@
 import random
 
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 from logbook import Logger
 
 import gui.fitCommands as cmd
@@ -21,7 +22,7 @@ class ItemMutatorPanel(wx.Panel):
     def __init__(self, parent, stuff):
         wx.Panel.__init__(self, parent)
         self.stuff = stuff
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        bindBackgroundToTheme(self, wx.SYS_COLOUR_BTNFACE)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -72,7 +73,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.SetScrollRate(0, 15)
         self.carryingFitID = gui.mainFrame.MainFrame.getInstance().getActiveFit()
         self.initialMutations = {}
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        bindBackgroundToTheme(self)
         self.stuff = stuff
         self.timer = None
         self.isModified = False

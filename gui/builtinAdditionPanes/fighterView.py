@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import warningTextColor
 
 import gui.display as d
 import gui.fitCommands as cmd
@@ -49,15 +50,18 @@ class FighterViewDrop(wx.DropTarget):
         self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
+    def OnDrop(self, x, y):
+        # What is dragged travels through DragDropHelper rather than the wx data object, so act on
+        # the drop here: wxGTK under wayland regularly abandons the data negotiation and never
+        # reaches OnData, but it always gets this far
+        dragged_data = DragDropHelper.consume()
+        if dragged_data is None:
+            return False
+        self.dropFn(x, y, dragged_data.split(':'))
+        return True
+
     def OnData(self, x, y, t):
-        if self.GetData():
-            dragged_data = DragDropHelper.data
-
-            if dragged_data is None:
-                return t
-
-            data = dragged_data.split(':')
-            self.dropFn(x, y, data)
+        # the drop itself is handled in OnDrop
         return t
 
 
@@ -115,7 +119,7 @@ class FighterView(wx.Panel):
                     slot = getattr(FittingSlot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
-                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings.GetColour(
+                color = warningTextColor() if used > total else wx.SystemSettings.GetColour(
                     wx.SYS_COLOUR_WINDOWTEXT)
 
                 lbl = getattr(self, "label%sUsed" % x.capitalize())
@@ -238,7 +242,7 @@ class FighterDisplay(d.Display):
             dataStr = "fighter:" + str(row)
             data.SetText(dataStr)
 
-            dropSource = wx.DropSource(self)
+            dropSource = wx.DropSource(self.getDragSourceWindow())
             dropSource.SetData(data)
             DragDropHelper.data = dataStr
             dropSource.DoDragDrop()

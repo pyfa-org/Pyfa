@@ -3,6 +3,7 @@ from enum import IntEnum
 
 # noinspection PyPackageRequirements
 import wx
+from gui.utils.dark import bindBackgroundToTheme
 import wx.lib.agw.hypertreelist
 
 import config
@@ -26,7 +27,7 @@ class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         # Had to manually set the size here, otherwise column widths couldn't be calculated correctly. See #1878
         wx.Panel.__init__(self, parent, size=(1000, 1000))
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        bindBackgroundToTheme(self, wx.SYS_COLOUR_BTNFACE)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -34,7 +35,7 @@ class ItemParams(wx.Panel):
 
         self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY,
                                                                 agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
-        self.paramList.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        bindBackgroundToTheme(self.paramList)
 
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
