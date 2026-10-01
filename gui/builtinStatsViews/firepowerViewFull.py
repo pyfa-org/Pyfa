@@ -224,8 +224,7 @@ class FirepowerViewFull(StatsView):
                 self._cachedValues[counter] = getattr(val, 'total', None)
             counter += 1
 
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 FirepowerViewFull.register()

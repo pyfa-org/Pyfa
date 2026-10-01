@@ -78,8 +78,7 @@ class ResourcesViewFull(StatsView):
             fighter_sizer.ShowItems(True)
             drone_sizer.ShowItems(False)
 
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
     def getHeaderText(self, fit):
         return _t("Resources")
@@ -373,8 +372,7 @@ class ResourcesViewFull(StatsView):
 
                 i += 1
 
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 ResourcesViewFull.register()

@@ -82,7 +82,7 @@ class PriceViewMinimal(StatsView):
             self.labelEMStatus.SetLabel("Updating prices...")
 
         self.refreshPanelPrices(fit)
-        self.panel.Layout()
+        self.layoutIfNeeded()
 
     def refreshPanelPrices(self, fit=None):
 
@@ -147,7 +147,7 @@ class PriceViewMinimal(StatsView):
         self.refreshPanelPrices(self.fit)
 
         self.labelEMStatus.SetLabel("")
-        self.panel.Layout()
+        self.layoutIfNeeded()
 
 
 PriceViewMinimal.register()

@@ -313,8 +313,8 @@ class Display(wx.ListCtrl):
                     if newColor != oldColor:
                         self.SetItem(colItem)
 
-                if self.GetItemData(item) != id_:
-                    self.SetItemData(item, id_)
+            if self.GetItemData(item) != id_:
+                self.SetItemData(item, id_)
 
         if self._dirtyColumns is None:
             # nothing measured yet, or something happened which affects all of them
@@ -332,9 +332,11 @@ class Display(wx.ListCtrl):
                     width = self._columnWidths.get(i)
                     if width is None:
                         width = self._columnWidths[i] = self.columnWidth(i)
-                    self.SetColumnWidth(i, width)
+                    if self.GetColumnWidth(i) != width:
+                        self.SetColumnWidth(i, width)
                 else:
-                    self.SetColumnWidth(i, col.size)
+                    if self.GetColumnWidth(i) != col.size:
+                        self.SetColumnWidth(i, col.size)
 
     def update(self, stuff, dirtyRows=None, dirtyColumns=None):
         self.populate(stuff)

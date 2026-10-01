@@ -172,8 +172,7 @@ class CapacitorViewFull(StatsView):
         getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)
 
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 CapacitorViewFull.register()

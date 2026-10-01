@@ -957,6 +957,8 @@ class _TabsContainer(wx.Panel):
 
     def DisableTab(self, tab, disabled=True):
         tb_renderer = self.tabs[tab]
+        if tb_renderer.disabled == disabled:
+            return
         tb_renderer.disabled = disabled
 
         self.Refresh()

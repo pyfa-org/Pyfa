@@ -158,8 +158,7 @@ class BombingViewFull(StatsView):
                                      (bomb.customName, fit.name, covertLevel))
 
 
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 BombingViewFull.register()

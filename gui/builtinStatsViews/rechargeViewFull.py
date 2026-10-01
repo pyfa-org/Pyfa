@@ -157,8 +157,7 @@ class RechargeViewFull(StatsView):
             label.SetLabel("0")
 
         label.SetToolTip(wx.ToolTip("%.3f" % value))
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 RechargeViewFull.register()

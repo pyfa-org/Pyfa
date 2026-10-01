@@ -631,7 +631,6 @@ class FittingView(d.Display):
                     self.populate(self.mods)
                     self._rowPresentation.clear()
                 self.refresh(self.mods)
-                self.Refresh()
 
             self.Show(self.activeFitID is not None and self.activeFitID == activeFitID)
         except RuntimeError:
@@ -781,6 +780,9 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         slotMap = {}
+        backgroundColor = self.GetBackgroundColour()
+        darkMode = isDark()
+        colorFitBySlot = sFit.serviceFittingOptions["colorFitBySlot"]
 
         # test for too many modules (happens with t3s / CCP change in slot layout)
         for slot in [e.value for e in FittingSlot]:
@@ -790,7 +792,7 @@ class FittingView(d.Display):
             if dirtyRows is not None and id(mod) not in dirtyRows:
                 continue
             rowKey = id(mod)
-            rowColor = self.GetBackgroundColour()
+            rowColor = backgroundColor
 
             #  only consider changing color if we're dealing with a Module
             if isinstance(mod, Module):
@@ -814,9 +816,10 @@ class FittingView(d.Display):
 
 
                 if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
-                    rowColor = errColorDark if isDark() else errColor
-                elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
-                    rowColor = self.slotColor(mod.slot)
+                    rowColor = errColorDark if darkMode else errColor
+                elif colorFitBySlot:  # Color by slot it enabled
+                    colorMap = slotColorMapDark if darkMode else slotColorMap
+                    rowColor = colorMap.get(mod.slot) or backgroundColor
 
             fontWeight = wx.FONTWEIGHT_BOLD if isinstance(mod, Rack) and \
                 sFit.serviceFittingOptions["rackSlots"] and \

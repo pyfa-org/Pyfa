@@ -161,8 +161,7 @@ class MiningYieldViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip('\n'.join(tipLines)))
                 self._cachedValues[counter] = (yieldValue, drainValue)
             counter += 1
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 MiningYieldViewFull.register()
