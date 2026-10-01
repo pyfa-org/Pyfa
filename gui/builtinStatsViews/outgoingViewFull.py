@@ -118,8 +118,7 @@ class OutgoingViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 OutgoingViewFull.register()

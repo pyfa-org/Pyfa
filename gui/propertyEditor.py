@@ -227,10 +227,10 @@ class ItemView(d.Display):
         self.activeItems = items
         d.Display.populate(self, items)
 
-    def refresh(self, items):
+    def refresh(self, items, dirtyRows=None, dirtyColumns=None):
         if len(items) > 1:
             items.sort(key=self.itemSort)
-        d.Display.refresh(self, items)
+        d.Display.refresh(self, items, dirtyRows=dirtyRows, dirtyColumns=dirtyColumns)
 
 
 class AttributeGrid(wxpg.PropertyGrid):

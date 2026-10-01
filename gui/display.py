@@ -36,9 +36,10 @@ class Display(wx.ListCtrl):
         self.activeColumns = []
         self.columnsMinWidth = []
         # Autosizing a column is expensive on wxMSW in dark mode (wxWidgets #24011), so it is
-        # only done for columns whose contents actually changed. None means "measure them all".
+        # measured in Python only for columns whose contents actually changed. None means
+        # "measure them all".
         self._dirtyColumns = None
-        self._headerWidths = {}
+        self._columnWidths = {}
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
         self.Bind(wx.EVT_SIZE, self.onResized)
@@ -151,7 +152,7 @@ class Display(wx.ListCtrl):
     def invalidateColumnWidths(self):
         """Forget what we measured, so every column is sized again on the next refresh."""
         self._dirtyColumns = None
-        self._headerWidths.clear()
+        self._columnWidths.clear()
 
     def onResized(self, event):
         # the width a column wants can depend on how much room there is, most visibly for the
@@ -159,18 +160,26 @@ class Display(wx.ListCtrl):
         self.invalidateColumnWidths()
         event.Skip()
 
-    def headerWidth(self, i):
-        """
-        Room the column needs for its own header.
+    def columnWidth(self, i):
+        """Measure a column without invoking wxMSW's native autosize implementation."""
+        dc = wx.ClientDC(self)
+        defaultFont = self.GetFont()
+        dc.SetFont(defaultFont)
 
-        Measuring it costs an autosize pass, which is what is slow under wxMSW dark mode, and it
-        only moves when the columns or the control's size do, so the measurement is kept.
-        """
-        width = self._headerWidths.get(i)
-        if width is None:
-            self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
-            width = self._headerWidths[i] = self.GetColumnWidth(i)
-        return width
+        column = self.GetColumn(i)
+        width = dc.GetTextExtent(column.GetText())[0]
+
+        for row in range(self.GetItemCount()):
+            item = self.GetItem(row, i)
+            itemFont = item.GetFont()
+            dc.SetFont(itemFont if itemFont.IsOk() else defaultFont)
+            itemWidth = dc.GetTextExtent(item.GetText())[0]
+            if item.GetImage() != -1:
+                itemWidth += self.imageList.GetSize(0)[0] + 4
+            width = max(width, itemWidth)
+
+        # Match the native list control's room around text and images.
+        return width + 24
 
     def removeColumn(self, col):
         i = self.getColIndex(type(col))
@@ -255,7 +264,7 @@ class Display(wx.ListCtrl):
                         self.DeleteItem(self.getLastItem())
                     self.Refresh()
 
-    def refresh(self, stuff):
+    def refresh(self, stuff, dirtyRows=None, dirtyColumns=None):
         if stuff is None:
             return
         item = -1
@@ -264,8 +273,12 @@ class Display(wx.ListCtrl):
         for id_, st in enumerate(stuff):
 
             item = self.GetNextItem(item)
+            if dirtyRows is not None and id(st) not in dirtyRows:
+                continue
 
             for i, col in enumerate(self.activeColumns):
+                if dirtyColumns is not None and i not in dirtyColumns:
+                    continue
                 colItem = self.GetItem(item, i)
                 oldText = colItem.GetText()
                 oldImageId = colItem.GetImage()
@@ -300,6 +313,7 @@ class Display(wx.ListCtrl):
                     if newColor != oldColor:
                         self.SetItem(colItem)
 
+            if self.GetItemData(item) != id_:
                 self.SetItemData(item, id_)
 
         if self._dirtyColumns is None:
@@ -315,17 +329,18 @@ class Display(wx.ListCtrl):
                     if i not in toMeasure:
                         # nothing which affects this column moved, the width it has still fits
                         continue
-                    headerWidth = self.headerWidth(i)
-                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                    baseWidth = self.GetColumnWidth(i)
-                    if baseWidth < headerWidth:
-                        self.SetColumnWidth(i, headerWidth)
+                    width = self._columnWidths.get(i)
+                    if width is None:
+                        width = self._columnWidths[i] = self.columnWidth(i)
+                    if self.GetColumnWidth(i) != width:
+                        self.SetColumnWidth(i, width)
                 else:
-                    self.SetColumnWidth(i, col.size)
+                    if self.GetColumnWidth(i) != col.size:
+                        self.SetColumnWidth(i, col.size)
 
-    def update(self, stuff):
+    def update(self, stuff, dirtyRows=None, dirtyColumns=None):
         self.populate(stuff)
-        self.refresh(stuff)
+        self.refresh(stuff, dirtyRows=dirtyRows, dirtyColumns=dirtyColumns)
 
     def getColumn(self, point):
         row, _, col = self.HitTestSubItem(point)

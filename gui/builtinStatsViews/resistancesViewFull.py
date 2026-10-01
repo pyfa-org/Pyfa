@@ -234,8 +234,7 @@ class ResistancesViewFull(StatsView):
             else:
                 lbl.SetValue(0)
 
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 ResistancesViewFull.register()

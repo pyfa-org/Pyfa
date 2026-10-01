@@ -276,8 +276,7 @@ class TargetingMiscViewMinimal(StatsView):
                     label.SetToolTip(wx.ToolTip(""))
 
             counter += 1
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        self.layoutIfNeeded()
 
 
 TargetingMiscViewMinimal.register()

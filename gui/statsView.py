@@ -22,7 +22,26 @@ class StatsView:
     views = {}
 
     def __init__(self):
-        pass
+        self._layoutSignature = None
+
+    def layoutIfNeeded(self):
+        signature = []
+        for window in self.panel.GetChildren():
+            label = None
+            if hasattr(window, "GetLabel"):
+                label = window.GetLabel()
+            signature.append((window.GetId(), label, window.IsShown()))
+        for window in self.headerPanel.GetChildren():
+            label = None
+            if hasattr(window, "GetLabel"):
+                label = window.GetLabel()
+            signature.append((window.GetId(), label, window.IsShown()))
+        signature = tuple(signature)
+        if signature == self._layoutSignature:
+            return
+        self.panel.Layout()
+        self.headerPanel.Layout()
+        self._layoutSignature = signature
 
     @classmethod
     def register(cls):
