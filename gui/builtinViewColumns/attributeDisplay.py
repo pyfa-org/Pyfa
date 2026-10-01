@@ -63,10 +63,10 @@ class AttributeDisplay(ViewColumn):
             originalRefresh = fittingView.refresh
             sMkt = Market.getInstance()
 
-            def refresh(stuff):
+            def refresh(stuff, dirtyRows=None, dirtyColumns=None):
                 # Hack into our master view and add a callback for ourselves to know when to query
                 self.directInfo = sMkt.directAttrRequest(stuff, info) if stuff else None
-                originalRefresh(stuff)
+                originalRefresh(stuff, dirtyRows=dirtyRows, dirtyColumns=dirtyColumns)
 
             fittingView.refresh = refresh
 

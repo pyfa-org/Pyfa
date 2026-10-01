@@ -277,7 +277,7 @@ class ItemView(Display):
         # Show them
         Display.populate(self, items)
 
-    def refresh(self, items):
+    def refresh(self, items, dirtyRows=None, dirtyColumns=None):
         if len(items) > 1:
             # Re-sort stuff
             if self.marketBrowser.mode != 'recent':
@@ -285,7 +285,7 @@ class ItemView(Display):
         for i, item in enumerate(items[:9]):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
-        Display.refresh(self, items)
+        Display.refresh(self, items, dirtyRows=dirtyRows, dirtyColumns=dirtyColumns)
 
     def OnSysColorChanged(self, event):
         try:

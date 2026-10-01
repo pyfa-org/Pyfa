@@ -765,7 +765,7 @@ class FittingView(d.Display):
         else:
             return slotColorMap.get(slot) or self.GetBackgroundColour()
 
-    def refresh(self, stuff):
+    def refresh(self, stuff, dirtyRows=None, dirtyColumns=None):
         """
         Displays fitting
 
@@ -773,9 +773,10 @@ class FittingView(d.Display):
         bit of post-processing (colors)
         """
         self.Freeze()
-        dirtyRows = getattr(self, '_dirtyRows', None)
+        if dirtyRows is None:
+            dirtyRows = getattr(self, '_dirtyRows', None)
         self._dirtyRows = None
-        d.Display.refresh(self, stuff, dirtyRows=dirtyRows)
+        d.Display.refresh(self, stuff, dirtyRows=dirtyRows, dirtyColumns=dirtyColumns)
 
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
