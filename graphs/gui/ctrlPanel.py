@@ -107,6 +107,7 @@ class GraphControlPanel(wx.Panel):
         self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, _t('Always show Y = 0'), wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(True)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
+        commonOptsSizer.Add(self.showY0Cb, 0, wx.EXPAND | wx.TOP, 5)
 
         optsSizer.Add(commonOptsSizer, 0, wx.EXPAND | wx.RIGHT, 10)
 
