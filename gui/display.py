@@ -179,7 +179,7 @@ class Display(wx.ListCtrl):
             width = max(width, itemWidth)
 
         # Match the native list control's room around text and images.
-        return width + 12
+        return width + 24
 
     def removeColumn(self, col):
         i = self.getColIndex(type(col))
@@ -264,7 +264,7 @@ class Display(wx.ListCtrl):
                         self.DeleteItem(self.getLastItem())
                     self.Refresh()
 
-    def refresh(self, stuff):
+    def refresh(self, stuff, dirtyRows=None, dirtyColumns=None):
         if stuff is None:
             return
         item = -1
@@ -273,8 +273,12 @@ class Display(wx.ListCtrl):
         for id_, st in enumerate(stuff):
 
             item = self.GetNextItem(item)
+            if dirtyRows is not None and id(st) not in dirtyRows:
+                continue
 
             for i, col in enumerate(self.activeColumns):
+                if dirtyColumns is not None and i not in dirtyColumns:
+                    continue
                 colItem = self.GetItem(item, i)
                 oldText = colItem.GetText()
                 oldImageId = colItem.GetImage()
@@ -309,7 +313,8 @@ class Display(wx.ListCtrl):
                     if newColor != oldColor:
                         self.SetItem(colItem)
 
-                self.SetItemData(item, id_)
+                if self.GetItemData(item) != id_:
+                    self.SetItemData(item, id_)
 
         if self._dirtyColumns is None:
             # nothing measured yet, or something happened which affects all of them
@@ -331,9 +336,9 @@ class Display(wx.ListCtrl):
                 else:
                     self.SetColumnWidth(i, col.size)
 
-    def update(self, stuff):
+    def update(self, stuff, dirtyRows=None, dirtyColumns=None):
         self.populate(stuff)
-        self.refresh(stuff)
+        self.refresh(stuff, dirtyRows=dirtyRows, dirtyColumns=dirtyColumns)
 
     def getColumn(self, point):
         row, _, col = self.HitTestSubItem(point)

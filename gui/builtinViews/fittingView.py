@@ -174,6 +174,8 @@ class FittingView(d.Display):
 
         self.hoveredRow = None
         self.hoveredColumn = None
+        self._tooltipText = None
+        self._rowPresentation = {}
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
@@ -188,7 +190,7 @@ class FittingView(d.Display):
         pyfalog.debug(self)
 
     def OnLeaveWindow(self, event):
-        self.SetToolTip(None)
+        self._setTooltip(None)
         self.hoveredRow = None
         self.hoveredColumn = None
         event.Skip()
@@ -196,21 +198,20 @@ class FittingView(d.Display):
     def OnMouseMove(self, event):
         row, _, col = self.HitTestSubItem(event.Position)
         if row != self.hoveredRow or col != self.hoveredColumn:
-            if self.ToolTip is not None:
-                self.SetToolTip(None)
-            else:
-                self.hoveredRow = row
-                self.hoveredColumn = col
-                if row != -1 and row not in self.blanks and col != -1 and col < len(self.DEFAULT_COLS):
-                    mod = self.mods[row]
-                    tooltip = self.activeColumns[col].getToolTip(mod)
-                    if tooltip is not None:
-                        self.SetToolTip(tooltip)
-                    else:
-                        self.SetToolTip(None)
-                else:
-                    self.SetToolTip(None)
+            self.hoveredRow = row
+            self.hoveredColumn = col
+            tooltip = None
+            if row != -1 and row not in self.blanks and col != -1 and col < len(self.DEFAULT_COLS):
+                mod = self.mods[row]
+                tooltip = self.activeColumns[col].getToolTip(mod)
+            self._setTooltip(tooltip)
         event.Skip()
+
+    def _setTooltip(self, tooltip):
+        if tooltip == self._tooltipText:
+            return
+        self.SetToolTip(tooltip)
+        self._tooltipText = tooltip
 
     def handleListDrag(self, x, y, data):
         """
@@ -613,6 +614,7 @@ class FittingView(d.Display):
     def slotsChanged(self):
         self.generateMods()
         self.populate(self.mods)
+        self._rowPresentation.clear()
 
     def fitChanged(self, event):
         event.Skip()
@@ -627,6 +629,7 @@ class FittingView(d.Display):
                 if self.GetItemCount() != len(self.mods):
                     # This only happens when turning on/off slot divisions
                     self.populate(self.mods)
+                    self._rowPresentation.clear()
                 self.refresh(self.mods)
                 self.Refresh()
 
@@ -733,6 +736,7 @@ class FittingView(d.Display):
                 for position, mod in enumerate(fit.modules):
                     if mod in selectedMods:
                         positions.append(position)
+            self._dirtyRows = {id(mod) for mod in selectedMods}
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleStatesCommand(
                 fitID=fitID,
                 mainPosition=mainPosition,
@@ -741,8 +745,7 @@ class FittingView(d.Display):
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[clickedRow])
-            if tooltip:
-                self.SetToolTip(tooltip)
+            self._setTooltip(tooltip)
 
         else:
             event.Skip()
@@ -771,7 +774,9 @@ class FittingView(d.Display):
         bit of post-processing (colors)
         """
         self.Freeze()
-        d.Display.refresh(self, stuff)
+        dirtyRows = getattr(self, '_dirtyRows', None)
+        self._dirtyRows = None
+        d.Display.refresh(self, stuff, dirtyRows=dirtyRows)
 
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
@@ -782,7 +787,10 @@ class FittingView(d.Display):
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         for i, mod in enumerate(self.mods):
-            self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            if dirtyRows is not None and id(mod) not in dirtyRows:
+                continue
+            rowKey = id(mod)
+            rowColor = self.GetBackgroundColour()
 
             #  only consider changing color if we're dealing with a Module
             if isinstance(mod, Module):
@@ -806,19 +814,21 @@ class FittingView(d.Display):
 
 
                 if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
-                    self.SetItemBackgroundColour(i, errColorDark if isDark() else errColor)
+                    rowColor = errColorDark if isDark() else errColor
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
-                    self.SetItemBackgroundColour(i, self.slotColor(mod.slot))
+                    rowColor = self.slotColor(mod.slot)
 
-            # Set rack face to bold
-            if isinstance(mod, Rack) and \
-                    sFit.serviceFittingOptions["rackSlots"] and \
-                    sFit.serviceFittingOptions["rackLabels"]:
-                self.font.SetWeight(wx.FONTWEIGHT_BOLD)
+            fontWeight = wx.FONTWEIGHT_BOLD if isinstance(mod, Rack) and \
+                sFit.serviceFittingOptions["rackSlots"] and \
+                sFit.serviceFittingOptions["rackLabels"] else wx.FONTWEIGHT_NORMAL
+
+            previous = self._rowPresentation.get(rowKey)
+            presentation = (rowColor, fontWeight)
+            if previous != presentation:
+                self.SetItemBackgroundColour(i, rowColor)
+                self.font.SetWeight(fontWeight)
                 self.SetItemFont(i, self.font)
-            else:
-                self.font.SetWeight(wx.FONTWEIGHT_NORMAL)
-                self.SetItemFont(i, self.font)
+                self._rowPresentation[rowKey] = presentation
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
