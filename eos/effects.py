@@ -37643,6 +37643,40 @@ class Effect8267(BaseEffect):
             container.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
 
 
+class Effect8268(BaseEffect):
+    """
+    nosferatuDurationBonusPassive
+
+    Used by:
+    Implants named like: Harvest Nosferatu Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'duration',
+            module.getModifiedItemAttr('durationBonus'), **kwargs)
+
+
+class Effect8269(BaseEffect):
+    """
+    stasisWebifierMaxRangeAddPassive
+
+    Used by:
+    Implants named like: Harvest Webifier Booster (4 of 4)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
+            module.getModifiedItemAttr('stasisWebRangeAdd'), **kwargs)
+
+
 
 class Effect8270(BaseEffect):
     """
@@ -43717,6 +43751,94 @@ class Effect12940(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Weapon',
                                       'capacitorNeed', module.getModifiedItemAttr('capNeedBonus'), **kwargs)
+
+
+class Effect12949(BaseEffect):
+    """
+    shipLaserDamagePirateAttackBattlecruiser
+
+    Used by:
+    Ship: Akoman
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Large Energy Turret'), 'damageMultiplier',
+            ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
+
+
+class Effect12950(BaseEffect):
+    """
+    shipBloodRaiderEnergyNeutralizerNosferatuTransferAmountBonusABC1
+
+    Used by:
+    Ship: Akoman
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Neutralizer', 'energyNeutralizerAmount',
+            src.getModifiedItemAttr('shipBonusABC1'), skill='Amarr Battlecruiser', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu', 'powerTransferAmount',
+            src.getModifiedItemAttr('shipBonusABC1'), skill='Amarr Battlecruiser', **kwargs)
+
+
+class Effect12951(BaseEffect):
+    """
+    shipBloodRaiderEnergyNeutralizerNosferatuOptimalRangeBonusABC2
+
+    Used by:
+    Ship: Akoman
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Energy Neutralizer', 'Energy Nosferatu'), 'maxRange',
+            src.getModifiedItemAttr('shipBonusABC2'), skill='Amarr Battlecruiser', **kwargs)
+
+
+class Effect12952(BaseEffect):
+    """
+    shipBloodRaiderEnergyNeutralizerNosferatuFalloffRangeBonusABC3
+
+    Used by:
+    Ship: Akoman
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Energy Neutralizer', 'Energy Nosferatu'), 'falloffEffectiveness',
+            src.getModifiedItemAttr('shipBonusABC3'), skill='Amarr Battlecruiser', **kwargs)
+
+
+class Effect12953(BaseEffect):
+    """
+    shipBloodRaiderWebRangeBonusMBC1
+
+    Used by:
+    Ship: Akoman
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange',
+            ship.getModifiedItemAttr('shipBonusMBC1'), skill='Minmatar Battlecruiser', **kwargs)
 
 
 class Effect12975(BaseEffect):
