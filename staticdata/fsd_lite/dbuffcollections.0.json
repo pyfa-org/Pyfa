@@ -3669,6 +3669,9 @@
     "itemModifiers": [
       {
         "dogmaAttributeID": 2116
+      }, 
+      {
+        "dogmaAttributeID": 6463
       }
     ], 
     "locationGroupModifiers": [], 
@@ -5990,6 +5993,12 @@
         "dogmaAttributeID": 1889
       }, 
       {
+        "dogmaAttributeID": 2801
+      }, 
+      {
+        "dogmaAttributeID": 2802
+      }, 
+      {
         "dogmaAttributeID": 5044
       }, 
       {
@@ -7571,5 +7580,24 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2692": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Crimson Harvest Trig Trial Smart Bomb Block", 
+    "displayName": {
+      "en-us": "<color=\"#FFFF454B\">Activation Blocked:</color> Smart Bombs"
+    }, 
+    "displayNameID": 1053709, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 1349, 
+        "groupID": 72
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "Hide"
   }
 }

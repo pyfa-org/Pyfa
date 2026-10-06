@@ -33591,7 +33591,7 @@
     "categoryID": 36, 
     "dataType": 5, 
     "defaultValue": 1.0, 
-    "description": "Impedance against Remote Repair (shield, armor, hull and energy).", 
+    "description": "Impedance against Remote Repair (shield, armor, and hull).", 
     "displayName": {
       "de": "Fernlogistikimpedanz", 
       "en-us": "Remote Logistics Impedance", 
@@ -51292,7 +51292,14 @@
     "defaultValue": 0.0, 
     "description": "Base capacitor cost to jump this ship through a Structure Jump Bridge like the Ansiblex.", 
     "displayName": {
-      "en-us": "Ansiblex Activation Cost"
+      "de": "Ansiblex-Aktivierungskosten", 
+      "en-us": "Ansiblex Activation Cost", 
+      "es": "Coste de activación del Ansiblex", 
+      "fr": "Coût d'activation de l'Ansiblex", 
+      "ja": "アンシブレックス起動コスト", 
+      "ko": "안시블렉스 활성화 비용", 
+      "ru": "Стоимость активации «Ансиблекса»", 
+      "zh": "安塞波启用耗电量"
     }, 
     "displayNameID": 1052402, 
     "displayWhenZero": 1, 
@@ -51302,10 +51309,63 @@
     "published": 1, 
     "stackable": 1, 
     "tooltipDescription": {
-      "en-us": "The base amount of an Ansiblex’s capacitor that is consumed when this ship makes a jump from that Ansiblex."
+      "de": "Die Basismenge des Energiespeichers eines Ansiblex, die verbraucht wird, wenn dieses Schiff von diesem Ansiblex aus einen Sprung durchführt.", 
+      "en-us": "The base amount of an Ansiblex’s capacitor that is consumed when this ship makes a jump from that Ansiblex.", 
+      "es": "Cantidad base del condensador de un Ansiblex que se consume cuando esta nave realiza un salto desde él.", 
+      "fr": "La quantité de base du capaciteur d'un Ansiblex consommée lorsque ce vaisseau saute depuis cet Ansiblex.", 
+      "ja": "この艦船がアンシブレックスからジャンプする際に消費される、アンシブレックスの基本キャパシタ消費量です。", 
+      "ko": "함선이 안시블렉스에서 점프할 때 소모되는 안시블렉스 캐패시터의 기본 소모량입니다.", 
+      "ru": "Базовый объём заряда накопителя «Ансиблекса», который расходуется, когда этот корабль совершает прыжок через гипермост.", 
+      "zh": "当这艘舰船通过安塞波进行跳跃时，该安塞波所消耗的基础电容电量。"
     }, 
     "tooltipDescriptionID": 1052404, 
     "tooltipTitleID": 1052403, 
     "unitID": 114
+  }, 
+  "6463": {
+    "attributeID": 6463, 
+    "categoryID": 36, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "description": "Impedance against Remote Capacitor Transmitters", 
+    "displayName": {
+      "en-us": "Remote Capacitor Transmitter Impedance"
+    }, 
+    "displayNameID": 1055362, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "iconID": 1035, 
+    "name": "remoteCapacitorImpedance", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 108
+  }, 
+  "6464": {
+    "attributeID": 6464, 
+    "categoryID": 37, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayName": {
+      "en-us": "Remote Capacitor Transmitter Impedance Bonus"
+    }, 
+    "displayNameID": 1055367, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "iconID": 1035, 
+    "name": "remoteCapacitorImpedanceBonus", 
+    "published": 1, 
+    "stackable": 1, 
+    "unitID": 124
+  }, 
+  "6465": {
+    "attributeID": 6465, 
+    "categoryID": 42, 
+    "dataType": 5, 
+    "defaultValue": 0.0, 
+    "displayWhenZero": 0, 
+    "highIsGood": 1, 
+    "name": "BehaviorSiegeRemoteCapacitorImpedanceModifier", 
+    "published": 0, 
+    "stackable": 1
   }
 }

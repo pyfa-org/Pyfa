@@ -36027,6 +36027,13 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
+        "modifiedAttributeID": 6463, 
+        "modifyingAttributeID": 6464, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 2135, 
         "modifyingAttributeID": 2352, 
         "operation": 6
@@ -58617,7 +58624,7 @@
     "published": 0, 
     "rangeAttributeID": 54, 
     "rangeChance": 0, 
-    "resistanceAttributeID": 2116
+    "resistanceAttributeID": 6463
   }, 
   "6185": {
     "disallowAutoRepeat": 0, 
@@ -66275,6 +66282,13 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
+        "modifiedAttributeID": 6463, 
+        "modifyingAttributeID": 6464, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 2135, 
         "modifyingAttributeID": 2352, 
         "operation": 6
@@ -66866,6 +66880,13 @@
         "func": "ItemModifier", 
         "modifiedAttributeID": 2116, 
         "modifyingAttributeID": 2342, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6463, 
+        "modifyingAttributeID": 6464, 
         "operation": 6
       }, 
       {
@@ -69867,6 +69888,13 @@
         "func": "ItemModifier", 
         "modifiedAttributeID": 2116, 
         "modifyingAttributeID": 2342, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6463, 
+        "modifyingAttributeID": 6464, 
         "operation": 6
       }, 
       {
@@ -76348,6 +76376,13 @@
         "func": "ItemModifier", 
         "modifiedAttributeID": 2116, 
         "modifyingAttributeID": 2638, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6463, 
+        "modifyingAttributeID": 6465, 
         "operation": 6
       }, 
       {
@@ -87592,6 +87627,13 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
+        "modifiedAttributeID": 6463, 
+        "modifyingAttributeID": 6464, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 2135, 
         "modifyingAttributeID": 2352, 
         "operation": 6
@@ -95804,6 +95846,13 @@
       {
         "domain": "shipID", 
         "func": "ItemModifier", 
+        "modifiedAttributeID": 6463, 
+        "modifyingAttributeID": 6465, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
         "modifiedAttributeID": 2135, 
         "modifyingAttributeID": 2639, 
         "operation": 6
@@ -103334,6 +103383,146 @@
         "groupID": 53, 
         "modifiedAttributeID": 6, 
         "modifyingAttributeID": 317, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12949": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12949, 
+    "effectName": "shipLaserDamagePirateAttackBattlecruiser", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 793, 
+        "operation": 6, 
+        "skillTypeID": 3309
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12950": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12950, 
+    "effectName": "shipBloodRaiderEnergyNeutralizerNosferatuTransferAmountBonusABC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 90, 
+        "modifyingAttributeID": 795, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 97, 
+        "modifyingAttributeID": 795, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12951": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12951, 
+    "effectName": "shipBloodRaiderEnergyNeutralizerNosferatuOptimalRangeBonusABC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 1889, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 1889, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12952": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12952, 
+    "effectName": " shipBloodRaiderEnergyNeutralizerNosferatuFalloffRangeBonusABC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 2044, 
+        "modifyingAttributeID": 5205, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 2044, 
+        "modifyingAttributeID": 5205, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12953": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12953, 
+    "effectName": " shipBloodRaiderWebRangeBonusMBC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 65, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 748, 
         "operation": 6
       }
     ], 

@@ -32601,7 +32601,14 @@
     "fittableNonSingleton": 0, 
     "groupID": 5239, 
     "groupName": {
-      "en-us": "Hybrid Drone"
+      "de": "Hybriddrohne", 
+      "en-us": "Hybrid Drone", 
+      "es": "Dron híbrido", 
+      "fr": "Drone hybride", 
+      "ja": "ハイブリッドドローン", 
+      "ko": "하이브리드 드론", 
+      "ru": "Гибридный дрон", 
+      "zh": "混合无人机"
     }, 
     "groupNameID": 1053249, 
     "published": 1, 

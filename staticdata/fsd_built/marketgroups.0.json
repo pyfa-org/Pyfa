@@ -51091,13 +51091,27 @@
   }, 
   "3880": {
     "description": {
-      "en-us": "Drones with both combat and EWAR capabilities"
+      "de": "Drohnen mit Kampf- und EK-Fähigkeiten", 
+      "en-us": "Drones with both combat and EWAR capabilities", 
+      "es": "Drones con capacidades de combate y de guerra electrónica.", 
+      "fr": "Drones disposant de capacités de combat et de GUÉL", 
+      "ja": "戦闘能力と電子戦能力を併せ持つドローン", 
+      "ko": "전투 및 전자전 수행이 가능한 드론", 
+      "ru": "Дроны, сочетающие боевые возможности и возможности электронного боя", 
+      "zh": "同时具备战斗和电子战能力的无人机"
     }, 
     "descriptionID": 1053252, 
     "hasTypes": 0, 
     "iconID": 1084, 
     "name": {
-      "en-us": "Hybrid Drones"
+      "de": "Hybriddrohnen", 
+      "en-us": "Hybrid Drones", 
+      "es": "Drones híbridos", 
+      "fr": "Drones hybrides", 
+      "ja": "ハイブリッドドローン", 
+      "ko": "하이브리드 드론", 
+      "ru": "Гибридные дроны", 
+      "zh": "混合无人机"
     }, 
     "nameID": 1053251, 
     "parentGroupID": 157
@@ -51106,7 +51120,14 @@
     "hasTypes": 1, 
     "iconID": 1084, 
     "name": {
-      "en-us": "Light Hybrid Drones"
+      "de": "Leichte Hybriddrohnen", 
+      "en-us": "Light Hybrid Drones", 
+      "es": "Drones híbridos ligeros", 
+      "fr": "Drones hybrides légers", 
+      "ja": "小型ハイブリッドドローン", 
+      "ko": "소형 하이브리드 드론", 
+      "ru": "Лёгкие гибридные дроны", 
+      "zh": "轻型混合无人机"
     }, 
     "nameID": 1053288, 
     "parentGroupID": 3880
@@ -51115,7 +51136,14 @@
     "hasTypes": 1, 
     "iconID": 1084, 
     "name": {
-      "en-us": "Medium Hybrid Drones"
+      "de": "Mittelgroße Hybriddrohnen", 
+      "en-us": "Medium Hybrid Drones", 
+      "es": "Drones híbridos medianos", 
+      "fr": "Drones hybrides intermédiaires", 
+      "ja": "中型ハイブリッドドローン", 
+      "ko": "중형 하이브리드 드론", 
+      "ru": "Средние гибридные дроны", 
+      "zh": "中型混合无人机"
     }, 
     "nameID": 1053289, 
     "parentGroupID": 3880
@@ -51124,7 +51152,14 @@
     "hasTypes": 1, 
     "iconID": 1084, 
     "name": {
-      "en-us": "Heavy Hybrid Drones"
+      "de": "Schwere Hybriddrohnen", 
+      "en-us": "Heavy Hybrid Drones", 
+      "es": "Drones híbridos pesados", 
+      "fr": "Drones hybrides lourds", 
+      "ja": "大型ハイブリッドドローン", 
+      "ko": "대형 하이브리드 드론", 
+      "ru": "Тяжёлые гибридные дроны", 
+      "zh": "重型混合无人机"
     }, 
     "nameID": 1053290, 
     "parentGroupID": 3880

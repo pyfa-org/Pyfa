@@ -15700,6 +15700,12 @@
   "27690": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_yellow_polished_50_oxidation.png"
   }, 
+  "27691": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/triglavian_Standard.jpg"
+  }, 
+  "27692": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/triglavian_Rare.jpg"
+  }, 
   "27693": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_yellow_metallic_50_oxidation.png"
   }, 
@@ -15736,8 +15742,14 @@
   "27704": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_copper_polished_oxidation.png"
   }, 
+  "27705": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_skull_02_128.png"
+  }, 
   "27706": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_rough_100_oxidation.png"
+  }, 
+  "27707": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_skull_02_128.png"
   }, 
   "27708": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_rough_100_oxidation.png"
@@ -15751,8 +15763,14 @@
   "27711": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_metallic_100_oxidation.png"
   }, 
+  "27712": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavina_logo_01_128.png"
+  }, 
   "27713": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_metallic_100_oxidation.png"
+  }, 
+  "27714": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavina_logo_01_128.png"
   }, 
   "27715": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_brushed_100_oxidation.png"
@@ -15760,10 +15778,103 @@
   "27716": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_royal_brushed_100_oxidation.png"
   }, 
+  "27717": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_splatter_02_128.png"
+  }, 
+  "27718": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_splatter_02_128.png"
+  }, 
+  "27719": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavian_penta_02_128.png"
+  }, 
+  "27720": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavian_penta_02_128.png"
+  }, 
+  "27722": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavian_pyramid_01_128.png"
+  }, 
+  "27723": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavian_pyramid_01_128.png"
+  }, 
+  "27724": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavian_penta_01_128.png"
+  }, 
+  "27725": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_triglavian_penta_01_128.png"
+  }, 
+  "27726": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_skull_04_128.png"
+  }, 
+  "27727": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_skull_04_128.png"
+  }, 
+  "27728": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_skull_03_128.png"
+  }, 
+  "27729": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_skull_03_128.png"
+  }, 
+  "27730": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_highgloss_000_100_010_cs180.png"
+  }, 
+  "27731": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_highgloss_000_100_010_cs180.png"
+  }, 
+  "27732": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_bw_rough_000_000_000.png"
+  }, 
+  "27733": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_bw_rough_000_000_000.png"
+  }, 
+  "27734": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_chartreuse_satin_000_030_100.png"
+  }, 
+  "27735": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_chartreuse_satin_000_030_100.png"
+  }, 
+  "27736": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cheese_matt_000_030_100.png"
+  }, 
+  "27737": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cheese_matt_000_030_100.png"
+  }, 
+  "27738": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cheese_highgloss_000_030_100.png"
+  }, 
+  "27739": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cheese_highgloss_000_030_100.png"
+  }, 
+  "27740": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_aluminum_brushed_063_001_092.png"
+  }, 
+  "27741": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_aluminum_brushed_063_001_092.png"
+  }, 
+  "27742": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_brushed_000_100_010.png"
+  }, 
+  "27743": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_brushed_000_100_010.png"
+  }, 
+  "27744": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_rough_000_100_050.png"
+  }, 
+  "27745": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_rough_000_100_050.png"
+  }, 
+  "27746": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/star_of_pochven_portraitbackground.png"
+  }, 
   "27747": {
     "iconFile": "res:/UI/Texture/Icons/Inventory/ExpertSystems/WormholeExpert.png"
   }, 
   "27748": {
     "iconFile": "res:/UI/Texture/Icons/Inventory/ExpertSystems/InsurgentExpert.png"
+  }, 
+  "27826": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Background-blood-raider-icon.png"
+  }, 
+  "27827": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Background-triglavian-icon.png"
   }
 }

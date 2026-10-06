@@ -138298,7 +138298,7 @@
     "capacity": 0.0, 
     "description": {
       "de": "Neutralisiert einen Teil der Energie im Energiespeicher des Zielschiffes.\n\nHinweis: Kann nur in Schiffe der Capital-Klasse eingebaut werden.", 
-      "en-us": "Neutralizes a portion of the energy in the target ship's capacitor.\n\nNote: May only be fitted to capital class ships.", 
+      "en-us": "Neutralizes a portion of the energy in the target ship's capacitor.\r\n\r\nNote: May only be fitted to capital class ships.", 
       "es": "Neutraliza parte de la energía del condensador de la nave objetivo.\n\nAviso: Solo se puede equipar en naves capitales.", 
       "fr": "Ce module neutralise une partie de l'énergie du capaciteur ennemi.\n\nRemarque : réservé aux vaisseaux de classe capital.", 
       "ja": "対象の艦船のキャパシタエネルギーを一部無効化する。注： 母艦級の艦船にのみ装着可能。", 

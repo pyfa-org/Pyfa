@@ -5350,6 +5350,497 @@
         "role": {
           "bonuses": [
             {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "Funktionsbonus:"
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "Amarr Battlecruiser Boni (je Skillstufe):"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "Minmatar Battlecruiser Boni (je Skillstufe):"
+          }
+        ]
+      }, 
+      "en-us": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "Role Bonus:"
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "Amarr Battlecruiser bonuses (per skill level):"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "Minmatar Battlecruiser bonuses (per skill level):"
+          }
+        ]
+      }, 
+      "es": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "Bonificación por función:"
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "Bonificaciones de Crucero de combate amarriano (por nivel de habilidad):"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "Bonificaciones de Crucero de combate minmatariano (por nivel de habilidad):"
+          }
+        ]
+      }, 
+      "fr": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "Bonus de rôle :"
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": " Bonus (par niveau de compétence) Croiseur de bataille amarr :"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": " Bonus (par niveau de compétence) Croiseur de bataille minmatar :"
+          }
+        ]
+      }, 
+      "it": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "Role Bonus:"
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "Amarr Battlecruiser bonuses (per skill level):"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "Minmatar Battlecruiser bonuses (per skill level):"
+          }
+        ]
+      }, 
+      "ja": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "性能ボーナス："
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "アマー巡洋戦艦ボーナス(スキルレベルごとに):"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "ミンマター巡洋戦艦ボーナス(スキルレベルごとに):"
+          }
+        ]
+      }, 
+      "ko": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "역할 보너스:"
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "아마르 배틀크루저 보너스 (스킬 레벨당):"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "민마타 배틀크루저 보너스 (스킬 레벨당):"
+          }
+        ]
+      }, 
+      "ru": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "на 125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "на 95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "на 50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "на 50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "Профильные особенности проекта:"
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "на 15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "на 20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "на 10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "За каждую степень освоения навыка Амаррские линейные крейсеры:"
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "на 20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "За каждую степень освоения навыка Минматарские линейные крейсеры:"
+          }
+        ]
+      }, 
+      "zh": {
+        "role": {
+          "bonuses": [
+            {
+              "text": "·Energy Nosferatu fitted to this ship will drain targeted ship's capacitor regardless of your own capacitor level"
+            }, 
+            {
+              "number": "125%", 
+              "text": "bonus to Large Energy Turret damage"
+            }, 
+            {
+              "number": "95%", 
+              "text": "reduction in Large Energy Turret powergrid requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret CPU requirement"
+            }, 
+            {
+              "number": "50%", 
+              "text": "reduction in Large Energy Turret activation cost"
+            }
+          ], 
+          "header": "特有加成："
+        }, 
+        "skills": [
+          {
+            "bonuses": [
+              {
+                "number": "15%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer drain amount"
+              }, 
+              {
+                "number": "20%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+              }, 
+              {
+                "number": "10%", 
+                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+              }
+            ], 
+            "header": "艾玛战列巡洋舰操作每升一级："
+          }, 
+          {
+            "bonuses": [
+              {
+                "number": "20%", 
+                "text": "bonus to Stasis Webifier range"
+              }
+            ], 
+            "header": "米玛塔尔战列巡洋舰操作每升一级："
+          }
+        ]
+      }
+    }, 
+    "typeID": 95741
+  }, 
+  {
+    "traits": {
+      "de": {
+        "role": {
+          "bonuses": [
+            {
               "number": "90%", 
               "text": "Reduktion der effektiv zurückgelegten Distanz für die Sprungerschöpfung"
             }
