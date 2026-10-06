@@ -117,9 +117,33 @@ class Display(wx.ListCtrl):
         info.SetAlign(wx.LIST_FORMAT_LEFT)
         self.InsertColumn(i, info)
         col.resized = False
-        if i == 0 and col.size != wx.LIST_AUTOSIZE_USEHEADER:
-            col.size += 4
-        self.SetColumnWidth(i, col.size)
+        if col.size == wx.LIST_AUTOSIZE_USEHEADER:
+            self.SetColumnWidth(i, col.size)
+        else:
+            self.sizeFixedColumn(i)
+        if i == 0 and len(self.activeColumns) > 1:
+            # the column which was first until now is not anymore
+            self.sizeFixedColumn(1)
+
+    def firstColumnPadding(self, i):
+        """
+        Extra room a fixed-width column needs at position i.
+
+        The first column of a report list gives up a few pixels to the row's own margin, so a
+        fixed-width column there needs them back. It is tied to the position rather than to the
+        column, as the column in front can change when columns are added or removed.
+        """
+        if i == 0 and self.activeColumns[i].size != wx.LIST_AUTOSIZE_USEHEADER:
+            return 4
+        return 0
+
+    def sizeFixedColumn(self, i):
+        col = self.activeColumns[i]
+        if col.size == wx.LIST_AUTOSIZE_USEHEADER or col.resized:
+            return
+        width = col.size + self.firstColumnPadding(i)
+        if self.GetColumnWidth(i) != width:
+            self.SetColumnWidth(i, width)
 
     def appendColumnBySpec(self, colSpec):
         self.insertColumnBySpec(len(self.activeColumns), colSpec)
@@ -145,7 +169,7 @@ class Display(wx.ListCtrl):
             col = ViewColumn.getColumn(colSpec)(self, None)
 
         self.addColumn(i, col)
-        self.columnsMinWidth.append(self.GetColumnWidth(i))
+        self.columnsMinWidth.insert(i, self.GetColumnWidth(i) - self.firstColumnPadding(i))
         self.invalidateColumnWidths()
 
     def invalidateColumnWidths(self):
@@ -184,6 +208,9 @@ class Display(wx.ListCtrl):
         del self.activeColumns[i]
         del self.columnsMinWidth[i]
         self.DeleteColumn(i)
+        if i == 0 and self.activeColumns:
+            # another column moved to the front
+            self.sizeFixedColumn(0)
         self.invalidateColumnWidths()
 
     def getColIndex(self, colClass):
@@ -214,8 +241,9 @@ class Display(wx.ListCtrl):
 
     def checkColumnSize(self, column):
         colItem = self.activeColumns[column]
-        if self.GetColumnWidth(column) < self.columnsMinWidth[column]:
-            self.SetColumnWidth(column, self.columnsMinWidth[column])
+        minWidth = self.columnsMinWidth[column] + self.firstColumnPadding(column)
+        if self.GetColumnWidth(column) < minWidth:
+            self.SetColumnWidth(column, minWidth)
         colItem.resized = True
 
     def getLastItem(self, state=wx.LIST_STATE_DONTCARE):
@@ -331,8 +359,7 @@ class Display(wx.ListCtrl):
                     if self.GetColumnWidth(i) != width:
                         self.SetColumnWidth(i, width)
                 else:
-                    if self.GetColumnWidth(i) != col.size:
-                        self.SetColumnWidth(i, col.size)
+                    self.sizeFixedColumn(i)
 
     def update(self, stuff, dirtyRows=None, dirtyColumns=None):
         self.populate(stuff)
