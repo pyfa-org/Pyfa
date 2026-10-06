@@ -1026,6 +1026,7 @@ class Effect272(BaseEffect):
     repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
 
     Used by:
+    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
@@ -1175,8 +1176,8 @@ class Effect391(BaseEffect):
     astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining
 
     Used by:
-    Implants named like: AIR Mining Yield Booster (3 of 3)
     Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
+    Implants named like: Mining Booster (6 of 8)
     Implants named like: Serenity Limited 'Efficiency' Dose (3 of 3)
     Implants named like: Serenity Poteque 'Prospector' Harvesting MC (3 of 3)
     Implant: Michi's Excavation Augmentor
@@ -1834,6 +1835,7 @@ class Effect584(BaseEffect):
 
     Used by:
     Implants named like: 'Pyrolancea' Dose (7 of 7)
+    Implants named like: Chemal Tech Turret Booster (3 of 3)
     Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
     Implants named like: Halcyon Y Booster (5 of 5)
     Implant: AIR Pyrolancea Booster II
@@ -4965,6 +4967,7 @@ class Effect1635(BaseEffect):
     capitalRepairSystemsSkillDurationBonus
 
     Used by:
+    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Modules named like: Nanobot Accelerator (8 of 8)
     Implant: AIR Repairer Booster III
     Skill: Capital Repair Systems
@@ -6873,6 +6876,7 @@ class Effect2296(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Tetrimon Resistance Booster (4 of 4)
     """
 
     type = 'passive'
@@ -7072,6 +7076,7 @@ class Effect2432(BaseEffect):
     Implants named like: Halcyon Y Booster (5 of 5)
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
     Implants named like: Mindflood Booster (4 of 4)
+    Implants named like: Tetrimon Capacitor Booster (4 of 4)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Basic Capsuleer Engineering Augmentation Chip
@@ -7698,6 +7703,7 @@ class Effect2696(BaseEffect):
     maxRangeBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Locus Coordinator (8 of 8)
     """
 
@@ -8461,6 +8467,7 @@ class Effect2803(BaseEffect):
     energyWeaponDamageMultiplyPassive
 
     Used by:
+    Implants named like: Harvest Damage Booster (4 of 4)
     Implants named like: Imperial Hardpoint Booster (3 of 3)
     Modules named like: Energy Collision Accelerator (8 of 8)
     Implant: Wisdom of Gheinok
@@ -8567,6 +8574,7 @@ class Effect2847(BaseEffect):
     trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
 
     Used by:
+    Implants named like: Chemal Tech Turret Booster (3 of 3)
     Implants named like: Drop Booster (4 of 4)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implants named like: Halcyon G Booster (5 of 5)
@@ -9332,7 +9340,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Launchers (446 of 944)
+    Items from market group: Ship Equipment > Turrets & Launchers (446 of 945)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9351,8 +9359,8 @@ class Effect3002(BaseEffect):
     Used by:
     Modules from group: Armor Resistance Shift Hardener (2 of 2)
     Modules from group: Capacitor Booster (43 of 43)
-    Modules from group: Energy Neutralizer (57 of 57)
-    Modules from group: Energy Nosferatu (58 of 58)
+    Modules from group: Energy Neutralizer (58 of 58)
+    Modules from group: Energy Nosferatu (59 of 59)
     Modules from group: Hull Repair Unit (25 of 25)
     Modules from group: Remote Capacitor Transmitter (37 of 37)
     Modules from group: Remote Hull Repairer (8 of 8)
@@ -9392,7 +9400,7 @@ class Effect3025(BaseEffect):
     Used by:
     Modules from group: Energy Weapon (105 of 220)
     Modules from group: Hybrid Weapon (107 of 223)
-    Modules from group: Precursor Weapon (20 of 20)
+    Modules from group: Precursor Weapon (21 of 21)
     Modules from group: Projectile Weapon (101 of 167)
     Modules named like: Pulse Laser (89 of 90)
     """
@@ -9738,8 +9746,8 @@ class Effect3200(BaseEffect):
     Used by:
     Modules from group: Ancillary Armor Repairer (12 of 12)
     Modules from group: Armor Repair Unit (105 of 105)
-    Modules from group: Remote Armor Repairer (45 of 45)
-    Modules named like: Remote Armor Repairer (54 of 54)
+    Modules from group: Remote Armor Repairer (49 of 49)
+    Modules named like: Remote Armor Repairer (58 of 58)
     """
 
     type = 'overheat'
@@ -13457,6 +13465,7 @@ class Effect4162(BaseEffect):
 
     Used by:
     Modules from group: Scan Probe Launcher (5 of 8)
+    Implants named like: Chemal Tech Exploration Booster (3 of 3)
     Implants named like: Electronics Booster (12 of 12)
     Implants named like: Halcyon G Booster (5 of 5)
     Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
@@ -15308,6 +15317,7 @@ class Effect4575(BaseEffect):
         # Remote impedance (no reps, etc)
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('remoteCapacitorImpedance', src.getModifiedItemAttr('remoteCapacitorImpedanceBonus'), **kwargs)
         fit.ship.increaseItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'), **kwargs)
         fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
         fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
@@ -16009,7 +16019,7 @@ class Effect4820(BaseEffect):
     bcLargeEnergyTurretPowerNeedBonus
 
     Used by:
-    Ship: Oracle
+    Variations of ship: Oracle (2 of 2)
     """
 
     type = 'passive'
@@ -16058,7 +16068,7 @@ class Effect4823(BaseEffect):
     bcLargeEnergyTurretCPUNeedBonus
 
     Used by:
-    Ship: Oracle
+    Variations of ship: Oracle (2 of 2)
     """
 
     type = 'passive'
@@ -16107,7 +16117,7 @@ class Effect4826(BaseEffect):
     bcLargeEnergyTurretCapacitorNeedBonus
 
     Used by:
-    Ship: Oracle
+    Variations of ship: Oracle (2 of 2)
     """
 
     type = 'passive'
@@ -16608,6 +16618,7 @@ class Effect4967(BaseEffect):
     shieldBoosterDurationBonusShieldSkills
 
     Used by:
+    Implants named like: Chemal Tech Repair Booster (3 of 3)
     Modules named like: Core Defense Operational Solidifier (8 of 8)
     Implant: AIR Repairer Booster III
     """
@@ -17992,6 +18003,7 @@ class Effect5189(BaseEffect):
     trackingSpeedBonusEffectLasers
 
     Used by:
+    Implants named like: Tetrimon Precision Booster (4 of 4)
     Modules named like: Energy Metastasis Adjuster (8 of 8)
     """
 
@@ -20256,6 +20268,7 @@ class Effect5459(BaseEffect):
     hackingVirusStrengthBonus
 
     Used by:
+    Implants named like: Chemal Tech Exploration Booster (3 of 3)
     Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
     Implant: Neural Lace 'Bluefire' Net Ablation 960-10
     """
@@ -22256,6 +22269,7 @@ class Effect5854(BaseEffect):
     shipBonusNosferatuOverride
 
     Used by:
+    Ship: Akoman
     Ship: Ashimmu
     Ship: Bhaalgorn
     Ship: Caedes
@@ -24727,7 +24741,7 @@ class Effect6187(BaseEffect):
     energyNeutralizerFalloff
 
     Used by:
-    Modules from group: Energy Neutralizer (57 of 57)
+    Modules from group: Energy Neutralizer (58 of 58)
     """
 
     type = 'active', 'projected'
@@ -24755,7 +24769,7 @@ class Effect6188(BaseEffect):
     shipModuleRemoteArmorRepairer
 
     Used by:
-    Modules from group: Remote Armor Repairer (45 of 45)
+    Modules from group: Remote Armor Repairer (49 of 49)
     """
 
     runTime = 'late'
@@ -24801,7 +24815,7 @@ class Effect6197(BaseEffect):
     energyNosferatuFalloff
 
     Used by:
-    Modules from group: Energy Nosferatu (58 of 58)
+    Modules from group: Energy Nosferatu (59 of 59)
     """
 
     runTime = 'late'
@@ -28603,6 +28617,7 @@ class Effect6581(BaseEffect):
         fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
         fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('remoteCapacitorImpedance', src.getModifiedItemAttr('remoteCapacitorImpedanceBonus'), **kwargs)
 
         fit.ship.forceItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'), **kwargs)
         fit.ship.forceItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'), **kwargs)
@@ -28670,6 +28685,7 @@ class Effect6582(BaseEffect):
 
         # Ewar and assistance resistances
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('remoteCapacitorImpedance', src.getModifiedItemAttr('remoteCapacitorImpedanceBonus'), **kwargs)
         fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
         fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
         fit.ship.boostItemAttr('weaponDisruptionResistance', src.getModifiedItemAttr('weaponDisruptionResistanceBonus'), **kwargs)
@@ -29936,6 +29952,7 @@ class Effect6658(BaseEffect):
                                    stackingPenalties=True, **kwargs)
 
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('remoteCapacitorImpedance', src.getModifiedItemAttr('remoteCapacitorImpedanceBonus'), **kwargs)
         fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
         fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
         # This one was removed from expressions, but somehow MJD is still blocked, so leaving it here
@@ -32972,9 +32989,9 @@ class Effect6953(BaseEffect):
     mediumRemoteRepFittingAdjustment
 
     Used by:
+    Modules named like: Medium Remote Armor Repairer (16 of 16)
     Variations of module: Medium Remote Armor Repairer I (14 of 14)
     Variations of module: Medium Remote Shield Booster I (13 of 13)
-    Module: Medium Ancillary Remote Armor Repairer
     Module: Medium Ancillary Remote Shield Booster
     """
 
@@ -33413,7 +33430,7 @@ class Effect6995(BaseEffect):
     targetDisintegratorAttack
 
     Used by:
-    Modules from group: Precursor Weapon (20 of 20)
+    Modules from group: Precursor Weapon (21 of 21)
     """
 
     dealsDamage = True
@@ -34768,7 +34785,7 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
-    Items from category: Ship (46 of 423)
+    Items from category: Ship (46 of 424)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
     Ships from group: Interceptor (10 of 10)
@@ -36902,6 +36919,7 @@ class Effect8119(BaseEffect):
         # Remote impedance (no reps, etc)
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'), **kwargs)
+        fit.ship.boostItemAttr('remoteCapacitorImpedance', src.getModifiedItemAttr('remoteCapacitorImpedanceBonus'), **kwargs)
         fit.ship.increaseItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'), **kwargs)
         fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'), **kwargs)
         fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'), **kwargs)
@@ -36971,6 +36989,7 @@ class Effect8128(BaseEffect):
 
     Used by:
     Implants named like: AIR Mining Range Booster (2 of 2)
+    Implants named like: Chemal Tech Mining Booster (3 of 3)
     """
 
     type = 'passive'
@@ -37611,6 +37630,7 @@ class Effect8267(BaseEffect):
     weaponDisruptorResistanceBonusPassive
 
     Used by:
+    Implants named like: Harvest Anti Disruptor Booster (4 of 4)
     Implants named like: Republic Electronics Booster (3 of 3)
     """
 
@@ -37630,6 +37650,7 @@ class Effect8270(BaseEffect):
 
     Used by:
     Implants named like: Halcyon Y Booster (5 of 5)
+    Implants named like: Tetrimon Anti Drain Booster (4 of 4)
     """
 
     type = 'passive'

@@ -976,7 +976,7 @@ class Fit:
                             or mod.item.requiresSkill("Capital Shield Emission Systems")),
                         "shieldBonus", value, stackingPenalties=True)
                 elif warfareBuffID == 2544:  # FW Moderate Site BC Skill Bonus
-                    for base in ('shipBonusABC', 'shipBonusCBC', 'shipBonusGBC', 'shipBonusMBC'):
+                    for base in ('shipBonusABC', 'shipBonusCBC', 'shipBonusGBC', 'shipBonusMBC', 'shipBonusPBC'):
                         for i in range(1, 5):
                             self.ship.boostItemAttr(f'{base}{i}', value)
                 elif warfareBuffID == 2545:  # FW ELT-5 Site T3D HP Bonus
