@@ -735,7 +735,6 @@ class FittingView(d.Display):
                 for position, mod in enumerate(fit.modules):
                     if mod in selectedMods:
                         positions.append(position)
-            self._dirtyRows = {id(mod) for mod in selectedMods}
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleStatesCommand(
                 fitID=fitID,
                 mainPosition=mainPosition,
@@ -773,9 +772,6 @@ class FittingView(d.Display):
         bit of post-processing (colors)
         """
         self.Freeze()
-        if dirtyRows is None:
-            dirtyRows = getattr(self, '_dirtyRows', None)
-        self._dirtyRows = None
         d.Display.refresh(self, stuff, dirtyRows=dirtyRows, dirtyColumns=dirtyColumns)
 
         sFit = Fit.getInstance()
@@ -792,7 +788,6 @@ class FittingView(d.Display):
         for i, mod in enumerate(self.mods):
             if dirtyRows is not None and id(mod) not in dirtyRows:
                 continue
-            rowKey = id(mod)
             rowColor = backgroundColor
 
             #  only consider changing color if we're dealing with a Module
@@ -826,13 +821,13 @@ class FittingView(d.Display):
                 sFit.serviceFittingOptions["rackSlots"] and \
                 sFit.serviceFittingOptions["rackLabels"] else wx.FONTWEIGHT_NORMAL
 
-            previous = self._rowPresentation.get(rowKey)
+            previous = self._rowPresentation.get(i)
             presentation = (rowColor, fontWeight)
             if previous != presentation:
                 self.SetItemBackgroundColour(i, rowColor)
                 self.font.SetWeight(fontWeight)
                 self.SetItemFont(i, self.font)
-                self._rowPresentation[rowKey] = presentation
+                self._rowPresentation[i] = presentation
 
         self.Thaw()
         self.itemCount = self.GetItemCount()

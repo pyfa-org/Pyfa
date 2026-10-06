@@ -39,7 +39,6 @@ class Display(wx.ListCtrl):
         # measured in Python only for columns whose contents actually changed. None means
         # "measure them all".
         self._dirtyColumns = None
-        self._columnWidths = {}
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
         self.Bind(wx.EVT_SIZE, self.onResized)
@@ -150,9 +149,8 @@ class Display(wx.ListCtrl):
         self.invalidateColumnWidths()
 
     def invalidateColumnWidths(self):
-        """Forget what we measured, so every column is sized again on the next refresh."""
+        """Size every column again on the next refresh."""
         self._dirtyColumns = None
-        self._columnWidths.clear()
 
     def onResized(self, event):
         # the width a column wants can depend on how much room there is, most visibly for the
@@ -329,9 +327,7 @@ class Display(wx.ListCtrl):
                     if i not in toMeasure:
                         # nothing which affects this column moved, the width it has still fits
                         continue
-                    width = self._columnWidths.get(i)
-                    if width is None:
-                        width = self._columnWidths[i] = self.columnWidth(i)
+                    width = self.columnWidth(i)
                     if self.GetColumnWidth(i) != width:
                         self.SetColumnWidth(i, width)
                 else:
