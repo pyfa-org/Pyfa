@@ -22,7 +22,7 @@ import time
 from logbook import Logger
 from itertools import chain
 
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, object_session
 
 import eos
 import eos.db
@@ -210,6 +210,8 @@ class Character:
                 return
 
         self.__skillIdMap[skill.itemID] = skill
+        if skill.learned:
+            skill.joinSession()
 
     def removeSkill(self, skill):
         self.__skills.remove(skill)
@@ -330,8 +332,15 @@ class Skill(HandledItem):
         self.__suppressed = False
         self.activeLevel = self.__level
 
+    def joinSession(self):
+        # SQLAlch 2.x does not do it automatically anymore
+        session = object_session(self.character) if self.character is not None else None
+        if session is not None:
+            session.add(self)
+
     def saveLevel(self):
         self.__level = self.activeLevel
+        self.joinSession()
 
         if self in self.character.dirtySkills:
             self.character.dirtySkills.remove(self)
