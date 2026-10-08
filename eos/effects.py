@@ -2557,7 +2557,7 @@ class Effect854(BaseEffect):
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('scanResolution',
                                   module.getModifiedItemAttr('scanResolutionMultiplier'),
-                                  stackingPenalties=True, penaltyGroup='cloakingScanResolutionMultiplier', **kwargs)
+                                  stackingPenalties=True, penaltyGroup='PostMul', **kwargs)
 
 
 class Effect856(BaseEffect):
@@ -7482,7 +7482,7 @@ class Effect2645(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         fit.ship.multiplyItemAttr('scanResolution', module.getModifiedItemAttr('scanResolutionMultiplier'),
-                                  stackingPenalties=True, **kwargs)
+                                  stackingPenalties=True, penaltyGroup='PostMul', **kwargs)
 
 
 class Effect2646(BaseEffect):
