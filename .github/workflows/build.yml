@@ -1,0 +1,244 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # a newer push to master supersedes the build in progress, while tag builds always run to the end
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+permissions:
+  contents: read
+
+env:
+  # without the key (e.g. in forks) the script prints a notice and the build goes on without the data
+  CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
+  CROWDIN_PROJECT_ID: ${{ vars.CROWDIN_PROJECT_ID }}
+
+jobs:
+  linux:
+    name: Linux AppImage
+    # the AppImage recipe bundles Ubuntu 22.04 packages, and the wx wheel is built for 22.04 as well
+    runs-on: ubuntu-22.04
+    env:
+      APPIMAGE_TOOL: appimage-builder-x86_64.AppImage
+      # run AppImages by extracting them, so that the build does not depend on FUSE being usable
+      APPIMAGE_EXTRACT_AND_RUN: 1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # version numbers come from git describe, which needs the tags and the history leading to them
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Install system packages
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install \
+            libfuse2 \
+            libgtk-3-0 libsdl2-2.0-0 libwebkit2gtk-4.0-37 \
+            libgstreamer1.0-0 libgstreamer-plugins-base1.0-0 \
+            libnotify4 libtiff5 libjpeg-turbo8 libpcre2-32-0 \
+            libsm6 libxtst6 libxxf86vm1 libcurl4 libegl1 libgl1
+
+      - uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: |
+          uv sync --frozen --no-default-groups --group wx-binary
+          uv run --no-sync python -c "import wx; print(wx.version())"
+
+      - name: Prepare pyfa data
+        run: |
+          uv export --frozen --no-default-groups --group wx-binary --no-hashes --format requirements-txt -o requirements-appimage.txt
+          uv run --no-sync python -B scripts/compile_lang.py
+          uv run --no-sync python -B scripts/dump_crowdin_progress.py
+          uv run --no-sync python -B db_update.py
+          version=$(uv run --no-sync python -B scripts/dump_version.py)
+          echo "PYFA_VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Build AppImage
+        run: |
+          curl --fail-with-body -o "$APPIMAGE_TOOL" -L https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+          chmod +x "$APPIMAGE_TOOL"
+          mkdir -p build AppDir/opt/pyfa AppDir/usr/share/icons/hicolor/64x64/apps
+          cp -r eos graphs gui imgs locale service utils eve.db config.py pyfa.py db_update.py README.md LICENSE version.yml AppDir/opt/pyfa/
+          cp imgs/gui/pyfa64.png AppDir/usr/share/icons/hicolor/64x64/apps/pyfa.png
+          ./"$APPIMAGE_TOOL" --recipe dist_assets/linux/AppImageBuilder.yml
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pyfa-linux
+          path: pyfa-${{ env.PYFA_VERSION }}-linux.AppImage
+          retention-days: 90
+          if-no-files-found: error
+
+  windows:
+    name: Windows
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - uses: actions/setup-python@v7
+        id: python
+        with:
+          python-version: '3.14'
+          architecture: x64
+
+      - uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --frozen --no-default-groups --group packaging --group wx-binary --python "${{ steps.python.outputs.python-path }}"
+
+      - name: Prepare pyfa data
+        run: |
+          # otherwise only the exit code of the last command fails the step
+          $PSNativeCommandUseErrorActionPreference = $true
+          uv run --no-sync python scripts/compile_lang.py
+          uv run --no-sync python scripts/dump_crowdin_progress.py
+          uv run --no-sync python db_update.py
+          $version = uv run --no-sync python scripts/dump_version.py
+          "PYFA_VERSION=$version" >> $env:GITHUB_ENV
+
+      - name: Build installer and zip
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          uv run --no-sync python -m PyInstaller --clean -y pyfa.spec
+          # see pyfa-org/pyfa#1622
+          Copy-Item dist_assets\win\pyfa.exe.manifest dist\pyfa\
+          $appVersion = uv run --no-sync python -c "from packaging.version import Version; import yaml; print(Version(yaml.safe_load(open('version.yml'))['version']))"
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" dist_assets\win\pyfa-setup.iss `
+            "/dMyAppVersion=$appVersion" `
+            "/dMyAppDir=$env:GITHUB_WORKSPACE\dist\pyfa" `
+            "/dMyOutputDir=$env:GITHUB_WORKSPACE" `
+            "/dMyOutputFile=pyfa-$env:PYFA_VERSION-win"
+          7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:GITHUB_WORKSPACE\dist\pyfa\*"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pyfa-windows
+          path: |
+            pyfa-${{ env.PYFA_VERSION }}-win.exe
+            pyfa-${{ env.PYFA_VERSION }}-win.zip
+          retention-days: 90
+          if-no-files-found: error
+
+  macos:
+    name: macOS ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      # one architecture failing should not throw away the other one's build
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: macos-15-intel
+          - arch: arm64
+            runner: macos-15
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Install OpenSSL
+        # cryptography stopped publishing Intel macOS wheels, so here it gets compiled against Homebrew's OpenSSL
+        if: matrix.arch == 'x86_64'
+        run: |
+          brew install openssl@3
+          echo "OPENSSL_DIR=$(brew --prefix openssl@3)" >> "$GITHUB_ENV"
+
+      - uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --frozen --no-default-groups --group packaging --group wx-binary
+
+      - name: Prepare pyfa data
+        run: |
+          uv run --no-sync python scripts/compile_lang.py
+          uv run --no-sync python scripts/dump_crowdin_progress.py
+          uv run --no-sync python db_update.py
+          version=$(uv run --no-sync python scripts/dump_version.py)
+          echo "PYFA_VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Build app
+        run: |
+          uv run --no-sync python -m PyInstaller -y --clean dist_assets/mac/pyfa.spec
+          built=$(lipo -archs dist/pyfa.app/Contents/MacOS/pyfa)
+          if [ "$built" != "${{ matrix.arch }}" ]; then
+            echo "::error::expected a ${{ matrix.arch }} build, got: $built"
+            exit 1
+          fi
+          (cd dist && zip -yr "pyfa-$PYFA_VERSION-mac-${{ matrix.arch }}.zip" pyfa.app)
+
+      - name: Report the oldest macOS the app runs on
+        # informational: the bundled binary needing the newest macOS decides it for the whole app
+        run: |
+          find dist/pyfa.app -type f \( -name '*.dylib' -o -name '*.so' -o -perm -u+x \) -print0 |
+            while IFS= read -r -d '' file; do
+              minos=$(otool -l "$file" 2>/dev/null | awk '
+                /LC_BUILD_VERSION/ { build = 1 }
+                build && $1 == "minos" { print $2; exit }
+                /LC_VERSION_MIN_MACOSX/ { legacy = 1 }
+                legacy && $1 == "version" { print $2; exit }')
+              if [ -n "$minos" ]; then echo "$minos ${file#dist/}"; fi
+            done | sort -t. -k1,1n -k2,2n | tail -n 5
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pyfa-mac-${{ matrix.arch }}
+          path: dist/pyfa-${{ env.PYFA_VERSION }}-mac-${{ matrix.arch }}.zip
+          retention-days: 90
+          if-no-files-found: error
+
+  release:
+    name: Draft release
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [linux, windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          ls -l dist
+          if draft=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null); then
+            # a published release is never touched; a draft (e.g. from a re-run) gets its files replaced
+            if [ "$draft" != "true" ]; then
+              echo "::error::release $TAG is already published, not changing it"
+              exit 1
+            fi
+            gh release upload "$TAG" dist/* --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" dist/* --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
+              --title "pyfa $TAG" --notes "Release description"
+          fi

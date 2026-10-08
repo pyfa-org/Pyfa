@@ -73,7 +73,8 @@ exe = EXE(pyz,
           name='pyfa',
           debug=False,
           strip=False,
-          upx=True,
+          # UPX is known to produce broken binaries on macOS arm64
+          upx=False,
           console=False ,
           icon=icon,
           contents_directory='app',
@@ -85,7 +86,7 @@ coll = COLLECT(
     a.zipfiles,
     a.datas,
     strip=False,
-    upx=True,
+    upx=False,
     name='pyfa',
 )
 
