@@ -51,6 +51,9 @@ def apply_col_listeners(target, context):
     manager = getattr(target.__class__, "_sa_class_manager", None)
     if manager:
         for col in manager.mapper.column_attrs:
+            # The ORM synchronizes fitID during flush; collection listeners track fit changes.
+            if col.key == 'fitID':
+                continue
             listen(col, 'set', update_fit_modified)
 
 
