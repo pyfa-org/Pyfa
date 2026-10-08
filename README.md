@@ -1,6 +1,6 @@
 # pyfa
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/pyfa-org/pyfa?branch=master&svg=true)]([https://travis-ci.org/pyfa-org/Pyfa](https://ci.appveyor.com/project/pyfa-org/pyfa))
+[![Build Status](https://github.com/pyfa-org/Pyfa/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/pyfa-org/Pyfa/actions/workflows/build.yml)
 
 ![pyfa](https://user-images.githubusercontent.com/275209/66119992-864be080-e5e2-11e9-994a-3a4368c9fad7.png)
 
