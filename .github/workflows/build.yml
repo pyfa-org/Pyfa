@@ -45,7 +45,7 @@ jobs:
             libnotify4 libtiff5 libjpeg-turbo8 libpcre2-32-0 \
             libsm6 libxtst6 libxxf86vm1 libcurl4 libegl1 libgl1
 
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
@@ -98,7 +98,7 @@ jobs:
           python-version: '3.14'
           architecture: x64
 
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
@@ -166,7 +166,7 @@ jobs:
           brew install openssl@3
           echo "OPENSSL_DIR=$(brew --prefix openssl@3)" >> "$GITHUB_ENV"
 
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
