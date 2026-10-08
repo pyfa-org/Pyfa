@@ -149,12 +149,17 @@ jobs:
         include:
           - arch: x86_64
             runner: macos-15-intel
+            platform: x86_64-apple-darwin
           - arch: arm64
             runner: macos-15
+            platform: aarch64-apple-darwin
     env:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-      # the runners come with Homebrew's Python, which is built for the runner's own macOS version and would
-      # make the app require it too; uv's own builds target much older macOS versions
+      # Oldest macOS the app has to run on. The runners are newer, and by default everything gets picked
+      # or built for the runner's own version: uv chooses wheels for it, Homebrew's libraries are built for
+      # it, and so is anything compiled here. The build fails if any bundled binary needs a newer one.
+      MACOSX_DEPLOYMENT_TARGET: '12.0'
+      # the runners come with Homebrew's Python, which is built for the runner's macOS; uv's own builds
+      # target much older versions
       UV_PYTHON_PREFERENCE: only-managed
     steps:
       - uses: actions/checkout@v7
@@ -162,20 +167,15 @@ jobs:
           fetch-depth: 0
           filter: blob:none
 
-      - name: Install OpenSSL
-        # cryptography stopped publishing Intel macOS wheels, so here it gets compiled against Homebrew's OpenSSL
-        if: matrix.arch == 'x86_64'
-        run: |
-          brew install openssl@3
-          echo "OPENSSL_DIR=$(brew --prefix openssl@3)" >> "$GITHUB_ENV"
-
       - uses: astral-sh/setup-uv@v10.2.0
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
 
       - name: Install dependencies
-        run: uv sync --frozen --no-default-groups --group packaging --group wx-binary
+        # naming the platform makes uv choose wheels for MACOSX_DEPLOYMENT_TARGET instead of the runner's
+        # macOS (numpy, for one, has separate wheels for macOS 14 and newer)
+        run: uv sync --frozen --no-default-groups --group packaging --group wx-binary --python-platform ${{ matrix.platform }}
 
       - name: Prepare pyfa data
         run: |
@@ -193,10 +193,9 @@ jobs:
             echo "::error::expected a ${{ matrix.arch }} build, got: $built"
             exit 1
           fi
-          (cd dist && zip -yr "pyfa-$PYFA_VERSION-mac-${{ matrix.arch }}.zip" pyfa.app)
 
-      - name: Report the oldest macOS the app runs on
-        # informational: the bundled binaries needing the newest macOS decide it for the whole app
+      - name: Check the oldest macOS the app runs on
+        # the bundled binaries needing the newest macOS decide it for the whole app
         run: |
           find dist/pyfa.app -type f \( -name '*.dylib' -o -name '*.so' -o -perm -u+x \) -print0 |
             while IFS= read -r -d '' file; do
@@ -206,12 +205,26 @@ jobs:
                 /LC_VERSION_MIN_MACOSX/ { legacy = 1 }
                 legacy && $1 == "version" { print $2; exit }')
               if [ -n "$minos" ]; then echo "$minos ${file#dist/}"; fi
-            done | sort -t. -k1,1n -k2,2n > minos.txt
+            done | sort -t. -k1,1n -k2,2n -k3,3n > minos.txt
           newest=$(tail -n 1 minos.txt | cut -d' ' -f1)
-          echo "The app needs macOS $newest or newer, because of:"
-          grep "^$newest " minos.txt | head -n 15
-          echo "Binaries per minimum version:"
+          echo "Binaries per minimum macOS version:"
           cut -d' ' -f1 minos.txt | uniq -c
+          echo "The app needs macOS $newest or newer, because of:"
+          awk -v version="$newest" '$1 == version' minos.txt | head -n 15
+          too_new=$(awk -v needed="$newest" -v target="$MACOSX_DEPLOYMENT_TARGET" 'BEGIN {
+            split(needed, n, "."); split(target, t, ".")
+            for (i = 1; i <= 3; i++) {
+              if (n[i] + 0 > t[i] + 0) { print "yes"; exit }
+              if (n[i] + 0 < t[i] + 0) { exit }
+            }
+          }')
+          if [ -n "$too_new" ]; then
+            echo "::error::the app needs macOS $newest, but has to run on macOS $MACOSX_DEPLOYMENT_TARGET (binaries listed above)"
+            exit 1
+          fi
+
+      - name: Package app
+        run: (cd dist && zip -yr "pyfa-$PYFA_VERSION-mac-${{ matrix.arch }}.zip" pyfa.app)
 
       - uses: actions/upload-artifact@v7
         with:

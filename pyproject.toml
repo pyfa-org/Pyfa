@@ -16,7 +16,10 @@ dependencies = [
     "python-dateutil==2.9.0.post0",
     "requests==2.34.2",
     "sqlalchemy==2.0.51",
-    "cryptography==50.0.0",
+    # newer versions publish no Intel macOS wheels, and building them there links OpenSSL from Homebrew,
+    # which is built for the build machine's macOS and would raise the minimum macOS of the app with it
+    "cryptography==50.0.0 ; sys_platform != 'darwin' or platform_machine != 'x86_64'",
+    "cryptography==48.0.1 ; sys_platform == 'darwin' and platform_machine == 'x86_64'",
     "markdown2==2.5.5",
     "packaging==26.2",
     "roman==5.2",
