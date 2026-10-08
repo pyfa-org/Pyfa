@@ -153,6 +153,9 @@ jobs:
             runner: macos-15
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
+      # the runners come with Homebrew's Python, which is built for the runner's own macOS version and would
+      # make the app require it too; uv's own builds target much older macOS versions
+      UV_PYTHON_PREFERENCE: only-managed
     steps:
       - uses: actions/checkout@v7
         with:
@@ -193,7 +196,7 @@ jobs:
           (cd dist && zip -yr "pyfa-$PYFA_VERSION-mac-${{ matrix.arch }}.zip" pyfa.app)
 
       - name: Report the oldest macOS the app runs on
-        # informational: the bundled binary needing the newest macOS decides it for the whole app
+        # informational: the bundled binaries needing the newest macOS decide it for the whole app
         run: |
           find dist/pyfa.app -type f \( -name '*.dylib' -o -name '*.so' -o -perm -u+x \) -print0 |
             while IFS= read -r -d '' file; do
@@ -203,7 +206,12 @@ jobs:
                 /LC_VERSION_MIN_MACOSX/ { legacy = 1 }
                 legacy && $1 == "version" { print $2; exit }')
               if [ -n "$minos" ]; then echo "$minos ${file#dist/}"; fi
-            done | sort -t. -k1,1n -k2,2n | tail -n 5
+            done | sort -t. -k1,1n -k2,2n > minos.txt
+          newest=$(tail -n 1 minos.txt | cut -d' ' -f1)
+          echo "The app needs macOS $newest or newer, because of:"
+          grep "^$newest " minos.txt | head -n 15
+          echo "Binaries per minimum version:"
+          cut -d' ' -f1 minos.txt | uniq -c
 
       - uses: actions/upload-artifact@v7
         with:
