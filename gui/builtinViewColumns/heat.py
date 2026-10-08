@@ -136,9 +136,6 @@ class Heat(ViewColumn):
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        import gui.mainFrame
-
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.resizable = False
         self.size = 54
         self.maxsize = self.size * 2
@@ -150,7 +147,9 @@ class Heat(ViewColumn):
         if not isinstance(mod, Module) or mod.state != FittingModuleState.OVERHEATED:
             return ""
 
-        thermo = Thermodynamics(Fit.getInstance().getFit(self.mainFrame.getActiveFit()))
+        # Use the fit the view shows, which is not the same as active one (could be another fit
+        # getting refreshed)
+        thermo = Thermodynamics(Fit.getInstance().getFit(self.fittingView.getActiveFit()))
         burnCycles = thermo.calcBurnCycles(mod)
         duration = mod.getModifiedItemAttr("duration") / 1000
         speed = mod.getModifiedItemAttr("speed") / 1000
