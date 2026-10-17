@@ -44066,3 +44066,177 @@ class Effect100106(BaseEffect):
         fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
             'signatureRadiusBonus', -50, **kwargs)
+
+
+class Effect100200(BaseEffect):
+    """
+    pyfaCustomPenitenceRecEneOptimal
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Energy Neutralizer', 'Energy Nosferatu'),
+            'maxRange', 50, skill='Recon Ships', **kwargs)
+
+
+class Effect100201(BaseEffect):
+    """
+    pyfaCustomPenitenceRecEneFalloff
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name in ('Energy Neutralizer', 'Energy Nosferatu'),
+            'falloffEffectiveness', 30, skill='Recon Ships', **kwargs)
+
+
+class Effect100202(BaseEffect):
+    """
+    pyfaCustomPenitenceRecEneAmount
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Neutralizer',
+            'energyNeutralizerAmount', 40, skill='Recon Ships', **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Energy Nosferatu',
+            'powerTransferAmount', 40, skill='Recon Ships', **kwargs)
+
+
+class Effect100203(BaseEffect):
+    """
+    pyfaCustomPenitenceHicWdfgOptimal
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
+            'warpScrambleRange', 10, skill='Heavy Interdiction Cruisers', **kwargs)
+
+
+class Effect100204(BaseEffect):
+    """
+    pyfaCustomPenitenceAmcWdStr
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in (
+            'trackingSpeedBonus', 'explosionDelayBonus', 'maxRangeBonus', 'falloffBonus',
+            'missileVelocityBonus', 'aoeVelocityBonus', 'aoeCloudSizeBonus'
+        ):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Weapon Disruption'), attrName,
+                10, skill='Amarr Cruiser', **kwargs)
+
+
+class Effect100205(BaseEffect):
+    """
+    pyfaCustomPenitenceAmcDroneHpDmg
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for type in ('shieldCapacity', 'armorHP', 'hp', 'damageMultiplier'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'),
+                type, 25, skill='Amarr Cruiser', **kwargs)
+
+
+class Effect100206(BaseEffect):
+    """
+    pyfaCustomPenitenceAmcDroneControl
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.extraAttributes.increase('droneControlRange', 7500, skill='Amarr Cruiser', **kwargs)
+
+
+class Effect100207(BaseEffect):
+    """
+    pyfaCustomPenitenceRoleArmorRes
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr('armor{}DamageResonance'.format(dmgType.capitalize()), -20, **kwargs)
+
+
+class Effect100208(BaseEffect):
+    """
+    pyfaCustomPenitenceRoleDroneSpeed
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'), 'maxVelocity', 12.5, **kwargs)
+
+
+class Effect100209(BaseEffect):
+    """
+    pyfaCustomPenitenceRoleWdfgSig
+
+    Used by:
+    Ship: Penitence
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Warp Disrupt Field Generator',
+            'signatureRadiusBonus', -50, **kwargs)
