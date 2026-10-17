@@ -6607,7 +6607,7 @@ class Effect2181(BaseEffect):
     shipBonusDroneHitpointsFixedAC2
 
     Used by:
-    Variations of ship: Arbitrator (3 of 3)
+    Variations of ship: Arbitrator (3 of 4)
     """
 
     type = 'passive'
@@ -6681,7 +6681,7 @@ class Effect2189(BaseEffect):
     shipBonusDroneDamageMultiplierAC2
 
     Used by:
-    Variations of ship: Arbitrator (3 of 3)
+    Variations of ship: Arbitrator (3 of 4)
     """
 
     type = 'passive'
@@ -10433,7 +10433,7 @@ class Effect3468(BaseEffect):
     eliteBonusHeavyInterdictorsWarpDisruptFieldGeneratorWarpScrambleRange2
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (6 of 6)
+    Ships from group: Heavy Interdiction Cruiser (6 of 7)
     """
 
     type = 'passive'
@@ -16284,7 +16284,7 @@ class Effect4902(BaseEffect):
     MWDSignatureRadiusRoleBonus
 
     Used by:
-    Ships from group: Assault Frigate (10 of 15)
+    Ships from group: Assault Frigate (10 of 16)
     Ships from group: Command Destroyer (6 of 6)
     Ships from group: Heavy Assault Cruiser (9 of 14)
     """
@@ -16901,7 +16901,7 @@ class Effect5008(BaseEffect):
     shipShieldEMResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (4 of 6)
+    Ships from group: Heavy Interdiction Cruiser (4 of 7)
     Ship: Ibis
     Ship: Taipan
     """
@@ -16918,7 +16918,7 @@ class Effect5009(BaseEffect):
     shipShieldExplosiveResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (4 of 6)
+    Ships from group: Heavy Interdiction Cruiser (4 of 7)
     Ship: Ibis
     Ship: Taipan
     """
@@ -16935,7 +16935,7 @@ class Effect5011(BaseEffect):
     shipShieldKineticResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (4 of 6)
+    Ships from group: Heavy Interdiction Cruiser (4 of 7)
     Ship: Ibis
     Ship: Taipan
     """
@@ -16952,7 +16952,7 @@ class Effect5012(BaseEffect):
     shipShieldThermalResistanceRookie
 
     Used by:
-    Ships from group: Heavy Interdiction Cruiser (4 of 6)
+    Ships from group: Heavy Interdiction Cruiser (4 of 7)
     Ship: Ibis
     Ship: Taipan
     """
@@ -26004,7 +26004,7 @@ class Effect6354(BaseEffect):
     shipBonusEwWeaponDisruptionStrengthAF2
 
     Used by:
-    Variations of ship: Crucifier (3 of 3)
+    Variations of ship: Crucifier (3 of 4)
     """
 
     type = 'passive'
@@ -26399,7 +26399,7 @@ class Effect6395(BaseEffect):
     shipBonusEwWeaponDisruptionStrengthAC1
 
     Used by:
-    Variations of ship: Arbitrator (3 of 3)
+    Variations of ship: Arbitrator (3 of 4)
     """
 
     type = 'passive'
@@ -34785,7 +34785,7 @@ class Effect7117(BaseEffect):
     roleBonusWarpSpeed
 
     Used by:
-    Items from category: Ship (46 of 424)
+    Items from category: Ship (46 of 426)
     Ships from group: Blockade Runner (5 of 5)
     Ships from group: Covert Ops (9 of 9)
     Ships from group: Interceptor (10 of 10)
@@ -43944,3 +43944,125 @@ class Effect13027(BaseEffect):
             fit.modules.filteredChargeBoost(
                 lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), f'{dmgType}Damage',
                 ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
+
+
+class Effect100100(BaseEffect):
+    """
+    pyfaCustomHeraldAsfSetOptimal
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'),
+            'maxRange', 20, skill='Assault Frigates', **kwargs)
+
+
+class Effect100101(BaseEffect):
+    """
+    pyfaCustomHeraldAsfSetDmg
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'),
+            'damageMultiplier', 40, skill='Assault Frigates', **kwargs)
+
+
+class Effect100102(BaseEffect):
+    """
+    pyfaCustomHeraldAsfArmorRes
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
+            fit.ship.boostItemAttr(
+                'armor{}DamageResonance'.format(dmgType.capitalize()),
+                -4, skill='Assault Frigates', **kwargs)
+
+
+class Effect100103(BaseEffect):
+    """
+    pyfaCustomHeraldEafCapRech
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('rechargeRate', -5, skill='Electronic Attack Ships', **kwargs)
+
+
+class Effect100104(BaseEffect):
+    """
+    pyfaCustomHeraldAmfWdStr
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attrName in (
+            'trackingSpeedBonus', 'explosionDelayBonus', 'maxRangeBonus', 'falloffBonus',
+            'missileVelocityBonus', 'aoeVelocityBonus', 'aoeCloudSizeBonus'
+        ):
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill('Weapon Disruption'), attrName,
+                12.5, skill='Amarr Frigate', **kwargs)
+
+
+class Effect100105(BaseEffect):
+    """
+    pyfaCustomHeraldAmfSetRof
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Small Energy Turret'),
+            'speed', -5, skill='Amarr Frigate', **kwargs)
+
+
+class Effect100106(BaseEffect):
+    """
+    pyfaCustomHeraldRoleMwdSigBlow
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
+            'signatureRadiusBonus', -50, **kwargs)

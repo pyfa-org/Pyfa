@@ -879,13 +879,13 @@ def update_db():
             'stasisWebifierResistance': 1,
             'weaponDisruptionResistance': 1}
         effectMap = {
-            100100: 'pyfaCustomHeraldAfArAmount',
-            100101: 'pyfaCustomHeraldAfShtTrackingOptimal',
-            100102: 'pyfaCustomHeraldGfShtDamage',
-            100103: 'pyfaCustomHeraldGfPointRange',
-            100104: 'pyfaCustomHeraldGfPropOverheat',
-            100105: 'pyfaCustomHeraldRolePlateMass',
-            100106: 'pyfaCustomHeraldRoleHeat'}
+            100100: 'pyfaCustomHeraldAsfSetOptimal',
+            100101: 'pyfaCustomHeraldAsfSetDmg',
+            100102: 'pyfaCustomHeraldAsfArmorRes',
+            100103: 'pyfaCustomHeraldEafCapRech',
+            100104: 'pyfaCustomHeraldAmfWdStr',
+            100105: 'pyfaCustomHeraldAmfSetRof',
+            100106: 'pyfaCustomHeraldRoleMwdSigBlow'}
         _hardcodeAttribs(heraldTypeID, attrMap)
         _hardcodeEffects(heraldTypeID, effectMap)
 
@@ -955,13 +955,16 @@ def update_db():
             'stasisWebifierResistance': 1,
             'weaponDisruptionResistance': 1}
         effectMap = {
-            100200: 'pyfaCustomPenitenceHacMhtFalloff',
-            100201: 'pyfaCustomPenitenceHacMhtTracking',
-            100202: 'pyfaCustomPenitenceGcMhtDamage',
-            100203: 'pyfaCustomPenitenceGcArAmount',
-            100204: 'pyfaCustomPenitenceGcPointRange',
-            100205: 'pyfaCustomPenitenceRoleVelocity',
-            100206: 'pyfaCustomPenitenceRolePlateMass'}
+            100200: 'pyfaCustomPenitenceRecEneOptimal',
+            100201: 'pyfaCustomPenitenceRecEneFalloff',
+            100202: 'pyfaCustomPenitenceRecEneAmount',
+            100203: 'pyfaCustomPenitenceHicWdfgOptimal',
+            100204: 'pyfaCustomPenitenceAmcWdStr',
+            100205: 'pyfaCustomPenitenceAmcDroneHpDmg',
+            100206: 'pyfaCustomPenitenceAmcDroneControl',
+            100207: 'pyfaCustomPenitenceRoleArmorRes',
+            100208: 'pyfaCustomPenitenceRoleDroneSpeed',
+            100209: 'pyfaCustomPenitenceRoleWdfgSig'}
         _hardcodeAttribs(penitenceTypeID, attrMap)
         _hardcodeEffects(penitenceTypeID, effectMap)
 
