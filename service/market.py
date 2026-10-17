@@ -327,6 +327,8 @@ class Market:
             "Python"                      : self.les_grp,  # AT20 prize
             "Skua"                        : self.les_grp,  # AT21 prize
             "Anhinga"                     : self.les_grp,  # AT21 prize
+            "Herald"                      : self.les_grp,  # AT22 prize
+            "Penitence"                   : self.les_grp,  # AT22 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
