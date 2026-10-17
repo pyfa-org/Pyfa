@@ -7585,7 +7585,14 @@
     "aggregateMode": "Maximum", 
     "developerDescription": "Crimson Harvest Trig Trial Smart Bomb Block", 
     "displayName": {
-      "en-us": "<color=\"#FFFF454B\">Activation Blocked:</color> Smart Bombs"
+      "de": "<color=\"#FFFF454B\">Aktivierung blockiert:</color> Smart Bombs", 
+      "en-us": "<color=\"#FFFF454B\">Activation Blocked:</color> Smart Bombs", 
+      "es": "<color=\"#FFFF454B\">Activación bloqueada:</color> bombas inteligentes", 
+      "fr": "<color=\"#FFFF454B\">Activation bloquée :</color> bombes de proximité", 
+      "ja": "<color=\"#FFFF454B\">起動ブロック：</color>スマートボム", 
+      "ko": "<color=\"#FFFF454B\">모듈 사용 금지:</color> 스마트폭탄", 
+      "ru": "<color=\"#FFFF454B\">Заблокированы:</color> импульсные излучатели", 
+      "zh": "<color=\"#FFFF454B\">激活受阻：</color>立体炸弹"
     }, 
     "displayNameID": 1053709, 
     "itemModifiers": [], 

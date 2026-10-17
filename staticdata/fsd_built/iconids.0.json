@@ -15876,5 +15876,9 @@
   }, 
   "27827": {
     "iconFile": "res:/UI/Texture/Icons/Inventory/Background-triglavian-icon.png"
+  }, 
+  "27859": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/ExpertSystems/TriglavianExpert.png", 
+    "iconType": "png"
   }
 }

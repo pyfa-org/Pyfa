@@ -260230,14 +260230,14 @@
     "radius": 1.0, 
     "typeID": 90117, 
     "typeName": {
-      "de": "Tetrimon Base Shortcut Keypass", 
+      "de": "Expired Tetrimon Base Shortcut Keypass", 
       "en-us": "Expired Tetrimon Base Shortcut Keypass", 
-      "es": "Pase de atajo de base de Tetrimon", 
-      "fr": "Passe de traverse de la base Tetrimon", 
-      "ja": "テトリモン基地ショートカットキーパス", 
-      "ko": "테트리몬 기지 게이트 출입키", 
-      "ru": "Tetrimon Base Shortcut Keypass", 
-      "zh": "特里蒙基地捷径钥匙卡"
+      "es": "Pase de atajo a la base de Tetrimon caducado", 
+      "fr": "Passe de traverse de la base Tetrimon expiré", 
+      "ja": "期限切れテトリモン基地ショートカットキーパス", 
+      "ko": "만료된 테트리몬 기지 전용 게이트 출입키", 
+      "ru": "Expired Tetrimon Base Shortcut Keypass", 
+      "zh": "过期的特里蒙基地捷径钥匙卡"
     }, 
     "typeNameID": 1019159, 
     "volume": 0.1
@@ -260264,14 +260264,14 @@
     "radius": 1.0, 
     "typeID": 90118, 
     "typeName": {
-      "de": "Crimson Gauntlet Shortcut Keypass", 
+      "de": "Expired Crimson Gauntlet Shortcut Keypass", 
       "en-us": "Expired Crimson Gauntlet Shortcut Keypass", 
-      "es": "Pase de atajo de Reto Carmesí", 
-      "fr": "Passe de traverse de l'enceinte pourpre", 
-      "ja": "クリムゾンガントレット・ショートカットキーパス", 
-      "ko": "크림슨 건틀렛 전용 게이트 출입키", 
-      "ru": "Crimson Gauntlet Shortcut Keypass", 
-      "zh": "血色试炼场捷径钥匙卡"
+      "es": "Pase de atajo de Reto Carmesí caducado", 
+      "fr": "Passe de traverse de l'enceinte pourpre expiré", 
+      "ja": "期限切れクリムゾンガントレット・ショートカットキーパス", 
+      "ko": "만료된 크림슨 건틀렛 게이트 출입키", 
+      "ru": "Expired Crimson Gauntlet Shortcut Keypass", 
+      "zh": "过期的血色试炼捷径钥匙卡"
     }, 
     "typeNameID": 1019161, 
     "volume": 0.1
@@ -260609,14 +260609,14 @@
     "radius": 1.0, 
     "typeID": 90136, 
     "typeName": {
-      "de": "Crimson Harvest Cerebral Accelerator Crate", 
+      "de": "Expired Crimson Harvest Cerebral Accelerator Crate", 
       "en-us": "Expired Crimson Harvest Cerebral Accelerator Crate", 
-      "es": "Caja de acelerador cerebral de la Cosecha Carmesí", 
-      "fr": "Caisse d'accélérateur cérébral de la Moisson Pourpre", 
-      "ja": "クリムゾンハーベスト大脳アクセラレーター箱", 
+      "es": "Caja de acelerador cerebral de la Cosecha Carmesí caducada", 
+      "fr": "Caisse d'accélérateur cérébral de la Moisson Pourpre expirée", 
+      "ja": "期限切れクリムゾンハーベスト大脳アクセラレーター箱", 
       "ko": "크림슨 하베스트 대뇌가속기 상자", 
-      "ru": "Crimson Harvest Cerebral Accelerator Crate", 
-      "zh": "血色收割大脑加速器箱"
+      "ru": "Expired Crimson Harvest Cerebral Accelerator Crate", 
+      "zh": "过期的血色收割大脑加速器箱"
     }, 
     "typeNameID": 1019231, 
     "volume": 1.0
