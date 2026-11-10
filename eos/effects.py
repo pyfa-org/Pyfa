@@ -44006,7 +44006,7 @@ class Effect12963(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44024,7 +44024,7 @@ class Effect12964(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44042,7 +44042,7 @@ class Effect12965(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44060,7 +44060,7 @@ class Effect12966(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44101,7 +44101,7 @@ class Effect12969(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetGallenteNavyModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in ('rigHybridTurretDamageBonus', 'hullHpBonus', 'repairBonus', 'trackingSpeedBonus'):
             module.increaseItemAttr(attr, count, **kwargs)
 
@@ -44190,7 +44190,7 @@ class Effect12982(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetAmarrNavyModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in ('rigEnergyTurretDamageBonus', 'capacitorCapacityBonus', 'armorHpBonus'):
             module.increaseItemAttr(attr, count, **kwargs)
         for attr in ('capNeedBonus',):
@@ -44211,7 +44211,7 @@ class Effect12984(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetMinmatarFleetModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in ('rigProjectileTurretDamageBonus', 'velocityBonus', 'trackingSpeedBonus'):
             module.increaseItemAttr(attr, count, **kwargs)
         for attr in ('durationSkillBonus',):
@@ -44232,7 +44232,7 @@ class Effect12985(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetCaldariNavyModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in ('speedFactor', 'rigMissileLauncherDamageBonus', 'shieldCapacityBonus', 'maxTargetRangeBonus'):
             module.increaseItemAttr(attr, count, **kwargs)
 
@@ -44246,7 +44246,7 @@ class Effect12989(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44264,7 +44264,7 @@ class Effect12990(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44282,7 +44282,7 @@ class Effect12991(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44300,7 +44300,7 @@ class Effect12992(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44318,7 +44318,7 @@ class Effect12993(BaseEffect):
     """
 
     runTime = 'early'
-    type = 'passive'
+    type = 'offline'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
@@ -44417,7 +44417,7 @@ class Effect13000(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetDarkBloodModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in (
                 'rigNosferatuNeutralizerDrainAmount', 'rigNosferatuNeutralizerDrainAmountOverheatingBonus',
                 'rigNosferatuNeutralizerOptimalRange', 'rigNosferatuNeutralizerFalloffRange',
@@ -44506,7 +44506,7 @@ class Effect13006(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetTrueSanshaModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in (
                 'rigEnergyTurretDamageBonus', 'rigAfterburnerSpeedBonus', 'rigAfterburnerOverloadingBonus',
                 'trackingSpeedBonus'):
@@ -44543,7 +44543,7 @@ class Effect13008(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetShadowSerpentisModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in ('falloffBonus', 'rigHybridTurretDamageBonus', 'velocityBonus'):
             module.increaseItemAttr(attr, count, **kwargs)
         for attr in ('rigStasisWebResistance',):
@@ -44613,7 +44613,7 @@ class Effect13012(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetDreadGuristasModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in ('droneDamageBonus', 'rangeSkillBonus', 'scanSkillEwStrengthBonus', 'hullHpBonus'):
             module.increaseItemAttr(attr, count, **kwargs)
         for attr in (
@@ -44652,7 +44652,7 @@ class Effect13016(BaseEffect):
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
         count = sum(mod.getModifiedItemAttr('rigSetDominationAngelModule', 0) for mod in fit.modules
-                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+                    if not mod.isEmpty)
         for attr in ('rigProjectileTurretDamageBonus', 'falloffBonus', 'WarpSBonus'):
             module.increaseItemAttr(attr, count, **kwargs)
         for attr in ('rigSignatureRadiusBonus',):
