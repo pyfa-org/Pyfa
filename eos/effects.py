@@ -43929,3 +43929,36 @@ class Effect13027(BaseEffect):
             fit.modules.filteredChargeBoost(
                 lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'), f'{dmgType}Damage',
                 ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate', **kwargs)
+
+
+class Effect13042(BaseEffect):
+    """
+    eliteBonusGunshipLaserOptimal2
+
+    Used by:
+    Ship: Herald
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Energy Turret'),
+                                      'maxRange', ship.getModifiedItemAttr('eliteBonusGunships'),
+                                      skill='Assault Frigates', **kwargs)
+
+
+class Effect13045(BaseEffect):
+    """
+    eliteBonusHeavyGunshipDroneControlRange2
+
+    Used by:
+    Ship: Penitence
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.extraAttributes.increase('droneControlRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship3'),
+                                     skill='Amarr Cruiser', **kwargs)
