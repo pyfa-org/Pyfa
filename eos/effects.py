@@ -43962,3 +43962,87 @@ class Effect13045(BaseEffect):
     def handler(fit, ship, context, projectionRange, **kwargs):
         fit.extraAttributes.increase('droneControlRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship3'),
                                      skill='Amarr Cruiser', **kwargs)
+
+
+class Effect13053(BaseEffect):
+    """
+    eliteBonusGunshipArmorHitpoints2
+
+    Used by:
+    Ship: Vengeance
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('eliteBonusGunship2'),
+                               skill='Assault Frigates', **kwargs)
+
+
+class Effect13056(BaseEffect):
+    """
+    shipMissileKineticDamageCC3
+
+    Used by:
+    Ship: Cerberus
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                        'kineticDamage', ship.getModifiedItemAttr('shipBonusCC3'),
+                                        skill='Caldari Cruiser', **kwargs)
+
+
+class Effect13074(BaseEffect):
+    """
+    shipSmallMissileEMDmgCF
+
+    Used by:
+    Ship: Hawk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'),
+            'emDamage', src.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
+
+
+class Effect13075(BaseEffect):
+    """
+    shipSmallMissileExplosiveDmgCF
+
+    Used by:
+    Ship: Hawk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'),
+            'explosiveDamage', src.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
+
+
+class Effect13076(BaseEffect):
+    """
+    shipSmallMissileThermalDmgCF
+
+    Used by:
+    Ship: Hawk
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Light Missiles') or mod.charge.requiresSkill('Rockets'),
+            'thermalDamage', src.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate', **kwargs)
