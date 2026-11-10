@@ -30641,7 +30641,7 @@ class Effect6697(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Armor', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Resource Processing', 'drawback',
@@ -30661,7 +30661,7 @@ class Effect6698(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Navigation', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Anchor', 'drawback',
@@ -30681,7 +30681,7 @@ class Effect6699(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Drones', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
 
@@ -30699,7 +30699,7 @@ class Effect6700(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Electronic Systems', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Scanning', 'drawback',
@@ -30721,7 +30721,7 @@ class Effect6701(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Projectile Weapon', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
 
@@ -30739,7 +30739,7 @@ class Effect6702(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Energy Weapon', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
 
@@ -30757,7 +30757,7 @@ class Effect6703(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Hybrid Weapon', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
 
@@ -30775,7 +30775,7 @@ class Effect6704(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Launcher', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
 
@@ -30793,7 +30793,7 @@ class Effect6705(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
-        lvl = src.level
+        lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Shield', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
 
@@ -44013,6 +44013,24 @@ class Effect12975(BaseEffect):
         fit.ship.increaseItemAttr(
             'conduitPassengerBonusModAdd', src.getModifiedItemAttr('conduitPassengerBonusModAddSkill'),
             skill='Capital Jump Portal Generation', **kwargs)
+
+
+class Effect12978(BaseEffect):
+    """
+    rigDrawbackReductionModuleSet
+
+    Used by:
+    Implant: Vigilant Tyrannos 'Xyston' Synchronization Rigging SY-1020
+    Skill: Synchronization Rigging
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        lvl = src.level if 'skill' in context else 1
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Synchronizer', 'drawback',
+                                      src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
 
 
 class Effect13021(BaseEffect):
