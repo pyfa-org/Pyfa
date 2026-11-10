@@ -44070,6 +44070,43 @@ class Effect12966(BaseEffect):
             module.getModifiedItemAttr('rigSetMinmatarFleetModule'), **kwargs)
 
 
+class Effect12968(BaseEffect):
+    """
+    rigHybridWeaponDamageMultiplyPostPercent
+
+    Used by:
+    Modules named like: Federation Navy Synchronizer (3 of 3)
+    Modules named like: Shadow Serpentis Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigHiddenTurretDamageMultiplier',
+            module.getModifiedItemAttr('rigHybridTurretDamageBonus'), stackingPenalties=True, **kwargs)
+
+
+class Effect12969(BaseEffect):
+    """
+    gallenteRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Federation Navy Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetGallenteNavyModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in ('rigHybridTurretDamageBonus', 'hullHpBonus', 'repairBonus', 'trackingSpeedBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+
+
 class Effect12975(BaseEffect):
     """
     skillConduitPassengerBonusModAddPassive
@@ -44103,6 +44140,102 @@ class Effect12978(BaseEffect):
         lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Synchronizer', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
+
+
+class Effect12980(BaseEffect):
+    """
+    rigEnergyWeaponDamageMultiplyPostPercent
+
+    Used by:
+    Modules from group: Rig Synchronizer (9 of 27)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigHiddenTurretDamageMultiplier',
+            module.getModifiedItemAttr('rigEnergyTurretDamageBonus'), stackingPenalties=True, **kwargs)
+
+
+class Effect12981(BaseEffect):
+    """
+    rigProjectileWeaponDamageMultiplyPostPercent
+
+    Used by:
+    Modules named like: Domination Synchronizer (3 of 3)
+    Modules named like: Republic Fleet Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigHiddenTurretDamageMultiplier',
+            module.getModifiedItemAttr('rigProjectileTurretDamageBonus'), stackingPenalties=True, **kwargs)
+
+
+class Effect12982(BaseEffect):
+    """
+    amarrRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Imperial Navy Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetAmarrNavyModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in ('rigEnergyTurretDamageBonus', 'capacitorCapacityBonus', 'armorHpBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+        for attr in ('capNeedBonus',):
+            module.increaseItemAttr(attr, -count, **kwargs)
+
+
+class Effect12984(BaseEffect):
+    """
+    minmatarRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Republic Fleet Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetMinmatarFleetModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in ('rigProjectileTurretDamageBonus', 'velocityBonus', 'trackingSpeedBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+        for attr in ('durationSkillBonus',):
+            module.increaseItemAttr(attr, -count, **kwargs)
+
+
+class Effect12985(BaseEffect):
+    """
+    caldariRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Caldari Navy Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetCaldariNavyModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in ('speedFactor', 'rigMissileLauncherDamageBonus', 'shieldCapacityBonus', 'maxTargetRangeBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
 
 
 class Effect12989(BaseEffect):
@@ -44193,6 +44326,372 @@ class Effect12993(BaseEffect):
         fit.modules.filteredItemIncrease(
             lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetDominationAngelBonus',
             module.getModifiedItemAttr('rigSetDominationAngelModule'), **kwargs)
+
+
+class Effect12996(BaseEffect):
+    """
+    rigNosferatuNeutralizerDrainAmountBonusPostPercentPassive
+
+    Used by:
+    Modules named like: Dark Blood Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigNosferatuNeutralizerDrainAmount')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
+                                      'powerTransferAmount', bonus, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
+                                      'energyNeutralizerAmount', bonus, **kwargs)
+
+
+class Effect12997(BaseEffect):
+    """
+    rigNosferatuNeutralizerOverloadAmountBonusPostPercentPassive
+
+    Used by:
+    Modules named like: Dark Blood Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigNosferatuNeutralizerDrainAmountOverheatingBonus')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
+                                      'overloadSelfDurationBonus', bonus, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
+                                      'overloadSelfDurationBonus', bonus, **kwargs)
+
+
+class Effect12998(BaseEffect):
+    """
+    rigNosferatuNeutralizerMaxRangeBonusPostPercentPassive
+
+    Used by:
+    Modules named like: Dark Blood Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigNosferatuNeutralizerOptimalRange')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
+                                      'maxRange', bonus, stackingPenalties=True, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
+                                      'maxRange', bonus, stackingPenalties=True, **kwargs)
+
+
+class Effect12999(BaseEffect):
+    """
+    rigNosferatuNeutralizerFalloffRangeBonusPostPercentPassive
+
+    Used by:
+    Modules named like: Dark Blood Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigNosferatuNeutralizerFalloffRange')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu',
+                                      'falloffEffectiveness', bonus, stackingPenalties=True, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
+                                      'falloffEffectiveness', bonus, stackingPenalties=True, **kwargs)
+
+
+class Effect13000(BaseEffect):
+    """
+    bloodRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Dark Blood Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetDarkBloodModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in (
+                'rigNosferatuNeutralizerDrainAmount', 'rigNosferatuNeutralizerDrainAmountOverheatingBonus',
+                'rigNosferatuNeutralizerOptimalRange', 'rigNosferatuNeutralizerFalloffRange',
+                'rigEnergyTurretDamageBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+
+
+class Effect13001(BaseEffect):
+    """
+    rigCapacitorRechargeTimeBonusPostPercentPassive
+
+    Used by:
+    Modules named like: Dark Blood Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigCapRechargeTimePenalty')
+        fit.ship.boostItemAttr('rechargeRate', bonus, **kwargs)
+
+
+class Effect13002(BaseEffect):
+    """
+    rigAfterburnerSpeedAmountPostPercentPassive
+
+    Used by:
+    Modules named like: True Sansha Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigAfterburnerSpeedBonus')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
+                                      'speedFactor', bonus, stackingPenalties=True, **kwargs)
+
+
+class Effect13003(BaseEffect):
+    """
+    rigAfterburnerOverloadAmountPostPercentPassive
+
+    Used by:
+    Modules named like: True Sansha Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigAfterburnerOverloadingBonus')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
+                                      'overloadSpeedFactorBonus', bonus, **kwargs)
+
+
+class Effect13005(BaseEffect):
+    """
+    rigAfterburnerActivationCostPenaltyPostPercentPassive
+
+    Used by:
+    Modules named like: True Sansha Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigAfterburnerCapacitorCostPenalty')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Afterburner'),
+                                      'capacitorNeed', bonus, **kwargs)
+
+
+class Effect13006(BaseEffect):
+    """
+    sanshaRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: True Sansha Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetTrueSanshaModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in (
+                'rigEnergyTurretDamageBonus', 'rigAfterburnerSpeedBonus', 'rigAfterburnerOverloadingBonus',
+                'trackingSpeedBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+
+
+class Effect13007(BaseEffect):
+    """
+    RigModifyWebResistancePostPercentPassive
+
+    Used by:
+    Modules named like: Shadow Serpentis Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigStasisWebResistance')
+        fit.ship.boostItemAttr('stasisWebifierResistance', bonus, **kwargs)
+
+
+class Effect13008(BaseEffect):
+    """
+    serpentisRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Shadow Serpentis Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetShadowSerpentisModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in ('falloffBonus', 'rigHybridTurretDamageBonus', 'velocityBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+        for attr in ('rigStasisWebResistance',):
+            module.increaseItemAttr(attr, -count, **kwargs)
+
+
+class Effect13009(BaseEffect):
+    """
+    rigMaxTargetingRangePenaltyPostPercentPassive
+
+    Used by:
+    Modules named like: Shadow Serpentis Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigTargetingRangePenalty')
+        fit.ship.boostItemAttr('maxTargetRange', bonus, stackingPenalties=True, **kwargs)
+
+
+class Effect13010(BaseEffect):
+    """
+    rigBonusDroneDamagePostPercentPassive
+
+    Used by:
+    Modules named like: Dread Guristas Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('droneDamageBonus')
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'), 'damageMultiplier',
+                                     bonus, stackingPenalties=True, **kwargs)
+
+
+class Effect13011(BaseEffect):
+    """
+    rigDroneControlRangePenaltyPassivePostPercent
+
+    Used by:
+    Modules named like: Dread Guristas Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigDroneControlRangePenalty')
+        fit.extraAttributes.boost('droneControlRange', bonus, **kwargs)
+
+
+class Effect13012(BaseEffect):
+    """
+    guristasRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Dread Guristas Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetDreadGuristasModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in ('droneDamageBonus', 'rangeSkillBonus', 'scanSkillEwStrengthBonus', 'hullHpBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+        for attr in (
+                'emDamageResistanceBonus', 'explosiveDamageResistanceBonus', 'kineticDamageResistanceBonus',
+                'thermalDamageResistanceBonus'):
+            module.increaseItemAttr(attr, -count, **kwargs)
+
+
+class Effect13015(BaseEffect):
+    """
+    rigSignatureRadiusReductionBonusPostPercentPassive
+
+    Used by:
+    Modules named like: Domination Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigSignatureRadiusBonus')
+        fit.ship.boostItemAttr('signatureRadius', bonus, stackingPenalties=True, **kwargs)
+
+
+class Effect13016(BaseEffect):
+    """
+    angelRigSetBonusEffectmodAdd
+
+    Used by:
+    Modules named like: Domination Synchronizer (3 of 3)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        count = sum(mod.getModifiedItemAttr('rigSetDominationAngelModule', 0) for mod in fit.modules
+                    if not mod.isEmpty and mod.state >= FittingModuleState.ONLINE)
+        for attr in ('rigProjectileTurretDamageBonus', 'falloffBonus', 'WarpSBonus'):
+            module.increaseItemAttr(attr, count, **kwargs)
+        for attr in ('rigSignatureRadiusBonus',):
+            module.increaseItemAttr(attr, -count, **kwargs)
+
+
+class Effect13017(BaseEffect):
+    """
+    rigShieldArmorHullHitpointsPenaltyPostPercentPassive
+
+    Used by:
+    Modules named like: Domination Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('rigShieldArmorHullHitpointsPenalty')
+        for attr in ('shieldCapacity', 'armorHP', 'hp'):
+            fit.ship.boostItemAttr(attr, bonus, **kwargs)
+
+
+class Effect13020(BaseEffect):
+    """
+    rigMissileDamageBonusAllDamageTypesPostPercent
+
+    Used by:
+    Modules named like: Caldari Navy Synchronizer (3 of 3)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigHiddenMissileDamageMultiplier',
+            module.getModifiedItemAttr('rigMissileLauncherDamageBonus'), stackingPenalties=True, **kwargs)
 
 
 class Effect13021(BaseEffect):
@@ -44469,6 +44968,81 @@ class Effect13058(BaseEffect):
                                       'overloadRangeBonus', bonus, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
                                       'overloadSpeedFactorBonus', bonus, **kwargs)
+
+
+class Effect13070(BaseEffect):
+    """
+    synchronizerRigHybridWeaponDamageMultiplyPostMulPassive
+
+    Used by:
+    Modules named like: Federation Navy Synchronizer (3 of 3)
+    Modules named like: Shadow Serpentis Synchronizer (3 of 3)
+    """
+
+    runTime = 'late'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name == 'Hybrid Weapon', 'damageMultiplier',
+            module.getModifiedItemAttr('rigHiddenTurretDamageMultiplier'), stackingPenalties=True, **kwargs)
+
+
+class Effect13071(BaseEffect):
+    """
+    synchronizerRigEnergyWeaponDamageMultiplyPostMulPassive
+
+    Used by:
+    Modules from group: Rig Synchronizer (9 of 27)
+    """
+
+    runTime = 'late'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name == 'Energy Weapon', 'damageMultiplier',
+            module.getModifiedItemAttr('rigHiddenTurretDamageMultiplier'), stackingPenalties=True, **kwargs)
+
+
+class Effect13072(BaseEffect):
+    """
+    synchronizerRigProjectileWeaponDamageMultiplyPostMulPassive
+
+    Used by:
+    Modules named like: Domination Synchronizer (3 of 3)
+    Modules named like: Republic Fleet Synchronizer (3 of 3)
+    """
+
+    runTime = 'late'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name == 'Projectile Weapon', 'damageMultiplier',
+            module.getModifiedItemAttr('rigHiddenTurretDamageMultiplier'), stackingPenalties=True, **kwargs)
+
+
+class Effect13073(BaseEffect):
+    """
+    synchronizerRigMissileDMGBonusPreMulPassive
+
+    Used by:
+    Modules named like: Caldari Navy Synchronizer (3 of 3)
+    """
+
+    runTime = 'late'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        multiplier = module.getModifiedItemAttr('rigHiddenMissileDamageMultiplier')
+        for dmgType in ('em', 'kinetic', 'explosive', 'thermal'):
+            fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+                                               f'{dmgType}Damage', multiplier, stackingPenalties=True, **kwargs)
 
 
 class Effect13074(BaseEffect):
