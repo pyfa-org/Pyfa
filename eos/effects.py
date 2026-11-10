@@ -44298,6 +44298,77 @@ class Effect13045(BaseEffect):
                                      skill='Amarr Cruiser', **kwargs)
 
 
+class Effect13048(BaseEffect):
+    """
+    moduleAberrantOverdriveInjectorSystemActiveSpeedBurstEffect
+
+    Used by:
+    Module: 'Vigilant' Vital Overdrive Injector System
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr(
+            'maxVelocity', module.getModifiedItemAttr('moduleAberrantOverdriveActiveSpeedBoostAmount'),
+            stackingPenalties=True, **kwargs)
+
+
+class Effect13049(BaseEffect):
+    """
+    moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffectActivation
+
+    Used by:
+    Module: 'Vigilant' Vital Shield Boost Amplifier
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        bonus = module.getModifiedItemAttr('moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffect')
+        fit.modules.filteredItemBoost(
+            lambda mod: (mod.item.requiresSkill('Shield Operation')
+                         or mod.item.requiresSkill('Capital Shield Operation')),
+            'shieldBonus', bonus, stackingPenalties=True, **kwargs)
+
+
+class Effect13050(BaseEffect):
+    """
+    moduleAberrantDroneNavigationComputerBonusEffectActivation
+
+    Used by:
+    Module: 'Vigilant' Vital Drone Navigation Computer
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        bonus = src.getModifiedItemAttr('moduleAberrantDroneNavigationComputerBonusEffect')
+        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity', bonus,
+                                       stackingPenalties=True, **kwargs)
+        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxVelocity', bonus,
+                                     stackingPenalties=True, **kwargs)
+
+
+class Effect13051(BaseEffect):
+    """
+    moduleAberrantCapRechargerBonusEffectActivation
+
+    Used by:
+    Module: 'Vigilant' Vital Cap Recharger
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.ship.multiplyItemAttr(
+            'rechargeRate', module.getModifiedItemAttr('moduleAberrantCapRechargerBonusEffect'), **kwargs)
+
+
 class Effect13053(BaseEffect):
     """
     eliteBonusGunshipArmorHitpoints2
