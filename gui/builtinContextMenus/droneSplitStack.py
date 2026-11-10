@@ -39,14 +39,51 @@ class DroneSplitStack(ContextMenuSingle):
                 fitID = self.mainFrame.getActiveFit()
                 fit = Fit.getInstance().getFit(fitID)
                 cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
-
                 if mainItem in fit.drones:
                     position = fit.drones.index(mainItem)
                     self.mainFrame.command.Submit(cmd.GuiSplitLocalDroneStackCommand(
                             fitID=fitID, position=position, amount=int(cleanInput)))
 
 
+class DroneSplitStackBandwidth(DroneSplitStack):
+    """
+    Split drone stack to match ship's available bandwidth, ensuring that only
+    one of the stacks is active so as not to exceed the bandwidth limit.
+    """
+    def getText(self, callingWindow, itmContext, mainItem):
+        return "Split {} Stack to Fit Max Bandwidth".format(itmContext)
+
+    def activate(self, callingWindow, fullContext, mainItem, i):
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        if mainItem in fit.drones:
+            bandwidth_per_drone = mainItem.item.\
+                                  attributes['droneBandwidthUsed'].value
+            ship_bandwidth = fit.ship.item.attributes['droneBandwidth'].value
+            max_active_drones = int(ship_bandwidth/bandwidth_per_drone)
+            if max_active_drones == 0:
+                wx.MessageDialog(
+                    None, "Cannot split drone stack to fit bandwidth. This "
+                    "drone type uses {0} mbit/s and this ship only has {1} "
+                    "mbit/s.".format(int(bandwidth_per_drone),
+                                     int(ship_bandwidth)),
+                    "Ship drone bandwidth exceeded", wx.OK | wx.ICON_ERROR
+                ).ShowModal()
+            else:
+                if max_active_drones > 5:
+                    max_active_drones = 5
+
+                position = fit.drones.index(mainItem)
+                self.mainFrame.command.Submit(
+                    cmd.GuiSplitLocalDroneStackCommand(fitID=fitID,
+                                                       position=position,
+                                                       amount=max_active_drones,
+                                                       deactivate=True)
+                )
+
+
 DroneSplitStack.register()
+DroneSplitStackBandwidth.register()
 
 
 class DroneStackSplit(wx.Dialog):
