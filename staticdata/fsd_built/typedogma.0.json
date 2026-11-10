@@ -119414,6 +119414,10 @@
       {
         "attributeID": 334, 
         "value": 2.0
+      }, 
+      {
+        "attributeID": 1047, 
+        "value": 0.0
       }
     ], 
     "dogmaEffects": [
@@ -119431,6 +119435,10 @@
       }, 
       {
         "effectID": 6293, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 13046, 
         "isDefault": 0
       }
     ]
@@ -158706,6 +158714,10 @@
       {
         "attributeID": 1298, 
         "value": 894.0
+      }, 
+      {
+        "attributeID": 1302, 
+        "value": 97904.0
       }, 
       {
         "attributeID": 1350, 
@@ -305817,7 +305829,7 @@
       }, 
       {
         "attributeID": 55, 
-        "value": 187500.0
+        "value": 140625.0
       }, 
       {
         "attributeID": 70, 
@@ -305913,11 +305925,11 @@
       }, 
       {
         "attributeID": 263, 
-        "value": 664.0
+        "value": 464.0
       }, 
       {
         "attributeID": 265, 
-        "value": 816.0
+        "value": 1016.0
       }, 
       {
         "attributeID": 267, 
@@ -305985,7 +305997,7 @@
       }, 
       {
         "attributeID": 485, 
-        "value": -5.0
+        "value": 3.0
       }, 
       {
         "attributeID": 511, 
@@ -306029,7 +306041,7 @@
       }, 
       {
         "attributeID": 675, 
-        "value": -5.0
+        "value": 3.0
       }, 
       {
         "attributeID": 1132, 
@@ -306138,10 +306150,6 @@
     ], 
     "dogmaEffects": [
       {
-        "effectID": 1001, 
-        "isDefault": 0
-      }, 
-      {
         "effectID": 3241, 
         "isDefault": 0
       }, 
@@ -306167,6 +306175,10 @@
       }, 
       {
         "effectID": 13027, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 13053, 
         "isDefault": 0
       }
     ]
@@ -308027,7 +308039,7 @@
       }, 
       {
         "attributeID": 463, 
-        "value": 7.5
+        "value": 5.0
       }, 
       {
         "attributeID": 479, 
@@ -308162,6 +308174,10 @@
         "value": 75.0
       }, 
       {
+        "attributeID": 1624, 
+        "value": 10.0
+      }, 
+      {
         "attributeID": 1768, 
         "value": 11412.0
       }, 
@@ -308212,7 +308228,19 @@
         "isDefault": 0
       }, 
       {
-        "effectID": 13025, 
+        "effectID": 6350, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 13074, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 13075, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 13076, 
         "isDefault": 0
       }
     ]
@@ -351969,6 +351997,10 @@
         "value": 1.0
       }, 
       {
+        "attributeID": 1535, 
+        "value": 5.0
+      }, 
+      {
         "attributeID": 1547, 
         "value": 2.0
       }, 
@@ -352011,10 +352043,6 @@
     ], 
     "dogmaEffects": [
       {
-        "effectID": 899, 
-        "isDefault": 0
-      }, 
-      {
         "effectID": 2647, 
         "isDefault": 0
       }, 
@@ -352048,6 +352076,10 @@
       }, 
       {
         "effectID": 11414, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 13056, 
         "isDefault": 0
       }
     ]
@@ -355541,7 +355573,7 @@
       }, 
       {
         "attributeID": 478, 
-        "value": 5.0
+        "value": 7.5
       }, 
       {
         "attributeID": 479, 
@@ -355589,7 +355621,7 @@
       }, 
       {
         "attributeID": 693, 
-        "value": -7.5
+        "value": -5.0
       }, 
       {
         "attributeID": 1132, 
@@ -361303,6 +361335,10 @@
       }, 
       {
         "effectID": 988, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 13044, 
         "isDefault": 0
       }
     ]
@@ -459956,6 +459992,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -459989,6 +460029,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -460110,6 +460154,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -460143,6 +460191,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -460264,6 +460316,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -460297,6 +460353,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -460418,6 +460478,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -460451,6 +460515,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -460572,6 +460640,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -460605,6 +460677,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -460726,6 +460802,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -460759,6 +460839,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -460880,6 +460964,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -460913,6 +461001,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -461152,6 +461244,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -461185,6 +461281,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -461306,6 +461406,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -461339,6 +461443,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -461460,6 +461568,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -461493,6 +461605,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -461614,6 +461730,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -461647,6 +461767,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -461768,6 +461892,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -461801,6 +461929,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -461922,6 +462054,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -461955,6 +462091,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -462076,6 +462216,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -462109,6 +462253,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -462230,6 +462378,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -462263,6 +462415,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -462380,6 +462536,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -462401,6 +462561,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -462518,6 +462682,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -462539,6 +462707,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -462656,6 +462828,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -462677,6 +462853,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -462794,6 +462974,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -462815,6 +462999,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -462932,6 +463120,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -462953,6 +463145,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -463070,6 +463266,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -463091,6 +463291,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -463208,6 +463412,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -463229,6 +463437,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -463346,6 +463558,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -463367,6 +463583,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -463484,6 +463704,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -463505,6 +463729,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -463622,6 +463850,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -463643,6 +463875,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -463760,6 +463996,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -463781,6 +464021,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -463898,6 +464142,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -463919,6 +464167,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -464036,6 +464288,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -464057,6 +464313,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -464174,6 +464434,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -464195,6 +464459,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -464312,6 +464580,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -464333,6 +464605,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -464450,6 +464726,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -464471,6 +464751,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -464588,6 +464872,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -464609,6 +464897,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -464726,6 +465018,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -464747,6 +465043,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -464864,6 +465164,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -464885,6 +465189,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465002,6 +465310,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465023,6 +465335,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465140,6 +465456,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465161,6 +465481,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465278,6 +465602,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465299,6 +465627,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465416,6 +465748,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465437,6 +465773,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465554,6 +465894,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465575,6 +465919,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465692,6 +466040,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465713,6 +466065,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465830,6 +466186,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465851,6 +466211,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -465968,6 +466332,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -465989,6 +466357,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -466106,6 +466478,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -466127,6 +466503,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -466244,6 +466624,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -466265,6 +466649,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -466382,6 +466770,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -466403,6 +466795,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -466672,6 +467068,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -466693,6 +467093,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -466822,6 +467226,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -466843,6 +467251,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -466972,6 +467384,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -466993,6 +467409,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -467122,6 +467542,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -467143,6 +467567,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -467272,6 +467700,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -467293,6 +467725,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -467422,6 +467858,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -467443,6 +467883,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -467572,6 +468016,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -467593,6 +468041,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -467722,6 +468174,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -467743,6 +468199,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -467872,6 +468332,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -467893,6 +468357,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -468022,6 +468490,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -468043,6 +468515,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -468172,6 +468648,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -468193,6 +468673,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -468322,6 +468806,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -468343,6 +468831,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -468472,6 +468964,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -468493,6 +468989,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -468622,6 +469122,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -468643,6 +469147,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -468772,6 +469280,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -468793,6 +469305,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -468922,6 +469438,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -468943,6 +469463,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -469072,6 +469596,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -469093,6 +469621,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -469222,6 +469754,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -469243,6 +469779,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -469372,6 +469912,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -469393,6 +469937,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -469522,6 +470070,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -469543,6 +470095,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -469672,6 +470228,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -469693,6 +470253,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -469822,6 +470386,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -469843,6 +470411,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -469972,6 +470544,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -469993,6 +470569,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -470122,6 +470702,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -470143,6 +470727,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -470272,6 +470860,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -470293,6 +470885,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -470422,6 +471018,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -470443,6 +471043,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -470572,6 +471176,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -470593,6 +471201,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -477270,6 +477882,10 @@
       {
         "attributeID": 1795, 
         "value": 35000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -477291,6 +477907,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -477384,6 +478004,10 @@
       {
         "attributeID": 1795, 
         "value": 35000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -477405,6 +478029,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -477498,6 +478126,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -477519,6 +478151,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -477612,6 +478248,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -477633,6 +478273,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -477722,6 +478366,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -477743,6 +478391,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -477832,6 +478484,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -477853,6 +478509,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -477946,6 +478606,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -477967,6 +478631,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -478060,6 +478728,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478081,6 +478753,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -478174,6 +478850,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478195,6 +478875,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -478288,6 +478972,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478309,6 +478997,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -478398,6 +479090,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478419,6 +479115,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -478508,6 +479208,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478529,6 +479233,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -478574,6 +479282,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478591,6 +479303,10 @@
       }, 
       {
         "effectID": 889, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -478636,6 +479352,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478653,6 +479373,10 @@
       }, 
       {
         "effectID": 889, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -478698,6 +479422,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478715,6 +479443,10 @@
       }, 
       {
         "effectID": 92, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -478760,6 +479492,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478777,6 +479513,10 @@
       }, 
       {
         "effectID": 95, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -478822,6 +479562,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478839,6 +479583,10 @@
       }, 
       {
         "effectID": 95, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -478884,6 +479632,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478901,6 +479653,10 @@
       }, 
       {
         "effectID": 96, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -478970,6 +479726,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -478987,6 +479747,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -479056,6 +479820,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479073,6 +479841,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -479142,6 +479914,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479159,6 +479935,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -479228,6 +480008,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479245,6 +480029,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -479314,6 +480102,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479331,6 +480123,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -479400,6 +480196,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479417,6 +480217,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -479486,6 +480290,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479503,6 +480311,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -479572,6 +480384,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479589,6 +480405,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -479666,6 +480486,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479683,6 +480507,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -479760,6 +480588,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479777,6 +480609,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -479854,6 +480690,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479871,6 +480711,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -479948,6 +480792,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -479965,6 +480813,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -480042,6 +480894,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480059,6 +480915,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -480136,6 +480996,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480153,6 +481017,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -480230,6 +481098,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480247,6 +481119,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -480324,6 +481200,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480341,6 +481221,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -480418,6 +481302,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480435,6 +481323,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -480512,6 +481404,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480530,6 +481426,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -480606,6 +481506,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480624,6 +481528,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -480700,6 +481608,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480718,6 +481630,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -480794,6 +481710,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480812,6 +481732,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -480888,6 +481812,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -480906,6 +481834,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -480982,6 +481914,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481000,6 +481936,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481076,6 +482016,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481094,6 +482038,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481170,6 +482118,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481188,6 +482140,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481264,6 +482220,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481282,6 +482242,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481358,6 +482322,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481376,6 +482344,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481452,6 +482424,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481470,6 +482446,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481546,6 +482526,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481564,6 +482548,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481640,6 +482628,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481658,6 +482650,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481734,6 +482730,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481752,6 +482752,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481828,6 +482832,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481846,6 +482854,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -481922,6 +482934,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -481940,6 +482956,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -482016,6 +483036,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482034,6 +483058,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -482110,6 +483138,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482128,6 +483160,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -482204,6 +483240,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482222,6 +483262,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -482298,6 +483342,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482316,6 +483364,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -482392,6 +483444,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482410,6 +483466,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -482486,6 +483546,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482504,6 +483568,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -482560,6 +483628,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482577,6 +483649,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -482634,6 +483710,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482651,6 +483731,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -482708,6 +483792,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482725,6 +483813,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -482782,6 +483874,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482799,6 +483895,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -482856,6 +483956,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482873,6 +483977,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -482930,6 +484038,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -482947,6 +484059,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -483004,6 +484120,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483021,6 +484141,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -483078,6 +484202,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483095,6 +484223,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -483152,6 +484284,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483169,6 +484305,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -483226,6 +484366,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483243,6 +484387,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -483300,6 +484448,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483317,6 +484469,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -483374,6 +484530,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483391,6 +484551,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -483448,6 +484612,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483465,6 +484633,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -483522,6 +484694,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483539,6 +484715,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -483596,6 +484776,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483613,6 +484797,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -483670,6 +484858,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483687,6 +484879,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -483744,6 +484940,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483761,6 +484961,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -483818,6 +485022,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483835,6 +485043,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -483892,6 +485104,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483909,6 +485125,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -483966,6 +485186,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -483983,6 +485207,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -484040,6 +485268,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484057,6 +485289,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -484114,6 +485350,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484131,6 +485371,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -484188,6 +485432,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484205,6 +485453,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -484250,6 +485502,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484267,6 +485523,10 @@
       }, 
       {
         "effectID": 3061, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -484312,6 +485572,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484329,6 +485593,10 @@
       }, 
       {
         "effectID": 3061, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -484386,6 +485654,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484403,6 +485675,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -484460,6 +485736,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484477,6 +485757,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -484534,6 +485818,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484551,6 +485839,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -484608,6 +485900,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484625,6 +485921,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -484682,6 +485982,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484699,6 +486003,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -484776,6 +486084,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484794,6 +486106,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -484870,6 +486186,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484888,6 +486208,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -484964,6 +486288,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -484982,6 +486310,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -485058,6 +486390,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485076,6 +486412,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -485152,6 +486492,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485169,6 +486513,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -485246,6 +486594,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485263,6 +486615,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -485340,6 +486696,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485357,6 +486717,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -485414,6 +486778,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485431,6 +486799,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -485488,6 +486860,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485505,6 +486881,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -485562,6 +486942,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485579,6 +486963,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -485636,6 +487024,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485653,6 +487045,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -485710,6 +487106,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485727,6 +487127,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -485784,6 +487188,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485801,6 +487209,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -485858,6 +487270,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485875,6 +487291,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -485932,6 +487352,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -485949,6 +487373,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -486006,6 +487434,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486023,6 +487455,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -486080,6 +487516,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486097,6 +487537,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -486154,6 +487598,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486171,6 +487619,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -486228,6 +487680,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486245,6 +487701,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -486302,6 +487762,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486319,6 +487783,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -486376,6 +487844,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486393,6 +487865,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -486450,6 +487926,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486467,6 +487947,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -486516,6 +488000,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486537,6 +488025,10 @@
       }, 
       {
         "effectID": 4527, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -486618,6 +488110,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486636,6 +488132,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -486716,6 +488216,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486734,6 +488238,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -486814,6 +488322,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486832,6 +488344,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -486912,6 +488428,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -486930,6 +488450,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487010,6 +488534,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487028,6 +488556,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487108,6 +488640,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487126,6 +488662,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487218,6 +488758,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487240,6 +488784,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487332,6 +488880,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487354,6 +488906,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487446,6 +489002,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487468,6 +489028,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487560,6 +489124,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487582,6 +489150,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487674,6 +489246,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487696,6 +489272,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487788,6 +489368,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487810,6 +489394,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -487846,6 +489434,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487863,6 +489455,10 @@
       }, 
       {
         "effectID": 2865, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -487904,6 +489500,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -487925,6 +489525,10 @@
       }, 
       {
         "effectID": 2865, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -487982,6 +489586,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488011,6 +489619,10 @@
       }, 
       {
         "effectID": 58, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -488068,6 +489680,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488097,6 +489713,10 @@
       }, 
       {
         "effectID": 58, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -488154,6 +489774,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488183,6 +489807,10 @@
       }, 
       {
         "effectID": 58, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -488240,6 +489868,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488269,6 +489901,10 @@
       }, 
       {
         "effectID": 58, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -488326,6 +489962,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488355,6 +489995,10 @@
       }, 
       {
         "effectID": 58, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -488412,6 +490056,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488441,6 +490089,10 @@
       }, 
       {
         "effectID": 58, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -488482,6 +490134,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488495,6 +490151,10 @@
       }, 
       {
         "effectID": 51, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -488536,6 +490196,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488549,6 +490213,10 @@
       }, 
       {
         "effectID": 51, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -488594,6 +490262,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488627,6 +490299,10 @@
       }, 
       {
         "effectID": 1720, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -488672,6 +490348,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488705,6 +490385,10 @@
       }, 
       {
         "effectID": 1720, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -488782,6 +490466,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488800,6 +490488,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -488876,6 +490568,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488894,6 +490590,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -488970,6 +490670,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -488988,6 +490692,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489064,6 +490772,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489082,6 +490794,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489158,6 +490874,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489176,6 +490896,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489252,6 +490976,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489270,6 +490998,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489354,6 +491086,10 @@
       {
         "attributeID": 2044, 
         "value": 3000.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489372,6 +491108,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489456,6 +491196,10 @@
       {
         "attributeID": 2044, 
         "value": 3000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489474,6 +491218,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489558,6 +491306,10 @@
       {
         "attributeID": 2044, 
         "value": 6000.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489576,6 +491328,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489660,6 +491416,10 @@
       {
         "attributeID": 2044, 
         "value": 6000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489678,6 +491438,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489762,6 +491526,10 @@
       {
         "attributeID": 2044, 
         "value": 12000.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489780,6 +491548,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489864,6 +491636,10 @@
       {
         "attributeID": 2044, 
         "value": 12000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489882,6 +491658,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -489954,6 +491734,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -489971,6 +491755,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -490044,6 +491832,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490061,6 +491853,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -490134,6 +491930,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490151,6 +491951,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -490224,6 +492028,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490241,6 +492049,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -490314,6 +492126,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490331,6 +492147,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -490404,6 +492224,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490421,6 +492245,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -490494,6 +492322,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490511,6 +492343,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -490584,6 +492420,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490601,6 +492441,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -490682,6 +492526,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490699,6 +492547,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -490780,6 +492632,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490797,6 +492653,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -490878,6 +492738,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490895,6 +492759,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -490976,6 +492844,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -490993,6 +492865,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -491062,6 +492938,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491079,6 +492959,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -491148,6 +493032,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491165,6 +493053,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -491234,6 +493126,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491251,6 +493147,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -491320,6 +493220,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491337,6 +493241,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -491418,6 +493326,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491435,6 +493347,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -491516,6 +493432,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491533,6 +493453,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -491614,6 +493538,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491631,6 +493559,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -491712,6 +493644,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491729,6 +493665,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -491798,6 +493738,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491815,6 +493759,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -491884,6 +493832,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491901,6 +493853,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -491970,6 +493926,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -491987,6 +493947,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -492068,6 +494032,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492085,6 +494053,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -492166,6 +494138,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492183,6 +494159,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -492252,6 +494232,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492269,6 +494253,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -492338,6 +494326,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492355,6 +494347,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -492424,6 +494420,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492441,6 +494441,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -492482,6 +494486,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492495,6 +494503,10 @@
       }, 
       {
         "effectID": 536, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -492536,6 +494548,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492549,6 +494565,10 @@
       }, 
       {
         "effectID": 536, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -492606,6 +494626,10 @@
       {
         "attributeID": 3118, 
         "value": 900.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492623,6 +494647,10 @@
       }, 
       {
         "effectID": 854, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -492720,6 +494748,10 @@
       {
         "attributeID": 1936, 
         "value": 15.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492737,6 +494769,10 @@
       }, 
       {
         "effectID": 5757, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -492822,6 +494858,10 @@
       {
         "attributeID": 1935, 
         "value": 15.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492839,6 +494879,10 @@
       }, 
       {
         "effectID": 5754, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -492936,6 +494980,10 @@
       {
         "attributeID": 2044, 
         "value": 28000.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -492954,6 +495002,10 @@
       {
         "effectID": 6428, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -493026,6 +495078,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493043,6 +495099,10 @@
       }, 
       {
         "effectID": 3174, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12989, 
         "isDefault": 0
       }
     ]
@@ -493116,6 +495176,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493133,6 +495197,10 @@
       }, 
       {
         "effectID": 3174, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12993, 
         "isDefault": 0
       }
     ]
@@ -493206,6 +495274,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493223,6 +495295,10 @@
       }, 
       {
         "effectID": 3174, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12991, 
         "isDefault": 0
       }
     ]
@@ -493296,6 +495372,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493313,6 +495393,10 @@
       }, 
       {
         "effectID": 3174, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -493386,6 +495470,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493403,6 +495491,10 @@
       }, 
       {
         "effectID": 3174, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12992, 
         "isDefault": 0
       }
     ]
@@ -493492,6 +495584,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493510,6 +495606,10 @@
       {
         "effectID": 5934, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -493598,6 +495698,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493616,6 +495720,10 @@
       {
         "effectID": 5934, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -493704,6 +495812,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493722,6 +495834,10 @@
       {
         "effectID": 5934, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -493810,6 +495926,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493828,6 +495948,10 @@
       {
         "effectID": 5934, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -493916,6 +496040,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -493934,6 +496062,10 @@
       {
         "effectID": 5934, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -494014,6 +496146,10 @@
       {
         "attributeID": 2138, 
         "value": 2115.0
+      }, 
+      {
+        "attributeID": 6372, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -494032,6 +496168,10 @@
       {
         "effectID": 6426, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12989, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -494112,6 +496252,10 @@
       {
         "attributeID": 2138, 
         "value": 2115.0
+      }, 
+      {
+        "attributeID": 6376, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -494130,6 +496274,10 @@
       {
         "effectID": 6426, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12993, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -494210,6 +496358,10 @@
       {
         "attributeID": 2138, 
         "value": 2115.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -494228,6 +496380,10 @@
       {
         "effectID": 6426, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -494308,6 +496464,10 @@
       {
         "attributeID": 2138, 
         "value": 2115.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -494326,6 +496486,10 @@
       {
         "effectID": 6426, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12990, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -494406,6 +496570,10 @@
       {
         "attributeID": 2138, 
         "value": 2115.0
+      }, 
+      {
+        "attributeID": 6375, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -494424,6 +496592,10 @@
       {
         "effectID": 6426, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12992, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -566123,6 +568295,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566136,6 +568312,10 @@
       }, 
       {
         "effectID": 536, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -566186,6 +568366,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566199,6 +568383,10 @@
       }, 
       {
         "effectID": 536, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -566253,6 +568441,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566270,6 +568462,10 @@
       }, 
       {
         "effectID": 889, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -566324,6 +568520,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566341,6 +568541,10 @@
       }, 
       {
         "effectID": 889, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -566407,6 +568611,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566424,6 +568632,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -566490,6 +568702,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566507,6 +568723,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -566573,6 +568793,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566590,6 +568814,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -566656,6 +568884,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566673,6 +568905,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -566739,6 +568975,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566756,6 +568996,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -566822,6 +569066,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566839,6 +569087,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -566905,6 +569157,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -566922,6 +569178,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -566988,6 +569248,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567005,6 +569269,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -567071,6 +569339,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567088,6 +569360,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -567154,6 +569430,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567171,6 +569451,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -567257,6 +569541,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567275,6 +569563,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -567360,6 +569652,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567378,6 +569674,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -567463,6 +569763,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567481,6 +569785,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -567566,6 +569874,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567584,6 +569896,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -567669,6 +569985,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567687,6 +570007,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -567772,6 +570096,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567790,6 +570118,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -567875,6 +570207,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567893,6 +570229,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -567978,6 +570318,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -567996,6 +570340,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -568061,6 +570409,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568078,6 +570430,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -568144,6 +570500,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568161,6 +570521,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -568227,6 +570591,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568244,6 +570612,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -568310,6 +570682,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568327,6 +570703,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -568393,6 +570773,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568410,6 +570794,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -568476,6 +570864,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568493,6 +570885,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -568559,6 +570955,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568576,6 +570976,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -568642,6 +571046,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568659,6 +571067,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -568725,6 +571137,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568742,6 +571158,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -568808,6 +571228,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -568825,6 +571249,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -569193,6 +571621,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569210,6 +571642,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -569287,6 +571723,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569304,6 +571744,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -569381,6 +571825,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569398,6 +571846,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -569491,6 +571943,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569513,6 +571969,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -569602,6 +572062,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569620,6 +572084,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -569721,6 +572189,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569743,6 +572215,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -569832,6 +572308,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569850,6 +572330,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -569951,6 +572435,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -569973,6 +572461,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -570062,6 +572554,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -570080,6 +572576,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -570181,6 +572681,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -570203,6 +572707,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -570292,6 +572800,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -570310,6 +572822,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -570411,6 +572927,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -570433,6 +572953,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -570522,6 +573046,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -570540,6 +573068,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -570641,6 +573173,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -570663,6 +573199,10 @@
       {
         "effectID": 6730, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -570752,6 +573292,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -570770,6 +573314,10 @@
       {
         "effectID": 6731, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -571238,6 +573786,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -571255,6 +573807,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -571337,6 +573893,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -571354,6 +573914,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -571436,6 +574000,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -571453,6 +574021,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -571535,6 +574107,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -571552,6 +574128,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -571681,6 +574261,10 @@
       {
         "attributeID": 3118, 
         "value": 900.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -571698,6 +574282,10 @@
       }, 
       {
         "effectID": 854, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -571792,6 +574380,10 @@
       {
         "attributeID": 1935, 
         "value": 15.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -571809,6 +574401,10 @@
       }, 
       {
         "effectID": 5754, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -572236,6 +574832,10 @@
       {
         "attributeID": 2044, 
         "value": 3000.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572254,6 +574854,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -572347,6 +574951,10 @@
       {
         "attributeID": 2044, 
         "value": 6000.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572365,6 +574973,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -572458,6 +575070,10 @@
       {
         "attributeID": 2044, 
         "value": 12000.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572476,6 +575092,10 @@
       {
         "effectID": 6187, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -572529,6 +575149,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572546,6 +575170,10 @@
       }, 
       {
         "effectID": 92, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -572671,6 +575299,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572688,6 +575320,10 @@
       }, 
       {
         "effectID": 95, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -572734,6 +575370,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572751,6 +575391,10 @@
       }, 
       {
         "effectID": 2865, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -572792,6 +575436,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572813,6 +575461,10 @@
       }, 
       {
         "effectID": 2865, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -572942,6 +575594,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -572963,6 +575619,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -573092,6 +575752,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -573113,6 +575777,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -573242,6 +575910,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -573263,6 +575935,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -573392,6 +576068,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -573413,6 +576093,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -573542,6 +576226,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -573563,6 +576251,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -573701,6 +576393,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -573722,6 +576418,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -573851,6 +576551,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -573872,6 +576576,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -574014,6 +576722,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -574035,6 +576747,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -574164,6 +576880,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -574185,6 +576905,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -574314,6 +577038,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -574335,6 +577063,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -574464,6 +577196,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -574485,6 +577221,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -574614,6 +577354,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -574635,6 +577379,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -574764,6 +577512,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -574785,6 +577537,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -574914,6 +577670,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -574935,6 +577695,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -575064,6 +577828,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -575085,6 +577853,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -575214,6 +577986,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -575235,6 +578011,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -575364,6 +578144,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -575385,6 +578169,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -575514,6 +578302,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -575535,6 +578327,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -575664,6 +578460,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -575685,6 +578485,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -575814,6 +578618,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -575835,6 +578643,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -575964,6 +578776,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -575985,6 +578801,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -576114,6 +578934,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -576135,6 +578959,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -576264,6 +579092,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -576285,6 +579117,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -576423,6 +579259,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -576444,6 +579284,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -576573,6 +579417,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -576594,6 +579442,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -576732,6 +579584,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -576753,6 +579609,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -576882,6 +579742,10 @@
       {
         "attributeID": 1795, 
         "value": 5000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -576903,6 +579767,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -579090,6 +581958,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -579111,6 +581983,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -579228,6 +582104,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -579249,6 +582129,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -579366,6 +582250,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -579387,6 +582275,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -579504,6 +582396,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -579525,6 +582421,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -579642,6 +582542,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -579663,6 +582567,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -579780,6 +582688,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -579801,6 +582713,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -579918,6 +582834,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -579939,6 +582859,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -580056,6 +582980,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -580077,6 +583005,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -580194,6 +583126,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -580215,6 +583151,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -580332,6 +583272,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -580353,6 +583297,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -580470,6 +583418,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -580491,6 +583443,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -580608,6 +583564,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -580629,6 +583589,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -580746,6 +583710,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -580767,6 +583735,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -580884,6 +583856,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -580905,6 +583881,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -581022,6 +584002,10 @@
       {
         "attributeID": 1795, 
         "value": 0.01
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -581043,6 +584027,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -581429,6 +584417,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -581447,6 +584439,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -581532,6 +584528,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -581550,6 +584550,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -581635,6 +584639,10 @@
       {
         "attributeID": 2138, 
         "value": 2045.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -581653,6 +584661,10 @@
       {
         "effectID": 6197, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12963, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -581750,6 +584762,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -581768,6 +584784,10 @@
       {
         "effectID": 5934, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12964, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -581849,6 +584869,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -581866,6 +584890,10 @@
       }, 
       {
         "effectID": 3174, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -581948,6 +584976,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -581965,6 +584997,10 @@
       }, 
       {
         "effectID": 3174, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -582063,6 +585099,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582081,6 +585121,10 @@
       {
         "effectID": 5934, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12966, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -582134,6 +585178,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582151,6 +585199,10 @@
       }, 
       {
         "effectID": 96, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -582229,6 +585281,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582246,6 +585302,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -582315,6 +585375,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582332,6 +585396,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -582401,6 +585469,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582418,6 +585490,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -582487,6 +585563,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582504,6 +585584,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -582573,6 +585657,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582590,6 +585678,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -582659,6 +585751,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582676,6 +585772,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -582745,6 +585845,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582762,6 +585866,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -582831,6 +585939,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582848,6 +585960,10 @@
       }, 
       {
         "effectID": 3201, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -582893,6 +586009,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582910,6 +586030,10 @@
       }, 
       {
         "effectID": 3061, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -582964,6 +586088,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -582981,6 +586109,10 @@
       }, 
       {
         "effectID": 3061, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -583047,6 +586179,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583064,6 +586200,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -583130,6 +586270,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583147,6 +586291,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -583213,6 +586361,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583230,6 +586382,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -583296,6 +586452,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583313,6 +586473,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -583379,6 +586543,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583396,6 +586564,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -583462,6 +586634,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583479,6 +586655,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -583545,6 +586725,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583562,6 +586746,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -583628,6 +586816,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583645,6 +586837,10 @@
       }, 
       {
         "effectID": 2052, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -583723,6 +586919,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583740,6 +586940,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -583818,6 +587022,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583835,6 +587043,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -583925,6 +587137,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -583942,6 +587158,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -584032,6 +587252,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -584049,6 +587273,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -584127,6 +587355,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -584144,6 +587376,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -584213,6 +587449,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -584230,6 +587470,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -584320,6 +587564,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -584337,6 +587585,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -584427,6 +587679,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -584444,6 +587700,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -584917,6 +588177,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -584934,6 +588198,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -585012,6 +588280,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585029,6 +588301,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -585110,6 +588386,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585127,6 +588407,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -585217,6 +588501,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585234,6 +588522,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -585312,6 +588604,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585329,6 +588625,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -585407,6 +588707,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585424,6 +588728,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -585514,6 +588822,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585531,6 +588843,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -585621,6 +588937,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585638,6 +588958,10 @@
       }, 
       {
         "effectID": 3002, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -585696,6 +589020,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585717,6 +589045,10 @@
       }, 
       {
         "effectID": 4527, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -585823,6 +589155,10 @@
       {
         "attributeID": 2044, 
         "value": 28000.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -585841,6 +589177,10 @@
       {
         "effectID": 6428, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -599492,6 +602832,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -599525,6 +602869,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -599646,6 +602994,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -599679,6 +603031,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -599800,6 +603156,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -599833,6 +603193,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -599954,6 +603318,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -599987,6 +603355,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -600108,6 +603480,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -600141,6 +603517,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -600262,6 +603642,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -600295,6 +603679,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -600416,6 +603804,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -600449,6 +603841,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -600570,6 +603966,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -600603,6 +604003,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -600724,6 +604128,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -600757,6 +604165,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -600878,6 +604290,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -600911,6 +604327,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -601032,6 +604452,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -601065,6 +604489,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -601186,6 +604614,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -601219,6 +604651,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -601340,6 +604776,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -601373,6 +604813,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -601494,6 +604938,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -601527,6 +604975,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -601648,6 +605100,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -601681,6 +605137,10 @@
       }, 
       {
         "effectID": 3025, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -601774,6 +605234,10 @@
       {
         "attributeID": 1795, 
         "value": 35000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -601795,6 +605259,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -601888,6 +605356,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -601909,6 +605381,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -602011,6 +605487,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -602032,6 +605512,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -602121,6 +605605,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -602142,6 +605630,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -602240,6 +605732,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -602261,6 +605757,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -602354,6 +605854,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -602375,6 +605879,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12964, 
         "isDefault": 0
       }
     ]
@@ -627606,7 +631114,7 @@
       }, 
       {
         "attributeID": 37, 
-        "value": 265.0
+        "value": 275.0
       }, 
       {
         "attributeID": 48, 
@@ -786587,6 +790095,10 @@
       {
         "attributeID": 1795, 
         "value": 35000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -786608,6 +790120,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -786701,6 +790217,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -786722,6 +790242,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -786824,6 +790348,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -786845,6 +790373,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -786934,6 +790466,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -786955,6 +790491,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -787053,6 +790593,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787074,6 +790618,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -787167,6 +790715,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787188,6 +790740,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -787265,6 +790821,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787282,6 +790842,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -787359,6 +790923,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787376,6 +790944,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -787453,6 +791025,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6315, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787470,6 +791046,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12966, 
         "isDefault": 0
       }
     ]
@@ -787547,6 +791127,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787565,6 +791149,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12964, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -787641,6 +791229,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787659,6 +791251,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12964, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -787735,6 +791331,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787753,6 +791353,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12964, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -787829,6 +791433,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787847,6 +791455,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12964, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -787923,6 +791535,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -787941,6 +791557,10 @@
       {
         "effectID": 5230, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12964, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -788021,6 +791641,10 @@
       {
         "attributeID": 2138, 
         "value": 2115.0
+      }, 
+      {
+        "attributeID": 6313, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -788039,6 +791663,10 @@
       {
         "effectID": 6426, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12964, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -788975,6 +792603,10 @@
       {
         "attributeID": 1936, 
         "value": 15.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -788992,6 +792624,10 @@
       }, 
       {
         "effectID": 5757, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -789232,6 +792868,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -789245,6 +792885,10 @@
       }, 
       {
         "effectID": 51, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -789299,6 +792943,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -789332,6 +792980,10 @@
       }, 
       {
         "effectID": 1720, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -789833,6 +793485,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -789850,6 +793506,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -789927,6 +793587,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -789944,6 +793608,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -790021,6 +793689,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6312, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -790038,6 +793710,10 @@
       }, 
       {
         "effectID": 3200, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12963, 
         "isDefault": 0
       }
     ]
@@ -790095,6 +793771,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -790112,6 +793792,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -790178,6 +793862,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -790195,6 +793883,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -790261,6 +793953,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -790278,6 +793974,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -790344,6 +794044,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -790361,6 +794065,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -790427,6 +794135,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -790444,6 +794156,10 @@
       }, 
       {
         "effectID": 2041, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12965, 
         "isDefault": 0
       }
     ]
@@ -790534,6 +794250,10 @@
       {
         "attributeID": 2138, 
         "value": 2115.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -790552,6 +794272,10 @@
       {
         "effectID": 6426, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -819529,6 +823253,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -819547,6 +823275,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -819632,6 +823364,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -819650,6 +823386,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -819735,6 +823475,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -819753,6 +823497,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -819838,6 +823586,10 @@
       {
         "attributeID": 1692, 
         "value": 4.0
+      }, 
+      {
+        "attributeID": 6314, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -819856,6 +823608,10 @@
       {
         "effectID": 5231, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12965, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -917785,6 +921541,10 @@
       {
         "attributeID": 2138, 
         "value": 2253.0
+      }, 
+      {
+        "attributeID": 6374, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -917803,6 +921563,10 @@
       {
         "effectID": 6470, 
         "isDefault": 1
+      }, 
+      {
+        "effectID": 12991, 
+        "isDefault": 0
       }
     ]
   }, 
@@ -963151,6 +966915,10 @@
       {
         "attributeID": 1300, 
         "value": 894.0
+      }, 
+      {
+        "attributeID": 1302, 
+        "value": 97904.0
       }, 
       {
         "attributeID": 1333, 
@@ -1073676,6 +1077444,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -1073697,6 +1077469,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -1073790,6 +1077566,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -1073811,6 +1077591,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -1073904,6 +1077688,10 @@
       {
         "attributeID": 1795, 
         "value": 35000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -1073925,6 +1077713,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -1074018,6 +1077810,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -1074039,6 +1077835,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -1074132,6 +1077932,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -1074153,6 +1077957,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]
@@ -1074242,6 +1078050,10 @@
       {
         "attributeID": 1795, 
         "value": 10000.0
+      }, 
+      {
+        "attributeID": 6373, 
+        "value": 1.0
       }
     ], 
     "dogmaEffects": [
@@ -1074263,6 +1078075,10 @@
       }, 
       {
         "effectID": 3001, 
+        "isDefault": 0
+      }, 
+      {
+        "effectID": 12990, 
         "isDefault": 0
       }
     ]

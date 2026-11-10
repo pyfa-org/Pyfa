@@ -9,7 +9,8 @@
     "iconFile": "res:/ui/texture/icons/26_64_11.png"
   }, 
   "21": {
-    "iconFile": "res:/ui/texture/icons/6_64_3.png"
+    "iconFile": "res:/ui/texture/icons/6_64_3.png", 
+    "iconType": "png"
   }, 
   "22": {
     "iconFile": "res:/ui/texture/icons/6_64_14.png"
@@ -15442,6 +15443,38 @@
   "27584": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_horde_mode_128.png"
   }, 
+  "27592": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/FactionSetRigsAmarr64x64.png"
+  }, 
+  "27593": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/FactionSetRigsCaldari64x64.png"
+  }, 
+  "27594": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/FactionSetRigsGallente64x64.png"
+  }, 
+  "27595": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/FactionSetRigsMinmatar64x64.png"
+  }, 
+  "27600": {
+    "iconFile": "res:/ui/texture/icons/75_32_20.png", 
+    "iconType": "png"
+  }, 
+  "27601": {
+    "iconFile": "res:/ui/texture/icons/75_32_18.png", 
+    "iconType": "png"
+  }, 
+  "27602": {
+    "iconFile": "res:/ui/texture/icons/75_32_10.png", 
+    "iconType": "png"
+  }, 
+  "27603": {
+    "iconFile": "res:/ui/texture/icons/75_32_19.png", 
+    "iconType": "png"
+  }, 
+  "27604": {
+    "iconFile": "res:/ui/texture/icons/75_32_11.png", 
+    "iconType": "png"
+  }, 
   "27605": {
     "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_basic_circle_01a_128.png"
   }, 
@@ -15877,8 +15910,293 @@
   "27827": {
     "iconFile": "res:/UI/Texture/Icons/Inventory/Background-triglavian-icon.png"
   }, 
+  "27857": {
+    "iconFile": "res:/UI/Texture/Icons/ItemOverlay/Academy_ship_16px.png"
+  }, 
+  "27858": {
+    "iconFile": "res:/UI/Texture/Icons/ItemOverlay/aberrant.png"
+  }, 
   "27859": {
     "iconFile": "res:/UI/Texture/Icons/Inventory/ExpertSystems/TriglavianExpert.png", 
     "iconType": "png"
+  }, 
+  "27860": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_amarr_128.png"
+  }, 
+  "27861": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_amarr_64.png"
+  }, 
+  "27862": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_caldari_128.png"
+  }, 
+  "27863": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_caldari_64.png"
+  }, 
+  "27864": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_gallente_128.png"
+  }, 
+  "27865": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_minmatar_128.png"
+  }, 
+  "27866": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_gallente_64.png"
+  }, 
+  "27867": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/containment_crystal_minmatar_64.png"
+  }, 
+  "27868": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_amarr_128.png"
+  }, 
+  "27869": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_amarr_64.png"
+  }, 
+  "27870": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_caldari_128.png"
+  }, 
+  "27871": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_caldari_64.png"
+  }, 
+  "27872": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_gallente_128.png"
+  }, 
+  "27873": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_gallente_64.png"
+  }, 
+  "27874": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_minmatar_128.png"
+  }, 
+  "27875": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterartifact_minmatar_64.png"
+  }, 
+  "27876": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterdata_amarr_128.png"
+  }, 
+  "27877": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterdata_amarr_64.png"
+  }, 
+  "27878": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterdata_caldari_128.png"
+  }, 
+  "27879": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterdata_caldari_64.png"
+  }, 
+  "27882": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterdata_minmatar_128.png"
+  }, 
+  "27883": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/drifterdata_minmatar_64.png"
+  }, 
+  "27884": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/horde_mode_sleeper_128.png"
+  }, 
+  "27885": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/horde_mode_sleeper_64.png"
+  }, 
+  "27886": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_amarr_128.png"
+  }, 
+  "27887": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_amarr_64.png"
+  }, 
+  "27888": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_caldari_128.png"
+  }, 
+  "27889": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_caldari_64.png"
+  }, 
+  "27890": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_gallente_128.png"
+  }, 
+  "27891": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_gallente_64.png"
+  }, 
+  "27892": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_minmatar_128.png"
+  }, 
+  "27893": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/strategicintel_minmatar_64.png"
+  }, 
+  "27894": {
+    "iconFile": "res:/ui/texture/corps/space_police_128-20261013-121447.png"
+  }, 
+  "27895": {
+    "iconFile": "res:/ui/texture/corps/state_syndicate_128-20261013-121402.png"
+  }, 
+  "27896": {
+    "iconFile": "res:/ui/texture/corps/syndicate_bank_128-20261013-121341.png"
+  }, 
+  "27897": {
+    "iconFile": "res:/ui/texture/corps/syndicate_commerce_128-20261013-143242.png"
+  }, 
+  "28000": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Background_107_icon.png"
+  }, 
+  "28171": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/empires_fw_amarr.png"
+  }, 
+  "28172": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/empires_fw_caldari.png"
+  }, 
+  "28173": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/empires_fw_gallente.png"
+  }, 
+  "28174": {
+    "iconFile": "res:/UI/Texture/Icons/StatusEffects/empires_fw_minmatar.png"
+  }, 
+  "28175": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_empire_amarr.png"
+  }, 
+  "28176": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_empire_caldari.png"
+  }, 
+  "28177": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_empire_gallente.png"
+  }, 
+  "28178": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_empire_minmatar.png"
+  }, 
+  "28179": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_pirate_angel.png"
+  }, 
+  "28180": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_pirate_guristas.png"
+  }, 
+  "28181": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_pirate_blood.png"
+  }, 
+  "28182": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_pirate_sansha.png"
+  }, 
+  "28183": {
+    "iconFile": "res:/UI/Texture/Icons/Modules/Rigs/rigs_pirate_serpentis.png"
+  }, 
+  "28184": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Background_103.png"
+  }, 
+  "28185": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Background_104.png"
+  }, 
+  "28186": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Background_105.png"
+  }, 
+  "28187": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/Background_106.png"
+  }, 
+  "28220": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/CSM_2026_icon.png"
+  }, 
+  "28221": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_sunset_01_128.png"
+  }, 
+  "28222": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_sunset_01_128.png"
+  }, 
+  "28223": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_palmtree_01_128.png"
+  }, 
+  "28224": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_palmtree_01_128.png"
+  }, 
+  "28225": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_amarr_logo_02_128.png"
+  }, 
+  "28226": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_amarr_logo_02_128.png"
+  }, 
+  "28227": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_caldari_logo_02_128.png"
+  }, 
+  "28228": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_caldari_logo_02_128.png"
+  }, 
+  "28229": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_gallente_logo_02_128.png"
+  }, 
+  "28230": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_gallente_logo_02_128.png"
+  }, 
+  "28231": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_minmatar_logo_02_128.png"
+  }, 
+  "28232": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/patterns/cosm_minmatar_logo_02_128.png"
+  }, 
+  "28233": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_polished_000_100_001.png"
+  }, 
+  "28234": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_polished_000_100_001.png"
+  }, 
+  "28235": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_metallic_000_030_100.png"
+  }, 
+  "28236": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_metallic_000_030_100.png"
+  }, 
+  "28237": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_metallic_000_100_010.png"
+  }, 
+  "28238": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_red_metallic_000_100_010.png"
+  }, 
+  "28239": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_polished_000_100_010.png"
+  }, 
+  "28240": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_polished_000_100_010.png"
+  }, 
+  "28241": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_rough_000_100_100.png"
+  }, 
+  "28242": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_rough_000_100_100.png"
+  }, 
+  "28243": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_highgloss_000_100_100.png"
+  }, 
+  "28244": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_safetyorange_highgloss_000_100_100.png"
+  }, 
+  "28245": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_rough_000_100_010.png"
+  }, 
+  "28246": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_cherryred_rough_000_100_010.png"
+  }, 
+  "28247": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_satin_000_080_100.png"
+  }, 
+  "28248": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_azure_satin_000_080_100.png"
+  }, 
+  "28249": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_pink_satin_000_080_100.png"
+  }, 
+  "28250": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_pink_satin_000_080_100.png"
+  }, 
+  "28251": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_magenta_matt_000_080_100.png"
+  }, 
+  "28252": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_magenta_matt_000_080_100.png"
+  }, 
+  "28253": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_malachite_satin_000_100_100_cs180.png"
+  }, 
+  "28254": {
+    "iconFile": "res:/UI/Texture/classes/Cosmetics/Ship/materials/cosm_malachite_satin_000_100_100_cs180.png"
+  }, 
+  "28255": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/AT_char_Main.png"
+  }, 
+  "28256": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/AT_char_Bronze.png"
+  }, 
+  "28257": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/AT_char_Silver.png"
+  }, 
+  "28258": {
+    "iconFile": "res:/UI/Texture/Icons/Inventory/AT_char_Gold.png"
   }
 }

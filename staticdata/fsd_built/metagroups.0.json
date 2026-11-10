@@ -284,5 +284,67 @@
       "zh": "一级科技建筑"
     }, 
     "nameID": 550644
+  }, 
+  "62": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.8901960849761963, 
+      "g": 0.9411764740943909, 
+      "r": 0.43921568989753723
+    }, 
+    "description": {
+      "de": "Über AIR-Akademie-Schiffe in Exordium verfügbar", 
+      "en-us": "Available through AIR Academy Ships within Exordium", 
+      "es": "Disponible a través del servicio de naves de la Academia AIR en Exordium.", 
+      "ja": "エグゾーディウム内の「AIRアカデミー艦船」から入手可能", 
+      "ko": "엑조디엄 지역에서 AIR 아카데미 함선 메뉴로 탑승할 수 있습니다.", 
+      "ru": "Доступно в разделе «Корабли Академии АМИ» в пределах Exordium", 
+      "zh": "可通过始源星域内的星空会学院舰船获得"
+    }, 
+    "descriptionID": 1057172, 
+    "iconID": 27857, 
+    "iconSuffix": "academy", 
+    "name": {
+      "de": "Akademie", 
+      "en-us": "Academy", 
+      "es": "Academia", 
+      "ja": "アカデミー", 
+      "ko": "아카데미", 
+      "ru": "Академия", 
+      "zh": "学院"
+    }, 
+    "nameID": 1057173
+  }, 
+  "63": {
+    "color": {
+      "a": 1.0, 
+      "b": 0.46666666865348816, 
+      "g": 0.13333334028720856, 
+      "r": 0.06666667014360428
+    }, 
+    "description": {
+      "de": "Dieses Modul wurde verändert und verfügt nun über einen neuen aktiven Effekt.", 
+      "en-us": "This module has been altered and now has a new active effect.", 
+      "es": "Este módulo se ha modificado y ahora cuenta con un nuevo efecto activo.", 
+      "fr": "Ce module a été modifié et possède désormais un nouvel effet actif.", 
+      "ja": "このモジュールは改変され、新たなアクティブ効果が追加された。", 
+      "ko": "모듈 성능이 변경되어 다른 효과를 제공합니다.", 
+      "ru": "Этот модуль был изменён и обзавёлся новым активным эффектом.", 
+      "zh": "该模块经过改造，现在拥有新的主动效果。"
+    }, 
+    "descriptionID": 1057350, 
+    "iconID": 27858, 
+    "iconSuffix": "aberrant", 
+    "name": {
+      "de": "Aberrant", 
+      "en-us": "Aberrant", 
+      "es": "Aberrante", 
+      "fr": "Aberrant", 
+      "ja": "変異", 
+      "ko": "괴리형", 
+      "ru": "Аберрантный", 
+      "zh": "异变"
+    }, 
+    "nameID": 1057351
   }
 }

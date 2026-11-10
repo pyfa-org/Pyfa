@@ -7729,6 +7729,7 @@
     "descriptionID": 87173, 
     "groupID": 71, 
     "iconID": 1283, 
+    "isDynamicType": 0, 
     "marketGroupID": 689, 
     "mass": 2000.0, 
     "metaGroupID": 1, 
@@ -12297,7 +12298,7 @@
       "ja": "採掘レーザーIブループリント", 
       "ko": "채굴 레이저 I 블루프린트", 
       "ru": "Miner I Blueprint", 
-      "zh": "采矿器蓝图 I"
+      "zh": "采矿器I蓝图"
     }, 
     "typeNameID": 67834, 
     "volume": 0.01
@@ -13092,7 +13093,7 @@
       "ja": "デュアルライトビームレーザーIブループリント", 
       "ko": "듀얼 라이트 빔 레이저 I 블루프린트", 
       "ru": "Dual Light Beam Laser I Blueprint", 
-      "zh": "双联轻型集束激光器蓝图 I"
+      "zh": "双联轻型集束激光器 I"
     }, 
     "typeNameID": 67868, 
     "volume": 0.01
@@ -13140,7 +13141,7 @@
       "ja": "小型フォーカスビームレーザーIブループリント", 
       "ko": "소형 집속 빔 레이저 I 블루프린트", 
       "ru": "Small Focused Beam Laser I Blueprint", 
-      "zh": "小型聚焦集束激光器 I 蓝图"
+      "zh": "小型聚焦集束激光器I蓝图"
     }, 
     "typeNameID": 67870, 
     "volume": 0.01
@@ -13308,7 +13309,7 @@
       "ja": "デュアルヘビービームレーザーIブループリント", 
       "ko": "듀얼 헤비 빔 레이저 I 블루프린트", 
       "ru": "Dual Heavy Beam Laser I Blueprint", 
-      "zh": "双联重型集束激光器蓝图 I"
+      "zh": "重型集束激光器蓝图 I"
     }, 
     "typeNameID": 67877, 
     "volume": 0.01
@@ -13332,7 +13333,7 @@
       "ja": "メガパルスレーザーIブループリント", 
       "ko": "메가 펄스 레이저 I 블루프린트", 
       "ru": "Mega Pulse Laser I Blueprint", 
-      "zh": "超级脉冲激光器蓝图 I"
+      "zh": "超级脉冲激光器I蓝图"
     }, 
     "typeNameID": 67878, 
     "volume": 0.01
@@ -13405,7 +13406,7 @@
       "ja": "炭化鉛弾Sブループリント", 
       "ko": "탄화납탄 S 블루프린트", 
       "ru": "Carbonized Lead S Blueprint", 
-      "zh": "碳铅弹蓝图 S"
+      "zh": "碳铅弹S蓝图"
     }, 
     "typeNameID": 67881, 
     "volume": 0.01
@@ -13505,7 +13506,7 @@
       "ja": "チタン製サボット弾Sブループリント", 
       "ko": "티타늄 철갑탄 S 블루프린트", 
       "ru": "Titanium Sabot S Blueprint", 
-      "zh": "钛合金萨博弹蓝图 S"
+      "zh": "钛合金萨博弹S蓝图"
     }, 
     "typeNameID": 67885, 
     "volume": 0.01
@@ -13555,7 +13556,7 @@
       "ja": "フェーズプラズマ弾Sブループリント", 
       "ko": "위상 플라즈마탄 S 블루프린트", 
       "ru": "Phased Plasma S Blueprint", 
-      "zh": "定相等离子弹蓝图 S"
+      "zh": "定相等离子弹S蓝图"
     }, 
     "typeNameID": 67887, 
     "volume": 0.01
@@ -15443,7 +15444,7 @@
       "ja": "シールドリチャージャーIIブループリント", 
       "ko": "실드 회복장치 II 블루프린트", 
       "ru": "Shield Recharger II Blueprint", 
-      "zh": "护盾回充器蓝图 II"
+      "zh": "电容回充器蓝图 II"
     }, 
     "typeNameID": 76534, 
     "volume": 0.01
@@ -15616,7 +15617,7 @@
       "ja": "カーゴスキャナーIブループリント", 
       "ko": "화물 스캐너 I 블루프린트", 
       "ru": "Cargo Scanner I Blueprint", 
-      "zh": "货柜扫描器蓝图 I"
+      "zh": "货柜扫描器I蓝图"
     }, 
     "typeNameID": 76541, 
     "volume": 0.01
@@ -15664,7 +15665,7 @@
       "ja": "採掘調査用チップセットI設計図", 
       "ko": "채굴 조사 칩셋 I 블루프린트", 
       "ru": "Mining Survey Chipset I Blueprint", 
-      "zh": "采矿调查芯片组蓝图 I"
+      "zh": "采矿调查芯片组I蓝图"
     }, 
     "typeNameID": 76543, 
     "volume": 0.01
@@ -15713,7 +15714,7 @@
       "ja": "ワープスクランブラーIIブループリント", 
       "ko": "워프 스크램블러 II 블루프린트", 
       "ru": "Warp Scrambler II Blueprint", 
-      "zh": "跃迁扰频器蓝图 II"
+      "zh": "跃迁扰频器II蓝图"
     }, 
     "typeNameID": 76545, 
     "volume": 0.01
@@ -15762,7 +15763,7 @@
       "ja": "回転制御Iブループリント", 
       "ko": "자이로 안정기 I 블루프린트", 
       "ru": "Gyrostabilizer I Blueprint", 
-      "zh": "回转稳定器蓝图 I"
+      "zh": "回转稳定器I蓝图"
     }, 
     "typeNameID": 76547, 
     "volume": 0.01
@@ -15955,7 +15956,7 @@
       "ja": "75mmガトリングレールIブループリント", 
       "ko": "75mm 개틀링 레일건 I 블루프린트", 
       "ru": "75mm Gatling Rail I Blueprint", 
-      "zh": "75mm加特林磁轨炮蓝图 I"
+      "zh": "75mm加特林磁轨炮I蓝图"
     }, 
     "typeNameID": 67970, 
     "volume": 0.01
@@ -16123,7 +16124,7 @@
       "ja": "ヘビー中性子ブラスターIブループリント", 
       "ko": "헤비 중성자 블라스터 I 블루프린트", 
       "ru": "Heavy Neutron Blaster I Blueprint", 
-      "zh": "重型中子疾速炮蓝图 I"
+      "zh": "重型中子疾速炮I蓝图"
     }, 
     "typeNameID": 67977, 
     "volume": 0.01
@@ -16147,7 +16148,7 @@
       "ja": "ヘビーイオンブラスターIブループリント", 
       "ko": "헤비 이온 블라스터 I 블루프린트", 
       "ru": "Heavy Ion Blaster I Blueprint", 
-      "zh": "重型离子疾速炮蓝图 I"
+      "zh": "重型离子疾速炮I蓝图"
     }, 
     "typeNameID": 67978, 
     "volume": 0.01
@@ -16219,7 +16220,7 @@
       "ja": "デュアル250mmレールガンIブループリント", 
       "ko": "듀얼 250mm 레일건 I 블루프린트", 
       "ru": "Dual 250mm Railgun I Blueprint", 
-      "zh": "双联250mm磁轨炮蓝图 I"
+      "zh": "125mm磁轨炮蓝图 I"
     }, 
     "typeNameID": 67981, 
     "volume": 0.01
@@ -16364,7 +16365,7 @@
       "ja": "アイアン弾Sブループリント", 
       "ko": "강철탄 S 블루프린트", 
       "ru": "Iron Charge S Blueprint", 
-      "zh": "铁质轨道弹蓝图 S"
+      "zh": "铁质轨道弹S蓝图"
     }, 
     "typeNameID": 67985, 
     "volume": 0.01
@@ -16414,7 +16415,7 @@
       "ja": "イリジウム弾Sブループリント", 
       "ko": "이리듐탄 S 블루프린트", 
       "ru": "Iridium Charge S Blueprint", 
-      "zh": "铱质轨道弹蓝图 S"
+      "zh": "铱质轨道弹S蓝图"
     }, 
     "typeNameID": 67987, 
     "volume": 0.01
@@ -17994,7 +17995,7 @@
       "ja": "キャパシタリチャージャーIブループリント", 
       "ko": "캐패시터 충전기 I 블루프린트", 
       "ru": "Cap Recharger I Blueprint", 
-      "zh": "电容回充器蓝图 I"
+      "zh": "电容回充器I蓝图"
     }, 
     "typeNameID": 76568, 
     "volume": 0.01
@@ -18885,7 +18886,7 @@
       "ja": "オーバードライブインジェクターシステムIIブループリント", 
       "ko": "오버드라이브 주입기 II 블루프린트", 
       "ru": "Overdrive Injector System II Blueprint", 
-      "zh": "超载喷注系统蓝图 II"
+      "zh": "超载注喷系统II蓝图"
     }, 
     "typeNameID": 76578, 
     "volume": 0.01
@@ -21202,7 +21203,7 @@
       "ja": "慣性スタビライザーIIのブループリント", 
       "ko": "관성 안정기 II 블루프린트", 
       "ru": "Inertial Stabilizers II Blueprint", 
-      "zh": "惯性稳定器蓝图 II"
+      "zh": "惯性稳定器II蓝图"
     }, 
     "typeNameID": 76641, 
     "volume": 0.01
@@ -24793,7 +24794,7 @@
       "ja": "EMシールド増幅器I設計図", 
       "ko": "EM 저항력 실드 증폭기 I 블루프린트", 
       "ru": "EM Shield Amplifier I Blueprint", 
-      "zh": "电磁护盾增效器蓝图 I"
+      "zh": "电磁护盾增效器I蓝图"
     }, 
     "typeNameID": 76678, 
     "volume": 0.01
@@ -25418,7 +25419,7 @@
       "ja": "ノヴァ自動捕捉型クルーズミサイルIブループリント", 
       "ko": "노바 오토 타겟팅 크루즈 미사일 I 블루프린트", 
       "ru": "Nova Auto-Targeting Cruise Missile I Blueprint", 
-      "zh": "星爆自动锁定巡航导弹蓝图 I"
+      "zh": "星爆自动锁定巡航导弹I蓝图"
     }, 
     "typeNameID": 68141, 
     "volume": 0.01
@@ -25480,7 +25481,7 @@
       "ja": "インフェルノ自動捕捉型クルーズミサイルIブループリント", 
       "ko": "인페르노 오토 타겟팅 크루즈 미사일 I 블루프린트", 
       "ru": "Inferno Auto-Targeting Cruise Missile I Blueprint", 
-      "zh": "炼狱自动锁定巡航导弹蓝图 I"
+      "zh": "炼狱自动锁定巡航导弹I蓝图"
     }, 
     "typeNameID": 68143, 
     "volume": 0.01
@@ -25607,7 +25608,7 @@
       "ja": "高速ライトミサイルランチャーIブループリント", 
       "ko": "급속 라이트 미사일 런처 I 블루프린트", 
       "ru": "Rapid Light Missile Launcher I Blueprint", 
-      "zh": "轻型快速导弹发射器蓝图 I"
+      "zh": "轻型快速导弹发射器I蓝图"
     }, 
     "typeNameID": 68145, 
     "volume": 0.01
@@ -25672,7 +25673,7 @@
       "ja": "高速ライトミサイルランチャーIIブループリント", 
       "ko": "급속 라이트 미사일 런처 II 블루프린트", 
       "ru": "Rapid Light Missile Launcher II Blueprint", 
-      "zh": "轻型快速导弹发射器蓝图 II"
+      "zh": "轻型快速导弹发射器II蓝图"
     }, 
     "typeNameID": 68147, 
     "volume": 0.01
@@ -32761,7 +32762,7 @@
       "ja": "ハンマーヘッドIIブループリント", 
       "ko": "해머헤드 II 블루프린트", 
       "ru": "Hammerhead II Blueprint", 
-      "zh": "战锤蓝图 II"
+      "zh": "战锤II蓝图"
     }, 
     "typeNameID": 68168, 
     "volume": 0.01
@@ -33100,7 +33101,7 @@
       "ja": "プラエトルIIブループリント", 
       "ko": "프라이토르 II 블루프린트", 
       "ru": "Praetor II Blueprint", 
-      "zh": "执政官蓝图 II"
+      "zh": "执政官II蓝图"
     }, 
     "typeNameID": 68170, 
     "volume": 0.01
@@ -35530,7 +35531,7 @@
       "ja": "EMシールドハードナーI設計図", 
       "ko": "EM 저항력 실드 강화장치 II 블루프린트", 
       "ru": "EM Shield Hardener II Blueprint", 
-      "zh": "电磁护盾增强器蓝图 II"
+      "zh": "电磁护盾增强器II蓝图"
     }, 
     "typeNameID": 76734, 
     "volume": 0.01
@@ -38587,7 +38588,7 @@
       "ja": "トルピードランチャーIIブループリント", 
       "ko": "토피도 런처 II 블루프린트", 
       "ru": "Torpedo Launcher II Blueprint", 
-      "zh": "鱼雷发射器蓝图 II"
+      "zh": "鱼雷发射器II蓝图"
     }, 
     "typeNameID": 68177, 
     "volume": 0.01
@@ -39128,7 +39129,7 @@
       "ja": "ワスプIIブループリント", 
       "ko": "와스프 II 블루프린트", 
       "ru": "Wasp II Blueprint", 
-      "zh": "胡蜂蓝图 II"
+      "zh": "胡蜂II蓝图"
     }, 
     "typeNameID": 68178, 
     "volume": 0.01
@@ -39727,7 +39728,7 @@
       "ja": "ホブゴブリンIブループリント", 
       "ko": "홉고블린 I 블루프린트", 
       "ru": "Hobgoblin I Blueprint", 
-      "zh": "地精灵蓝图 I"
+      "zh": "地精灵I蓝图"
     }, 
     "typeNameID": 68181, 
     "volume": 0.01
@@ -40461,7 +40462,7 @@
       "ja": "バーサーカーIブループリント", 
       "ko": "버서커 I 블루프린트", 
       "ru": "Berserker I Blueprint", 
-      "zh": "狂战士蓝图 I"
+      "zh": "狂战士I蓝图"
     }, 
     "typeNameID": 68185, 
     "volume": 0.01
@@ -40793,7 +40794,7 @@
       "ja": "ウォリアーIブループリント", 
       "ko": "워리어 I 블루프린트", 
       "ru": "Warrior I Blueprint", 
-      "zh": "武士蓝图 I"
+      "zh": "武士I蓝图"
     }, 
     "typeNameID": 68187, 
     "volume": 0.01
@@ -48206,7 +48207,7 @@
       "ja": "ステイシスウェビフィケーションバッテリーブループリント", 
       "ko": "스테이시스 웹 타워 블루프린트", 
       "ru": "Stasis Webification Battery Blueprint", 
-      "zh": "停滞网状光束发射台蓝图"
+      "zh": "停滞网状光波发射台蓝图"
     }, 
     "typeNameID": 76278, 
     "volume": 0.01
@@ -50649,7 +50650,7 @@
       "ja": "第8回アライアアンストーナメント用に製造された、高度に進化したドローンプラットフォーム。イシュカーの設計を基にしているが、この船は元のブループリントをはるかにしのぐ設計要素が特徴だ。\n\n斬新な熱拡散フィールドプロジェクターに加えて、最新のハードワイヤリングドローンプロトコルと改良型ワープスクランブル機能を備えている。丈夫なアーマープレートと組み合わせると、どのような戦闘に遭遇しても強力な仲間となる。", 
       "ko": "제 8회 얼라이언스 토너먼트를 위해 특별 제작된 함선으로 최첨단 드론 플랫폼을 탑재하고 있습니다. 이쉬쿠르를 바탕으로 제작이 이루어졌으나 기존 설계를 뛰어넘는 막강한 성능을 자랑합니다. <br><br>혁신적인 열분산장치를 비롯한 최첨단 드론 프로토콜과 개선된 워프 스크램블러가 탑재되었습니다. 그 위에 견고한 장갑 플레이팅까지 합쳐지게 되자 그 어떠한 전장에서도 강력한 존재감을 발휘할 수 있게 되었습니다.", 
       "ru": "Фрегаты типа «Уту» — это корабли-носители дронов нового поколения, разработанные по спецзаказу и выдававшиеся в качестве приза победителям 8-го «Турнира альянсов». Взяв за основу ударные корабли типа «Ишкур», конструкторы смогли существенно улучшить этот проект\n\nпутем установки на борту новых фрегатов систем отвода тепла от модулей, работающих в режиме перегрева, новейших комплексов управления дронами и модернизированного оборудования для глушения варп-двигателей. В сочетании с хорошей броневой защитой это оборудование делает «Уту» опасным противником в любом бою.", 
-      "zh": "乌图级是一座非常先进的无人机平台，专门用于第八届联盟锦标赛。乌图级是基于伊什库尔级的基础设计建造的，但是它的一些设计元素已经远远高于原本的设计前身。\n\n除了革命性设计的热能散发投射场之外，乌图级还装备了极为先进的无人机接口硬件，以及升级的跃迁干扰能力。再加上坚固的装甲，使得乌图级成为任何战斗中最为坚实有力的盟友。"
+      "zh": "乌图级是一座非常先进的无人机平台，专门用于第八届联盟锦标赛。乌图级是基于伊什库尔级的基础设计建造的，但是它的一些设计元素已经远远高于原本的设计前身。除了革命性设计的热能散发投射场之外，乌图级还装备了极为先进的无人机接口硬件，以及升级的跃迁干扰能力。再加上坚固的装甲，使得乌图级成为任何战斗中最为坚实有力的盟友。"
     }, 
     "descriptionID": 93899, 
     "designerIDs": [
@@ -57828,7 +57829,7 @@
       "ja": "タキオンビームレーザーIIブループリント", 
       "ko": "타키온 빔 레이저 II 블루프린트", 
       "ru": "Tachyon Beam Laser II Blueprint", 
-      "zh": "超光速粒子集束激光器蓝图 II"
+      "zh": "重型集束激光器蓝图 II"
     }, 
     "typeNameID": 68234, 
     "volume": 0.01
@@ -59495,7 +59496,7 @@
       "ja": "デュアル250mmレールガンIIブループリント", 
       "ko": "듀얼 250mm 레일건 II 블루프린트", 
       "ru": "Dual 250mm Railgun II Blueprint", 
-      "zh": "双联250mm磁轨炮蓝图 II"
+      "zh": "双联1000mm磁轨炮蓝图 II"
     }, 
     "typeNameID": 68241, 
     "volume": 0.01
@@ -60057,7 +60058,7 @@
       "ja": "ヘビー電子ブラスターIIブループリント", 
       "ko": "헤비 전자 블라스터 II 블루프린트", 
       "ru": "Heavy Electron Blaster II Blueprint", 
-      "zh": "重型电子疾速炮蓝图 II"
+      "zh": "重型电子疾速炮II蓝图"
     }, 
     "typeNameID": 68243, 
     "volume": 0.01
@@ -60619,7 +60620,7 @@
       "ja": "ヘビー中性子ブラスターIIブループリント", 
       "ko": "헤비 중성자 블라스터 II 블루프린트", 
       "ru": "Heavy Neutron Blaster II Blueprint", 
-      "zh": "重型中子疾速炮蓝图 II"
+      "zh": "重型中子疾速炮II蓝图"
     }, 
     "typeNameID": 68245, 
     "volume": 0.01
@@ -61184,7 +61185,7 @@
       "ja": "ライト電子ブラスターIIブループリント", 
       "ko": "라이트 전자 블라스터 II 블루프린트", 
       "ru": "Light Electron Blaster II Blueprint", 
-      "zh": "轻型电子疾速炮蓝图 II"
+      "zh": "重型电子疾速炮蓝图 II"
     }, 
     "typeNameID": 68247, 
     "volume": 0.01
@@ -64002,7 +64003,7 @@
       "ja": "ワープ妨害器Iブループリント", 
       "ko": "워프 디스럽터 I 블루프린트", 
       "ru": "Warp Disruptor I Blueprint", 
-      "zh": "跃迁扰断器蓝图 I"
+      "zh": "跃迁扰断器I蓝图"
     }, 
     "typeNameID": 76778, 
     "volume": 0.01
@@ -72930,7 +72931,7 @@
       "ja": "フォーカス中型パルスレーザーIIブループリント", 
       "ko": "중형 집속 펄스 레이저 II 블루프린트", 
       "ru": "Focused Medium Pulse Laser II Blueprint", 
-      "zh": "聚焦中型脉冲激光器蓝图 II"
+      "zh": "聚焦中型脉冲激光器II蓝图"
     }, 
     "typeNameID": 68268, 
     "volume": 0.01
@@ -75756,7 +75757,7 @@
       "ja": "中型リモートシールドブースターIIブループリント", 
       "ko": "중형 원격 실드 부스터 II 블루프린트", 
       "ru": "Medium Remote Shield Booster II Blueprint", 
-      "zh": "中型远程护盾回充增量器蓝图 II"
+      "zh": "中型远程护盾回充增量器II蓝图"
     }, 
     "typeNameID": 76934, 
     "volume": 0.01
@@ -80769,7 +80770,7 @@
       "ja": "SOCT2ブループリント", 
       "ko": "SOCT 2 블루프린트", 
       "ru": "SOCT 2 Blueprint", 
-      "zh": "SOCT 2蓝图"
+      "zh": "理性思维社团2蓝图"
     }, 
     "typeNameID": 68285, 
     "volume": 0.01
@@ -82153,7 +82154,7 @@
       "ja": "データサブバーターIブループリント", 
       "ko": "데이터 해킹 장치 I 블루프린트", 
       "ru": "Data Subverter I Blueprint", 
-      "zh": "数据破坏仪蓝图 I"
+      "zh": "数据破坏仪I蓝图"
     }, 
     "typeNameID": 105477, 
     "volume": 0.01
@@ -83227,7 +83228,7 @@
       "ja": "中型シールドエクステンダーIブループリント", 
       "ko": "중형 실드 확장장치 I 블루프린트", 
       "ru": "Medium Shield Extender I Blueprint", 
-      "zh": "中型护盾扩展装置蓝图 I"
+      "zh": "旗舰级护盾扩展装置蓝图 I"
     }, 
     "typeNameID": 76987, 
     "volume": 0.01
@@ -95578,7 +95579,7 @@
       "ja": "小型トラクタービームIIブループリント", 
       "ko": "소형 트랙터 빔 II 블루프린트", 
       "ru": "Small Tractor Beam II Blueprint", 
-      "zh": "小型牵引光束器蓝图 II"
+      "zh": "小型牵引光束器II蓝图"
     }, 
     "typeNameID": 263170, 
     "volume": 0.01
@@ -95840,7 +95841,7 @@
       "ja": "コアプローブランチャーIIブループリント", 
       "ko": "코어 프로브 런처 II 블루프린트", 
       "ru": "Core Probe Launcher II Blueprint", 
-      "zh": "核心探针发射器蓝图 II"
+      "zh": "核心探针发射器II蓝图"
     }, 
     "typeNameID": 263377, 
     "volume": 0.01
@@ -95905,7 +95906,7 @@
       "ja": "拡張型プローブランチャーIIブループリント", 
       "ko": "확장형 프로브 런처 II 블루프린트", 
       "ru": "Expanded Probe Launcher II Blueprint", 
-      "zh": "延伸探针发射器蓝图 II"
+      "zh": "延伸探针发射器II蓝图"
     }, 
     "typeNameID": 263378, 
     "volume": 0.01
@@ -96094,7 +96095,7 @@
       "ja": "装甲戦闘用艦隊支援システム-高速リペアIIブループリント", 
       "ko": "장갑 전장 링크 - 급속 수리 II 블루프린트", 
       "ru": "Armored Warfare Link - Rapid Repair II Blueprint", 
-      "zh": "装甲作战网络—快速修理蓝图 II"
+      "zh": "装甲作战网络—快速修理II蓝图"
     }, 
     "typeNameID": 263381, 
     "volume": 0.01
@@ -96346,7 +96347,7 @@
       "ja": "採掘支援リンク-採掘機キャパシタ効率化IIブループリント", 
       "ko": "채광 링크 - 하베스터 캐패시터 효율 II 블루프린트", 
       "ru": "Mining Foreman Link - Harvester Capacitor Efficiency II Blueprint", 
-      "zh": "开采先锋—采集器电容能效蓝图 II"
+      "zh": "开采先锋—采集器电容能效II蓝图"
     }, 
     "typeNameID": 263385, 
     "volume": 0.01
@@ -96472,7 +96473,7 @@
       "ja": "採掘支援リンク-採掘レーザーフィールド強化IIブループリント", 
       "ko": "채광 링크 - 채굴 레이저 필드 강화장치 II블루프린트", 
       "ru": "Mining Foreman Link - Mining Laser Field Enhancement II Blueprint", 
-      "zh": "开采先锋—采矿激光器力场增强蓝图 II"
+      "zh": "开采先锋—采矿激光器力场增强II蓝图"
     }, 
     "typeNameID": 263387, 
     "volume": 0.01
@@ -97046,7 +97047,7 @@
       "ja": "中型リモート船体リペアラIIブループリント", 
       "ko": "중형 원격 선체수리 장치 II 블루프린트", 
       "ru": "Medium Remote Hull Repairer II Blueprint", 
-      "zh": "中型远程结构维修器蓝图 II"
+      "zh": "中型远程结构维修器II蓝图"
     }, 
     "typeNameID": 261685, 
     "volume": 0.01
@@ -97296,14 +97297,14 @@
     "capacity": 575.0, 
     "certificateTemplate": 60, 
     "description": {
-      "de": "Die Naga wurde im Jahr YC 109 durch die <a href=showinfo:2//1000043>Corporate Police Force</a> als Schiff zur Bekämpfung der -<a href=showinfo:30//500010>Guristas</a> konzipiert. Dabei wurde auf die gewohnt robusten <a href=showinfo:2//1000035>Caldari Navy</a>-Standards verzichtet, um Waffenanlagen der Schlachtschiff-Klasse anbringen zu können. Das <a href=showinfo:2//1000005>Hyasyoda</a>-Management wies das Schiff als zu spezialisiertes Modell zurück. <br>Das Naga-Design geriet in den Hyasyoda-Archiven in Vergessenheit (abgesehen von einem kurzen Auftritt in der Gallente-Holoserie <i>CPF Blue</i>). Im Jahr YC 113 liefen mit der Caldari Navy Verträge zur Produktion von Schlachtkreuzern eines neuen Rangs. Hyasyoda reagierte schnell und gewann die Ausschreibung mit der Naga. <a href=showinfo:2//1000010>Kaalakiota</a> und <a href=showinfo:2//1000019>Ishukone</a> wurden dabei unterboten.", 
-      "en-us": "The Naga was designed in YC 109 by <a href=showinfo:2//1000043>Corporate Police Force</a> as an anti-<a href=showinfo:30//500010>Guristas</a> ship, sacrificing the usual robust <a href=showinfo:2//1000035>Caldari Navy</a> standards in favor of supporting battleship-class weaponry. It was rejected by <a href=showinfo:2//1000005>Hyasyoda</a> management for being overspecialized.\r\n<br>The Naga design remained in the Hyasyoda archives, forgotten (save for a cameo in the Gallente holo-series <i>CPF Blue</i>). In YC 113 the Caldari Navy entertained contracts for a new tier of gunboat battlecruiser. Hyasyoda quickly submitted and won with the Naga, underbidding both <a href=showinfo:2//1000010>Kaalakiota</a> and <a href=showinfo:2//1000019>Ishukone</a>.", 
-      "es": "El <a href=showinfo:2//1000043>Cuerpo de Policía Corporativo</a> diseñó la Naga en 109 CY a modo de nave <a href=showinfo:30//500010>antigurista</a>, sacrificando los estándares de resistencia habituales de la <a href=showinfo:2//1000035>Armada Caldari</a> en favor del armamento de un acorazado. La dirección de <a href=showinfo:2//1000005>Hyasyoda</a> la rechazó por ser demasiado especializada.\r\n<br>El diseño de la Naga se conservó en los archivos de Hyasyoda y cayó en el olvido (excepto por un cameo que tuvo en la serie holográfica gallente <i>Nostalgia CPC</i>). En 113 CY, la Armada Caldari publicó contratos para una nueva categoría de crucero de combate cañonero. Hyasyoda se presentó con la Naga y ganó, con un presupuesto inferior al de <a href=showinfo:2//1000010>Kaalakiota</a> y al de <a href=showinfo:2//1000019>Ishukone</a>.", 
-      "fr": "Le Naga a été conçu en 109 après CY par la <a href=showinfo:2//1000043>Corporate Police Force</a> comme vaisseau anti-<a href=showinfo:30//500010>Guristas</a>, sacrifiant les normes robustes habituelles de la <a href=showinfo:2//1000035>Caldari Navy</a> au profit d'un armement de classe cuirassé. Il a été rejeté par la direction de <a href=showinfo:2//1000005>Hyasyoda</a> pour sa spécialisation excessive. <br>Le modèle du Naga est resté dans les archives de Hyasyoda, totalement oublié (à l'exception d'une brève apparition dans une holo-série gallente, <i>FPC Blue</i>). En 113 après CY, la Caldari Navy a lancé un appel d'offres pour une nouvelle classe de canonnière croiseur cuirassé. Hyasyoda a rapidement proposé le Naga, qui l'a emporté, non seulement face à <a href=showinfo:2//1000010>Kaalakiota</a>, mais aussi à <a href=showinfo:2//1000019>Ishukone</a>.", 
-      "ja": "ナーガはYC109年に<a href=showinfo:2//1000043>企業警察隊</a>が<a href=showinfo:30//500010>ガリスタス</a>対策用に設計した艦船である。<a href=showinfo:2//1000035>カルダリ海軍</a>伝統の堅牢さをあえて犠牲にし、戦艦用の大型兵器を搭載できるようになっているが、元々は<a href=showinfo:2//1000005>ヒャショーダ</a> の幹部から、あまりに性能が特化しすぎているとして却下されていた艦船である。\r\n<br>却下されたナーガはヒャショーダの保管庫にしまい込まれたきりになっていた（ガレンテの連作ホロリール<i>CPFブルー</i>に一度だけカメオ出演したことはあったが）が、YC113年になって、カルダリ海軍は火力に特化した新型巡洋戦艦の開発委託先を探しはじめた。ヒャショーダは即座にナーガを提示し、<a href=showinfo:2//1000010>カーラキオタ</a> や<a href=showinfo:2//1000019>イシュコネ</a>をさしおいて入札を勝ちとったのである。", 
-      "ko": "<a href=showinfo:2//1000043>코퍼레이션 치안유지대</a>가 YC 109년에 제작한 대<a href=showinfo:30//500010>구리스타스</a>함선으로 견고함에 치중하는 기존의 <a href=showinfo:2//1000035>칼다리 해군</a>식 설계에서 벗어나 배틀쉽급 무기 탑재에 주력했습니다. 그러나 지나친 화력 특화로 인해 결국 <a href=showinfo:2//1000005>하야스요다</a> 경영진은 이 함선을 사용하지 않기로 결정 내렸습니다.\r\n<br>나가의 설계도는 하야스요다 아카이브에 저장되어 기억에서 잊혀가고 있었습니다. (갈란테의 홀로시리즈 <i>CPF 블루</i>에 등장하며 잠깐 존재를 드러내긴 했습니다.) YC 113년, 칼다리 해군은 새로운 수준의 배틀크루저를 제작하고자 계약 입찰 공고를 냈습니다. 하야스요다는 <a href=showinfo:2//1000010>칼라키오타</a>와 <a href=showinfo:2//1000019>이슈콘</a>보다 낮은 입찰가를 제시하여 계약을 성립하였습니다.", 
-      "ru": "В 109 году от ю. с. инженеры из <a href=showinfo:2//1000043>«Полицейской службы» корпорации «Хайасьода»</a> разработали проект Naga — корабля, предназначенного для противодействия <a href=showinfo:30//500010>«Гуристас»</a>. В отличие от других судов <a href=showinfo:2//1000035>калдарского флота</a>, эта модель не могла похвастаться высокой прочностью, однако обладала всеми мощностями для обслуживания орудийных систем линейных крейсеров. В тот момент руководство <a href=showinfo:2//1000005>«Хайасьоды»</a> отказалось от производства корабля, поскольку посчитало его направленность слишком узкой. <br>С тех пор чертежи Naga пылились в архивах «Хайасьоды», и о проекте упомянули разве что в голографическом сериале <i>«Синий титан»</i>. В 113 году от ю. с. калдарскому флоту понадобился боевой линейный крейсер нового поколения. Представители «Хайасьоды» сразу же вспомнили про Naga и молниеносно выиграли тендер, оставив позади таких гигантов, как <a href=showinfo:2//1000010>«Каалакиота»</a> и <a href=showinfo:2//1000019>«Ишукон»</a>.", 
-      "zh": "娜迦级诞生于YC109年，由<a href=showinfo:2//1000043>联合警备队</a>设计，专门被用来对付<a href=showinfo:30//500010>古斯塔斯</a>舰船。为了装配战列舰级别的武器装备，它舍弃了<a href=showinfo:2//1000035>加达里海军</a>传统的坚固标准。<a href=showinfo:2//1000005>三岛集团</a>的管理层因为它的适用性过于狭窄而放弃了它的生产。 <br>它的设计图就一直躺在三岛集团的档案库中，被人遗忘（虽说它曾在盖伦特全息影像连续剧<i>流氓警备队</i>中露过一小面）。YC113年，加达里海军招标建造新型战列巡洋舰。三岛集团迅速提交了娜迦级的设计，并最终以低廉的价格压倒<a href=showinfo:2//1000010>卡拉吉塔集团</a>和<a href=showinfo:2//1000019>异株湖集团</a>，赢得了合同。"
+      "de": "Angesichts der Aufgabe, im Jahr YC128 in Syndicate, einer Region außerhalb der Reichweite von CONCORD, die Ordnung aufrechtzuerhalten, benötigte die Caldari Navy eine neue schlagkräftige Lösung, die allein durch ihre einschüchternde Präsenz die Autorität des Staates etablieren würde. Die Naga Navy Issue wurde in Kooperation mit den Megacorporations der Mountain-Fraktion in Auftrag gegeben, um sicherzustellen, dass die frisch unter Kontrolle gebrachte Region die kompromisslose Ehre und Stärke der Caldari zu Gesicht bekam.", 
+      "en-us": "Faced with the prospect of maintaining order in Syndicate in YC128, a region beyond the reach of CONCORD, the Caldari Navy needed a new hard-hitting solution that would establish State authority through its intimidating presence alone. The Naga Navy Issue was commissioned in partnership with the megacorporations of the Mountain faction to ensure that the newly controlled region would witness the uncompromisable honor and strength of the Caldari.", 
+      "es": "Ante la necesidad de mantener el orden en Syndicate en el año 128 CY, una región fuera del alcance de CONCORD, la Armada Caldari necesitaba una nueva y contundente solución capaz de imponer la autoridad del Estado con su sola presencia intimidatoria. La Naga modelo de la Armada se encargó en colaboración con las megacorporaciones de la facción Montaña para garantizar que la región recién sometida a su control fuera testigo del honor inquebrantable y la fuerza de los caldaris.", 
+      "fr": "En 128 après CY, face à la nécessité de maintenir l'ordre au sein de Syndicate, une région hors de l'influence de CONCORD, la Caldari Navy avait besoin d'une nouvelle solution percutante qui établirait l'autorité de l'État par sa seule présence intimidante. Le Naga Navy Issue a ainsi été commandé en partenariat avec les mégacorporations de la Faction de la Montagne afin de garantir que la région récemment entrée sous son contrôle soit témoin de l'honneur et de la force intransigeants des Caldari.", 
+      "ja": "YC128年、CONCORDの手が及ばないシンジケートで治安維持を担うことになったカルダリ海軍は、新しく力強い解決策を必要としていた。威圧的な存在感だけで連合の権威を確立できるような戦力である。新たに支配下に置いたこの宙域に、カルダリの揺るぎない名誉と力を示すべく、山岳派のメガコーポレーションと共同でナーガ海軍仕様の開発が命じられた。", 
+      "ko": "YC 128년, 칼다리 해군은 CONCORD의 영향력이 미치지 않는 신디케이트 지역의 치안을 유지해야 하는 상황에 처합니다. 따라서 무력과 위압적인 존재감으로 국가의 권위를 확립할 새로운 전략이 필요했습니다. 새로 장악한 지역에 칼다리의 타협하지 않는 명예와 강인함을 각인시킬 수단으로 마운틴 팩션의 메가코퍼레이션과 협력해 나가 해군 에디션 개발 계획을 수립했습니다.", 
+      "ru": "В 128 году от ю. с. калдарский флот столкнулся с необходимостью поддержания порядка в Синдикате — секторе вне зоны досягаемости КОНКОРДА, — и остро нуждался в корабле, одним своим видом внушающем ужас врагам Государства. Версия Naga Navy Issue была разработана в сотрудничестве с мегакорпорациями «Горной фракции» и призвана демонстрировать неоспоримое моральное и военное превосходство калдарцев в новообретённом пространстве.", 
+      "zh": "YC128年，加达里海军面临着在辛迪加地区维持秩序的难题。由于该地区不受统合部管辖，他们需要一种强力的新型舰船，仅凭强大的威慑力就能确立合众国的权威。娜迦级海军型由加达里海军与“高山联盟”的超级集团联手打造，目的是让加达里新近控制的地区见识到加达里人捍卫荣誉、展现实力的坚定决心。"
     }, 
     "descriptionID": 263226, 
     "designerIDs": [
@@ -97312,6 +97313,7 @@
     "factionID": 500001, 
     "graphicID": 11776, 
     "groupID": 1201, 
+    "isDynamicType": 0, 
     "isisGroupID": 23, 
     "marketGroupID": 471, 
     "mass": 15000000.0, 
@@ -99142,7 +99144,7 @@
       "ja": "小型ターゲティング増幅器Iブループリント", 
       "ko": "소형 타겟팅 증폭기 I 블루프린트", 
       "ru": "Small Targeting Amplifier I Blueprint", 
-      "zh": "小型锁定增效器蓝图 I"
+      "zh": "小型锁定增效器I蓝图"
     }, 
     "typeNameID": 276934, 
     "volume": 0.01
@@ -137717,7 +137719,7 @@
       "ja": "中型シールドブースターIブループリント", 
       "ko": "중형 실드 부스터 I 블루프린트", 
       "ru": "Medium Shield Booster I Blueprint", 
-      "zh": "中型护盾回充增量器蓝图 I"
+      "zh": "中型电容注电器蓝图 I"
     }, 
     "typeNameID": 77343, 
     "volume": 0.01
@@ -137779,7 +137781,7 @@
       "ja": "大型シールドブースターIブループリント", 
       "ko": "대형 실드 부스터 I 블루프린트", 
       "ru": "Large Shield Booster I Blueprint", 
-      "zh": "大型护盾回充增量器蓝图 I"
+      "zh": "远程护盾回充增量器蓝图"
     }, 
     "typeNameID": 77345, 
     "volume": 0.01
@@ -137841,7 +137843,7 @@
       "ja": "超大型シールドブースターIブループリント", 
       "ko": "초대형 실드 부스터 I 블루프린트", 
       "ru": "X-Large Shield Booster I Blueprint", 
-      "zh": "超大型护盾回充增量器蓝图 I"
+      "zh": "远程护盾回充增量器蓝图"
     }, 
     "typeNameID": 77347, 
     "volume": 0.01
@@ -142923,7 +142925,7 @@
       "ja": "キツネブループリント", 
       "ko": "키츠네 블루프린트", 
       "ru": "Kitsune Blueprint", 
-      "zh": "狐妖级蓝图"
+      "zh": " - \"个蓝图\", \"个蓝图\""
     }, 
     "typeNameID": 68478, 
     "volume": 0.01
@@ -145123,7 +145125,7 @@
       "ja": "200mm スチールプレートIのブループリント", 
       "ko": "200mm 강철 플레이트 I 블루프린트", 
       "ru": "200mm Steel Plates I Blueprint", 
-      "zh": "200mm钢附甲板蓝图 I"
+      "zh": "200mm钢附甲板I蓝图"
     }, 
     "typeNameID": 77441, 
     "volume": 0.01
@@ -145187,7 +145189,7 @@
       "ja": "400mm スチールプレートIのブループリント", 
       "ko": "400mm 강철 플레이트 I 블루프린트", 
       "ru": "400mm Steel Plates I Blueprint", 
-      "zh": "400mm钢附甲板蓝图 I"
+      "zh": "400mm钢附甲板I蓝图"
     }, 
     "typeNameID": 77443, 
     "volume": 0.01
@@ -145251,7 +145253,7 @@
       "ja": "800mm スチールプレートIのブループリント", 
       "ko": "800mm 강철 플레이트 I 블루프린트", 
       "ru": "800mm Steel Plates I Blueprint", 
-      "zh": "800mm钢附甲板蓝图 I"
+      "zh": "800mm钢附甲板I蓝图"
     }, 
     "typeNameID": 77445, 
     "volume": 0.01
@@ -145314,7 +145316,7 @@
       "ja": "EMアーマーハードナーI設計図", 
       "ko": "EM 저항력 장갑 강화장치 I 블루프린트", 
       "ru": "EM Armor Hardener I Blueprint", 
-      "zh": "电磁装甲增强器蓝图 I"
+      "zh": "电磁装甲增强器I蓝图"
     }, 
     "typeNameID": 77447, 
     "volume": 0.01
@@ -146427,7 +146429,7 @@
       "ja": "小型リモートアーマーリペアラIブループリント", 
       "ko": "소형 원격 장갑수리 장치 I 블루프린트", 
       "ru": "Small Remote Armor Repairer I Blueprint", 
-      "zh": "小型远程装甲维修器蓝图 I"
+      "zh": "小型远程装甲维修器I蓝图"
     }, 
     "typeNameID": 77477, 
     "volume": 0.01
@@ -146553,7 +146555,7 @@
       "ja": "大型リモートアーマーリペアラIブループリント", 
       "ko": "대형 원격 장갑수리 장치 I 블루프린트", 
       "ru": "Large Remote Armor Repairer I Blueprint", 
-      "zh": "大型远程装甲维修器蓝图 I"
+      "zh": "大型远程装甲维修器I蓝图"
     }, 
     "typeNameID": 77481, 
     "volume": 0.01
@@ -147023,6 +147025,7 @@
     "factionID": 500001, 
     "graphicID": 1882, 
     "groupID": 324, 
+    "isDynamicType": 0, 
     "isisGroupID": 11, 
     "marketGroupID": 434, 
     "mass": 1095300.0, 
@@ -151282,7 +151285,7 @@
       "ja": "超小型補助パワーコアIブループリント", 
       "ko": "마이크로 보조 파워코어 I 블루프린트", 
       "ru": "Micro Auxiliary Power Core I Blueprint", 
-      "zh": "微型辅助能源核心蓝图 I"
+      "zh": "微型辅助能源核心I蓝图"
     }, 
     "typeNameID": 77568, 
     "volume": 0.01
@@ -151550,14 +151553,14 @@
     "basePrice": 1785720.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "Diese Tarnung für verdeckte Operationen ist ein sehr spezielles Stück Technologie und für den gemeinsamen Einsatz mit spezifischen Covert Ops-Schiffen gedacht. Theoretisch könnte sie zwar auch auf anderen Schiffen funktionieren, aber ihr Raumverzerrungsfeld ist derart instabil, dass der Versuch, seine Fluktuationen zu kompensieren, eine nicht darauf spezialisierte Hardware überfordern würde. \n\nHinweis: Dieses besondere Modul ist fortschrittlich genug, dass es einem Schiff gestattet, den Warpantrieb zu benutzen, während es sich im Tarnmodus befindet. Das Ausrüsten von zwei oder mehr Tarnmodulen stört allerdings deren Funktionalität, da die asynchrone Krümmung des Lichts zu Interferenzen führt.", 
+      "de": "Diese Tarnung für verdeckte Operationen ist ein sehr spezielles Stück Technologie und für den gemeinsamen Einsatz mit spezifischen Covert Ops-Schiffen gedacht. Theoretisch könnte sie zwar auch auf anderen Schiffen funktionieren, aber ihr Raumverzerrungsfeld ist derart instabil, dass der Versuch, seine Fluktuationen zu kompensieren, eine nicht darauf spezialisierte Hardware überfordern würde. \r\n\r\nHinweis: Dieses besondere Modul ist fortschrittlich genug, dass es einem Schiff gestattet, den Warpantrieb zu benutzen, während es sich im Tarnmodus befindet. Das Ausrüsten von zwei oder mehr Tarnmodulen stört allerdings deren Funktionalität, da die asynchrone Krümmung des Lichts zu Interferenzen führt.", 
       "en-us": "A very specialized piece of technology, the covert ops cloak is designed for use in tandem with specific covert ops vessels. Although it could theoretically work on other ships, its spatial distortion field is so unstable that trying to compensate for its fluctuations will overwhelm non-specialized computing hardware. \r\n\r\nNote: This particular module is advanced enough that it allows a ship to warp while cloaked. However, fitting two or more cloaking devices to a ship negates their use, as unsynchronized light deflection causes interference.", 
-      "es": "El camuflaje de operaciones encubiertas es una pieza de tecnología muy especializada que está diseñada para usarse en tándem con naves de operaciones encubiertas específicas. Aunque en teoría podría funcionar en otras naves, su campo de distorsión espacial es tan inestable que tratar de compensar sus fluctuaciones abrumará el hardware informático no especializado.\n\nAviso: Este módulo en particular es lo bastante avanzado como para permitir que una nave warpee mientras está camuflada. Sin embargo, si se equipa una nave con dos o más dispositivos de camuflaje, se anulará su uso, ya que la desviación de luz asíncrona provoca interferencias.", 
-      "fr": "Le camouflage des opérations secrètes est un petit bijou de technologie extrêmement spécialisé, conçu pour être utilisé sur les vaisseaux des opérations secrètes. Bien qu'il puisse en théorie être installé sur d'autres vaisseaux, son champ de distorsion spatiale est si instable que les fluctuations qu'il génère sont trop fortes pour être compensées par du matériel informatique non spécialisé. \n\nRemarque : ce module particulier est assez avancé pour permettre à un vaisseau de warper lorsqu'il est camouflé. Toutefois, équiper deux dispositifs de camouflage ou plus sur un vaisseau annule leurs effets, puisque la réfraction asynchrone de la lumière provoque des interférences.", 
-      "ja": "隠密行動用遮蔽装置は特定の隠密行動艦に搭載することを目的として、技術の粋を集めて設計された。理論上は他のタイプの船に搭載しても作動可能だが、この装置が造り出す空間の歪みは極めて不安定なため、歪みによる揺れを補償することによって非特殊型コンピューティングハードウェアは負荷を強いられる。 \n\n注：このモジュールは高性能なため、遮蔽中でも艦船がワープできる。しかし複数の遮蔽装置を装備すると、光の屈折が同期せずに干渉を起こすため、効果を発揮しなくなる。", 
+      "es": "El camuflaje de operaciones encubiertas es una pieza de tecnología muy especializada que está diseñada para usarse en tándem con naves de operaciones encubiertas específicas. Aunque en teoría podría funcionar en otras naves, su campo de distorsión espacial es tan inestable que tratar de compensar sus fluctuaciones abrumará el hardware informático no especializado.\r\n\r\nAviso: Este módulo en particular es lo bastante avanzado como para permitir que una nave warpee mientras está camuflada. Sin embargo, si se equipa una nave con dos o más dispositivos de camuflaje, se anulará su uso, ya que la desviación de luz asíncrona provoca interferencias.", 
+      "fr": "Le camouflage des opérations secrètes est un petit bijou de technologie extrêmement spécialisé, conçu pour être utilisé sur les vaisseaux des opérations secrètes. Bien qu'il puisse en théorie être installé sur d'autres vaisseaux, son champ de distorsion spatiale est si instable que les fluctuations qu'il génère sont trop fortes pour être compensées par du matériel informatique non spécialisé. \r\n\r\nRemarque : ce module particulier est assez avancé pour permettre à un vaisseau de warper lorsqu'il est camouflé. Toutefois, équiper deux dispositifs de camouflage ou plus sur un vaisseau annule leurs effets, puisque la réfraction asynchrone de la lumière provoque des interférences.", 
+      "ja": "隠密行動用遮蔽装置は特定の隠密行動艦に搭載することを目的として、技術の粋を集めて設計された。理論上は他のタイプの船に搭載しても作動可能だが、この装置が造り出す空間の歪みは極めて不安定なため、歪みによる揺れを補償することによって非特殊型コンピューティングハードウェアは負荷を強いられる。 \r\n\r\n注：このモジュールは高性能なため、遮蔽中でも艦船がワープできる。しかし複数の遮蔽装置を装備すると、光の屈折が同期せずに干渉を起こすため、効果を発揮しなくなる。", 
       "ko": "코버트 옵스 함선에 탑재되는 클로킹 장치입니다. 이론적으로 다른 함급에 탑재하는 것 또한 가능하지만 전용 하드웨어 없이 공간왜곡 필드의 안정성을 유지하기가 어려워 권장되지는 않습니다. <br><br>참고: 최첨단 기술로 설계되어 클로킹 중에도 워프가 가능합니다. 두 개 이상의 클로킹 장치를 탑재할 경우 광편향 싱크로율의 불일치로 인해 은폐 효과가 무효화됩니다.", 
-      "ru": "Всережимная система маскировки является очень узкоспециализированным оборудованием, созданным для использования на отдельных диверсионных кораблях. Теоретически, она может работать и на других кораблях, но ее поле пространственного искажения настолько нестабильно, что из-за попыток компенсировать ее колебания неспециализированное оборудование может выйти из строя. \n\nВнимание: Этот модуль позволяет использовать варп-двигатель корабля при включенной системе маскировки. Примечание: одновременное использование нескольких систем маскировки невозможно, так как вызываемые несинхронным отражением световых волн помехи нейтрализуют их действие.", 
-      "zh": "作为一种非常特殊的技术，隐秘行动隐形装置被设计为与某些隐秘类型的舰船协同使用。尽管理论上它也能配备在其他舰船上，但是其空间扭曲立场非常不稳定，要弥补这种波动，即使最大的标准舰载电脑也会不堪重负。注：注意：这种高级装备让舰船可以在隐形的情况下跃迁，但是使用两个或者多个隐形装置将会导致其作用抵消，因为不同步的光反射会造成相互干扰。"
+      "ru": "Всережимная система маскировки является очень узкоспециализированным оборудованием, созданным для использования на отдельных диверсионных кораблях. Теоретически, она может работать и на других кораблях, но ее поле пространственного искажения настолько нестабильно, что из-за попыток компенсировать ее колебания неспециализированное оборудование может выйти из строя. \r\n\r\nВнимание: Этот модуль позволяет использовать варп-двигатель корабля при включенной системе маскировки. Примечание: одновременное использование нескольких систем маскировки невозможно, так как вызываемые несинхронным отражением световых волн помехи нейтрализуют их действие.", 
+      "zh": "作为一种非常特殊的技术，隐秘行动隐形装置被设计为与某些隐秘类型的舰船协同使用。尽管理论上它也能配备在其他舰船上，但是其空间扭曲立场非常不稳定，要弥补这种波动，即使最大的标准舰载电脑也会不堪重负。 \r\n\r\n注意：这种高级装备让舰船可以在隐形的情况下跃迁，但是使用两个或者多个隐形装置将会导致其作用抵消，因为不同步的光反射会造成相互干扰。"
     }, 
     "descriptionID": 91441, 
     "groupID": 330, 
@@ -152446,7 +152449,7 @@
       "ja": "放熱機Iブループリント", 
       "ko": "방열판 I 블루프린트", 
       "ru": "Heat Sink I Blueprint", 
-      "zh": "散热槽蓝图 I"
+      "zh": "散热槽I蓝图"
     }, 
     "typeNameID": 104278, 
     "volume": 0.01
@@ -152614,7 +152617,7 @@
       "ja": "トラッキングコンピューターIブループリント", 
       "ko": "트래킹 컴퓨터 I 블루프린트", 
       "ru": "Tracking Computer I Blueprint", 
-      "zh": "索敌计算机蓝图 I"
+      "zh": "索敌计算机I蓝图"
     }, 
     "typeNameID": 104445, 
     "volume": 0.01
@@ -156550,7 +156553,7 @@
       "ja": "リモートセンサーダンプナーIIブループリント", 
       "ko": "원격 센서 댐프너 II 블루프린트", 
       "ru": "Remote Sensor Dampener II Blueprint", 
-      "zh": "远程感应抑阻器蓝图 II"
+      "zh": "远程感应抑阻器II蓝图"
     }, 
     "typeNameID": 104341, 
     "volume": 0.01
@@ -156575,7 +156578,7 @@
       "ja": "センサーブースターIIブループリント", 
       "ko": "센서 부스터 II 블루프린트", 
       "ru": "Sensor Booster II Blueprint", 
-      "zh": "感应增强器蓝图 II"
+      "zh": "感应增强器II蓝图"
     }, 
     "typeNameID": 104343, 
     "volume": 0.01
@@ -160672,7 +160675,7 @@
       "ja": "オニキスブループリント", 
       "ko": "오닉스 블루프린트", 
       "ru": "Onyx Blueprint", 
-      "zh": "奥尼克斯级蓝图"
+      "zh": " - \"个蓝图\", \"个蓝图\""
     }, 
     "typeNameID": 68577, 
     "volume": 0.01
@@ -162411,7 +162414,7 @@
       "ja": "100MNアフターバーナーIブループリント", 
       "ko": "100MN 애프터버너 I 블루프린트", 
       "ru": "100MN Afterburner I Blueprint", 
-      "zh": "100MN加力燃烧器蓝图 I"
+      "zh": "100MN加力燃烧器I蓝图"
     }, 
     "typeNameID": 77634, 
     "volume": 0.01
@@ -162923,7 +162926,7 @@
       "ja": "大型リモートキャパシタトランスミッターIIブループリント", 
       "ko": "대형 원격 캐패시터 전송기 II 블루프린트", 
       "ru": "Large Remote Capacitor Transmitter II Blueprint", 
-      "zh": "大型远程电容传输装置蓝图 II"
+      "zh": "大型远程电容传输装置II蓝图"
     }, 
     "typeNameID": 77645, 
     "volume": 0.01
@@ -162973,7 +162976,7 @@
       "ja": "隠密行動用遮蔽装置IIブループリント", 
       "ko": "코버트 옵스 클로킹 장치 II 블루프린트", 
       "ru": "Covert Ops Cloaking Device II Blueprint", 
-      "zh": "隐秘行动隐形装置蓝图 II"
+      "zh": "特勤舰隐形装置II蓝图"
     }, 
     "typeNameID": 77647, 
     "volume": 0.01
@@ -164670,7 +164673,7 @@
       "ja": "キャピタルリモートキャパシタトランスミッターIIブループリント", 
       "ko": "캐피탈 원격 캐패시터 전송기 II 블루프린트", 
       "ru": "Capital Remote Capacitor Transmitter II Blueprint", 
-      "zh": "旗舰级远程电容传输装置蓝图 II"
+      "zh": "旗舰级远程电容传输装置II蓝图"
     }, 
     "typeNameID": 77685, 
     "volume": 0.01
@@ -170569,7 +170572,7 @@
       "ja": "スコーチ弾Sブループリント", 
       "ko": "스코치 S 블루프린트", 
       "ru": "Scorch S Blueprint", 
-      "zh": "灼烧蓝图 S"
+      "zh": "灼烧S蓝图"
     }, 
     "typeNameID": 68643, 
     "volume": 0.01
@@ -171914,7 +171917,7 @@
       "ja": "大型アクティブステルスシステムIブループリント", 
       "ko": "대형 액티브 스텔스 시스템 I 블루프린트", 
       "ru": "Large Active Stealth System I Blueprint", 
-      "zh": "大型反侦测系统蓝图 I"
+      "zh": "大型主动隐形系统 I 蓝图"
     }, 
     "typeNameID": 96577, 
     "volume": 0.01
@@ -172656,7 +172659,7 @@
       "ja": "クェーク弾Lブループリント", 
       "ko": "퀘이크 L 블루프린트", 
       "ru": "Quake L Blueprint", 
-      "zh": "地震蓝图 L"
+      "zh": "地震L蓝图"
     }, 
     "typeNameID": 68670, 
     "volume": 0.01
@@ -173123,7 +173126,7 @@
       "ja": "バラージ弾Lブループリント", 
       "ko": "버라지 L 블루프린트", 
       "ru": "Barrage L Blueprint", 
-      "zh": "雷暴蓝图 L"
+      "zh": "雷暴L蓝图"
     }, 
     "typeNameID": 68677, 
     "volume": 0.01
@@ -173190,7 +173193,7 @@
       "ja": "ヘイル弾Mブループリント", 
       "ko": "헤일 M 블루프린트", 
       "ru": "Hail M Blueprint", 
-      "zh": "冰雹蓝图 M"
+      "zh": "冰雹M蓝图"
     }, 
     "typeNameID": 68678, 
     "volume": 0.01
@@ -173387,7 +173390,7 @@
       "ja": "ストーム弾Lブループリント", 
       "ko": "스톰 L 블루프린트", 
       "ru": "Storm L Blueprint", 
-      "zh": "风暴蓝图 L"
+      "zh": "风暴L蓝图"
     }, 
     "typeNameID": 68681, 
     "volume": 0.01
@@ -173521,7 +173524,7 @@
       "ja": "ヌル弾Lブループリント", 
       "ko": "널 L 블루프린트", 
       "ru": "Null L Blueprint", 
-      "zh": "虚空蓝图 L"
+      "zh": "虚空L蓝图"
     }, 
     "typeNameID": 68685, 
     "volume": 0.01
@@ -173588,7 +173591,7 @@
       "ja": "ボイド弾Mブループリント", 
       "ko": "보이드 M 블루프린트", 
       "ru": "Void M Blueprint", 
-      "zh": "涅槃蓝图 M"
+      "zh": " - \"个蓝图\", \"个蓝图\""
     }, 
     "typeNameID": 68687, 
     "volume": 0.01
@@ -175618,7 +175621,7 @@
       "ja": "小型エネルギーノスフェラトゥ2のブループリント", 
       "ko": "소형 에너지 노스페라투 II 블루프린트", 
       "ru": "Small Energy Nosferatu II Blueprint", 
-      "zh": "小型掠能器蓝图 II"
+      "zh": "小型掠能器II蓝图"
     }, 
     "typeNameID": 96585, 
     "volume": 0.01
@@ -175682,7 +175685,7 @@
       "ja": "小型エネルギーニュートラライザーIIブループリント", 
       "ko": "소형 에너지 뉴트럴라이저 II 블루프린트", 
       "ru": "Small Energy Neutralizer II Blueprint", 
-      "zh": "小型能量中和器蓝图 II"
+      "zh": "小型能量中和器 II"
     }, 
     "typeNameID": 96587, 
     "volume": 0.01
@@ -179888,7 +179891,7 @@
       "ja": "クルーズミサイルランチャーIブループリント", 
       "ko": "크루즈 미사일 런처 I 블루프린트", 
       "ru": "Cruise Missile Launcher I Blueprint", 
-      "zh": "巡航导弹发射器蓝图 I"
+      "zh": "巡航导弹发射器I蓝图"
     }, 
     "typeNameID": 68745, 
     "volume": 0.01
@@ -196784,6 +196787,7 @@
     "descriptionID": 88314, 
     "groupID": 764, 
     "iconID": 98, 
+    "isDynamicType": 0, 
     "marketGroupID": 1087, 
     "mass": 50.0, 
     "metaGroupID": 4, 
@@ -196824,6 +196828,7 @@
     "descriptionID": 91182, 
     "groupID": 763, 
     "iconID": 1042, 
+    "isDynamicType": 0, 
     "marketGroupID": 1196, 
     "mass": 100.0, 
     "metaGroupID": 4, 
@@ -197059,6 +197064,7 @@
     "descriptionID": 88320, 
     "groupID": 766, 
     "iconID": 26546, 
+    "isDynamicType": 0, 
     "marketGroupID": 658, 
     "mass": 20.0, 
     "metaGroupID": 4, 
@@ -226658,6 +226664,7 @@
     "descriptionID": 92681, 
     "groupID": 285, 
     "iconID": 1405, 
+    "isDynamicType": 0, 
     "marketGroupID": 676, 
     "mass": 0.0, 
     "metaGroupID": 4, 
@@ -229902,7 +229909,7 @@
       "ja": "帝国海軍仕様小型キャパシタブースターブループリント", 
       "ko": "제국 해군 소형 캐패시터 부스터 블루프린트", 
       "ru": "Imperial Navy Small Capacitor Booster Blueprint", 
-      "zh": "帝国海军小型电容注电器蓝图"
+      "zh": "艾玛达海军小型电容注电器蓝图"
     }, 
     "typeNameID": 103543, 
     "volume": 0.01
@@ -230281,7 +230288,7 @@
       "ja": "連邦海軍仕様トラッキングコンピューターブループリント", 
       "ko": "연방 해군 트래킹 컴퓨터 블루프린트", 
       "ru": "Federation Navy Tracking Computer Blueprint", 
-      "zh": "联邦海军索敌计算机蓝图"
+      "zh": "盖伦特海军索敌计算机蓝图"
     }, 
     "typeNameID": 104441, 
     "volume": 0.01
@@ -230806,6 +230813,7 @@
     "descriptionID": 92735, 
     "groupID": 205, 
     "iconID": 26453, 
+    "isDynamicType": 0, 
     "marketGroupID": 647, 
     "mass": 1.0, 
     "metaGroupID": 4, 
@@ -232045,7 +232053,7 @@
       "ja": "連邦海軍仕様200mmレールガンブループリント", 
       "ko": "연방 해군 200mm 레일건 블루프린트", 
       "ru": "Federation Navy 200mm Railgun Blueprint", 
-      "zh": "联邦海军200mm磁轨炮蓝图"
+      "zh": "盖伦特海军350mm磁轨炮蓝图"
     }, 
     "typeNameID": 75634, 
     "volume": 0.01
@@ -234391,6 +234399,7 @@
     "descriptionID": 91350, 
     "groupID": 338, 
     "iconID": 2104, 
+    "isDynamicType": 0, 
     "marketGroupID": 613, 
     "mass": 0.0, 
     "metaGroupID": 4, 
@@ -280824,7 +280833,7 @@
       "ja": "帝国海軍仕様キャパシタパワーリレーブループリント", 
       "ko": "제국 해군 캐패시터 릴레이 블루프린트", 
       "ru": "Imperial Navy Capacitor Power Relay Blueprint", 
-      "zh": "帝国海军电容能源继电器蓝图"
+      "zh": "帝国海军电容能源继电器"
     }, 
     "typeNameID": 103481, 
     "volume": 0.01
@@ -284550,7 +284559,7 @@
       "ja": "イリジウム弾XLブループリント", 
       "ko": "이리듐탄 XL 블루프린트", 
       "ru": "Iridium Charge XL Blueprint", 
-      "zh": "铱质轨道弹蓝图 XL"
+      "zh": "铱质轨道弹XL蓝图"
     }, 
     "typeNameID": 69245, 
     "volume": 0.01
@@ -284676,7 +284685,7 @@
       "ja": "鉛弾Lブループリント", 
       "ko": "납탄 XL 블루프린트", 
       "ru": "Lead Charge XL Blueprint", 
-      "zh": "铅质轨道弹蓝图 XL"
+      "zh": "铅质轨道弹XL蓝图"
     }, 
     "typeNameID": 69247, 
     "volume": 0.01
@@ -295682,7 +295691,7 @@
       "ja": "ヘッドバーガイト採掘クリスタルＩブループリント", 
       "ko": "헤버자이트 채광용 크리스탈 I 블루프린트", 
       "ru": "Hedbergite Mining Crystal I Blueprint", 
-      "zh": "同位原矿采集晶体蓝图 I"
+      "zh": "同位原矿采集晶体I蓝图"
     }, 
     "typeNameID": 69377, 
     "volume": 0.01
@@ -295746,7 +295755,7 @@
       "ja": "ヘモファイト採掘クリスタルIブループリント", 
       "ko": "헤모르파이트 채광용 크리스탈 I 블루프린트", 
       "ru": "Hemorphite Mining Crystal I Blueprint", 
-      "zh": "希莫非特采集晶体蓝图 I"
+      "zh": "希莫非特采集晶体I蓝图"
     }, 
     "typeNameID": 69378, 
     "volume": 0.01
@@ -295940,7 +295949,7 @@
       "ja": "メロコキサイトアステロイド採掘クリスタル タイプA I設計図", 
       "ko": "메르코시트 소행성 채광용 크리스탈 타입 A I 블루프린트", 
       "ru": "Mercoxit Asteroid Mining Crystal Type A I Blueprint", 
-      "zh": "基腹断岩小行星采集晶体A型蓝图 I"
+      "zh": "基腹断岩小行星采集晶体A型I蓝图"
     }, 
     "typeNameID": 69381, 
     "volume": 0.01
@@ -296196,7 +296205,7 @@
       "ja": "スコダイト採掘クリスタルIブループリント", 
       "ko": "스코다이트 채광용 크리스탈 I 블루프린트", 
       "ru": "Scordite Mining Crystal I Blueprint", 
-      "zh": "灼烧岩采集晶体蓝图 I"
+      "zh": "灼烧岩采集晶体I蓝图"
     }, 
     "typeNameID": 69385, 
     "volume": 0.01
@@ -296324,7 +296333,7 @@
       "ja": "ベルドスパー採掘クリスタルＩブループリント", 
       "ko": "벨드스파 채광용 크리스탈 I 블루프린트", 
       "ru": "Veldspar Mining Crystal I Blueprint", 
-      "zh": "凡晶石采集晶体蓝图 I"
+      "zh": "凡晶石采集晶体I蓝图"
     }, 
     "typeNameID": 69387, 
     "volume": 0.01
@@ -322486,7 +322495,7 @@
       "ja": "アークエンジェルチタン製サボット弾Mブループリント", 
       "ko": "아크 엔젤 티타늄 철갑탄 M 블루프린트", 
       "ru": "Arch Angel Titanium Sabot M Blueprint", 
-      "zh": "大天使钛合金萨博弹蓝图 M"
+      "zh": "大天使钛合金萨博弹M蓝图"
     }, 
     "typeNameID": 69481, 
     "volume": 0.01
@@ -326406,7 +326415,7 @@
       "ja": "コンジャクティブ光学ECCMスキャンアレイIブループリント", 
       "ko": "결합 라이다 ECCM 스캔 시설 I 블루프린트", 
       "ru": "Conjunctive Ladar ECCM Scanning Array I Blueprint", 
-      "zh": "整合光雷达ECCM扫描器阵列蓝图 I"
+      "zh": "整合光雷达ECCM扫描器阵列I蓝图"
     }, 
     "typeNameID": 104187, 
     "volume": 0.01
@@ -326992,7 +327001,7 @@
       "ja": "シールド光学バックアップクラスタIブループリント", 
       "ko": "차폐된 라이다 백업 클러스터 I 블루프린트", 
       "ru": "Shielded Ladar Backup Cluster I Blueprint", 
-      "zh": "盾防光雷达感应器支援集群蓝图 I"
+      "zh": "带护盾的梯子备份集群 I 蓝图"
     }, 
     "typeNameID": 104370, 
     "volume": 0.01
@@ -327240,7 +327249,7 @@
       "ja": "ウォーディド磁力バックアップクラスタIブループリント", 
       "ko": "격리된 자기장 백업 클러스터 I 블루프린트", 
       "ru": "Warded Magnetometric Backup Cluster I Blueprint", 
-      "zh": "反扰磁力感应器支援集群蓝图 I"
+      "zh": "带护罩的磁力备份集群 I 蓝图"
     }, 
     "typeNameID": 104377, 
     "volume": 0.01
@@ -327302,7 +327311,7 @@
       "ja": "セキュア電波バックアップクラスタIブループリント", 
       "ko": "안정된 레이더 백업 클러스터 I 블루프린트", 
       "ru": "Secure Radar Backup Cluster I Blueprint", 
-      "zh": "安全雷达感应器支援集群蓝图 I"
+      "zh": "安全雷达备份集群 I 蓝图"
     }, 
     "typeNameID": 104368, 
     "volume": 0.01
@@ -327426,7 +327435,7 @@
       "ja": "ウォーディド電波バックアップクラスタIブループリント", 
       "ko": "격리된 레이더 백업 클러스터 I 블루프린트", 
       "ru": "Warded Radar Backup Cluster I Blueprint", 
-      "zh": "反扰雷达感应器支援集群蓝图 I"
+      "zh": "防护雷达备份集群 I 蓝图"
     }, 
     "typeNameID": 104378, 
     "volume": 0.01
@@ -327528,7 +327537,7 @@
       "ja": "シージモジュールIブループリント", 
       "ko": "시즈모듈 I 블루프린트", 
       "ru": "Siege Module I Blueprint", 
-      "zh": "会战装备蓝图 I"
+      "zh": "堡垒装备I 蓝图"
     }, 
     "typeNameID": 104347, 
     "volume": 0.01
@@ -328536,7 +328545,7 @@
       "ja": "400mm スチールプレートIIのブループリント", 
       "ko": "400mm 강철 플레이트 II 블루프린트", 
       "ru": "400mm Steel Plates II Blueprint", 
-      "zh": "400mm钢附甲板蓝图 II"
+      "zh": "400mm钢附甲板II蓝图"
     }, 
     "typeNameID": 98968, 
     "volume": 0.01
@@ -328602,7 +328611,7 @@
       "ja": "800mm スチールプレートIIのブループリント", 
       "ko": "800mm 강철 플레이트 II 블루프린트", 
       "ru": "800mm Steel Plates II Blueprint", 
-      "zh": "800mm钢附甲板蓝图 II"
+      "zh": "800mm钢附甲板II蓝图"
     }, 
     "typeNameID": 98970, 
     "volume": 0.01
@@ -330606,11 +330615,11 @@
     "description": {
       "de": "Grundverständnis, um sich mittels Schnittstelle an Technologie der Talocan zu koppeln. \r\nDie Talocan waren Meister der Raummanipulation und der Hypereuklidischen Mathematik.\r\n\r\nErmöglicht die rudimentäre Anwendung von Talocan Bauteilen bei der Erschaffung fortschrittlicher Technologie, obwohl die dahinter stehenden wissenschaftlichen Theorien ein Rätsel bleiben.", 
       "en-us": "Basic understanding of interfacing with Talocan technology.\r\n\r\nThe Talocan were masters of Spatial manipulation and Hypereuclidean Mathematics.\r\n\r\nAllows the rudimentary use of Talocan components in the creation of advanced technology, even though the scientific theories behind them remain a mystery.", 
-      "es": "Comprensión básica de la interconexión con la tecnología talocana.\n\nLos Talocan eran maestros de la manipulación espacial y las matemáticas hipereuclidianas.\n\nPermite el uso rudimentario de componentes talocanos en la creación de tecnología avanzada, aunque las teorías científicas en que se basa siguen siendo un misterio.", 
-      "fr": "Compréhension de base des interactions possibles avec la technologie talocan.\n\nLes Talocan étaient passés maîtres dans la manipulation spatiale et dans les mathématiques hypereuclidiennes.\n\nPermet une utilisation rudimentaire des composants Talocan en vue de la création d'une technologie avancée, même si les théories scientifiques sous-jacentes demeurent un mystère.", 
+      "es": "Comprensión básica de la interconexión con la tecnología talocana.\r\n\r\nLos Talocan eran maestros de la manipulación espacial y las matemáticas hipereuclidianas.\r\n\r\nPermite el uso rudimentario de componentes talocanos en la creación de tecnología avanzada, aunque las teorías científicas en que se basa siguen siendo un misterio.", 
+      "fr": "Compréhension de base des interactions possibles avec la technologie talocan.\r\n\r\nLes Talocan étaient passés maîtres dans la manipulation spatiale et dans les mathématiques hypereuclidiennes.\r\n\r\nPermet une utilisation rudimentaire des composants Talocan en vue de la création d'une technologie avancée, même si les théories scientifiques sous-jacentes demeurent un mystère.", 
       "ja": "タロカン技術を使ったインターフェイス接続に関する基本知識。タロカンの人々は、空間操作やハイパーユークリッド数学に精通していた。このスキルにより、根底にある科学的原理を知らないままでもタロカン部品の基本的利用が可能になり、先端技術の創造に生かすことができる。", 
       "ko": "탈로칸 기술에 대한 기본적인 이해를 습득합니다. <br><br>공간 조작과 하이퍼기하학의 달인이었던 탈로칸입니다. <br><br>원리는 알 수 없지만 기초적인 탈로칸 부품을 토대로 첨단 기술을 개발할 수 있습니다.", 
-      "ru": "Понимание основных принципов практического использования технологий цивилизации талокан.\n\n\n\nТалоканы были мастерами управления пространством и гиперэвклидовой математики.\n\n\n\nПозволяет использовать базовые функции базовые функции такмалских компонентов при разработке передовых технологий, хотя научные теории, лежащие в их основе, до сих пор остаются загадкой.", 
+      "ru": "Понимание основных принципов практического использования технологий цивилизации талокан.\r\n\r\nТалоканы были мастерами управления пространством и гиперэвклидовой математики.\r\n\r\nПозволяет использовать базовые функции такмалских компонентов при разработке передовых технологий, хотя научные теории, лежащие в их основе, до сих пор остаются загадкой.", 
       "zh": "与塔洛迦技术互动的基本技能。\r\n\r\n塔洛迦人是空间控制和超欧几里德数学的大师。\r\n\r\n虽然技能背后的科学原理还是一个谜，但这是在高科技装备制造中使用塔洛迦部件所必须的技能。"
     }, 
     "descriptionID": 89764, 
@@ -331168,7 +331177,7 @@
       "ja": "イオンシージブラスターI設計図", 
       "ko": "이온 시즈 블라스터 I 블루프린트", 
       "ru": "Ion Siege Blaster I Blueprint", 
-      "zh": "离子会战疾速炮蓝图 I"
+      "zh": "离子会战疾速炮I蓝图"
     }, 
     "typeNameID": 69568, 
     "volume": 0.01
@@ -331294,7 +331303,7 @@
       "ja": "クワッド3500mmシージアーティレリIブループリント", 
       "ko": "쿼드 3500mm 공성포 I 블루프린트", 
       "ru": "Quad 3500mm Siege Artillery I Blueprint", 
-      "zh": "四联3500mm会战型火炮蓝图 I"
+      "zh": "统合部四联3500mm会战火炮"
     }, 
     "typeNameID": 69570, 
     "volume": 0.01
@@ -334636,14 +334645,14 @@
     "basePrice": 1785720.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "Diese Tarnung für verdeckte Operationen ist ein sehr spezielles Stück Technologie und für den gemeinsamen Einsatz mit spezifischen Covert Ops-Schiffen gedacht. Theoretisch könnte sie zwar auch auf anderen Schiffen funktionieren, aber ihr Raumverzerrungsfeld ist derart instabil, dass der Versuch, seine Fluktuationen zu kompensieren, eine nicht darauf spezialisierte Hardware überfordern würde.\n\nHinweis: Dieses besondere Modul ist fortschrittlich genug, dass es einem Schiff gestattet, den Warpantrieb zu benutzen, während es sich im Tarnmodus befindet. Das Ausrüsten von zwei oder mehr Tarnmodulen stört allerdings deren Funktionalität, da die asynchrone Krümmung des Lichts zu Interferenzen führt.", 
+      "de": "Diese Tarnung für verdeckte Operationen ist ein sehr spezielles Stück Technologie und für den gemeinsamen Einsatz mit spezifischen Covert Ops-Schiffen gedacht. Theoretisch könnte sie zwar auch auf anderen Schiffen funktionieren, aber ihr Raumverzerrungsfeld ist derart instabil, dass der Versuch, seine Fluktuationen zu kompensieren, eine nicht darauf spezialisierte Hardware überfordern würde.\r\n\r\nHinweis: Dieses besondere Modul ist fortschrittlich genug, dass es einem Schiff gestattet, den Warpantrieb zu benutzen, während es sich im Tarnmodus befindet. Das Ausrüsten von zwei oder mehr Tarnmodulen stört allerdings deren Funktionalität, da die asynchrone Krümmung des Lichts zu Interferenzen führt.", 
       "en-us": "A very specialized piece of technology, the covert ops cloak is designed for use in tandem with specific covert ops vessels. Although it could theoretically work on other ships, its spatial distortion field is so unstable that trying to compensate for its fluctuations will overwhelm non-specialized computing hardware.\r\n\r\nNote: This particular module is advanced enough that it allows a ship to warp while cloaked. However, fitting two or more cloaking devices to a ship negates their use, as unsynchronized light deflection causes interference.", 
-      "es": "El camuflaje de operaciones encubiertas es una pieza de tecnología muy especializada que está diseñada para usarse en tándem con naves de operaciones encubiertas específicas. Aunque en teoría podría funcionar en otras naves, su campo de distorsión espacial es tan inestable que tratar de compensar sus fluctuaciones abrumará el hardware informático no especializado.\n\nAviso: Este módulo en particular es lo bastante avanzado como para permitir que una nave warpee mientras está camuflada. Sin embargo, si se equipa una nave con dos o más dispositivos de camuflaje, se anulará su uso, ya que la desviación de luz asíncrona provoca interferencias.", 
-      "fr": "Le camouflage des opérations secrètes est un petit bijou de technologie extrêmement spécialisé, conçu pour être utilisé sur les vaisseaux des opérations secrètes. Bien qu'il puisse en théorie être installé sur d'autres vaisseaux, son champ de distorsion spatiale est si instable que les fluctuations qu'il génère sont trop fortes pour être compensées par du matériel informatique non spécialisé.\n\nRemarque : ce module particulier est assez avancé pour permettre à un vaisseau de warper lorsqu'il est camouflé. Toutefois, équiper deux dispositifs de camouflage ou plus sur un vaisseau annule leurs effets, puisque la réfraction asynchrone de la lumière provoque des interférences.", 
-      "ja": "隠密行動用遮蔽装置は特定の隠密行動艦に搭載することを目的として、技術の粋を集めて設計された。理論上は他のタイプの船に搭載しても作動可能だが、この装置が造り出す空間の歪みは極めて不安定なため、歪みによる揺れを補償することによって非特殊型コンピューティングハードウェアは負荷を強いられる。\n\n注：このモジュールは高性能なため、遮蔽中でも艦船がワープできる。しかし複数の遮蔽装置を装備すると、光の屈折が同期せずに干渉を起こすため、効果を発揮しなくなる。", 
+      "es": "El camuflaje de operaciones encubiertas es una pieza de tecnología muy especializada que está diseñada para usarse en tándem con naves de operaciones encubiertas específicas. Aunque en teoría podría funcionar en otras naves, su campo de distorsión espacial es tan inestable que tratar de compensar sus fluctuaciones abrumará el hardware informático no especializado.\r\n\r\nAviso: Este módulo en particular es lo bastante avanzado como para permitir que una nave warpee mientras está camuflada. Sin embargo, si se equipa una nave con dos o más dispositivos de camuflaje, se anulará su uso, ya que la desviación de luz asíncrona provoca interferencias.", 
+      "fr": "Le camouflage des opérations secrètes est un petit bijou de technologie extrêmement spécialisé, conçu pour être utilisé sur les vaisseaux des opérations secrètes. Bien qu'il puisse en théorie être installé sur d'autres vaisseaux, son champ de distorsion spatiale est si instable que les fluctuations qu'il génère sont trop fortes pour être compensées par du matériel informatique non spécialisé.\r\n\r\nRemarque : ce module particulier est assez avancé pour permettre à un vaisseau de warper lorsqu'il est camouflé. Toutefois, équiper deux dispositifs de camouflage ou plus sur un vaisseau annule leurs effets, puisque la réfraction asynchrone de la lumière provoque des interférences.", 
+      "ja": "隠密行動用遮蔽装置は特定の隠密行動艦に搭載することを目的として、技術の粋を集めて設計された。理論上は他のタイプの船に搭載しても作動可能だが、この装置が造り出す空間の歪みは極めて不安定なため、歪みによる揺れを補償することによって非特殊型コンピューティングハードウェアは負荷を強いられる。\r\n\r\n注：このモジュールは高性能なため、遮蔽中でも艦船がワープできる。しかし複数の遮蔽装置を装備すると、光の屈折が同期せずに干渉を起こすため、効果を発揮しなくなる。", 
       "ko": "코버트 옵스 함선에 탑재되는 클로킹 장치입니다. 이론적으로 다른 함급에 탑재하는 것 또한 가능하지만 전용 하드웨어 없이 공간왜곡 필드의 안정성을 유지하기가 어려워 권장되지는 않습니다. <br><br>참고: 최첨단 기술로 설계되어 클로킹 중에도 워프가 가능합니다. 두 개 이상의 클로킹 장치를 탑재할 경우 광편향 싱크로율의 불일치로 인해 은폐 효과가 무효화됩니다.", 
-      "ru": "Всережимная система маскировки является очень узкоспециализированным оборудованием, созданным для использования на отдельных диверсионных кораблях. Теоретически, она может работать и на других кораблях, но ее поле пространственного искажения настолько нестабильно, что из-за попыток компенсировать ее колебания неспециализированное оборудование может выйти из строя.\n\nВнимание: Этот модуль позволяет использовать варп-двигатель корабля при включенной системе маскировки. Примечание: одновременное использование нескольких систем маскировки невозможно, так как вызываемые несинхронным отражением световых волн помехи нейтрализуют их действие.", 
-      "zh": "作为一种非常特殊的技术，隐秘行动隐形装置被设计为与某些隐秘类型的舰船协同使用。尽管理论上它也能配备在其他舰船上，但是其空间扭曲立场非常不稳定，要弥补这种波动，即使最大的标准舰载电脑也会不堪重负。注：注意：这种高级装备让舰船可以在隐形的情况下跃迁，但是使用两个或者多个隐形装置将会导致其作用抵消，因为不同步的光反射会造成相互干扰。"
+      "ru": "Всережимная система маскировки является очень узкоспециализированным оборудованием, созданным для использования на отдельных диверсионных кораблях. Теоретически, она может работать и на других кораблях, но ее поле пространственного искажения настолько нестабильно, что из-за попыток компенсировать ее колебания неспециализированное оборудование может выйти из строя.\r\n\r\nВнимание: Этот модуль позволяет использовать варп-двигатель корабля при включенной системе маскировки. Примечание: одновременное использование нескольких систем маскировки невозможно, так как вызываемые несинхронным отражением световых волн помехи нейтрализуют их действие.", 
+      "zh": "作为一种非常特殊的技术，隐秘行动隐形装置被设计为与某些隐秘类型的舰船协同使用。尽管理论上它也能配备在其他舰船上，但是其空间扭曲立场非常不稳定，要弥补这种波动，即使最大的标准舰载电脑也会不堪重负。注意：这种高级装备让舰船可以在隐形的情况下跃迁，但是使用两个或者多个隐形装置将会导致其作用抵消，因为不同步的光反射会造成相互干扰。"
     }, 
     "descriptionID": 91437, 
     "groupID": 330, 
@@ -336409,7 +336418,7 @@
       "ja": "小型「ウルフ」シールドエクステンダーブループリント", 
       "ko": "소형 '울프' 실드 확장장치 블루프린트", 
       "ru": "Small 'Wolf' Shield Extender Blueprint", 
-      "zh": "座狼小型护盾扩展装置蓝图"
+      "zh": "小型“狼”护盾扩展器蓝图"
     }, 
     "typeNameID": 99047, 
     "volume": 0.01

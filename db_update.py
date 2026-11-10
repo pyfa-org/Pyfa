@@ -973,8 +973,8 @@ def update_db():
     hardcodeTrigSystemEffects()
     hardcodeFwProxyEffects()
 
-    hardcodeHerald()
-    hardcodePenitence()
+    # hardcodeHerald()
+    # hardcodePenitence()
 
     eos.db.gamedata_session.commit()
     with eos.db.gamedata_engine.begin() as connection:

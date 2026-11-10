@@ -42305,6 +42305,17 @@ class Effect12597(BaseEffect):
             lambda mod: mod.item.requiresSkill('Capital Shield Operation') or mod.item.requiresSkill('Capital Repair Systems'),
             'capacitorNeed', src.getModifiedItemAttr('siegeLocalLogisticsCapacitorNeedBonus'), **kwargs)
 
+        for attr in ('fighterAbilityMissilesExplosionRadius', 'fighterAbilityAttackMissileExplosionRadius'):
+            fit.fighters.filteredItemMultiply(
+                lambda mod: mod.item.requiresSkill('Fighters'), attr,
+                src.getModifiedItemAttr('ISAFighterExplosionRadiusReductionBonusActive'),
+                stackingPenalties=True, penaltyGroup='preMul', **kwargs)
+        for attr in ('fighterAbilityMissilesExplosionVelocity', 'fighterAbilityAttackMissileExplosionVelocity'):
+            fit.fighters.filteredItemMultiply(
+                lambda mod: mod.item.requiresSkill('Fighters'), attr,
+                src.getModifiedItemAttr('ISAFighterExplosionVelocityBonusActive'),
+                stackingPenalties=True, penaltyGroup='preMul', **kwargs)
+
 
 class Effect12739(BaseEffect):
     """

@@ -7515,7 +7515,13 @@
     "aggregateMode": "Maximum", 
     "developerDescription": "AIR Epic Arc - Hull Resistance", 
     "displayName": {
-      "en-us": "Hull Damage Recieved"
+      "de": "Erlittener Rumpfschaden", 
+      "en-us": "Hull Damage Received", 
+      "es": "Daño recibido al casco", 
+      "ja": "受けた船体ダメージ", 
+      "ko": "받은 선체 피해", 
+      "ru": "Полученный урон по корпусу", 
+      "zh": "受到的结构伤害"
     }, 
     "displayNameID": 1047372, 
     "itemModifiers": [
@@ -7581,6 +7587,1578 @@
     "operationName": "PostPercent", 
     "showOutputValueInUI": "ShowInverted"
   }, 
+  "2604": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Conquest Dbuff 1 - warpSpeedMultiplier", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1050535, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2605": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Conquest Dbuff 2 - Subcapital Energy Turret Damage", 
+    "displayName": {
+      "de": "Bonus auf den Schaden von Subcapital-Energiegeschütztürmen", 
+      "en-us": "bonus to subcapital energy turret damage", 
+      "es": "de bonificación al daño de la torreta de energía subcapital.", 
+      "fr": "de bonus aux dégâts des tourelles à énergie sous-capitales", 
+      "ja": "準キャピタルエネルギータレットのダメージにボーナス", 
+      "ko": "서브캐피탈 에너지 터렛 피해량 증가", 
+      "ru": "бонус к урону стандартных лазерных орудий", 
+      "zh": "非旗舰级能量炮台伤害加成"
+    }, 
+    "displayNameID": 1050556, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3303
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3306
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3309
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2606": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 3 - Energy Turret Capacitor Cost Reduction", 
+    "displayName": {
+      "de": "Reduktion der Energiespeicherkosten von Energiegeschütztürmen", 
+      "en-us": "reduction to energy turret capacitor cost", 
+      "es": "de reducción del coste del condensador de la torreta de energía.", 
+      "fr": "de réduction au coût de capaciteur des tourelles à énergie", 
+      "ja": "エネルギータレットのキャパシタ消費量が減少", 
+      "ko": "에너지 터렛 캐패시터 비용 감소", 
+      "ru": "снижение расхода энергии накопителя на активацию лазерных орудий", 
+      "zh": "能量炮台电容消耗降低"
+    }, 
+    "displayNameID": 1050557, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "groupID": 53
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2607": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Conquest Dbuff 4 - Mining Critical Hit Chance", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1050559, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2608": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 5 - Grappler Base Strength", 
+    "displayName": {
+      "de": "% Pauschalbonus auf die Basisstärke von Netzen des Stasisgreifarms", 
+      "en-us": "% flat bonus to Stasis Grappler base web strength", 
+      "es": "% de bonificación fija a la intensidad de red base del anquilizador de estasis.", 
+      "fr": "% de bonus fixe à la puissance d'entrave de base de l'entrave de stase", 
+      "ja": "ステイシスグラップラーの基本ウェブ効力に一律%のボーナス", 
+      "ko": "% 추가 효과를 스테이시스 그래플러 기본 스테이시스 웹 강도에 제공", 
+      "ru": "фикс. бонус (%) к базовой мощности стазис-захватов", 
+      "zh": "停滞捕捉光束强度固定加成%"
+    }, 
+    "displayNameID": 1050560, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 20, 
+        "groupID": 1672
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2609": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Conquest Dbuff 6 - Scan Probe Strength", 
+    "displayName": {
+      "de": "Bonus auf Stärke von Scansonden", 
+      "en-us": "Scan Probe Strength Bonus", 
+      "es": "Bonificación de intensidad de la sonda de escaneo", 
+      "fr": "Bonus de puissance de balayage de sonde", 
+      "ja": "スキャンプローブ強度ボーナス", 
+      "ko": "스캔 프로브 강도 보너스", 
+      "ru": "Прибавка к эффективности поиска разведзондами", 
+      "zh": "扫描探针强度加成"
+    }, 
+    "displayNameID": 1050561, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6118, 
+        "skillID": 3412
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2610": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 7 - Energy Turret tracking", 
+    "displayName": {
+      "de": "Bonus auf die Nachführungsgeschwindigkeit von Energiegeschütztürmen", 
+      "en-us": "bonus to energy turret tracking speed", 
+      "es": "de bonificación a la velocidad de rastreo de la torreta de energía.", 
+      "fr": "de bonus à la vitesse de poursuite des tourelles à énergie", 
+      "ja": "エネルギータレットの追跡速度にボーナス", 
+      "ko": "에너지 터렛 트래킹 속도 증가", 
+      "ru": "бонус к скорости наведения лазерных орудий", 
+      "zh": "能量炮台追踪速度加成"
+    }, 
+    "displayNameID": 1050562, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "groupID": 53
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2611": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 8 - Armor Repairer and Remote Armor Repairer capacitor cost reduction", 
+    "displayName": {
+      "de": "Reduktion der Energiespeicherkosten von Subcapital-Panzerungsreparatursystemen und Panzerungs-Fernreparatursystemen", 
+      "en-us": "reduction to subcapital armor repairer and remote armor repairer capacitor cost", 
+      "es": "de reducción del coste de condensador de los reparadores de blindaje remotos y los reparadores de blindaje subcapitales.", 
+      "fr": "de réduction au coût de capaciteur des réparateurs de blindage et des réparateurs de blindage à distance sous-capitaux", 
+      "ja": "準キャピタルアーマーリペアラとリモートアーマーリペアラのキャパシタ消費量が減少", 
+      "ko": "서브캐피탈 장갑수리 장치 및 원격 장갑수리 장치 캐패시터 사용량 감소", 
+      "ru": "снижение расхода энергии накопителя на активацию стандартных модулей ремонта брони и дистанционных модулей накачки щитов", 
+      "zh": "非旗舰级装甲修理器和远程装甲修理器电容消耗降低"
+    }, 
+    "displayNameID": 1050563, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 16069
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2612": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 9 - Capacitor Battery Amount bonus", 
+    "displayName": {
+      "de": "Bonus auf die Energiespeichermenge ausgerüsteter Energiespeicherbatterien", 
+      "en-us": "bonus to fitted capacitor battery capacitor amount", 
+      "es": "de bonificación a la capacidad del condensador de las baterías equipadas.", 
+      "fr": "de bonus à la charge de capaciteur de la batterie installée", 
+      "ja": "装備中のキャパシタバッテリー容量にボーナス", 
+      "ko": "캐패시터 배터리에 장착해 캐패시터 용량 증가", 
+      "ru": "бонус к ёмкости установленной накопительной батареи", 
+      "zh": "已装配电容器电池的电容加成"
+    }, 
+    "displayNameID": 1050568, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 67, 
+        "groupID": 61
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2613": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr General Dbuff 10 - Sirdan xer Qosh Armor HP bonus", 
+    "displayName": {
+      "de": "Bonus auf Panzerungs-HP (Captain Marshal Sirdan xer Qosh)", 
+      "en-us": "bonus to armor hitpoints (Captain Marshal Sirdan xer Qosh)", 
+      "es": "de bonificación a los puntos de vida del blindaje (capitán mariscal Sirdan xer Qosh).", 
+      "fr": "de bonus aux points de vie du blindage (Capitaine maréchal Sirdan xer Qosh)", 
+      "ja": "アーマーHPにボーナス（大元帥シルダン・ゼル・クオシュ）", 
+      "ko": "장갑 내구도 증가 (시르단 제르 코쉬 대제독)", 
+      "ru": "бонус к прочности брони (капитан-маршал Сирдан ксер Куош)", 
+      "zh": "装甲值加成（萨丹·泽·库什元帅）"
+    }, 
+    "displayNameID": 1050801, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2614": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Conquest Dbuff 11 - Conquest Engine Hitpoints FAKE", 
+    "displayName": {
+      "de": "Bonus auf die HP der Amarr-Eroberungsmaschine.", 
+      "en-us": "bonus to amarr conquest engine hitpoints.", 
+      "es": "de bonificación a los puntos de vida del motor de conquista de Amarr.", 
+      "fr": "de bonus aux points de vie de la Machine de Conquête amarr.", 
+      "ja": "アマー「征服」エンジンHPにボーナス。", 
+      "ko": "아마르 정복 엔진 내구도 증가", 
+      "ru": "бонус к прочности амаррской завоевательной технологии.", 
+      "zh": "艾玛征服引擎生命值加成。"
+    }, 
+    "displayNameID": 1050828, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2615": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - ALL FACTIONS - Conquest Engine Hitpoints REAL", 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 9
+      }, 
+      {
+        "dogmaAttributeID": 263
+      }, 
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2616": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 13", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2617": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 14", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2618": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 15", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2619": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 16", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2620": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 17", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2621": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 18", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2622": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 19", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2623": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Amarr Dbuff 20", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2624": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 1 - warpSpeedMultiplier", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1050536, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2625": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 2 - Subcapital Missile rate of fire", 
+    "displayName": {
+      "de": "Bonus auf die Feuerrate von Subcapital-Lenkwaffenwerfern", 
+      "en-us": "bonus to subcapital missile launcher rate of fire", 
+      "es": "de bonificación a la cadencia de tiro de lanzamisiles subcapitales.", 
+      "fr": "de bonus à la cadence de tir des lance-missiles sous-capitaux", 
+      "ja": "ミサイルランチャーの発射間隔にボーナス", 
+      "ko": "서브캐피탈 미사일 런처 연사속도 증가", 
+      "ru": "бонус к скорострельности стандартных ракетных установок", 
+      "zh": "非旗舰级导弹发射器射速加成"
+    }, 
+    "displayNameID": 1050793, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 51, 
+        "skillID": 3320
+      }, 
+      {
+        "dogmaAttributeID": 51, 
+        "skillID": 3321
+      }, 
+      {
+        "dogmaAttributeID": 51, 
+        "skillID": 3324
+      }, 
+      {
+        "dogmaAttributeID": 51, 
+        "skillID": 3325
+      }, 
+      {
+        "dogmaAttributeID": 51, 
+        "skillID": 3326
+      }, 
+      {
+        "dogmaAttributeID": 51, 
+        "skillID": 25719
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2626": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 3 - Missile explosion velocity", 
+    "displayName": {
+      "de": "Bonus auf die Explosionsgeschwindigkeit von Lenkwaffen", 
+      "en-us": "bonus to missile explosion velocity", 
+      "es": "de bonificación a la velocidad de explosión de los misiles.", 
+      "fr": "de bonus à la vitesse d'explosion des missiles", 
+      "ja": "ミサイルの爆風速度にボーナス", 
+      "ko": "미사일 폭발속도 증가", 
+      "ru": "бонус к скорости распространения взрыва ракет", 
+      "zh": "导弹爆炸速度加成"
+    }, 
+    "displayNameID": 1050794, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 653, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2627": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 4 - Mining Critical Hit Chance", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1050795, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2628": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 5 - missile guidance computer and enhancer missile velocity bonus", 
+    "displayName": {
+      "de": "Bonus auf die Lenkwaffengeschwindigkeit von ausgerüsteten Leitverbesserungen und Leitcomputern", 
+      "en-us": "bonus to fitted guidance enhancer and guidance computer missile velocity", 
+      "es": "de bonificación a la velocidad de los misiles del ordenador de guiado y del intensificador de guiado equipado.", 
+      "fr": "de bonus à la vitesse des missiles de l'optimisateur de guidage et de l'ordinateur de guidage installé", 
+      "ja": "装備中の誘導エンハンサーと誘導コンピューターのミサイル速度にボーナス", 
+      "ko": "유도 향상장치 및 유도 컴퓨터에 장착해 미사일 속도 증가", 
+      "ru": "бонус к скорости ракет для вычислителей управления и систем коррекции управления", 
+      "zh": "已装配制导增强器和索敌计算机导弹速度加成"
+    }, 
+    "displayNameID": 1050796, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 547, 
+        "groupID": 1395
+      }, 
+      {
+        "dogmaAttributeID": 547, 
+        "groupID": 1396
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2629": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 6 - Dscan Range", 
+    "displayName": {
+      "de": "Bonus auf die Reichweite des Richtungsscanners", 
+      "en-us": "bonus to directional scanner range", 
+      "es": "de bonificación al alcance del escáner direccional.", 
+      "fr": "de bonus à la portée du scanner directionnel", 
+      "ja": "指向性スキャナー範囲にボーナス", 
+      "ko": "전방위 스캐너 사거리 증가", 
+      "ru": "бонус к дальности пеленгатора", 
+      "zh": "定向扫描器范围加成"
+    }, 
+    "displayNameID": 1050797, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 5796
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2630": {
+    "aggregateMode": "Minimum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 7 - missile explosion radius reduction", 
+    "displayName": {
+      "de": "Reduktion des Explosionsradius von Lenkwaffen", 
+      "en-us": "reduction to missile explosion radius", 
+      "es": "de reducción al radio de explosión de los misiles.", 
+      "fr": "de réduction au rayon d'explosion des missiles", 
+      "ja": "ミサイルの爆風半径が縮小", 
+      "ko": "미사일 폭발반경 감소", 
+      "ru": "сужение радиуса взрыва ракет", 
+      "zh": "导弹爆炸半径降低"
+    }, 
+    "displayNameID": 1050798, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 654, 
+        "skillID": 3319
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2631": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 8 - subcapital shield booster and remote shield booster capacitor reduction", 
+    "displayName": {
+      "de": "Reduktion der Energiespeicherkosten für Subcapital-Schildbooster und Schildfernbooster", 
+      "en-us": "reduction to subcapital shield booster and remote shield booster capacitor cost", 
+      "es": "de reducción del coste de condensador de los potenciadores de escudo remotos y los potenciadores de escudo subcapitales.", 
+      "fr": "de réduction au coût de capaciteur des boosters de bouclier et des boosters de bouclier à distance sous-capitaux", 
+      "ja": "準キャピタルシールドブースターとリモートシールドブースターのキャパシタ消費量が減少", 
+      "ko": "서브캐피탈 실드 부스터 및 원격 실드 부스터 캐패시터 사용량 감소", 
+      "ru": "снижение затрат энергии накопителя на активацию стандартных и дистанционных модулей накачки щитов", 
+      "zh": "非旗舰级护盾回充增量器和远程护盾回充增量器电容消耗降低"
+    }, 
+    "displayNameID": 1050799, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3422
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2632": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Conquest Dbuff 9 - shield boost amplifer shield boost amount", 
+    "displayName": {
+      "de": "Bonus auf die Schildboostmenge von ausgerüsteten Schildboostverstärkern", 
+      "en-us": "bonus to fitted shield boost amplifier shield boost amount", 
+      "es": "de bonificación a la cantidad de potenciadores de escudo del amplificador de potenciador de escudo equipado.", 
+      "fr": "de bonus à la quantité de boost de l'amplificateur de bouclier installé", 
+      "ja": "装備中のシールドブースト増幅器のブースト量にボーナス", 
+      "ko": "실드 부스터 증폭기에 장착해 실드 회복량 증가", 
+      "ru": "бонус к эффективности установленных оптимизаторов накачки щитов", 
+      "zh": "已装配护盾回充增量增效器回充量加成"
+    }, 
+    "displayNameID": 1050800, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 548, 
+        "groupID": 338
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2633": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari General Dbuff 10 - Heika Torigo Shield Capacity bonus", 
+    "displayName": {
+      "de": "Bonus auf Schild-HP (Executive General Heika Torigo)", 
+      "en-us": "bonus to shield hitpoints (Executive General Heika Torigo)", 
+      "es": "de bonificación a los puntos de vida de los escudos (general ejecutiva Heika Torigo).", 
+      "fr": "de bonus aux points de vie du bouclier (Général exécutif Heika Torigo)", 
+      "ja": "アーマーHPにボーナス（エグゼクティブ・ジェネラル、ヘイカ・トリゴ）", 
+      "ko": "실드 내구도 증가 (연합 제독 헤이카 토리고)", 
+      "ru": "бонус к прочности щитов (генеральный директор Хейка Ториго)", 
+      "zh": "护盾值加成（执行长官海卡·托里格）"
+    }, 
+    "displayNameID": 1050813, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2634": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari conquest Dbuff 11 - Conquest Engine Hitpoints FAKE", 
+    "displayName": {
+      "de": "Bonus auf die HP der Caldari-Eroberungsmaschine.", 
+      "en-us": "bonus to caldari conquest engine hitpoints.", 
+      "es": "de bonificación a los puntos de vida del motor de conquista de Caldari.", 
+      "fr": "de bonus aux points de vie de la Machine de Conquête caldari.", 
+      "ja": "カルダリ「征服」エンジンHPにボーナス。", 
+      "ko": "칼다리 정복 엔진 내구도 증가", 
+      "ru": "бонус к прочности калдарской завоевательной технологии.", 
+      "zh": "加达里征服引擎生命值加成。"
+    }, 
+    "displayNameID": 1050855, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2635": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 12", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2636": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 13", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2637": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 14", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2638": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 15", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2639": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 16", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2640": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 17", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2641": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 18", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2642": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 19", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2643": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Caldari Dbuff 20", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2644": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 1 - warpSpeedMultiplier", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1050537, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2645": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest Dbuff 2 - Subcapital Hybrid Damage", 
+    "displayName": {
+      "de": "Bonus auf den Schaden von Subcapital-Hybridgeschütztürmen", 
+      "en-us": "bonus to subcapital hybrid turret damage", 
+      "es": "de bonificación al daño de la torreta híbrida subcapital.", 
+      "fr": "de bonus aux dégâts des tourelles hybrides sous-capitales", 
+      "ja": "準キャピタルハイブリッドタレットのダメージにボーナス", 
+      "ko": "서브캐피탈 하이브리드 터렛 피해량 증가", 
+      "ru": "бонус к урону стандартных гибридных орудий", 
+      "zh": "非旗舰级混合炮台伤害加成"
+    }, 
+    "displayNameID": 1050785, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3301
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3304
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3307
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2646": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest buff 3 - Falloff Range", 
+    "displayName": {
+      "de": "Bonus auf den Präzisionsabfall von Hybridgeschütztürmen ", 
+      "en-us": "bonus to hybrid falloff ", 
+      "es": "de bonificación al alcance efectivo híbrido.", 
+      "fr": "de bonus à la déperdition hybride ", 
+      "ja": "ハイブリッドの精度低下範囲にボーナス", 
+      "ko": "하이브리드 유효사거리 증가 ", 
+      "ru": "бонус к добавочной дальности гибридных орудий ", 
+      "zh": "混合失准范围加成 "
+    }, 
+    "displayNameID": 1050786, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 158, 
+        "groupID": 74
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2647": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest Dbuff 4 - Mining Critical Hit Chance", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1050787, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2648": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest Dbuff 5 - Scan Probe Strength", 
+    "displayName": {
+      "de": "Bonus auf Stärke von Scansonden", 
+      "en-us": "scan probe strength bonus", 
+      "es": "de bonificación de intensidad de la sonda de escaneo.", 
+      "fr": "de bonus à la puissance de balayage de sonde", 
+      "ja": "スキャンプローブ強度ボーナス", 
+      "ko": "스캔 프로브 강도 증가", 
+      "ru": "прибавка к эффективности поиска разведзондами", 
+      "zh": "扫描探针强度加成"
+    }, 
+    "displayNameID": 1050788, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6118, 
+        "skillID": 3412
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2649": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest Dbuff 6 - tracking speed", 
+    "displayName": {
+      "de": "Bonus auf die Nachführungsgeschwindigkeit von Hybridgeschütztürmen", 
+      "en-us": "bonus to hybrid turret tracking speed", 
+      "es": "de bonificación a la velocidad de rastreo de la torreta híbrida.", 
+      "fr": "de bonus à la vitesse de poursuite des tourelles hybrides", 
+      "ja": "ハイブリッドタレットの追跡速度にボーナス", 
+      "ko": "하이브리드 터렛 트래킹 속도 증가", 
+      "ru": "бонус к скорости наведения гибридных орудий", 
+      "zh": "混合炮台索敌速度加成"
+    }, 
+    "displayNameID": 1050789, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "groupID": 74
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2650": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest Dbuff 7 - Supcapital armor repairer and armor cap cost", 
+    "displayName": {
+      "de": "Reduktion der Energiespeicherkosten von Subcapital-Panzerungsreparatursystemen und Panzerungs-Fernreparatursystemen", 
+      "en-us": "reduction to subcapital armor repairer and remote armor repairer capacitor cost", 
+      "es": "de reducción del coste de condensador de los reparadores de blindaje remotos y los reparadores de blindaje subcapitales.", 
+      "fr": "de réduction au coût de capaciteur des réparateurs de blindage et des réparateurs de blindage à distance sous-capitaux", 
+      "ja": "準キャピタルアーマーリペアラとリモートアーマーリペアラのキャパシタ消費量が減少", 
+      "ko": "서브캐피탈 장갑수리 장치 및 원격 장갑수리 장치 캐패시터 사용량 감소", 
+      "ru": "снижение расхода энергии накопителя на активацию стандартных модулей ремонта брони и дистанционных модулей накачки щитов", 
+      "zh": "非旗舰级装甲修理器和远程装甲修理器电容消耗降低"
+    }, 
+    "displayNameID": 1050790, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 16069
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2651": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 8 - Armor Plate Mass Reduction", 
+    "displayName": {
+      "de": "Reduktion des Masseabzugs von Panzerplatten", 
+      "en-us": "reduction in armor plate mass penalty", 
+      "es": "de reducción de la penalización de masa de la placa de blindaje.", 
+      "fr": "de réduction à la pénalité de masse du revêtement de blindage", 
+      "ja": "アーマープレートの質量ペナルティが減少", 
+      "ko": "장갑 플레이트 질량 페널티 감소", 
+      "ru": "снижение штрафа за массу для бронеплит", 
+      "zh": "装甲板质量惩罚降低"
+    }, 
+    "displayNameID": 1050791, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 796, 
+        "groupID": 329
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2652": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest Dbuff 9 - tracking enhancer and tracking computer tracking speed", 
+    "displayName": {
+      "de": "Bonus auf die Nachführungsgeschwindigkeit von ausgerüsteten Nachführverbesserungen und Leitcomputern", 
+      "en-us": "bonus to fitted tracking enhancer and tracking computer tracking speed", 
+      "es": "de bonificación a la cantidad de velocidad de rastreo del ordenador de rastreo y del intensificador de rastreo equipados.", 
+      "fr": "de bonus à la vitesse de poursuite des optimisateurs de suivi et ordinateurs de suivi installés", 
+      "ja": "装備中のトラッキングエンハンサーとトラッキングコンピューターの追跡速度にボーナス", 
+      "ko": "트래킹 향상장치 및 트래킹 컴퓨터에 장착해 트래킹 속도 증가", 
+      "ru": "бонус к скорости наведения установленных вычислителей наведения и систем коррекции наведения", 
+      "zh": "已装配索敌增强器和索敌计算机追踪速度加成"
+    }, 
+    "displayNameID": 1050792, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 767, 
+        "groupID": 211
+      }, 
+      {
+        "dogmaAttributeID": 767, 
+        "groupID": 213
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2653": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente General Dbuff 10 - Foriana Revelli", 
+    "displayName": {
+      "de": "Bonus auf Panzerungs-HP (Vizeadmiralin Foriana Revelli)", 
+      "en-us": "bonus to armor hitpoints (Vice Admiral Foriana Revelli)", 
+      "es": "de bonificación a los puntos de vida del blindaje (vicealmirante Foriana Revelli).", 
+      "fr": "de bonus aux points de vie du blindage (Vice-amirale Foriana Revelli)", 
+      "ja": "アーマーHPにボーナス（準提督フォリアナ・レヴェッリ）", 
+      "ko": "장갑 내구도 증가 (포리아나 레벨리 소장)", 
+      "ru": "бонус к прочности брони (вице-адмирал Фориана Ревелли)", 
+      "zh": "装甲值加成（海军中将弗莉安娜·雷维利）"
+    }, 
+    "displayNameID": 1050814, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 265
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2654": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Conquest Dbuff 11 - Conquest Engine Hitpoints FAKE", 
+    "displayName": {
+      "de": "Bonus auf die HP der Gallente-Eroberungsmaschine.", 
+      "en-us": "bonus to gallente conquest engine hitpoints.", 
+      "es": "de bonificación a los puntos de vida del motor de conquista de Gallente.", 
+      "fr": "de bonus aux points de vie de la Machine de Conquête gallente.", 
+      "ja": "ガレンテ「征服」エンジンHPにボーナス。", 
+      "ko": "갈란테 정복 엔진 내구도 증가", 
+      "ru": "бонус к прочности галлентской завоевательной технологии.", 
+      "zh": "盖伦特征服引擎生命值加成"
+    }, 
+    "displayNameID": 1050856, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2655": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 12", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2656": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 13", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2657": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 14", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2658": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 15", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2659": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 16", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2660": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 17", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2661": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 18", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2662": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 19", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2663": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Gallente Dbuff 20", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2664": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Conquest Dbuff 1 - warpSpeedMultiplier", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1050538, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2665": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Conquest Dbuff 2 - Subcapital Projectile Damage", 
+    "displayName": {
+      "de": "Bonus auf den Schaden von Subcapital-Projektilwaffentürmen", 
+      "en-us": "bonus to subcapital projectile turret damage", 
+      "es": "de bonificación al daño de la torreta de proyectiles subcapital.", 
+      "fr": "de bonus aux dégâts des tourelles à projectiles sous-capitales", 
+      "ja": "準キャピタルプロジェクタイルタレットのダメージにボーナス", 
+      "ko": "서브캐피탈 발사체 터렛 피해량 증가", 
+      "ru": "бонус к урону стандартных баллистических орудий", 
+      "zh": "非旗舰级射弹炮台伤害加成"
+    }, 
+    "displayNameID": 1050569, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3302
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3305
+      }, 
+      {
+        "dogmaAttributeID": 64, 
+        "skillID": 3308
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2666": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Conquest Dbuff 3 - Projectile Falloff", 
+    "displayName": {
+      "de": "Bonus auf den Präzisionsabfall von Projektilen", 
+      "en-us": "bonus to projectile falloff", 
+      "es": "de bonificación al alcance efectivo de proyectiles.", 
+      "fr": "de bonus à la déperdition des projectiles", 
+      "ja": "プロジェクタイルタレットの精度低下範囲にボーナス", 
+      "ko": "발사체 유효사거리 증가", 
+      "ru": "бонус к добавочной дальности баллистических орудий", 
+      "zh": "射弹失准范围加成"
+    }, 
+    "displayNameID": 1050570, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 158, 
+        "groupID": 55
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2667": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Conquest Dbuff 4 - Mining Critical Hit Chance", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1050571, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2668": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 5 - Overdrive Injector System base speed", 
+    "displayName": {
+      "de": "% Pauschalbonus auf die Geschwindigkeit des Overdrive-Injektionssystem", 
+      "en-us": "% flat bonus to Overdrive Injector System velocity", 
+      "es": "% de bonificación fija a la velocidad del sistema inyector de sobrepotencia.", 
+      "fr": "% de bonus fixe à la vitesse du système de surinjection", 
+      "ja": "オーバードライブインジェクターシステムの速度に%のボーナス", 
+      "ko": "% 추가 효과를 오버드라이브 주입기 시스템 속도에 제공", 
+      "ru": "фикс. бонус (%) к эффективности инжекторной системы ускорения", 
+      "zh": "超载喷注系统速度固定加成%"
+    }, 
+    "displayNameID": 1050573, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 1076, 
+        "groupID": 764
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2669": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 6 - Directional Scanner Range bonus", 
+    "displayName": {
+      "de": "Bonus auf die Reichweite des Richtungsscanners", 
+      "en-us": "bonus to directional scanner range", 
+      "es": "de bonificación al alcance del escáner direccional.", 
+      "fr": "de bonus à la portée du scanner directionnel", 
+      "ja": "指向性スキャナー範囲にボーナス", 
+      "ko": "전방위 스캐너 사거리 증가", 
+      "ru": "бонус к дальности пеленгатора", 
+      "zh": "定向扫描器范围加成"
+    }, 
+    "displayNameID": 1050574, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 5796
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2670": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Conquest Dbuff 7 - Projectile Tracking", 
+    "displayName": {
+      "de": "Bonus auf die Nachführungsgeschwindigkeit von Projektilwaffen", 
+      "en-us": "bonus to projectile weapon tracking speed", 
+      "es": "de bonificación a la velocidad de rastreo de las armas de proyectiles.", 
+      "fr": "de bonus à la vitesse de poursuite des armes à projectiles", 
+      "ja": "プロジェクタイル兵器のトラッキング速度にボーナス", 
+      "ko": "발사체 무기 트래킹 속도 증가", 
+      "ru": "бонус к скорости наведения баллистических орудий", 
+      "zh": "射弹武器追踪速度加成"
+    }, 
+    "displayNameID": 1050576, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 160, 
+        "groupID": 55
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2671": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 8 - subcapital shield booster and remote shield booster capacitor cost", 
+    "displayName": {
+      "de": "Reduktion der Energiespeicherkosten für Subcapital-Schildbooster und Schildfernbooster", 
+      "en-us": "reduction to subcapital shield booster and remote shield booster capacitor cost", 
+      "es": "de reducción del coste de condensador de los potenciadores de escudo remotos y los potenciadores de escudo subcapitales.", 
+      "fr": "de réduction au coût de capaciteur des boosters de bouclier et des boosters de bouclier à distance sous-capitaux", 
+      "ja": "準キャピタルシールドブースターとリモートシールドブースターのキャパシタ消費量が減少", 
+      "ko": "서브캐피탈 실드 부스터 및 원격 실드 부스터 캐패시터 사용량 감소", 
+      "ru": "снижение затрат энергии накопителя на активацию стандартных и дистанционных модулей накачки щитов", 
+      "zh": "非旗舰级护盾回充增量器和远程护盾回充增量器电容消耗降低"
+    }, 
+    "displayNameID": 1050577, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 6, 
+        "skillID": 3422
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2672": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 9 - Tracking enhancer and tracking computer falloff increase", 
+    "displayName": {
+      "de": "Bonus auf den Präzisionsabfall von ausgerüsteten Nachführverbesserungen und Leitcomputern", 
+      "en-us": "bonus to fitted tracking enhancer and tracking computer falloff amount", 
+      "es": "de bonificación a la cantidad de alcance efectivo del ordenador de rastreo y del intensificador de rastreo equipado.", 
+      "fr": "de bonus à la quantité de déperdition des optimisateurs de suivi et ordinateurs de suivi installés", 
+      "ja": "装備中のトラッキングエンハンサーとトラッキングコンピューターの精度低下範囲にボーナス", 
+      "ko": "트래킹 향상장치 및 트래킹 컴퓨터에 장착해 유효사거리 증가", 
+      "ru": "бонус к добавочной дальности установленных вычислителей наведения и систем коррекции наведения", 
+      "zh": "已装配索敌增强器和索敌计算机失准范围加成"
+    }, 
+    "displayNameID": 1050578, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 349, 
+        "groupID": 211
+      }, 
+      {
+        "dogmaAttributeID": 349, 
+        "groupID": 213
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2673": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar General Dbuff 10 - Kanth Filmar", 
+    "displayName": {
+      "de": "Bonus auf Schild-HP (Hetman General Kanth Filmir)", 
+      "en-us": "bonus to shield hitpoints (Hetman General Kanth Filmar)", 
+      "es": "de bonificación a los puntos de vida de los escudos (general hetman Kanth Filmar).", 
+      "fr": "de bonus aux points de vie du bouclier (Général Hetman Kanth Filmir)", 
+      "ja": "シールドHPにボーナス（首長将軍カンス・フィルミア）", 
+      "ko": "실드 내구도 증가 (칸스 필미르 함대 장군)", 
+      "ru": "бонус к прочности щитов (генерал-гетман Кант Филмир)", 
+      "zh": "护盾值加成（盖特曼将军坎特·菲尔米尔）"
+    }, 
+    "displayNameID": 1050815, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 263
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2674": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Conquest Dbuff 11 - Conquest Engine Hitpoints FAKE", 
+    "displayName": {
+      "de": "Bonus auf die HP der Minmatar-Eroberungsmaschine.", 
+      "en-us": "bonus to minmatar conquest engine hitpoints.", 
+      "es": "de bonificación a los puntos de vida del motor de conquista de Minmatar.", 
+      "fr": "de bonus aux points de vie de la Machine de Conquête minmatar.", 
+      "ja": "ミンマター「征服」エンジンHPにボーナス。", 
+      "ko": "민마타 정복 엔진 내구도 증가", 
+      "ru": "бонус к прочности минматарской завоевательной технологии.", 
+      "zh": "米玛塔尔征服引擎生命值加成"
+    }, 
+    "displayNameID": 1050857, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2675": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 12", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2676": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 13", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2677": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 14", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2678": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 15", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2679": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 16", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2680": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 17", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2681": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 18", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2682": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 19", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2683": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "SFW - Minmatar Dbuff 20", 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PreAssignment", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
   "2692": {
     "aggregateMode": "Maximum", 
     "developerDescription": "Crimson Harvest Trig Trial Smart Bomb Block", 
@@ -7606,5 +9184,451 @@
     "locationRequiredSkillModifiers": [], 
     "operationName": "ModAdd", 
     "showOutputValueInUI": "Hide"
+  }, 
+  "2694": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Amarr Industrialist Buff - Mining Critical Hit Chance", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1055990, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2695": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Amarr Explorer Buff - Warp Speed Bonus", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1055994, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2696": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Amarr Enforcer Buff - Capacitor Capacity", 
+    "displayName": {
+      "de": "Bonus auf die maximale Energiespeichermenge", 
+      "en-us": "bonus to maximum capacitor amount", 
+      "es": "de bonificación a la cantidad de condensadores máxima.", 
+      "fr": "de bonus à la charge maximale de capaciteur", 
+      "ja": "最大キャパシタ容量にボーナス", 
+      "ko": "캐패시터 최대 용량 증가", 
+      "ru": "бонус к максимальному заряду накопителя", 
+      "zh": "最大电容加成"
+    }, 
+    "displayNameID": 1056002, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 482
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2697": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Amarr Soldier Buff - Energy Vampire and Energy Neutralizer Strength", 
+    "displayName": {
+      "de": "Bonus auf die Transfermenge von Energie-Nosferatu und Energieneutralisierer", 
+      "en-us": "bonus to energy nosferatu and energy neutralizer drain amount", 
+      "es": "de bonificación a la cantidad drenada por el nosferatu de energía y el neutralizador energético.", 
+      "fr": "de bonus au volume d'énergie drainée par les Nosferatu à énergie et les neutraliseurs d'énergie", 
+      "ja": "エネルギーノスフェラトゥおよびエネルギーニュートラライザーの吸収量にボーナス", 
+      "ko": "에너지 노스페라투 및 에너지 뉴트럴라이저 흡수량 증가", 
+      "ru": "бонус к эффективности модулей паразитной подзарядки и энергонейтрализаторов", 
+      "zh": "掠能器和能量中和器吸取量加成"
+    }, 
+    "displayNameID": 1056001, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [
+      {
+        "dogmaAttributeID": 90, 
+        "groupID": 68
+      }, 
+      {
+        "dogmaAttributeID": 97, 
+        "groupID": 71
+      }
+    ], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2698": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Caldari Industrialist Buff", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1055991, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2699": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Caldari Explorer Buff - Warp Speed Buff", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1055995, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2700": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Caldari Enforcer Buff - Shield Booster Amount", 
+    "displayName": {
+      "de": "Bonus auf die Leistung von Schildboostern", 
+      "en-us": "bonus to shield booster amount", 
+      "es": "de bonificación a la cantidad de potenciadores de escudo.", 
+      "fr": "de bonus au montant des boosters de bouclier", 
+      "ja": "シールドブースターの回復量にボーナス", 
+      "ko": "실드 부스터 회복량 증가", 
+      "ru": "бонус к эффективности модуля накачки щитов", 
+      "zh": "护盾回充增量器回充量加成"
+    }, 
+    "displayNameID": 1056003, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3416
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 21802
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2701": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Caldari Soldier Buff - Remote Shield Booster Amount", 
+    "displayName": {
+      "de": "Bonus auf die Effektivität von Schildfernboostern", 
+      "en-us": "bonus to remote shield booster effectiveness", 
+      "es": "de bonificación a la efectividad del potenciador de escudo remoto.", 
+      "fr": "de bonus à l'efficacité du booster de bouclier à distance", 
+      "ja": "リモートシールドブースターの効果にボーナス", 
+      "ko": "원격 실드 부스터 효과 증가", 
+      "ru": "бонус к эффективности модулей дистанционной накачки щитов", 
+      "zh": "远程护盾回充增量器效果加成"
+    }, 
+    "displayNameID": 1056000, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 3422
+      }, 
+      {
+        "dogmaAttributeID": 68, 
+        "skillID": 24571
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2702": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Gallente Industrialist Buff", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1055992, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2703": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Gallente Explorer Buff - Warp Speed Buff", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1055996, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2704": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Gallente Soldier Buff - armor repair amount", 
+    "displayName": {
+      "de": "Bonus auf die Reparaturmenge von Panzerungsreparatursystemen", 
+      "en-us": "bonus to armor repairer amount", 
+      "es": "de bonificación a la eficiencia de los reparadores de blindaje.", 
+      "fr": "de bonus à la capacité réparatrice du réparateur de blindage", 
+      "ja": "アーマーリペアラのリペア量にボーナス", 
+      "ko": "장갑수리 장치 수리량 증가", 
+      "ru": "бонус к эффективности установки ремонта брони", 
+      "zh": "装甲维修器维修量加成"
+    }, 
+    "displayNameID": 1056004, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 3393
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 21803
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2705": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Gallente Soldier Buff - Remote Armor Repair Boost", 
+    "displayName": {
+      "de": "Bonus auf die Effektivität von Panzerungs-Fernreparatursystemen", 
+      "en-us": "bonus to remote armor repairer effectiveness", 
+      "es": "de bonificación a la reparación de blindaje remota.", 
+      "fr": "de bonus à l'efficacité du réparateur de blindage à distance", 
+      "ja": "リモートアーマーリペアラの効果にボーナス", 
+      "ko": "원격 장갑수리량 효과 증가", 
+      "ru": "бонус к эффективности модулей дистанционного ремонта брони", 
+      "zh": "远程装甲维修器效果加成"
+    }, 
+    "displayNameID": 1055998, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 16069
+      }, 
+      {
+        "dogmaAttributeID": 84, 
+        "skillID": 24568
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2706": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Minmatar Industrialist Buff", 
+    "displayName": {
+      "de": "Bonus auf die kritische Trefferwahrscheinlichkeit von Bergbau", 
+      "en-us": "bonus to mining critical hit chance", 
+      "es": "de bonificación a la probabilidad de impacto crítico minero.", 
+      "fr": "de bonus aux chances de coup critique d'extraction minière", 
+      "ja": "採掘のクリティカルヒット発生率にボーナス", 
+      "ko": "대량 채굴 확률 증가", 
+      "ru": "бонус к вероятности крит. удара при бурении", 
+      "zh": "采矿暴击几率加成"
+    }, 
+    "displayNameID": 1055993, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 3386
+      }, 
+      {
+        "dogmaAttributeID": 5967, 
+        "skillID": 16281
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2707": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Minmatar Explorer Buff - Warp Speed Bonus", 
+    "displayName": {
+      "de": "AE/s zusätzliche Basis-Warpgeschwindigkeit", 
+      "en-us": "AU/s Additional Base Warp Speed", 
+      "es": "UA/s de velocidad de warp base adicional", 
+      "fr": "UA/s de vitesse de warp de base supplémentaire", 
+      "ja": "基本ワープ速度に追加される速度（AU/秒）", 
+      "ko": "기본 워프 속도 증가", 
+      "ru": "Доп. базовая скорость хода в варп-режиме в а. е./сек.", 
+      "zh": "基础跃迁速度+AU/s"
+    }, 
+    "displayNameID": 1055997, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 600
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "ModAdd", 
+    "showOutputValueInUI": "ShowNormal"
+  }, 
+  "2708": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Minmatar Enforcer Buff - Signature Radius Reduction", 
+    "displayName": {
+      "de": "Reduktion des Signaturradius", 
+      "en-us": "reduction to signature radius", 
+      "es": "de reducción del radio de la señal.", 
+      "fr": "de réduction du rayon de signature", 
+      "ja": "シグネチャ半径を縮小", 
+      "ko": "시그니처 반경 감소", 
+      "ru": "сужение радиуса сигнатуры", 
+      "zh": "信号半径降低"
+    }, 
+    "displayNameID": 1056005, 
+    "itemModifiers": [
+      {
+        "dogmaAttributeID": 552
+      }
+    ], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowInverted"
+  }, 
+  "2709": {
+    "aggregateMode": "Maximum", 
+    "developerDescription": "Path to Conquest - Minmatar Soldier Buff - Target Painter Strength", 
+    "displayName": {
+      "de": "Bonus auf die Effektivität des Zielmarkierers", 
+      "en-us": "bonus to target painter effectiveness", 
+      "es": "de bonificación a la efectividad del revelador de objetivo.", 
+      "fr": "de bonus à l'efficacité du marqueur de cible", 
+      "ja": "ターゲットペインターの効果にボーナス", 
+      "ko": "타겟 페인터 효과 증가", 
+      "ru": "бонус к эффективности модулей подсветки целей", 
+      "zh": "目标标记装置效果加成"
+    }, 
+    "displayNameID": 1055999, 
+    "itemModifiers": [], 
+    "locationGroupModifiers": [], 
+    "locationModifiers": [], 
+    "locationRequiredSkillModifiers": [
+      {
+        "dogmaAttributeID": 554, 
+        "skillID": 19921
+      }
+    ], 
+    "operationName": "PostPercent", 
+    "showOutputValueInUI": "ShowNormal"
   }
 }
