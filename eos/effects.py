@@ -44134,6 +44134,40 @@ class Effect13053(BaseEffect):
                                skill='Assault Frigates', **kwargs)
 
 
+class Effect13054(BaseEffect):
+    """
+    subsystemBonusGallenteCore3WeaponAndSensorResistance
+
+    Used by:
+    Subsystem: Proteus Core - Electronic Efficiency Gate
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attr in ('sensorDampenerResistance', 'weaponDisruptionResistance'):
+            fit.ship.boostItemAttr(attr, src.getModifiedItemAttr('subsystemBonusGallenteCore3'),
+                                   skill='Gallente Core Systems', **kwargs)
+
+
+class Effect13055(BaseEffect):
+    """
+    subsystemBonusCaldariCore3WeaponAndSensorResistance
+
+    Used by:
+    Subsystem: Tengu Core - Electronic Efficiency Gate
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context, projectionRange, **kwargs):
+        for attr in ('sensorDampenerResistance', 'weaponDisruptionResistance'):
+            fit.ship.boostItemAttr(attr, src.getModifiedItemAttr('subsystemBonusCaldariCore3'),
+                                   skill='Caldari Core Systems', **kwargs)
+
+
 class Effect13056(BaseEffect):
     """
     shipMissileKineticDamageCC3
