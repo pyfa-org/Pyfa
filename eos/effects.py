@@ -29908,9 +29908,8 @@ class Effect6658(BaseEffect):
                 bonus = '%s%sDamageResonance' % (attrPrefix, damageType)
                 bonus = '%s%s' % (bonus[0].lower(), bonus[1:])
                 booster = '%s%sDamageResonance' % (layer, damageType)
-                penalize = False if layer == 'hull' else True
                 fit.ship.multiplyItemAttr(bonus, src.getModifiedItemAttr(booster),
-                                          stackingPenalties=penalize, penaltyGroup='preMul', **kwargs)
+                                          stackingPenalties=True, penaltyGroup='preMul', **kwargs)
 
         # Turrets
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret') or
