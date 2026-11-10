@@ -43740,6 +43740,160 @@ class Effect12924(BaseEffect):
             fit.ship.increaseItemAttr(attr, src.getModifiedItemAttr('proximityDbuffEffectTacticalDestroyerHP'), **kwargs)
 
 
+class Effect12925(BaseEffect):
+    """
+    shipLargeLaserRangeBonusABC3
+
+    Used by:
+    Ship: Oracle Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Energy Turret'),
+                                      'maxRange', ship.getModifiedItemAttr('shipBonusABC3'),
+                                      skill='Amarr Battlecruiser', **kwargs)
+
+
+class Effect12926(BaseEffect):
+    """
+    shipBonusArmorPlateMassGBC3
+
+    Used by:
+    Ship: Talos Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Plate',
+                                      'massAddition', ship.getModifiedItemAttr('shipBonusGBC3'),
+                                      skill='Gallente Battlecruiser', **kwargs)
+
+
+class Effect12927(BaseEffect):
+    """
+    shipBonusLargeHybridTurretHybridFallOffGBC1
+
+    Used by:
+    Ship: Talos Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Large Hybrid Turret'),
+                                      'falloff', ship.getModifiedItemAttr('shipBonusGBC1'),
+                                      skill='Gallente Battlecruiser', **kwargs)
+
+
+class Effect12928(BaseEffect):
+    """
+    shipBonusMWDSignatureRadiusMBC3
+
+    Used by:
+    Ship: Tornado Fleet Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
+                                      'signatureRadiusBonus', ship.getModifiedItemAttr('shipBonusMBC3'),
+                                      skill='Minmatar Battlecruiser', **kwargs)
+
+
+class Effect12932(BaseEffect):
+    """
+    shipRoleBonusAttackBattlecruiserLargeMissilePowerFittingBonus
+
+    Used by:
+    Ship: Naga Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name in ('Missile Launcher Cruise', 'Missile Launcher Torpedo'),
+            'power', ship.getModifiedItemAttr('bcLargeLauncherPower'), **kwargs)
+
+
+class Effect12933(BaseEffect):
+    """
+    shipRoleBonusAttackBattlecruiserLargeMissileCPUFittingBonus
+
+    Used by:
+    Ship: Naga Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredItemMultiply(
+            lambda mod: mod.item.group.name in ('Missile Launcher Cruise', 'Missile Launcher Torpedo'),
+            'cpu', ship.getModifiedItemAttr('bcLargeLauncherCPU'), **kwargs)
+
+
+class Effect12934(BaseEffect):
+    """
+    shipBonusCruiseMissileAndTorpedoKineticCBC1
+
+    Used by:
+    Ship: Naga Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Cruise Missiles') or mod.charge.requiresSkill('Torpedoes'),
+            'kineticDamage', ship.getModifiedItemAttr('shipBonusCBC1'), skill='Caldari Battlecruiser', **kwargs)
+
+
+class Effect12935(BaseEffect):
+    """
+    shipBonusCruiseMissileAndTorpedoEMThermalExplosiveCBC2
+
+    Used by:
+    Ship: Naga Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for dmgType in ('em', 'explosive', 'thermal'):
+            fit.modules.filteredChargeBoost(
+                lambda mod: mod.charge.requiresSkill('Cruise Missiles') or mod.charge.requiresSkill('Torpedoes'),
+                f'{dmgType}Damage', ship.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser', **kwargs)
+
+
+class Effect12936(BaseEffect):
+    """
+    shipBonusCruiseMissileAndTorpedoMaximumVelocityCBC3
+
+    Used by:
+    Ship: Naga Navy Issue
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Cruise Missiles') or mod.charge.requiresSkill('Torpedoes'),
+            'maxVelocity', ship.getModifiedItemAttr('shipBonusCBC3'), skill='Caldari Battlecruiser', **kwargs)
+
+
 class Effect12940(BaseEffect):
     """
     capNeedBonusEffectLasersOnline
