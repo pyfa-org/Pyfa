@@ -43998,6 +43998,78 @@ class Effect12953(BaseEffect):
             ship.getModifiedItemAttr('shipBonusMBC1'), skill='Minmatar Battlecruiser', **kwargs)
 
 
+class Effect12963(BaseEffect):
+    """
+    rigSetAmarrNavyBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Imperial Navy (66 of 69)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetAmarrNavyBonus',
+            module.getModifiedItemAttr('rigSetAmarrNavyModule'), **kwargs)
+
+
+class Effect12964(BaseEffect):
+    """
+    rigSetCaldariNavyBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Caldari Navy (51 of 54)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetCaldariNavyBonus',
+            module.getModifiedItemAttr('rigSetCaldariNavyModule'), **kwargs)
+
+
+class Effect12965(BaseEffect):
+    """
+    rigSetGallenteNavyBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Federation Navy (65 of 68)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetGallenteNavyBonus',
+            module.getModifiedItemAttr('rigSetGallenteNavyModule'), **kwargs)
+
+
+class Effect12966(BaseEffect):
+    """
+    rigSetMinmatarFleetBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Republic Fleet (75 of 78)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetMinmatarFleetBonus',
+            module.getModifiedItemAttr('rigSetMinmatarFleetModule'), **kwargs)
+
+
 class Effect12975(BaseEffect):
     """
     skillConduitPassengerBonusModAddPassive
@@ -44031,6 +44103,96 @@ class Effect12978(BaseEffect):
         lvl = src.level if 'skill' in context else 1
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Rig Synchronizer', 'drawback',
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl, **kwargs)
+
+
+class Effect12989(BaseEffect):
+    """
+    rigSetDarkBloodBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Dark Blood (64 of 67)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetDarkBloodBonus',
+            module.getModifiedItemAttr('rigSetDarkBloodModule'), **kwargs)
+
+
+class Effect12990(BaseEffect):
+    """
+    rigSetTrueSanshaBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: True Sansha (74 of 77)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetTrueSanshaBonus',
+            module.getModifiedItemAttr('rigSetTrueSanshaModule'), **kwargs)
+
+
+class Effect12991(BaseEffect):
+    """
+    rigSetDreadGuristasBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Dread Guristas (54 of 57)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetDreadGuristasBonus',
+            module.getModifiedItemAttr('rigSetDreadGuristasModule'), **kwargs)
+
+
+class Effect12992(BaseEffect):
+    """
+    rigSetShadowSerpentisBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Shadow Serpentis (71 of 74)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetShadowSerpentisBonus',
+            module.getModifiedItemAttr('rigSetShadowSerpentisModule'), **kwargs)
+
+
+class Effect12993(BaseEffect):
+    """
+    rigSetDominationBonusModAddSetRigGroup
+
+    Used by:
+    Modules named like: Domination (86 of 89)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, module, context, projectionRange, **kwargs):
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.group.name == 'Rig Synchronizer', 'rigSetDominationAngelBonus',
+            module.getModifiedItemAttr('rigSetDominationAngelModule'), **kwargs)
 
 
 class Effect13021(BaseEffect):
