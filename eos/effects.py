@@ -44185,6 +44185,41 @@ class Effect13056(BaseEffect):
                                         skill='Caldari Cruiser', **kwargs)
 
 
+class Effect13057(BaseEffect):
+    """
+    boosterDirectionalScannerRangeBonusPassive
+
+    Used by:
+    Implant: SARO Monitoring Booster
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        fit.ship.boostItemAttr('maxDirectionalScanRange',
+                               booster.getModifiedItemAttr('boosterDirectionalScannerRangeBonus'), **kwargs)
+
+
+class Effect13058(BaseEffect):
+    """
+    boosterOverheatMicrowarpScramBenefitsPassive
+
+    Used by:
+    Implant: SARO Pursuit Booster
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, booster, context, projectionRange, **kwargs):
+        bonus = booster.getModifiedItemAttr('boosterOverheatMicrowarpScramBenefits')
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Navigation'),
+                                      'overloadRangeBonus', bonus, **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('High Speed Maneuvering'),
+                                      'overloadSpeedFactorBonus', bonus, **kwargs)
+
+
 class Effect13074(BaseEffect):
     """
     shipSmallMissileEMDmgCF
