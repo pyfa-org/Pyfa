@@ -932,21 +932,33 @@ class Market:
         filtered = [item for item in items if self.getMetaGroupIdByItem(item) in metas]
         return filtered
 
-    def getReplacements(self, identity):
+    def getReplacements(self, identity, setEffectIDs=()):
+        """
+        setEffectIDs - IDs of effects by which modules count towards synchronizer rig sets which matter (as the rig
+        is fitted); replacements have to belong to the same of those sets as the item itself
+        """
         item = self.getItem(identity)
         # We already store needed type IDs in database
         replTypeIDs = {int(i) for i in item.replacements.split(",") if i} if item.replacements is not None else {}
         if not replTypeIDs:
             return ()
+
+        def getSets(setItem):
+            return {e.ID for e in setItem.effects.values()}.intersection(setEffectIDs)
+
+        itemSets = getSets(item)
         # As replacements were generated without keeping track which items were published,
         # filter them out here
         items = []
         for typeID in replTypeIDs:
-            item = self.getItem(typeID)
-            if not item:
+            replItem = self.getItem(typeID)
+            if not replItem:
                 continue
-            if self.getPublicityByItem(item):
-                items.append(item)
+            if not self.getPublicityByItem(replItem):
+                continue
+            if getSets(replItem) != itemSets:
+                continue
+            items.append(replItem)
         return items
 
     def getRecentlyUsed(self):
