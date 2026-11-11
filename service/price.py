@@ -28,6 +28,7 @@ import wx
 from logbook import Logger
 
 from eos import db
+from eos.const import SYNCHRONIZER_SETS
 from eos.saveddata.price import PriceStatus
 from service.fit import Fit
 from service.market import Market
@@ -197,14 +198,21 @@ class Price:
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 
-    def findCheaperReplacements(self, items, callback, fetchTimeout=10):
+    def findCheaperReplacements(self, items, callback, fit=None, fetchTimeout=10):
         sMkt = Market.getInstance()
+
+        # With a synchronizer rig fitted, modules of its set amplify its bonuses, so they cannot be swapped for
+        # modules outside of the set (and the other way around); without one, set membership makes no difference
+        setEffectIDs = set()
+        if fit is not None:
+            fitTypeIDs = {mod.item.ID for mod in fit.modules if not mod.isEmpty}
+            setEffectIDs = {effectID for effectID, s in SYNCHRONIZER_SETS.items() if fitTypeIDs & s.rigTypeIDs}
 
         replacementsAll = {}  # All possible item replacements
         for item in items:
             if item in replacementsAll:
                 continue
-            itemRepls = sMkt.getReplacements(item)
+            itemRepls = sMkt.getReplacements(item, setEffectIDs=setEffectIDs)
             if itemRepls:
                 replacementsAll[item] = itemRepls
         itemsToFetch = {i for i in chain(replacementsAll.keys(), *replacementsAll.values())}

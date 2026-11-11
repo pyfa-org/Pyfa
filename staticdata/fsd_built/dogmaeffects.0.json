@@ -100415,6 +100415,38 @@
         "modifyingAttributeID": 5988, 
         "operation": 6, 
         "skillTypeID": 21803
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2125, 
+        "modifyingAttributeID": 6477, 
+        "operation": 0, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2126, 
+        "modifyingAttributeID": 6478, 
+        "operation": 0, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2235, 
+        "modifyingAttributeID": 6478, 
+        "operation": 0, 
+        "skillTypeID": 23069
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 2234, 
+        "modifyingAttributeID": 6477, 
+        "operation": 0, 
+        "skillTypeID": 23069
       }
     ], 
     "propulsionChance": 0, 
@@ -103367,6 +103399,340 @@
     "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
+  "12925": {
+    "description": {
+      "de": "Automatisch erzeugter Effekt", 
+      "en-us": "Automatically generated effect", 
+      "es": "Efecto generado automáticamente.", 
+      "fr": "Effet généré automatiquement", 
+      "ja": "自動生成効果", 
+      "ko": "자동 생성 효과", 
+      "ru": "Автоматически созданный эффект", 
+      "zh": "自动生成效果"
+    }, 
+    "descriptionID": 1048202, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12925, 
+    "effectName": "shipLargeLaserRangeBonusABC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 5205, 
+        "operation": 6, 
+        "skillTypeID": 3309
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12926": {
+    "description": {
+      "de": "Automatisch erzeugter Effekt", 
+      "en-us": "Automatically generated effect", 
+      "es": "Efecto generado automáticamente.", 
+      "fr": "Effet généré automatiquement", 
+      "ja": "自動生成効果", 
+      "ko": "자동 생성 효과", 
+      "ru": "Автоматически созданный эффект", 
+      "zh": "自动生成效果"
+    }, 
+    "descriptionID": 1048205, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12926, 
+    "effectName": "shipBonusArmorPlateMassGBC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 329, 
+        "modifiedAttributeID": 796, 
+        "modifyingAttributeID": 5046, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12927": {
+    "description": {
+      "de": "Automatisch erzeugter Effekt", 
+      "en-us": "Automatically generated effect", 
+      "es": "Efecto generado automáticamente.", 
+      "fr": "Effet généré automatiquement", 
+      "ja": "自動生成効果", 
+      "ko": "자동 생성 효과", 
+      "ru": "Автоматически созданный эффект", 
+      "zh": "自动生成效果"
+    }, 
+    "descriptionID": 1048208, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12927, 
+    "effectName": "shipBonusLargeHybridTurretHybridFallOffGBC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 158, 
+        "modifyingAttributeID": 747, 
+        "operation": 6, 
+        "skillTypeID": 3307
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12928": {
+    "description": {
+      "de": "Automatisch erzeugter Effekt", 
+      "en-us": "Automatically generated effect", 
+      "es": "Efecto generado automáticamente.", 
+      "fr": "Effet généré automatiquement", 
+      "ja": "自動生成効果", 
+      "ko": "자동 생성 효과", 
+      "ru": "Автоматически созданный эффект", 
+      "zh": "自动生成效果"
+    }, 
+    "descriptionID": 1048209, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12928, 
+    "effectName": "shipBonusMWDSignatureRadiusMBC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 554, 
+        "modifyingAttributeID": 5207, 
+        "operation": 6, 
+        "skillTypeID": 3454
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12932": {
+    "description": {
+      "de": "Automatisch erzeugter Effekt", 
+      "en-us": "Automatically generated effect", 
+      "es": "Efecto generado automáticamente.", 
+      "fr": "Effet généré automatiquement", 
+      "ja": "自動生成効果", 
+      "ko": "자동 생성 효과", 
+      "ru": "Автоматически созданный эффект", 
+      "zh": "自动生成效果"
+    }, 
+    "descriptionID": 1048232, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12932, 
+    "effectName": "shipRoleBonusAttackBattlecruiserLargeMissilePowerFittingBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 506, 
+        "modifiedAttributeID": 30, 
+        "modifyingAttributeID": 6280, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 508, 
+        "modifiedAttributeID": 30, 
+        "modifyingAttributeID": 6280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12933": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12933, 
+    "effectName": "shipRoleBonusAttackBattlecruiserLargeMissileCPUFittingBonus", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 506, 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 6281, 
+        "operation": 0
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 508, 
+        "modifiedAttributeID": 50, 
+        "modifyingAttributeID": 6281, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12934": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12934, 
+    "effectName": "shipBonusCruiseMissileAndTorpedoKineticCBC1", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 743, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 743, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12935": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12935, 
+    "effectName": " shipBonusCruiseMissileAndTorpedoEMThermalExplosiveCBC2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 745, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 745, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 745, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 745, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 745, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 745, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12936": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12936, 
+    "effectName": " shipBonusCruiseMissileAndTorpedoMaximumVelocityCBC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 5044, 
+        "operation": 6, 
+        "skillTypeID": 3326
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 5044, 
+        "operation": 6, 
+        "skillTypeID": 3325
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
   "12940": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 4, 
@@ -103530,6 +103896,185 @@
     "published": 0, 
     "rangeChance": 0
   }, 
+  "12963": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12963, 
+    "effectName": "rigSetAmarrNavyBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6316, 
+        "modifyingAttributeID": 6312, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12964": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12964, 
+    "effectName": "rigSetCaldariNavyBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6317, 
+        "modifyingAttributeID": 6313, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12965": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12965, 
+    "effectName": "rigSetGallenteNavyBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6318, 
+        "modifyingAttributeID": 6314, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12966": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12966, 
+    "effectName": "rigSetMinmatarFleetBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6319, 
+        "modifyingAttributeID": 6315, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12968": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12968, 
+    "effectName": "rigHybridWeaponDamageMultiplyPostPercent", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6529, 
+        "modifyingAttributeID": 6404, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12969": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12969, 
+    "effectName": "gallenteRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6404, 
+        "modifyingAttributeID": 6318, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 327, 
+        "modifyingAttributeID": 6318, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 806, 
+        "modifyingAttributeID": 6318, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 767, 
+        "modifyingAttributeID": 6318, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12971": {
+    "disallowAutoRepeat": 0, 
+    "distribution": 2, 
+    "effectCategory": 2, 
+    "effectID": 12971, 
+    "effectName": "NPCfakeJumpOutEffect", 
+    "electronicChance": 0, 
+    "guid": "effects.JumpOut", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
   "12975": {
     "disallowAutoRepeat": 0, 
     "effectCategory": 0, 
@@ -103546,6 +104091,1050 @@
         "modifiedAttributeID": 5681, 
         "modifyingAttributeID": 6350, 
         "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12978": {
+    "description": {
+      "de": "Automatisch erzeugter Effekt", 
+      "en-us": "Automatically generated effect", 
+      "es": "Efecto generado automáticamente.", 
+      "fr": "Effet généré automatiquement", 
+      "ja": "自動生成効果", 
+      "ko": "자동 생성 효과", 
+      "ru": "Автоматически созданный эффект", 
+      "zh": "自动生成效果"
+    }, 
+    "descriptionID": 1049912, 
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12978, 
+    "effectName": "rigDrawbackReductionModuleSet", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 1138, 
+        "modifyingAttributeID": 1139, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12979": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12979, 
+    "effectName": "rigMagnetometricSensorStengthBonusModAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 210, 
+        "modifyingAttributeID": 6356, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12980": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12980, 
+    "effectName": "rigEnergyWeaponDamageMultiplyPostPercent", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6529, 
+        "modifyingAttributeID": 6405, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12981": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12981, 
+    "effectName": "rigProjectileWeaponDamageMultiplyPostPercent", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6529, 
+        "modifyingAttributeID": 6406, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12982": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12982, 
+    "effectName": "amarrRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6405, 
+        "modifyingAttributeID": 6316, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 1079, 
+        "modifyingAttributeID": 6316, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 335, 
+        "modifyingAttributeID": 6316, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 317, 
+        "modifyingAttributeID": 6316, 
+        "operation": 3
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12983": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12983, 
+    "effectName": "rigShieldBoostBonusPostpercent", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 6361, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12984": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12984, 
+    "effectName": "minmatarRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6406, 
+        "modifyingAttributeID": 6319, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 315, 
+        "modifyingAttributeID": 6319, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 767, 
+        "modifyingAttributeID": 6319, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 312, 
+        "modifyingAttributeID": 6319, 
+        "operation": 3
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12985": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12985, 
+    "effectName": "caldariRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 20, 
+        "modifyingAttributeID": 6317, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6407, 
+        "modifyingAttributeID": 6317, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 337, 
+        "modifyingAttributeID": 6317, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 309, 
+        "modifyingAttributeID": 6317, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12989": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12989, 
+    "effectName": "rigSetDarkBloodBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6377, 
+        "modifyingAttributeID": 6372, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12990": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12990, 
+    "effectName": "rigSetTrueSanshaBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6378, 
+        "modifyingAttributeID": 6373, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12991": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12991, 
+    "effectName": "rigSetDreadGuristasBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6379, 
+        "modifyingAttributeID": 6374, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12992": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12992, 
+    "effectName": "rigSetShadowSerpentisBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6380, 
+        "modifyingAttributeID": 6375, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12993": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12993, 
+    "effectName": "rigSetDominationBonusModAddSetRigGroup", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6381, 
+        "modifyingAttributeID": 6376, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "12996": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12996, 
+    "effectName": "rigNosferatuNeutralizerDrainAmountBonusPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 90, 
+        "modifyingAttributeID": 6384, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 97, 
+        "modifyingAttributeID": 6384, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12997": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12997, 
+    "effectName": "rigNosferatuNeutralizerOverloadAmountBonusPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 1206, 
+        "modifyingAttributeID": 6385, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 1206, 
+        "modifyingAttributeID": 6385, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12998": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12998, 
+    "effectName": "rigNosferatuNeutralizerMaxRangeBonusPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 6386, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 6386, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "12999": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 12999, 
+    "effectName": "rigNosferatuNeutralizerFalloffRangeBonusPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 68, 
+        "modifiedAttributeID": 2044, 
+        "modifyingAttributeID": 6387, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 71, 
+        "modifiedAttributeID": 2044, 
+        "modifyingAttributeID": 6387, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13000": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13000, 
+    "effectName": "bloodRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6384, 
+        "modifyingAttributeID": 6377, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6385, 
+        "modifyingAttributeID": 6377, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6386, 
+        "modifyingAttributeID": 6377, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6387, 
+        "modifyingAttributeID": 6377, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6405, 
+        "modifyingAttributeID": 6377, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13001": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13001, 
+    "effectName": "rigCapacitorRechargeTimeBonusPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 55, 
+        "modifyingAttributeID": 6388, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13002": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13002, 
+    "effectName": "rigAfterburnerSpeedAmountPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 20, 
+        "modifyingAttributeID": 6389, 
+        "operation": 6, 
+        "skillTypeID": 3450
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13003": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13003, 
+    "effectName": "rigAfterburnerOverloadAmountPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1223, 
+        "modifyingAttributeID": 6390, 
+        "operation": 6, 
+        "skillTypeID": 3450
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13004": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13004, 
+    "effectName": "rigEnergyTurretOverloadAmountPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 53, 
+        "modifiedAttributeID": 1210, 
+        "modifyingAttributeID": 6391, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13005": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13005, 
+    "effectName": "rigAfterburnerActivationCostPenaltyPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 6, 
+        "modifyingAttributeID": 6392, 
+        "operation": 6, 
+        "skillTypeID": 3450
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13006": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13006, 
+    "effectName": "sanshaRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6405, 
+        "modifyingAttributeID": 6378, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6389, 
+        "modifyingAttributeID": 6378, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6390, 
+        "modifyingAttributeID": 6378, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 767, 
+        "modifyingAttributeID": 6378, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13007": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13007, 
+    "effectName": "RigModifyWebResistancePostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2115, 
+        "modifyingAttributeID": 6393, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13008": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13008, 
+    "effectName": "serpentisRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 349, 
+        "modifyingAttributeID": 6380, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6393, 
+        "modifyingAttributeID": 6380, 
+        "operation": 3
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6404, 
+        "modifyingAttributeID": 6380, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 315, 
+        "modifyingAttributeID": 6380, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13009": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13009, 
+    "effectName": "rigMaxTargetingRangePenaltyPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 76, 
+        "modifyingAttributeID": 6394, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13010": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13010, 
+    "effectName": "rigBonusDroneDamagePostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 1255, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13011": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13011, 
+    "effectName": "rigDroneControlRangePenaltyPassivePostPercent", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 458, 
+        "modifyingAttributeID": 6397, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13012": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13012, 
+    "effectName": "guristasRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 1255, 
+        "modifyingAttributeID": 6379, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 294, 
+        "modifyingAttributeID": 6379, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 828, 
+        "modifyingAttributeID": 6379, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 327, 
+        "modifyingAttributeID": 6379, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 984, 
+        "modifyingAttributeID": 6379, 
+        "operation": 3
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 985, 
+        "modifyingAttributeID": 6379, 
+        "operation": 3
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 986, 
+        "modifyingAttributeID": 6379, 
+        "operation": 3
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 987, 
+        "modifyingAttributeID": 6379, 
+        "operation": 3
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13015": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13015, 
+    "effectName": "rigSignatureRadiusReductionBonusPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 552, 
+        "modifyingAttributeID": 6398, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13016": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13016, 
+    "effectName": "angelRigSetBonusEffectmodAdd", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6398, 
+        "modifyingAttributeID": 6381, 
+        "operation": 3
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6406, 
+        "modifyingAttributeID": 6381, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 349, 
+        "modifyingAttributeID": 6381, 
+        "operation": 2
+      }, 
+      {
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 624, 
+        "modifyingAttributeID": 6381, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13017": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13017, 
+    "effectName": "rigShieldArmorHullHitpointsPenaltyPostPercentPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 263, 
+        "modifyingAttributeID": 6399, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 6399, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 9, 
+        "modifyingAttributeID": 6399, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13020": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13020, 
+    "effectName": "rigMissileDamageBonusAllDamageTypesPostPercent", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 5140, 
+        "modifiedAttributeID": 6530, 
+        "modifyingAttributeID": 6407, 
+        "operation": 6
       }
     ], 
     "propulsionChance": 0, 
@@ -103714,6 +105303,581 @@
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13042": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13042, 
+    "effectName": "eliteBonusGunshipLaserOptimal2", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 54, 
+        "modifyingAttributeID": 571, 
+        "operation": 6, 
+        "skillTypeID": 3303
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13044": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13044, 
+    "effectName": "gunshipSkillMultiplier3", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 571, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13045": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13045, 
+    "effectName": "eliteBonusHeavyGunshipDroneControlRange2", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 458, 
+        "modifyingAttributeID": 6476, 
+        "operation": 2
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13046": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13046, 
+    "effectName": " warshipSkillMultiplier3", 
+    "electronicChance": 0, 
+    "guid": "", 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 6476, 
+        "modifyingAttributeID": 280, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13048": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 13048, 
+    "effectName": "moduleAberrantOverdriveInjectorSystemActiveSpeedBurstEffect", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 6481, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13049": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 13049, 
+    "effectName": "moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffectActivation", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 6482, 
+        "operation": 6, 
+        "skillTypeID": 3416
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 68, 
+        "modifyingAttributeID": 6482, 
+        "operation": 6, 
+        "skillTypeID": 21802
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13050": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 13050, 
+    "effectName": "moduleAberrantDroneNavigationComputerBonusEffectActivation", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 6483, 
+        "operation": 6, 
+        "skillTypeID": 3436
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 37, 
+        "modifyingAttributeID": 6483, 
+        "operation": 6, 
+        "skillTypeID": 23069
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13051": {
+    "disallowAutoRepeat": 0, 
+    "dischargeAttributeID": 6, 
+    "durationAttributeID": 73, 
+    "effectCategory": 1, 
+    "effectID": 13051, 
+    "effectName": "moduleAberrantCapRechargerBonusEffectActivation", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 55, 
+        "modifyingAttributeID": 6484, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13053": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13053, 
+    "effectName": "eliteBonusGunshipArmorHitpoints2", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 265, 
+        "modifyingAttributeID": 675, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13054": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13054, 
+    "effectName": "subsystemBonusGallenteCore3WeaponAndSensorResistance", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2112, 
+        "modifyingAttributeID": 2685, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2113, 
+        "modifyingAttributeID": 2685, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13055": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13055, 
+    "effectName": "subsystemBonusCaldariCore3WeaponAndSensorResistance", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2112, 
+        "modifyingAttributeID": 2683, 
+        "operation": 6
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 2113, 
+        "modifyingAttributeID": 2683, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13056": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13056, 
+    "effectName": "shipMissileKineticDamageCC3", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 117, 
+        "modifyingAttributeID": 1535, 
+        "operation": 6, 
+        "skillTypeID": 3319
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13057": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13057, 
+    "effectName": "boosterDirectionalScannerRangeBonusPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 5796, 
+        "modifyingAttributeID": 6497, 
+        "operation": 6
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13058": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13058, 
+    "effectName": "boosterOverheatMicrowarpScramBenefitsPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1222, 
+        "modifyingAttributeID": 6498, 
+        "operation": 6, 
+        "skillTypeID": 3449
+      }, 
+      {
+        "domain": "shipID", 
+        "func": "LocationRequiredSkillModifier", 
+        "modifiedAttributeID": 1223, 
+        "modifyingAttributeID": 6498, 
+        "operation": 6, 
+        "skillTypeID": 3454
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13070": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13070, 
+    "effectName": "synchronizerRigHybridWeaponDamageMultiplyPostMulPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 74, 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 6529, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13071": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13071, 
+    "effectName": "synchronizerRigEnergyWeaponDamageMultiplyPostMulPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 53, 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 6529, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13072": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13072, 
+    "effectName": "synchronizerRigProjectileWeaponDamageMultiplyPostMulPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "shipID", 
+        "func": "LocationGroupModifier", 
+        "groupID": 55, 
+        "modifiedAttributeID": 64, 
+        "modifyingAttributeID": 6529, 
+        "operation": 4
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13073": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13073, 
+    "effectName": "synchronizerRigMissileDMGBonusPreMulPassive", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 212, 
+        "modifyingAttributeID": 6530, 
+        "operation": 0
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
+    "rangeChance": 0
+  }, 
+  "13074": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13074, 
+    "effectName": "shipSmallMissileEMDmgCF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3320
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 114, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3321
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13075": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13075, 
+    "effectName": "shipSmallMissileExplosiveDmgCF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3320
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 116, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3321
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13076": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13076, 
+    "effectName": "shipSmallMissileThermalDmgCF", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3320
+      }, 
+      {
+        "domain": "charID", 
+        "func": "OwnerRequiredSkillModifier", 
+        "modifiedAttributeID": 118, 
+        "modifyingAttributeID": 463, 
+        "operation": 6, 
+        "skillTypeID": 3321
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeChance": 0
+  }, 
+  "13078": {
+    "disallowAutoRepeat": 0, 
+    "effectCategory": 0, 
+    "effectID": 13078, 
+    "effectName": "roleBonusMaxActiveDronesAssign", 
+    "electronicChance": 0, 
+    "isAssistance": 0, 
+    "isOffensive": 0, 
+    "isWarpSafe": 0, 
+    "modifierInfo": [
+      {
+        "domain": "charID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 352, 
+        "modifyingAttributeID": 6535, 
+        "operation": 7
+      }
+    ], 
+    "propulsionChance": 0, 
+    "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }
 }

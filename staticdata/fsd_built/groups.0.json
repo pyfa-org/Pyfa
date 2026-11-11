@@ -32581,6 +32581,46 @@
     "published": 0, 
     "useBasePrice": 0
   }, 
+  "5140": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 7, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5140, 
+    "groupName": {
+      "de": "Modifikationssynchronisator", 
+      "en-us": "Rig Synchronizer", 
+      "es": "Sincronizador de complemento", 
+      "fr": "Synchroniseur d'optimisation", 
+      "ja": "リグシンクロナイザー", 
+      "ko": "리그 동기화 장치", 
+      "ru": "Синхронизатор надстроек", 
+      "zh": "改装件同步器"
+    }, 
+    "groupNameID": 1048848, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5151": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5151, 
+    "groupName": {
+      "de": "FK-Vanguard-Transporter", 
+      "en-us": "FW Vanguard Hauler", 
+      "es": "Nave de mercancías de la Vanguardia de GF", 
+      "fr": "Cargo Vanguard de la GF", 
+      "ja": "FW Vanguardハウラー", 
+      "ko": "팩션 전쟁 Vanguard 운반선", 
+      "ru": "Перевозчик авангарда в МВ", 
+      "zh": "势力战争先锋运载舰"
+    }, 
+    "groupNameID": 1049340, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
   "5154": {
     "anchorable": 0, 
     "anchored": 0, 
@@ -32591,6 +32631,266 @@
       "en-us": "Fabricator Rogue Drone Dreadnought"
     }, 
     "groupNameID": 1049467, 
+    "published": 0, 
+    "useBasePrice": 0
+  }, 
+  "5186": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5186, 
+    "groupName": {
+      "de": "FK-General des Imperiums der Amarr", 
+      "en-us": "FW Amarr Empire General", 
+      "es": "General de GF del Imperio Amarr", 
+      "fr": "Général de la GF de l'Empire amarr", 
+      "ja": "FWアマー帝国艦船", 
+      "ko": "팩션 전쟁 아마르 제국 장군", 
+      "ru": "Амаррский генерал в МВ", 
+      "zh": "势力战争艾玛帝国上将"
+    }, 
+    "groupNameID": 1050657, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5187": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5187, 
+    "groupName": {
+      "de": "FK-General des Staats der Caldari", 
+      "en-us": "FW Caldari State General", 
+      "es": "General de GF del Estado Caldari", 
+      "fr": "Général de la GF de l'État caldari", 
+      "ja": "FWカルダリ連合艦船", 
+      "ko": "팩션 전쟁 칼다리 연합 장군", 
+      "ru": "Калдарский генерал в МВ", 
+      "zh": "势力战争加达里合众国上将"
+    }, 
+    "groupNameID": 1050658, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5188": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5188, 
+    "groupName": {
+      "de": "FK-General der Föderation der Gallente", 
+      "en-us": "FW Gallente Federation General", 
+      "es": "General de GF de la Federación Gallente", 
+      "fr": "Général de la GF de la Fédération gallente", 
+      "ja": "FWガレンテ連邦艦船", 
+      "ko": "팩션 전쟁 갈란테 연방 장군", 
+      "ru": "Галлентский генерал в МВ", 
+      "zh": "势力战争盖伦特联邦上将"
+    }, 
+    "groupNameID": 1050659, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5189": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5189, 
+    "groupName": {
+      "de": "FK-General der Republik Minmatar", 
+      "en-us": "FW Minmatar Republic General", 
+      "es": "General de GF de la República Minmatar", 
+      "fr": "Général de la GF de la République minmatar", 
+      "ja": "FWミンマター共和国艦船", 
+      "ko": "팩션 전쟁 민마타 공화국 장군", 
+      "ru": "Минматарский генерал в МВ", 
+      "zh": "势力战争米玛塔尔共和国上将"
+    }, 
+    "groupNameID": 1050663, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5190": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5190, 
+    "groupName": {
+      "de": "FK-Dreadnought des Imperiums der Amarr", 
+      "en-us": "FW Amarr Empire Dreadnought", 
+      "es": "Superacorazado de GF del Imperio Amarr", 
+      "fr": "Supercuirassé de l'Empire amarr de la GF", 
+      "ja": "FWアマー帝国攻城艦", 
+      "ko": "팩션 전쟁 아마르 제국 드레드노트", 
+      "ru": "Амаррский дредноут в МВ", 
+      "zh": "势力战争艾玛帝国无畏舰"
+    }, 
+    "groupNameID": 1050669, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5191": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5191, 
+    "groupName": {
+      "de": "FK-Dreadnought des Staats der Caldari", 
+      "en-us": "FW Caldari State Dreadnought", 
+      "es": "Superacorazado de GF del Estado Caldari", 
+      "fr": "Supercuirassé de l'État caldari de la GF", 
+      "ja": "FWカルダリ連合攻城艦", 
+      "ko": "팩션 전쟁 칼다리 연합 드레드노트", 
+      "ru": "Калдарский дредноут в МВ", 
+      "zh": "势力战争加达里合众国无畏舰"
+    }, 
+    "groupNameID": 1050670, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5192": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5192, 
+    "groupName": {
+      "de": "FK-Dreadnought der Föderation der Gallente", 
+      "en-us": "FW Gallente Federation Dreadnought", 
+      "es": "Superacorazado de GF de la Federación Gallente", 
+      "fr": "Supercuirassé de la Fédération gallente de la GF", 
+      "ja": "FWガレンテ連邦攻城艦", 
+      "ko": "팩션 전쟁 갈란테 연방 드레드노트", 
+      "ru": "Галлентский дредноут в МВ", 
+      "zh": "势力战争盖伦特联邦无畏舰"
+    }, 
+    "groupNameID": 1050674, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5193": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5193, 
+    "groupName": {
+      "de": "FK-Dreadnought der Republik Minmatar", 
+      "en-us": "FW Minmatar Republic Dreadnought", 
+      "es": "Superacorazado de GF de la República Minmatar", 
+      "fr": "Supercuirassé de la République minmatar de la GF", 
+      "ja": "FWミンマター共和国攻城艦", 
+      "ko": "팩션 전쟁 민마타 공화국 드레드노트", 
+      "ru": "Минматарский дредноут в МВ", 
+      "zh": "势力战争米玛塔尔共和国无畏舰"
+    }, 
+    "groupNameID": 1050675, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5194": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5194, 
+    "groupName": {
+      "de": "FK-Titan des Imperiums der Amarr", 
+      "en-us": "FW Amarr Empire Titan", 
+      "es": "Titán de GF del Imperio Amarr", 
+      "fr": "Titan de l'Empire amarr de la GF", 
+      "ja": "FWアマー帝国タイタン", 
+      "ko": "팩션 전쟁 아마르 제국 타이탄", 
+      "ru": "Амаррский титан в МВ", 
+      "zh": "势力战争艾玛帝国泰坦"
+    }, 
+    "groupNameID": 1050679, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5195": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5195, 
+    "groupName": {
+      "de": "FK-Titan des Staats der Caldari", 
+      "en-us": "FW Caldari State Titan", 
+      "es": "Titán de GF del Estado Caldari", 
+      "fr": "Titan de l'État caldari de la GF", 
+      "ja": "FWカルダリ連合タイタン", 
+      "ko": "팩션 전쟁 칼다리 연합 타이탄", 
+      "ru": "Калдарский титан в МВ", 
+      "zh": "势力战争加达里合众国泰坦"
+    }, 
+    "groupNameID": 1050680, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5196": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5196, 
+    "groupName": {
+      "de": "FK-Titan der Föderation der Gallente", 
+      "en-us": "FW Gallente Federation Titan", 
+      "es": "Titán de GF de la Federación Gallente", 
+      "fr": "Titan de la Fédération gallente de la GF", 
+      "ja": "FWガレンテ連邦タイタン", 
+      "ko": "팩션 전쟁 갈란테 연방 프리깃", 
+      "ru": "Галлентский титан в МВ", 
+      "zh": "势力战争盖伦特联邦泰坦"
+    }, 
+    "groupNameID": 1050681, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5197": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5197, 
+    "groupName": {
+      "de": "FK-Titan der Republik Minmatar", 
+      "en-us": "FW Minmatar Republic Titan", 
+      "es": "Titán de GF de la República Minmatar", 
+      "fr": "Titan de la République minmatar de la GF", 
+      "ja": "FWミンマター共和国タイタン", 
+      "ko": "팩션 전쟁 민마타 공화국 프리깃", 
+      "ru": "Минматарский титан в МВ", 
+      "zh": "势力战争米玛塔尔共和国泰坦"
+    }, 
+    "groupNameID": 1050682, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5198": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 65, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5198, 
+    "groupName": {
+      "de": "Eroberungsmaschine", 
+      "en-us": "Conquest Engine", 
+      "es": "Motor de conquista", 
+      "fr": "Machine de Conquête", 
+      "ja": "「征服」エンジン", 
+      "ko": "정복 엔진", 
+      "ru": "Завоевательная технология", 
+      "zh": "征服引擎"
+    }, 
+    "groupNameID": 1050816, 
     "published": 0, 
     "useBasePrice": 0
   }, 
@@ -32611,6 +32911,145 @@
       "zh": "混合无人机"
     }, 
     "groupNameID": 1053249, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5251": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 20, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5251, 
+    "groupName": {
+      "de": "Cybermodifikation", 
+      "en-us": "Cyber Rigging", 
+      "es": "Complementos cibernéticos", 
+      "fr": "Cyber Optimisation", 
+      "ja": "サイバーリギング", 
+      "ko": "사이버 리그", 
+      "ru": "Кибернадстройки", 
+      "zh": "赛博改装技术"
+    }, 
+    "groupNameID": 1056736, 
+    "published": 1, 
+    "useBasePrice": 1
+  }, 
+  "5254": {
+    "anchorable": 0, 
+    "anchored": 1, 
+    "categoryID": 2, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5254, 
+    "groupName": {
+      "de": "Gegenstandshändler", 
+      "en-us": "Item Trader", 
+      "es": "Comerciante de artículos", 
+      "fr": "Marchand d'objet", 
+      "ja": "アイテムトレーダー", 
+      "ko": "아이템 교환소", 
+      "ru": "Торговец предметами", 
+      "zh": "物品贸易官"
+    }, 
+    "groupNameID": 1057719, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5265": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5265, 
+    "groupName": {
+      "de": "FK-Shuttle des Imperiums der Amarr", 
+      "en-us": "FW Amarr Empire Shuttle", 
+      "es": "Lanzadera de GF del Imperio Amarr", 
+      "fr": "Navette de l'Empire amarr de la GF", 
+      "ja": "FWアマー帝国シャトル", 
+      "ko": "팩션 전쟁 아마르 제국 셔틀", 
+      "ru": "Амаррский катер МВ", 
+      "zh": "势力战争艾玛帝国穿梭机"
+    }, 
+    "groupNameID": 1059756, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5266": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5266, 
+    "groupName": {
+      "de": "FK-Shuttle des Staats der Caldari", 
+      "en-us": "FW Caldari State Shuttle", 
+      "es": "Lanzadera de GF del Estado Caldari", 
+      "fr": "Navette de l'État caldari de la GF", 
+      "ja": "FWカルダリ連合シャトル", 
+      "ko": "팩션 전쟁 칼다리 셔틀", 
+      "ru": "Калдарский катер МВ", 
+      "zh": "势力战争加达里合众国穿梭机"
+    }, 
+    "groupNameID": 1059757, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5267": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5267, 
+    "groupName": {
+      "de": "FK-Shuttle der Föderation der Gallente", 
+      "en-us": "FW Gallente Federation Shuttle", 
+      "es": "Lanzadera de GF de la Federación Gallente", 
+      "fr": "Navette de la Fédération gallente de la GF", 
+      "ja": "FWガレンテ連邦シャトル", 
+      "ko": "팩션 전쟁 갈란테 셔틀", 
+      "ru": "Галлентский катер МВ", 
+      "zh": "势力战争盖伦特联邦穿梭机"
+    }, 
+    "groupNameID": 1059758, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5268": {
+    "anchorable": 0, 
+    "anchored": 0, 
+    "categoryID": 11, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5268, 
+    "groupName": {
+      "de": "FK-Shuttle der Republik Minmatar", 
+      "en-us": "FW Minmatar Republic Shuttle", 
+      "es": "Lanzadera de GF de la República Minmatar", 
+      "fr": "Navette de la République minmatar de la GF", 
+      "ja": "FWミンマター共和国シャトル", 
+      "ko": "FW 민마타 셔틀", 
+      "ru": "Минматарский катер МВ", 
+      "zh": "势力战争米玛塔尔共和国穿梭机"
+    }, 
+    "groupNameID": 1059759, 
+    "published": 1, 
+    "useBasePrice": 0
+  }, 
+  "5270": {
+    "anchorable": 0, 
+    "anchored": 1, 
+    "categoryID": 2, 
+    "fittableNonSingleton": 0, 
+    "groupID": 5270, 
+    "groupName": {
+      "de": "FW Rally Point", 
+      "en-us": "FW Rally Point", 
+      "es": "Punto de reunión de GF", 
+      "ja": "FWラリーポイント", 
+      "ko": "팩션 전쟁 집결지", 
+      "ru": "Точка сбора МВ", 
+      "zh": "势力战争集会点"
+    }, 
+    "groupNameID": 1060378, 
     "published": 1, 
     "useBasePrice": 0
   }, 

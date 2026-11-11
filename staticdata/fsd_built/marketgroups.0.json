@@ -30529,7 +30529,7 @@
       "zh": "海军势力战列巡洋舰设计。"
     }, 
     "descriptionID": 288170, 
-    "hasTypes": 1, 
+    "hasTypes": 0, 
     "iconID": 1443, 
     "name": {
       "de": "Navyfraktion", 
@@ -51009,6 +51009,70 @@
     "nameID": 1048151, 
     "parentGroupID": 3834
   }, 
+  "3865": {
+    "hasTypes": 1, 
+    "iconID": 20959, 
+    "name": {
+      "de": "Amarr", 
+      "en-us": "Amarr", 
+      "es": "Amarr", 
+      "fr": "Amarr", 
+      "ja": "アマー", 
+      "ko": "아마르", 
+      "ru": "Амаррцы", 
+      "zh": "艾玛"
+    }, 
+    "nameID": 1048234, 
+    "parentGroupID": 1704
+  }, 
+  "3866": {
+    "hasTypes": 1, 
+    "iconID": 20966, 
+    "name": {
+      "de": "Caldari", 
+      "en-us": "Caldari", 
+      "es": "Caldari", 
+      "fr": "Caldari", 
+      "ja": "カルダリ", 
+      "ko": "칼다리", 
+      "ru": "Калдарцы", 
+      "zh": "加达里"
+    }, 
+    "nameID": 1048235, 
+    "parentGroupID": 1704
+  }, 
+  "3867": {
+    "hasTypes": 1, 
+    "iconID": 20967, 
+    "name": {
+      "de": "Gallente", 
+      "en-us": "Gallente", 
+      "es": "Gallente", 
+      "fr": "Gallente", 
+      "ja": "ガレンテ", 
+      "ko": "갈란테", 
+      "ru": "Галленты", 
+      "zh": "盖伦特"
+    }, 
+    "nameID": 1048236, 
+    "parentGroupID": 1704
+  }, 
+  "3868": {
+    "hasTypes": 1, 
+    "iconID": 20968, 
+    "name": {
+      "de": "Minmatar", 
+      "en-us": "Minmatar", 
+      "es": "Minmatar", 
+      "fr": "Minmatar", 
+      "ja": "ミンマター", 
+      "ko": "민마타", 
+      "ru": "Республика Минматар", 
+      "zh": "米玛塔尔"
+    }, 
+    "nameID": 1048237, 
+    "parentGroupID": 1704
+  }, 
   "3869": {
     "hasTypes": 0, 
     "iconID": 21420, 
@@ -51056,6 +51120,70 @@
     }, 
     "nameID": 1048461, 
     "parentGroupID": 3871
+  }, 
+  "3874": {
+    "hasTypes": 0, 
+    "iconID": 27593, 
+    "name": {
+      "de": "Synchronisator-Modifikationen", 
+      "en-us": "Synchronizer Rigs", 
+      "es": "Complementos sincronizadores", 
+      "fr": "Optimisations de synchronisation", 
+      "ja": "シンクロナイザーリグ", 
+      "ko": "동기화 리그", 
+      "ru": "Синхронизируемые надстройки", 
+      "zh": "同步器改装件"
+    }, 
+    "nameID": 1049484, 
+    "parentGroupID": 1111
+  }, 
+  "3875": {
+    "hasTypes": 1, 
+    "iconID": 27593, 
+    "name": {
+      "de": "Klein", 
+      "en-us": "Small", 
+      "es": "Pequeño", 
+      "fr": "Petit", 
+      "ja": "小型", 
+      "ko": "소", 
+      "ru": "Мелкие", 
+      "zh": "小型"
+    }, 
+    "nameID": 1049485, 
+    "parentGroupID": 3874
+  }, 
+  "3876": {
+    "hasTypes": 1, 
+    "iconID": 27593, 
+    "name": {
+      "de": "Mittel", 
+      "en-us": "Medium", 
+      "es": "Mediano", 
+      "fr": "Intermédiaire", 
+      "ja": "中型", 
+      "ko": "중간", 
+      "ru": "Умерен.", 
+      "zh": "中型"
+    }, 
+    "nameID": 1049952, 
+    "parentGroupID": 3874
+  }, 
+  "3877": {
+    "hasTypes": 1, 
+    "iconID": 27593, 
+    "name": {
+      "de": "Groß", 
+      "en-us": "Large", 
+      "es": "Grande", 
+      "fr": "Grand", 
+      "ja": "大型", 
+      "ko": "대", 
+      "ru": "Крупный", 
+      "zh": "大型"
+    }, 
+    "nameID": 1049953, 
+    "parentGroupID": 3874
   }, 
   "3878": {
     "hasTypes": 1, 
@@ -51181,5 +51309,64 @@
     }, 
     "nameID": 1054542, 
     "parentGroupID": 817
+  }, 
+  "3887": {
+    "hasTypes": 1, 
+    "iconID": 21622, 
+    "name": {
+      "de": "Kampagnen-Assets", 
+      "en-us": "Campaign Assets", 
+      "es": "Bienes de campaña", 
+      "fr": "Ressources de campagne", 
+      "ja": "キャンペーン資産", 
+      "ko": "코퍼레이션 자산", 
+      "ru": "Активы кампании", 
+      "zh": "活动资产"
+    }, 
+    "nameID": 1056204, 
+    "parentGroupID": 3834
+  }, 
+  "3888": {
+    "description": {
+      "de": "Modifikations-Implantate", 
+      "en-us": "Rigging Implants", 
+      "es": "Implantes de complementos", 
+      "fr": "Implants d'optimisation", 
+      "ja": "リギングインプラント", 
+      "ko": "리그 임플란트", 
+      "ru": "Импланты для надстроек", 
+      "zh": "改装植入体"
+    }, 
+    "descriptionID": 1056734, 
+    "hasTypes": 0, 
+    "iconID": 2224, 
+    "name": {
+      "de": "Modifikations-Implantate", 
+      "en-us": "Rigging Implants", 
+      "es": "Implantes de complementos", 
+      "fr": "Implants d'optimisation", 
+      "ja": "リギングインプラント", 
+      "ko": "리그 임플란트", 
+      "ru": "Импланты для надстроек", 
+      "zh": "改装植入体"
+    }, 
+    "nameID": 1056733, 
+    "parentGroupID": 531
+  }, 
+  "3889": {
+    "hasTypes": 1, 
+    "iconID": 2224, 
+    "name": {
+      "de": "Implantat-Slot 10", 
+      "en-us": "Implant Slot 10", 
+      "es": "Ranura de implante 10", 
+      "fr": "Emplacement d'implant 10", 
+      "ja": "インプラントスロット10", 
+      "ko": "임플란트 슬롯 10", 
+      "ru": "Разъём для имплантов 10", 
+      "zh": "植入体槽位10"
+    }, 
+    "nameID": 1056735, 
+    "parentGroupID": 3888
   }
 }

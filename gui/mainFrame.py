@@ -728,7 +728,7 @@ class MainFrame(wx.Frame):
             fitItems = {i for i in Fit.fitItemIter(fit, forceFitImplants=True) if i is not fit.ship.item}
             self.disablerAll = wx.WindowDisabler()
             self.waitDialog = wx.BusyInfo(_t("Please Wait..."), parent=self)
-            Price.getInstance().findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=10)
+            Price.getInstance().findCheaperReplacements(fitItems, updateFitCb, fit=fit, fetchTimeout=10)
 
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())

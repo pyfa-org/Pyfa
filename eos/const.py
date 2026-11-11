@@ -18,6 +18,7 @@
 # =============================================================================
 
 from enum import IntEnum,unique
+from typing import NamedTuple
 
 
 @unique
@@ -113,3 +114,36 @@ class Operator(IntEnum):
     MULTIPLY = 2
     POSTINCREASE = 3
     FORCE = 4
+
+
+class SynchronizerSet(NamedTuple):
+    # Type IDs of the synchronizer rigs of the set
+    rigTypeIDs: frozenset
+    # ID of the attribute marking modules of the set (it is what they add to the rig)
+    moduleAttrID: int
+
+
+# Synchronizer rig sets: ID of the effect modules of a set use to count towards its rig -> set info
+SYNCHRONIZER_SETS = {
+    # rigSetAmarrNavyBonusModAddSetRigGroup: Small, Medium, Large Imperial Navy Synchronizer; rigSetAmarrNavyModule
+    12963: SynchronizerSet(rigTypeIDs=frozenset((96130, 96131, 96132)), moduleAttrID=6312),
+    # rigSetCaldariNavyBonusModAddSetRigGroup: Small, Medium, Large Caldari Navy Synchronizer; rigSetCaldariNavyModule
+    12964: SynchronizerSet(rigTypeIDs=frozenset((96139, 96144, 96145)), moduleAttrID=6313),
+    # rigSetGallenteNavyBonusModAddSetRigGroup: Small, Medium, Large Federation Navy Synchronizer;
+    # rigSetGallenteNavyModule
+    12965: SynchronizerSet(rigTypeIDs=frozenset((95809, 96128, 96129)), moduleAttrID=6314),
+    # rigSetMinmatarFleetBonusModAddSetRigGroup: Small, Medium, Large Republic Fleet Synchronizer;
+    # rigSetMinmatarFleetModule
+    12966: SynchronizerSet(rigTypeIDs=frozenset((96136, 96137, 96138)), moduleAttrID=6315),
+    # rigSetDarkBloodBonusModAddSetRigGroup: Small, Medium, Large Dark Blood Synchronizer; rigSetDarkBloodModule
+    12989: SynchronizerSet(rigTypeIDs=frozenset((96541, 96559, 96564)), moduleAttrID=6372),
+    # rigSetTrueSanshaBonusModAddSetRigGroup: Small, Medium, Large True Sansha Synchronizer; rigSetTrueSanshaModule
+    12990: SynchronizerSet(rigTypeIDs=frozenset((96587, 96594, 96595)), moduleAttrID=6373),
+    # rigSetDreadGuristasBonusModAddSetRigGroup: Small, Medium, Large Dread Guristas Synchronizer;
+    # rigSetDreadGuristasModule
+    12991: SynchronizerSet(rigTypeIDs=frozenset((96696, 96719, 96720)), moduleAttrID=6374),
+    # rigSetShadowSerpentisBonusModAddSetRigGroup: Small, Medium, Large Shadow Serpentis Synchronizer;
+    # rigSetShadowSerpentisModule
+    12992: SynchronizerSet(rigTypeIDs=frozenset((96625, 96640, 96641)), moduleAttrID=6375),
+    # rigSetDominationBonusModAddSetRigGroup: Small, Medium, Large Domination Synchronizer; rigSetDominationAngelModule
+    12993: SynchronizerSet(rigTypeIDs=frozenset((96723, 96725, 96726)), moduleAttrID=6376)}

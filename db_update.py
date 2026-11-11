@@ -92,6 +92,7 @@ def update_db():
     import eos.db
     import eos.gamedata
     import eos.config
+    from eos.const import SYNCHRONIZER_SETS
 
     # Create the database tables
     eos.db.gamedata_meta.create_all(eos.db.gamedata_engine)
@@ -445,6 +446,11 @@ def update_db():
             1289: 1287,
             1290: 1288}
         skillReqAttribsFlat = set(skillReqAttribs.keys()).union(skillReqAttribs.values())
+        # Modules counting towards synchronizer rig sets differ from their equivalents only by the set they count
+        # towards (effect, and the attribute it adds to the rig); which of them stay replaceable depends on
+        # synchronizers fitted, and is decided by the market service
+        synchronizerSetEffects = set(SYNCHRONIZER_SETS)
+        synchronizerSetAttribs = {s.moduleAttrID for s in SYNCHRONIZER_SETS.values()}
         # Get data on type groups
         # Format: {type ID: group ID}
         typesGroups = {}
@@ -454,6 +460,8 @@ def update_db():
         # Format: {type ID: set(effect, IDs)}
         typesEffects = {}
         for row in dogmaTypeEffectsData:
+            if row['effectID'] in synchronizerSetEffects:
+                continue
             typesEffects.setdefault(row['typeID'], set()).add(row['effectID'])
         # Get data on type attributes
         # Format: {type ID: {attribute ID: attribute value}}
@@ -476,7 +484,7 @@ def update_db():
                 633,  # metaLevel
                 1692,  # metaGroupID
                 1768  # typeColorScheme
-            ):
+            ) or attributeID in synchronizerSetAttribs:
                 continue
             else:
                 typeNormalAttribs = typesNormalAttribs.setdefault(row['typeID'], {})
@@ -973,8 +981,8 @@ def update_db():
     hardcodeTrigSystemEffects()
     hardcodeFwProxyEffects()
 
-    hardcodeHerald()
-    hardcodePenitence()
+    # hardcodeHerald()
+    # hardcodePenitence()
 
     eos.db.gamedata_session.commit()
     with eos.db.gamedata_engine.begin() as connection:

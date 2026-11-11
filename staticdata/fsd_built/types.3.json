@@ -7857,7 +7857,7 @@
     "capacity": 0.0, 
     "description": {
       "de": "Die Errichtung von Stützpunkten der Guristas-Piraten stellt eine abrupte Änderung ihrer bisherigen Taktiken dar, die ehemals darauf beruhten, Beutezüge durch die Territorien des Staats der Caldari und angrenzenden Regionen des Hochsicherheitsraums durchzuführen. Diese Stützpunkte sind eine ernsthafte Bedrohung für die Kerninteressen des Imperiums und seine Industrievorhaben. Insbesondere können die Bergbauoperationen der Guristas-Piraten und Patrouillenflotten in immer größerer Zahl von solchen Stützpunkten aus agieren, indem sie in Asteroidengürteln und gegen verwundbare Infrastrukturen vorgehen. CONCORD hat die Bedrohung durch Piratenstützpunkte als äußerst ernst eingestuft und wird Kapselpilotengruppen belohnen, die die Initiative ergreifen, um Strukturen dieser Art anzugreifen und zu zerstören. Die Kapselpilotflotte, die einem Piratenstützpunkt den meisten Schaden zufügt, erhält bis zu <color=yellow>800.000.000 ISK</color>, wobei einzelne Piloten bis zu <color=yellow>30.000.000 ISK</color> erhalten können.", 
-      "en-us": "A high-tempo shift of gears for Guristas Pirates raiding throughout the Caldari State, and bordering empire regions of high-security space, the appearance of Guristas Pirates Strongholds represents a major challenge to core empire military and industrial operations.\r\n\r\nNotably, Guristas Pirate mining operations and patrol fleets are able to range out from their strongholds in ever greater numbers, striking in asteroid belts and against vulnerable infrastructure.\r\n\r\nCONCORD has assessed the threat of pirate strongholds as extremely serious and will reward capsuleer groups that take the lead in degrading and destroying outlaw structures of this kind.\r\n\r\nThe capsuleer fleet that inflicts the most damage on a pirate stronghold will receive up to <color=yellow>800,000,000 ISK</color>, with individual pilots potentially receiving up to <color=yellow>30,000,000 ISK</color> each.", 
+      "en-us": "A high-tempo shift of gears for Guristas Pirates raiding throughout the Caldari State, and bordering empire regions of high-security space, the appearance of Guristas Pirates Strongholds represents a major challenge to core empire military and industrial operations.\r\n\r\nNotably, Guristas Pirate mining operations and patrol fleets are able to range out from their strongholds in ever greater numbers, striking in asteroid belts and against vulnerable infrastructure.\r\n\r\nCONCORD has assessed the threat of pirate strongholds as extremely serious and will reward capsuleer groups that take the lead in degrading and destroying outlaw structures of this kind.\r\n\r\nThe capsuleer fleet that inflicts the most damage on a pirate stronghold will receive up to <color=yellow>1,000,000,000 ISK</color>, with individual pilots potentially receiving up to <color=yellow>100,000,000 ISK</color> each.", 
       "es": "La aparición de bastiones refleja un agresivo cambio de tendencia de los Piratas Guristas que saquean el Estado Caldari y las regiones fronterizas imperiales en espacios de seguridad alta y representa un gran desafío para las principales operaciones militares e industriales del Imperio.\r\n\r\nEn concreto, las operaciones mineras y las flotas de patrulla de los piratas Guristas son capaces de escapar del alcance de sus bastiones cada vez en mayor número, atacando cinturones de asteroides e infraestructuras vulnerables.\r\n\r\nLa evaluación de CONCORD ha determinado que los bastiones piratas presentan una amenaza extremadamente grave y retribuirá a los grupos de capsulistas que tomen la iniciativa para degradar y destruir las estructuras forajidas de este tipo.\r\n\r\nLa flota capsulista que inflija el mayor daño a un bastión pirata recibirá hasta <color=yellow>800 000 000 ISK</color> y cada uno de los pilotos podrá recibir hasta <color=yellow>30 000 000 ISK</color>.", 
       "fr": "L'apparition de forteresses renforce considérablement les pirates guristas écumant l'État caldari aux abords des régions de l'espace de haute sécurité impérial et représente un défi majeur pour les opérations militaires et industrielles des principaux empires. En effet, les opérations d'extraction minière et les flottes de patrouilles des pirates guristas sont désormais capables de se déployer loin de leur forteresse et de venir frapper dans des ceintures d'astéroïdes et infrastructures vulnérables. CONCORD prend très au sérieux la menace des forteresses pirates et récompensera les groupes de capsuliers qui seront les premiers à endommager et détruire les structures illégales de ce type. La flotte de capsuliers qui infligera le plus de dégâts à une forteresse pirate recevra jusqu'à <color=yellow>800 000 000 ISK</color>, chacun des pilotes recevant alors jusqu'à <color=yellow>30 000 000 ISK</color>.", 
       "ja": "カルダリ連合の支配宙域やハイセキュリティ宙域の大国国境付近におけるガリスタス海賊の襲撃活動の激化、そしてガリスタスの要塞の出現は、主要大国の軍事・産業にとって大きな問題となっている。\r\n\r\n特にガリスタス海賊の採掘部隊やパトロールフリートがこういった要塞から大規模な遠征を行い、アステロイドベルトや防備の少ないインフラに対する襲撃を敢行することが可能となってしまっている。\r\n\r\nCONCORDは海賊の要塞を重大な脅威と考えており、そういった違法ストラクチャに対する弱体化・破壊活動を率先しておこなったカプセラの集団に報酬を提供している。\r\n\r\n海賊の要塞に最も多くのダメージを与えたカプセラフリートには最大<color=yellow>800,000,000 ISK</color>が進呈され、さらにパイロット個々人に対しては最大<color=yellow>30,000,000 ISK</color>が送られる可能性がある。", 
@@ -7895,7 +7895,7 @@
     "capacity": 0.0, 
     "description": {
       "de": "Als Eskalation der Aktivität des Bundes der Blood Raider in den Kerngebieten des Imperiums der Amarr und den benachbarten Regionen des Hochsicherheitsraums, stellt die Errichtung von Stützpunkten der Blood Raiders eine ernsthafte Bedrohung für die Kerninteressen des Imperiums dar. Insbesondere können die Bergbauoperationen der Blood Raiders und Patrouillenflotten in immer größerer Zahl von solchen Stützpunkten aus agieren, indem sie in Asteroidengürteln und gegen verwundbare Infrastrukturen vorgehen. CONCORD hat die Bedrohung durch Piratenstützpunkte als äußerst ernst eingestuft und wird Kapselpilotengruppen belohnen, die die Initiative ergreifen, um Strukturen dieser Art anzugreifen und zu zerstören. Die Kapselpilotflotte, die einem Piratenstützpunkt den meisten Schaden zufügt, erhält bis zu <color=yellow>800.000.000 ISK</color>, wobei einzelne Piloten bis zu <color=yellow>30.000.000 ISK</color> erhalten können.", 
-      "en-us": "Representing an escalation in Blood Raider Covenant activity across the core territories of the Amarr Empire, and neighboring regions of high-security space, the establishment of Blood Raiders Strongholds poses a severe threat to core empire interests.\r\n\r\nIn particular, Blood Raider mining operations and patrol fleets are able to range out from such strongholds in ever greater numbers, striking in asteroid belts and against vulnerable infrastructure.\r\n\r\nCONCORD has assessed the threat of pirate strongholds as extremely serious and will reward capsuleer groups that take the lead in degrading and destroying outlaw structures of this kind.\r\n\r\nThe capsuleer fleet that inflicts the most damage on a pirate stronghold will receive up to <color=yellow>800,000,000 ISK</color>, with individual pilots potentially receiving up to <color=yellow>30,000,000 ISK</color> each.", 
+      "en-us": "Representing an escalation in Blood Raider Covenant activity across the core territories of the Amarr Empire, and neighboring regions of high-security space, the establishment of Blood Raiders Strongholds poses a severe threat to core empire interests.\r\n\r\nIn particular, Blood Raider mining operations and patrol fleets are able to range out from such strongholds in ever greater numbers, striking in asteroid belts and against vulnerable infrastructure.\r\n\r\nCONCORD has assessed the threat of pirate strongholds as extremely serious and will reward capsuleer groups that take the lead in degrading and destroying outlaw structures of this kind.\r\n\r\nThe capsuleer fleet that inflicts the most damage on a pirate stronghold will receive up to <color=yellow>1,000,000,000 ISK</color>, with individual pilots potentially receiving up to <color=yellow>100,000,000 ISK</color> each.", 
       "es": "El establecimiento de los bastiones de los Saqueadores Sanguinarios supone una seria amenaza para los intereses principales del imperio, ya que representa una intensificación de la actividad del Pacto de los Saqueadores Sanguinarios en los territorios más importantes del Imperio Amarr y en las regiones vecinas de espacio de seguridad alta.\r\n\r\nLas operaciones mineras y las flotas de patrulla de los Saqueadores Sanguinarios son capaces de escapar del alcance de esos bastiones cada vez más atacando cinturones de asteroides e infraestructuras vulnerables.\r\n\r\nLa evaluación de CONCORD ha determinado que los bastiones piratas presentan una amenaza extremadamente grave y retribuirá a los grupos de capsulistas que tomen la iniciativa para degradar y destruir las estructuras forajidas de este tipo.\r\n\r\nLa flota capsulista que inflija el mayor daño a un bastión pirata recibirá hasta <color=yellow>800 000 000 ISK</color> y cada uno de los pilotos podrá recibir hasta <color=yellow>30 000 000 ISK</color>.", 
       "fr": "Représentant une intensification de l'activité de la cabale Blood Raider à travers les territoires centraux de l'Empire amarr et les régions voisines de l'espace de haute sécurité, l'établissement de forteresses de Blood Raiders constitue une menace sérieuse pour les intérêts des principaux empires. En particulier, les opérations minières et les flottes de patrouille des Blood Raiders peuvent se déployer depuis ces forteresses en nombre toujours plus grand, frappant les ceintures d'astéroïdes et les infrastructures vulnérables. CONCORD a estimé que la menace des forteresses pirates était extrêmement sérieuse et récompensera les groupes de capsuliers qui prendront l'initiative d'endommager et de détruire les structures hors-la-loi de ce type. La flotte de capsulierss qui infligera le plus de dégâts à un bastion pirate recevra jusqu'à <color=yellow>800 000 000 ISK</color>, les pilotes individuels pouvant recevoir jusqu'à <color=yellow>30 000 000 ISK</color> chacun.", 
       "ja": "アマー帝国の中枢宙域ならびにハイセキュリティ宙域におけるブラッドレイダーカバナントの活動増大を象徴するブラッドレイダーの要塞の存在は、主要帝国の利権に対する大きな脅威となっている。\r\n\r\n特にブラッドレイダーの採掘部隊やパトロールフリートがこういった要塞から大規模な遠征を行い、アステロイドベルトや防備の少ないインフラに対する襲撃を敢行することが可能となってしまっている。\r\n\r\nCONCORDは海賊の要塞を重大な脅威と考えており、そういった違法ストラクチャに対する弱体化・破壊活動を率先しておこなったカプセラの集団に報酬を提供している。\r\n\r\n海賊の要塞に最も多くのダメージを与えたカプセラフリートには最大<color=yellow>800,000,000 ISK</color>が進呈され、さらにパイロット個々人に対しては最大<color=yellow>30,000,000 ISK</color>が送られる可能性がある。", 
@@ -11938,7 +11938,7 @@
       "ja": "スタンドアップ中型衛星ドリル安定性II設計図", 
       "ko": "스탠드업 M-Set 위성 드릴 안정화 장치 II 블루프린트", 
       "ru": "Standup M-Set Moon Drilling Stability II Blueprint", 
-      "zh": "屹立中型卫星钻探稳定蓝图 II"
+      "zh": "屹立卫星钻探稳定II M蓝图"
     }, 
     "typeNameID": 529768, 
     "volume": 0.01
@@ -11988,7 +11988,7 @@
       "ja": "スタンドアップ中型衛星ドリル性能II設計図", 
       "ko": "스탠드업 M-Set 위성 드릴 효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Moon Drilling Efficiency II Blueprint", 
-      "zh": "屹立中型卫星钻探效率蓝图 II"
+      "zh": "屹立卫星钻探效率II M蓝图"
     }, 
     "typeNameID": 529770, 
     "volume": 0.01
@@ -12163,7 +12163,7 @@
       "ja": "スタンドアップ中型ハイブリッドリアクター時間効率II設計図", 
       "ko": "스탠드업 M-Set 하이브리드 반응로 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Hybrid Reactor Time Efficiency II Blueprint", 
-      "zh": "屹立中型混合反应堆时间效率蓝图 II"
+      "zh": "屹立混合反应堆时间效率II M蓝图"
     }, 
     "typeNameID": 529777, 
     "volume": 0.01
@@ -12188,7 +12188,7 @@
       "ja": "スタンドアップ中型ハイブリッドリアクター資源効率I設計図", 
       "ko": "스탠드업 M-Set 하이브리드 반응로 자원효율성 I 블루프린트", 
       "ru": "Standup M-Set Hybrid Reactor Material Efficiency I Blueprint", 
-      "zh": "屹立中型混合反应堆材料效率蓝图 I"
+      "zh": "屹立混合反应堆材料效率I M蓝图"
     }, 
     "typeNameID": 529778, 
     "volume": 0.01
@@ -12263,7 +12263,7 @@
       "ja": "スタンドアップ中型有機化合リアクター時間効率II設計図", 
       "ko": "스탠드업 M-Set 생화학 반응로 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Biochemical Reactor Time Efficiency II Blueprint", 
-      "zh": "屹立中型生化反应堆时间效率蓝图 II"
+      "zh": "屹立生化反应堆时间效率II M蓝图"
     }, 
     "typeNameID": 529781, 
     "volume": 0.01
@@ -12363,7 +12363,7 @@
       "ja": "スタンドアップ大型リアクター性能II設計図", 
       "ko": "스탠드업 L-Set 반응로 효율성 II 블루프린트", 
       "ru": "Standup L-Set Reactor Efficiency II Blueprint", 
-      "zh": "屹立大型反应堆效率蓝图 II"
+      "zh": "屹立反应堆效率II L蓝图"
     }, 
     "typeNameID": 529785, 
     "volume": 0.01
@@ -14686,7 +14686,7 @@
       "ja": "この装甲と電磁気で強化されたデータキャッシュは、通常ガリスタスの造船所施設に統合されている。ロガーヘッド級軍事力補強を建造する際、高いレベルのセキュリティと破損からの保護を提供する。\r\n\nこれらの装甲キャッシュは、設置されている施設の破壊に耐えられる可能性が高い。適切な船で回収すれば、キャッシュにアクセスしてロガーヘッドの設計図データを回収することができる。", 
       "ko": "구리스타스 쉽야드 시설물에 설치되는 EM 데이터 캐시로 로거헤드급 포스 악실리아 제작 시 강력한 방화벽 및 보안 기능을 제공합니다. <br><br>설치된 시설이 파괴되어도 높은 확률로 저장고는 손상되지 않습니다. 특정 함선은 데이터 캐시로부터 로거헤드 블루프린트 데이터를 획득할 수 있습니다.", 
       "ru": "Бронированный и защищённый от электромагнитных полей носитель данных, интегрированный в промышленные линии верфей «Гуристас» и обеспечивающий высокий уровень безопасности и защиты от повреждения данных при постройке вспомогательных КБТ класса «Василиск».\n\n\n\nЭти носители данных с высокой вероятностью переживают уничтожение объектов, в которые установлены. Если такой носитель удалось найти и спасти с помощью подходящего корабля, можно получить доступ к данным и извлечь из него чертежи «Василиска».", 
-      "zh": "这个带有装甲且被电磁强化过的数据缓存通常整合在古斯塔斯的船坞里，在建造赤龟级战力辅助舰时提供高强度的安全和保护措施。\n\n\n\n这些带有装甲的缓存很可能在它安装的设施被摧毁后还能毫发无损。如果使用合适的舰船来进行复原，就可以打开这种缓存，复原出里面的赤龟级蓝图数据。"
+      "zh": "这个带有装甲且被电磁强化过的数据缓存通常整合在古斯塔斯的船坞里，在建造赤龟级战力辅助舰时提供高强度的安全和保护措施。这些带有装甲的缓存很可能在它安装的设施被摧毁后还能毫发无损。如果使用合适的舰船来进行复原，就可以打开这种缓存，复原出里面的赤龟级蓝图数据。"
     }, 
     "descriptionID": 530120, 
     "groupID": 1818, 
@@ -14722,7 +14722,7 @@
       "ja": "この装甲と電磁気で強化されたデータキャッシュは、通常ガリスタスの造船所施設に統合されている。ケイマン級攻城艦を建造する際、高いレベルのセキュリティと破損からの保護を提供する。\r\n\nこれらの装甲キャッシュは、設置されている施設の破壊に耐えられる可能性が高い。適切な船で回収すれば、キャッシュにアクセスしてケイマンの設計図データを回収することができる。", 
       "ko": "구리스타스 쉽야드 시설물에 설치되는 EM 데이터 캐시로 카이만급 드레드노트 제작 시 강력한 방화벽 및 보안 기능을 제공합니다. <br><br>설치된 시설이 파괴되어도 높은 확률로 저장고는 손상되지 않습니다. 특정 함선은 데이터 캐시로부터 카이만 블루프린트 데이터를 획득할 수 있습니다.", 
       "ru": "Бронированный и защищённый от электромагнитных полей носитель данных, интегрированный в промышленные линии верфей «Гуристас» и обеспечивающий высокий уровень безопасности и защиты от повреждения данных при постройке дредноутов класса «Кайман».\n\n\n\nЭти носители данных с высокой вероятностью переживают уничтожение объектов, в которые установлены. Если такой носитель удалось найти и спасти с помощью подходящего корабля, можно получить доступ к данным и извлечь из него чертежи «Каймана».", 
-      "zh": "这个带有装甲且被电磁强化过的数据缓存通常整合在古斯塔斯的船坞里，在建造凯门鳄级无畏舰时提供高强度的安全和保护措施。\n\n\n\n这些带有装甲的缓存很可能在它安装的设施被摧毁后还能毫发无损。如果使用合适的舰船来进行复原，就可以打开这种缓存，复原出里面的凯门鳄级蓝图数据。"
+      "zh": "这个带有装甲且被电磁强化过的数据缓存通常整合在古斯塔斯的船坞里，在建造凯门鳄级无畏舰时提供高强度的安全和保护措施。这些带有装甲的缓存很可能在它安装的设施被摧毁后还能毫发无损。如果使用合适的舰船来进行复原，就可以打开这种缓存，复原出里面的凯门鳄级蓝图数据。"
     }, 
     "descriptionID": 530122, 
     "groupID": 1818, 
@@ -14758,7 +14758,7 @@
       "ja": "この装甲と電磁気で強化されたデータキャッシュは、通常ガリスタスの造船所施設に統合されている。コモドクラス旗艦級戦艦を建造する際、高いレベルのセキュリティと破損からの保護を提供する。\r\n\nこれらの装甲キャッシュは、設置されている施設の破壊に耐えられる可能性が高い。適切な船で回収すれば、キャッシュにアクセスしてコモドの設計図データを回収することができる。", 
       "ko": "구리스타스 쉽야드 시설물에 설치되는 EM 데이터 캐시로 코모도급 타이탄 제작 시 강력한 방화벽 및 보안 기능을 제공합니다. <br><br>설치된 시설이 파괴되어도 높은 확률로 저장고는 손상되지 않습니다. 특정 함선은 데이터 캐시로부터 코모도 블루프린트 데이터를 획득할 수 있습니다.", 
       "ru": "Бронированный и защищённый от электромагнитных полей носитель данных, интегрированный в промышленные линии верфей «Гуристас» и обеспечивающий высокий уровень безопасности и защиты от повреждения данных при постройке титанов класса «Комодо».\n\n\n\nЭти носители данных с высокой вероятностью переживают уничтожение объектов, в которые установлены. Если такой носитель удалось найти и спасти с помощью подходящего корабля, можно получить доступ к данным и извлечь из него чертежи «Комодо».", 
-      "zh": "这个带有装甲且被电磁强化过的数据缓存通常整合在古斯塔斯的船坞里，在建造科莫多级泰坦时提供高强度的安全和保护措施。\n\n\n\n这些带有装甲的缓存很可能在它安装的设施被摧毁后还能毫发无损。如果使用合适的舰船来进行复原，就可以打开这种缓存，复原出里面的科莫多级蓝图数据。"
+      "zh": "这个带有装甲且被电磁强化过的数据缓存通常整合在古斯塔斯的船坞里，在建造科莫多级泰坦时提供高强度的安全和保护措施。这些带有装甲的缓存很可能在它安装的设施被摧毁后还能毫发无损。如果使用合适的舰船来进行复原，就可以打开这种缓存，复原出里面的科莫多级蓝图数据。"
     }, 
     "descriptionID": 530124, 
     "groupID": 1818, 
@@ -15385,7 +15385,7 @@
       "ja": "スタンドアップ中型衛星鉱石グレーディングプロセッサーII設計図", 
       "ko": "스탠드업 M-Set 위성 광물 품질관리 프로세서 II 블루프린트", 
       "ru": "Standup M-Set Moon Ore Grading Processor II Blueprint", 
-      "zh": "屹立中型卫星矿石分级处理器蓝图 II"
+      "zh": "屹立卫星矿石分级处理器II M蓝图"
     }, 
     "typeNameID": 530234, 
     "volume": 0.01
@@ -30826,7 +30826,7 @@
       "ja": "スタンドアップ・ドラゴンフライI設計図", 
       "ko": "스탠드업 드래곤플라이 I 블루프린트", 
       "ru": "Standup Dragonfly I Blueprint", 
-      "zh": "屹立蜻蜓蓝图 I"
+      "zh": "屹立蜻蜓I蓝图"
     }, 
     "typeNameID": 531681, 
     "volume": 0.01
@@ -30925,7 +30925,7 @@
       "ja": "スタンドアップ・エクアイトI設計図", 
       "ko": "스탠드업 에퀴테 I 블루프린트", 
       "ru": "Standup Equite I Blueprint", 
-      "zh": "屹立骑士蓝图 I"
+      "zh": "屹立骑士I蓝图"
     }, 
     "typeNameID": 531685, 
     "volume": 0.01
@@ -30973,7 +30973,7 @@
       "ja": "スタンドアップ・ドラゴンフライII設計図", 
       "ko": "스탠드업 드래곤플라이 II 블루프린트", 
       "ru": "Standup Dragonfly II Blueprint", 
-      "zh": "屹立蜻蜓蓝图 II"
+      "zh": "屹立蜻蜓II蓝图"
     }, 
     "typeNameID": 531687, 
     "volume": 0.01
@@ -31973,6 +31973,7 @@
     "descriptionID": 531792, 
     "groupID": 60, 
     "iconID": 21860, 
+    "isDynamicType": 0, 
     "marketGroupID": 615, 
     "mass": 5000.0, 
     "metaGroupID": 1, 
@@ -32012,6 +32013,7 @@
     "descriptionID": 531793, 
     "groupID": 60, 
     "iconID": 21860, 
+    "isDynamicType": 0, 
     "marketGroupID": 615, 
     "mass": 5000.0, 
     "metaGroupID": 1, 
@@ -32051,6 +32053,7 @@
     "descriptionID": 531791, 
     "groupID": 60, 
     "iconID": 21860, 
+    "isDynamicType": 0, 
     "marketGroupID": 615, 
     "mass": 5000.0, 
     "metaGroupID": 2, 
@@ -32090,6 +32093,7 @@
     "descriptionID": 531794, 
     "groupID": 60, 
     "iconID": 21860, 
+    "isDynamicType": 0, 
     "marketGroupID": 615, 
     "mass": 5000.0, 
     "metaGroupID": 4, 
@@ -34319,7 +34323,7 @@
       "ja": "スタンドアップ大型エネルギーニュートラライザーII設計図", 
       "ko": "스탠드업 대형 에너지 뉴트럴라이저 II 블루프린트", 
       "ru": "Standup Heavy Energy Neutralizer II Blueprint", 
-      "zh": "屹立重型能量中和器蓝图 II"
+      "zh": "屹立重型能量中和器II蓝图"
     }, 
     "typeNameID": 532447, 
     "volume": 0.01
@@ -34849,7 +34853,7 @@
       "ja": "スタンドアップ・ステイシスウェビファイヤーII設計図", 
       "ko": "스탠드업 스테이시스 웹 생성기 II 블루프린트", 
       "ru": "Standup Stasis Webifier II Blueprint", 
-      "zh": "屹立停滞缠绕光束蓝图 II"
+      "zh": "屹立停滞缠绕光束II蓝图"
     }, 
     "typeNameID": 532478, 
     "volume": 0.01
@@ -34991,7 +34995,7 @@
       "ja": "スタンドアップ・キャップバッテリーI設計図", 
       "ko": "스탠드업 캐패시터 배터리 I 블루프린트", 
       "ru": "Standup Cap Battery I Blueprint", 
-      "zh": "屹立电容器电池蓝图 I"
+      "zh": "屹立电容器电池I蓝图"
     }, 
     "typeNameID": 532481, 
     "volume": 0.01
@@ -35462,7 +35466,7 @@
       "ja": "スタンドアップ・リモートセンサーダンプナーII設計図", 
       "ko": "스탠드업 원격 센서 댐프너 II 블루프린트", 
       "ru": "Standup Remote Sensor Dampener II Blueprint", 
-      "zh": "屹立远程感应抑阻器蓝图 II"
+      "zh": "屹立远程感应抑阻器II蓝图"
     }, 
     "typeNameID": 532543, 
     "volume": 0.01
@@ -55225,7 +55229,7 @@
       "ja": "アップウェルにより、強化型ファクションフォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が20%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程距離が720%延長<br>全てのアイスと鉱石の再処理生産量が16%増加<br>資源効率ならびに時間効率の研究と設計図複製ジョブに必要なISKの量が15%減少<br>資源効率研究の所要時間が40%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다. <br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 20% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>모든 아이스 및 광물 정제 산출량 16% 증가<br>ME 연구, TE 연구, 블루프린트 복제 시의 ISK 비용 15% 감소<br>ME 연구 소요 시간 40% 감소<br><br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+20% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>+16% к эффективности переработки всех типов льда и руды<br>-15% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также копирования чертежей<br>-40% от времени на исследования по повышению материалоэффективности<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高20%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>所有冰矿和矿石的提炼产出提高16%<br>材料效率研究、时间效率研究和蓝图拷贝项目的星币需求降低15%<br>材料效率研究项目的时间需求降低40%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>所有冰块和矿石的再加工产量提高 16%。<br>ME 研究、TE 研究和蓝图复制任务的 ISK 需求降低 15%。<br>机械工程研究工作所需时间减少 40%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536495, 
     "groupID": 1984, 
@@ -55297,7 +55301,7 @@
       "ja": "アップウェルにより、強化型勢力フォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が15%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程距離が720%延長<br>資源効率ならびに時間効率の研究、発明、設計図複製ジョブに必要なISKの量が15%減少<br>発明ジョブの所要時間が40%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다.<br><br><b>리그 보너스:</b><br>캐패시터 용량 및 내구도 15% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br> 거점 방어 포대 캐패시터 사용량 42% 감소 및 최적사거리 720% 증가<br> ME 연구, TE 연구, 인벤션, 블루프린트 복제 시의 ISK 비용 15% 감소 <br>인벤션 소요 시간 40% 감소<br><br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+15% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>-15% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также создания изобретений и копирования чертежей<br>-40% от времени создания изобретений<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高15%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>材料效率研究、时间效率研究、发明和蓝图拷贝项目的星币需求降低15%<br>发明项目的时间需求降低40%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>ME 研究、TE 研究、发明和蓝图复制任务的 ISK 需求降低 15%。<br>发明创造工作所需时间减少 40%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536497, 
     "groupID": 1984, 
@@ -55369,7 +55373,7 @@
       "ja": "アップウェルにより、強化型ファクションフォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が20%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程が720%拡大<br>資源効率ならびに時間効率の研究、発明、設計図複製ジョブに必要なISKの量が30%減少<br>資源効率ならびに時間効率の研究、設計図複製ジョブの所要時間が50%減少<br>発明ジョブの所要時間が40%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다. <br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 20% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>ME 연구, TE 연구, 인벤션, 블루프린트 복제 시의 ISK 비용 30% 감소<br>ME 연구, TE 연구, 블루프린트 복제 소요 시간 50% 감소<br><br>인벤션 소요 시간 40% 감소<br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+20% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>-30% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также создания изобретений и копирования чертежей<br>-50% от времени на исследования по повышению материалоэффективности и скорости производства, а также на копирование чертежей<br>-40% от времени создания изобретений<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高20%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>材料效率研究、时间效率研究、发明和蓝图拷贝项目的星币需求降低30%<br>材料效率研究、时间效率研究和蓝图拷贝项目的时间需求降低50%<br>发明项目的时间需求降低40%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>ME 研究、TE 研究、发明和蓝图复制任务的 ISK 需求降低 30%。<br>机械工程研究、技术工程研究和蓝图复印工作所需时间减少 50%。<br>发明创造工作所需时间减少 40%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536499, 
     "groupID": 1984, 
@@ -55801,7 +55805,7 @@
       "ja": "アップウェルにより、強化型ファクションフォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が25%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程が720%延長<br>全てのサービスモジュールの燃料消費量が10%減少<br>資源効率ならびに時間効率の研究、発明、設計図複製ジョブに必要なISKの量が40%減少<br>資源効率ならびに時間効率の研究、設計図複製ジョブの所要時間が60%減少<br>発明ジョブの所要時間が50%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다.<br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 25% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>서비스 모듈 연료 소모 10% 감소<br>ME 연구, TE 연구, 인벤션, 블루프린트 복제 시의 ISK 비용 40% 감소<br>ME 연구, TE 연구, 블루프린트 복제 소요 시간 60% 감소<br><br>인벤션 소요 시간 50% 감소<br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+25% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>-10% от потребления топлива всеми служебными модулями<br>-40% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также создания изобретений и копирования чертежей<br>-60% от времени на исследования по повышению материалоэффективности и скорости производства, а также на копирование чертежей<br>-50% от времени создания изобретений<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高25%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>所有服务装备的燃料消耗降低10%<br>材料效率研究、时间效率研究、发明和蓝图拷贝项目的星币需求降低40%<br>材料效率研究、时间效率研究和蓝图拷贝项目的时间需求降低60%<br>发明项目的时间需求降低50%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>所有服务模块的燃油消耗量降低 10%。<br>ME 研究、TE 研究、发明和蓝图复制任务的 ISK 需求降低 40%。<br>机械工程研究、技术工程研究和蓝图复印工作所需时间减少 60%。<br>发明创造工作所需时间减少 50%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536542, 
     "groupID": 1984, 
@@ -55945,7 +55949,7 @@
       "ja": "アップウェルにより、強化型ファクションフォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が25%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程が720%延長<br>資源効率ならびに時間効率の研究、発明、設計図複製ジョブに必要なISKの量が40%減少<br>資源効率ならびに時間効率の研究、設計図複製ジョブの所要時間が60%減少<br>発明ジョブの所要時間が50%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다.<br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 25% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>ME 연구, TE 연구, 인벤션, 블루프린트 복제 시의 ISK 비용 40% 감소<br>ME 연구, TE 연구, 블루프린트 복제 소요 시간 60% 감소<br><br>인벤션 소요 시간 50% 감소<br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+25% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>-40% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также создания изобретений и копирования чертежей<br>-60% от времени на исследования по повышению материалоэффективности и скорости производства, а также на копирование чертежей<br>-50% от времени создания изобретений<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高25%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>材料效率研究、时间效率研究、发明和蓝图拷贝项目的星币需求降低40%<br>材料效率研究、时间效率研究和蓝图拷贝项目的时间需求降低60%<br>发明项目的时间需求降低50%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>ME 研究、TE 研究、发明和蓝图复制任务的 ISK 需求降低 40%。<br>机械工程研究、技术工程研究和蓝图复印工作所需时间减少 60%。<br>发明创造工作所需时间减少 50%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536546, 
     "groupID": 1984, 
@@ -55981,7 +55985,7 @@
       "ja": "アップウェルにより、強化型ファクションフォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が20%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程距離が720%延長<br>全てのアイスと鉱石の再処理生産量が10%増加<br>資源効率ならびに時間効率の研究と発明、設計図複製ジョブに必要なISKの量が23%減少<br>発明ジョブの所要時間が50%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다.<br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 20% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>모든 아이스 및 광물 정제 산출량 10% 증가<br>ME 연구, TE 연구, 블루프린트 복제 시의 ISK 비용 23% 감소<br>ME 연구에 소요되는 시간 50% 감소<br><br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+20% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>+10% к эффективности переработки всех типов льда и руды<br>-23% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также создания изобретений и копирования чертежей<br>-50% от времени создания изобретений<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高20%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>所有冰矿和矿石的提炼产出提高10%<br>材料效率研究、时间效率研究、发明和蓝图拷贝项目的星币需求降低23%<br>发明项目的时间需求降低50%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>所有冰块和矿石的再加工产量提高 10%。<br>ME 研究、TE 研究、发明和蓝图复制任务的 ISK 需求量减少了 23%。<br>发明创造工作所需时间减少 50%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536547, 
     "groupID": 1984, 
@@ -56774,7 +56778,7 @@
       "ja": "アップウェルにより、強化型ファクションフォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が25%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程距離が720%延長<br>全てのアイスと鉱石の再処理生産量が16%増加<br>製造ジョブの必要資源が2%減少<br>資源効率ならびに時間効率の研究と設計図複製ジョブに必要なISKの量が15%減少<br>資源効率研究の所要時間が40%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다. <br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 25% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>모든 아이스 및 광물 정제 산출량 16% 증가<br>제조 작업 필요 자원 2% 감소<br>ME 연구, TE 연구, 블루프린트 복제 시의 ISK 비용 15% 감소<br>ME 연구 소요 시간 40% 감소<br><br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+25% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>+16% к эффективности переработки всех типов льда и руды<br>-2% от расхода материалов при выполнении производственных проектов<br>-15% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также копирования чертежей<br>-40% от времени на исследования по повышению материалоэффективности<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高25%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>所有冰矿和矿石的提炼产出提高16%<br>制造项目的材料需求降低2%<br>材料效率研究、时间效率研究和蓝图拷贝项目的星币需求降低15%<br>材料效率研究项目的时间需求降低40%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>所有冰块和矿石的再加工产量提高 16%。<br>生产项目的材料需求降低<br>ME 研究、TE 研究和蓝图复制任务的 ISK 需求降低 15%。<br>机械工程研究工作所需时间减少 40%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536569, 
     "groupID": 1984, 
@@ -57676,7 +57680,7 @@
       "ja": "アップウェルにより、強化型勢力フォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が25%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程距離が720%延長<br>製造ジョブの必要資源が1%減少<br>基本キャピタル部品の製造に必要な時間が50%減少<br>資源効率ならびに時間効率の研究、発明、設計図複製ジョブに必要なISKの量が30%減少<br>設計図複製ジョブの所要時間が60%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다. <br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 25% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>제조 작업 필요 자원 1% 감소<br>기본 캐피탈 장비 제조 소요 시간 50% 감소<br>ME 연구, TE 연구, 인벤션, 블루프린트 복제 시의 ISK 비용 30% 감소<br>블루프린트 복제 소요 시간 60% 감소<br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+25% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>-1% от расхода материалов, необходимых для выполнения производственных проектов<br>-50% от времени производства базовых флагманских компонентов<br>-30% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также создания изобретений и копирования чертежей<br>-60% от времени копирования чертежей<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高25%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>制造项目的材料需求降低1%<br>基础旗舰组件制造的时间需求降低50%<br>材料效率研究、时间效率研究、发明和蓝图拷贝项目的时星币需求降低30%<br>蓝图拷贝项目的时间需求降低60%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>生产项目的材料需求降低<br>基本资本部件制造所需时间减少 50%<br>ME 研究、TE 研究、发明和蓝图复制任务的 ISK 需求降低 30%。<br>蓝图复印作业所需时间减少 60%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536594, 
     "groupID": 1984, 
@@ -57784,7 +57788,7 @@
       "ja": "アップウェルにより、強化型勢力フォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が25%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程距離が720%延長<br>製造ジョブの必要資源が1%減少<br>T2部品の製造に必要な時間が40%減少<br>資源効率ならびに時間効率の研究、発明、設計図複製ジョブに必要なISKの量が30%減少<br>資源効率ならびに時間効率の研究、設計図複製ジョブの所要時間が60%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다. <br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 25% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>제조 작업 필요 자원 1% 감소<br>테크 II 장비 제조 소요 시간 40% 감소<br>ME 연구, TE 연구, 인벤션, 블루프린트 복제 시의 ISK 비용 30% 감소<br>ME 연구, TE 연구, 블루프린트 복제 소요 시간 60% 감소<br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+25% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>-1% от расхода материалов, необходимых для выполнения производственных проектов<br>-40% от времени производства компонентов второй техкатегории<br>-30% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также создания изобретений и копирования чертежей<br>-60% от времени на исследования по повышению материалоэффективности и скорости производства, а также на копирование чертежей<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高25%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>制造项目的材料需求降低1%<br>二级科技组件制造的时间需求降低40%<br>材料效率研究、时间效率研究、发明和蓝图拷贝项目的时星币需求降低30%<br>材料效率研究、时间效率研究和蓝图拷贝项目的时间需求降低60%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>生产项目的材料需求降低<br>技术二组件制造所需时间减少 40%<br>ME 研究、TE 研究、发明和蓝图复制任务的 ISK 需求降低 30%。<br>机械工程研究、技术工程研究和蓝图复印工作所需时间减少 60%。<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536597, 
     "groupID": 1984, 
@@ -57929,7 +57933,7 @@
       "ja": "アップウェルにより、強化型ファクションフォータイザーにはこの特殊なスタンドアップリグが取り付けられている。アップウェル製アウトポストリグは、YC120年におけるアップウェル・アウトポスト・アップグレードプログラムを通して基数限定で提供された、最新のストラクチャ技術を体現した建造物である。本ストラクチャが破壊されたり係留が解除されたりした場合、このリグは永久的に失われ、代替品が手に入ることもない。<br><br><b>本リグが付与するボーナスは以下の通り：</b><br>全てのHPとキャパシタ容量が20%増加<br>最大ターゲット範囲が18%増加<br>スキャン分解能が180%増加<br>最大ターゲットロック数が+5<br>キャパシタ使用量が42%減少、地点防衛砲台の最適射程が720%拡大<br>全てのアイスと鉱石の再処理生産量が14%増加<br>資源効率ならびに時間効率の研究とブループリント研究ジョブに必要なISKの量が23%減少<br>資源効率研究の所要時間が50%減少<br><br>本リグの付与ボーナスは星系セキュリティステータスに合わせて拡縮することはない<br><br><b>本特殊版リグの付与ボーナスは他のスタンドアップ大型リグの類似ボーナスを上書きする</b>", 
       "ko": "업웰 컨소시엄이 업그레이드된 팩션 포티자에 설치한 특수 스탠드업 리그입니다. 첨단 기술의 집합체인 업웰 전초기지 리그는 YC 120년, 업웰 전초기지 업그레이드 프로그램을 통해 한정된 수량만 생산되었습니다. 구조물이 파괴되거나 위치 고정이 해제되면 이 리그는 영구 제거됩니다.<br><br><b>리그 보너스:</b><br>모든 내구도 및 캐패시터 용량 20% 증가<br>최대 타겟팅 거리 18% 증가<br>스캔 정밀도 180% 증가<br>최대 타겟 수 +5<br>방어 포탑 캐패시터 사용량 42% 감소 및 유효사거리 720% 증가<br>모든 아이스 및 광물 정제 산출량 14% 증가<br>ME 연구, TE 연구, 블루프린트 복제 시의 ISK 비용 23% 감소<br>ME 연구 소요 시간 50% 감소<br><br>보너스는 항성계 시큐리티 상태에 영향을 받지 않습니다.<br><br><b>다른 스탠드업 L-Set 리그의 보너스와 중복 적용되지 않습니다.</b>", 
       "ru": "Консорциум «Апвелл» установил эту особую стационар-надстройку на улучшенную версию «Фортизара». Надстройки для форпостов консорциума «Апвел» — это новейшая строительная технология, доступная в ограниченном количестве в рамках программы обновления форпостов «Апвел» 120 года от ю. с. Если сооружение будет уничтожено или снято с якоря, надстройка будет потеряна навсегда, восстановить её будет невозможно.<br><br><b>Эта надстройка даёт следующие преимущества:</b><br>+20% к общей прочности и объёму накопителя<br>+18% к максимальной дальности наведения<br>+180% к разрешающей способности сканеров<br>+5 к максимальному числу захваченных целей<br>-42% от расхода энергии накопителя; +720% к оптимальной дальности батарей точечной защиты<br>+14% к эффективности переработки всех типов льда и руды<br>-23% от стоимости (ISK) исследований по повышению материалоэффективности и скорости производства, а также копирования чертежей<br>-50% от времени на исследования по повышению материалоэффективности<br><br>Бонусы этой надстройки не зависят от статуса безопасности системы<br><br><b>Бонусы этой надстройки ограниченной серии перекрывают любые схожие бонусы от других больших стационар-надстроек.</b>", 
-      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这个改装件提供以下加成：</b><br>护盾值、装甲值、结构值和电容器电量提高20%<br>最大锁定范围提高18%<br>扫描分辨率提高180%<br>最大锁定目标数增加5<br>电容消耗降低42%，定点防御炮塔的最佳射程提高720%<br>所有冰矿和矿石的提炼产出提高14%<br>材料效率研究、时间效率研究和蓝图拷贝项目的星币需求降低23%<br>材料效率研究项目的时间需求降低50%<br><br>此改装件提供的加成不随星系安全等级变化而调整<br><br><b>此特别版改装件提供的加成覆盖任何其他屹立大型改装件提供的类似加成。</b>"
+      "zh": "这个特别版的屹立改装件由昇威集团安装于这个升级版势力铁壁中。这个昇威哨站改装件代表了太空建筑科技的最新成果，数量有限，只能通过YC120年的昇威哨站升级项目获得。如果该建筑被摧毁或解除锚定，这个改装件将会彻底损毁，无法复原。<br><br><b>这套装备提供以下额外功能：</b><br>护盾、装甲、结构值和电容量加成<br>最大锁定距离提高6%<br>扫描分辨率提高2%<br>目标锁定数上限惩罚<br>电容器使用量减少 42%，点防御电池的最佳射程提升 720%。<br>所有冰块和矿石的再加工产量提高 14%。<br>ME 研究、TE 研究和蓝图复制任务的 ISK 需求量减少了 23%。<br>机械工程研究工作所需时间减少 50%<br><br>这套装备提供的加成不会随系统安全状态而提升。<br><br><b>此特别版套装的额外奖励将覆盖其他 Standup L-Set 套装的任何类似奖励。</b>"
     }, 
     "descriptionID": 536601, 
     "groupID": 1984, 
@@ -58676,7 +58680,7 @@
       "ja": "テトリオン・エキゾチック・プラズマS設計図", 
       "ko": "테트리온 엑조틱 플라즈마 S 블루프린트", 
       "ru": "Tetryon Exotic Plasma S Blueprint", 
-      "zh": "四重子异种等离子弹蓝图 S"
+      "zh": "四重子异种等离子弹S蓝图"
     }, 
     "typeNameID": 536434, 
     "volume": 0.01
@@ -58848,7 +58852,7 @@
       "ja": "メソン・エキゾチック・プラズマM設計図", 
       "ko": "메손 엑조틱 플라즈마 M 블루프린트", 
       "ru": "Meson Exotic Plasma M Blueprint", 
-      "zh": "介子异种等离子弹蓝图 M"
+      "zh": "介子异种等离子弹M蓝图"
     }, 
     "typeNameID": 536441, 
     "volume": 0.01
@@ -58900,7 +58904,7 @@
       "ja": "ミスティックM設計図", 
       "ko": "미스틱 M 블루프린트", 
       "ru": "Mystic M Blueprint", 
-      "zh": "奥秘蓝图 M"
+      "zh": "奥秘M蓝图"
     }, 
     "typeNameID": 536443, 
     "volume": 0.01
@@ -58948,7 +58952,7 @@
       "ja": "バリオン・エキゾチック・プラズマL設計図", 
       "ko": "바리온 엑조틱 플라즈마 L 블루프린트", 
       "ru": "Baryon Exotic Plasma L Blueprint", 
-      "zh": "重子异种等离子弹蓝图 L"
+      "zh": "重子异种等离子弹L蓝图"
     }, 
     "typeNameID": 536445, 
     "volume": 0.01
@@ -58998,7 +59002,7 @@
       "ja": "オカルトL設計図", 
       "ko": "오컬트 L 블루프린트", 
       "ru": "Occult L Blueprint", 
-      "zh": "神秘蓝图 L"
+      "zh": "神秘L蓝图"
     }, 
     "typeNameID": 536447, 
     "volume": 0.01
@@ -94302,7 +94306,7 @@
       "ja": "大型変異順応性リモートアーマーリペアラI設計図", 
       "ko": "대형 뮤타적응성 원격 장갑수리 장치 I 블루프린트", 
       "ru": "Heavy Mutadaptive Remote Armor Repairer I Blueprint", 
-      "zh": "重型突变适应远程装甲维修器蓝图 I"
+      "zh": "重型突变适应远程装甲维修器I蓝图"
     }, 
     "typeNameID": 543670, 
     "volume": 0.01
@@ -106713,7 +106717,7 @@
       "ja": "ヴェレス・ライトエントロピック・ディスインテグレーター設計図", 
       "ko": "벨레스 라이트 엔트로픽 분열기 블루프린트", 
       "ru": "Veles Light Entropic Disintegrator Blueprint", 
-      "zh": "暗泽裔轻型熵能分解者蓝图"
+      "zh": "韦莱斯轻型熵能分解者蓝图"
     }, 
     "typeNameID": 549368, 
     "volume": 0.01
@@ -106765,7 +106769,7 @@
       "ja": "ヴェレス超高速エントロピック・ディスインテグレーター設計図", 
       "ko": "벨레스 초중력장 엔트로픽 분열기 블루프린트", 
       "ru": "Veles Supratidal Entropic Disintegrator Blueprint", 
-      "zh": "暗泽裔潮上熵能分解者蓝图"
+      "zh": "韦莱斯潮上熵能分解者蓝图"
     }, 
     "typeNameID": 549370, 
     "volume": 0.01
@@ -123609,7 +123613,7 @@
       "ja": "超潮性エントロピックディスインテグレーター I設計図", 
       "ko": "극중력장 엔트로픽 분열기 I 블루프린트", 
       "ru": "Ultratidal Entropic Disintegrator I Blueprint", 
-      "zh": "潮极熵能分解者蓝图 I"
+      "zh": "潮极熵能分解者I蓝图"
     }, 
     "typeNameID": 552643, 
     "volume": 0.01
@@ -125028,7 +125032,7 @@
       "ja": "この箱には自分の勢力のコンバットラインに含まれる巡洋艦級の宇宙船を建造できる設計図が含まれている。\n\n巡洋艦はフリゲートや駆逐艦よりも大型かつ強力で、多くの戦闘活動に向いている。\n\nこの設計図をインダストリーシステムで各種無機物と共に使用すると一隻の巡洋艦を建造できる。無機物はアステロイドから採掘した鉱石を再処理するか、マーケットを利用する他のカプセラから購入することで入手できる。", 
       "ko": "소속 팩션의 크루저급 함선 블루프린트 사본이 담겨 있는 상자입니다. <br><br>크루저는 프리깃이나 디스트로이어보다 크고 강력하며, 다양한 교전 상황에서 효과적인 함선입니다. <br><br>산업 시스템에서 해당 블루프린트를 사용하여 크루저 한 척을 제작할 수 있습니다. 제작 시 투입되는 미네랄은 소행성에서 채굴한 광석을 정제하거나 거래소를 통해 획득할 수 있습니다.", 
       "ru": "Этот контейнер содержит копию чертежа крейсера из линейки боевых кораблей вашего государства. Крейсеры больше и мощнее, чем фрегаты и эсминцы, и они отлично подходят для самых разных боевых ситуаций. С помощью этого чертежа можно создать один крейсер. Для этого необходимо собрать соответствующие минералы и прибыть в промышленную систему. Минералы добываются путём переработки руды из астероидов, но при желании их можно купить у других капсулёров, воспользовавшись торговой системой.", 
-      "zh": "这个箱子中有一张蓝图拷贝，用来建造你所属势力的一艘战斗型巡洋舰。\n\n巡洋舰比护卫舰和驱逐舰都更大，也更强，是多种战斗场合的上佳选择。\n\n有了这张蓝图，加上一些所需的矿物，就可以建造一艘巡洋舰。矿物可以通过提炼在小行星带采到的矿石来获得，也可以在市场上购买。"
+      "zh": "这个箱子中有一张蓝图拷贝，用来建造你所属势力的一艘战斗型巡洋舰。巡洋舰比护卫舰和驱逐舰都更大，也更强，是多种战斗场合的上佳选择。有了这张蓝图，加上一些所需的矿物，就可以建造一艘巡洋舰。矿物可以通过提炼在小行星带采到的矿石来获得，也可以在市场上购买。"
     }, 
     "descriptionID": 552922, 
     "groupID": 1194, 
@@ -152244,7 +152248,7 @@
       "ja": "ミディアムグレード・ハイドラ・イプシロン設計図", 
       "ko": "중급 히드라 엡실론 블루프린트", 
       "ru": "Mid-grade Hydra Epsilon Blueprint", 
-      "zh": "中级九头蛇 - 伊普西隆型蓝图"
+      "zh": "中级极乐 - 九头蛇型蓝图"
     }, 
     "typeNameID": 562581, 
     "volume": 0.01
@@ -152394,7 +152398,7 @@
       "ja": "ローグレード・ハイドラ・イプシロン設計図", 
       "ko": "하급 히드라 엡실론 블루프린트", 
       "ru": "Low-grade Hydra Epsilon Blueprint", 
-      "zh": "低级九头蛇 - 伊普西隆型蓝图"
+      "zh": "低级极乐 - 九头蛇型蓝图"
     }, 
     "typeNameID": 562587, 
     "volume": 0.01
@@ -164403,7 +164407,7 @@
       "ja": "中型ヴォートンプロジェクターII設計図", 
       "ko": "Medium Vorton Projector II Blueprint", 
       "ru": "Medium Vorton Projector II Blueprint", 
-      "zh": "中型电弧弦投射器蓝图 II"
+      "zh": "中型电弧弦投射器II蓝图"
     }, 
     "typeNameID": 564070, 
     "volume": 0.01
@@ -164578,7 +164582,7 @@
       "ja": "メスマーフラックス・コンデンサーパックS設計図", 
       "ko": "메즈머플럭스 콘덴서 팩 S 블루프린트", 
       "ru": "MesmerFlux Condenser Pack S Blueprint", 
-      "zh": "梅斯流电容包蓝图 S"
+      "zh": "梅斯流电容包S蓝图"
     }, 
     "typeNameID": 564077, 
     "volume": 0.01
@@ -164603,7 +164607,7 @@
       "ja": "ブラストショット・コンデンサーパックS設計図", 
       "ko": "블라스트샷 콘덴서 팩 S 블루프린트", 
       "ru": "BlastShot Condenser Pack S Blueprint", 
-      "zh": "爆发电容包蓝图 S"
+      "zh": "爆发电容包S蓝图"
     }, 
     "typeNameID": 564078, 
     "volume": 0.01
@@ -164678,7 +164682,7 @@
       "ja": "メスマーフラックス・コンデンサーパックM設計図", 
       "ko": "메즈머플럭스 콘덴서 팩 M 블루프린트", 
       "ru": "MesmerFlux Condenser Pack M Blueprint", 
-      "zh": "梅斯流电容包蓝图 M"
+      "zh": "梅斯流电容包M蓝图"
     }, 
     "typeNameID": 564081, 
     "volume": 0.01
@@ -164778,7 +164782,7 @@
       "ja": "メスマーフラックス・コンデンサーパックL設計図", 
       "ko": "메즈머플럭스 콘덴서 팩 L 블루프린트", 
       "ru": "MesmerFlux Condenser Pack L Blueprint", 
-      "zh": "梅斯流电容包蓝图 L"
+      "zh": "梅斯流电容包L蓝图"
     }, 
     "typeNameID": 564085, 
     "volume": 0.01
@@ -164828,7 +164832,7 @@
       "ja": "スラムボット・コンデンサーパックL設計図", 
       "ko": "슬램볼트 콘덴서 팩 L 블루프린트", 
       "ru": "SlamBolt Condenser Pack L Blueprint", 
-      "zh": "瞬闪电容包蓝图 L"
+      "zh": "瞬闪电容包L蓝图"
     }, 
     "typeNameID": 564087, 
     "volume": 0.01
@@ -219921,7 +219925,7 @@
       "ja": "QA-only Expert System with skills that affect non-ship areas of the game:\n\n\n\njump clone installation, standings, market orders, contracts, booster drawbacks, booster duration, implant installation, manufacturing jobs installation, manufacturing jobs number, research jobs number, manufacturing of an advanced blueprint (Vagabond for example), scrapmetal refining efficiency, PI CC upgrade, planet number\n\n\n\nSkills: \n\n\n\nConnections I\n\nCorporation Management I\n\nTycoon I\n\nContracting I\n\nNeurotoxin Control I\n\nNeurotoxin Recovery I\n\nCybernetics V\n\nBiology II\n\nIndustry III\n\nMass Production I\n\nAdvanced Medium Ship Construction I\n\nMinmatar Starship Engineering I\n\nMechanical Engineering I\n\nLaboratory Operation I\n\nScrapmetal Processing V\n\nCommand Center Upgrades V\n\nInterplanetary Consolidation V\n\nPlanetology V", 
       "ko": "QA-only Expert System with skills that affect non-ship areas of the game: jump clone installation, standings, market orders, contracts, booster drawbacks, booster duration, implant installation, manufacturing jobs installation, manufacturing jobs number, research jobs number, manufacturing of an advanced blueprint (Vagabond for example), scrapmetal refining efficiency, PI CC upgrade, planet number Skills: Connections I Corporation Management I Tycoon I Contracting I Neurotoxin Control I Neurotoxin Recovery I Cybernetics V Biology II Industry III Mass Production I Advanced Medium Ship Construction I Minmatar Starship Engineering I Mechanical Engineering I Laboratory Operation I Scrapmetal Processing V Command Center Upgrades V Interplanetary Consolidation V Planetology V", 
       "ru": "QA-only Expert System with skills that affect non-ship areas of the game: jump clone installation, standings, market orders, contracts, booster drawbacks, booster duration, implant installation, manufacturing jobs installation, manufacturing jobs number, research jobs number, manufacturing of an advanced blueprint (Vagabond for example), scrapmetal refining efficiency, PI CC upgrade, planet number Skills: Connections I Corporation Management I Tycoon I Contracting I Neurotoxin Control I Neurotoxin Recovery I Cybernetics V Biology II Industry III Mass Production I Advanced Medium Ship Construction I Minmatar Starship Engineering I Mechanical Engineering I Laboratory Operation I Scrapmetal Processing V Command Center Upgrades V Interplanetary Consolidation V Planetology V", 
-      "zh": "QA测试专家系统囊括了游戏中除了舰船之外的相关技能：\n\n\n\n远距克隆安装，声望，市场订单，合同，增效剂副作用，增效剂持续时间，植入体安装，制造项目安装，制造项目数量，研究项目数量，制造高级蓝图（比如流浪级），废金属精炼效率，行星工业设施升级，行星数量\n\n\n\n技能： \n\n\n\n关系学 I\n\n军团管理 I\n\n商业巨头 I\n\n合同规则 I\n\n神经毒化控制理论 I\n\n神经毒化抵抗理论 I\n\n控制论 V\n\n生物学 II\n\n工业理论 III\n\n批量生产学 I\n\n高级中型舰船建造研究 I\n\n米玛塔尔星舰工程学 I\n\n机械工程学 I\n\n实验室运作理论 I\n\n碎铁处理技术 V\n\n指挥中心升级理论 V\n\n行星统筹管理学 V\n\n行星学 V"
+      "zh": "远距克隆安装，声望，市场订单，合同，增效剂副作用，增效剂持续时间，植入体安装，制造项目安装，制造项目数量，研究项目数量，制造高级蓝图（比如流浪级），废金属精炼效率，行星工业设施升级，行星数量人脉关系 I 公司管理 I 大亨 I 承包 I 神经毒素控制 I 神经毒素回收 I 控制论 V 生物学 II 工业 III 大规模生产 I 先进中型舰船建造 I 米玛塔尔星舰工程 I 机械工程 I 实验室运营 I 废金属处理 V 指挥中心升级 V 星际整合 V 行星学 V"
     }, 
     "descriptionID": 573926, 
     "groupID": 4090, 
@@ -233551,7 +233555,7 @@
       "ja": "YC122年の年末とYC123年の年始に、キープスター級シタデルを巡って一連の大規模戦闘が行われた。この記念碑は、戦いに参加した数千人のカプセラを称えるものである。当時、その戦闘はニューエデンの歴史において最も大規模かつ血なまぐさいものだった。\n\n \n\nYC122年、ニューエデンの南部と西部に位置するゼロセキュリティリージョンは、『The Imperium』と『PAPI』というカプセラの連合勢力同士の大規模な対立に揺れていた。YC122年の年末には、PAPIの連合軍がImperiumが本拠地を置いていたデルヴリージョンへの侵攻を開始し、当該リージョンが紛争の最前線となった。同年10月、PAPIがFWST-8に築こうとした橋頭堡を巡り、ニューエデン史において最も大規模な戦闘が発生したが、この時の記録は3か月と経たず破られることとなる。\n\n\n\n12月末までには、デルヴにおける戦いの焦点は、ImperiumのキープスターがPAPIによる継続的な攻撃を受けていたM2-XFEというシステムに移っていた。YC122年の12月30日と31日、最初の大規模な衝突がキープスターのアーマータイマー中に発生し、この戦いに参戦したパイロットはピーク時で合計5,158名にのぼる。スーパーキャピタル艦で構成された両陣営のフリートが一歩も譲らぬ戦いを繰り広げる一方、キープスター周辺のあたり一面で船が爆散し、最初の戦闘が終結した時点で、257隻のタイタンを含める3,404隻のカプセラ船と、合計で29兆を超えるISKが失われていた。\n\n\n\n数日後に発生したM2-XFEにおける二度目の戦闘では、さらに多くのカプセラが戦いに参加しようとし、その結果は悪名高いものとなった。YC123年の1月3日、記録をさらに更新する6,739人のパイロットが当該システムに入り、さらに数千人が戦闘への参加を試みていたが、前例のない数のワープ対応宇宙船が密集した結果、まるで宇宙そのものが戦闘のストレスに耐えかねたかのように、予測不可能な時空アノマリーが発生。このアノマリーは、M2内に存在していた全ての艦船のシステムに大きな影響を与えたが、防衛側だったImperiumはPAPIに先んじて現地に到着しており、大混乱の最中にジャンプドライブやスターゲートを使用する必要がなかったため、事態への対処をより上手く行うことができた。攻撃側は、飽和状態となっていたM2へのジャンプドライブを満足に行えず、二度目の戦闘は防衛側の大勝利となった。攻撃側の艦船の多くがM2への進入時に撃破され、Imperiumの部隊の罠にはめられた艦船はさらに多かった。キープスターの防衛は、ひとまず成功したのである。\n\n\n\nM2-XFEにおける二度目の戦いの後の数週間、なるべく多くのPAPIのスーパーキャピタル艦を当該システム内に足止めするため、Imperiumのフリートは移動型ワープ妨害器を係留し、執拗なパトロールを行った。デルヴリージョン中で戦闘が発生しており、大量の敵船の足止めを行っておくことで、戦略的アドバンテージが得られたのである。足止めされたスーパーキャピタル艦の救出作戦において、数度の小規模戦闘が発生した一方、両連合は当該システム内における他のストラクチャを巡る戦いも継続していた。YC123年1月27日、450隻近い主力艦と6隻のタイタン級艦が撃破された戦いの末、PAPIは足止めを受けていたパイロットの一部の解放に成功。YC123年2月1日、NJU-QVコンステレーションをまたにかけた、数千人のカプセラが参加した戦闘にPAPI軍は勝利し、これにより、M2-XFEのインフラストラクチャハブを支配下においた。PAPIはその後、Imperiumの援軍がシステム内に入ってくるのを妨害できるテネブレックス・サイノジャマーを起動するための下準備をゆっくりと進め始めた。YC123年3月7日、PAPIのサイノジャマーがオンラインになり、Imperiumは足止めしていたPAPIの残りの主力艦を解放しつつ、戦力のほとんどを当該システムから撤退させた。そしてYC123年3月12日、一連の戦闘の元々の焦点だったM2-XFEのキープスターはついに、PAPI軍によって破壊されたのである。\n\n \n\n総括すると、YC122年とYC123の年末から年始にかけてM2-XFE内で起きた戦闘では、450隻以上のタイタン級宇宙船を含めた20,000隻以上のカプセラ船が破壊されたことになる。M2-XFE内での最初の戦闘は、単一戦闘内での被害額がニューエデンにおける最高額を記録し、二度目の戦闘は、単一システム内に一度に集まったカプセラ船の数という面においてFWST-8の記録を破っている。2か月を超える激しい戦闘の後、キープスターは最終的に撃破され、Imperium軍はすぐそばにあるキャピタルシステムの1DQ1-Aに再集結した。本記念碑が建設された時点で、PAPIとImperiumはさらに大規模な紛争を繰り広げており、この対立が最終的にどのような形で解決するかは、予断を許さない状況にある。", 
       "ko": "YC 122년 말부터 123년 초 사이 키프스타급 시타델을 두고 역사적인 전투를 펼쳤던 캡슐리어들을 위해 건설된 기념비입니다. M2-XFE 전투는 당시 뉴에덴 역사상 최대 규모의 전투로 기록되었습니다.<br><br>YC 122년, 캡슐리어 얼라이언스인 \"Imperium\"과 \"PAPI\"가 널 시큐리티 서부 및 남부 지역을 두고 역사적인 대결을 펼쳤습니다. YC 122년 말, 교전 지역이 델브로 좁혀지며 PAPI 함대가 Imperium을 옥죄어 들어갔습니다. YC 122년 10월에 진행된 FWST-8 전투는 뉴에덴 역사상 최대 규모의 전투로 기록되었으나 불과 3개월이 채 되기 전에 그 자리를 내려놓게 됩니다. YC 122년 12월 말, 두 세력 사이의 전투는 M2-XFE 항성계로 집중되기 시작했습니다. PAPI가 Imperium의 키프스타를 공격했으며 12월 30일부터 31일 사이에 무려 5,158명의 캡슐리어가 전투에 참가한 것으로 기록되었습니다. 양측 슈퍼캐피탈 함대가 끊임없이 포격을 교환하면서 키프스타 주변은 아수라장을 방불케 했습니다. 전장의 열기가 가라앉은 시점에서 무려 3,404대의 함선과 257대의 타이탄이 파괴되었습니다(총 피해액 29조 ISK).<br><br>제2차 M2-XFE 전투에서는 더욱 많은 숫자의 캡슐리어가 참전했으며 악명 높은 결과를 만드는 데 일조했습니다. YC 123년 1월 3일, 6,739명의 캡슐리어가 M2-XFE 항성계에 진입했으며 수천명에 달하는 추가 인원이 지속적으로 입장을 시도했습니다. 이윽고 수용량이 한계치에 도달하면서 워프 드라이브에 영향을 주는 시공간 특이점이 발생했습니다. 해당 특이점은 M2-XFE에 위치한 모든 함선에 영향을 줬으나 한 발 먼저 항성계에 진입한 Imperium의 경우 워프 드라이브를 가동할 필요가 없었기에 상대적으로 영향에서 자유로울 수 있었습니다. 그 결과, 항성계로 진입하는 과정에서 PAPI는 다수의 함선을 잃었고 발 또한 묶이게 되었습니다. 그렇게 두 번째 교전에서는 Imperium이 PAPI를 상대로 기록적인 승리를 거뒀습니다.<br><br>제2차 M2-XFE 전투가 끝난 뒤 Imperium 함대는 이동식 워프 디스럽터를 사용하여 적의 슈퍼캐피탈 함선을 무력화하는 데 집중했습니다. 이후 슈퍼캐피탈 함선 구출 작전을 비롯하여 항성계에 전개된 구조물을 장악하기 위한 소규모 교전이 지속되었습니다. YC 123년 1월 27일, PAPI는 조난당한 파일럿들을 구조하기 위해 대규모 작전을 펼쳤으며 그 과정에서 450대의 캐피탈 함선과 6대의 타이탄이 희생되었습니다. YC 123년 2월 1일, PAPI는 NJU-QV 성좌에서 펼쳐진 전투에서 기록적인 승리를 거두면서 M2-XFE 항성계의 인프라 허브를 점령했습니다. 이후 PAPI는 Imperium의 지원 함대를 봉쇄하기 위해 테네브렉스 사이노 재머를 설치하기 시작했습니다. YC 123년 3월 7일, 사이노 재머가 완성되자 Imperium은 전선을 뒤로 물리고 항성계 밖으로 함대를 후퇴시켰습니다. YC 123년 3월 12일, 피 튀기는 전투의 원인이었던 M2-XFE 키프스타가 마침내 PAPI에 의해 파괴되었습니다.<br><br>M2-XFE 항성계에서 약 20,000대의 함선과 450대의 타이탄이 파괴되었습니다. 1차 M2-XFE 전투의 경우 가장 높은 자산 가치, 2차 M2-XFE 전투는 가장 많은 참가자에 관한 기록을 경신했습니다. M2-XFE 키프스타는 2개월에 걸친 혈투 끝에 파괴되었으며 Imperium은 자신들의 본거지인 1DQ1-A 항성계로 후퇴했습니다. 해당 기념비가 건설된 시점에서 PAPI와 Imperium은 아직 전쟁 중이기 때문에 오직 시간만이 누가 승자인지 증명할 것입니다.", 
       "ru": "Этот монумент возведён в честь тысяч капсулёров, сражавшихся в разрушительных битвах за цитадель класса «Кипстар» в конце 122 и начале 123 годов от ю. с. На тот момент эти битвы были самыми масштабными и кровавыми столкновениями в истории Нового Эдема. В 122 году от ю. с. южные и западные системы с нулевым уровнем безопасности были потрясены масштабным конфликтом двух объединений капсулёров, широко известных как Imperium и PAPI. К концу 122 года от ю. с. основные сражения велись в секторе «Делв», где силы коалиции PAPI вторглись в головной район Imperium. Тогда в октябре бой за плацдарм, который силы PAPI пытались организовать в FWST-8, установил рекорд среди крупномасштабных битв в истории Нового Эдема. Однако этот рекорд продержался всего три месяца. К концу декабря основные боевые действия в секторе «Делв» были сосредоточены в системе M2-XFE, где силы PAPI непрерывно продолжали штурмовать Кипстар, принадлежавший Imperium. Первое крупное столкновение произошло из-за таймера брони «Кипстара» 30 и 31 декабря 122 года от ю. с. Тогда в самый разгар сражения в нём участвовало 5158 пилотов. Никто не хотел уступать. Флоты КСБТ обменивались выстрелами, вокруг цитадели гремели взрывы кораблей. Когда дым первого сражения рассеялся, было подсчитано, что за время столкновения было уничтожено 3404 корабля капсулёров — из них 257 титанов — суммарной стоимостью 29 триллионов ISK. Несколько дней спустя в системе M2-XFE началась вторая битва, которая привлекла ещё больше капсулёров и привела к печально известным последствиям. 3 января 123 года от ю. с. в систему вошло рекордное число капсулёров — 6739 пилотов — и ещё несколько тысяч ждали своей очереди. Такое скопление кораблей с действующими варп-двигателями привело к появлению непредсказуемой пространственно-временной аномалии, словно сама вселенная содрогнулась от этой битвы. Под действие аномалии попали все корабли, находившиеся в M2, но защитники из коалиции Imperium оказались в более выгодном положении и смогли справиться с творящимся вокруг хаосом: они прибыли раньше флотов PAPI, и им не нужно было использовать гипердвигатели и звёздные врата. Второе сражение окончилось победой защитников, и не последнюю роль в этом сыграла неисправность гипердвигателей, с которой столкнулись нападающие, пытавшиеся войти в переполненную систему. Многие из атакующих кораблей взрывались при входе в систему, другие угодили в ловушку, расставленную силами коалиции Imperium. На какое-то время «Кипстар» был спасён. В течение нескольких недель после второй битвы в системе M2-XFE флоты Imperium ставили на якорь мобильные варп-подавители, а их патрули следили за тем, чтобы как можно больше КСБТ PAPI оставалось у них в плену. При этом бои в секторе «Делв» не стихали. Помимо небольших столкновений, которые устроили пилоты PAPI в попытке освободить из плена свои корабли, коалиции продолжали сражаться за расположенные в системе сооружения. 27 января 123 года от ю. с. в результате битвы, в которой было уничтожено почти 450 КБТ и 6 титанов, PAPI смогли освободить из западни часть своих пилотов. 1 февраля 123 года от ю. с. силы PAPI одержали победу в многотысячной битве в созвездии M2-XFE, получив контроль над центром инфраструктуры системы M2-XFE. После этого PAPI начали не спеша готовиться к активации собственного генератора помех приводному маяку системы «Тенебрекс», который позволил бы им не впускать подкрепления Imperium в эту систему. 7 марта 123 года от ю. с. PAPI активировали свой генератор помех приводному маяку, вынудив множество кораблей Imperium покинуть систему и освободив оставшиеся в плену КБТ. И наконец, 12 марта 123 года от ю. с. силы PAPI уничтожили «Кипстар» в системе M2-XFE, вокруг которого и началась эта кровопролитная борьба. Суммарно в ходе боёв в системе M2-XFE в конце 122 и начале 123 годов от ю. с. было уничтожено более 20 000 кораблей капсулёров, включая более 450 титанов. Первая битва в системе M2-XFE побила рекорд Нового Эдема по суммарной стоимости уничтоженных за одно сражение кораблей, а вторая битва побила рекорд, установленный в системе FWST-8, по максимальной численности кораблей капсулёров, одновременно присутствующих в одной системе. После более чем двух месяцев ожесточённых боёв «Кипстар» был уничтожен, и силы Imperium перегруппировались в своей соседней головной системе 1DQ1-A. К тому моменту, как был воздвигнут этот монумент, между PAPI и Imperium разгорелась новая ещё более масштабная война, и только время покажет, чем закончится этот конфликт.", 
-      "zh": "This monument honors the thousands of capsuleers that participated in the series of cataclysmic battles over a Keepstar-class Citadel in late YC122 and early YC123. At the time these battles represented the largest and bloodiest clashes in the history of New Eden.\n\n \n\nIn YC122, the southern and western nullsec regions of New Eden were shaken by the massive conflict between the capsuleer coalitions popularly known as \"The Imperium\" and \"PAPI\". By the end of YC122 the primary front of the war was the Delve region, with PAPI coalition forces invading the capital region of the Imperium. In October of that year clashes over an attempted PAPI beachhead in FWST-8 broke the record for the largest battle in New Eden history, a record that was destined to broken again less than three months later.\n\n\n\nBy the end of December the fighting in Delve was focused on the system of M2-XFE, where an Imperium Keepstar came under sustained attack from PAPI forces. The first massive clash occurred over the Keepstar's armor timer on December 30th and 31st YC122 with a combined 5,158 pilots fighting in the system at its peak. Supercapital fleets from both sides traded blows relatively evenly as ships exploded all around the Citadel. When the dust settled from this first battle, 3,404 capsuleer ships including 257 titans and a combined value of over 29 trillion ISK had been destroyed.\n\n\n\nThe second battle of M2-XFE a few days later saw even more capsuleers attempt to join the fray, leading to an infamous result. On January 3rd YC123 a record 6,739 pilots entered the system, and several thousand more attempted to join the fighting. This unprecedented number of warp-capable starships in close proximity led to unpredictable spacetime anomalies as the universe itself seemed to strain under the stress of the battle. The anomalies played havoc on all ship systems within M2, but the defending forces of the Imperium coalition were in a better position to weather the storm as they had arrived on location earlier then the PAPI fleets and therefore they did not need to make use of jump drives and stargates during the period of greatest disruption. The result of this second battle was a significant victory for the defending forces, as the attackers faced significant disruption to the operation of their jump drives into the crowded system. Many attacking ships were destroyed as they entered the system, and many more were trapped in the system by the forces of the Imperium. The Keepstar had been saved for a time.\n\n\n\nIn the weeks following the second battle of M2-XFE, Imperium fleets anchored mobile warp disruptors and patrolled relentlessly to keep as many PAPI supercapitals as possible trapped in the system as fighting raged on across the Delve region, taking advantage of the strategic advantage provided by the trapping of so many hostile vessels. Several smaller clashes occurred over operations to rescue some of the trapped supercapital vessels, and the coalitions also continued to fight over other structures in the system. On January 27th YC123, PAPI were able to free a portion of their trapped pilots after a battle that saw nearly 450 Capitals and 6 Titans-class hulls destroyed.  On February 1st YC123, PAPI forces were victorious in a battle that stretched across the NJU-QV constellation and involved thousands of capsuleers, giving them control of M2-XFE's Infrastructure Hub. PAPI then began to slowly lay the groundwork to activate their own Tenebrex Cyno Jammer structure which would give them the ability to disrupt Imperium reinforcements to the system. On March 7th YC123 the PAPI Cyno Jammer structure came online and the Imperium retreated the bulk of their forces from the system, freeing the remaining trapped PAPI capital ships. Finally on March 12th YC123 the M2-XFE Keepstar that had been the original focal point of all this bloodshed was destroyed by PAPI forces.\n\n \n\nAll in all, the fighting within M2-XFE in late YC122 and early YC123 led to the destruction of more 20,000 capsuleer vessels including over 450 titan-class starships. The first battle of M2-XFE broke the New Eden record for the most value destroyed in a single battle, and the second battle broke FWST-8's record for the battle with the most capsuleer ships within a system at one time. The Keepstar was eventually destroyed after over two months of brutal fighting, and the forces of the Imperium regrouped at their nearby capital system of 1DQ1-A. At the time that this monument was erected, the greater war between PAPI and the Imperium was raging on and only time would tell how the conflict would eventually be resolved."
+      "zh": "这座纪念碑铭记着在YC122年末和YC123年初参与争夺一座星城的一系列灾难般的战役的数千名克隆飞行员。在当时，这些战斗是新伊甸历史上规模最大、最血腥的冲突。\n\n\nYC122年，通称“The Imperium”和“PAPI”的克隆飞行员联盟群之间爆发了大规模冲突，震撼了新伊甸南部和西部的0.0地区。到YC122年末，战争的主要前线是绝地之域，PAPI联盟群的军队入侵了Imperium的首都地区。同年10月，PAPI在FWST-8企图建立滩头阵地，双方的冲突打破了新伊甸历史上最大规模战斗的记录，不到三个月后，这一记录注定会再次被打破。\n\n\n到12月底，绝地之域的战斗集中在M2-XFE星系，在那里Imperium的一个星城遭到了PAPI部队的持续攻击。首次大规模交战发生在YC122年12月30日至31日，起因是这座星城的装甲增强模式计时器，峰值共有5,158名飞行员在该星系内参战。双方的超级旗舰舰队在堡垒周围激烈交火，飞船此起彼伏地爆炸，双方势均力敌。当第一场战斗尘埃落定时，包括257艘泰坦在内的3,404艘克隆飞行员舰船被摧毁，总价值超过29万亿ISK。\n\n\n几天后，在M2-XFE的第二次战斗中，更多的克隆飞行员试图加入战斗，导致了一个臭名昭著的结果。YC123年1月3日，创纪录的6,739名飞行员进入该星系，另有数千人试图加入战斗。数量空前具备跃迁能力的星舰聚集在如此近的距离内，导致了难以预料的时间空间异常现象，宇宙本身似乎也在这场战斗的压力下变得紧张起来。这种异常现象对M2范围内的所有飞船系统都造成了严重破坏，但因为Imperium联盟群的防御部队比PAPI舰队更早到达战场，因此能够更好地抵御这场风暴——在干扰最剧烈的时期，他们无需使用跳跃引擎和星门。第二次战斗的结果是防御方取得了重大胜利，因为进攻方进入拥挤星系时，跳跃引擎运行受到了严重干扰。许多进攻舰队在进入星系时便被摧毁，还有更多的被Imperium部队困在星系中。星城暂时得以保全。\n\n\n在M2-XFE第二次战役之后的几周里，Imperium舰队利用困住如此多敌对舰船所带来的战略优势，在绝地之域各地战火纷飞之时，锚定了机动跃迁扰断器并进行了不懈的巡逻，以尽可能多地将PAPI的超级旗舰困在该星系中。在营救一些被困的超级旗舰的过程中发生了几次小规模冲突，两个联盟群还在继续争夺星系中的其他建筑。YC123年1月27日，PAPI在经历了一场摧毁了近450艘旗舰和6艘泰坦的战斗后，成功解救了部分被困飞行员。YC123年2月1日，PAPI部队在一场横跨NJU-QV星座、数千名克隆飞行员参与的战斗中取得胜利，控制了M2-XFE的基础设施中心。随后，PAPI开始慢慢为启动他们自己的暗影诱导干扰塔建筑打下基础，这将使他们有能力干扰Imperium对该星系的增援。YC123年3月7日，PAPI的诱导干扰塔启动，Imperium随即从该星系撤出了大部分部队，释放了剩余被困的PAPI旗舰。最后，在YC123年3月12日，这起血腥冲突最初的焦点——M2-XFE星城被PAPI的部队摧毁。\n\n\n总而言之，在YC122年末和YC123年初的M2-XFE星系中的战斗中，有超过20,000艘克隆飞行员舰船被摧毁，其中包括450多艘泰坦。M2-XFE的第一场战斗打破了新伊甸单场战斗摧毁价值最高的记录，而第二场战斗则打破了FWST-8星系内同时出现最多克隆飞行员舰船的记录。经过两个多月的残酷战斗，星城最终被摧毁，Imperium部队在其附近的首都星系1DQ1-A重新集结。在这座纪念碑竖立之时，PAPI和Imperium之间的全面大战仍在激烈地进行，这场冲突最终将如何解决，唯有时间能给出答案。"
     }, 
     "descriptionID": 580724, 
     "graphicID": 24978, 
@@ -239878,7 +239882,7 @@
       "ja": "インターディクション無効化II設計図", 
       "ko": "인터딕션 무효화 장치 II 블루프린트", 
       "ru": "Interdiction Nullifier II Blueprint", 
-      "zh": "拦截失效装置蓝图 II"
+      "zh": "拦截失效装置II蓝图"
     }, 
     "typeNameID": 581470, 
     "volume": 0.01
@@ -239929,7 +239933,7 @@
       "ja": "大型工業コアII 設計図", 
       "ko": "대형 인더스트리얼 코어 II 블루프린트", 
       "ru": "Large Industrial Core II Blueprint", 
-      "zh": "大型工业核心蓝图 II"
+      "zh": "大型工业核心II蓝图"
     }, 
     "typeNameID": 581841, 
     "volume": 0.01
@@ -244932,12 +244936,12 @@
     "description": {
       "de": "Mit diesem Monument werden die zahlreichen Kapselpiloten geehrt, die am Sprungtor-Bauprojekt der Republik Minmatar im Jahr YC123 beteiligt waren. Die zehn Kapselpiloten und fünf Kapselpiloten-Corporations, die den größten Beitrag zum Projekt geleistet haben, werden im Folgenden aufgeführt. <b>Diese zehn Kapselpiloten leisteten den größten Beitrag zum Bau dieses Sprungtors:</b> 1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url> 2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url> 3. <url=showinfo:1373//90448078>Gloobz</url> 4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url> 5. <url=showinfo:1373//144661902>Maxp</url> 6. <url=showinfo:1373//90896815>Lara Edios</url> 7. <url=showinfo:1373//95734873>Ashley Parisi</url> 8. <url=showinfo:1373//144807672>Eleana Tomelac</url> 9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url> 10. <url=showinfo:1373//1640795123>Onslaughtor</url> <b>Diese fünf Kapselpiloten-Corporations leisteten den größten Beitrag zum Bau dieses Sprungtors:</b> 1. <url=showinfo:2//98426237>Phoenix Naval Operations</url> 2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url> 3. <url=showinfo:2//98294796>Stahlklang Foundation</url> 4. <url=showinfo:2//98671606>KekoBan</url> 5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
       "en-us": "This monument honors the numerous capsuleers who contributed to the Minmatar Republic's construction project for this stargate in YC123. The ten individual capsuleers and five capsuleer corporations who contributed the most to this project are listed below.\r\n\r\n<b>Top ten individual capsuleer contributors to the construction project for this stargate:</b>\r\n1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url>\r\n2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url>\r\n3. <url=showinfo:1373//90448078>Gloobz</url>\r\n4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url>\r\n5. <url=showinfo:1373//144661902>Maxp</url>\r\n6. <url=showinfo:1373//90896815>Lara Edios</url>\r\n7. <url=showinfo:1373//95734873>Ashley Parisi</url>\r\n8. <url=showinfo:1373//144807672>Eleana Tomelac</url>\r\n9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url>\r\n10. <url=showinfo:1373//1640795123>Onslaughtor</url>\r\n\r\n<b>Top five capsuleer corporations that contributed to the construction project for this stargate:</b>\r\n1. <url=showinfo:2//98426237>Phoenix Naval Operations</url>\r\n2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url>\r\n3. <url=showinfo:2//98294796>Stahlklang Foundation</url>\r\n4. <url=showinfo:2//98671606>KekoBan</url>\r\n5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
-      "es": "Este monumento honra a los numerosos capsulistas que han contribuido al proyecto de construcción de este portal estelar de la República Minmatar en 123 CY. A continuación, se enumeran los diez capsulistas y las cinco corporaciones de capsulistas que más han contribuido a este proyecto.\n\n\n\n<b>Los diez capsulistas que más han contribuido al proyecto de construcción de este portal estelar:</b>\n\n1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url>\n\n2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url>\n\n3. <url=showinfo:1373//90448078>Gloobz</url>\n\n4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url>\n\n5. <url=showinfo:1373//144661902>Maxp</url>\n\n6. <url=showinfo:1373//90896815>Lara Edios</url>\n\n7. <url=showinfo:1373//95734873>Ashley Parisi</url>\n\n8. <url=showinfo:1373//144807672>Eleana Tomelac</url>\n\n9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url>\n\n10. <url=showinfo:1373//1640795123>Onslaughtor</url>\n\n\n\n<b>Las cinco corporaciones de capsulistas que más han contribuido al proyecto de construcción de este portal estelar:</b>\n\n1. <url=showinfo:2//98426237>Phoenix Naval Operations</url>\n\n2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url>\n\n3. <url=showinfo:2//98294796>Stahlklang Foundation</url>\n\n4. <url=showinfo:2//98671606>KekoBan</url>\n\n5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
+      "es": "Este monumento honra a los numerosos capsulistas que han contribuido al proyecto de construcción de este portal estelar de la República Minmatar en 123 CY. A continuación, se enumeran los diez capsulistas y las cinco corporaciones de capsulistas que más han contribuido a este proyecto.\r\n\r\n\r\n\r\n<b>Los diez capsulistas que más han contribuido al proyecto de construcción de este portal estelar:</b>\r\n\r\n1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url>\r\n\r\n2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url>\r\n\r\n3. <url=showinfo:1373//90448078>Gloobz</url>\r\n\r\n4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url>\r\n\r\n5. <url=showinfo:1373//144661902>Maxp</url>\r\n\r\n6. <url=showinfo:1373//90896815>Lara Edios</url>\r\n\r\n7. <url=showinfo:1373//95734873>Ashley Parisi</url>\r\n\r\n8. <url=showinfo:1373//144807672>Eleana Tomelac</url>\r\n\r\n9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url>\r\n\r\n10. <url=showinfo:1373//1640795123>Onslaughtor</url>\r\n\r\n\r\n\r\n<b>Las cinco corporaciones de capsulistas que más han contribuido al proyecto de construcción de este portal estelar:</b>\r\n\r\n1. <url=showinfo:2//98426237>Phoenix Naval Operations</url>\r\n\r\n2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url>\r\n\r\n3. <url=showinfo:2//98294796>Stahlklang Foundation</url>\r\n\r\n4. <url=showinfo:2//98671606>KekoBan</url>\r\n\r\n5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
       "fr": "Ce monument honore les nombreux capsuliers qui ont contribué au projet de construction de la République minmatar pour ce portail stellaire en CY 123. Les dix capsuliers individuels, ainsi que les cinq corporations de capsuliers qui ont apporté la plus grande contribution à ce projet sont nommés ci-dessous. <b>Dix meilleurs capsuliers individuels ayant contribué au projet de construction pour ce portail stellaire :</b> 1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url> 2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url> 3. <url=showinfo:1373//90448078>Gloobz</url> 4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url> 5. <url=showinfo:1373//144661902>Maxp</url> 6. <url=showinfo:1373//90896815>Lara Edios</url> 7. <url=showinfo:1373//95734873>Ashley Parisi</url> 8. <url=showinfo:1373//144807672>Eleana Tomelac</url> 9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url> 10. <url=showinfo:1373//1640795123>Onslaughtor</url> <b>Cinq meilleures corporations de capsuliers ayant contribué au projet de construction pour ce portail stellaire :</b> 1. <url=showinfo:2//98426237>Phoenix Naval Operations</url> 2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url> 3. <url=showinfo:2//98294796>Stahlklang Foundation</url> 4. <url=showinfo:2//98671606>KekoBan</url> 5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
-      "ja": "この記念碑は、YC123年にミンマター共和国が行った本スターゲートの建設事業に貢献した、大勢のカプセラを称えるために建てられた。その中でも特に本プロジェクトに寄与した、10人の個人カプセラと5社のカプセラコーポレーションを以下に記す。\n\n\n\n<b>本スターゲートの建設プロジェクトに多大な貢献をした、上位10名のカプセラ（個人）：</b>\n\n1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url>\n\n2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url>\n\n3. <url=showinfo:1373//90448078>Gloobz</url>\n\n4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url>\n\n5. <url=showinfo:1373//144661902>Maxp</url>\n\n6. <url=showinfo:1373//90896815>Lara Edios</url>\n\n7. <url=showinfo:1373//95734873>Ashley Parisi</url>\n\n8. <url=showinfo:1373//144807672>Eleana Tomelac</url>\n\n9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url>\n\n10. <url=showinfo:1373//1640795123>Onslaughtor</url>\n\n\n\n<b>本スターゲートの建設プロジェクトに多大な貢献をした、上位5社のカプセラコーポレーション：</b>\n\n1. <url=showinfo:2//98426237>Phoenix Naval Operations</url>\n\n2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url>\n\n3. <url=showinfo:2//98294796>Stahlklang Foundation</url>\n\n4. <url=showinfo:2//98671606>KekoBan</url>\n\n5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
+      "ja": "この記念碑は、YC123年にミンマター共和国が行った本スターゲートの建設事業に貢献した、大勢のカプセラを称えるために建てられた。その中でも特に本プロジェクトに寄与した、10人の個人カプセラと5社のカプセラコーポレーションを以下に記す。\r\n\r\n\r\n\r\n<b>本スターゲートの建設プロジェクトに多大な貢献をした、上位10名のカプセラ（個人）：</b>\r\n\r\n1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url>\r\n\r\n2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url>\r\n\r\n3. <url=showinfo:1373//90448078>Gloobz</url>\r\n\r\n4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url>\r\n\r\n5. <url=showinfo:1373//144661902>Maxp</url>\r\n\r\n6. <url=showinfo:1373//90896815>Lara Edios</url>\r\n\r\n7. <url=showinfo:1373//95734873>Ashley Parisi</url>\r\n\r\n8. <url=showinfo:1373//144807672>Eleana Tomelac</url>\r\n\r\n9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url>\r\n\r\n10. <url=showinfo:1373//1640795123>Onslaughtor</url>\r\n\r\n\r\n\r\n<b>本スターゲートの建設プロジェクトに多大な貢献をした、上位5社のカプセラコーポレーション：</b>\r\n\r\n1. <url=showinfo:2//98426237>Phoenix Naval Operations</url>\r\n\r\n2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url>\r\n\r\n3. <url=showinfo:2//98294796>Stahlklang Foundation</url>\r\n\r\n4. <url=showinfo:2//98671606>KekoBan</url>\r\n\r\n5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
       "ko": "해당 기념비는 민마타 공화국을 도와 스타게이트를 건설한 캡슐리어들을 기리기 위해 제작되었습니다.<br><br><b>스타게이트 건설에 가장 큰 기여를 한 10명의 캡슐리어:</b><br><br>1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url><br>2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url><br>3. <url=showinfo:1373//90448078>Gloobz</url><br>4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url><br>5. <url=showinfo:1373//144661902>Maxp</url><br>6. <url=showinfo:1373//90896815>Lara Edios</url><br>7. <url=showinfo:1373//95734873>Ashley Parisi</url><br>8. <url=showinfo:1373//144807672>Eleana Tomelac</url><br>9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url><br>10. <url=showinfo:1373//1640795123>Onslaughtor</url><br><br><b>스타게이트 건설에 가장 큰 기여를 한 5개의 코퍼레이션:</b><br>1. <url=showinfo:2//98426237>Phoenix Naval Operations</url><br>2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url><br>3. <url=showinfo:2//98294796>Stahlklang Foundation</url><br>4. <url=showinfo:2//98671606>KekoBan</url><br>5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
       "ru": "Этот монумент возведён в честь всех капсулёров, помогавших Республике Минматар в строительстве этих звёздных врат в 123 году от ю. с. Ниже перечислены имена десяти капсулёров и названия пяти корпораций, вклад которых невозможно переоценить. <b>Десять капсулёров, принимавших самое активное участие в строительстве этих звёздных врат:</b> 1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url> 2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url> 3. <url=showinfo:1373//90448078>Gloobz</url> 4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url> 5. <url=showinfo:1373//144661902>Maxp</url> 6. <url=showinfo:1373//90896815>Lara Edios</url> 7. <url=showinfo:1373//95734873>Ashley Parisi</url> 8. <url=showinfo:1373//144807672>Eleana Tomelac</url> 9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url> 10. <url=showinfo:1373//1640795123>Onslaughtor</url> <b>Пять корпораций капсулёров, внёсших наибольший вклад в строительство этих звёздных врат:</b> 1. <url=showinfo:2//98426237>Phoenix Naval Operations</url> 2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url> 3. <url=showinfo:2//98294796>Stahlklang Foundation</url> 4. <url=showinfo:2//98671606>KekoBan</url> 5. <url=showinfo:2//1417840265>Free Radical Corporation</url>", 
-      "zh": "这座纪念碑铭记着在YC123年参与米玛塔尔共和国星门建造项目的众多克隆飞行员。其中贡献最大的10名克隆飞行员以及5个克隆飞行员军团的名字如下：<b>贡献最大的10名克隆飞行员：</b>1.<url=showinfo:1373//2113204228>Xeantuxe Vaille</url> 2.<url=showinfo:1373//95249238>PixyWarrior Ellecon</url> 3.<url=showinfo:1373//90448078>Gloobz</url> 4.<url=showinfo:1373//2116255096>迈克尔·弗兹博尔顿</url>5.<url=showinfo:1373//144661902>马克斯</url>6.<url=showinfo:1373//90896815>拉拉·埃迪奥斯</url>7.<url=showinfo:1373//95734873>阿什利·帕里西</url>8.<url=showinfo:1373//144807672>埃莱娜·托梅拉克</url>9.<url=showinfo:1373//2112708895>汤姆少校的鬼魂</url>10.<url=showinfo:1373//1640795123>贡献最大的5个克隆飞行员军团：</b>1.<url=showinfo:2//98426237>凤凰海军行动</url>2.<url=showinfo:2//98665675>陶塞蒂的闪电</url>3.<url=showinfo:2//98294796>斯塔尔克朗基金会</url>4.<url=showinfo:2//98671606>KekoBan</url> 5.<url=showinfo:2//1417840265>自由基公司</url>"
+      "zh": "这座纪念碑铭记着在YC123年参与米玛塔尔共和国星门建造项目的众多克隆飞行员。其中贡献最大的10名克隆飞行员以及5个克隆飞行员军团的名字如下：\r\n\r\n<b>贡献最大的10名克隆飞行员：</b>\r\n\r\n1. <url=showinfo:1373//2113204228>Xeantuxe Vaille</url>\r\n\r\n2. <url=showinfo:1373//95249238>PixyWarrior Ellecon</url>\r\n\r\n3. <url=showinfo:1373//90448078>Gloobz</url>\r\n\r\n4. <url=showinfo:1373//2116255096>Michael Fuzzybolton</url>\r\n\r\n5. <url=showinfo:1373//144661902>Maxp</url>\r\n\r\n6. <url=showinfo:1373//90896815>Lara Edios</url>\r\n\r\n7. <url=showinfo:1373//95734873>Ashley Parisi</url>\r\n\r\n8. <url=showinfo:1373//144807672>Eleana Tomelac</url>\r\n\r\n9. <url=showinfo:1373//2112708895>Major Tom's Ghost</url>\r\n\r\n10.<url=showinfo:1373//1640795123>Onslaughtor</url>\r\n\r\n<b>贡献最大的5个克隆飞行员军团：</b>\r\n\r\n1. <url=showinfo:2//98426237>Phoenix Naval Operations</url>\r\n\r\n2. <url=showinfo:2//98665675>Les Eclaireurs de Tau-Ceti</url>\r\n\r\n3. <url=showinfo:2//98294796>Stahlklang Foundation</url>\r\n\r\n4. <url=showinfo:2//98671606>KekoBan</url>\r\n\r\n5. <url=showinfo:2//1417840265>Free Radical Corporation</url>"
     }, 
     "descriptionID": 582894, 
     "graphicID": 24960, 
@@ -263575,7 +263579,7 @@
       "ja": "コヒーレントアステロイド採掘クリスタル タイプB II設計図", 
       "ko": "응집성 소행성 채광용 크리스탈 타입 B II 블루프린트", 
       "ru": "Coherent Asteroid Mining Crystal Type B II Blueprint", 
-      "zh": "聚合小行星采集晶体B型蓝图 II"
+      "zh": "聚合小行星采集晶体B型II蓝图"
     }, 
     "typeNameID": 587334, 
     "volume": 0.01
@@ -263757,7 +263761,7 @@
       "ja": "アビサルアステロイド採掘クリスタル タイプC II設計図", 
       "ko": "어비설 소행성 채광용 크리스탈 타입 C II 블루프린트", 
       "ru": "Abyssal Asteroid Mining Crystal Type C II Blueprint", 
-      "zh": "深渊小行星采集晶体C型蓝图 II"
+      "zh": "深渊小行星采集晶体C型II蓝图"
     }, 
     "typeNameID": 587341, 
     "volume": 0.01
@@ -263809,7 +263813,7 @@
       "ja": "メロコキサイトアステロイド採掘クリスタル タイプC II設計図", 
       "ko": "메르코시트 소행성 채광용 크리스탈 타입 C II 블루프린트", 
       "ru": "Mercoxit Asteroid Mining Crystal Type C II Blueprint", 
-      "zh": "基腹断岩小行星采集晶体C型蓝图 II"
+      "zh": "基腹断岩小行星采集晶体C型II蓝图"
     }, 
     "typeNameID": 587343, 
     "volume": 0.01
@@ -263863,7 +263867,7 @@
       "ja": "シンプルアステロイド採掘クリスタル タイプC I設計図", 
       "ko": "기초 소행성 채광용 크리스탈 타입 C I 블루프린트", 
       "ru": "Simple Asteroid Mining Crystal Type C I Blueprint", 
-      "zh": "普通小行星采集晶体C型蓝图 I"
+      "zh": "普通小行星采集晶体C型I蓝图"
     }, 
     "typeNameID": 587345, 
     "volume": 0.01
@@ -263917,7 +263921,7 @@
       "ja": "コヒーレントアステロイド採掘クリスタル タイプC I設計図", 
       "ko": "응집성 소행성 채광용 크리스탈 타입 C I 블루프린트", 
       "ru": "Coherent Asteroid Mining Crystal Type C I Blueprint", 
-      "zh": "聚合小行星采集晶体C型蓝图 I"
+      "zh": "聚合小行星采集晶体C型I蓝图"
     }, 
     "typeNameID": 587347, 
     "volume": 0.01
@@ -272989,7 +272993,7 @@
       "ja": "アラレズ設計図", 
       "ko": "아랄레즈 블루프린트", 
       "ru": "Aralez Blueprint", 
-      "zh": "翼灵级蓝图"
+      "zh": "翼灵蓝图"
     }, 
     "typeNameID": 589178, 
     "volume": 0.01
@@ -277985,7 +277989,7 @@
       "ja": "普遍衛星採掘クリスタル タイプB I設計図", 
       "ko": "저급 위성 채광용 크리스탈 타입 B I 블루프린트", 
       "ru": "Ubiquitous Moon Mining Crystal Type B I Blueprint", 
-      "zh": "常见卫星矿石采集晶体B型蓝图 I"
+      "zh": "常见卫星矿石采集晶体B型I蓝图"
     }, 
     "typeNameID": 590887, 
     "volume": 0.01
@@ -292568,7 +292572,7 @@
       "ja": "大型アステロイド鉱石圧縮装置I設計図", 
       "ko": "대형 소행성 광물 압축기 I 블루프린트", 
       "ru": "Large Asteroid Ore Compressor I Blueprint", 
-      "zh": "大型小行星矿石压缩装置蓝图 I"
+      "zh": "大型小行星矿石压缩装置I蓝图"
     }, 
     "typeNameID": 595245, 
     "volume": 0.01
@@ -292620,7 +292624,7 @@
       "ja": "大型アイス圧縮装置I設計図", 
       "ko": "대형 아이스 압축기 I 블루프린트", 
       "ru": "Large Ice Compressor I Blueprint", 
-      "zh": "大型冰矿压缩装置蓝图 I"
+      "zh": "大型冰矿压缩装置I蓝图"
     }, 
     "typeNameID": 595247, 
     "volume": 0.01
@@ -312684,7 +312688,7 @@
       "ja": "この箱はAIRキャリアプログラムへの参加報酬として、学際的研究協会から提供されたものである。\n\nいずれかの四大国家のハウラーの設計図コピーが1つ入っている。", 
       "ko": "학제간연구협회에서 지급하는 AIR 커리어 프로그램 참여 보상입니다.<br><br>4대 제국 중 한 국가의 운반선 블루프린트 복제본이 들어 있습니다.", 
       "ru": "Этот контейнер был создан Ассоциацией междисциплинарных исследований в качестве награды за использование карьерного плана АМИ. Он содержит копию чертежа грузового корабля одной из держав.", 
-      "zh": "这个箱子是参与星空会职业计划所获得的奖励。\n\n\n\n内含一张帝国运载舰蓝图拷贝。"
+      "zh": "这个箱子是参与星空会职业计划所获得的奖励。内含一张帝国运载舰蓝图拷贝。"
     }, 
     "descriptionID": 610656, 
     "factionID": 500028, 
@@ -312985,14 +312989,14 @@
     "radius": 1.0, 
     "typeID": 63783, 
     "typeName": {
-      "de": "Soldier of Fortune - Frigate Skill Crate", 
-      "en-us": "Soldier of Fortune - Frigate Skill Crate", 
-      "es": "Mercenario: caja de habilidades de fragata", 
-      "fr": "Mercenaire - Caisse de compétences de frégate", 
-      "ja": "ソルジャーオブフォーチュン（傭兵） - フリゲート用スキル箱", 
-      "ko": "용병 - 프리깃 스킬 상자", 
-      "ru": "Soldier of Fortune - Frigate Skill Crate", 
-      "zh": "自由战士 - 护卫舰技能箱"
+      "de": "Soldier - Frigate Skill Crate", 
+      "en-us": "Soldier - Frigate Skill Crate", 
+      "es": "Soldado: caja de habilidades de fragatas", 
+      "fr": "Soldat - Caisse de compétences de frégate", 
+      "ja": "兵士 - フリゲートスキル箱", 
+      "ko": "군인 - 프리깃 스킬 상자", 
+      "ru": "Soldier - Frigate Skill Crate", 
+      "zh": "战士 - 护卫舰技能箱"
     }, 
     "typeNameID": 599405, 
     "volume": 1.0
@@ -313021,14 +313025,14 @@
     "radius": 1.0, 
     "typeID": 63784, 
     "typeName": {
-      "de": "Soldier of Fortune - Combat Frigate Crate", 
-      "en-us": "Soldier of Fortune - Combat Frigate Crate", 
-      "es": "Mercenario: caja de fragatas de combate", 
-      "fr": "Mercenaire - Caisse de frégate de combat", 
-      "ja": "ソルジャーオブフォーチュン（傭兵） - 戦闘用フリゲート箱", 
-      "ko": "용병 - 전투 프리깃 상자", 
-      "ru": "Soldier of Fortune - Combat Frigate Crate", 
-      "zh": "自由战士 - 战斗护卫舰箱"
+      "de": "Soldier - Combat Frigate Crate", 
+      "en-us": "Soldier - Combat Frigate Crate", 
+      "es": "Soldado: caja de fragata de combate", 
+      "fr": "Soldat - Caisse de frégate de combat", 
+      "ja": "兵士 - 戦闘用フリゲート箱", 
+      "ko": "군인 - 전투 프리깃 상자", 
+      "ru": "Soldier - Combat Frigate Crate", 
+      "zh": "战士 - 战斗护卫舰箱"
     }, 
     "typeNameID": 599406, 
     "volume": 2500.0
@@ -313057,14 +313061,14 @@
     "radius": 1.0, 
     "typeID": 63785, 
     "typeName": {
-      "de": "Soldier of Fortune - Support Frigate Crate", 
-      "en-us": "Soldier of Fortune - Support Frigate Crate", 
-      "es": "Mercenario: caja de fragatas de apoyo", 
-      "fr": "Mercenaire - Caisse de frégate d'appui", 
-      "ja": "ソルジャーオブフォーチュン（傭兵） - 支援型フリゲート箱", 
-      "ko": "용병 - 지원형 프리깃 상자", 
-      "ru": "Soldier of Fortune - Support Frigate Crate", 
-      "zh": "自由战士 - 后勤护卫舰箱"
+      "de": "Soldier - Support Frigate Crate", 
+      "en-us": "Soldier - Support Frigate Crate", 
+      "es": "Soldado: caja de fragata de apoyo", 
+      "fr": "Soldat - Caisse de frégate d'appui", 
+      "ja": "兵士 - 支援型フリゲート箱", 
+      "ko": "군인 - 지원형 프리깃 상자", 
+      "ru": "Soldier - Support Frigate Crate", 
+      "zh": "战士 - 后勤护卫舰箱"
     }, 
     "typeNameID": 599407, 
     "volume": 2500.0
@@ -314015,14 +314019,14 @@
     "basePrice": 0.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "<font size=\"14\"><b>AIR-Glücksritter</b></font> Dieses Expertensystem wird von der Association for Interdisciplinary Research (AIR) ausgegeben, um es neuen Kapselpiloten zu ermöglichen, eine Vielzahl an Schiffen und Aktivitäten auszuprobieren, ohne die nötigen Skills trainieren zu müssen. Das System macht Skills verfügbar, die es Kapselpiloten erlauben, alle Fregatten der vier Imperien zu fliegen. Durch die enthaltenen Unterstützungsskills ist das System besonders nützlich für den Kampf gegen andere Kapselpiloten oder zur Unterstützung der eigenen Flotte. Das Expertensystem umfasst Skills, die sich auf Panzerung, Schilde, Lenkwaffen, Drohnen, Projektilwaffentürme, Hybridgeschütztürme, Energiegeschütztürme, Module für elektronische Kriegsführung und Module zur Fernunterstützung beziehen. Ein Expertensystem ist eine externe, beschränkte künstliche Intelligenz, die Ihnen während der aktiven Dauer Zugriff auf bestimmte Skills gewährt. Da ein aktives Expertensystem unabhängig von Ihrem Klon und Ihrer Kapsel arbeitet, geht es bei einem Kapseltod oder Klonsprung nicht verloren. <i>Expertensysteme wurden vom Konsortium PKN Interstellar entwickelt. Sie sind über das HyperNet-Überlichtgeschwindigkeitskommunikationsnetzwerk zugänglich und werden von PKN Interstellar-Mitgliedcorporations vertrieben. Ein Expertensystem ist eine beschränkte KI, die auf künstlicher Gelhirn-Technologie basiert. Das Expertensystem nutzt Nervenbahnen, die auf jenen basieren, die durch Skilltraining oder Skill-Injektion entstehen. Dadurch ist es mit dem Schiff-Interface und den Kontrollsystemen der Kapsel kompatibel. Spezielle Überlichtgeschwindigkeitskanäle im HyperNet von PKN Interstellar ermöglichen Befehls- und Kontrollkommunikation in Echtzeit.</i>", 
-      "en-us": "<font size=\"14\"><b>AIR Soldier of Fortune</b></font>\r\n\r\nThis Expert System is sponsored by the Association for Interdisciplinary Research (AIR) to allow new capsuleers to try out a variety of ships and activities before having to train the required skills. \r\n\r\nIt makes skills available that enable a capsuleer to fly all frigates from all four Empires, while its supporting skills make it especially useful when fighting against other capsuleers or providing support for your fleet. This Expert System includes skills related to armor, shields, missiles, drones, projectile turrets, hybrid turrets, energy turrets, electronic warfare modules, and remote assistance modules.\r\n\r\nAn Expert System is a remote, restricted artificial intelligence providing you with access to certain skills during the active period. As it is independent from your clone and your capsule, an active Expert System is not lost on pod death or clone jump.\r\n\r\n<i>Expert Systems are a product developed by the PKN Interstellar consortium, made available over the HyperNet FTL communications network, and marketed by PKN Interstellar member corporations. An Expert System is a restricted AI based on artificial gelbrain technology. As the Expert System uses neural pathways based on those created by skill training or skill injection, it is compatible with capsule-ship interface and control systems. Real time command and control communication is achieved using dedicated FTL channels on PKN Interstellar's HyperNet.</i>", 
-      "es": "<font size=\"14\"><b>Mercenario de AIR.</b></font>\r\n\r\nEste sistema experto lo patrocina la Asociación para la Investigación Interdisciplinaria (AIR por el nombre en inglés) para que los nuevos capsulistas prueben varias naves y actividades antes de desarrollar las habilidades necesarias. \r\n\r\nOfrece habilidades que permiten a un capsulista pilotar todas las fragatas de los cuatro imperios, mientras que sus habilidades secundarias hacen que sea especialmente útil al luchar contra otros capsulistas o para apoyar a la flota. Este sistema experto incluye habilidades relacionadas con el blindaje, los escudos, los misiles, los drones, las torretas de proyectiles, híbridas y de energía, los módulos de guerra electrónica y los módulos de asistencia remota.\r\n\r\nUn sistema experto es una inteligencia artificial remota y restringida que proporciona acceso a ciertas habilidades durante el periodo activo. No depende ni de tu clon ni de tu cápsula, por lo que no lo perderás si esta se destruye o si se lleva a cabo un salto de clon.\r\n\r\n<i>Los sistemas expertos son productos desarrollados por el consorcio PKN Interstellar, quien los pone a disposición de los usuarios a través de la red de comunicaciones supralumínica HyperNet y los comercializa a través de las corporaciones que forman parte de PKN Interstellar. Un sistema experto es una IA restringida que funciona con tecnología de cerebro-gel artificial. Como utiliza vías neuronales basadas en las que se crean al desarrollar o inyectar habilidades, es compatible con los sistemas de control y la interfaz cápsula-nave. Así pues, se establece una comunicación entre mando y control en tiempo real con canales supralumínicos exclusivos dentro de la red HyperNet de PKN Interstellar.</i>", 
-      "fr": "<font size=\"14\"><b>Mercenaire de l'AIR</b></font> Ce système expert est parrainé par l'Association de recherche interdisciplinaire (AIR) afin de permettre aux nouveaux capsuliers de tester divers vaisseaux et activités avant de devoir acquérir les compétences nécessaires. Il donne accès aux compétences permettant au capsulier de piloter toutes les frégates des quatre empires, tandis que ses compétences de soutien le rendent particulièrement utile lors des combats contre d'autres capsuliers ou pour soutenir votre flotte. Ce système expert comprend des compétences liées au blindage, aux boucliers, aux missiles, aux drones, aux tourelles à projectiles, aux tourelles hybrides, aux tourelles à énergie, aux modules de guerre électronique et aux modules de soutien à distance. Un système expert est une intelligence artificielle restreinte à distance qui vous fait bénéficier de certaines compétences pendant la période active. Étant indépendant de votre clone et de votre capsule, un système expert actif ne sera donc pas perdu en cas de décapsulage ou saut de clone. <i>Les systèmes experts sont un produit développé par le consortium PKN Interstellar, rendu disponible à travers le réseau de communications PRL de l'Hypernet, et commercialisé par les corporations membres de PKN Interstellar. Un système expert est une IA restreinte basée sur la technologie de neurogel artificiel. Puisque le système expert utilise des voies neurales basées sur celles créées par l'apprentissage ou l'injection de compétences, il est donc compatible avec l'interface vaisseau-capsulier et les systèmes de contrôle. Les communications de commandement et de contrôle en temps réel sont assurées via les canaux PRL dédiés sur l'Hypernet de PKN Interstellar.</i>", 
-      "ja": "<font size=\"14\"><b>AIRソルジャーオブフォーチュン（傭兵）</b></font>\r\n\r\nこのエキスパートシステムは学際的研究協会（AIR）の出資を受けており、使用することで、新人カプセラが必要スキルをトレーニングする必要なく様々な艦船やアクティビティを体験することができる。 \r\n\r\nカプセラが四大国家の全フリゲートを操縦するスキルを使えるだけでなく、含まれているサポートスキルは他のカプセラと戦ったり、フリートにサポートを提供する際にも非常に役に立つ。このエキスパートシステムにはアーマーやシールド、ミサイル、ドローン、プロジェクタイルタレット、ハイブリッドタレット、エネルギータレット、電子戦用モジュール、そして遠隔サポートモジュールに関するスキルが同梱されている。\r\n\r\nエキスパートシステムは、有効期間中に特定のスキルへのアクセスを提供する、リモートで制限された人工知能である。クローンやカプセルからは独立しているため、ポッドの喪失やクローンジャンプによって失われることがない。\r\n\r\n<i>エキスパートシステムは、PKNインターステラー・コンソーシアムが開発した製品で、ハイパーネットFTL通信網を流通し、PKNインターステラーの関連企業が販売している。人工ゲルブレイン技術をベースにした制限付きAIで、スキルトレーニングやスキルインジェクションによって生成された神経経路を利用しているため、カプセルシップのインターフェースや制御システムとも互換性がある。PKNインターステラーのハイパーネット上の専用FTLチャンネルを使用して、リアルタイムコマンドと制御通信を実現している。</i>", 
-      "ko": "<font size=\"14\"><b>AIR 용병</b></font>\r\n\r\n학제간연구협회(AIR)의 후원으로 제작된 전문가 시스템으로 스킬이 부족한 캡슐리어에게 다양한 함선과 활동을 경험할 수 있는 기회를 제공합니다.\r\n\r\n4대 제국 프리깃을 조종하는 스킬 및 전투와 함대 지원에 필요한 스킬을 사용할 수 있습니다. 장갑, 실드, 미사일, 드론, 발사체 터렛, 하이브리드 터렛, 에너지 터렛, 전자전 모듈, 원격 지원 모듈 관련 스킬이 포함됩니다.\r\n\r\n전문가 시스템은 제한형 AI로 일정 기간동안 캡슐리어의 스킬 사용을 활성화합니다. 사용자의 신체 및 캡슐과 독립되어 있기 때문에 캡슐이 파괴되거나 클론을 변경해도 시스템이 제거되지 않습니다.\r\n\r\n<i>전문가 시스템은 PKN 인터스텔라에 의해 개발 및 판매되는 제품으로 FTL 통신 네트워크인 하이퍼넷을 통해 배포됩니다. 인공 젤브레인을 바탕으로 설계된 제한형 AI로 스킬 주입 및 훈련을 통해 생성된 신경망을 활용하기 때문에 함선 인터페이스를 비롯한 제어 시스템과 연동됩니다. FTL 네트워크인 하이퍼넷을 통해 실시간 제어 및 통신이 이루어집니다.</i>", 
-      "ru": "<font size=\"14\"><b>Солдат удачи АМИ</b></font> Эта экспертная система создана при поддержке Ассоциации междисциплинарных исследований (АМИ), чтобы капсулёры-новички могли ознакомиться с различными кораблями и занятиями, прежде чем начинать осваивать необходимые навыки. С её помощью капсулёр получает доступ к навыкам, позволяющим управлять всеми фрегатами четырёх держав, а навыки поддержки, предлагаемые системой, пригодятся во время сражений с другими капсулёрами и при оказании содействия своему флоту. Экспертная система предоставляет доступ к навыкам, связанным с бронёй, щитами, ракетами, дронами, баллистическими орудиями, гибридными орудиями, лазерными орудиями, модулями электронной борьбы и модулями дистанционной поддержки. Экспертная система — это дистанционный искусственный интеллект ограниченного действия, предоставляющий определённые навыки на время его использования. Поскольку экспертная система независима от вашего клона и капсулы, вы не потеряете её при уничтожении капсулы или смене клона. <i>Экспертная система — это продукция консорциума «ПКН Интерстеллар», которую поставляют корпорации, входящие в состав «ПКН Интерстеллар». Она доставляется посредством системы сверхсветовых коммуникаций через гиперсеть. Экспертная система — это ИИ ограниченного действия, созданный на основе технологии гелеобразного мозга. Экспертная система использует нейронные каналы, образующиеся во время освоения или инъекции навыков, поэтому она совместима с интерфейсом корабля и капсулы, а также с их системами управления. Управление и коммуникация в реальном времени осуществляются по выделенным сверхсветовым каналам гиперсети консорциума «ПКН Интерстеллар».</i>", 
-      "zh": "<font size=\"14\"><b>星空会自由战士</b></font>这个专家系统由星空会提供赞助，让新手克隆飞行员可以在没有训练所需技能的情况下体验各种舰船和活动。它可以为克隆飞行员解锁驾驶四大帝国的全部护卫舰所需的技能，而它提供的辅助技能更是让使用者在对战其他克隆飞行员或为舰队提供支援时如虎添翼。这个专家系统提供的技能包括了装甲、护盾、导弹、无人机、射弹炮台、混合炮台、能量炮台、电子战装备和远程辅助装备相关技能。专家系统是一种虚拟的数据资源，通过租用专家系统你可以在一定时间内获得一些特定的技能。它不依托于你的克隆体和太空舱，因此即使太空舱被毁或进行远距克隆后也能继续使用。<i>专家系统由PKN星际财团研发，由财团下属军团通过超光速网络通信来进行推广。专家系统是一种基于虚拟大脑技术的受限人工智能。专家系统使用了通过技能训练或技能注入产生的神经通路，与太空舱界面和控制系统兼容。通过PKN星系超网上的专用超光速频道可以实现实时指令和控制通信。</i>"
+      "de": "<font size=\"14\"><b>AIR-Soldat</b></font> Dieses Expertensystem wird von der Association for Interdisciplinary Research (AIR) ausgegeben, um es neuen Kapselpiloten zu ermöglichen, eine Vielzahl an Schiffen und Aktivitäten auszuprobieren, ohne die nötigen Skills trainieren zu müssen. Das System macht Skills verfügbar, die es Kapselpiloten erlauben, alle Fregatten der vier Imperien zu fliegen. Durch die enthaltenen Unterstützungsskills ist das System besonders nützlich für den Kampf gegen andere Kapselpiloten oder zur Unterstützung der eigenen Flotte. Das Expertensystem umfasst Skills, die sich auf Panzerung, Schilde, Lenkwaffen, Drohnen, Projektilwaffentürme, Hybridgeschütztürme, Energiegeschütztürme, Module für elektronische Kriegsführung und Module zur Fernunterstützung beziehen. Ein Expertensystem ist eine entfernte, eingeschränkte künstliche Intelligenz, die Ihnen während der aktiven Dauer Zugang zu bestimmten Skills bietet. Da es unabhängig von Ihrem Klon und Ihrer Kapsel ist, geht ein aktives Expertensystem nicht bei Kapseltod oder Klonsprung verloren. <i>Expertensysteme sind ein Produkt, das vom PKN Interstellar Consortium entwickelt und über das HyperNet Überlichtgeschwindigkeitskommunikationsnetzwerk bereitgestellt wird. Sie werden von den Mitgliedscorporations von PKN Interstellar vermarktet. Ein Expertensystem ist eine eingeschränkte KI, die auf künstlicher Gelhirn-Technologie basiert. Da das Expertensystem neuronale Pfade nutzt, die durch Skilltraining oder Skill-Injektion erstellt wurden, ist es mit Kapsel-Schiff-Interface und Kontrollsystemen kompatibel. Die Echtzeit-Kommando- und Kontrollkommunikation erfolgt über dedizierte Überlichtkanäle im HyperNet von PKN Interstellar.</i>", 
+      "en-us": "<font size=\"14\"><b>AIR Soldier</b></font>\r\n\r\nThis Expert System is sponsored by the Association for Interdisciplinary Research (AIR) to allow new capsuleers to try out a variety of ships and activities before having to train the required skills. \r\n\r\nIt makes skills available that enable a capsuleer to fly all frigates from all four Empires, while its supporting skills make it especially useful when fighting against other capsuleers or providing support for your fleet. This Expert System includes skills related to armor, shields, missiles, drones, projectile turrets, hybrid turrets, energy turrets, electronic warfare modules, and remote assistance modules.\r\n\r\nAn Expert System is a remote, restricted artificial intelligence providing you with access to certain skills during the active period. As it is independent from your clone and your capsule, an active Expert System is not lost on pod death or clone jump.\r\n\r\n<i>Expert Systems are a product developed by the PKN Interstellar consortium, made available over the HyperNet FTL communications network, and marketed by PKN Interstellar member corporations. An Expert System is a restricted AI based on artificial gelbrain technology. As the Expert System uses neural pathways based on those created by skill training or skill injection, it is compatible with capsule-ship interface and control systems. Real time command and control communication is achieved using dedicated FTL channels on PKN Interstellar's HyperNet.</i>", 
+      "es": "<font size=\"14\"><b>Soldado de AIR</b></font>\r\n\r\nEste sistema experto lo patrocina la Asociación para la Investigación Interdisciplinaria (AIR por el nombre en inglés) para que los nuevos capsulistas prueben varias naves y actividades antes de desarrollar las habilidades necesarias.\r\n\r\nOfrece habilidades que permiten a un capsulista pilotar todas las fragatas de los cuatro imperios, mientras que sus habilidades secundarias hacen que sea especialmente útil al luchar contra otros capsulistas o para apoyar a la flota. Este sistema experto incluye habilidades relacionadas con el blindaje, los escudos, los misiles, los drones, las torretas de proyectiles, híbridas y de energía, los módulos de guerra electrónica y los módulos de asistencia remota.\r\n\r\nUn sistema experto es una inteligencia artificial remota y restringida que proporciona acceso a ciertas habilidades durante el periodo activo. No depende ni de tu clon ni de tu cápsula, por lo que no lo perderás si esta se destruye o si se lleva a cabo un salto de clon.\r\n\r\n<i>Los sistemas expertos son productos desarrollados por el consorcio PKN Interstellar, quien los pone a disposición de los usuarios a través de la red de comunicaciones supralumínica HyperNet y los comercializa a través de las corporaciones que forman parte de PKN Interstellar. Un sistema experto es una IA restringida que funciona con tecnología de cerebro-gel artificial. Como utiliza vías neuronales basadas en las que se crean al desarrollar o inyectar habilidades, es compatible con los sistemas de control y la interfaz cápsula-nave. Así pues, se establece una comunicación entre mando y control en tiempo real con canales supralumínicos exclusivos dentro de la red HyperNet de PKN Interstellar.</i>", 
+      "fr": "<font size=\"14\"><b>Soldat de l'AIR</b></font>\r\n\r\nCe système expert est parrainé par l'Association de recherche interdisciplinaire (AIR) afin de permettre aux nouveaux capsuliers de tester divers vaisseaux et activités avant de devoir acquérir les compétences nécessaires. \r\n\r\nIl donne accès aux compétences permettant au capsulier de piloter toutes les frégates des quatre empires, tandis que ses compétences de soutien le rendent particulièrement utile lors des combats contre d'autres capsuliers ou pour soutenir votre flotte. Ce système expert comprend des compétences liées au blindage, aux boucliers, aux missiles, aux drones, aux tourelles à projectiles, aux tourelles hybrides, aux tourelles à énergie, aux modules de guerre électronique et aux modules de soutien à distance.\r\n\r\nUn système expert est une intelligence artificielle restreinte à distance qui vous fait bénéficier de certaines compétences pendant la période active. Étant indépendant de votre clone et de votre capsule, un système expert actif ne sera donc pas perdu en cas de décapsulage ou saut de clone.\r\n\r\n<i>Les systèmes experts sont un produit développé par le consortium PKN Interstellar, disponible via le réseau de communications PRL HyperNet et commercialisé par les corporations membres de PKN Interstellar. Un système expert est une IA restreinte basée sur la technologie du neurogel. Comme le système expert utilise des voies neuronales basées sur celles créées par l'apprentissage de compétences ou l'injection de compétences, il est compatible avec l'interface et les systèmes de contrôle vaisseau-capsule. Les communications de contrôle et de commandement en temps réel transitent via des canaux PRL dédiés sur l'HyperNet de PKN Interstellar.</i>", 
+      "ja": "<font size=\"14\"><b>AIR兵士</b></font>\r\n\r\nこのエキスパートシステムは、学際的研究協会（AIR）の支援によって提供されている。使用することで、新人カプセラは必要なスキルをトレーニングする前に、さまざまな艦船やアクティビティを体験することができる。\r\n\r\nカプセラが四大国家の全フリゲートを操縦するスキルを使えるだけでなく、含まれているサポートスキルは他のカプセラと戦ったり、フリートにサポートを提供する際にも非常に役に立つ。このエキスパートシステムにはアーマーやシールド、ミサイル、ドローン、プロジェクタイルタレット、ハイブリッドタレット、エネルギータレット、電子戦用モジュール、そして遠隔サポートモジュールに関するスキルが同梱されている。\r\n\r\nエキスパートシステムは、有効期間中に特定のスキルへのアクセスを提供する、リモートで制限された人工知能である。クローンやカプセルからは独立しているため、ポッドの喪失やクローンジャンプによって失われることがない。\r\n\r\n<i>エキスパートシステムは、PKNインターステラー・コンソーシアムが開発した製品で、ハイパーネットFTL通信網を流通し、PKNインターステラーの関連企業が販売している。人工ゲルブレイン技術をベースにした制限付きAIで、スキルトレーニングやスキルインジェクションによって生成された神経経路を利用しているため、カプセルシップのインターフェースや制御システムとも互換性がある。PKNインターステラーのハイパーネット上の専用FTLチャンネルを使用して、リアルタイムコマンドと制御通信を実現している。</i>", 
+      "ko": "<font size=\"14\"><b>AIR 군인</b></font>\r\n\r\n학제간연구협회(AIR)의 후원으로 제작된 전문가 시스템으로 스킬이 부족한 캡슐리어에게 다양한 함선과 활동을 경험할 수 있는 기회를 제공합니다.\r\n\r\n4대 국가 프리깃을 조종하는 스킬 및 전투와 함대 지원에 필요한 스킬을 사용할 수 있습니다. 장갑, 실드, 미사일, 드론, 발사체 터렛, 하이브리드 터렛, 에너지 터렛, 전자전 모듈, 원격 지원 모듈 관련 스킬이 포함됩니다.\r\n\r\n전문가 시스템은 제한형 AI로 일정 기간동안 캡슐리어의 스킬 사용을 활성화합니다. 사용자의 신체 및 캡슐과 독립되어 있기 때문에 캡슐이 파괴되거나 클론을 변경해도 시스템이 제거되지 않습니다.\r\n\r\n<i>전문가 시스템은 PKN 인터스텔라에 의해 개발 및 판매되는 제품으로 FTL 통신 네트워크인 하이퍼넷을 통해 배포됩니다. 인공 젤브레인을 바탕으로 설계된 제한형 AI로 스킬 주입 및 훈련을 통해 생성된 신경망을 활용하기 때문에 함선 인터페이스를 비롯한 제어 시스템과 연동됩니다. FTL 네트워크인 하이퍼넷을 통해 실시간 제어 및 통신이 이루어집니다.</i>", 
+      "ru": "<font size=\"14\"><b>Солдат АМИ</b></font> Эта экспертная система создана при поддержке Ассоциации междисциплинарных исследований (АМИ), чтобы капсулёры-новички могли ознакомиться с различными кораблями и занятиями, прежде чем начинать осваивать необходимые навыки. С её помощью капсулёр временно открывает навыки, позволяющие управлять всеми фрегатами четырёх держав, а навыки поддержки, предлагаемые системой, пригодятся во время сражений с другими капсулёрами и при оказании содействия своему флоту. Экспертная система предоставляет доступ к навыкам обращения с бронёй, щитами, ракетами, дронами, баллистическими орудиями, гибридными орудиями, лазерными орудиями, модулями электронной борьбы и модулями дистанционной поддержки. Экспертная система — это дистанционный искусственный интеллект ограниченного действия, предоставляющий определённые навыки на время его использования. Поскольку экспертная система независима от вашего клона и капсулы, вы не потеряете её при уничтожении капсулы или смене клона. <i>Экспертные системы — это продукты консорциума «ПКН Интерстеллар», предоставляемые корпорациями, входящими в состав «ПКН Интерстеллар», и доступные посредством системы сверхсветовых коммуникаций через гиперсеть. По своей сути они являются ИИ ограниченного действия, созданными на основе технологии гелеобразного мозга. Экспертные системы используют нейронные каналы, образующиеся при освоении или инъекции навыков, поэтому они совместимы с интерфейсом корабля и капсулы, а также с их системами управления. Управление и коммуникация осуществляются в реальном времени по выделенным сверхсветовым каналам гиперсети консорциума «ПКН Интерстеллар».</i>", 
+      "zh": "<font size=\"14\"><b>星空会战士</b></font>这个专家系统由星空会提供赞助，让新手克隆飞行员可以在没有训练所需技能的情况下体验各种舰船和活动。它可以为克隆飞行员解锁驾驶四大帝国的全部护卫舰所需的技能，而它提供的辅助技能更是让使用者在对战其他克隆飞行员或为舰队提供支援时如虎添翼。这个专家系统提供的技能包括了装甲、护盾、导弹、无人机、射弹炮台、混合炮台、能量炮台、电子战装备和远程辅助装备相关技能。专家系统是一种虚拟的数据资源，通过租用专家系统你可以在一定时间内获得一些特定的技能。它不依托于你的克隆体和太空舱，因此即使太空舱被毁或进行远距克隆后也能继续使用。<i>专家系统由PKN星际财团研发，由财团下属军团通过超光速网络通信来进行推广。专家系统是一种基于虚拟大脑技术的受限人工智能。专家系统使用了通过技能训练或技能注入产生的神经通路，与太空舱界面和控制系统兼容。通过PKN星际集团超网上的专用超光速频道可以实现实时指令和控制通信。</i>"
     }, 
     "descriptionID": 599598, 
     "groupID": 4098, 
@@ -314033,14 +314037,14 @@
     "radius": 1.0, 
     "typeID": 63829, 
     "typeName": {
-      "de": "Free AIR Soldier of Fortune Expert System", 
-      "en-us": "Free AIR Soldier of Fortune Expert System", 
-      "es": "Sistema experto de mercenario de AIR gratuito", 
-      "fr": "Système expert de mercenaire gratuit de l'AIR", 
-      "ja": "AIR無料ソルジャーオブフォーチュン・エキスパートシステム", 
-      "ko": "무료 AIR 용병 전문가 시스템", 
-      "ru": "Free AIR Soldier of Fortune Expert System", 
-      "zh": "免费的星空会自由战士专家系统"
+      "de": "Free AIR Soldier Expert System", 
+      "en-us": "Free AIR Soldier Expert System", 
+      "es": "Sistema experto de soldado de AIR gratuito", 
+      "fr": "Système expert gratuit de soldat de l'AIR", 
+      "ja": "無料AIR兵士エキスパートシステム", 
+      "ko": "무료 AIR 군인 전문가 시스템", 
+      "ru": "Free AIR Soldier Expert System", 
+      "zh": "免费的星空会战士专家系统"
     }, 
     "typeNameID": 599597, 
     "volume": 1.0
@@ -316881,14 +316885,14 @@
     "basePrice": 0.0, 
     "capacity": 150.0, 
     "description": {
-      "de": "Die Spezialabteilung für Regulierungen & Ordnung (SARO) ist ein oft verdeckt agierender Elite-Zweig von CONCORDs Directive Enforcement Department. Ihre Agenten haben die Erlaubnis, vorbeugend auf jegliche potentielle Bedrohungen für ihre Mission zu reagieren, inklusive des sofortigen Eröffnens von Feuer auf Eindringlinge.", 
-      "en-us": "Special Affairs for Regulations & Order (SARO) is an secretive elite branch of CONCORD's Directive Enforcement Department. Their officers are authorized to respond pre-emptively to all potential threats to their missions, up to and including firing on interlopers on sight.", 
-      "es": "La Subdivisión de Asuntos para la Regulación y el Orden (SARO) es una sección secreta de élite del Departamento de Ejecución de Directivas de CONCORD. Sus oficiales están autorizados a responder preventivamente a cualquier amenaza potencial para sus misiones, pudiendo incluso llegar a abrir fuego contra intrusos a la menor ocasión.", 
-      "fr": "Le Service d'Application des Réglementations et de l'Ordre (SARO) est une branche d'élite secrète du département exécutif des directives de CONCORD. Leurs officiers sont autorisés à répondre de manière préventive à toute menace potentielle pour leurs missions, jusqu'à tirer à vue sur les intrus.", 
-      "ja": "「規制及び秩序のための特別任務部隊（Special Affairs for Regulations & Order＝SARO）」は、統制施行部門（DED）の秘密エリート部隊である。隊員は任務を阻む全ての潜在的脅威に対して先制的対処を行う権限を与えられており、侵入者を見つけ次第攻撃することもある。", 
-      "ko": "질서유지특임대(SARO)는 CONCORD 지령집행부 산하의 비밀 특수 부대입니다. SARO 장교들은 임무에 대한 잠재적인 위협을 배제할 권한을 지니고 있으며, 특정 상황에서 선제 공격을 가할 수 있습니다.", 
-      "ru": "Специальный отдел правил и порядка (СОПП) — элитное секретное подразделение службы мониторинга реализации резолюций КОНКОРДа. Его руководство уполномочено совершать упреждающие действия при наличии потенциальной угрозы своей деятельности, включая стрельбу по замеченным подозрительным целям.", 
-      "zh": "统合部法规秩序特别事务局（SARO）是DED旗下的一支精英队伍。他们的指挥官获授权可以在执行任务时对任何潜在的威胁采取先发制人的措施，包括可以对来犯者直接开火。"
+      "de": "Eine Fregatte der Pacifier-Klasse unter dem Kommando der Special Affairs for Regulations & Order (SARO).\r\n\r\nDieses Schiff ist Teil eines Teams zur Durchsetzung der Flugverbotszone um eine geheime SARO-Anlage und hat den Befehl, alle unbefugten Schiffe zu vernichten.", 
+      "en-us": "A Pacifier-class frigate under the command of the Special Affairs for Regulations & Order (SARO).\r\n\r\nThis ship is part of a team charged with enforcing the no-fly zone around a classified SARO facility and has the authority to put down any unauthorized vessels.", 
+      "es": "Una fragata de clase Pacifier bajo el mando de la Subdivisión de Asuntos para la Regulación y el Orden (SARO).\r\n\r\nEsta nave forma parte de un equipo encargado de hacer cumplir la prohibición de vuelo en torno a una instalación secreta de SARO y tiene autorización para derribar cualquier nave no autorizada.", 
+      "fr": "Une frégate de classe Pacifier sous le commandement du Service d'Application des Réglementations et de l'Ordre (SARO).\r\n\r\nCe vaisseau fait partie d'une équipe chargée de faire respecter la zone d'exclusion aérienne autour d'une installation SARO classifiée et est autorisé à abattre tout vaisseau non autorisé.", 
+      "ja": "「規制及び秩序のための特別任務部隊（SARO）」の指揮下にあるパシファイアー級フリゲート。\r\n\r\nこの艦は、SAROの機密施設周辺の飛行禁止区域を取り締まる部隊の一員であり、無許可の艦船を排除する権限を持つ。", 
+      "ko": "질서유지특임대(SARO) 소속 퍼시파이어 프리깃입니다.\r\n\r\nSARO 시설 주변 비행 금지 구역의 치안을 유지합니다. 허가를 받지 않은 모든 함선을 공격할 권한이 있습니다.", 
+      "ru": "Этот фрегат модели Pacifier принадлежит Специальному отделу правил и порядка (СОПП).\r\n\r\nЕго экипаж входит в команду, обеспечивающую сохранение бесполётной зоны вокруг тайного объекта СОПП, и наделён полномочиями ликвидировать любые подозрительные корабли.", 
+      "zh": "一艘由法规秩序特别事务局（法序局）指挥的安抚者级护卫舰。该舰隶属于一支负责执行禁飞令的舰队，任务是管控某处机密法序局设施周边的禁飞区，并有权击退任何未经授权进入该区域的舰船。"
     }, 
     "descriptionID": 600462, 
     "graphicID": 21490, 
@@ -316902,14 +316906,14 @@
     "soundID": 20070, 
     "typeID": 64002, 
     "typeName": {
-      "de": "SARO Pacifier", 
-      "en-us": "SARO Pacifier", 
-      "es": "Pacifier de SARO", 
-      "fr": "Pacifier SARO", 
-      "ja": "SAROのパシファイヤー", 
-      "ko": "SARO 퍼시파이어", 
-      "ru": "SARO Pacifier", 
-      "zh": "法规秩序特别事务局 安抚者级"
+      "de": "Subduing Pacifier", 
+      "en-us": "Subduing Pacifier", 
+      "es": "Pacifier subyugante", 
+      "fr": "Pacifier de répression", 
+      "ja": "サブデューイング・パシファイアー", 
+      "ko": "진압형 퍼시파이어", 
+      "ru": "Subduing Pacifier", 
+      "zh": "镇定安抚者级"
     }, 
     "typeNameID": 600460, 
     "volume": 0.0, 
@@ -316919,14 +316923,14 @@
     "basePrice": 0.0, 
     "capacity": 158.0, 
     "description": {
-      "de": "Die Spezialabteilung für Regulierungen & Ordnung (SARO) ist ein oft verdeckt agierender Elite-Zweig von CONCORDs DED. Ihre Agenten haben die Erlaubnis, vorbeugend auf jegliche potentielle Bedrohungen für ihre Mission zu reagieren, inklusive des sofortigen Eröffnens von Feuer auf Eindringlinge.", 
-      "en-us": "Special Affairs for Regulations & Order (SARO) is an secretive elite branch of CONCORD's Directive Enforcement Department. Their officers are authorized to respond pre-emptively to all potential threats to their missions, up to and including firing on interlopers on sight.", 
-      "es": "La Subdivisión de Asuntos para la Regulación y el Orden (SARO) es una sección secreta de élite del Departamento de Ejecución de Directivas de CONCORD. Sus oficiales están autorizados a responder preventivamente a cualquier amenaza potencial para sus misiones, pudiendo incluso llegar a abrir fuego contra intrusos a la menor ocasión.", 
-      "fr": "Le Service d'Application des Réglementations et de l'Ordre (SARO) est une branche d'élite secrète du département exécutif des directives de CONCORD. Leurs officiers sont autorisés à répondre de manière préventive à toute menace potentielle pour leurs missions, jusqu'à tirer à vue sur les intrus.", 
-      "ja": "「規制及び秩序のための特別任務部隊（Special Affairs for Regulations & Order＝SARO）」は、統制施行部門（DED）の秘密エリート部隊である。隊員は任務を阻む全ての潜在的脅威に対して先制的対処を行う権限を与えられており、侵入者を見つけ次第攻撃することもある。", 
-      "ko": "질서유지특임대(SARO)는 CONCORD 지령집행부 산하의 비밀 특수 부대입니다. SARO 장교들은 임무에 대한 잠재적인 위협을 배제할 권한을 지니고 있으며, 특정 상황에서 선제 공격을 가할 수 있습니다.", 
-      "ru": "Специальный отдел правил и порядка (СОПП) — элитное секретное подразделение службы мониторинга реализации резолюций КОНКОРДа. Его руководство уполномочено совершать упреждающие действия при наличии потенциальной угрозы своей деятельности, включая стрельбу по замеченным подозрительным целям.", 
-      "zh": "统合部法规秩序特别事务局（SARO）是DED旗下的一支精英队伍。他们的指挥官获授权可以在执行任务时对任何潜在的威胁采取先发制人的措施，包括可以对来犯者直接开火。"
+      "de": "Eine Fregatte der Skybreaker-Klasse unter dem Kommando der Special Affairs for Regulations & Order (SARO), ausgerüstet mit Zielmarkierern.\r\n\r\nDieses Schiff ist Teil eines Teams zur Durchsetzung der Flugverbotszone um eine geheime SARO-Anlage und hat den Befehl, alle unbefugten Schiffe zu vernichten.", 
+      "en-us": "A Skybreaker-class frigate under the command of the Special Affairs for Regulations & Order (SARO). It is fitted with target painting capabilities.\r\n\r\nThis ship is part of a team charged with enforcing the no-fly zone around a classified SARO facility and has the authority to put down any unauthorized vessels.", 
+      "es": "Una fragata de clase Skybreaker bajo el mando de la Subdivisión de Asuntos para la Regulación y el Orden (SARO). Está equipada con sistemas de revelación de objetivos.\r\n\r\nEsta nave forma parte de un equipo encargado de hacer cumplir la prohibición de vuelo en torno a una instalación secreta de SARO y tiene autorización para derribar cualquier nave no autorizada.", 
+      "fr": "Une frégate de classe Skybreaker sous le commandement du Service d'Application des Réglementations et de l'Ordre (SARO). Elle est dotée de capacités de marquage de cible.\r\n\r\nCe vaisseau fait partie d'une équipe chargée de faire respecter la zone d'exclusion aérienne autour d'une installation SARO classifiée et est autorisé à abattre tout vaisseau non autorisé.", 
+      "ja": "「規制及び秩序のための特別任務部隊（SARO）」の指揮下にあるスカイブレイカー級フリゲート。ターゲットペインターを搭載している。\r\n\r\nこの艦は、SAROの機密施設周辺の飛行禁止区域を取り締まる部隊の一員であり、無許可の艦船を排除する権限を持つ。", 
+      "ko": "질서유지특임대(SARO) 소속 스카이브레이커 프리깃입니다. 타겟 페인팅 장비를 장착했습니다.\r\n\r\nSARO 시설 주변 비행 금지 구역의 치안을 유지합니다. 허가를 받지 않은 모든 함선을 공격할 권한이 있습니다.", 
+      "ru": "Этот фрегат модели Skybreaker принадлежит Специальному отделу правил и порядка (СОПП) и оснащён системами подсветки целей.\r\n\r\nЕго экипаж входит в команду, обеспечивающую сохранение бесполётной зоны вокруг тайного объекта СОПП, и наделён полномочиями ликвидировать любые подозрительные корабли.", 
+      "zh": "一艘由法规秩序特别事务局（法序局）指挥的破天级护卫舰。它配备目标标记功能。该舰隶属于一支负责执行禁飞令的舰队，任务是管控某处机密法序局设施周边的禁飞区，并有权击退任何未经授权进入该区域的舰船。"
     }, 
     "descriptionID": 600465, 
     "graphicID": 24569, 
@@ -316939,14 +316943,14 @@
     "soundID": 20070, 
     "typeID": 64003, 
     "typeName": {
-      "de": "SARO Skybreaker", 
-      "en-us": "SARO Skybreaker", 
-      "es": "Skybreaker de SARO", 
-      "fr": "Skybreaker SARO", 
-      "ja": "SAROのスカイブレイカー", 
-      "ko": "SARO 스카이브레이커", 
-      "ru": "SARO Skybreaker", 
-      "zh": "法规秩序特别事务局 破天者级"
+      "de": "Detector Skybreaker", 
+      "en-us": "Detector Skybreaker", 
+      "es": "Skybreaker detectora", 
+      "fr": "Skybreaker de détection", 
+      "ja": "ディテクター・スカイブレイカー", 
+      "ko": "탐지형 스카이브레이커", 
+      "ru": "Detector Skybreaker", 
+      "zh": "探测者破天级"
     }, 
     "typeNameID": 600464, 
     "volume": 28600.0, 
@@ -316956,14 +316960,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Die Spezialabteilung für Regulierungen & Ordnung (SARO) ist ein oft verdeckt agierender Elite-Zweig von CONCORDs DED. Ihre Agenten haben die Erlaubnis, vorbeugend auf jegliche potentielle Bedrohungen für ihre Mission zu reagieren, inklusive des sofortigen Eröffnens von Feuer auf Eindringlinge.", 
-      "en-us": "Special Affairs for Regulations & Order (SARO) is an secretive elite branch of CONCORD's Directive Enforcement Department. Their officers are authorized to respond pre-emptively to all potential threats to their missions, up to and including firing on interlopers on sight.", 
-      "es": "La Subdivisión de Asuntos para la Regulación y el Orden (SARO) es una sección secreta de élite del Departamento de Ejecución de Directivas de CONCORD. Sus oficiales están autorizados a responder preventivamente a cualquier amenaza potencial para sus misiones, pudiendo incluso llegar a abrir fuego contra intrusos a la menor ocasión.", 
-      "fr": "Le Service d'Application des Réglementations et de l'Ordre (SARO) est une branche d'élite secrète du département exécutif des directives de CONCORD. Leurs officiers sont autorisés à répondre de manière préventive à toute menace potentielle pour leurs missions, jusqu'à tirer à vue sur les intrus.", 
-      "ja": "「規制及び秩序のための特別任務部隊（Special Affairs for Regulations & Order＝SARO）」は、統制施行部門（DED）の秘密エリート部隊である。隊員は任務を阻む全ての潜在的脅威に対して先制的対処を行う権限を与えられており、侵入者を見つけ次第攻撃することもある。", 
-      "ko": "질서유지특임대(SARO)는 CONCORD 지령집행부 산하의 비밀 특수 부대입니다. SARO 장교들은 임무에 대한 잠재적인 위협을 배제할 권한을 지니고 있으며, 특정 상황에서 선제 공격을 가할 수 있습니다.", 
-      "ru": "Специальный отдел правил и порядка (СОПП) — элитное секретное подразделение службы мониторинга реализации резолюций КОНКОРДа. Его руководство уполномочено совершать упреждающие действия при наличии потенциальной угрозы своей деятельности, включая стрельбу по замеченным подозрительным целям.", 
-      "zh": "统合部法规秩序特别事务局（SARO）是DED旗下的一支精英队伍。他们的指挥官获授权可以在执行任务时对任何潜在的威胁采取先发制人的措施，包括可以对来犯者直接开火。"
+      "de": "Eine Fregatte der Nemesis-Klasse unter dem Kommando der Special Affairs for Regulations & Order (SARO), ausgerüstet mit Sensordämpfern.\r\n\r\nDieses Schiff ist Teil eines Teams zur Durchsetzung der Flugverbotszone um eine geheime SARO-Anlage und hat den Befehl, alle unbefugten Schiffe zu vernichten.", 
+      "en-us": "A Nemesis-class frigate under the command of the Special Affairs for Regulations & Order (SARO). It is fitted with sensor dampening capabilities.\r\n\r\nThis ship is part of a team charged with enforcing the no-fly zone around a classified SARO facility and has the authority to put down any unauthorized vessels.", 
+      "es": "Una fragata de clase Nemesis bajo el mando de la Subdivisión de Asuntos para la Regulación y el Orden (SARO). Está equipada con sistemas de atenuación de sensores.\r\n\r\nEsta nave forma parte de un equipo encargado de hacer cumplir la prohibición de vuelo en torno a una instalación secreta de SARO y tiene autorización para derribar cualquier nave no autorizada.", 
+      "fr": "Une frégate de classe Nemesis sous le commandement du Service d'Application des Réglementations et de l'Ordre (SARO). Elle est dotée de capacités d'atténuation de détection.\r\n\r\nCe vaisseau fait partie d'une équipe chargée de faire respecter la zone d'exclusion aérienne autour d'une installation SARO classifiée et est autorisé à abattre tout vaisseau non autorisé.", 
+      "ja": "「規制及び秩序のための特別任務部隊（SARO）」の指揮下にあるネメシス級フリゲート。センサーダンプニング機能を搭載している。\r\n\r\nこの艦は、SAROの機密施設周辺の飛行禁止区域を取り締まる部隊の一員であり、無許可の艦船を排除する権限を持つ。", 
+      "ko": "질서유지특임대(SARO) 소속 네메시스 프리깃입니다. 센서 댐프너 장비를 장착했습니다.\r\n\r\nSARO 시설 주변 비행 금지 구역의 치안을 유지합니다. 허가를 받지 않은 모든 함선을 공격할 권한이 있습니다.", 
+      "ru": "Этот фрегат модели Nemesis принадлежит Специальному отделу правил и порядка (СОПП) и оснащён системами подавления сенсоров.\r\n\r\nЕго экипаж входит в команду, обеспечивающую сохранение бесполётной зоны вокруг тайного объекта СОПП, и наделён полномочиями ликвидировать любые подозрительные корабли.", 
+      "zh": "一艘由法规秩序特别事务局（法序局）指挥的纳美西斯级护卫舰。它具备感应弱化功能。该舰隶属于一支负责执行禁飞令的舰队，任务是管控某处机密法序局设施周边的禁飞区，并有权击退任何未经授权进入该区域的舰船。"
     }, 
     "descriptionID": 600467, 
     "graphicID": 1909, 
@@ -316977,14 +316981,14 @@
     "soundID": 20072, 
     "typeID": 64004, 
     "typeName": {
-      "de": "SARO Nemesis", 
-      "en-us": "SARO Nemesis", 
-      "es": "Nemesis de SARO", 
-      "fr": "Nemesis SARO", 
-      "ja": "SAROのネメシス", 
-      "ko": "SARO 네메시스", 
-      "ru": "SARO Nemesis", 
-      "zh": "法规秩序特别事务局 纳美西斯级"
+      "de": "Flashbang Nemesis", 
+      "en-us": "Flashbang Nemesis", 
+      "es": "Nemesis cegadora", 
+      "fr": "Nemesis assourdissant", 
+      "ja": "フラッシュバン・ネメシス", 
+      "ko": "섬광형 네메시스", 
+      "ru": "Flashbang Nemesis", 
+      "zh": "闪光弹纳美西斯级"
     }, 
     "typeNameID": 600466, 
     "volume": 28100.0, 
@@ -316994,13 +316998,14 @@
     "basePrice": 0.0, 
     "capacity": 375.0, 
     "description": {
-      "de": "Die Spezialabteilung für Regulierungen & Ordnung (SARO) ist ein oft verdeckt agierender Elite-Zweig von CONCORDs DED. Ihre Agenten haben die Erlaubnis, vorbeugend auf jegliche potentielle Bedrohungen für ihre Mission zu reagieren, inklusive des sofortigen Eröffnens von Feuer auf Eindringlinge.", 
-      "es": "La Subdivisión de Asuntos para la Regulación y el Orden (SARO) es una sección secreta de élite del Departamento de Ejecución de Directivas de CONCORD. Sus oficiales están autorizados a responder preventivamente a cualquier amenaza potencial para sus misiones, pudiendo incluso llegar a abrir fuego contra intrusos a la menor ocasión.", 
-      "fr": "Le Service d'Application des Réglementations et de l'Ordre (SARO) est une branche d'élite secrète du département exécutif des directives de CONCORD. Leurs officiers sont autorisés à répondre de manière préventive à toute menace potentielle pour leurs missions, jusqu'à tirer à vue sur les intrus.", 
-      "ja": "「規制及び秩序のための特別任務部隊（Special Affairs for Regulations & Order＝SARO）」は、統制施行部門（DED）の秘密エリート部隊である。隊員は任務を阻む全ての潜在的脅威に対して先制的対処を行う権限を与えられており、侵入者を見つけ次第攻撃することもある。", 
-      "ko": "질서유지특임대(SARO)는 CONCORD 지령집행부 산하의 비밀 특수 부대입니다. SARO 장교들은 임무에 대한 잠재적인 위협을 배제할 권한을 지니고 있으며, 특정 상황에서 선제 공격을 가할 수 있습니다.", 
-      "ru": "Специальный отдел правил и порядка (СОПП) — элитное секретное подразделение службы мониторинга реализации резолюций КОНКОРДа. Его руководство уполномочено совершать упреждающие действия при наличии потенциальной угрозы своей деятельности, включая стрельбу по замеченным подозрительным целям.", 
-      "zh": "统合部法规秩序特别事务局（SARO）是DED旗下的一支精英队伍。他们的指挥官获授权可以在执行任务时对任何潜在的威胁采取先发制人的措施，包括可以对来犯者直接开火。"
+      "de": "Ein Zerstörer der Confessor-Klasse unter dem Kommando der Special Affairs for Regulations & Order (SARO), ausgerüstet mit Stasisnetzen.\r\n\r\nDieses Schiff ist Teil eines Teams zur Durchsetzung der Flugverbotszone um eine geheime SARO-Anlage und hat den Befehl, alle unbefugten Schiffe zu vernichten.", 
+      "en-us": "A Confessor-class destroyer under the command of the Special Affairs for Regulations & Order (SARO). It is fitted with webifying capabilities.\r\n\r\nThis ship is part of a team charged with enforcing the no-fly zone around a classified SARO facility and has the authority to put down any unauthorized vessels.", 
+      "es": "Un destructor de clase Confessor bajo el mando de la Subdivisión de Asuntos para la Regulación y el Orden (SARO). Está equipada con capacidad de red ralentizadora.\r\n\r\nEsta nave forma parte de un equipo encargado de hacer cumplir la prohibición de vuelo en torno a una instalación secreta de SARO y tiene autorización para derribar cualquier nave no autorizada.", 
+      "fr": "Un destroyer de classe Confessor sous le commandement du Service d'Application des Réglementations et de l'Ordre (SARO). Il est doté de capacités de génération de stase.\r\n\r\nCe vaisseau fait partie d'une équipe chargée de faire respecter la zone d'exclusion aérienne autour d'une installation SARO classifiée et est autorisé à abattre tout vaisseau non autorisé.", 
+      "ja": "「規制及び秩序のための特別任務部隊（SARO）」の指揮下にあるコンフェッサー級駆逐艦。ウェビファイアを搭載している。\r\n\r\nこの艦は、SAROの機密施設周辺の飛行禁止区域を取り締まる部隊の一員であり、無許可の艦船を排除する権限を持つ。", 
+      "ko": "질서유지특임대(SARO) 소속 컨페서 디스트로이어입니다. 스테이시스 웹 장비를 장착했습니다.\r\n\r\nSARO 시설 주변 비행 금지 구역의 치안을 유지합니다. 허가를 받지 않은 모든 함선을 공격할 권한이 있습니다.", 
+      "ru": "Этот эсминец модели Confessor принадлежит Специальному отделу правил и порядка (СОПП) и оснащён системами стазис-индукции.\r\n\r\nЕго экипаж входит в команду, обеспечивающую сохранение бесполётной зоны вокруг тайного объекта СОПП, и наделён полномочиями ликвидировать любые подозрительные корабли.", 
+      "zh": "一艘由法规秩序特别事务局（法序局）指挥的忏悔者级驱逐舰。它具备停滞缠绕功能。该舰隶属于一支负责执行禁飞令的舰队，任务是管控某处机密法序局设施周边的禁飞区，并有权击退任何未经授权进入该区域的舰船。"
     }, 
     "descriptionID": 600469, 
     "graphicID": 20980, 
@@ -317014,14 +317019,14 @@
     "soundID": 20114, 
     "typeID": 64005, 
     "typeName": {
-      "de": "SARO Confessor", 
-      "en-us": "SARO Confessor", 
-      "es": "Confessor de SARO", 
-      "fr": "Confessor SARO", 
-      "ja": "SAROのコンフェッサー", 
-      "ko": "SARO 컨페서", 
-      "ru": "SARO Confessor", 
-      "zh": "法规秩序特别事务局忏悔者级"
+      "de": "Detainer Confessor", 
+      "en-us": "Detainer Confessor", 
+      "es": "Confessor de captor", 
+      "fr": "Confessor de détention", 
+      "ja": "ディテイナー・コンフェッサー", 
+      "ko": "압류자 컨페서", 
+      "ru": "Detainer Confessor", 
+      "zh": "扣押者忏悔者级"
     }, 
     "typeNameID": 600468, 
     "volume": 28600.0, 
@@ -317106,14 +317111,14 @@
     "basePrice": 0.0, 
     "capacity": 345.0, 
     "description": {
-      "de": "Die Spezialabteilung für Regulierungen & Ordnung (SARO) ist ein oft verdeckt agierender Elite-Zweig von CONCORDs Directive Enforcement Department. Ihre Agenten haben die Erlaubnis, vorbeugend auf jegliche potentielle Bedrohungen für ihre Mission zu reagieren, inklusive des sofortigen Eröffnens von Feuer auf Eindringlinge.", 
-      "en-us": "Special Affairs for Regulations & Order (SARO) is an secretive elite branch of CONCORD's Directive Enforcement Department. Their officers are authorized to respond pre-emptively to all potential threats to their missions, up to and including firing on interlopers on sight.", 
-      "es": "La Subdivisión de Asuntos para la Regulación y el Orden (SARO) es una sección secreta de élite del Departamento de Ejecución de Directivas de CONCORD. Sus oficiales están autorizados a responder preventivamente a cualquier amenaza potencial para sus misiones, pudiendo incluso llegar a abrir fuego contra intrusos a la menor ocasión.", 
-      "fr": "Le Service d'Application des Réglementations et de l'Ordre (SARO) est une branche d'élite secrète du département exécutif des directives de CONCORD. Leurs officiers sont autorisés à répondre de manière préventive à toute menace potentielle pour leurs missions, jusqu'à tirer à vue sur les intrus.", 
-      "ja": "「規制及び秩序のための特別任務部隊（Special Affairs for Regulations & Order＝SARO）」は、統制施行部門（DED）の秘密エリート部隊である。隊員は任務を阻む全ての潜在的脅威に対して先制的対処を行う権限を与えられており、侵入者を見つけ次第攻撃することもある。", 
-      "ko": "질서유지특임대(SARO)는 CONCORD 지령집행부 산하의 비밀 특수 부대입니다. SARO 장교들은 임무에 대한 잠재적인 위협을 배제할 권한을 지니고 있으며, 특정 상황에서 선제 공격을 가할 수 있습니다.", 
-      "ru": "Специальный отдел правил и порядка (СОПП) — элитное секретное подразделение службы мониторинга реализации резолюций КОНКОРДа. Его руководство уполномочено совершать упреждающие действия при наличии потенциальной угрозы своей деятельности, включая стрельбу по замеченным подозрительным целям.", 
-      "zh": "统合部法规秩序特别事务局（SARO）是DED旗下的一支精英队伍。他们的指挥官获授权可以在执行任务时对任何潜在的威胁采取先发制人的措施，包括可以对来犯者直接开火。"
+      "de": "Eine Fregatte der Skybreaker-Klasse unter dem Kommando der Special Affairs for Regulations & Order (SARO), ausgerüstet mit Zielmarkierern.\r\n\r\nDieses Schiff ist Teil eines Teams zur Durchsetzung der Flugverbotszone um eine geheime SARO-Anlage und hat den Befehl, alle unbefugten Schiffe zu vernichten.", 
+      "en-us": "A Skybreaker-class frigate under the command of the Special Affairs for Regulations & Order (SARO). It is fitted with target painting capabilities.\r\n\r\nThis ship is part of a team charged with enforcing the no-fly zone around a classified SARO facility and has the authority to put down any unauthorized vessels.", 
+      "es": "Una fragata de clase Skybreaker bajo el mando de la Subdivisión de Asuntos para la Regulación y el Orden (SARO). Está equipada con sistemas de revelación de objetivos.\r\n\r\nEsta nave forma parte de un equipo encargado de hacer cumplir la prohibición de vuelo en torno a una instalación secreta de SARO y tiene autorización para derribar cualquier nave no autorizada.", 
+      "fr": "Une frégate de classe Skybreaker sous le commandement du Service d'Application des Réglementations et de l'Ordre (SARO). Elle est dotée de capacités de marquage de cible.\r\n\r\nCe vaisseau fait partie d'une équipe chargée de faire respecter la zone d'exclusion aérienne autour d'une installation SARO classifiée et est autorisé à abattre tout vaisseau non autorisé.", 
+      "ja": "「規制及び秩序のための特別任務部隊（SARO）」の指揮下にあるスカイブレイカー級フリゲート。ターゲットペインターを搭載している。\r\n\r\nこの艦は、SAROの機密施設周辺の飛行禁止区域を取り締まる部隊の一員であり、無許可の艦船を排除する権限を持つ。", 
+      "ko": "질서유지특임대(SARO) 소속 스카이브레이커 프리깃입니다. 타겟 페인팅 장비를 장착했습니다.\r\n\r\nSARO 시설 주변 비행 금지 구역의 치안을 유지합니다. 허가를 받지 않은 모든 함선을 공격할 권한이 있습니다.", 
+      "ru": "Этот фрегат модели Skybreaker принадлежит Специальному отделу правил и порядка (СОПП) и оснащён системами подсветки целей.\r\n\r\nЕго экипаж входит в команду, обеспечивающую сохранение бесполётной зоны вокруг тайного объекта СОПП, и наделён полномочиями ликвидировать любые подозрительные корабли.", 
+      "zh": "一艘由法规秩序特别事务局（法序局）指挥的破天级护卫舰。它配备目标标记功能。该舰隶属于一支负责执行禁飞令的舰队，任务是管控某处机密法序局设施周边的禁飞区，并有权击退任何未经授权进入该区域的舰船。"
     }, 
     "descriptionID": 600475, 
     "graphicID": 1854, 
@@ -317127,14 +317132,14 @@
     "soundID": 20063, 
     "typeID": 64008, 
     "typeName": {
-      "de": "SARO Curse", 
-      "en-us": "SARO Curse", 
-      "es": "Curse de SARO", 
-      "fr": "Curse SARO", 
-      "ja": "SAROのカース", 
-      "ko": "SARO 커스", 
-      "ru": "SARO Curse", 
-      "zh": "法规秩序特别事务局 诅咒级"
+      "de": "Counter-Curse", 
+      "en-us": "Counter-Curse", 
+      "es": "Curse contrarrestadora", 
+      "fr": "Curse de contremesure", 
+      "ja": "カウンター・カース", 
+      "ko": "커스 대응", 
+      "ru": "Counter-Curse", 
+      "zh": "反制诅咒级"
     }, 
     "typeNameID": 600474, 
     "volume": 101000.0, 
@@ -317144,14 +317149,14 @@
     "basePrice": 0.0, 
     "capacity": 450.0, 
     "description": {
-      "de": "Die Spezialabteilung für Regulierungen & Ordnung (SARO) ist ein oft verdeckt agierender Elite-Zweig von CONCORDs DED. Ihre Agenten haben die Erlaubnis, vorbeugend auf jegliche potentielle Bedrohungen für ihre Mission zu reagieren, inklusive des sofortigen Eröffnens von Feuer auf Eindringlinge.", 
-      "en-us": "Special Affairs for Regulations & Order (SARO) is an secretive elite branch of CONCORD's Directive Enforcement Department. Their officers are authorized to respond pre-emptively to all potential threats to their missions, up to and including firing on interlopers on sight.", 
-      "es": "La Subdivisión de Asuntos para la Regulación y el Orden (SARO) es una sección secreta de élite del Departamento de Ejecución de Directivas de CONCORD. Sus oficiales están autorizados a responder preventivamente a cualquier amenaza potencial para sus misiones, pudiendo incluso llegar a abrir fuego contra intrusos a la menor ocasión.", 
-      "fr": "Le Service d'Application des Réglementations et de l'Ordre (SARO) est une branche d'élite secrète du département exécutif des directives de CONCORD. Leurs officiers sont autorisés à répondre de manière préventive à toute menace potentielle pour leurs missions, jusqu'à tirer à vue sur les intrus.", 
-      "ja": "「規制及び秩序のための特別任務部隊（Special Affairs for Regulations & Order＝SARO）」は、統制施行部門（DED）の秘密エリート部隊である。隊員は任務を阻む全ての潜在的脅威に対して先制的対処を行う権限を与えられており、侵入者を見つけ次第攻撃することもある。", 
-      "ko": "질서유지특임대(SARO)는 CONCORD 지령집행부 산하의 비밀 특수 부대입니다. SARO 장교들은 임무에 대한 잠재적인 위협을 배제할 권한을 지니고 있으며, 특정 상황에서 선제 공격을 가할 수 있습니다.", 
-      "ru": "Специальный отдел правил и порядка (СОПП) — элитное секретное подразделение службы мониторинга реализации резолюций КОНКОРДа. Его руководство уполномочено совершать упреждающие действия при наличии потенциальной угрозы своей деятельности, включая стрельбу по замеченным подозрительным целям.", 
-      "zh": "统合部法规秩序特别事务局（SARO）是DED旗下的一支精英队伍。他们的指挥官获授权可以在执行任务时对任何潜在的威胁采取先发制人的措施，包括可以对来犯者直接开火。"
+      "de": "Ein Kreuzer der Curse-Klasse unter dem Kommando der Special Affairs for Regulations & Order (SARO), ausgerüstet mit Stasisnetzen und Warpunterbrechern.\r\n\r\nDieses Schiff ist Teil eines Teams zur Durchsetzung der Flugverbotszone um eine geheime SARO-Anlage und hat den Befehl, alle unbefugten Schiffe zu vernichten.", 
+      "en-us": "A Curse-class cruiser under the command of the Special Affairs for Regulations & Order (SARO). It is fitted with webifying and warp scrambling capabilities.\r\n\r\nThis ship is part of a team charged with enforcing the no-fly zone around a classified SARO facility and has the authority to put down any unauthorized vessels.", 
+      "es": "Una crucero de clase Curse bajo el mando de la Subdivisión de Asuntos para la Regulación y el Orden (SARO). Está equipada con capacidad de red ralentizadora y de distorsión de warp.\r\n\r\nEsta nave forma parte de un equipo encargado de hacer cumplir la prohibición de vuelo en torno a una instalación secreta de SARO y tiene autorización para derribar cualquier nave no autorizada.", 
+      "fr": "Un croiseur de classe Curse sous le commandement du Service d'Application des Réglementations et de l'Ordre (SARO). Il est doté de capacités de génération de stase et d'inhibition de warp.\r\n\r\nCe vaisseau fait partie d'une équipe chargée de faire respecter la zone d'exclusion aérienne autour d'une installation SARO classifiée et est autorisé à abattre tout vaisseau non autorisé.", 
+      "ja": "「規制及び秩序のための特別任務部隊（SARO）」の指揮下にあるカース級巡洋艦。ウェビファイアとワープスクランブラーを搭載している。\r\n\r\nこの艦は、SAROの機密施設周辺の飛行禁止区域を取り締まる部隊の一員であり、無許可の艦船を排除する権限を持つ。", 
+      "ko": "질서유지특임대(SARO) 소속 커스 크루저입니다. 스테이시스 웹 및 워프 교란 장비를 장착했습니다.\r\n\r\nSARO 시설 주변 비행 금지 구역의 치안을 유지합니다. 허가를 받지 않은 모든 함선을 공격할 권한이 있습니다.", 
+      "ru": "Этот крейсер модели Curse, принадлежащий Специальному отделу правил и порядка (СОПП), оснащён системами стазис-индукции и варп-глушения.\r\n\r\nЕго экипаж входит в команду, обеспечивающую сохранение бесполётной зоны вокруг тайного объекта СОПП, и наделён полномочиями ликвидировать любые подозрительные корабли.", 
+      "zh": "一艘由法规秩序特别事务局（法序局）指挥的诅咒级巡洋舰。它具备停滞缠绕和跃迁扰断功能。该舰隶属于一支负责执行禁飞令的舰队，任务是管控某处机密法序局设施周边的禁飞区，并有权击退任何未经授权进入该区域的舰船。"
     }, 
     "descriptionID": 600477, 
     "graphicID": 3361, 
@@ -317165,14 +317170,14 @@
     "soundID": 20072, 
     "typeID": 64009, 
     "typeName": {
-      "de": "SARO Phobos", 
-      "en-us": "SARO Phobos", 
-      "es": "Phobos de SARO", 
-      "fr": "Phobos SARO", 
-      "ja": "SAROのフォボス", 
-      "ko": "SARO 포보스", 
-      "ru": "SARO Phobos", 
-      "zh": "法规秩序特别事务局 伏波斯级"
+      "de": "Detainer Phobos", 
+      "en-us": "Detainer Phobos", 
+      "es": "Phobos de captor", 
+      "fr": "Phobos de détention", 
+      "ja": "ディテイナー・フォボス", 
+      "ko": "압류자 포보스", 
+      "ru": "Detainer Phobos", 
+      "zh": "扣押者伏波斯级"
     }, 
     "typeNameID": 600476, 
     "volume": 101000.0, 
@@ -317182,14 +317187,14 @@
     "basePrice": 0.0, 
     "capacity": 475.0, 
     "description": {
-      "de": "Die Spezialabteilung für Regulierungen & Ordnung (SARO) ist ein oft verdeckt agierender Elite-Zweig von CONCORDs DED. Ihre Agenten haben die Erlaubnis, vorbeugend auf jegliche potentielle Bedrohungen für ihre Mission zu reagieren, inklusive des sofortigen Eröffnens von Feuer auf Eindringlinge.", 
-      "en-us": "Special Affairs for Regulations & Order (SARO) is an secretive elite branch of CONCORD's Directive Enforcement Department. Their officers are authorized to respond pre-emptively to all potential threats to their missions, up to and including firing on interlopers on sight.", 
-      "es": "La Subdivisión de Asuntos para la Regulación y el Orden (SARO) es una sección secreta de élite del Departamento de Ejecución de Directivas de CONCORD. Sus oficiales están autorizados a responder preventivamente a cualquier amenaza potencial para sus misiones, pudiendo incluso llegar a abrir fuego contra intrusos a la menor ocasión.", 
-      "fr": "Le Service d'Application des Réglementations et de l'Ordre (SARO) est une branche d'élite secrète du département exécutif des directives de CONCORD. Leurs officiers sont autorisés à répondre de manière préventive à toute menace potentielle pour leurs missions, jusqu'à tirer à vue sur les intrus.", 
-      "ja": "「規制及び秩序のための特別任務部隊（Special Affairs for Regulations & Order＝SARO）」は、統制施行部門（DED）の秘密エリート部隊である。隊員は任務を阻む全ての潜在的脅威に対して先制的対処を行う権限を与えられており、侵入者を見つけ次第攻撃することもある。", 
-      "ko": "질서유지특임대(SARO)는 CONCORD 지령집행부 산하의 비밀 특수 부대입니다. SARO 장교들은 임무에 대한 잠재적인 위협을 배제할 권한을 지니고 있으며, 특정 상황에서 선제 공격을 가할 수 있습니다.", 
-      "ru": "Специальный отдел правил и порядка (СОПП) — элитное секретное подразделение службы мониторинга реализации резолюций КОНКОРДа. Его руководство уполномочено совершать упреждающие действия при наличии потенциальной угрозы своей деятельности, включая стрельбу по замеченным подозрительным целям.", 
-      "zh": "统合部法规秩序特别事务局（SARO）是DED旗下的一支精英队伍。他们的指挥官获授权可以在执行任务时对任何潜在的威胁采取先发制人的措施，包括可以对来犯者直接开火。"
+      "de": "Ein Schlachtkreuzer der Talos-Klasse unter dem Kommando der Special Affairs for Regulations & Order (SARO) mit dem Auftrag, den Frieden mit Feuerkraft aufrecht zu erhalten.\r\n\r\nDieses Schiff ist Teil eines Teams zur Durchsetzung der Flugverbotszone um eine geheime SARO-Anlage und hat den Befehl, alle unbefugten Schiffe zu vernichten.", 
+      "en-us": "A Talos-class battlecruiser under the command of the Special Affairs for Regulations & Order (SARO). It is charged with keeping the peace through hostile action.\r\n\r\nThis ship is part of a team charged with enforcing the no-fly zone around a classified SARO facility and has the authority to put down any unauthorized vessels.", 
+      "es": "Un crucero de combate de clase Talos bajo el mando de la Subdivisión de Asuntos para la Regulación y el Orden (SARO). Tiene la misión de mantener la paz mediante el uso de la fuerza.\r\n\r\nEsta nave forma parte de un equipo encargado de hacer cumplir la prohibición de vuelo en torno a una instalación secreta de SARO y tiene autorización para derribar cualquier nave no autorizada.", 
+      "fr": "Un croiseur cuirassé de classe Talos sous le commandement du Service d'Application des Réglementations et de l'Ordre (SARO). Il a pour mission de maintenir la paix par des actions offensives.\r\n\r\nCe vaisseau fait partie d'une équipe chargée de faire respecter la zone d'exclusion aérienne autour d'une installation SARO classifiée et est autorisé à abattre tout vaisseau non autorisé.", 
+      "ja": "「規制及び秩序のための特別任務部隊（SARO）」の指揮下にあるタロス級巡洋戦艦。敵対行動による治安維持を任務としている。\r\n\r\nこの艦は、SAROの機密施設周辺の飛行禁止区域を取り締まる部隊の一員であり、無許可の艦船を排除する権限を持つ。", 
+      "ko": "질서유지특임대(SARO) 소속 탈로스 배틀크루저입니다. 적대 세력에 맞서 평화를 유지하는 임무를 맡았습니다.\r\n\r\nSARO 시설 주변 비행 금지 구역의 치안을 유지합니다. 허가를 받지 않은 모든 함선을 공격할 권한이 있습니다.", 
+      "ru": "Этот линейный крейсер модели Talos, принадлежащий Специальному отделу правил и порядка (СОПП), расправляется с врагами ради поддержания мира.\r\n\r\nЕго экипаж входит в команду, обеспечивающую сохранение бесполётной зоны вокруг тайного объекта СОПП, и наделён полномочиями ликвидировать любые подозрительные корабли.", 
+      "zh": "一艘由法规秩序特别事务局（法序局）指挥的塔洛斯级战列巡洋舰。它的职责是通过敌对行动来维护和平。该舰隶属于一支负责执行禁飞令的舰队，任务是管控某处机密法序局设施周边的禁飞区，并有权击退任何未经授权进入该区域的舰船。"
     }, 
     "descriptionID": 600479, 
     "graphicID": 11777, 
@@ -317203,14 +317208,14 @@
     "soundID": 20072, 
     "typeID": 64010, 
     "typeName": {
-      "de": "SARO Talos", 
-      "en-us": "SARO Talos", 
-      "es": "Talos de SARO", 
-      "fr": "Talos SARO", 
-      "ja": "SAROのタロス", 
-      "ko": "SARO 탈로스", 
-      "ru": "SARO Talos", 
-      "zh": "法规秩序特别事务局 塔洛斯级"
+      "de": "Tactical Talos", 
+      "en-us": "Tactical Talos", 
+      "es": "Talos táctica", 
+      "fr": "Talos tactique", 
+      "ja": "タクティカル・タロス", 
+      "ko": "전술형 탈로스", 
+      "ru": "Tactical Talos", 
+      "zh": "战术塔洛斯级"
     }, 
     "typeNameID": 600478, 
     "volume": 270000.0, 
