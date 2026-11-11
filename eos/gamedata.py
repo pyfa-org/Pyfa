@@ -76,11 +76,11 @@ class Effect(EqBase):
         The runTime that this effect should be run at.
         This property is also automaticly fetched from effects/<effectName>.py if the file exists.
         the possible values are:
-        None, "early", "normal", "late"
+        None, "earliest", "early", "normal", "late"
         None and "normal" are equivalent, and are also the default.
 
-        effects with an early runTime will be ran first when things are calculated,
-        followed by effects with a normal runTime and as last effects with a late runTime are ran.
+        effects with an earliest runTime will be ran first when things are calculated, followed by effects
+        with an early runTime, then with a normal runTime and as last effects with a late runTime are ran.
         """
         if not self.__generated:
             self.__generateHandler()
