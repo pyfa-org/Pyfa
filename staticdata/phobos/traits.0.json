@@ -72923,11 +72923,11 @@
             "bonuses": [
               {
                 "number": "10%", 
-                "text": "de bonus aux dégâts des missiles légers et des roquettes"
+                "text": "de bonus aux dégâts cinétiques des missiles légers et des roquettes"
               }, 
               {
                 "number": "5%", 
-                "text": "bonus to EM, explosive, thermal Light Missile and Rocket damage"
+                "text": "de bonus aux dégâts EM, explosifs et thermiques des missiles légers et roquettes"
               }, 
               {
                 "number": "5%", 
@@ -81118,15 +81118,15 @@
           "bonuses": [
             {
               "number": "100%", 
-              "text": "bonus to Mining and Gas Cloud Scoop yield"
+              "text": "de bonus au rendement de l'extraction, et du récupérateur de nuages de gaz"
             }, 
             {
               "number": "2+", 
-              "text": "bonus to ship warp core strength"
+              "text": "de bonus à la puissance du réacteur de warp du vaisseau"
             }, 
             {
               "number": "50%", 
-              "text": "reduction in Industrial Cynosural Field Generator liquid ozone consumption"
+              "text": "de réduction de la consommation d'ozone liquide du générateur de champ cynosural industriel"
             }
           ], 
           "header": "Bonus de rôle :"
@@ -81136,11 +81136,11 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "bonus to Mining yield"
+                "text": "de bonus au rendement d'extraction minière"
               }, 
               {
                 "number": "5%", 
-                "text": "reduction in Gas Cloud Scoop duration"
+                "text": "de réduction à la durée du récupérateur de nuages de gaz"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate d’extraction minière :"
@@ -131376,11 +131376,11 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "bonus to Small Hybrid Turret damage"
+                "text": "de bonus aux dégâts des petites tourelles hybrides"
               }, 
               {
                 "number": "4%", 
-                "text": "bonus to all shield resistances"
+                "text": "de bonus à toutes les résistances du bouclier"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate caldari :"
@@ -153533,7 +153533,7 @@
           "bonuses": [
             {
               "number": "5+", 
-              "text": "bonus to Relic and Data Analyzer virus strength"
+              "text": "de bonus à la puissance du virus des analyseurs de reliques et des analyseurs de données"
             }
           ], 
           "header": "Bonus de rôle :"
@@ -153543,11 +153543,11 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Core and Combat Scanner Probe strength"
+                "text": "de bonus à la puissance des sondes de balayage cosmiques et des sondes de balayage de combat"
               }, 
               {
                 "number": "5%", 
-                "text": "reduction in Salvager duration"
+                "text": "de réduction à la durée du récupérateur"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate amarr :"
@@ -160267,11 +160267,11 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "bonus to Light Missile and Rocket rate of fire"
+                "text": "de bonus à la cadence de tir des missiles légers et des roquettes"
               }, 
               {
                 "number": "7.5%", 
-                "text": "bonus to Shield Booster amount"
+                "text": "de bonus au montant des boosters de bouclier"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate minmatar :"
@@ -160425,11 +160425,11 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Small Projectile Turret rate of fire"
+                "text": "de bonus à la cadence de tir de la petite tourelle à projectiles"
               }, 
               {
                 "number": "10%", 
-                "text": "bonus to Small Projectile Turret falloff"
+                "text": "de bonus à la déperdition des petites tourelles à projectiles"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate minmatar :"
@@ -161535,11 +161535,11 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Small Hybrid Turret tracking speed"
+                "text": "de bonus à la vitesse de poursuite des petites tourelles hybrides"
               }, 
               {
                 "number": "10%", 
-                "text": "bonus to Drone hitpoints and tracking speed"
+                "text": "de bonus aux points de vie des drones et à la vitesse de poursuite"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate gallente :"
@@ -161693,11 +161693,11 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "bonus to Light Missile and Rocket damage"
+                "text": "de bonus aux dégâts des missiles légers et des roquettes"
               }, 
               {
                 "number": "10%", 
-                "text": "bonus to Light Missile and Rocket max velocity"
+                "text": "de bonus à la vitesse maximale des missiles légers et des roquettes"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate caldari :"
@@ -168806,7 +168806,7 @@
           "bonuses": [
             {
               "number": "5+", 
-              "text": "bonus to Relic and Data Analyzer virus strength"
+              "text": "de bonus à la puissance du virus des analyseurs de reliques et des analyseurs de données"
             }
           ], 
           "header": "Bonus de rôle :"
@@ -168816,11 +168816,11 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Core and Combat Scanner Probe strength"
+                "text": "de bonus à la puissance des sondes de balayage cosmiques et des sondes de balayage de combat"
               }, 
               {
                 "number": "5%", 
-                "text": "reduction in Salvager duration"
+                "text": "de réduction à la durée du récupérateur"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate minmatar :"
@@ -169019,11 +169019,11 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Armor Repairer amount"
+                "text": "de bonus à la capacité réparatrice du réparateur de blindage"
               }, 
               {
                 "number": "5%", 
-                "text": "bonus to Small Hybrid Turret damage"
+                "text": "de bonus aux dégâts des petites tourelles hybrides"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate gallente :"
@@ -224530,7 +224530,7 @@
           "bonuses": [
             {
               "number": "5+", 
-              "text": "bonus to Relic and Data Analyzer virus strength"
+              "text": "de bonus à la puissance du virus des analyseurs de reliques et des analyseurs de données"
             }
           ], 
           "header": "Bonus de rôle :"
@@ -224540,11 +224540,11 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Core and Combat Scanner Probe strength"
+                "text": "de bonus à la puissance des sondes de balayage cosmiques et des sondes de balayage de combat"
               }, 
               {
                 "number": "5%", 
-                "text": "reduction in Salvager duration"
+                "text": "de réduction à la durée du récupérateur"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate caldari :"
@@ -224769,7 +224769,7 @@
           "bonuses": [
             {
               "number": "5+", 
-              "text": "bonus to Relic and Data Analyzer virus strength"
+              "text": "de bonus à la puissance du virus des analyseurs de reliques et des analyseurs de données"
             }
           ], 
           "header": "Bonus de rôle :"
@@ -224779,11 +224779,11 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Core and Combat Scanner Probe strength"
+                "text": "de bonus à la puissance des sondes de balayage cosmiques et des sondes de balayage de combat"
               }, 
               {
                 "number": "5%", 
-                "text": "reduction in Salvager duration"
+                "text": "de réduction à la durée du récupérateur"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate gallente :"
@@ -224982,11 +224982,11 @@
             "bonuses": [
               {
                 "number": "10%", 
-                "text": "reduction in Small Energy Turret activation cost"
+                "text": "de réduction au coût d'activation des petites tourelles à énergie"
               }, 
               {
                 "number": "4%", 
-                "text": "bonus to all armor resistances"
+                "text": "de bonus à toutes les résistances de blindage"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate amarr :"
@@ -225140,11 +225140,11 @@
             "bonuses": [
               {
                 "number": "10%", 
-                "text": "reduction in Small Energy Turret activation cost"
+                "text": "de réduction au coût d'activation des petites tourelles à énergie"
               }, 
               {
                 "number": "5%", 
-                "text": "bonus to Small Energy Turret damage"
+                "text": "de bonus aux dégâts des petites tourelles à énergie"
               }
             ], 
             "header": " Bonus (par niveau de compétence) Frégate amarr :"
