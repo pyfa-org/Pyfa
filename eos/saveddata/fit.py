@@ -1069,7 +1069,7 @@ class Fit:
             self.clear()
 
         # Loop through our run times here. These determine which effects are run in which order.
-        for runTime in ("early", "normal", "late"):
+        for runTime in ("earliest", "early", "normal", "late"):
             # pyfalog.debug("Run time: {0}", runTime)
             # Items that are unrestricted. These items are run on the local fit
             # first and then projected onto the target fit it one is designated
@@ -1136,7 +1136,7 @@ class Fit:
                         # If doing self projection, no need to run through the recursion process. Simply run the
                         # projection effects on ourselves
                         pyfalog.debug("Running self-projection for {0}", repr(self))
-                        for runTime in ("early", "normal", "late"):
+                        for runTime in ("earliest", "early", "normal", "late"):
                             self.__runProjectionEffects(runTime, self, projInfo)
                     else:
                         fit.calculateModifiedAttributes(self, type=CalcType.PROJECTED)
