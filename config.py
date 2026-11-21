@@ -160,6 +160,13 @@ def defPaths(customSavePath=None):
 
     __createDirs(savePath)
 
+    if isFrozen():
+        # PyInstaller's matplotlib runtime hook points MPLCONFIGDIR to a new temp dir on every launch,
+        # so matplotlib rebuilds its font cache on each start (~20s on macOS, system_profiler lists all fonts)
+        mplConfigDir = os.path.join(savePath, "matplotlib")
+        __createDirs(mplConfigDir)
+        os.environ["MPLCONFIGDIR"] = mplConfigDir
+
     secret_file = os.path.join(savePath, ".secret")
     if not os.path.exists(secret_file):
         with open(secret_file, "wb") as _file:
