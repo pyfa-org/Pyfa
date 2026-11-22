@@ -44795,13 +44795,14 @@ class Effect13048(BaseEffect):
     Module: 'Vigilant' Vital Overdrive Injector System
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'maxVelocity', module.getModifiedItemAttr('moduleAberrantOverdriveActiveSpeedBoostAmount'),
-            stackingPenalties=True, **kwargs)
+        module.multiplyItemAttr(
+            'implantBonusVelocity', module.getModifiedItemAttr('moduleAberrantOverdriveActiveSpeedBoostAmount'),
+            **kwargs)
 
 
 class Effect13049(BaseEffect):
@@ -44812,15 +44813,14 @@ class Effect13049(BaseEffect):
     Module: 'Vigilant' Vital Shield Boost Amplifier
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        bonus = module.getModifiedItemAttr('moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffect')
-        fit.modules.filteredItemBoost(
-            lambda mod: (mod.item.requiresSkill('Shield Operation')
-                         or mod.item.requiresSkill('Capital Shield Operation')),
-            'shieldBonus', bonus, stackingPenalties=True, **kwargs)
+        module.multiplyItemAttr(
+            'shieldBoostMultiplier',
+            module.getModifiedItemAttr('moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffect'), **kwargs)
 
 
 class Effect13050(BaseEffect):
@@ -44831,15 +44831,14 @@ class Effect13050(BaseEffect):
     Module: 'Vigilant' Vital Drone Navigation Computer
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        bonus = src.getModifiedItemAttr('moduleAberrantDroneNavigationComputerBonusEffect')
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity', bonus,
-                                       stackingPenalties=True, **kwargs)
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxVelocity', bonus,
-                                     stackingPenalties=True, **kwargs)
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.multiplyItemAttr(
+            'speedFactor', module.getModifiedItemAttr('moduleAberrantDroneNavigationComputerBonusEffect'),
+            stackingPenalties=True, **kwargs)
 
 
 class Effect13051(BaseEffect):
@@ -44850,12 +44849,14 @@ class Effect13051(BaseEffect):
     Module: 'Vigilant' Vital Cap Recharger
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.ship.multiplyItemAttr(
-            'rechargeRate', module.getModifiedItemAttr('moduleAberrantCapRechargerBonusEffect'), **kwargs)
+        module.forceItemAttr(
+            'capacitorRechargeRateMultiplier',
+            module.getModifiedItemAttr('ModuleAberrantCapacitorRechargeRatePostAssignmentHidden'), **kwargs)
 
 
 class Effect13053(BaseEffect):

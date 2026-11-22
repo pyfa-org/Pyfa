@@ -105411,15 +105411,16 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
+        "domain": "itemID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 37, 
+        "modifiedAttributeID": 1076, 
         "modifyingAttributeID": 6481, 
-        "operation": 6
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "13049": {
@@ -105435,24 +105436,16 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 68, 
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 548, 
         "modifyingAttributeID": 6482, 
-        "operation": 6, 
-        "skillTypeID": 3416
-      }, 
-      {
-        "domain": "shipID", 
-        "func": "LocationRequiredSkillModifier", 
-        "modifiedAttributeID": 68, 
-        "modifyingAttributeID": 6482, 
-        "operation": 6, 
-        "skillTypeID": 21802
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "13050": {
@@ -105468,20 +105461,11 @@
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "charID", 
-        "func": "OwnerRequiredSkillModifier", 
-        "modifiedAttributeID": 37, 
+        "domain": "itemID", 
+        "func": "ItemModifier", 
+        "modifiedAttributeID": 20, 
         "modifyingAttributeID": 6483, 
-        "operation": 6, 
-        "skillTypeID": 3436
-      }, 
-      {
-        "domain": "charID", 
-        "func": "OwnerRequiredSkillModifier", 
-        "modifiedAttributeID": 37, 
-        "modifyingAttributeID": 6483, 
-        "operation": 6, 
-        "skillTypeID": 23069
+        "operation": 4
       }
     ], 
     "propulsionChance": 0, 
@@ -105495,22 +105479,23 @@
     "durationAttributeID": 73, 
     "effectCategory": 1, 
     "effectID": 13051, 
-    "effectName": "moduleAberrantCapRechargerBonusEffectActivation", 
+    "effectName": "moduleAberrantCapRechargerBonusEffectActivationPostAssignment", 
     "electronicChance": 0, 
     "isAssistance": 0, 
     "isOffensive": 0, 
     "isWarpSafe": 0, 
     "modifierInfo": [
       {
-        "domain": "shipID", 
+        "domain": "itemID", 
         "func": "ItemModifier", 
-        "modifiedAttributeID": 55, 
-        "modifyingAttributeID": 6484, 
-        "operation": 4
+        "modifiedAttributeID": 144, 
+        "modifyingAttributeID": 6557, 
+        "operation": 7
       }
     ], 
     "propulsionChance": 0, 
     "published": 0, 
+    "rangeAttributeID": 54, 
     "rangeChance": 0
   }, 
   "13053": {

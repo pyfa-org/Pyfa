@@ -4533,7 +4533,7 @@
           "bonuses": [
             {
               "number": "95%", 
-              "text": "大型能量炮台电网需求降低"
+              "text": "大型能量炮台能量栅格需求降低"
             }, 
             {
               "number": "50%", 
@@ -6137,7 +6137,7 @@
             }, 
             {
               "number": "95%", 
-              "text": "大型能量炮台电网需求降低"
+              "text": "大型能量炮台能量栅格需求降低"
             }, 
             {
               "number": "50%", 
@@ -20221,15 +20221,15 @@
             "bonuses": [
               {
                 "number": "10%", 
-                "text": "后勤铁骑舰载机速度加成"
+                "text": "支援铁骑舰载机速度加成"
               }, 
               {
                 "number": "20%", 
-                "text": "后勤铁骑舰载机护盾值加成"
+                "text": "支援铁骑舰载机护盾值加成"
               }, 
               {
                 "number": "10%", 
-                "text": "德洛米后勤铁骑舰载机停滞缠绕强度和范围加成"
+                "text": "德洛米支援铁骑舰载机停滞缠绕强度和范围加成"
               }, 
               {
                 "number": "20%", 
@@ -26141,7 +26141,7 @@
           "bonuses": [
             {
               "number": "25%", 
-              "text": "bonus to Drone max velocity"
+              "text": "无人机最大速度加成"
             }
           ], 
           "header": "特有加成："
@@ -26151,19 +26151,19 @@
             "bonuses": [
               {
                 "number": "10%", 
-                "text": "bonus to Drone hitpoints and damage"
+                "text": "无人机伤害和HP加成"
               }, 
               {
                 "number": "10%", 
-                "text": "bonus to Small Energy Turret, Light Missile and Rocket damage"
+                "text": "小型能量炮台, 轻型导弹和火箭伤害加成"
               }, 
               {
                 "number": "20%", 
-                "text": "bonus to Energy Nosferatu and Energy Neutralizer optimal range"
+                "text": "掠能器和能量中和器最佳射程加成"
               }, 
               {
                 "number": "10%", 
-                "text": "bonus to Energy Nosferatu and Energy Neutralizer falloff range"
+                "text": "掠能器和能量中和器失准范围加成"
               }
             ], 
             "header": "艾玛驱逐舰操作每升一级："
@@ -43398,7 +43398,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "Bonus auf Stärke und Dauer von Panzerungskommando-Strahlen"
+                "text": "Bonus auf Stärke und Dauer von Panzerungs- und Gefechtskommandostrahlen"
               }, 
               {
                 "number": "5%", 
@@ -43544,7 +43544,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "de bonificación a la intensidad y la duración del estallido de mando de blindaje."
+                "text": "de bonificación a la intensidad y la duración del estallido de mando de blindaje y de mando de escaramuza."
               }, 
               {
                 "number": "5%", 
@@ -43617,7 +43617,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "de bonus à la puissance et à la durée des salves de commandement de blindage"
+                "text": "de bonus à la puissance et à la durée des salves de commandement de blindage et salves de commandement de guérilla"
               }, 
               {
                 "number": "5%", 
@@ -43763,7 +43763,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "装甲戦コマンドバーストの効果と持続時間にボーナス"
+                "text": "装甲戦コマンドと機動戦コマンドバーストの効果と持続時間にボーナス"
               }, 
               {
                 "number": "5%", 
@@ -43836,7 +43836,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "장갑 버스트 강도 및 지속시간 증가"
+                "text": "장갑 버스트, 스커미시 버스트 강도 및 지속시간 증가"
               }, 
               {
                 "number": "5%", 
@@ -43909,7 +43909,7 @@
             "bonuses": [
               {
                 "number": "на 5%", 
-                "text": "bonus to Armored Command and Skirmish Command burst strength and duration"
+                "text": "бонус к мощности и времени работы импульсного оптимизатора брони и импульсного оптимизатора маневрирования"
               }, 
               {
                 "number": "на 5%", 
@@ -43961,15 +43961,15 @@
             "bonuses": [
               {
                 "number": "30%", 
-                "text": "后勤铁骑舰载机护盾值加成"
+                "text": "支援铁骑舰载机护盾值加成"
               }, 
               {
                 "number": "10%", 
-                "text": "塞壬后勤铁骑舰载机跃迁干扰范围加成"
+                "text": "塞壬支援铁骑舰载机跃迁干扰范围加成"
               }, 
               {
                 "number": "10%", 
-                "text": "塞壬后勤铁骑舰载机加力燃烧器速度加成"
+                "text": "塞壬支援铁骑舰载机加力燃烧器速度加成"
               }, 
               {
                 "number": "20%", 
@@ -44754,7 +44754,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "Bonus auf Stärke und Dauer von Panzerungskommando-Strahlen"
+                "text": "Bonus auf Stärke und Dauer von Panzerungs- und Informationskommandostrahlen"
               }, 
               {
                 "number": "5%", 
@@ -44900,7 +44900,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "de bonificación a la intensidad y la duración del estallido de mando de blindaje."
+                "text": "de bonificación a la intensidad y la duración del estallido de mando de blindaje y de mando de información."
               }, 
               {
                 "number": "5%", 
@@ -44973,7 +44973,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "de bonus à la puissance et à la durée des salves de commandement de blindage"
+                "text": "de bonus à la puissance et à la durée des salves de commandement de blindage et salves de commandement d'informations"
               }, 
               {
                 "number": "5%", 
@@ -45119,7 +45119,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "装甲戦コマンドバーストの効果と持続時間にボーナス"
+                "text": "装甲戦コマンドと情報戦コマンドバーストの効果と持続時間にボーナス"
               }, 
               {
                 "number": "5%", 
@@ -45192,7 +45192,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "장갑 버스트 강도 및 지속시간 증가"
+                "text": "장갑 버스트, 정보전 버스트 강도 및 지속시간 증가"
               }, 
               {
                 "number": "5%", 
@@ -45265,7 +45265,7 @@
             "bonuses": [
               {
                 "number": "на 5%", 
-                "text": "бонус к мощности и времени работы импульсного оптимизатора брони"
+                "text": "бонус к мощности и времени работы импульсного оптимизатора брони и импульсного оптимизатора РЭБ"
               }, 
               {
                 "number": "на 5%", 
@@ -45321,11 +45321,11 @@
               }, 
               {
                 "number": "20%", 
-                "text": "后勤铁骑舰载机护盾值加成"
+                "text": "支援铁骑舰载机护盾值加成"
               }, 
               {
                 "number": "10%", 
-                "text": "修道士后勤铁骑舰载机能量中和强度和最佳射程加成"
+                "text": "修道士支援铁骑舰载机能量中和强度和最佳射程加成"
               }, 
               {
                 "number": "20%", 
@@ -45416,7 +45416,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "Bonus auf die Stärke und Dauer von Schildkommando-Strahlen"
+                "text": "Bonus auf Stärke und Dauer von Schild- und Informationskommandostrahlen"
               }, 
               {
                 "number": "5%", 
@@ -45562,7 +45562,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "de bonificación a la intensidad y la duración del estallido de mando de escudo."
+                "text": "de bonificación a la intensidad y la duración del estallido de mando de escudo y de mando de información."
               }, 
               {
                 "number": "5%", 
@@ -45635,7 +45635,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "de bonus à la puissance et à la durée des salves de commandement de bouclier"
+                "text": "de bonus à la puissance et à la durée des salves de commandement de bouclier et salves de commandement d'informations"
               }, 
               {
                 "number": "5%", 
@@ -45781,7 +45781,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "シールドコマンドバーストの効果と持続時間にボーナス"
+                "text": "シールドコマンドと情報戦コマンドバーストの効果と持続時間にボーナス"
               }, 
               {
                 "number": "5%", 
@@ -45854,7 +45854,7 @@
             "bonuses": [
               {
                 "number": "5%", 
-                "text": "실드 버스트 강도 및 지속시간 증가"
+                "text": "실드 버스트, 정보전 버스트 강도 및 지속시간 증가"
               }, 
               {
                 "number": "5%", 
@@ -45927,7 +45927,7 @@
             "bonuses": [
               {
                 "number": "на 5%", 
-                "text": "бонус к мощности и времени работы импульсного оптимизатора щитов"
+                "text": "бонус к мощности и времени работы импульсного оптимизатора щитов и импульсного оптимизатора РЭБ"
               }, 
               {
                 "number": "на 5%", 
@@ -45983,11 +45983,11 @@
               }, 
               {
                 "number": "20%", 
-                "text": "后勤铁骑舰载机护盾值加成"
+                "text": "支援铁骑舰载机护盾值加成"
               }, 
               {
                 "number": "10%", 
-                "text": "圣甲虫后勤铁骑舰载机ECM强度和最佳射程加成"
+                "text": "圣甲虫支援铁骑舰载机ECM强度和最佳射程加成"
               }, 
               {
                 "number": "20%", 
@@ -54821,11 +54821,11 @@
               }, 
               {
                 "number": "5%", 
-                "text": "德洛米后勤铁骑舰载机停滞缠绕范围加成"
+                "text": "德洛米支援铁骑舰载机停滞缠绕范围加成"
               }, 
               {
                 "number": "2%", 
-                "text": "德洛米后勤铁骑舰载机停滞缠绕强度加成"
+                "text": "德洛米支援铁骑舰载机停滞缠绕强度加成"
               }, 
               {
                 "number": "1%", 
@@ -71517,7 +71517,7 @@
           "bonuses": [
             {
               "number": "95%", 
-              "text": "大型混合炮台电网需求降低"
+              "text": "大型混合炮台能量栅格需求降低"
             }, 
             {
               "number": "50%", 
@@ -129946,7 +129946,7 @@
           "bonuses": [
             {
               "number": "50%", 
-              "text": "bonus to Light Missile and Rocket max velocity"
+              "text": "轻型导弹和火箭飞行速度加成"
             }
           ], 
           "header": "特有加成："
@@ -129956,15 +129956,15 @@
             "bonuses": [
               {
                 "number": "7.5%", 
-                "text": "bonus to Light Missile and Rocket rate of fire"
+                "text": "火箭和轻型导弹射速加成"
               }, 
               {
                 "number": "7.5%", 
-                "text": "bonus to Shield Booster amount"
+                "text": "护盾回充增量器回充量加成"
               }, 
               {
                 "number": "7.5%", 
-                "text": "bonus to Light Missile and Rocket explosion velocity"
+                "text": "轻型导弹和火箭爆炸速度加成"
               }
             ], 
             "header": "米玛塔尔驱逐舰操作每升一级："
@@ -138509,7 +138509,7 @@
           "bonuses": [
             {
               "number": "50%", 
-              "text": "bonus to Light Missile and Rocket max velocity"
+              "text": "轻型导弹和火箭飞行速度加成"
             }
           ], 
           "header": "特有加成："
@@ -138519,15 +138519,15 @@
             "bonuses": [
               {
                 "number": "10%", 
-                "text": "bonus to kinetic Light Missile and Rocket damage"
+                "text": "轻型导弹和火箭动能伤害加成"
               }, 
               {
                 "number": "5%", 
-                "text": "bonus to EM, explosive, thermal Light Missile and Rocket damage"
+                "text": "轻型导弹和火箭电磁、爆炸和热能伤害加成"
               }, 
               {
                 "number": "5%", 
-                "text": "bonus to Light Missile and Rocket explosion radius"
+                "text": "轻型导弹和火箭爆炸半径加成"
               }
             ], 
             "header": "加达里驱逐舰操作每升一级："
@@ -151974,11 +151974,11 @@
               }, 
               {
                 "number": "5%", 
-                "text": "修道士后勤铁骑舰载机能量中和最佳射程加成"
+                "text": "修道士支援铁骑舰载机能量中和最佳射程加成"
               }, 
               {
                 "number": "2%", 
-                "text": "修道士后勤铁骑舰载机能量中和强度加成"
+                "text": "修道士支援铁骑舰载机能量中和强度加成"
               }, 
               {
                 "number": "1%", 
@@ -173273,7 +173273,7 @@
           "bonuses": [
             {
               "number": "25%", 
-              "text": "bonus to Drone max velocity"
+              "text": "无人机最大速度加成"
             }
           ], 
           "header": "特有加成："
@@ -173283,15 +173283,15 @@
             "bonuses": [
               {
                 "number": "10%", 
-                "text": "bonus to Drone hitpoints and damage"
+                "text": "无人机伤害和HP加成"
               }, 
               {
                 "number": "10%", 
-                "text": "bonus to Small Hybrid Turret damage and tracking speed"
+                "text": "小型混合炮台伤害和跟踪速度加成"
               }, 
               {
                 "number": "10%", 
-                "text": "bonus to Stasis Webifier Drone factor of velocity decrease and hitpoints"
+                "text": "停滞缠绕无人机最大速度影响系数和HP加成"
               }
             ], 
             "header": "盖伦特驱逐舰操作每升一级："
@@ -173774,7 +173774,7 @@
           "bonuses": [
             {
               "number": "95%", 
-              "text": "巡航导弹和鱼雷发射器电网要求降低"
+              "text": "巡航导弹和鱼雷发射器能量栅格需求降低"
             }, 
             {
               "number": "50%", 
@@ -184301,11 +184301,11 @@
               }, 
               {
                 "number": "5%", 
-                "text": "圣甲虫后勤铁骑舰载机ECM最佳射程加成"
+                "text": "圣甲虫支援铁骑舰载机ECM最佳射程加成"
               }, 
               {
                 "number": "2%", 
-                "text": "圣甲虫后勤铁骑舰载机ECM强度加成"
+                "text": "圣甲虫支援铁骑舰载机ECM强度加成"
               }, 
               {
                 "number": "1%", 
@@ -185359,7 +185359,7 @@
               }, 
               {
                 "number": "2%", 
-                "text": " 支援戦闘機「サイレン」のアフターバーナー速度にボーナス"
+                "text": "支援戦闘機「サイレン」のアフターバーナー速度にボーナス"
               }, 
               {
                 "number": "1%", 
@@ -185535,11 +185535,11 @@
               }, 
               {
                 "number": "5%", 
-                "text": "塞壬后勤铁骑舰载机跃迁干扰范围加成"
+                "text": "塞壬支援铁骑舰载机跃迁干扰范围加成"
               }, 
               {
                 "number": "2%", 
-                "text": "塞壬后勤铁骑舰载机加力燃烧器速度加成"
+                "text": "塞壬支援铁骑舰载机加力燃烧器速度加成"
               }, 
               {
                 "number": "1%", 

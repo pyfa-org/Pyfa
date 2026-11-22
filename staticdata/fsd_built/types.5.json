@@ -487,14 +487,14 @@
     "basePrice": 0.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "Dieses Signalfeuer markiert einen Später-Militärstandort. Das Eingangstor ist so konfiguriert, dass es Tech I und Imperiums-Fraktions-Navy-Schiffe mit Fregattengröße einlässt. Die in diesem Beschleunigungstor installierten Sicherheitsfunktionen verhindern die Aktivierung durch alle mit Warpkern-Stabilisatormodulen ausgestatteten Schiffe. Zudem wird es alle Kapselpiloten mit einem Verdächtigen-Timer ausstatten, wenn sie das Beschleunigungstor aktivieren. ", 
-      "en-us": "This beacon marks a scout military location. The entry gate is configured to admit Tech I and empire faction navy ships of Frigate size.\r\n\r\nThe security features installed in this acceleration gate will prevent activation by any ship that is fitted with warp core stabilizer modules. Additionally, it will provide all capsuleers with a suspect timer when they activate the acceleration gate. ", 
-      "es": "Esta baliza marca una sede militar de exploración. El portal de entrada está configurado para admitir naves T1 y naves de la Armada de facciones imperiales de tamaño fragata.\r\n\r\nLas funciones de seguridad instaladas en este portal de aceleración impiden que lo active ninguna nave con módulos estabilizadores del núcleo de warp. Además, otorgará a todos los capsulistas un temporizador de sospechoso al activar el portal de aceleración. ", 
-      "fr": "Cette balise marque un emplacement militaire d'éclaireur. Le portail d'entrée est configuré pour n'admettre que des vaisseaux Tech I de faction Navy impériale de la taille d'une frégate. Les fonctions de sécurité installées sur ce portail d'accélération empêchent tout vaisseau équipé de modules de stabilisateur du réacteur de warp de l'activer. De plus, tous les capsuliers subiront un compte à rebours de suspect en activant le portail d'accélération. ", 
-      "ja": "偵察用軍事ポイントを示すビーコン。このエントリーゲートは、フリゲートサイズのT1艦船と国家勢力の海軍仕様艦が通過できる設定になっている。\r\n\r\nこのアクセラレーションゲートに備わったセキュリティ機能により、ワープコア制御モジュールを装備した艦船はゲートを起動することができない。さらに、このアクセラレーションゲートを起動させたすべてのカプセラには、容疑者タイマーが付与される。 ", 
-      "ko": "정찰 군사 훈련장의 위치를 표시하는 비컨입니다. 테크 I 및 4대 국가 해군 프리깃 함급의 함선만 입장할 수 있습니다.\r\n\r\n보안 규정에 따라 워프 코어 스태빌라이저 모듈을 탑재한 함선은 입장이 불가능합니다. 또한 액셀레이션 게이트를 활성화하는 모든 캡슐리어에게 용의자 타이머가 적용됩니다. ", 
-      "ru": "Этот маяк обозначает зону военной разведки. Конфигурация ворот рассчитана на фрегаты, включая суда 1-го техноуровня, а также флотские корабли держав. Система безопасности не позволяет активировать эти разгонные ворота, если корабль оснащён модулями стабилизации варп-ядра. Кроме того, при активации этих ворот все капсулёры получают статус нарушителей. ", 
-      "zh": "这个信标标志着一处侦察站军事设施。入口通道设定为可通行一级科技和船型等同于护卫舰的帝国势力海军舰船。安装在这个加速轨道中的安全设备会阻止任何舰船使用装配的跃迁核心稳定器。此外，激活加速轨道的所有克隆飞行员都将触发嫌犯计时器。 "
+      "de": "Dieses Signalfeuer markiert einen Später-Militärstandort. Das Eingangstor ist so konfiguriert, dass es Tech I und Imperiums-Fraktions-Navy-Schiffe mit Fregattengröße einlässt. Die in diesem Beschleunigungstor installierten Sicherheitsfunktionen verhindern die Aktivierung durch alle mit Warpkern-Stabilisatormodulen ausgestatteten Schiffe. Zudem wird es alle Kapselpiloten mit einem Verdächtigen-Timer ausstatten, wenn sie das Beschleunigungstor aktivieren.", 
+      "en-us": "This beacon marks a scout military location. The entry gate is configured to admit Tech I and empire faction navy ships of Frigate size.\r\n\r\nThe security features installed in this acceleration gate will prevent activation by any ship that is fitted with warp core stabilizer modules. Additionally, it will provide all capsuleers with a suspect timer when they activate the acceleration gate.", 
+      "es": "Esta baliza marca una sede militar de exploración. El portal de entrada está configurado para admitir naves T1 y naves de la Armada de facciones imperiales de tamaño fragata.\r\n\r\nLas funciones de seguridad instaladas en este portal de aceleración impiden que lo active ninguna nave con módulos estabilizadores del núcleo de warp. Además, otorgará a todos los capsulistas un temporizador de sospechoso al activar el portal de aceleración.", 
+      "fr": "Cette balise marque un emplacement militaire d'éclaireur. Le portail d'entrée est configuré pour n'admettre que des vaisseaux Tech I de faction Navy impériale de la taille d'une frégate. Les fonctions de sécurité installées sur ce portail d'accélération empêchent tout vaisseau équipé de modules de stabilisateur du réacteur de warp de l'activer. De plus, tous les capsuliers subiront un compte à rebours de suspect en activant le portail d'accélération.", 
+      "ja": "偵察用軍事ポイントを示すビーコン。このエントリーゲートは、フリゲートサイズのT1艦船と国家勢力の海軍仕様艦が通過できる設定になっている。\r\n\r\nこのアクセラレーションゲートに備わったセキュリティ機能により、ワープコア制御モジュールを装備した艦船はゲートを起動することができない。さらに、このアクセラレーションゲートを起動させたすべてのカプセラには、容疑者タイマーが付与される。", 
+      "ko": "정찰 군사 훈련장의 위치를 표시하는 비컨입니다. 테크 I 및 4대 국가 해군 프리깃 함급의 함선만 입장할 수 있습니다.\r\n\r\n보안 규정에 따라 워프 코어 스태빌라이저 모듈을 탑재한 함선은 입장이 불가능합니다. 또한 액셀레이션 게이트를 활성화하는 모든 캡슐리어에게 용의자 타이머가 적용됩니다.", 
+      "ru": "Этот маяк обозначает зону военной разведки. Конфигурация ворот рассчитана на фрегаты, включая суда 1-го техноуровня, а также флотские корабли держав. Система безопасности не позволяет активировать эти разгонные ворота, если корабль оснащён модулями стабилизации варп-ядра. Кроме того, при активации этих ворот все капсулёры получают статус нарушителей.", 
+      "zh": "这个信标标志着一处侦察站军事设施。入口通道设定为可通行一级科技和船型等同于护卫舰的帝国势力海军舰船。安装在这个加速轨道中的安全设备会阻止任何舰船使用装配的跃迁核心稳定器。此外，激活加速轨道的所有克隆飞行员都将触发嫌犯计时器。"
     }, 
     "descriptionID": 1045522, 
     "graphicID": 1211, 
@@ -2814,7 +2814,7 @@
       "ja": "非起動時、ブリーチコントロールモジュールは通常のダメージコントロールユニットと同様の方法でフィールドエミッターを使用する。ひとたび起動すると、それらのフィールドエミッターをスーパーチャージして艦船全体にチャージの波を波及させ、侵入チームの活動を妨害したのち、最終的にモジュールを焼き切る。\r\n\r\nシールド、アーマー、および船体のレジスタンスにボーナスを付与する。\r\n\r\n起動すると、限られた時間、ブリーチャーポッドによるダメージに対して強力なレジスタンスが付与される。ただし、1回使用するとモジュールは焼き切れる。\r\n\r\n注意：複数のダメージ制御を同時に装備することはできない。", 
       "ko": "비활성화되면 침투 통제 모듈은 일반 데미지 컨트롤 유닛과 동일한 방식으로 필드 생성기를 활동합니다. 활성화되면 필드 생성기를 과충전하며 필드 생성기에서 전력 파동을 생성해 함선 표면에 흘려보냅니다. 모듈이 과부하되기 전까지 전력 파동으로 침투하려는 적을 방해합니다.\r\n\r\n실드, 장갑, 선체의 저항력이 증가합니다.\r\n\r\n활성화하면 일정 시간 동안 침투 포드 피해에 매우 높은 저항력을 제공합니다. 단, 1회 사용 후 모듈이 손상됩니다.\r\n\r\n주의: 데미지 컨트롤 모듈은 하나만 장착할 수 있습니다.", 
       "ru": "В пассивном режиме антиабордажный модуль использует излучатели поля так же, как и обычный модуль боевой живучести. При активации он перегружает эти излучатели, создавая энергетические волны, которые расходятся по всему кораблю и сводят на нет усилия любых абордажных команд, после чего модуль окончательно перегорает. Улучшает сопротивляемость щитов, брони и корпуса. Можно использовать для резкого повышения сопротивляемости внедряющимся капсулам на короткое время. После однократного применения модуль перегорает. Примечание: на корабле можно установить лишь один модуль боевой живучести.", 
-      "zh": "未激活时，突破控制模块的力场发射器工作方式与常规损伤控制单元无异。一旦激活，它将超载这些力场发射器，产生电荷波涤荡整艘舰船，干扰任何登舰破坏小队的行动，并最终导致模块烧毁。为护盾、装甲和结构提供抗性加成。可主动激活，在有限时间内大幅提升对分裂者级太空舱伤害的抗性。但使用一次后即烧毁。注：只能同时装配一个损伤控制。"
+      "zh": "未激活时，突破控制模块的力场发射器工作方式与常规损伤控制单元无异。一旦激活，它将超载这些力场发射器，产生电荷波涤荡整艘舰船，干扰任何登舰破坏小队的行动，并最终导致模块烧毁。为护盾、装甲和结构提供抗性加成。可主动激活，在有限时间内大幅提升对突破者座舱伤害的抗性。但使用一次后即烧毁。注：只能同时装配一个损伤控制。"
     }, 
     "descriptionID": 1047231, 
     "groupID": 60, 
@@ -5044,7 +5044,7 @@
       "ja": "ポーテック「探鉱者」サルベージSV-906設計図", 
       "ko": "포텍 '프로스펙터' 샐비지 SV-906 블루프린트", 
       "ru": "Poteque 'Prospector' Salvaging SV-906 Blueprint", 
-      "zh": "打捞SV-906蓝图的波特克“掘金者”"
+      "zh": "打捞SV-906的波特克“掘金者”蓝图"
     }, 
     "typeNameID": 1047755, 
     "volume": 0.01
@@ -5398,14 +5398,14 @@
     "basePrice": 0.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "<b>+16 % Lenkwaffenflugdauer. Grunddauer: 3,5 Minuten.</b> Dieser Booster wurde mit flüchtigen Verbindungen hergestellt und verfällt am <b>27. Juli YC128</b>. ", 
-      "en-us": "<b>+16% Missile Flight Time. Base duration: 3.5 minutes.</b>\r\n\r\nThis booster has been manufactured using volatile compounds and will expire on <b>July 27th, YC128</b>. ", 
+      "de": "<b>+16 % Lenkwaffenflugdauer. Grunddauer: 3,5 Minuten.</b> Dieser Booster wurde mit flüchtigen Verbindungen hergestellt und verfällt am <b>27. Juli YC128</b>.", 
+      "en-us": "<b>+16% Missile Flight Time. Base duration: 3.5 minutes.</b>\r\n\r\nThis booster has been manufactured using volatile compounds and will expire on <b>July 27th, YC128</b>.", 
       "es": "<b>+16 % al tiempo de vuelo de misiles. Duración base: 3,5 minutos.</b>\r\n\r\nEste potenciador se ha fabricado con compuestos volátiles y caducará el <b>27 de julio de 128 CY.</b>", 
-      "fr": "<b>+16 % au temps de vol des missiles. Durée de base : 3,5 minutes.</b> Ce booster a été produit avec des mélanges volatils et expirera le <b>27 juillet 128 après CY</b>. ", 
+      "fr": "<b>+16 % au temps de vol des missiles. Durée de base : 3,5 minutes.</b> Ce booster a été produit avec des mélanges volatils et expirera le <b>27 juillet 128 après CY</b>.", 
       "ja": "<b>ミサイル飛行時間+16%、基本持続時間：3.5分</b>\r\n\r\nこのブースターは揮発性の合成物質で製造されており、<b>YC128年7月27日</b>に有効期限が切れる。", 
-      "ko": "<b>미사일 비행시간 16% 증가, 기본 지속 시간: 3분 30초</b>\r\n\r\n불안정한 혼합물로 구성되어 <b>YC 128년 7월 27일</b>에 사용이 만료됩니다. ", 
-      "ru": "<b>+16% ко времени полёта ракет. Базовая длительность: 3 минуты 30 секунд.</b> Стимулятор содержит нестабильные компоненты и перестанет действовать <b>27 июля 128 года от ю. с.</b> ", 
-      "zh": "<b>导弹飞行时间延长16%。基础持续时间：3.5分钟。</b>这款增效剂在制造时使用了不稳定的化合物，将于<b>YC128年7月27日</b>过期。 "
+      "ko": "<b>미사일 비행시간 16% 증가, 기본 지속 시간: 3분 30초</b>\r\n\r\n불안정한 혼합물로 구성되어 <b>YC 128년 7월 27일</b>에 사용이 만료됩니다.", 
+      "ru": "<b>+16% ко времени полёта ракет. Базовая длительность: 3 минуты 30 секунд.</b> Стимулятор содержит нестабильные компоненты и перестанет действовать <b>27 июля 128 года от ю. с.</b>", 
+      "zh": "<b>导弹飞行时间延长16%。基础持续时间：3.5分钟。</b>这款增效剂在制造时使用了不稳定的化合物，将于<b>YC128年7月27日</b>过期。"
     }, 
     "descriptionID": 1047825, 
     "groupID": 303, 
@@ -5997,14 +5997,14 @@
     "capacity": 600.0, 
     "certificateTemplate": 113, 
     "description": {
-      "de": "Im Jahr YC128 stellte die Republic Fleet angesichts des Schreckgespensts der Eroberungstechnologie am Horizont eine Anfrage nach einem neuen Schlachtkreuzer, der den in diesem Konflikt erwarteten Einsatzteams einen Vorteil verschaffen könnte. Obwohl die Eroberungstechnologie durch eine Vereinbarung mit CONCORD eingeschränkt war, hielten viele ihren Einsatz für unvermeidlich, und die Minmatar wollten ihrer Befürchtung proaktiv begegnen. Das Ergebnis war die Tornado Fleet Issue, ein fortschrittliches Schiff der Republic Fleet. Trotz seiner beeindruckenden Verbesserungen gegenüber dem ursprünglichen Modell behaupteten Kritiker, dieses Schiff sei lediglich eine konventionelle Waffe, die der gewaltigen Macht der Eroberungsmaschinen in keiner Weise standhalten könne.", 
+      "de": "Im Jahr YC128 stellte die Republic Fleet angesichts des Schreckgespensts der Eroberungstechnologie am Horizont eine Anfrage nach einem neuen Schlachtkreuzer, der den in diesem Konflikt erwarteten Einsatzteams einen Vorteil verschaffen könnte. Obwohl die Eroberungstechnologie durch eine Vereinbarung mit CONCORD eingeschränkt war, hielten viele ihren Einsatz für unvermeidlich, und die Minmatar wollten ihrer Befürchtung proaktiv begegnen.\r\n\r\nDas Ergebnis war die Tornado Fleet Issue, ein fortschrittliches Schiff der Republic Fleet. Trotz seiner beeindruckenden Verbesserungen gegenüber dem ursprünglichen Modell behaupteten Kritiker, dieses Schiff sei lediglich eine konventionelle Waffe, die der gewaltigen Macht der Eroberungsmaschinen in keiner Weise standhalten könne.", 
       "en-us": "With the specter of Conquest technology on the horizon in YC128, the Republic Fleet issued a request for a new Battlecruiser that might help provide some edge to the strike teams expected to be a part of that conflict. Though Conquest technology had been restricted by agreement with CONCORD, many felt that its deployment was inevitable, and the Minmatar wished to be proactive in their fear.\r\n\r\nThe result was the Tornado Fleet Issue, an advanced Republic Fleet vessel. Despite its proud suite of improvements over the original model, detractors claimed that this vessel was merely a conventional weapon that could in no way match the awesome power of the Conquest Engines.", 
-      "es": "Ante la amenaza que suponía la tecnología de conquista en 128 CY, la Flota de la República solicitó el desarrollo de un nuevo crucero de combate que pudiera proporcionar una ventaja a los equipos de ataque que previsiblemente participarían en el conflicto. Aunque el uso de la tecnología de conquista estaba restringido por un acuerdo con CONCORD, muchos consideraban inevitable su despliegue, por lo que los minmatarianos decidieron anticiparse a esa amenaza.\r\n\r\nEl resultado fue la Tornado de la Flota, una nave avanzada de la Flota de la República. Pese a las numerosas mejoras que incorporaba respecto al modelo original, sus detractores sostenían que no era más que un arma convencional, incapaz de rivalizar con el formidable poder de los motores de conquista.", 
-      "fr": "Alors que le spectre de la technologie de Conquête se profilait à l'horizon en 128 après CY, la Flotte de la République demanda un nouveau croiseur de bataille susceptible de donner un avantage aux équipes d'intervention qui pourraient devoir participer à ce conflit. Bien que la technologie de Conquête ait été restreinte par un accord avec CONCORD, beaucoup estimaient son utilisation inévitable, et les Minmatar voulaient anticiper cette menace.\r\n\r\nC'est ainsi qu'est né le Tornado Fleet Issue, un vaisseau avancé de la Flotte de la République. Malgré ses améliorations impressionnantes par rapport au modèle d'origine, selon ses détracteurs, il ne s'agissait là que d'une arme conventionnelle incapable d'égaler la formidable puissance des machines de Conquête.", 
-      "ja": "YC128年、「征服」技術の脅威が迫る中、共和国海軍は、来たる紛争への投入が見込まれる打撃部隊に優位性をもたらす新型巡洋戦艦の開発を要請した。「征服」技術はCONCORDとの合意によって制限されていたものの、実戦投入は避けられないと多くの者が考えており、ミンマターはその脅威を見据えて先手を打とうとしていた。\r\n\r\nその成果が、共和国海軍の高性能フリート艦艇、トルネード海軍仕様である。従来型から数々の改良を遂げた自慢の艦船であったが、征服エンジンの圧倒的な力には到底及ばない平凡な兵器だと批判する者もいた。", 
+      "es": "Ante la amenaza que suponía la tecnología de conquista en 128 CY, la Flota de la República solicitó el desarrollo de un nuevo crucero de combate que pudiera proporcionar una ventaja a los equipos de ataque que previsiblemente participarían en el conflicto. Aunque el uso de la tecnología de conquista estaba restringido por un acuerdo con CONCORD, muchos consideraban inevitable su despliegue, por lo que los minmatarianos decidieron anticiparse a esa amenaza.\r\n\r\nEl resultado fue la Tornado modelo de la Flota, una nave avanzada de la Flota de la República. Pese a las numerosas mejoras que incorporaba respecto al modelo original, sus detractores sostenían que no era más que un arma convencional, incapaz de rivalizar con el formidable poder de los motores de conquista.", 
+      "fr": "Alors que le spectre de la technologie de Conquête se profilait à l'horizon en 128 après CY, la Flotte de la République demanda un nouveau croiseur cuirassé susceptible de donner un avantage aux équipes d'intervention qui pourraient devoir participer à ce conflit. Bien que la technologie de Conquête ait été restreinte par un accord avec CONCORD, beaucoup estimaient son utilisation inévitable, et les Minmatar voulaient anticiper cette menace.\r\n\r\nC'est ainsi qu'est né le Tornado Fleet Issue, un vaisseau avancé de la Flotte de la République. Malgré ses améliorations impressionnantes par rapport au modèle d'origine, selon ses détracteurs, il ne s'agissait là que d'une arme conventionnelle incapable d'égaler la puissance prodigieuse des machines de Conquête.", 
+      "ja": "YC128年、「征服」技術の脅威が迫る中、共和国海軍は、来たる紛争への投入が見込まれる打撃部隊に優位性をもたらす新型巡洋戦艦の開発を要請した。「征服」技術はCONCORDとの合意によって制限されていたものの、実戦投入は避けられないと多くの者が考えており、ミンマターはその脅威を見据えて先手を打とうとしていた。\r\n\r\nその成果が、共和国海軍の高性能艦、トルネード海軍仕様である。従来型から数々の改良を遂げた自慢の艦船であったが、「征服」エンジンの圧倒的な力には到底及ばない、平凡な兵器にすぎないと批判する者もいた。", 
       "ko": "YC 128년, 정복전 기술의 등장이 가시화되며 민마타 공화국 함대는 향후 분쟁에 투입될 타격 부대가 우위를 차지할 수 있는 새로운 배틀크루저 개발을 요청했습니다. 정복전 기술은 CONCORD와 맺은 협약에 따라 사용이 제한되지만, 많은 이들은 그 기술이 실전에 쓰일 것이라고 예상했습니다. 결국 민마타는 적보다 먼저 대응하기로 결정했습니다.\r\n\r\n그 결과 토네이도 공화국 함대 에디션이 개발되었습니다. 기존 모델보다 다양한 분야의 성능이 개선된 뛰어난 함선으로 평가받았지만, 일부 비판 의견에 따르면 정복 엔진의 압도적인 위력에는 비교도 되지 않는 재래식 무기에 불과하다고 합니다.", 
-      "ru": "В ответ на угрозу завоевательных технологий в 128 году от ю. с. республиканский флот инициировал разработку нового линейного крейсера, который поможет получить преимущество в борьбе с объединениями, вовлечёнными в этот конфликт. Хотя КОНКОРД существенно ограничил применение завоевательных технологий, многие понимали, что избежать этого не удастся, и минматары решили действовать заранее. В результате на свет появился передовой корабль минматарского флота под названием Tornado Fleet Issue. Хотя он во многом превосходит классическую модель Tornado, скептики считают, что ему бесконечно далеко от сокрушительной мощи завоевательных технологий.", 
-      "zh": "YC128年，随着征服引擎技术带来的威胁日益临近，共和舰队决定研发一种新型战列巡洋舰，以增强突击小队的战斗力，帮助他们在即将到来的冲突中占据优势。尽管征服引擎技术已根据与统合部达成的协议受到限制，但许多人认为，这项技术迟早会被投入使用。出于对这一威胁的担忧，米玛塔尔人决定提前做好准备，主动采取应对措施。最终，龙卷风级舰队型应运而生。这是一艘先进的共和舰队战舰。尽管该舰在原始型号的基础上进行了诸多引以为傲的升级，批评者仍然声称，它不过是一艘采用传统武器的战舰，根本无法与征服引擎的惊人威力相提并论。"
+      "ru": "В ответ на угрозу завоевательных технологий в 128 году от ю. с. республиканский флот инициировал разработку нового линейного крейсера, который поможет получить преимущество в борьбе с объединениями, вовлечёнными в этот конфликт. Хотя КОНКОРД существенно ограничил применение завоевательных технологий, многие понимали, что избежать этого не удастся, и минматары решили действовать заранее.\r\n\r\nВ результате на свет появился передовой корабль минматарского флота под названием Tornado Fleet Issue. Хотя он во многом превосходит классическую модель Tornado, скептики считают, что ему бесконечно далеко от сокрушительной мощи завоевательных технологий.", 
+      "zh": "YC128年，随着征服引擎技术带来的威胁日益逼近，共和舰队决定研发一种新型战列巡洋舰，以增强突击小队的战斗力，帮助他们在即将到来的冲突中占据优势。尽管征服引擎技术已根据与统合部达成的协议受到限制，但许多人认为，这项技术迟早会被投入使用。出于对这一威胁的担忧，米玛塔尔人决定提前做好准备，主动采取应对措施。最终，龙卷风级舰队型应运而生。这是一艘先进的共和舰队战舰。尽管该舰在原始型号的基础上进行了诸多引以为傲的升级，批评者仍然声称，它不过是一艘采用传统武器的战舰，根本无法与征服引擎的惊人威力相提并论。"
     }, 
     "descriptionID": 1048030, 
     "designerIDs": [
@@ -6089,14 +6089,14 @@
     "radius": 1.0, 
     "typeID": 95634, 
     "typeName": {
-      "de": "Oracle Navy Issue Blueprint ", 
+      "de": "Oracle Navy Issue Blueprint", 
       "en-us": "Oracle Navy Issue Blueprint", 
       "es": "Plano de la Oracle modelo de la Armada", 
-      "fr": "Plan de construction Oracle Navy Issue ", 
+      "fr": "Plan de construction Oracle Navy Issue", 
       "ja": "オラクル海軍仕様設計図", 
-      "ko": "오라클 해군 에디션 블루프린트 ", 
-      "ru": "Oracle Navy Issue Blueprint ", 
-      "zh": "预言级海军型蓝图 "
+      "ko": "오라클 해군 에디션 블루프린트", 
+      "ru": "Чертёж Oracle Navy Issue", 
+      "zh": "预言级海军型蓝图"
     }, 
     "typeNameID": 1048033, 
     "volume": 0.01
@@ -6447,7 +6447,7 @@
       "ja": "プローブ用アーコンバイン・アリズンSKIN", 
       "ko": "프로브 '아르크컴바인의 비상' SKIN", 
       "ru": "Probe Arkombine Arisen SKIN", 
-      "zh": "探针级方舟联合体崛起涂装"
+      "zh": "探索级方舟联合体崛起涂装"
     }, 
     "typeNameID": 1048172, 
     "volume": 0.01
@@ -7546,7 +7546,7 @@
       "ja": "<font size=\"14\"><b>アマーパイロット・エキスパートシステム</b></font>\r\n\r\nこのエキスパートシステムを使用すると、カプセラがアマーのT1および海軍仕様のフリゲート、駆逐艦、巡洋艦、巡洋戦艦、そして戦艦を操縦するために必要なスキルと、アマー艦に特化したサポートスキルを利用できるようになる。\r\n\r\n<b>このエキスパートシステムで提供される一時スキルの有効期間は7日間。</b>\r\n\r\nエキスパートシステムは、有効なレンタル期間中に特定のスキルへのアクセスを提供する、リモートで制限された人工知能である。クローンやカプセルからは独立しているため、ポッドの喪失やクローンジャンプによって失われることがない。\r\n\r\n<font size=\"14\"><b>エキスパートシステムの起動</b></font>\r\n\r\nエキスパートシステムは、サービスを利用しようとする特定のカプセラがアイテムを交換することで自動的に起動する。\r\n\r\n<i>エキスパートシステムは、PKNインターステラー・コンソーシアムが開発した製品で、ハイパーネットFTL通信網を流通し、PKNインターステラーの関連企業が販売している。人工ゲルブレイン技術をベースにした制限付きAIで、スキルトレーニングやスキルインジェクションによって生成された神経経路を利用しているため、カプセルシップのインターフェースや制御システムとも互換性がある。PKNインターステラーのハイパーネット上の専用FTLチャンネルを使用して、リアルタイムコマンドと制御通信を実現している。</i>", 
       "ko": "<font size=\"14\"><b>아마르 파일럿 전문가 시스템</b></font>\r\n\r\n이 전문가 시스템은 아마르에 특화된 지원 스킬과 더불어, 캡슐리어가 아마르 테크 I 및 해군 프리깃, 디스트로이어, 크루저, 배틀크루저, 배틀쉽을 운용하는 데 필요한 스킬을 제공합니다.\r\n\r\n<b>해당 전문가 시스템은 7일간 지속됩니다.</b>\r\n\r\n전문가 시스템은 제한형 AI로 일정 기간 캡슐리어의 스킬 사용을 활성화합니다. 사용자의 신체 및 캡슐과 독립되어 있기 때문에 캡슐이 파괴되거나 클론을 변경해도 시스템이 제거되지 않습니다.\r\n\r\n<font size=\"14\"><b>전문가 시스템 활성화</b></font>\r\n\r\n전문가 시스템을 수령하면 즉시 적용됩니다.\r\n\r\n<i>전문가 시스템은 PKN 인터스텔라에 의해 개발 및 판매되는 제품으로 FTL 통신 네트워크인 하이퍼넷을 통해 배포됩니다. 인공 젤브레인을 바탕으로 설계된 제한형 AI이며, 스킬 주입 및 훈련을 통해 생성된 신경망을 활용하기에 함선 인터페이스를 비롯한 제어 시스템과 연동됩니다. FTL 네트워크인 하이퍼넷을 통해 실시간 제어 및 통신이 이루어집니다.</i>", 
       "ru": "<font size=\"14\"><b>Экспертная система «Амаррский пилот»</b></font> Эта экспертная система даёт доступ к навыкам, позволяющим пилоту летать на амаррских судах 1 техноуровня, на амаррских флотских фрегатах, эсминцах, крейсерах, линейных крейсерах и линкорах, а также разблокирует соответствующие навыки поддержки. <b>Полученные временные навыки действуют в течение семи дней.</b> Экспертная система — это дистанционный искусственный интеллект ограниченного действия, предоставляющий определённые навыки на время его использования. Такие системы не теряются при уничтожении капсулы или смене клона, поскольку не зависят от них. <font size=\"14\"><b>Активация экспертной системы</b></font> Активация происходит автоматически, когда капсулёр использует соответствующий предмет. <i>Экспертные системы — это продукты консорциума «ПКН Интерстеллар», предоставляемые корпорациями, входящими в состав «ПКН Интерстеллар», и доступные посредством системы сверхсветовых коммуникаций через гиперсеть. По своей сути они являются ИИ ограниченного действия, созданными на основе технологии гелеобразного мозга. Экспертные системы используют нейронные каналы, образующиеся при освоении или инъекции навыков, поэтому они совместимы с интерфейсом корабля и капсулы, а также с их системами управления. Управление и коммуникация осуществляются в реальном времени по выделенным сверхсветовым каналам гиперсети консорциума «ПКН Интерстеллар».</i>", 
-      "zh": "<font size=\"14\"><b>艾玛飞行员专家系统</b></font>这个专家系统提供的技能让克隆飞行员可以驾驶米玛塔尔一级科技和海军型护卫舰、驱逐舰、巡洋舰、战列巡洋舰和战列舰，并提供适用于艾玛的辅助技能。<b>该专家系统赋予的技能有效期为七天。</b>专家系统是一种远程受限人工智能，可在租赁有效期内为你提供访问特定技能的权限。专家系统不依托于克隆体和太空舱，因此处于有效期内的专家系统在太空舱损毁或进行远距克隆时也能继续使用。<font size=\"14\"><b>启用专家系统</b></font>克隆飞行员兑换此物品后就会自动启用专家系统。<i>专家系统由PKN星际财团研发，通过超光速网络通信提供服务，并由PKN星际集团成员企业负责推广与销售。专家系统是一种基于虚拟大脑技术的受限人工智能。专家系统使用了通过技能训练或技能注入产生的神经通路，与太空舱界面和控制系统兼容。通过PKN星系超网上的专用超光速频道可以实现实时指令和控制通信。</i>"
+      "zh": "<font size=\"14\"><b>艾玛飞行员专家系统</b></font>这个专家系统提供的技能让克隆飞行员可以驾驶艾玛一级科技和海军型护卫舰、驱逐舰、巡洋舰、战列巡洋舰和战列舰，并提供适用于艾玛的辅助技能。<b>该专家系统赋予的技能有效期为七天。</b>专家系统是一种远程受限人工智能，可在租赁有效期内为你提供访问特定技能的权限。专家系统不依托于克隆体和太空舱，因此处于有效期内的专家系统在太空舱损毁或进行远距克隆时也能继续使用。<font size=\"14\"><b>启用专家系统</b></font>克隆飞行员兑换此物品后就会自动启用专家系统。<i>专家系统由PKN星际财团研发，通过超光速网络通信提供服务，并由PKN星际集团成员企业负责推广与销售。专家系统是一种基于虚拟大脑技术的受限人工智能。专家系统使用了通过技能训练或技能注入产生的神经通路，与太空舱界面和控制系统兼容。通过PKN星系超网上的专用超光速频道可以实现实时指令和控制通信。</i>"
     }, 
     "descriptionID": 1048566, 
     "groupID": 4091, 
@@ -8385,7 +8385,7 @@
       "ja": "プローブは一般的なミンマターのフリゲートと比べて大型で、優れた偵察艦・輸送艦とされている。ミンマター艦としては異例なほど外殻が堅く、撃破されにくい。一方、兵装用のハードポイントが限られているため、交戦時はドローンの支援に頼らざるを得ない。\r\n\r\nこれはプローブのAIRアカデミー専用版である。エグゾーディウム内のカプセラに無償で提供され、訓練を支援する。エグゾーディウムの外での操縦、取引、再処理はできない。", 
       "ko": "프로브는 대다수의 민마타 프리깃보다 큰 편으로 정찰기 및 밀수선으로 사용하기 적합합니다. 일반 민마타 함선과는 다르게 단단한 외막을 갖추어 파괴하기 쉽지 않으며 장착 가능한 무기의 수가 한정되어 있어 교전 시 지원 병력에 의존하는 특성을 보입니다.\r\n\r\nAIR 아카데미 에디션 프로브입니다. 엑조디엄 지역의 캡슐리어가 훈련용으로 무료로 사용할 수 있습니다. 엑조디엄 외부에서 탑승하거나 거래 및 재처리가 불가능합니다.", 
       "ru": "По сравнению с большинством минматарских фрегатов корабль модели Probe — настоящий великан. Он отлично подходит для разведки и перевозки грузов, поскольку обладает прочным внешним покрытием, которое не так-то просто пробить, что, опять же, нехарактерно для судов минматарского производства. Слабое место Probe — небольшое число разъёмов для орудий, из-за чего на поле боя он вынужден опираться на поддержку дронов.\r\n\r\nЭто особая версия Probe от Академии АМИ для помощи в обучении. Корабль предоставляется бесплатно, но не может покидать пределов Exordium, быть продан или переработан.", 
-      "zh": "与大多数米玛塔尔护卫舰相比，探针级体型较大，被视为优秀的侦察舰和运货舰。与米玛塔尔舰船的典型特征不同，它坚硬的外层装甲使其难以被摧毁；但由于武器挂点有限，一旦卷入战斗，就只能依靠无人机辅助作战。这是探针级的星空会学院特别版。它免费提供给始源星域的克隆飞行员，以协助他们进行训练。该舰船无法驶离始源星域，也无法进行交易或重炼。"
+      "zh": "与大多数米玛塔尔护卫舰相比，探索级体型较大，被视为优秀的侦察舰和运货舰。与米玛塔尔舰船的典型特征不同，它坚硬的外层装甲使其难以被摧毁；但由于武器挂点有限，一旦卷入战斗，就只能依靠无人机辅助作战。这是探索级的星空会学院特别版。它免费提供给始源星域的克隆飞行员，以协助他们进行训练。该舰船无法驶离始源星域，也无法进行交易或重炼。"
     }, 
     "descriptionID": 1049076, 
     "designerIDs": [
@@ -8416,7 +8416,7 @@
       "ja": "アカデミープローブ", 
       "ko": "아카데미 프로브", 
       "ru": "Academy Probe", 
-      "zh": "学院探针级"
+      "zh": "学院探索级"
     }, 
     "typeNameID": 1049074, 
     "volume": 19500.0, 
@@ -9280,7 +9280,6 @@
       "de": "Massive Geschwindigkeitserhöhung für eine sehr kurze Zeit. Der Schub, der das Schiff vorantreibt, und der daraus resultierende maximale Geschwindigkeitsgewinn wird durch die Masse des Schiffs begrenzt, welches dieses Modul verwendet. Die unglaubliche Energiemenge, die benötigt wird, um diesen Antrieb zu aktivieren, bedeutet, dass ein Teil der Energiespeicherleistung permanent reserviert werden muss, um die Integrität des Warp-Eingrenzungsfeldes aufrechtzuerhalten. Wenn diese Funktion aktiviert ist, erhöht sich das EM-Profil des Schiffes beträchtlich.\r\n\r\nNachteil: Max. Energiespeicherkapazität reduziert.\r\n\r\nHinweis: Dieses Modul ist für Fregatten und Zerstörer gedacht.\r\n\r\nDies ist eine spezielle AIR-Akademie-Version eines 5MN-Mikrowarpantriebs. Er wird Kapselpiloten innerhalb von Exordium kostenlos zur Unterstützung ihrer Ausbildung bereitgestellt. Er kann nur mit Akademie-Schiffen verwendet werden.", 
       "en-us": "Massive boost to speed for a very short time. The thrust that boosts the ship, and the corresponding maximum velocity bonus, are limited by the mass of the ship that uses this module. The sheer amount of energy needed to power this system means that it must permanently reserve a fraction of the capacitor output just to maintain the integrity of its warp containment field, and when activated it substantially increases the ship's EM footprint.\r\n\r\nPenalty: Max capacitor reduced.\r\n\r\nNote: Usually fit on Frigates and Destroyers.\r\n\r\nThis is a special AIR Academy version of a 5MN Microwarpdrive. It is provided free of charge to capsuleers within Exordium to assist with their training. It can only be used with Academy Ships.", 
       "es": "Aumento enorme de la velocidad durante un periodo muy breve. El impulso que potencia la nave, y la bonificación de velocidad máxima correspondiente, están limitadas por la masa que usa este módulo. La cantidad de energía necesaria para alimentar este sistema le obliga a reservar de forma permanente una fracción de la salida del condensador para mantener la integridad del campo de contención de warp y, al activarlo, la huella electromagnética de la nave aumenta considerablemente.\r\n\r\nPenalización: condensador máximo reducido.\r\n\r\nAviso: Suele equiparse en fragatas y destructores.\r\n\r\nEsta es una versión especial del motor de microwarp de 5 MN de la Academia AIR. Se proporciona gratuitamente a los capsulistas de Exordium para facilitar su entrenamiento. Solo puede utilizarse en naves de la Academia.", 
-      "fr": "Puissante accélération pendant un laps de temps très limité. La poussée appliquée au vaisseau et le bonus de vitesse maximale correspondant sont limités par la masse du vaisseau utilisant le module. La quantité phénoménale d'énergie nécessaire au fonctionnement de ce système exige d'allouer en permanence une fraction de l'énergie produite par le capaciteur au champ de confinement de warp, dans le seul but de maintenir son intégrité. L'énergie libérée une fois le module activé accroît excessivement l'empreinte EM du vaisseau.\r\n\r\nPénalité : réduit la puissance max du capaciteur.\r\n\r\nRemarque : module communément monté sur les frégates et destroyers.\r\n\r\nIl s'agit d'une version spéciale AIR Academy de propulseur de microwarp 5MN. Elle est fournie gratuitement aux capsuliers d'Exordium afin de les aider dans leur apprentissage. Elle ne peut être utilisée qu'avec les vaisseaux Academy.", 
       "ja": "ごく短時間速度を大幅に向上させる。得られる推進力と、それによる最高速度ボーナスは、このモジュールを使用する艦船の質量に制約を受ける。このシステムの稼働には莫大なエネルギーを要し、アイドル状態でも常時キャパシタ出力の一部を割り当ててワープコンテインメントフィールドを維持しておく必要があり、起動すると艦の電磁的なEM痕跡が著しく増大してしまう弊害もある。\r\n\r\nペナルティ：キャパシタの最大値が低下する。\r\n\r\n注：通常はフリゲート艦および駆逐艦に装備される。\r\n\r\nこれは5MNマイクロワープドライブのAIRアカデミー専用版である。エグゾーディウム内のカプセラに無償で提供され、訓練を支援する。アカデミー艦船でのみ使用できる。", 
       "ko": "일정 시간 동안 비행속도가 대폭 증가합니다. 함선 중량에 따라 추진력 및 최대 속도 보너스가 제한됩니다. 워프 제어 필드를 안정적으로 유지하기 위해 지속적인 전력 소모를 요구합니다. 장착 시 캐패시터 용량이 감소하며 활성화 시 시그니처 반경이 증가합니다.\r\n\r\n페널티: 캐패시터 용량이 감소합니다.\r\n\r\n참고: 주로 프리깃 또는 디스트로이어에 장착이 가능합니다.\r\n\r\nAIR 아카데미 에디션 5MN 마이크로 워프 드라이브입니다. 엑조디엄 지역의 캡슐리어가 훈련용으로 무료로 사용할 수 있습니다. 아카데미 함선에만 장착할 수 있습니다.", 
       "ru": "Огромный прирост скорости на короткое время. Мощность ускорения и размер соответствующего бонуса максимальной скорости ограничены массой корабля, использующего этот модуль. Для питания этой системы требуется огромный объём энергии, по этой причине на постоянной основе резервируется определённая часть энергии, производимой накопителем — только лишь для поддержания целостности поля сдерживания в варпе. В момент активации значительно увеличивает электромагнитный след корабля.\r\n\r\nШтраф: уменьшение максимальной ёмкости накопителя.\r\n\r\nПримечание: обычно устанавливается на фрегаты и эсминцы.\r\n\r\nЭто особая версия микроварп-ускорителя 5MN от Академии АМИ, которая предоставляется бесплатно для помощи в обучении. Его можно использовать только на кораблях Академии в Exordium.", 
@@ -11773,14 +11772,14 @@
     "basePrice": 0.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "Diese von der Federation Navy entwickelte Modifikation verbessert Hybridgeschütztürme, Panzerungsreparatur und Struktur-HP. Sie integriert außerdem die Schnittstellen zwischen Federation Navy-Technologie. Je mehr Federation Navy-Module installiert sind, desto höher die Leistung. Abzug: Beim Einsatz mehrerer Module des gleichen oder eines ähnlichen Typs, welche dasselbe Attribut beeinflussen, wird deren Wirksamkeit für dieses Attribut eingeschränkt. Der CPU-Nachteil beim Ausrüsten dieser Modifikation kann durch das Trainieren des Skills <a href=showinfo:96100>Synchronisierungsmodifizierung</a> verringert werden.\r\n\r\n", 
-      "en-us": "Developed by the Federation Navy, this rig improves hybrid turret, armor repair, and structure hitpoints. It also integrates the pathways between Federation Navy technology. This unlocks even greater performance the more Federation Navy modules are installed.\r\n\r\nPenalty: Using more than one type of this module or similar modules that affect the same attribute on the ship will be penalized.\r\n\r\nThe CPU drawback of fitting this rig may be reduced by training the <a href=showinfo:96100>Synchronization Rigging</a> skill.\r\n\r\n", 
-      "es": "Desarrollado por la Armada de la Federación, este complemento mejora las torretas híbridas, la reparación de blindaje y los puntos de vida de la estructura. También integra conexiones entre las tecnologías de la Armada de la Federación, lo que permite aumentar aún más su rendimiento cuantos más módulos de la Armada de la Federación se instalen.\r\n\r\nPenalización: Por usar más de un tipo de módulo o módulos similares que afecten al mismo atributo de la nave.\r\n\r\nSe puede reducir la desventaja de CPU de equipar este complemento desarrollando la habilidad <a href=showinfo:96100>Complementos de sincronización</a>.\r\n", 
-      "fr": "Développée par la Federation Navy, cette optimisation améliore les tourelles hybrides, la réparation du blindage et les points de vie de la structure. Elle intègre également les voies entre les technologies de la Federation Navy. Permet d'augmenter davantage les performances à mesure que d'autres modules de la Federation Navy sont installés.\r\n\r\nPénalité : utiliser plus d'un module de ce type ou plusieurs modules modifiant un même attribut du vaisseau fera l'objet d'une pénalité.\r\n\r\nIl est possible de réduire le malus au CPU causé par l'utilisation de cette optimisation en apprenant la compétence <a href=showinfo:96100>Optimisation de synchronisation</a>.\r\n\r\n", 
-      "ja": "連邦海軍によって開発されたリグ。ハイブリッドタレット、アーマーリペア、ストラクチャHPが向上する。また、連邦海軍の技術同士を連携させる機構も組み込まれており、連邦海軍のモジュールを多く搭載するほど、さらに高い性能を発揮する。\r\n\r\nペナルティ：艦船に同じタイプのモジュール、または同じ属性の類似モジュールを複数取り付けると、ペナルティが発生する。\r\n\r\n<a href=showinfo:96100>同期リグ</a>スキルをトレーニングすれば、このリグを装備することで発生するCPUのデメリットを軽減できる。\r\n", 
-      "ko": "연방 해군이 개발한 리그입니다. 하이브리드 터렛, 장갑수리 장치, 구조물 내구도를 향상시킵니다. 또한 연방 해군 기술 간 연결 경로를 통합합니다. 따라서 연방 해군 모듈을 많이 장착할수록 성능이 강화됩니다.\r\n\r\n페널티: 동일한 속성의 모듈 여러 개를 장착할 경우 페널티가 부여됩니다.\r\n\r\n리그 부작용으로 감소하는 CPU는 <a href=showinfo:96100>동기화 리그</a> 스킬 습득해 완화할 수 있습니다.\r\n\r\n", 
-      "ru": "Эта надстройка, разработанная флотом Федерации, усиливает гибридные орудия и модули ремонта брони, а также повышает прочность корпуса. Кроме того, она связывает между собой технологии галлентского производства: чем больше модулей флота Федерации установлено на корабль, тем лучше она работает. Внимание! Установка на борт корабля двух и более модулей, влияющих на одну и ту же характеристику, приведёт к снижению эффективности их действия в отношении данной характеристики. Негативное влияние надстройки на ЦПУ можно снизить благодаря навыку <a href=showinfo:96100>«Синхронизация надстроек»</a>.\r\n\r\n", 
-      "zh": "该改装件由联邦海军开发，可提升混合炮台性能、装甲维修量和结构值。它还能连通联邦海军技术体系，将各项装备的效果串联起来。装配的联邦海军装备越多，性能提升就越显著。惩罚：在一艘舰船上使用多个这类装备或多个与该装备作用一致的类似装备将削弱实际使用效果。可通过训练<a href=showinfo:96100>同步改装技术</a>技能来降低装配该改装件所带来的CPU影响。\r\n\r\n"
+      "de": "Diese von der Federation Navy entwickelte Modifikation verbessert Hybridgeschütztürme, Panzerungsreparatur und Struktur-HP. Sie integriert außerdem die Schnittstellen zwischen Federation Navy-Technologie. Je mehr Federation Navy-Module installiert sind, desto höher die Leistung. Abzug: Beim Einsatz mehrerer Module des gleichen oder eines ähnlichen Typs, welche dasselbe Attribut beeinflussen, wird deren Wirksamkeit für dieses Attribut eingeschränkt. Der CPU-Nachteil beim Ausrüsten dieser Modifikation kann durch das Trainieren des Skills <a href=showinfo:96100>Synchronisierungsmodifizierung</a> verringert werden.", 
+      "en-us": "Developed by the Federation Navy, this rig improves hybrid turret, armor repair, and structure hitpoints. It also integrates the pathways between Federation Navy technology. This unlocks even greater performance the more Federation Navy modules are installed.\r\n\r\nPenalty: Using more than one type of this module or similar modules that affect the same attribute on the ship will be penalized.\r\n\r\nThe CPU drawback of fitting this rig may be reduced by training the <a href=showinfo:96100>Synchronization Rigging</a> skill.", 
+      "es": "Desarrollado por la Armada de la Federación, este complemento mejora las torretas híbridas, la reparación de blindaje y los puntos de vida de la estructura. También integra conexiones entre las tecnologías de la Armada de la Federación, lo que permite aumentar aún más su rendimiento cuantos más módulos de la Armada de la Federación se instalen.\r\n\r\nPenalización: Por usar más de un tipo de módulo o módulos similares que afecten al mismo atributo de la nave.\r\n\r\nSe puede reducir la desventaja de CPU de equipar este complemento desarrollando la habilidad <a href=showinfo:96100>Complementos de sincronización</a>.", 
+      "fr": "Développée par la Federation Navy, cette optimisation améliore les tourelles hybrides, la réparation du blindage et les points de vie de la structure. Elle intègre également les voies entre les technologies de la Federation Navy. Permet d'augmenter davantage les performances à mesure que d'autres modules de la Federation Navy sont installés.\r\n\r\nPénalité : utiliser plus d'un module de ce type ou plusieurs modules modifiant un même attribut du vaisseau fera l'objet d'une pénalité.\r\n\r\nIl est possible de réduire le malus au CPU causé par l'utilisation de cette optimisation en apprenant la compétence <a href=showinfo:96100>Optimisation de synchronisation</a>.", 
+      "ja": "連邦海軍によって開発されたリグ。ハイブリッドタレット、アーマーリペア、ストラクチャHPが向上する。また、連邦海軍の技術同士を連携させる機構も組み込まれており、連邦海軍のモジュールを多く搭載するほど、さらに高い性能を発揮する。\r\n\r\nペナルティ：艦船に同じタイプのモジュール、または同じ属性の類似モジュールを複数取り付けると、ペナルティが発生する。\r\n\r\n<a href=showinfo:96100>同期リグ</a>スキルをトレーニングすれば、このリグを装備することで発生するCPUのデメリットを軽減できる。", 
+      "ko": "연방 해군이 개발한 리그입니다. 하이브리드 터렛, 장갑수리 장치, 구조물 내구도를 향상시킵니다. 또한 연방 해군 기술 간 연결 경로를 통합합니다. 따라서 연방 해군 모듈을 많이 장착할수록 성능이 강화됩니다.\r\n\r\n페널티: 동일한 속성의 모듈 여러 개를 장착할 경우 페널티가 부여됩니다.\r\n\r\n리그 부작용으로 감소하는 CPU는 <a href=showinfo:96100>동기화 리그</a> 스킬 습득해 완화할 수 있습니다.", 
+      "ru": "Эта надстройка, разработанная флотом Федерации, усиливает гибридные орудия и модули ремонта брони, а также повышает прочность корпуса. Кроме того, она связывает между собой технологии галлентского производства: чем больше модулей флота Федерации установлено на корабль, тем лучше она работает. Внимание! Установка на борт корабля двух и более модулей, влияющих на одну и ту же характеристику, приведёт к снижению эффективности их действия в отношении данной характеристики. Негативное влияние надстройки на ЦПУ можно снизить благодаря навыку <a href=showinfo:96100>«Синхронизация надстроек»</a>.", 
+      "zh": "该改装件由联邦海军开发，可提升混合炮台性能、装甲维修量和结构值。它还能连通联邦海军技术体系，将各项装备的效果串联起来。装配的联邦海军装备越多，性能提升就越显著。惩罚：在一艘舰船上使用多个这类装备或多个与该装备作用一致的类似装备将削弱实际使用效果。可通过训练<a href=showinfo:96100>同步改装技术</a>技能来降低装配该改装件所带来的CPU影响。"
     }, 
     "descriptionID": 1049948, 
     "groupID": 5140, 
@@ -12887,7 +12886,7 @@
       "en-us": "Non-Interactable Mammoth (Do not translate)", 
       "es": "Non-Interactable Mammoth (Do not translate)", 
       "fr": "Non-Interactable Mammoth (Do not translate)", 
-      "ja": "Non-interactable Mammoth (Do not translate) ", 
+      "ja": "Non-interactable Mammoth (Do not translate)", 
       "ko": "Non-interactable Mammoth (Do not translate)", 
       "ru": "Non-Interactable Mammoth (Do not translate)", 
       "zh": "Non-interactable Mammoth (Do not translate)"
@@ -12913,7 +12912,7 @@
       "en-us": "Non-interactable Habitation Brothel (do not translate)", 
       "es": "Non-interactable Habitation Brothel (do not translate)", 
       "fr": "Non-interactable Habitation Brothel (do not translate)", 
-      "ja": "Non-interactable Habitation Brothel (do not translate) ", 
+      "ja": "Non-interactable Habitation Brothel (do not translate)", 
       "ko": "Non-interactable Habitation Brothel (do not translate)", 
       "ru": "Non-interactable Habitation Brothel (do not translate)", 
       "zh": "Non-interactable Habitation Brothel (do not translate)"
@@ -12938,7 +12937,7 @@
       "en-us": "Non-interactable Habitation Casino (do not translate)", 
       "es": "Non-interactable Habitation Casino (do not translate)", 
       "fr": "Non-interactable Habitation Casino (do not translate)", 
-      "ja": "Non-interactable Habitation Casino (do not translate) ", 
+      "ja": "Non-interactable Habitation Casino (do not translate)", 
       "ko": "Non-interactable Habitation Casino (do not translate)", 
       "ru": "Non-interactable Habitation Casino (do not translate)", 
       "zh": "Non-interactable Habitation Casino (do not translate)"
@@ -26244,7 +26243,7 @@
       "ja": "ゾーリャのババロガ", 
       "ko": "조로야의 바바로가", 
       "ru": "Zorya's Babaroga", 
-      "zh": "曙光级巴巴罗加号"
+      "zh": "曙光巴巴罗加级"
     }, 
     "typeNameID": 1053517, 
     "volume": 18500000.0, 
@@ -27970,7 +27969,7 @@
       "ja": "ババロガ・テトリモン・クリムゾンマークSKIN", 
       "ko": "바바로가 '테트리몬 크림슨 마크' SKIN", 
       "ru": "Babaroga Tetrimon Crimson Mark SKIN", 
-      "zh": "巴巴罗加号特里蒙血色印记涂装"
+      "zh": "巴巴罗加级特里蒙血色印记涂装"
     }, 
     "typeNameID": 1054483, 
     "volume": 0.01
@@ -29128,14 +29127,14 @@
     "basePrice": 10000.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "Anomale Moleküle des Raspit-Minerals, die durch hyperdimensionale Kräfte verändert wurden. Das Imperium der Amarr benötigt dieses anomale Material für seine Forschung zur Energieeffizienz der Drifter. Akzeptiert ihr Kampagnenziel und liefert dies bei ihrem Gegenstandshändler außerhalb des Ankerpunkts der Amarr Navy in <url=showinfo:5//30002974>Mehatoor</url> ab.", 
+      "de": "Anomale Moleküle des Raspit-Minerals, die durch hyperdimensionale Kräfte verändert wurden. Das Imperium der Amarr benötigt dieses anomale Material für seine Forschung zur Energieeffizienz der Drifter.\r\n\r\nDas Imperium der Amarr wird alle belohnen, die das Kampagnenziel annehmen und dies bei ihrem Gegenstandshändler außerhalb des Ankerpunkts der Amarr Navy in <url=showinfo:5//30002974>Mehatoor</url> abliefern.", 
       "en-us": "Aberrant molecules of Raspite mineral that have been altered by exposure to hyperdimensional forces. The Amarr Empire needs this aberrant material for their research into Drifter energy efficiency. \r\n\r\nThe Amarr Empire will reward anyone who accepts their campaign objective and delivers this to their item trader outside the Amarr Navy Anchorage in <url=showinfo:5//30002974>Mehatoor</url>.", 
-      "es": "Moléculas aberrantes del mineral raspita que han sido alteradas por su exposición a fuerzas hiperdimensionales. El Imperio Amarr necesita este material anómalo para investigar la eficiencia energética de los drifters.\r\n\r\nAcepta su objetivo de campaña y entrega este material a su comerciante de artículos, situado fuera del anclaje de la Armada Amarr en <url=showinfo:5//30002974>Mehatoor</url>.", 
-      "fr": "Molécules aberrantes du minéral raspite altérées par l'exposition à des forces hyperdimensionnelles. L'Empire amarr a besoin de la forme aberrante de ce matériau pour ses recherches sur l'efficacité énergétique des drifters. \r\n\r\nAcceptez son objectif de campagne et livrez cette ressource à son marchand d'objets à l'extérieur de l'ancrage de l'Amarr Navy à <url=showinfo:5//30002974>Mehatoor</url>.", 
-      "ja": "超次元の力にさらされて変質したラスパイト無機物の変異分子。アマー帝国は、ドリフターのエネルギー効率に関する研究のために、この変異鉱物を必要としている。\r\n\r\n帝国は自国のキャンペーン目標のため、<url=showinfo:5//30002974>メハトゥア</url>のアマー海軍係留拠点外にいるアイテムトレーダーにこれを届けた者に報酬を与える。", 
+      "es": "Moléculas aberrantes del mineral raspita que han sido alteradas por su exposición a fuerzas hiperdimensionales. El Imperio Amarr necesita este material anómalo para investigar la eficiencia energética de los drifters.\r\n\r\nEl Imperio Amarr recompensará a quienes acepten el objetivo de su campaña y entreguen esto a su comerciante de artículos situado fuera del anclaje de la Armada Amarr en <url=showinfo:5//30002974>Mehatoor</url>.", 
+      "fr": "Molécules aberrantes du minéral raspite altérées par l'exposition à des forces hyperdimensionnelles. L'Empire amarr a besoin de la forme aberrante de ce matériau pour ses recherches sur l'efficacité énergétique des drifters. \r\n\r\nL'Empire amarr récompensera quiconque accepte son objectif de campagne et livre cette ressource à son marchand d'objets à l'extérieur de l'ancrage de l'Amarr Navy à <url=showinfo:5//30002974>Mehatoor</url>.", 
+      "ja": "超次元の力にさらされて変質したラスパイト無機物の変異分子。アマー帝国は、ドリフターのエネルギー効率に関する研究のために、この変異鉱物を必要としている。\r\n\r\nアマー帝国は、キャンペーン目標を受諾し、<url=showinfo:5//30002974>メハトゥア</url>のアマー海軍係留拠点の外にいるアイテムトレーダーにこれを納品した者に報酬を与える。", 
       "ko": "괴리형 라스파이트 분자는 초차원적 에너지에 노출되어 형성됩니다. 아마르 제국은 드리프터의 에너지 효율성 연구를 위해 괴리형 자원이 필요합니다.\r\n\r\n제국은 작전 계획에 따라 <url=showinfo:5//30002974>메하투어</url> 아마르 해군 정박지 외부의 거래상과 괴리형 자원을 거래하는 캡슐리어에게 보상을 제공할 것입니다.", 
-      "ru": "Аберрантные молекулы распита изменились под воздействием гиперпространства. Этот аномальный материал нужен Амаррской Империи для исследований энергетической эффективности технологий Скитальцев. Возьмите соответствующее задание кампании и доставьте минерал торговцу неподалёку от якорной станции имперского флота в системе <url=showinfo:5//30002974>Mehatoor</url>.", 
-      "zh": "受到超维力量影响而发生变异的斜钨铅矿，其分子结构已发生异常变化。艾玛帝国需要这种异常材料，研究如何提高流浪者的能量利用效率。接受他们的活动目标，并将此物品交给位于<url=showinfo:5//30002974>莫哈托尔</url>艾玛海军锚地外的物品贸易官。"
+      "ru": "Аберрантные молекулы распита изменились под воздействием гиперпространства. Этот аномальный материал нужен Амаррской Империи для исследований энергетической эффективности технологий Скитальцев. \r\n\r\nАмаррцы наградят каждого, кто примет задание кампании и доставит минерал торговцу неподалёку от якорной станции имперского флота в системе <url=showinfo:5//30002974>Mehatoor</url>.", 
+      "zh": "受到超维力量影响而发生变异的斜钨铅矿，其分子结构已发生异常变化。艾玛帝国需要这种异常材料，研究如何提高流浪者的能量利用效率。接受艾玛帝国的活动目标，并将此物品交给位于<url=showinfo:5//30002974>莫哈托尔</url>的艾玛海军锚地外的物品贸易官，即可获得奖励。"
     }, 
     "descriptionID": 1054675, 
     "groupID": 18, 
@@ -29158,7 +29157,7 @@
       "zh": "异变斜钨铅矿"
     }, 
     "typeNameID": 1054674, 
-    "volume": 0.01
+    "volume": 0.001
   }, 
   "97513": {
     "basePrice": 10000.0, 
@@ -29194,7 +29193,7 @@
       "zh": "异变复稀金矿"
     }, 
     "typeNameID": 1054676, 
-    "volume": 0.01
+    "volume": 0.001
   }, 
   "97514": {
     "basePrice": 10000.0, 
@@ -29230,7 +29229,7 @@
       "zh": "异变碳硅石"
     }, 
     "typeNameID": 1054678, 
-    "volume": 0.01
+    "volume": 0.001
   }, 
   "97515": {
     "basePrice": 10000.0, 
@@ -29266,7 +29265,7 @@
       "zh": "异变钪原矿"
     }, 
     "typeNameID": 1054680, 
-    "volume": 0.01
+    "volume": 0.001
   }, 
   "97516": {
     "basePrice": 0.0, 
@@ -29307,14 +29306,14 @@
     "basePrice": 0.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "Platzhaltergegenstand für die „Weg zur Eroberung“-Kampagne im November ", 
-      "en-us": "Placeholder Item for November path to conquest campaign ", 
+      "de": "Platzhaltergegenstand für die „Weg zur Eroberung“-Kampagne im November", 
+      "en-us": "Placeholder Item for November path to conquest campaign", 
       "es": "Placeholder Item for November path to conquest campaign", 
-      "fr": "Objet temporaire pour la campagne la « Voie de la conquête » de novembre ", 
+      "fr": "Objet temporaire pour la campagne la « Voie de la conquête » de novembre", 
       "ja": "11月の「征服への道」キャンペーンプレースホルダーアイテム", 
-      "ko": "Placeholder Item for November path to conquest campaign ", 
-      "ru": "Предмет для ноябрьской кампании «Путь к завоеванию» (заполнитель) ", 
-      "zh": "11月征服之路活动的占位物品 "
+      "ko": "Placeholder Item for November path to conquest campaign", 
+      "ru": "Предмет для ноябрьской кампании «Путь к завоеванию» (заполнитель)", 
+      "zh": "11月征服之路活动的占位物品"
     }, 
     "descriptionID": 1054807, 
     "groupID": 314, 
@@ -29472,7 +29471,7 @@
       "zh": "热电通量日志"
     }, 
     "typeNameID": 1054824, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97545": {
     "basePrice": 0.0, 
@@ -29507,20 +29506,20 @@
       "zh": "护盾故障转移报告"
     }, 
     "typeNameID": 1054826, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97546": {
     "basePrice": 0.0, 
     "capacity": 0.0, 
     "description": {
-      "de": "Die Föderation wird alle belohnen, die ihr Kampagnenziel annehmen und dies bei ihrem Gegenstandshändler außerhalb des Ankerpunkts der Federation Navy in <url=showinfo:5//30003788>Intaki</url> abliefern. Diese Telemetrie wurde von Raubdrohnen gesammelt, die Anoikis befallen hatten, und enthält Hinweise auf Hyperraumfluktuationen. Ihre Kartierung könnte helfen, die Details der Manifestation des Emergenten Artefakts zu identifizieren. ", 
-      "en-us": "The Federation will reward anyone who accepts their campaign objective and delivers this to their item trader outside the Federation Navy Anchorage in <url=showinfo:5//30003788>Intaki</url>.\r\n\r\nCollected by Rogue Drones that have infested Anoikis, this telemetry includes evidence of hyperspace fluctuations. Mapping these could help identify the details of the Emergent Artifact’s manifestation. ", 
+      "de": "Die Föderation wird alle belohnen, die ihr Kampagnenziel annehmen und dies bei ihrem Gegenstandshändler außerhalb des Ankerpunkts der Federation Navy in <url=showinfo:5//30003788>Intaki</url> abliefern. Diese Telemetrie wurde von Raubdrohnen gesammelt, die Anoikis befallen hatten, und enthält Hinweise auf Hyperraumfluktuationen. Ihre Kartierung könnte helfen, die Details der Manifestation des Emergenten Artefakts zu identifizieren.", 
+      "en-us": "The Federation will reward anyone who accepts their campaign objective and delivers this to their item trader outside the Federation Navy Anchorage in <url=showinfo:5//30003788>Intaki</url>.\r\n\r\nCollected by Rogue Drones that have infested Anoikis, this telemetry includes evidence of hyperspace fluctuations. Mapping these could help identify the details of the Emergent Artifact’s manifestation.", 
       "es": "La Federación Caldari recompensará a quienes acepten el objetivo de su campaña y entreguen esto a su comerciante de artículos situado fuera del anclaje de la Armada de la Federación en <url=showinfo:5//30003788>Intaki</url>.\r\n\r\nEsta telemetría, recopilada por los drones rebeldes que han infestado Anoikis, contiene pruebas de fluctuaciones hiperespaciales. Cartografiarlas podría ayudar a determinar los detalles de la manifestación del artefacto emergente.", 
-      "fr": "La Fédération récompensera quiconque accepte son objectif de campagne et livre ce matériau à son marchand d'objets à l'extérieur de l'ancrage de la Federation Navy à <url=showinfo:5//30003788>Intaki</url>.\r\n\r\nRecueillies par les drones renégats qui ont infesté Anoikis, ces données de télémétrie comprennent des preuves de fluctuations hyperspatiales.Les cartographier pourrait aider à identifier les détails de la manifestation de l'artéfact émergent. ", 
+      "fr": "La Fédération récompensera quiconque accepte son objectif de campagne et livre ce matériau à son marchand d'objets à l'extérieur de l'ancrage de la Federation Navy à <url=showinfo:5//30003788>Intaki</url>.\r\n\r\nRecueillies par les drones renégats qui ont infesté Anoikis, ces données de télémétrie comprennent des preuves de fluctuations hyperspatiales.Les cartographier pourrait aider à identifier les détails de la manifestation de l'artéfact émergent.", 
       "ja": "連邦は自国のキャンペーン目標のため、<url=showinfo:5//30003788>インタキ</url>の連邦海軍係留拠点外にいるアイテムトレーダーにこれを届けた者に報酬を与える。\r\n\r\nアノイキスにはびこるローグドローンが集めた遠隔測定データ。ハイパースペースの変動に関する証拠が収められている。これらの位置をマッピングすることで、出現アーティファクトの兆候をより詳細に特定できるかもしれない。", 
-      "ko": "연방은 작전 계획에 따라 <url=showinfo:5//30003788>인타키</url> 연방 해군 정박지 외부의 거래상과 괴리형 자원을 거래하는 캡슐리어에게 보상을 제공할 것입니다.\r\n\r\n아노이키스에 감염된 로그 드론을 파괴하고 수집한 텔레메트리에 하이퍼스페이스 파장의 증거가 기록되어 있습니다. 파장의 근원을 파악하면 전이 유물이 나타나는 시공간을 특정할 수 있을 것입니다. ", 
-      "ru": "Галлентская Федерация наградит всякого, кто примет задание кампании и доставит этот предмет соответствующему торговцу неподалёку от якорной станции флота Федерации в системе <url=showinfo:5//30003788>Intaki</url>. Эти телеметрические данные, собранные восставшими дронами из Аноикиса, позволяют определить эпизоды гиперпространственных флуктуаций. Составление карты таких флуктуаций даст дополнительную информацию о появлении эмерджентного артефакта. ", 
-      "zh": "接受他们的活动目标，并将此物品交给位于<url=showinfo:5//30003788>印塔基</url>联邦海军锚地外的物品贸易官，即可获得奖励。这些遥测数据由侵入阿诺基斯的自由无人机收集，其中包含超空间波动的相关证据。绘制这些波动的分布图，或许有助于确定突创神器显现过程的具体细节。 "
+      "ko": "연방은 작전 계획에 따라 <url=showinfo:5//30003788>인타키</url> 연방 해군 정박지 외부의 거래상과 괴리형 자원을 거래하는 캡슐리어에게 보상을 제공할 것입니다.\r\n\r\n아노이키스에 감염된 로그 드론을 파괴하고 수집한 텔레메트리에 하이퍼스페이스 파장의 증거가 기록되어 있습니다. 파장의 근원을 파악하면 전이 유물이 나타나는 시공간을 특정할 수 있을 것입니다.", 
+      "ru": "Галлентская Федерация наградит всякого, кто примет задание кампании и доставит этот предмет соответствующему торговцу неподалёку от якорной станции флота Федерации в системе <url=showinfo:5//30003788>Intaki</url>. Эти телеметрические данные, собранные восставшими дронами из Аноикиса, позволяют определить эпизоды гиперпространственных флуктуаций. Составление карты таких флуктуаций даст дополнительную информацию о появлении эмерджентного артефакта.", 
+      "zh": "接受他们的活动目标，并将此物品交给位于<url=showinfo:5//30003788>印塔基</url>联邦海军锚地外的物品贸易官，即可获得奖励。这些遥测数据由侵入阿诺基斯的自由无人机收集，其中包含超空间波动的相关证据。绘制这些波动的分布图，或许有助于确定突创神器显现过程的具体细节。"
     }, 
     "descriptionID": 1054829, 
     "groupID": 1194, 
@@ -29542,7 +29541,7 @@
       "zh": "自由无人机阿诺基斯遥测数据"
     }, 
     "typeNameID": 1054828, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97547": {
     "basePrice": 0.0, 
@@ -29577,7 +29576,7 @@
       "zh": "立体坍缩信号"
     }, 
     "typeNameID": 1054830, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97548": {
     "basePrice": 0.0, 
@@ -29612,7 +29611,7 @@
       "zh": "共和国战略情报"
     }, 
     "typeNameID": 1054833, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97549": {
     "basePrice": 0.0, 
@@ -29647,7 +29646,7 @@
       "zh": "联邦战略情报"
     }, 
     "typeNameID": 1054835, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97550": {
     "basePrice": 0.0, 
@@ -29682,7 +29681,7 @@
       "zh": "合众国战略情报"
     }, 
     "typeNameID": 1054837, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97551": {
     "basePrice": 0.0, 
@@ -29717,7 +29716,7 @@
       "zh": "帝国战略情报"
     }, 
     "typeNameID": 1054839, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97552": {
     "basePrice": 0.0, 
@@ -29752,7 +29751,7 @@
       "zh": "超球形外壳"
     }, 
     "typeNameID": 1054843, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97553": {
     "basePrice": 0.0, 
@@ -29787,7 +29786,7 @@
       "zh": "超场投射器"
     }, 
     "typeNameID": 1054845, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97554": {
     "basePrice": 0.0, 
@@ -29822,7 +29821,7 @@
       "zh": "脉冲模拟电路"
     }, 
     "typeNameID": 1054847, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97555": {
     "basePrice": 0.0, 
@@ -29857,7 +29856,7 @@
       "zh": "超跃连接器"
     }, 
     "typeNameID": 1054849, 
-    "volume": 0.1
+    "volume": 0.01
   }, 
   "97559": {
     "basePrice": 23.0, 
@@ -30859,7 +30858,7 @@
     "radius": 1.0, 
     "typeID": 97649, 
     "typeName": {
-      "en-us": "Totality Day Celebration Crate "
+      "en-us": "Totality Day Celebration Crate"
     }, 
     "typeNameID": 1055364, 
     "volume": 4.0
@@ -31711,7 +31710,7 @@
       "ja": "栄光ある朽ち果てたキャピタルリモートアーマーリペアラ変異プラスミド設計図", 
       "ko": "영광의 손상된 캐피탈 원격 장갑수리 장치 뮤타플라즈미드 블루프린트", 
       "ru": "Glorified Decayed Capital Remote Armor Repairer Mutaplasmid Blueprint", 
-      "zh": "腐朽的荣耀旗舰级远程装甲维修器蓝图"
+      "zh": "腐蚀的荣耀旗舰级远程装甲维修器突变质体蓝图"
     }, 
     "typeNameID": 1055488, 
     "volume": 0.1
@@ -31780,7 +31779,7 @@
       "ja": "栄光ある朽ち果てた大型リモートアーマーリペアラ変異プラスミド設計図", 
       "ko": "영광의 손상된 대형 원격 장갑수리 장치 뮤타플라즈미드 블루프린트", 
       "ru": "Glorified Decayed Large Remote Armor Repairer Mutaplasmid Blueprint", 
-      "zh": "腐朽的荣耀大型装甲维修器突变质体蓝图"
+      "zh": "腐朽的荣耀大型远程装甲维修器突变质体蓝图"
     }, 
     "typeNameID": 1055491, 
     "volume": 0.1
@@ -31849,7 +31848,7 @@
       "ja": "栄光ある朽ち果てた中型リモートアーマーリペアラ変異プラスミド設計図", 
       "ko": "영광의 손상된 중형 원격 장갑수리 장치 뮤타플라즈미드 블루프린트", 
       "ru": "Glorified Decayed Medium Remote Armor Repairer Mutaplasmid Blueprint", 
-      "zh": "腐朽的荣耀中型装甲维修器突变质体蓝图"
+      "zh": "腐朽的荣耀中型远程装甲维修器突变质体蓝图"
     }, 
     "typeNameID": 1055494, 
     "volume": 0.1
@@ -31918,7 +31917,7 @@
       "ja": "栄光ある朽ち果てた小型リモートアーマーリペアラ変異プラスミド設計図", 
       "ko": "영광의 손상된 소형 원격 장갑수리 장치 뮤타플라즈미드 블루프린트", 
       "ru": "Glorified Decayed Small Remote Armor Repairer Mutaplasmid Blueprint", 
-      "zh": "腐朽的荣耀小型装甲维修器突变质体蓝图"
+      "zh": "腐朽的荣耀小型远程装甲维修器突变质体蓝图"
     }, 
     "typeNameID": 1055497, 
     "volume": 0.1
@@ -35270,14 +35269,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Eine Fregatte der Incursus-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente. ", 
-      "en-us": "An Incursus-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity. ", 
+      "de": "Eine Fregatte der Incursus-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente.", 
+      "en-us": "An Incursus-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity.", 
       "es": "Una fragata de clase Incursus bajo el mando de la Primacía de Gallente. Tiene asignada la tarea de la disrupción de warp.\r\n\r\nLa Primacía de Gallente aborrece el desarrollo de tecnología de drones rebeldes por parte de la Federación, pues considera que debilita a los gallentes y amenaza su pureza.", 
-      "fr": "Une frégate de classe Incursus sous le commandement de la Primauté gallente.Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente. ", 
+      "fr": "Une frégate de classe Incursus sous le commandement de la Primauté gallente.Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente.", 
       "ja": "ガレンティア・プライマシーの指揮下にあるインカーサス級フリゲート。ワープ妨害任務を担っている。\r\n\r\nガレンティア・プライマシーは、連邦によるローグドローン技術の開発を嫌悪している。彼らはそれを弱体化につながる行為であり、ガレンテの純粋性を損なうものと見なしている。", 
-      "ko": "갈렌티아 프라이머시 소속 인커서스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다. ", 
-      "ru": "Этот фрегат модели Incursus принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд. ", 
-      "zh": "一艘由盖伦特首领掌控的因卡萨斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。 "
+      "ko": "갈렌티아 프라이머시 소속 인커서스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다.", 
+      "ru": "Этот фрегат модели Incursus принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд.", 
+      "zh": "一艘由盖伦特首领掌控的因卡萨斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。"
     }, 
     "descriptionID": 1056370, 
     "graphicID": 26086, 
@@ -35650,14 +35649,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente. ", 
-      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity. ", 
+      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente.", 
+      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity.", 
       "es": "Una fragata de clase Ares bajo el mando de la Primacía de Gallente. Tiene asignada la tarea de la disrupción de warp.\r\n\r\nLa Primacía de Gallente aborrece el desarrollo de tecnología de drones rebeldes por parte de la Federación, pues considera que debilita a los gallentes y amenaza su pureza.", 
-      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente. ", 
+      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente.", 
       "ja": "ガレンティア・プライマシーの指揮下にあるアレス級フリゲート。ワープ妨害任務を担っている。\r\n\r\nガレンティア・プライマシーは、連邦によるローグドローン技術の開発を嫌悪している。彼らはそれを弱体化につながる行為であり、ガレンテの純粋性を損なうものと見なしている。", 
-      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다. ", 
-      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд. ", 
-      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。 "
+      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다.", 
+      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд.", 
+      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。"
     }, 
     "descriptionID": 1056392, 
     "graphicID": 35814, 
@@ -35688,14 +35687,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente. ", 
-      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity. ", 
+      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente.", 
+      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity.", 
       "es": "Una fragata de clase Ares bajo el mando de la Primacía de Gallente. Tiene asignada la tarea de la disrupción de warp.\r\n\r\nLa Primacía de Gallente aborrece el desarrollo de tecnología de drones rebeldes por parte de la Federación, pues considera que debilita a los gallentes y amenaza su pureza.", 
-      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente. ", 
+      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente.", 
       "ja": "ガレンティア・プライマシーの指揮下にあるアレス級フリゲート。ワープ妨害任務を担っている。\r\n\r\nガレンティア・プライマシーは、連邦によるローグドローン技術の開発を嫌悪している。彼らはそれを弱体化につながる行為であり、ガレンテの純粋性を損なうものと見なしている。", 
-      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다. ", 
-      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд. ", 
-      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。 "
+      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다.", 
+      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд.", 
+      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。"
     }, 
     "descriptionID": 1056394, 
     "graphicID": 35814, 
@@ -35726,14 +35725,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente. ", 
-      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity. ", 
+      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente.", 
+      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity.", 
       "es": "Una fragata de clase Ares bajo el mando de la Primacía de Gallente. Tiene asignada la tarea de la disrupción de warp.\r\n\r\nLa Primacía de Gallente aborrece el desarrollo de tecnología de drones rebeldes por parte de la Federación, pues considera que debilita a los gallentes y amenaza su pureza.", 
-      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente. ", 
+      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente.", 
       "ja": "ガレンティア・プライマシーの指揮下にあるアレス級フリゲート。ワープ妨害任務を担っている。\r\n\r\nガレンティア・プライマシーは、連邦によるローグドローン技術の開発を嫌悪している。彼らはそれを弱体化につながる行為であり、ガレンテの純粋性を損なうものと見なしている。", 
-      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다. ", 
-      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд. ", 
-      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。 "
+      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다.", 
+      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд.", 
+      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。"
     }, 
     "descriptionID": 1056396, 
     "graphicID": 35814, 
@@ -35764,14 +35763,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente. ", 
-      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity. ", 
+      "de": "Eine Fregatte der Ares-Klasse unter dem Kommando der Gallentia Primacy, die mit Warpstörung beauftragt ist. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente.", 
+      "en-us": "An Ares-class frigate under the command of the Gallentia Primacy. It is tasked with warp disruption.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity.", 
       "es": "Una fragata de clase Ares bajo el mando de la Primacía de Gallente. Tiene asignada la tarea de la disrupción de warp.\r\n\r\nLa Primacía de Gallente aborrece el desarrollo de tecnología de drones rebeldes por parte de la Federación, pues considera que debilita a los gallentes y amenaza su pureza.", 
-      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente. ", 
+      "fr": "Une frégate de classe Ares sous le commandement de la Primauté gallente. Elle est chargée de la perturbation de warp.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente.", 
       "ja": "ガレンティア・プライマシーの指揮下にあるアレス級フリゲート。ワープ妨害任務を担っている。\r\n\r\nガレンティア・プライマシーは、連邦によるローグドローン技術の開発を嫌悪している。彼らはそれを弱体化につながる行為であり、ガレンテの純粋性を損なうものと見なしている。", 
-      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다. ", 
-      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд. ", 
-      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。 "
+      "ko": "갈렌티아 프라이머시 소속 아레스 프리깃입니다. 워프 디스럽션 기능을 탑재했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다.", 
+      "ru": "Этот фрегат модели Ares принадлежит «Превосходству Галленции» и оснащён системами варп-подавления. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд.", 
+      "zh": "一艘由盖伦特首领掌控的阿瑞斯级护卫舰。该舰负责执行跃迁扰断任务。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。"
     }, 
     "descriptionID": 1056398, 
     "graphicID": 35814, 
@@ -36372,14 +36371,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Eine Fregatte der Taranis-Klasse unter dem Kommando der Gallentia Primacy mit nur einem Auftrag: Gewalt. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente. ", 
-      "en-us": "A Taranis-class frigate under the command of the Gallentia Primacy. It is tasked with violence.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity. ", 
+      "de": "Eine Fregatte der Taranis-Klasse unter dem Kommando der Gallentia Primacy mit nur einem Auftrag: Gewalt. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente.", 
+      "en-us": "A Taranis-class frigate under the command of the Gallentia Primacy. It is tasked with violence.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity.", 
       "es": "Una fragata de clase Taranis bajo el mando de la Primacía de Gallente. Se le ha encomendado ejercer la violencia.\r\n\r\nLa Primacía de Gallente aborrece el desarrollo de tecnología de drones rebeldes por parte de la Federación, pues considera que debilita a los gallentes y amenaza su pureza.", 
-      "fr": "Une frégate de classe Taranis sous le commandement de la Primauté gallente. Elle est chargée de recourir à la violence.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente. ", 
+      "fr": "Une frégate de classe Taranis sous le commandement de la Primauté gallente. Elle est chargée de recourir à la violence.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente.", 
       "ja": "ガレンティア・プライマシーの指揮下にあるタラニス級フリゲート。武力行使を任務としている。\r\n\r\nガレンティア・プライマシーは、連邦によるローグドローン技術の開発を嫌悪している。彼らはそれを弱体化につながる行為であり、ガレンテの純粋性を損なうものと見なしている。", 
-      "ko": "갈렌티아 프라이머시 소속 타라니스 프리깃입니다. 오로지 파괴를 위해 무장했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다. ", 
-      "ru": "Этот фрегат модели Taranis принадлежит «Превосходству Галленции», а его команде поручено расправляться со всеми врагами без разбору. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд. ", 
-      "zh": "一艘由盖伦特首领掌控的塔纳尼斯级护卫舰。该舰的任务是执行暴力行动。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。 "
+      "ko": "갈렌티아 프라이머시 소속 타라니스 프리깃입니다. 오로지 파괴를 위해 무장했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다.", 
+      "ru": "Этот фрегат модели Taranis принадлежит «Превосходству Галленции», а его команде поручено расправляться со всеми врагами без разбору. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд.", 
+      "zh": "一艘由盖伦特首领掌控的塔纳尼斯级护卫舰。该舰的任务是执行暴力行动。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。"
     }, 
     "descriptionID": 1056430, 
     "graphicID": 35815, 
@@ -36486,14 +36485,14 @@
     "basePrice": 0.0, 
     "capacity": 265.0, 
     "description": {
-      "de": "Eine Fregatte der Enyo-Klasse unter dem Kommando der Gallentia Primacy, die mit Schwerpunkt auf Gleichgewicht und Flexibilität ausgerüstet wurde. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente. ", 
-      "en-us": "An Enyo-class frigate under the command of the Gallentia Primacy. It is fitted for balance and flexibility.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity. ", 
+      "de": "Eine Fregatte der Enyo-Klasse unter dem Kommando der Gallentia Primacy, die mit Schwerpunkt auf Gleichgewicht und Flexibilität ausgerüstet wurde. Die Gallentia Primacy verabscheut die Entwicklung der Raubdrohnen-Technologie der Föderation und sieht darin einen Weg zur Schwäche und eine Verwässerung der Reinheit der Gallente.", 
+      "en-us": "An Enyo-class frigate under the command of the Gallentia Primacy. It is fitted for balance and flexibility.\r\n\r\nThe Gallentia Primacy loathes the Federation's Rogue Drone technology development, seeing it as a path to weakness and a dilution of Gallente purity.", 
       "es": "Una fragata de clase Enyo bajo el mando de la Primacía de Gallente. Está equipada para ofrecer equilibrio y versatilidad.\r\n\r\nLa Primacía de Gallente aborrece el desarrollo de tecnología de drones rebeldes por parte de la Federación, pues considera que debilita a los gallentes y amenaza su pureza.", 
-      "fr": "Une frégate de classe Enyo sous le commandement de la Primauté gallente. Elle a été équipée pour offrir flexibilité et équilibre.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente. ", 
+      "fr": "Une frégate de classe Enyo sous le commandement de la Primauté gallente. Elle a été équipée pour offrir flexibilité et équilibre.\r\n\r\nLa Primauté gallente exècre le développement de la technologie des drones renégats par la Fédération, y voyant un chemin vers la faiblesse et une dilution de la pureté gallente.", 
       "ja": "ガレンティア・プライマシーの指揮下にあるエンヨ級フリゲート。バランスと柔軟性を重視した装備が施されている。\r\n\r\nガレンティア・プライマシーは、連邦によるローグドローン技術の開発を嫌悪している。彼らはそれを弱体化につながる行為であり、ガレンテの純粋性を損なうものと見なしている。", 
-      "ko": "갈렌티아 프라이머시 소속 엔요 프리깃입니다. 균형과 유연성을 중점으로 피팅했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다. ", 
-      "ru": "Этот фрегат модели Enyo принадлежит «Превосходству Галленции» и обладает гибким функционалом. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд. ", 
-      "zh": "一艘由盖伦特首领掌控的恩尤级护卫舰。该舰的配置兼顾了均衡性与灵活性。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。 "
+      "ko": "갈렌티아 프라이머시 소속 엔요 프리깃입니다. 균형과 유연성을 중점으로 피팅했습니다.\r\n\r\n갈렌티아 프라이머시는 연방의 로그 드론 기술 개발을 혐오합니다. 갈란테의 순수성을 훼손하는 나약한 행위로 여기기 때문입니다.", 
+      "ru": "Этот фрегат модели Enyo принадлежит «Превосходству Галленции» и обладает гибким функционалом. Члены организации яростно критикуют курс Федерации на изучение технологий восставших дронов, полагая, что это только ослабит галлентов и испортит их генофонд.", 
+      "zh": "一艘由盖伦特首领掌控的恩尤级护卫舰。该舰的配置兼顾了均衡性与灵活性。盖伦特首领痛恨联邦研发的自由无人机技术，认为这会让盖伦特人变得软弱，并玷污盖伦特人的纯粹性。"
     }, 
     "descriptionID": 1056436, 
     "graphicID": 26089, 
@@ -37862,18 +37861,11 @@
     "metaLevel": 8, 
     "portionSize": 1, 
     "published": 1, 
-    "radius": 500.0, 
+    "radius": 1.0, 
     "techLevel": 1, 
     "typeID": 97955, 
     "typeName": {
-      "de": "Imperial Navy Stasis Webifier", 
-      "en-us": "Imperial Navy Stasis Webifier", 
-      "es": "Red ralentizadora de la Armada Imperial", 
-      "fr": "Générateur de stase de l'Imperial Navy", 
-      "ja": "帝国海軍仕様ステイシスウェビファイヤー", 
-      "ko": "제국 해군 스테이시스 웹 생성기", 
-      "ru": "Imperial Navy Stasis Webifier", 
-      "zh": "帝国海军停滞缠绕光束"
+      "en-us": "Compact Imperial Navy Stasis Webifier"
     }, 
     "typeNameID": 1056851, 
     "variationParentTypeID": 526, 
@@ -37971,7 +37963,7 @@
     "radius": 1.0, 
     "typeID": 97958, 
     "typeName": {
-      "en-us": "Vanguard PTC LowSec SARO Spawner (DO NOT TRANSLATE) "
+      "en-us": "Vanguard PTC LowSec SARO Spawner (DO NOT TRANSLATE)"
     }, 
     "typeNameID": 1056969, 
     "volume": 0.0
@@ -37988,7 +37980,7 @@
     "radius": 1.0, 
     "typeID": 97959, 
     "typeName": {
-      "en-us": "Path to Conquest SARO  LowSec combat site boss spawner (DO NOT TRANSLATE) "
+      "en-us": "Path to Conquest SARO  LowSec combat site boss spawner (DO NOT TRANSLATE)"
     }, 
     "typeNameID": 1056970, 
     "volume": 0.0
@@ -38231,7 +38223,7 @@
       "ja": "「ヴィジラント」バイタル・オーバードライブインジェクターシステム", 
       "ko": "'비질런트' 바이탈 오버드라이브 주입기 시스템", 
       "ru": "'Vigilant' Vital Overdrive Injector System", 
-      "zh": "“警惕级”活力超载喷注系统"
+      "zh": "“警戒”活力超载喷注系统"
     }, 
     "typeNameID": 1057034, 
     "variationParentTypeID": 1244, 
@@ -38271,7 +38263,7 @@
       "ja": "「ヴィジラント」バイタル・シールドブースト増幅器", 
       "ko": "'비질런트' 바이탈 실드 부스터 증폭기", 
       "ru": "'Vigilant' Vital Shield Boost Amplifier", 
-      "zh": "“警惕级”活力护盾回充增量增效器"
+      "zh": "“警戒”活力护盾回充增量增效器"
     }, 
     "typeNameID": 1057040, 
     "variationParentTypeID": 11561, 
@@ -38311,7 +38303,7 @@
       "ja": "「ヴィジラント」バイタル・ドローンナビゲーションコンピュータ", 
       "ko": "'비질런트' 바이탈 드론 항법 시스템", 
       "ru": "'Vigilant' Vital Drone Navigation Computer", 
-      "zh": "“警惕级”活力无人机导航计算机"
+      "zh": "“警戒”活力无人机导航计算机"
     }, 
     "typeNameID": 1057051, 
     "variationParentTypeID": 24395, 
@@ -38351,7 +38343,7 @@
       "ja": "「ヴィジラント」バイタル・キャパシタリチャージャー", 
       "ko": "'비질런트' 바이탈 캐패시터 충전기", 
       "ru": "'Vigilant' Vital Cap Recharger", 
-      "zh": "“警惕级”活力电容回充器"
+      "zh": "“警戒”活力电容回充器"
     }, 
     "typeNameID": 1057163, 
     "variationParentTypeID": 1195, 
@@ -38496,7 +38488,7 @@
       "en-us": "This monument has been erected to honor the 17,079 Capsuleers who helped make the State's \"State Corridor Initative\" military campaign a success. Special tribute is paid to the first 10 capsuleers who were awarded with the \"Corridor Architech\" title.\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2124288444>UberTreat</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//2124164104>iOBi</url>\r\n<url=showinfo:1377//121167547>Marcius Nhasty</url>\r\n<url=showinfo:1377//179842939>John Walkentower</url>\r\n<url=showinfo:1377//2122959823>Ellis Ofsol</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n\r\nAdditionally, Executive General Heika Torigo has left a special marking honoring the following 10 capsuleers who contributed the most amount of individual progress to the campaign.\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//1592503651>Captain Aramus</url>\r\n<url=showinfo:1377//1620086158>Emiug</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//1152243964>Thadius Faran</url>\r\n<url=showinfo:1377//2113037823>Acetai Agittain</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n<url=showinfo:1377//94881262>Hitomi Auduin</url>", 
       "es": "Este monumento se ha erigido en honor a los 17 079 capsulistas que contribuyeron al éxito de la campaña militar «Iniciativa del pasadizo del Estado» del Estado. Se rinde un homenaje especial a los 10 primeros capsulistas que recibieron el título de «Arquitectura de pasadizos».\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2124288444>UberTreat</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//2124164104>iOBi</url>\r\n<url=showinfo:1377//121167547>Marcius Nhasty</url>\r\n<url=showinfo:1377//179842939>John Walkentower</url>\r\n<url=showinfo:1377//2122959823>Ellis Ofsol</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n\r\nAdemás, la general ejecutiva Heika Torigo ha dejado una marca especial en honor a los siguientes 10 capsulistas que más contribuyeron individualmente al progreso de la campaña.\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//1592503651>Capitán Aramus</url>\r\n<url=showinfo:1377//1620086158>Emiug</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//1152243964>Thadius Faran</url>\r\n<url=showinfo:1377//2113037823>Acetai Agittain</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n<url=showinfo:1377//94881262>Hitomi Auduin</url>", 
       "fr": "Ce monument a été érigé en l'honneur des 17 079 capsuliers qui ont contribué au succès de la campagne militaire du « Projet de couloir de l'État ». Un hommage particulier est rendu aux 10 premiers capsuliers ayant reçu le titre « Architecte de couloir ».\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2124288444>UberTreat</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//2124164104>iOBi</url>\r\n<url=showinfo:1377//121167547>Marcius Nhasty</url>\r\n<url=showinfo:1377//179842939>John Walkentower</url>\r\n<url=showinfo:1377//2122959823>Ellis Ofsol</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n\r\nDe plus, le général exécutif Heika Torigo a laissé une marque spéciale en l'honneur des 10 capsuliers suivants, qui ont le plus contribué individuellement à la campagne.\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//1592503651>Captain Aramus</url>\r\n<url=showinfo:1377//1620086158>Emiug</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//1152243964>Thadius Faran</url>\r\n<url=showinfo:1377//2113037823>Acetai Agittain</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n<url=showinfo:1377//94881262>Hitomi Auduin</url>", 
-      "ja": "この記念碑は、連合の軍事作戦「連合コリドー構想」の成功に貢献した17,079人のカプセラを称えて建立された。特に、「コリドーアーキテクト」の称号を授与された最初の10人のカプセラに敬意を表している。\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url> \r\n<url=showinfo:1377//93074900>UberCookies</url> \r\n<url=showinfo:1377//2124288444>UberTreat</url> \r\n<url=showinfo:1377//2114096575>Abby Aurilen</url> \r\n<url=showinfo:1377//92689599>Rolder Slaton</url> \r\n<url=showinfo:1377//2124164104>iOBi</url> \r\n<url=showinfo:1377//121167547>Marcius Nhasty</url> \r\n<url=showinfo:1377//179842939>John Walkentower</url> \r\n<url=showinfo:1377//2122959823>Ellis Ofsol</url> \r\n<url=showinfo:1377//2124161603>FooBot</url> \r\n\r\nさらに、エグゼクティブ・ジェネラル、ヘイカ・トリゴは、キャンペーンで個人として最も多くの進捗を積み上げた以下の10人のカプセラを称え、特別な刻印を残している。\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url> \r\n<url=showinfo:1377//1592503651>Captain Aramus</url> \r\n<url=showinfo:1377//1620086158>Emiug</url> \r\n<url=showinfo:1377//93074900>UberCookies</url> \r\n<url=showinfo:1377//2114096575>Abby Aurilen</url> \r\n<url=showinfo:1377//92689599>Rolder Slaton</url> \r\n<url=showinfo:1377//1152243964>Thadius Faran</url> \r\n<url=showinfo:1377//2113037823>Acetai Agittain</url> \r\n<url=showinfo:1377//2124161603>FooBot</url> \r\n<url=showinfo:1377//94881262>Hitomi Auduin</url> ", 
+      "ja": "この記念碑は、連合の軍事作戦「連合コリドー構想」の成功に貢献した17,079人のカプセラを称えて建立された。特に、「コリドーアーキテクト」の称号を授与された最初の10人のカプセラに敬意を表している。\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url> \r\n<url=showinfo:1377//93074900>UberCookies</url> \r\n<url=showinfo:1377//2124288444>UberTreat</url> \r\n<url=showinfo:1377//2114096575>Abby Aurilen</url> \r\n<url=showinfo:1377//92689599>Rolder Slaton</url> \r\n<url=showinfo:1377//2124164104>iOBi</url> \r\n<url=showinfo:1377//121167547>Marcius Nhasty</url> \r\n<url=showinfo:1377//179842939>John Walkentower</url> \r\n<url=showinfo:1377//2122959823>Ellis Ofsol</url> \r\n<url=showinfo:1377//2124161603>FooBot</url> \r\n\r\nさらに、エグゼクティブ・ジェネラル、ヘイカ・トリゴは、キャンペーンで個人として最も多くの進捗を積み上げた以下の10人のカプセラを称え、特別な刻印を残している。\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url> \r\n<url=showinfo:1377//1592503651>Captain Aramus</url> \r\n<url=showinfo:1377//1620086158>Emiug</url> \r\n<url=showinfo:1377//93074900>UberCookies</url> \r\n<url=showinfo:1377//2114096575>Abby Aurilen</url> \r\n<url=showinfo:1377//92689599>Rolder Slaton</url> \r\n<url=showinfo:1377//1152243964>Thadius Faran</url> \r\n<url=showinfo:1377//2113037823>Acetai Agittain</url> \r\n<url=showinfo:1377//2124161603>FooBot</url> \r\n<url=showinfo:1377//94881262>Hitomi Auduin</url>", 
       "ko": "기념비는 연합의 '연합 회랑 시공' 군사 작전에 기여한 17,079명의 캡슐리어를 기념하기 위해 건립되었습니다. 가장 큰 기여를 한 10명의 캡슐리어에게 '회랑 건설자' 칭호가 수여되었습니다.\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2124288444>UberTreat</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//2124164104>iOBi</url>\r\n<url=showinfo:1377//121167547>Marcius Nhasty</url>\r\n<url=showinfo:1377//179842939>John Walkentower</url>\r\n<url=showinfo:1377//2122959823>Ellis Ofsol</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n\r\n또한 헤이카 토리고 연합 제독이 작전 계획에 개인으로 참여해 크게 기여한 캡슐리어 10인을 치하했습니다.\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//1592503651>Captain Aramus</url>\r\n<url=showinfo:1377//1620086158>Emiug</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//1152243964>Thadius Faran</url>\r\n<url=showinfo:1377//2113037823>Acetai Agittain</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n<url=showinfo:1377//94881262>Hitomi Auduin</url>", 
       "ru": "Этот монумент воздвигнут в честь 17 079 капсулёров, обеспечивших успех калдарской военной кампании «Калдарский коридор». Отдельного упоминания удостоились первые 10 капсулёров, которые получили звание «Строитель коридора».\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2124288444>UberTreat</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//2124164104>iOBi</url>\r\n<url=showinfo:1377//121167547>Marcius Nhasty</url>\r\n<url=showinfo:1377//179842939>John Walkentower</url>\r\n<url=showinfo:1377//2122959823>Ellis Ofsol</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n\r\nКроме того, генеральный директор Хейка Ториго отметила 10 капсулёров, внёсших наибольший персональный вклад в кампанию. Вот их имена:\r\n\r\n<url=showinfo:1377//96806684>Remilia Malitia</url>\r\n<url=showinfo:1377//1592503651>Captain Aramus</url>\r\n<url=showinfo:1377//1620086158>Emiug</url>\r\n<url=showinfo:1377//93074900>UberCookies</url>\r\n<url=showinfo:1377//2114096575>Abby Aurilen</url>\r\n<url=showinfo:1377//92689599>Rolder Slaton</url>\r\n<url=showinfo:1377//1152243964>Thadius Faran</url>\r\n<url=showinfo:1377//2113037823>Acetai Agittain</url>\r\n<url=showinfo:1377//2124161603>FooBot</url>\r\n<url=showinfo:1377//94881262>Hitomi Auduin</url>", 
       "zh": "这座纪念碑旨在纪念为加达里合众国的“合众回廊计划”军事行动做出贡献的17,079名克隆飞行员。特别向首批获得“回廊建筑师”称号的10名克隆飞行员致敬。<url=showinfo:1377//96806684>Remilia Malitia</url> <url=showinfo:1377//93074900>UberCookies</url> <url=showinfo:1377//2124288444>UberTreat</url> <url=showinfo:1377//2114096575>Abby Aurilen</url> <url=showinfo:1377//92689599>Rolder Slaton</url> <url=showinfo:1377//2124164104>iOBi</url> <url=showinfo:1377//121167547>Marcius Nhasty</url> <url=showinfo:1377//179842939>John Walkentower</url> <url=showinfo:1377//2122959823>Ellis Ofsol</url> <url=showinfo:1377//2124161603>FooBot</url>此外，执行长官海卡·托里格还留下了特别标记，以表彰以下10位为此次战役做出最大个人贡献的克隆飞行员。<url=showinfo:1377//96806684>Remilia Malitia</url> <url=showinfo:1377//1592503651>Captain Aramus</url> <url=showinfo:1377//1620086158>Emiug</url> <url=showinfo:1377//93074900>UberCookies</url> <url=showinfo:1377//2114096575>Abby Aurilen</url> <url=showinfo:1377//92689599>Rolder Slaton</url> <url=showinfo:1377//1152243964>Thadius Faran</url> <url=showinfo:1377//2113037823>Acetai Agittain</url> <url=showinfo:1377//2124161603>FooBot</url> <url=showinfo:1377//94881262>Hitomi Auduin</url>"
@@ -38675,14 +38667,7 @@
     "radius": 1.0, 
     "typeID": 97995, 
     "typeName": {
-      "de": "Imperial Navy Stasis Webifier Blueprint", 
-      "en-us": "Imperial Navy Stasis Webifier Blueprint", 
-      "es": "Plano de red ralentizadora de la Armada Imperial", 
-      "fr": "Plan de construction Générateur de stase de l'Imperial Navy", 
-      "ja": "帝国海軍仕様ステイシスウェビファイヤーの設計図", 
-      "ko": "제국 해군 스테이시스 웹 생성기 블루프린트", 
-      "ru": "Imperial Navy Stasis Webifier Blueprint", 
-      "zh": "帝国海军停滞缠绕光束蓝图"
+      "en-us": "Compact Imperial Navy Stasis Webifier Blueprint"
     }, 
     "typeNameID": 1057373, 
     "volume": 0.01
@@ -43549,7 +43534,7 @@
       "ja": "ビシージャー・カルラ", 
       "ko": "포위형 카루라", 
       "ru": "Besieger Karura", 
-      "zh": "围攻者迦楼罗"
+      "zh": "围攻者迦楼罗级"
     }, 
     "typeNameID": 1060520, 
     "volume": 28600.0, 
@@ -43639,6 +43624,149 @@
     "typeNameID": 1060638, 
     "volume": 1.0
   }, 
+  "98599": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "<i>In chaos, opportunity. In death, profit. Take what's yours, burn the rest.</i>\r\n \r\nCapsuleer pirates are among the most feared predators of New Eden’s space lanes, posing a deadly threat to almost any non-capsuleer traffic and a serious problem for all but the most experienced loyalist and law-abiding capsuleers. Capsuleers, the so-called “Empyreans”, are considered a disruptive element by many but the outlaws among them can reach levels of notoriety that are usually the preserve of major corporation or alliance leaders."
+    }, 
+    "descriptionID": 1060879, 
+    "groupID": 1950, 
+    "marketGroupID": 2031, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 4, 
+    "radius": 1.0, 
+    "typeID": 98599, 
+    "typeName": {
+      "en-us": "Succubus Empyrean Outlaws SKIN"
+    }, 
+    "typeNameID": 1060880, 
+    "volume": 0.01
+  }, 
+  "98600": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "<i>In chaos, opportunity. In death, profit. Take what's yours, burn the rest.</i>\r\n \r\nCapsuleer pirates are among the most feared predators of New Eden’s space lanes, posing a deadly threat to almost any non-capsuleer traffic and a serious problem for all but the most experienced loyalist and law-abiding capsuleers. Capsuleers, the so-called “Empyreans”, are considered a disruptive element by many but the outlaws among them can reach levels of notoriety that are usually the preserve of major corporation or alliance leaders."
+    }, 
+    "descriptionID": 1060882, 
+    "groupID": 1950, 
+    "marketGroupID": 2030, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 4, 
+    "radius": 1.0, 
+    "typeID": 98600, 
+    "typeName": {
+      "en-us": "Phantasm Empyrean Outlaws SKIN"
+    }, 
+    "typeNameID": 1060883, 
+    "volume": 0.01
+  }, 
+  "98601": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "<i>In chaos, opportunity. In death, profit. Take what's yours, burn the rest.</i>\r\n \r\nCapsuleer pirates are among the most feared predators of New Eden’s space lanes, posing a deadly threat to almost any non-capsuleer traffic and a serious problem for all but the most experienced loyalist and law-abiding capsuleers. Capsuleers, the so-called “Empyreans”, are considered a disruptive element by many but the outlaws among them can reach levels of notoriety that are usually the preserve of major corporation or alliance leaders."
+    }, 
+    "descriptionID": 1060885, 
+    "groupID": 1950, 
+    "marketGroupID": 1963, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 4, 
+    "radius": 1.0, 
+    "typeID": 98601, 
+    "typeName": {
+      "en-us": "Nightmare Empyrean Outlaws SKIN"
+    }, 
+    "typeNameID": 1060886, 
+    "volume": 0.01
+  }, 
+  "98602": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "<i>In chaos, opportunity. In death, profit. Take what's yours, burn the rest.</i>\r\n \r\nCapsuleer pirates are among the most feared predators of New Eden’s space lanes, posing a deadly threat to almost any non-capsuleer traffic and a serious problem for all but the most experienced loyalist and law-abiding capsuleers. Capsuleers, the so-called “Empyreans”, are considered a disruptive element by many but the outlaws among them can reach levels of notoriety that are usually the preserve of major corporation or alliance leaders."
+    }, 
+    "descriptionID": 1060888, 
+    "groupID": 1950, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 32, 
+    "radius": 1.0, 
+    "typeID": 98602, 
+    "typeName": {
+      "en-us": "Immolator Empyrean Outlaws SKIN"
+    }, 
+    "typeNameID": 1060889, 
+    "volume": 0.01
+  }, 
+  "98603": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "<i>In chaos, opportunity. In death, profit. Take what's yours, burn the rest.</i>\r\n \r\nCapsuleer pirates are among the most feared predators of New Eden’s space lanes, posing a deadly threat to almost any non-capsuleer traffic and a serious problem for all but the most experienced loyalist and law-abiding capsuleers. Capsuleers, the so-called “Empyreans”, are considered a disruptive element by many but the outlaws among them can reach levels of notoriety that are usually the preserve of major corporation or alliance leaders."
+    }, 
+    "descriptionID": 1060891, 
+    "groupID": 1950, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 135, 
+    "radius": 1.0, 
+    "typeID": 98603, 
+    "typeName": {
+      "en-us": "Zirnitra Empyrean Outlaws SKIN"
+    }, 
+    "typeNameID": 1060892, 
+    "volume": 0.01
+  }, 
+  "98604": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "<i>In chaos, opportunity. In death, profit. Take what's yours, burn the rest.</i>\r\n \r\nCapsuleer pirates are among the most feared predators of New Eden’s space lanes, posing a deadly threat to almost any non-capsuleer traffic and a serious problem for all but the most experienced loyalist and law-abiding capsuleers. Capsuleers, the so-called “Empyreans”, are considered a disruptive element by many but the outlaws among them can reach levels of notoriety that are usually the preserve of major corporation or alliance leaders."
+    }, 
+    "descriptionID": 1060894, 
+    "groupID": 1950, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 135, 
+    "radius": 1.0, 
+    "typeID": 98604, 
+    "typeName": {
+      "en-us": "Drekavac Empyrean Outlaws SKIN"
+    }, 
+    "typeNameID": 1060895, 
+    "volume": 0.01
+  }, 
+  "98605": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "<i>In chaos, opportunity. In death, profit. Take what's yours, burn the rest.</i>\r\n \r\nCapsuleer pirates are among the most feared predators of New Eden’s space lanes, posing a deadly threat to almost any non-capsuleer traffic and a serious problem for all but the most experienced loyalist and law-abiding capsuleers. Capsuleers, the so-called “Empyreans”, are considered a disruptive element by many but the outlaws among them can reach levels of notoriety that are usually the preserve of major corporation or alliance leaders."
+    }, 
+    "descriptionID": 1060897, 
+    "groupID": 1950, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 135, 
+    "radius": 1.0, 
+    "typeID": 98605, 
+    "typeName": {
+      "en-us": "Kikimora Empyrean Outlaws SKIN"
+    }, 
+    "typeNameID": 1060898, 
+    "volume": 0.01
+  }, 
   "98650": {
     "basePrice": 0.0, 
     "capacity": 0.0, 
@@ -43647,6 +43775,7 @@
     }, 
     "descriptionID": 1061331, 
     "groupID": 1950, 
+    "marketGroupID": 2103, 
     "mass": 0.0, 
     "portionSize": 1, 
     "published": 1, 
@@ -43667,6 +43796,7 @@
     }, 
     "descriptionID": 1061536, 
     "groupID": 1950, 
+    "marketGroupID": 2103, 
     "mass": 0.0, 
     "portionSize": 1, 
     "published": 1, 
@@ -43687,6 +43817,7 @@
     }, 
     "descriptionID": 1061541, 
     "groupID": 1950, 
+    "marketGroupID": 2103, 
     "mass": 0.0, 
     "portionSize": 1, 
     "published": 1, 
@@ -43707,6 +43838,7 @@
     }, 
     "descriptionID": 1061545, 
     "groupID": 1950, 
+    "marketGroupID": 2103, 
     "mass": 0.0, 
     "portionSize": 1, 
     "published": 1, 
@@ -43717,6 +43849,150 @@
       "en-us": "Tornado Fleet Issue Stark Strategist SKIN"
     }, 
     "typeNameID": 1061546, 
+    "volume": 0.01
+  }, 
+  "98655": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "From a strong field, replete with many veteran players, the Mind Clash 101st Worlds Championships was won by Roj \"Copper Lightning\" Tarnagan in October YC123. The Gallente Prime Champion and multiple winner of the Federation Cup triumphed over the 99th Worlds Champion, Nadia \"Silver Bear\" Tanaka, in a final that was closely followed by audiences across New Eden, though especially keenly in the Federation and State.\r\n\r\nA nanocoating marking the victory of Roj Tarnagan was swiftly commissioned for sale to an eager market of Mind Clash fans, as has become common practice in recent years. With capsuleers a significant demographic among the most dedicated Mind Clash followers, the Copper Lightning nanocoating is expected to be popular among fans of this complex, mentally-demanding neuro-holographic sport."
+    }, 
+    "descriptionID": 1061692, 
+    "groupID": 1950, 
+    "marketGroupID": 2059, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 4, 
+    "radius": 1.0, 
+    "typeID": 98655, 
+    "typeName": {
+      "en-us": "Malediction Copper Lightning SKIN"
+    }, 
+    "typeNameID": 1061693, 
+    "volume": 0.01
+  }, 
+  "98656": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "From a strong field, replete with many veteran players, the Mind Clash 101st Worlds Championships was won by Roj \"Copper Lightning\" Tarnagan in October YC123. The Gallente Prime Champion and multiple winner of the Federation Cup triumphed over the 99th Worlds Champion, Nadia \"Silver Bear\" Tanaka, in a final that was closely followed by audiences across New Eden, though especially keenly in the Federation and State.\r\n\r\nA nanocoating marking the victory of Roj Tarnagan was swiftly commissioned for sale to an eager market of Mind Clash fans, as has become common practice in recent years. With capsuleers a significant demographic among the most dedicated Mind Clash followers, the Copper Lightning nanocoating is expected to be popular among fans of this complex, mentally-demanding neuro-holographic sport."
+    }, 
+    "descriptionID": 1061695, 
+    "groupID": 1950, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 8, 
+    "radius": 1.0, 
+    "typeID": 98656, 
+    "typeName": {
+      "en-us": "Gaia Copper Lightning SKIN"
+    }, 
+    "typeNameID": 1061696, 
+    "volume": 0.01
+  }, 
+  "98657": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "From a strong field, replete with many veteran players, the Mind Clash 101st Worlds Championships was won by Roj \"Copper Lightning\" Tarnagan in October YC123. The Gallente Prime Champion and multiple winner of the Federation Cup triumphed over the 99th Worlds Champion, Nadia \"Silver Bear\" Tanaka, in a final that was closely followed by audiences across New Eden, though especially keenly in the Federation and State.\r\n\r\nA nanocoating marking the victory of Roj Tarnagan was swiftly commissioned for sale to an eager market of Mind Clash fans, as has become common practice in recent years. With capsuleers a significant demographic among the most dedicated Mind Clash followers, the Copper Lightning nanocoating is expected to be popular among fans of this complex, mentally-demanding neuro-holographic sport."
+    }, 
+    "descriptionID": 1061698, 
+    "groupID": 1950, 
+    "marketGroupID": 2353, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 1, 
+    "radius": 1.0, 
+    "typeID": 98657, 
+    "typeName": {
+      "en-us": "Ibis Copper Lightning SKIN"
+    }, 
+    "typeNameID": 1061699, 
+    "volume": 0.01
+  }, 
+  "98658": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "From a strong field, replete with many veteran players, the Mind Clash 101st Worlds Championships was won by Roj \"Copper Lightning\" Tarnagan in October YC123. The Gallente Prime Champion and multiple winner of the Federation Cup triumphed over the 99th Worlds Champion, Nadia \"Silver Bear\" Tanaka, in a final that was closely followed by audiences across New Eden, though especially keenly in the Federation and State.\r\n\r\nA nanocoating marking the victory of Roj Tarnagan was swiftly commissioned for sale to an eager market of Mind Clash fans, as has become common practice in recent years. With capsuleers a significant demographic among the most dedicated Mind Clash followers, the Copper Lightning nanocoating is expected to be popular among fans of this complex, mentally-demanding neuro-holographic sport."
+    }, 
+    "descriptionID": 1061701, 
+    "groupID": 1950, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 128, 
+    "radius": 1.0, 
+    "typeID": 98658, 
+    "typeName": {
+      "en-us": "Pioneer Copper Lightning SKIN"
+    }, 
+    "typeNameID": 1061702, 
+    "volume": 0.01
+  }, 
+  "98659": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "From a strong field, replete with many veteran players, the Mind Clash 101st Worlds Championships was won by Roj \"Copper Lightning\" Tarnagan in October YC123. The Gallente Prime Champion and multiple winner of the Federation Cup triumphed over the 99th Worlds Champion, Nadia \"Silver Bear\" Tanaka, in a final that was closely followed by audiences across New Eden, though especially keenly in the Federation and State.\r\n\r\nA nanocoating marking the victory of Roj Tarnagan was swiftly commissioned for sale to an eager market of Mind Clash fans, as has become common practice in recent years. With capsuleers a significant demographic among the most dedicated Mind Clash followers, the Copper Lightning nanocoating is expected to be popular among fans of this complex, mentally-demanding neuro-holographic sport."
+    }, 
+    "descriptionID": 1061704, 
+    "groupID": 1950, 
+    "marketGroupID": 2030, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 1, 
+    "radius": 1.0, 
+    "typeID": 98659, 
+    "typeName": {
+      "en-us": "Orthrus Copper Lightning SKIN"
+    }, 
+    "typeNameID": 1061705, 
+    "volume": 0.01
+  }, 
+  "98660": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "From a strong field, replete with many veteran players, the Mind Clash 101st Worlds Championships was won by Roj \"Copper Lightning\" Tarnagan in October YC123. The Gallente Prime Champion and multiple winner of the Federation Cup triumphed over the 99th Worlds Champion, Nadia \"Silver Bear\" Tanaka, in a final that was closely followed by audiences across New Eden, though especially keenly in the Federation and State.\r\n\r\nA nanocoating marking the victory of Roj Tarnagan was swiftly commissioned for sale to an eager market of Mind Clash fans, as has become common practice in recent years. With capsuleers a significant demographic among the most dedicated Mind Clash followers, the Copper Lightning nanocoating is expected to be popular among fans of this complex, mentally-demanding neuro-holographic sport."
+    }, 
+    "descriptionID": 1061707, 
+    "groupID": 1950, 
+    "marketGroupID": 1963, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 1, 
+    "radius": 1.0, 
+    "typeID": 98660, 
+    "typeName": {
+      "en-us": "Barghest Copper Lightning SKIN"
+    }, 
+    "typeNameID": 1061708, 
+    "volume": 0.01
+  }, 
+  "98661": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "en-us": "From a strong field, replete with many veteran players, the Mind Clash 101st Worlds Championships was won by Roj \"Copper Lightning\" Tarnagan in October YC123. The Gallente Prime Champion and multiple winner of the Federation Cup triumphed over the 99th Worlds Champion, Nadia \"Silver Bear\" Tanaka, in a final that was closely followed by audiences across New Eden, though especially keenly in the Federation and State.\r\n\r\nA nanocoating marking the victory of Roj Tarnagan was swiftly commissioned for sale to an eager market of Mind Clash fans, as has become common practice in recent years. With capsuleers a significant demographic among the most dedicated Mind Clash followers, the Copper Lightning nanocoating is expected to be popular among fans of this complex, mentally-demanding neuro-holographic sport."
+    }, 
+    "descriptionID": 1061710, 
+    "groupID": 1950, 
+    "mass": 0.0, 
+    "portionSize": 1, 
+    "published": 1, 
+    "raceID": 16, 
+    "radius": 1.0, 
+    "typeID": 98661, 
+    "typeName": {
+      "en-us": "Gnosis Copper Lightning SKIN"
+    }, 
+    "typeNameID": 1061711, 
     "volume": 0.01
   }, 
   "98700": {
@@ -43735,6 +44011,70 @@
     }, 
     "typeNameID": 1062198, 
     "volume": 0.0
+  }, 
+  "98845": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "description": {
+      "de": "Reduziert die Höchstgeschwindigkeit eines Schiffes mittels Mikro-Energieströmen, die auf wirksame Weise das Ziel zeitweilig umschließen und es dadurch verlangsamen. Im Jahr YC128 trugen 14.161 Kapselpiloten zur Kampagne „Gesegneter Austausch“ bei. Dank der Wirtschaftsreformen dieser Kampagne konnte die Imperial Navy die Entwicklung ihrer eigenen Stasisnetz-Version finanzieren.", 
+      "en-us": "Reduces the maximum speed of a ship by employing micro energy streams that effectively entangle the target temporarily, thereby slowing it down.\r\n\r\nIn YC128, 14,161 capsuleers contributed to the Blessed Exchange campaign. It is thanks to that campaign’s economic reforms that the Imperial Navy was able to finance the development of its own Stasis Webifier version.", 
+      "es": "Reduce la velocidad máxima de una nave usando canales de microenergía que se entrelazan temporalmente con ella y la ralentizan.\r\n\r\nEn el año 128 CY, 14 161 capsulistas contribuyeron a la campaña «El bendito intercambio». Gracias a las reformas económicas de dicha campaña, la Armada Imperial pudo financiar el desarrollo de su propia versión de la red ralentizadora.", 
+      "fr": "Réduit la vitesse maximale d'un vaisseau à l'aide de flux de micro-énergie qui saisissent temporairement la cible pour la ralentir.\r\n\r\nEn 128 après CY, 14 161 capsuliers ont contribué à la campagne du Marché sacré. C'est grâce aux réformes économiques de cette campagne que l'Imperial Navy a pu financer le développement de sa propre version de générateur de stase.", 
+      "ja": "マイクロエネルギー流で標的を一時的に絡め取ることで、艦船の最高速度を低下させる。\r\n\r\nYC128年、14,161人のカプセラが「祝福の取引所」キャンペーンに参加した。このキャンペーンによる経済改革のおかげで、帝国海軍は独自仕様のステイシスウェビファイヤーを開発する資金を確保できた。", 
+      "ko": "마이크로 에너지 파동을 발사함으로써 대상 함선의 움직임을 방해하고 최대 속도를 감소시킵니다.\r\n\r\nYC 128년, 14,161명의 캡슐리어가 축복받은 거래소 작전 계획에 기여합니다. 제국 해군은 작전 성과로 거둔 경제 개혁을 바탕으로 새로운 스테이시스 웹 생성기 운용 함선을 개발할 자금을 마련할 수 있었습니다.", 
+      "ru": "Уменьшает максимальную скорость корабля при помощи энергетических микро-потоков, которые временно опутывают цель, замедляя её. В 128 году от ю. с. 14 161 капсулёр принял участие в кампании «Священный торжок». Именно благодаря экономическим реформам, проведённым в рамках этой кампании, имперский флот смог проспонсировать разработку собственной версии стазис-индуктора.", 
+      "zh": "通过发射微能量流暂时缠住目标舰船，从而降低舰船的最大速度，使其减速。YC128年，共有14,161名克隆飞行员参与了“神圣交易”活动。正是得益于该活动推行的经济改革，帝国海军才得以资助自主研发停滞缠绕光束装置。"
+    }, 
+    "descriptionID": 1063125, 
+    "groupID": 65, 
+    "iconID": 1284, 
+    "isDynamicType": 0, 
+    "marketGroupID": 683, 
+    "mass": 0.0, 
+    "metaGroupID": 4, 
+    "metaLevel": 8, 
+    "portionSize": 1, 
+    "published": 1, 
+    "radius": 1.0, 
+    "techLevel": 1, 
+    "typeID": 98845, 
+    "typeName": {
+      "de": "Imperial Navy Stasis Webifier", 
+      "en-us": "Imperial Navy Stasis Webifier", 
+      "es": "Red ralentizadora de la Armada Imperial", 
+      "fr": "Générateur de stase de l'Imperial Navy", 
+      "ja": "帝国海軍仕様ステイシスウェビファイヤー", 
+      "ko": "제국 해군 스테이시스 웹 생성기", 
+      "ru": "Imperial Navy Stasis Webifier", 
+      "zh": "帝国海军停滞缠绕光束"
+    }, 
+    "typeNameID": 1063124, 
+    "variationParentTypeID": 526, 
+    "volume": 5.0
+  }, 
+  "98846": {
+    "basePrice": 0.0, 
+    "capacity": 0.0, 
+    "groupID": 145, 
+    "iconID": 1284, 
+    "mass": 0.0, 
+    "metaGroupID": 4, 
+    "portionSize": 1, 
+    "published": 1, 
+    "radius": 1.0, 
+    "typeID": 98846, 
+    "typeName": {
+      "de": "Imperial Navy Stasis Webifier Blueprint", 
+      "en-us": "Imperial Navy Stasis Webifier Blueprint", 
+      "es": "Plano de red ralentizadora de la Armada Imperial", 
+      "fr": "Plan de construction Générateur de stase de l'Imperial Navy", 
+      "ja": "帝国海軍仕様ステイシスウェビファイヤーの設計図", 
+      "ko": "제국 해군 스테이시스 웹 생성기 블루프린트", 
+      "ru": "Imperial Navy Stasis Webifier Blueprint", 
+      "zh": "帝国海军停滞缠绕光束蓝图"
+    }, 
+    "typeNameID": 1063128, 
+    "volume": 0.01
   }, 
   "350916": {
     "basePrice": 1500.0, 
