@@ -870,9 +870,9 @@ class Fit:
                         "falloff", value, stackingPenalties=True)
 
                 elif warfareBuffID == 98:  # Weather_darkness_velocity_bonus
-                    self.ship.boostItemAttr("maxVelocity", value)
+                    self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
-                        "maxVelocity", value)
+                        "maxVelocity", value, stackingPenalties=True)
 
                 elif warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
                     for tankType in ("shield", "armor"):

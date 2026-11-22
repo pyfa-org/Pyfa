@@ -9670,7 +9670,7 @@ class Effect3174(BaseEffect):
 
     Used by:
     Modules from group: Stasis Grappler (8 of 8)
-    Modules from group: Stasis Web (20 of 20)
+    Modules from group: Stasis Web (21 of 21)
     Modules from group: Warp Scrambler (58 of 59)
     """
 
@@ -26845,7 +26845,7 @@ class Effect6426(BaseEffect):
 
     Used by:
     Modules from group: Stasis Grappler (8 of 8)
-    Modules from group: Stasis Web (20 of 20)
+    Modules from group: Stasis Web (21 of 21)
     Starbases from group: Stasis Webification Battery (3 of 3)
     """
 
@@ -44002,7 +44002,7 @@ class Effect12963(BaseEffect):
     rigSetAmarrNavyBonusModAddSetRigGroup
 
     Used by:
-    Modules named like: Imperial Navy (66 of 69)
+    Modules named like: Imperial Navy (67 of 70)
     """
 
     runTime = 'earliest'
@@ -44843,7 +44843,7 @@ class Effect13050(BaseEffect):
 
 class Effect13051(BaseEffect):
     """
-    moduleAberrantCapRechargerBonusEffectActivation
+    moduleAberrantCapRechargerBonusEffectActivationPostAssignment
 
     Used by:
     Module: 'Vigilant' Vital Cap Recharger
