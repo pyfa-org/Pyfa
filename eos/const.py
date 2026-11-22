@@ -121,29 +121,36 @@ class SynchronizerSet(NamedTuple):
     rigTypeIDs: frozenset
     # ID of the attribute marking modules of the set (it is what they add to the rig)
     moduleAttrID: int
+    # ID of the rig attribute which accumulates values added by modules of the set
+    rigAttrID: int
 
 
 # Synchronizer rig sets: ID of the effect modules of a set use to count towards its rig -> set info
 SYNCHRONIZER_SETS = {
-    # rigSetAmarrNavyBonusModAddSetRigGroup: Small, Medium, Large Imperial Navy Synchronizer; rigSetAmarrNavyModule
-    12963: SynchronizerSet(rigTypeIDs=frozenset((96130, 96131, 96132)), moduleAttrID=6312),
-    # rigSetCaldariNavyBonusModAddSetRigGroup: Small, Medium, Large Caldari Navy Synchronizer; rigSetCaldariNavyModule
-    12964: SynchronizerSet(rigTypeIDs=frozenset((96139, 96144, 96145)), moduleAttrID=6313),
-    # rigSetGallenteNavyBonusModAddSetRigGroup: Small, Medium, Large Federation Navy Synchronizer;
-    # rigSetGallenteNavyModule
-    12965: SynchronizerSet(rigTypeIDs=frozenset((95809, 96128, 96129)), moduleAttrID=6314),
-    # rigSetMinmatarFleetBonusModAddSetRigGroup: Small, Medium, Large Republic Fleet Synchronizer;
-    # rigSetMinmatarFleetModule
-    12966: SynchronizerSet(rigTypeIDs=frozenset((96136, 96137, 96138)), moduleAttrID=6315),
-    # rigSetDarkBloodBonusModAddSetRigGroup: Small, Medium, Large Dark Blood Synchronizer; rigSetDarkBloodModule
-    12989: SynchronizerSet(rigTypeIDs=frozenset((96541, 96559, 96564)), moduleAttrID=6372),
-    # rigSetTrueSanshaBonusModAddSetRigGroup: Small, Medium, Large True Sansha Synchronizer; rigSetTrueSanshaModule
-    12990: SynchronizerSet(rigTypeIDs=frozenset((96587, 96594, 96595)), moduleAttrID=6373),
-    # rigSetDreadGuristasBonusModAddSetRigGroup: Small, Medium, Large Dread Guristas Synchronizer;
-    # rigSetDreadGuristasModule
-    12991: SynchronizerSet(rigTypeIDs=frozenset((96696, 96719, 96720)), moduleAttrID=6374),
-    # rigSetShadowSerpentisBonusModAddSetRigGroup: Small, Medium, Large Shadow Serpentis Synchronizer;
-    # rigSetShadowSerpentisModule
-    12992: SynchronizerSet(rigTypeIDs=frozenset((96625, 96640, 96641)), moduleAttrID=6375),
-    # rigSetDominationBonusModAddSetRigGroup: Small, Medium, Large Domination Synchronizer; rigSetDominationAngelModule
-    12993: SynchronizerSet(rigTypeIDs=frozenset((96723, 96725, 96726)), moduleAttrID=6376)}
+    # rigSetAmarrNavyBonusModAddSetRigGroup: Small, Medium, Large Imperial Navy Synchronizer
+    # rigSetAmarrNavyModule on modules, rigSetAmarrNavyBonus on rigs
+    12963: SynchronizerSet(rigTypeIDs=frozenset((96130, 96131, 96132)), moduleAttrID=6312, rigAttrID=6316),
+    # rigSetCaldariNavyBonusModAddSetRigGroup: Small, Medium, Large Caldari Navy Synchronizer
+    # rigSetCaldariNavyModule on modules, rigSetCaldariNavyBonus on rigs
+    12964: SynchronizerSet(rigTypeIDs=frozenset((96139, 96144, 96145)), moduleAttrID=6313, rigAttrID=6317),
+    # rigSetGallenteNavyBonusModAddSetRigGroup: Small, Medium, Large Federation Navy Synchronizer
+    # rigSetGallenteNavyModule on modules, rigSetGallenteNavyBonus on rigs
+    12965: SynchronizerSet(rigTypeIDs=frozenset((95809, 96128, 96129)), moduleAttrID=6314, rigAttrID=6318),
+    # rigSetMinmatarFleetBonusModAddSetRigGroup: Small, Medium, Large Republic Fleet Synchronizer
+    # rigSetMinmatarFleetModule on modules, rigSetMinmatarFleetBonus on rigs
+    12966: SynchronizerSet(rigTypeIDs=frozenset((96136, 96137, 96138)), moduleAttrID=6315, rigAttrID=6319),
+    # rigSetDarkBloodBonusModAddSetRigGroup: Small, Medium, Large Dark Blood Synchronizer
+    # rigSetDarkBloodModule on modules, rigSetDarkBloodBonus on rigs
+    12989: SynchronizerSet(rigTypeIDs=frozenset((96541, 96559, 96564)), moduleAttrID=6372, rigAttrID=6377),
+    # rigSetTrueSanshaBonusModAddSetRigGroup: Small, Medium, Large True Sansha Synchronizer
+    # rigSetTrueSanshaModule on modules, rigSetTrueSanshaBonus on rigs
+    12990: SynchronizerSet(rigTypeIDs=frozenset((96587, 96594, 96595)), moduleAttrID=6373, rigAttrID=6378),
+    # rigSetDreadGuristasBonusModAddSetRigGroup: Small, Medium, Large Dread Guristas Synchronizer
+    # rigSetDreadGuristasModule on modules, rigSetDreadGuristasBonus on rigs
+    12991: SynchronizerSet(rigTypeIDs=frozenset((96696, 96719, 96720)), moduleAttrID=6374, rigAttrID=6379),
+    # rigSetShadowSerpentisBonusModAddSetRigGroup: Small, Medium, Large Shadow Serpentis Synchronizer
+    # rigSetShadowSerpentisModule on modules, rigSetShadowSerpentisBonus on rigs
+    12992: SynchronizerSet(rigTypeIDs=frozenset((96625, 96640, 96641)), moduleAttrID=6375, rigAttrID=6380),
+    # rigSetDominationBonusModAddSetRigGroup: Small, Medium, Large Domination Synchronizer
+    # rigSetDominationAngelModule on modules, rigSetDominationAngelBonus on rigs
+    12993: SynchronizerSet(rigTypeIDs=frozenset((96723, 96725, 96726)), moduleAttrID=6376, rigAttrID=6381)}
