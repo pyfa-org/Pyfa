@@ -35,7 +35,7 @@ if configVal is True:
         def deco(function):
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
-                cacheKey = []
+                cacheKey = [function.__name__]
                 cacheKey.extend(args)
                 for keyword in keywords:
                     cacheKey.append(kwargs.get(keyword))
