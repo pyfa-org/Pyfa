@@ -40,6 +40,7 @@ class CopySelectDialog(wx.Dialog):
     copyFormatMultiBuy = 4
     copyFormatEfs = 5
     copyFormatFitStats = 6
+    copyFormatEsf = 7
 
     def __init__(self, parent):
         self.MULTIBUY_OPTIONS = (
@@ -68,7 +69,8 @@ class CopySelectDialog(wx.Dialog):
             CopySelectDialog.copyFormatEsi: self.exportEsi,
             CopySelectDialog.copyFormatMultiBuy: self.exportMultiBuy,
             CopySelectDialog.copyFormatEfs: self.exportEfs,
-            CopySelectDialog.copyFormatFitStats: self.exportFitStats
+            CopySelectDialog.copyFormatFitStats: self.exportFitStats,
+            CopySelectDialog.copyFormatEsf: self.exportEsf,
         }
 
         self.mainFrame = parent
@@ -78,6 +80,7 @@ class CopySelectDialog(wx.Dialog):
             ("EFT", (CopySelectDialog.copyFormatEft, self.EFT_OPTIONS)),
             ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, self.MULTIBUY_OPTIONS)),
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
+            ("esf/1", (CopySelectDialog.copyFormatEsf, None)),
             ("DNA", (CopySelectDialog.copyFormatDna, self.DNA_OPTIONS)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
             ("Stats", (CopySelectDialog.copyFormatFitStats, None)),
@@ -194,6 +197,10 @@ class CopySelectDialog(wx.Dialog):
     def exportEsi(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())
         Port.exportESI(fit, False, False, False, callback)
+
+    def exportEsf(self, options, callback):
+        fit = getFit(self.mainFrame.getActiveFit())
+        Port.exportEsf(fit, callback)
 
     def exportXml(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())

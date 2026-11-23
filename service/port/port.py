@@ -36,6 +36,7 @@ from service.port.eft import (
     exportEft, importEft, importEftCfg,
     isValidDroneImport, isValidFighterImport, isValidCargoImport,
     isValidImplantImport, isValidBoosterImport)
+from service.port.esf import exportEsf, importEsf
 from service.port.esi import exportESI, importESI
 from service.port.multibuy import exportMultiBuy
 from service.port.shipstats import exportFitStats
@@ -221,6 +222,9 @@ class Port:
                 firstLine = line
                 break
 
+        if firstLine.startswith('%esf/'):
+            return "ESF", True, cls.importEsf(string)
+
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
             return "XML", True, cls.importXml(string, progress)
@@ -315,6 +319,15 @@ class Port:
     @staticmethod
     def exportDna(fit, options, callback=None):
         return exportDna(fit, options, callback=callback)
+
+    # esf/1-related methods
+    @staticmethod
+    def importEsf(string):
+        return importEsf(string)
+
+    @staticmethod
+    def exportEsf(fit, callback=None):
+        return exportEsf(fit, callback=callback)
 
     # ESI-related methods
     @staticmethod
