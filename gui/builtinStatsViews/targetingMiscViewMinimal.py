@@ -101,6 +101,22 @@ class TargetingMiscViewMinimal(StatsView):
 
             self._cachedValues.append({"main": 0})
 
+        # Special holds (mineral hold, fleet hangar, ...), one row each, so they
+        # are visible without hovering over the cargo total
+        self.holdsSizer = wx.FlexGridSizer(0, 2, 0, 0)
+        contentSizer.Add(self.holdsSizer, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+        self._shownHolds = None
+
+    def refreshHolds(self, holds):
+        shown = tuple((alias, formatAmount(value, 4, 0, 9)) for alias, value in holds)
+        if shown == self._shownHolds:
+            return
+        self._shownHolds = shown
+        self.holdsSizer.Clear(delete_windows=True)
+        for alias, amount in shown:
+            self.holdsSizer.Add(wx.StaticText(self.panel, wx.ID_ANY, "%s: " % alias), 0, wx.ALIGN_LEFT)
+            self.holdsSizer.Add(wx.StaticText(self.panel, wx.ID_ANY, "%s m³" % amount), 0, wx.ALIGN_LEFT)
+
     def refreshPanel(self, fit):
         # If we did anything interesting, we'd update our labels to reflect the new fit's stats here
 
@@ -276,6 +292,15 @@ class TargetingMiscViewMinimal(StatsView):
                     label.SetToolTip(wx.ToolTip(""))
 
             counter += 1
+
+        holds = []
+        if fit is not None:
+            for attrName, alias in cargoNamesOrder.items():
+                value = cargoValues[attrName]() or 0
+                if value > 0:
+                    holds.append((alias, value))
+        self.refreshHolds(holds)
+
         self.layoutIfNeeded()
 
 
