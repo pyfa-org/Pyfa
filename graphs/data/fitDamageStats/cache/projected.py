@@ -22,6 +22,7 @@ from collections import namedtuple
 
 from eos.modifiedAttributeDict import getResistanceAttrID
 from graphs.data.base import FitDataCache
+from graphs.data.fitDamageStats.calc.disruption import getDisruptionModules
 
 
 ModProjData = namedtuple('ModProjData', ('boost', 'optimal', 'falloff', 'stackingGroup', 'resAttrID'))
@@ -70,6 +71,13 @@ class ProjectedDataCache(FitDataCache):
                         'default',
                         getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEPaint'])))
         return projectedData
+
+    def getProjDisruptionData(self, tgt):
+        try:
+            disruptionData = self._data[tgt.item.ID]['disruption']
+        except KeyError:
+            disruptionData = self._data.setdefault(tgt.item.ID, {})['disruption'] = getDisruptionModules(tgt)
+        return disruptionData
 
     def getProjDroneData(self, src):
         try:

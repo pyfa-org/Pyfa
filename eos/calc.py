@@ -20,6 +20,8 @@
 
 import math
 
+from eos.utils.float import floatUnerr
+
 
 # Just copy-paste penalization chain calculation code (with some modifications,
 # as multipliers arrive in different form) in here to not make actual attribute
@@ -69,3 +71,39 @@ def calculateLockTime(srcScanRes, tgtSigRadius):
     if not srcScanRes or not tgtSigRadius:
         return None
     return min(40000 / srcScanRes / math.asinh(tgtSigRadius) ** 2, 30 * 60)
+
+
+def calculateMissileFlightRange(maxVelocity, mass, agility, flightTime):
+    """Distance covered by a missile during the given flight time."""
+    # Source: http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1307419&page=1#15
+    # D_m = V_m * (T_m + T_0*[exp(- T_m/T_0)-1])
+    accelTime = min(flightTime, mass * agility / 1000000)
+    # Average distance done during acceleration
+    duringAcceleration = maxVelocity / 2 * accelTime
+    # Distance done after being at full speed
+    fullSpeed = maxVelocity * (flightTime - accelTime)
+    return duringAcceleration + fullSpeed
+
+
+def calculateMissileRangeData(maxVelocity, explosionDelayMs, mass, agility, shipRadius, rangeLimit=None):
+    """Missile range in (lowerRange, higherRange, higherChance) form.
+
+    Mirrors :attr:`eos.saveddata.module.Module.missileMaxRangeData` so graphs can
+    recalculate range from attributes modified by projected effects.
+    """
+    if not maxVelocity:
+        return None
+    # Flight time has bonus based on ship radius, see https://github.com/pyfa-org/Pyfa/issues/2083
+    flightTime = floatUnerr(explosionDelayMs / 1000 + shipRadius / maxVelocity)
+    lowerTime = math.floor(flightTime)
+    higherTime = math.ceil(flightTime)
+    lowerRange = calculateMissileFlightRange(maxVelocity, mass, agility, lowerTime)
+    higherRange = calculateMissileFlightRange(maxVelocity, mass, agility, higherTime)
+    if rangeLimit:
+        lowerRange = min(lowerRange, rangeLimit)
+        higherRange = min(higherRange, rangeLimit)
+    # Make range center-to-surface, as missiles spawn in the center of the ship
+    lowerRange = max(0, lowerRange - shipRadius)
+    higherRange = max(0, higherRange - shipRadius)
+    higherChance = flightTime - lowerTime
+    return lowerRange, higherRange, higherChance

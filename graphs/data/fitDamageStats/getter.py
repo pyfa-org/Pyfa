@@ -22,10 +22,24 @@ import eos.config
 from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
 from eos.utils.stats import DmgTypes
+from graphs.calc import checkLockRange
 from graphs.data.base import PointGetter, SmoothPointGetter
 from service.settings import GraphSettings
 from .calc.application import getApplicationPerKey
+from .calc.disruption import getDisruptionMultipliers
 from .calc.projected import getScramRange, getScrammables, getTackledSpeed, getSigRadiusMult
+
+
+def getReverseProjMults(graph, src, tgt, distance, applyProjected):
+    """Multipliers from weapon disruptors the target projects onto the attacker."""
+    if not applyProjected or not tgt.isFit:
+        return None
+    if tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+        return None
+    if not checkLockRange(src=tgt, distance=distance):
+        return {}
+    disruptionData = graph._projectedCache.getProjDisruptionData(tgt=tgt)
+    return getDisruptionMultipliers(disruptionData, distance) or None
 
 
 def applyDamage(dmgMap, applicationMap, tgtResists, tgtFullHp):
@@ -183,7 +197,8 @@ class XDistanceMixin(SmoothPointGetter):
             distance=distance,
             tgtSpeed=tgtSpeed,
             tgtAngle=miscParams['tgtAngle'],
-            tgtSigRadius=tgtSigRadius)
+            tgtSigRadius=tgtSigRadius,
+            reverseProjMults=getReverseProjMults(self.graph, src, tgt, distance, commonData['applyProjected']))
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
             applicationMap=applicationMap,
@@ -232,7 +247,10 @@ class XTimeMixin(PointGetter):
             distance=miscParams['distance'],
             tgtSpeed=tgtSpeed,
             tgtAngle=miscParams['tgtAngle'],
-            tgtSigRadius=tgtSigRadius)
+            tgtSigRadius=tgtSigRadius,
+            reverseProjMults=getReverseProjMults(
+                self.graph, src, tgt, miscParams['distance'],
+                GraphSettings.getInstance().get('applyProjected')))
         return applicationMap
 
     def getRange(self, xRange, miscParams, src, tgt):
@@ -359,7 +377,9 @@ class XTgtSpeedMixin(SmoothPointGetter):
             distance=miscParams['distance'],
             tgtSpeed=tgtSpeed,
             tgtAngle=miscParams['tgtAngle'],
-            tgtSigRadius=tgtSigRadius)
+            tgtSigRadius=tgtSigRadius,
+            reverseProjMults=getReverseProjMults(
+                self.graph, src, tgt, miscParams['distance'], commonData['applyProjected']))
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
             applicationMap=applicationMap,
@@ -408,6 +428,9 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
         return {
             'tgtSpeed': tgtSpeed,
             'tgtSigMult': tgtSigMult,
+            'reverseProjMults': getReverseProjMults(
+                self.graph, src, tgt, miscParams['distance'],
+                GraphSettings.getInstance().get('applyProjected')),
             'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
             'tgtResists': tgt.getResists(),
             'tgtFullHp': tgt.getFullHp()}
@@ -422,7 +445,8 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
             distance=miscParams['distance'],
             tgtSpeed=commonData['tgtSpeed'],
             tgtAngle=miscParams['tgtAngle'],
-            tgtSigRadius=tgtSigRadius * commonData['tgtSigMult'])
+            tgtSigRadius=tgtSigRadius * commonData['tgtSigMult'],
+            reverseProjMults=commonData['reverseProjMults'])
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
             applicationMap=applicationMap,
