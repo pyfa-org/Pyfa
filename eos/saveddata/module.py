@@ -23,6 +23,7 @@ from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
+from eos.calc import calculateMissileRangeData
 from eos.const import FittingHardpoint, FittingModuleState, FittingSlot
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
@@ -335,40 +336,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, M
             if chargeName in ("Scanner Probe", "Survey Probe"):
                 return None
 
-        def calculateRange(maxVelocity, mass, agility, flightTime):
-            # Source: http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1307419&page=1#15
-            # D_m = V_m * (T_m + T_0*[exp(- T_m/T_0)-1])
-            accelTime = min(flightTime, mass * agility / 1000000)
-            # Average distance done during acceleration
-            duringAcceleration = maxVelocity / 2 * accelTime
-            # Distance done after being at full speed
-            fullSpeed = maxVelocity * (flightTime - accelTime)
-            maxRange = duringAcceleration + fullSpeed
-            return maxRange
-
-        maxVelocity = self.getModifiedChargeAttr("maxVelocity")
-        if not maxVelocity:
-            return None
-        shipRadius = self.owner.ship.getModifiedItemAttr("radius")
-        # Flight time has bonus based on ship radius, see https://github.com/pyfa-org/Pyfa/issues/2083
-        flightTime = floatUnerr(self.getModifiedChargeAttr("explosionDelay") / 1000 + shipRadius / maxVelocity)
-        mass = self.getModifiedChargeAttr("mass")
-        agility = self.getModifiedChargeAttr("agility")
-        lowerTime = math.floor(flightTime)
-        higherTime = math.ceil(flightTime)
-        lowerRange = calculateRange(maxVelocity, mass, agility, lowerTime)
-        higherRange = calculateRange(maxVelocity, mass, agility, higherTime)
         # Fof range limit is supposedly calculated based on overview (surface-to-surface) range
+        rangeLimit = None
         if 'fofMissileLaunching' in self.charge.effects:
             rangeLimit = self.getModifiedChargeAttr("maxFOFTargetRange")
-            if rangeLimit:
-                lowerRange = min(lowerRange, rangeLimit)
-                higherRange = min(higherRange, rangeLimit)
-        # Make range center-to-surface, as missiles spawn in the center of the ship
-        lowerRange = max(0, lowerRange - shipRadius)
-        higherRange = max(0, higherRange - shipRadius)
-        higherChance = flightTime - lowerTime
-        return lowerRange, higherRange, higherChance
+        return calculateMissileRangeData(
+            maxVelocity=self.getModifiedChargeAttr("maxVelocity"),
+            explosionDelayMs=self.getModifiedChargeAttr("explosionDelay"),
+            mass=self.getModifiedChargeAttr("mass"),
+            agility=self.getModifiedChargeAttr("agility"),
+            shipRadius=self.owner.ship.getModifiedItemAttr("radius"),
+            rangeLimit=rangeLimit)
 
     @property
     def falloff(self):

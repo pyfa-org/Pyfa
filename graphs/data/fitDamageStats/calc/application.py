@@ -21,7 +21,7 @@
 import math
 from functools import lru_cache
 
-from eos.calc import calculateRangeFactor
+from eos.calc import calculateMissileRangeData, calculateRangeFactor
 from eos.const import FittingHardpoint
 from eos.utils.float import floatUnerr
 from graphs.calc import checkLockRange, checkDroneControlRange
@@ -30,7 +30,7 @@ from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
-def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius, reverseProjMults=None):
     inLockRange = checkLockRange(src=src, distance=distance)
     inDroneRange = checkDroneControlRange(src=src, distance=distance)
     applicationMap = {}
@@ -55,7 +55,8 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                     distance=distance,
                     tgtSpeed=tgtSpeed,
                     tgtAngle=tgtAngle,
-                    tgtSigRadius=tgtSigRadius)
+                    tgtSigRadius=tgtSigRadius,
+                    reverseProjMults=reverseProjMults)
             else:
                 applicationMap[mod] = 0
         # Missile launcher or civilian missile launcher
@@ -66,7 +67,8 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                     mod=mod,
                     distance=distance,
                     tgtSpeed=tgtSpeed,
-                    tgtSigRadius=tgtSigRadius)
+                    tgtSigRadius=tgtSigRadius,
+                    reverseProjMults=reverseProjMults)
             else:
                 applicationMap[mod] = 0
         elif mod.item.group.name in ('Smart Bomb', 'Structure Area Denial Module'):
@@ -142,14 +144,21 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
 
 
 # Item application multiplier calculation
-def getTurretMult(mod, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+def getTurretMult(mod, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius, reverseProjMults=None):
+    optimalRange = mod.maxRange or 0
+    falloffRange = mod.falloff or 0
+    tracking = mod.getModifiedItemAttr('trackingSpeed')
+    if reverseProjMults:
+        optimalRange *= reverseProjMults.get('maxRange', 1)
+        falloffRange *= reverseProjMults.get('falloff', 1)
+        tracking *= reverseProjMults.get('trackingSpeed', 1)
     cth = _calcTurretChanceToHit(
         atkSpeed=atkSpeed,
         atkAngle=atkAngle,
         atkRadius=src.getRadius(),
-        atkOptimalRange=mod.maxRange or 0,
-        atkFalloffRange=mod.falloff or 0,
-        atkTracking=mod.getModifiedItemAttr('trackingSpeed'),
+        atkOptimalRange=optimalRange,
+        atkFalloffRange=falloffRange,
+        atkTracking=tracking,
         atkOptimalSigRadius=mod.getModifiedItemAttr('optimalSigRadius'),
         distance=distance,
         tgtSpeed=tgtSpeed,
@@ -174,8 +183,10 @@ def getVortonMult(mod, distance, tgtSpeed, tgtSigRadius):
     return rangeFactor * applicationFactor
 
 
-def getLauncherMult(mod, distance, tgtSpeed, tgtSigRadius):
+def getLauncherMult(mod, distance, tgtSpeed, tgtSigRadius, reverseProjMults=None):
     missileMaxRangeData = mod.missileMaxRangeData
+    if reverseProjMults:
+        missileMaxRangeData = _getDisruptedRangeData(mod, missileMaxRangeData, reverseProjMults)
     if missileMaxRangeData is None:
         return 0
     # The ranges already consider ship radius
@@ -186,13 +197,34 @@ def getLauncherMult(mod, distance, tgtSpeed, tgtSigRadius):
         distanceFactor = higherChance
     else:
         distanceFactor = 0
+    erMult = reverseProjMults.get('aoeCloudSize', 1) if reverseProjMults else 1
+    evMult = reverseProjMults.get('aoeVelocity', 1) if reverseProjMults else 1
     applicationFactor = _calcMissileFactor(
-        atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
-        atkEv=mod.getModifiedChargeAttr('aoeVelocity'),
+        atkEr=mod.getModifiedChargeAttr('aoeCloudSize') * erMult,
+        atkEv=mod.getModifiedChargeAttr('aoeVelocity') * evMult,
         atkDrf=mod.getModifiedChargeAttr('aoeDamageReductionFactor'),
         tgtSpeed=tgtSpeed,
         tgtSigRadius=tgtSigRadius)
     return distanceFactor * applicationFactor
+
+
+def _getDisruptedRangeData(mod, missileMaxRangeData, reverseProjMults):
+    if missileMaxRangeData is None:
+        return None
+    velocityMult = reverseProjMults.get('maxVelocity', 1)
+    delayMult = reverseProjMults.get('explosionDelay', 1)
+    if velocityMult == 1 and delayMult == 1:
+        return missileMaxRangeData
+    rangeLimit = None
+    if 'fofMissileLaunching' in mod.charge.effects:
+        rangeLimit = mod.getModifiedChargeAttr('maxFOFTargetRange')
+    return calculateMissileRangeData(
+        maxVelocity=mod.getModifiedChargeAttr('maxVelocity') * velocityMult,
+        explosionDelayMs=mod.getModifiedChargeAttr('explosionDelay') * delayMult,
+        mass=mod.getModifiedChargeAttr('mass'),
+        agility=mod.getModifiedChargeAttr('agility'),
+        shipRadius=mod.owner.ship.getModifiedItemAttr('radius'),
+        rangeLimit=rangeLimit)
 
 
 def getBreacherMult(mod, tgt, distance):
