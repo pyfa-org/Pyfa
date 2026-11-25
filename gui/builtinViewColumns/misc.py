@@ -20,6 +20,8 @@
 # noinspection PyPackageRequirements
 import wx
 
+from eos.const import SYNCHRONIZER_SETS
+from service.attribute import Attribute
 from service.fit import Fit
 from service.market import Market
 from gui.viewColumn import ViewColumn
@@ -214,6 +216,17 @@ class Miscellanea(ViewColumn):
             text = "{0}{1} | {2}{3}".format(formatAmount(cloudSize, 3, 0, 3), "m",
                                             formatAmount(aoeVelocity, 3, 0, 3), "m/s")
             tooltip = "Explosion radius and explosion velocity"
+            return text, tooltip
+        elif itemGroup == "Rig Synchronizer":
+            syncSet = next((s for s in SYNCHRONIZER_SETS.values() if item.ID in s.rigTypeIDs), None)
+            if syncSet is None:
+                return "", None
+            attrInfo = Attribute.getInstance().getAttributeInfo(syncSet.rigAttrID)
+            if attrInfo is None:
+                return "", None
+            count = stuff.getModifiedItemAttr(attrInfo.name, 0)
+            text = "{0}".format(formatAmount(count, 3, 0, 3))
+            tooltip = "Faction modules boosting the rig"
             return text, tooltip
         elif itemCategory == "Subsystem":
             slots = ("hi", "med", "low")

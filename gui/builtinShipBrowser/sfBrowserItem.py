@@ -267,6 +267,7 @@ class SFBrowserItem(wx.Window):
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
         self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnMouseCaptureLost)
 
     def OnFocus(self, evt):
         self.SetHighlighted(True)
@@ -313,10 +314,20 @@ class SFBrowserItem(wx.Window):
     def SetDraggable(self, mode=True):
         self.canBeDragged = mode
 
+    def OnMouseCaptureLost(self, event):
+        # Mouse button release will not be delivered, so make sure no toolbar button is left pressed
+        self.toolbar.ClearState()
+        self.Refresh()
+
     def OnLeftUp(self, event):
         if self.mainFrame.supress_left_up:
             wx.Yield()
             self.mainFrame.supress_left_up = False
+            if self.HasCapture():
+                self.ReleaseMouse()
+            # Release is ignored, so make sure no toolbar button is left pressed
+            self.toolbar.ClearState()
+            self.Refresh()
             return
 
         if self.HasCapture():
@@ -350,6 +361,9 @@ class SFBrowserItem(wx.Window):
             self.CaptureMouse()
 
         btn = self.toolbar.MouseClick(event)
+        # Some toolbar button was left in pressed state, and has just been reset; process click from scratch
+        if btn is False:
+            btn = self.toolbar.MouseClick(event)
 
         if btn is not None:
             if btn.GetState() & BTN_PRESSED:

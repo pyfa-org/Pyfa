@@ -35099,7 +35099,7 @@
       "ja": "支援戦闘機部隊の制限", 
       "ko": "서포트 파이터 편대 한계", 
       "ru": "Ограничение по отрядам истребителей поддержки", 
-      "zh": "后勤铁骑舰载机中队限制"
+      "zh": "支援铁骑舰载机中队限制"
     }, 
     "displayNameID": 311176, 
     "displayWhenZero": 0, 
@@ -43505,7 +43505,7 @@
       "ja": "スタンドアップサポート戦闘機分隊制限", 
       "ko": "스탠드업 서포트 파이터 편대 제한", 
       "ru": "Ограничение по отрядам истребителей поддержки", 
-      "zh": "屹立后勤铁骑舰载机中队限制"
+      "zh": "屹立支援铁骑舰载机中队限制"
     }, 
     "displayNameID": 317098, 
     "displayWhenZero": 0, 
@@ -48681,14 +48681,14 @@
     "defaultValue": 0.0, 
     "description": "If set on a charge or module type, will prevent it from being activated in hazard system", 
     "displayName": {
-      "de": "Kann nicht in Zarzakh verwendet werden ", 
-      "en-us": "Unusable in Zarzakh ", 
-      "es": "Inutilizable en Zarzakh ", 
-      "fr": "Inutilisable à Zarzakh ", 
-      "ja": "ザルザクでは使用不可 ", 
-      "ko": "자르자크에서 사용 불가 ", 
-      "ru": "Нельзя использовать в Zarzakh ", 
-      "zh": "无法在扎尔扎克使用 "
+      "de": "Kann nicht in Zarzakh verwendet werden", 
+      "en-us": "Unusable in Zarzakh", 
+      "es": "Inutilizable en Zarzakh", 
+      "fr": "Inutilisable à Zarzakh", 
+      "ja": "ザルザクでは使用不可", 
+      "ko": "자르자크에서 사용 불가", 
+      "ru": "Нельзя использовать в Zarzakh", 
+      "zh": "无法在扎尔扎克使用"
     }, 
     "displayNameID": 669819, 
     "displayWhenZero": 0, 
@@ -51189,7 +51189,7 @@
       "ja": "ブリーチャーポッドダメージレジスタンス", 
       "ko": "침투 포드 피해 저항력", 
       "ru": "Сопротивляемость урону внедряющейся капсулы", 
-      "zh": "分裂者级太空舱伤害抗性"
+      "zh": "突破者座舱伤害抗性"
     }, 
     "displayNameID": 1047242, 
     "displayWhenZero": 0, 
@@ -51213,7 +51213,7 @@
       "ja": "起動中ブリーチャーポッド被ダメージ量", 
       "ko": "받은 활성화 침투 포드 피해", 
       "ru": "Активный урон от внедряющейся капсулы", 
-      "zh": "已激活的分裂者级太空舱伤害承受量"
+      "zh": "已激活的突破者座舱伤害承受量"
     }, 
     "displayNameID": 1047243, 
     "displayWhenZero": 0, 
@@ -52416,7 +52416,8 @@
     "dataType": 5, 
     "defaultValue": 0.0, 
     "displayName": {
-      "en-us": "Remote Capacitor Transmitter Impedance Bonus"
+      "en-us": "Remote Capacitor Transmitter Impedance Bonus", 
+      "zh": "远程电容传输阻扰加成"
     }, 
     "displayNameID": 1055367, 
     "displayWhenZero": 0, 
@@ -52505,7 +52506,7 @@
     "defaultValue": 0.0, 
     "displayName": {
       "de": "Aktiver Geschwindigkeitsbonus", 
-      "en-us": "Active Speed Boost Amount", 
+      "en-us": "Active Speed Boost Multiplier", 
       "es": "Cantidad de potenciador de velocidad activa", 
       "fr": "Quantité de bonus de vitesse actif", 
       "ja": "アクティブ時の速度ブースト総量", 
@@ -52519,8 +52520,13 @@
     "iconID": 98, 
     "name": "moduleAberrantOverdriveActiveSpeedBoostAmount", 
     "published": 1, 
-    "stackable": 0, 
-    "unitID": 105
+    "stackable": 1, 
+    "tooltipDescription": {
+      "en-us": "While this module is active its passive effect is vastly increased in effectiveness"
+    }, 
+    "tooltipDescriptionID": 1063013, 
+    "tooltipTitleID": 1063012, 
+    "unitID": 104
   }, 
   "6482": {
     "attributeID": 6482, 
@@ -52529,7 +52535,7 @@
     "defaultValue": 0.0, 
     "displayName": {
       "de": "Aktive Schildbooster-Leistung", 
-      "en-us": "Active Shield Booster Amount", 
+      "en-us": "Active Shield Boost Bonus Multiplier", 
       "es": "Cantidad de potenciadores de escudo activos", 
       "fr": "Quantité active du booster de bouclier", 
       "ja": "アクティブ時のシールドブースター回復量", 
@@ -52543,8 +52549,13 @@
     "iconID": 2104, 
     "name": "moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffect", 
     "published": 1, 
-    "stackable": 0, 
-    "unitID": 105
+    "stackable": 1, 
+    "tooltipDescription": {
+      "en-us": "While this module is active its passive effect is vastly increased in effectiveness"
+    }, 
+    "tooltipDescriptionID": 1063009, 
+    "tooltipTitleID": 1063008, 
+    "unitID": 104
   }, 
   "6483": {
     "attributeID": 6483, 
@@ -52553,7 +52564,7 @@
     "defaultValue": 0.0, 
     "displayName": {
       "de": "Aktiver Bonus auf die maximale Geschwindigkeit von Drohnen und Jägern", 
-      "en-us": "Active Drone and Fighter Maximum Velocity Bonus", 
+      "en-us": "Drone and Fighter Maximum Velocity Bonus Multiplier", 
       "es": "Bonificación de velocidad máx. de drones y cazas activos", 
       "fr": "Bonus actif de vitesse maximale des drones et chasseurs", 
       "ja": "アクティブ時のドローンおよび戦闘機の最高速度ボーナス", 
@@ -52567,8 +52578,13 @@
     "iconID": 2988, 
     "name": "moduleAberrantDroneNavigationComputerBonusEffect", 
     "published": 1, 
-    "stackable": 0, 
-    "unitID": 105
+    "stackable": 1, 
+    "tooltipDescription": {
+      "en-us": "While this module is active its passive effect is vastly increased in effectiveness"
+    }, 
+    "tooltipDescriptionID": 1063011, 
+    "tooltipTitleID": 1063010, 
+    "unitID": 104
   }, 
   "6484": {
     "attributeID": 6484, 
@@ -52577,7 +52593,7 @@
     "defaultValue": 1.0, 
     "displayName": {
       "de": "Aktiver Bonus auf Energiespeicher-Wiederaufladerate", 
-      "en-us": "Active Capacitor recharge rate bonus", 
+      "en-us": "Active Recharge Rate Multiplier", 
       "es": "Bonificación de ritmo de carga del condensador activo", 
       "fr": "Bonus actif de vitesse de recharge du capaciteur", 
       "ja": "アクティブ時のキャパシタ充電速度ボーナス", 
@@ -52587,12 +52603,17 @@
     }, 
     "displayNameID": 1057166, 
     "displayWhenZero": 0, 
-    "highIsGood": 0, 
+    "highIsGood": 1, 
     "iconID": 1400, 
-    "name": "moduleAberrantCapRechargerBonusEffect", 
+    "name": "moduleAberrantCapRechargerBonusEffectFAKE", 
     "published": 1, 
     "stackable": 1, 
-    "unitID": 111
+    "tooltipDescription": {
+      "en-us": "While this module is active its passive effect is vastly increased in effectiveness"
+    }, 
+    "tooltipDescriptionID": 1063007, 
+    "tooltipTitleID": 1063006, 
+    "unitID": 104
   }, 
   "6497": {
     "attributeID": 6497, 
@@ -52675,5 +52696,23 @@
     "name": "roleMaxActiveDronesAssign", 
     "published": 0, 
     "stackable": 0
+  }, 
+  "6557": {
+    "attributeID": 6557, 
+    "categoryID": 5, 
+    "dataType": 5, 
+    "defaultValue": 1.0, 
+    "description": "Amount of time taken to fully recharge the capacitor.\r\nThis is a HIDDEN postAssignment Attribute - We need to do some bad things to get a 0.88x multiplier to be a 0.64x multiplier. This seemed to be the cleanest way without dividing the number by 1.375 or making a new dogma attribute with postPercentage that wouldn't be as strong. This is probably the easiest way to not confuse future game designers and balancers", 
+    "displayName": {
+      "en-us": "Capacitor recharge rate bonus"
+    }, 
+    "displayNameID": 1063051, 
+    "displayWhenZero": 0, 
+    "highIsGood": 0, 
+    "iconID": 1400, 
+    "name": "ModuleAberrantCapacitorRechargeRatePostAssignmentHidden", 
+    "published": 0, 
+    "stackable": 1, 
+    "unitID": 105
   }
 }

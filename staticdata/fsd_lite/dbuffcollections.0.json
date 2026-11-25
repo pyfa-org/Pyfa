@@ -5964,7 +5964,7 @@
       "ja": "スキルレベルごとに付与される巡洋戦艦シップボーナス", 
       "ko": "배틀크루저 함선 보너스 (레벨 당)", 
       "ru": "усиление бонусов для линейных крейсеров за степень навыка", 
-      "zh": "每升一级，对战列巡洋舰的加成效果"
+      "zh": "战列巡洋舰操作技能每级技能额外加成"
     }, 
     "displayNameID": 1037517, 
     "itemModifiers": [
@@ -7556,7 +7556,7 @@
       "ja": "ブリーチャーポッド被ダメージ量", 
       "ko": "받은 침투 포드 피해", 
       "ru": "Полученный урон от внедряющейся капсулы", 
-      "zh": "分裂者级太空舱伤害承受量"
+      "zh": "突破者座舱伤害承受量"
     }, 
     "displayNameID": 1047249, 
     "itemModifiers": [
@@ -8446,14 +8446,14 @@
     "aggregateMode": "Maximum", 
     "developerDescription": "SFW - Gallente Conquest buff 3 - Falloff Range", 
     "displayName": {
-      "de": "Bonus auf den Präzisionsabfall von Hybridgeschütztürmen ", 
-      "en-us": "bonus to hybrid falloff ", 
+      "de": "Bonus auf den Präzisionsabfall von Hybridgeschütztürmen", 
+      "en-us": "bonus to hybrid falloff", 
       "es": "de bonificación al alcance efectivo híbrido.", 
-      "fr": "de bonus à la déperdition hybride ", 
+      "fr": "de bonus à la déperdition hybride", 
       "ja": "ハイブリッドの精度低下範囲にボーナス", 
-      "ko": "하이브리드 유효사거리 증가 ", 
-      "ru": "бонус к добавочной дальности гибридных орудий ", 
-      "zh": "混合失准范围加成 "
+      "ko": "하이브리드 유효사거리 증가", 
+      "ru": "бонус к добавочной дальности гибридных орудий", 
+      "zh": "混合失准范围加成"
     }, 
     "displayNameID": 1050786, 
     "itemModifiers": [], 

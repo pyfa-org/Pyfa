@@ -870,9 +870,9 @@ class Fit:
                         "falloff", value, stackingPenalties=True)
 
                 elif warfareBuffID == 98:  # Weather_darkness_velocity_bonus
-                    self.ship.boostItemAttr("maxVelocity", value)
+                    self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
                     self.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"),
-                        "maxVelocity", value)
+                        "maxVelocity", value, stackingPenalties=True)
 
                 elif warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
                     for tankType in ("shield", "armor"):
@@ -1068,6 +1068,11 @@ class Fit:
             pyfalog.info("Fit is not yet calculated; will be running local calcs for {}".format(repr(self)))
             self.clear()
 
+        # Rigs and subsystems modify attributes which other modules' own effects read within the same pass (e.g.
+        # overheating bonuses of propulsion modules), so they have to be processed first. Sort is stable, so
+        # order is kept otherwise
+        modules = sorted(self.modules, key=lambda mod: mod.slot not in (FittingSlot.RIG, FittingSlot.SUBSYSTEM))
+
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("earliest", "early", "normal", "late"):
             # pyfalog.debug("Run time: {0}", runTime)
@@ -1079,12 +1084,12 @@ class Fit:
                 self.fighters,
                 self.boosters,
                 self.appliedImplants,
-                self.modules
+                modules
             ] if not self.isStructure else [
                 # Ensure a restricted set for citadels
                 (self.character, self.ship),
                 self.fighters,
-                self.modules
+                modules
             ]
 
             # Items that are restricted. These items are only run on the local

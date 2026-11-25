@@ -123,7 +123,6 @@ class FitItem(SFItem.SFBrowserItem):
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
-        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnMouseCaptureLost)
         self.mainFrame.Bind(GE.FIT_RENAMED, self.OnFitRename)
 
         self.animTimerId = wx.NewId()
@@ -191,6 +190,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def OnMouseCaptureLost(self, event):
         """ Destroy drag information (GH issue #479)"""
+        SFItem.SFBrowserItem.OnMouseCaptureLost(self, event)
         if self.dragging and self.dragged:
             self.dragging = False
             self.dragged = False

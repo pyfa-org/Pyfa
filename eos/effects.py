@@ -9670,7 +9670,7 @@ class Effect3174(BaseEffect):
 
     Used by:
     Modules from group: Stasis Grappler (8 of 8)
-    Modules from group: Stasis Web (20 of 20)
+    Modules from group: Stasis Web (21 of 21)
     Modules from group: Warp Scrambler (58 of 59)
     """
 
@@ -26845,7 +26845,7 @@ class Effect6426(BaseEffect):
 
     Used by:
     Modules from group: Stasis Grappler (8 of 8)
-    Modules from group: Stasis Web (20 of 20)
+    Modules from group: Stasis Web (21 of 21)
     Starbases from group: Stasis Webification Battery (3 of 3)
     """
 
@@ -44002,7 +44002,7 @@ class Effect12963(BaseEffect):
     rigSetAmarrNavyBonusModAddSetRigGroup
 
     Used by:
-    Modules named like: Imperial Navy (66 of 69)
+    Modules named like: Imperial Navy (67 of 70)
     """
 
     runTime = 'earliest'
@@ -44795,13 +44795,14 @@ class Effect13048(BaseEffect):
     Module: 'Vigilant' Vital Overdrive Injector System
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.ship.boostItemAttr(
-            'maxVelocity', module.getModifiedItemAttr('moduleAberrantOverdriveActiveSpeedBoostAmount'),
-            stackingPenalties=True, **kwargs)
+        module.multiplyItemAttr(
+            'implantBonusVelocity', module.getModifiedItemAttr('moduleAberrantOverdriveActiveSpeedBoostAmount'),
+            **kwargs)
 
 
 class Effect13049(BaseEffect):
@@ -44812,15 +44813,14 @@ class Effect13049(BaseEffect):
     Module: 'Vigilant' Vital Shield Boost Amplifier
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        bonus = module.getModifiedItemAttr('moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffect')
-        fit.modules.filteredItemBoost(
-            lambda mod: (mod.item.requiresSkill('Shield Operation')
-                         or mod.item.requiresSkill('Capital Shield Operation')),
-            'shieldBonus', bonus, stackingPenalties=True, **kwargs)
+        module.multiplyItemAttr(
+            'shieldBoostMultiplier',
+            module.getModifiedItemAttr('moduleAberrantShieldBoostAmplifierShieldBoosterBonusEffect'), **kwargs)
 
 
 class Effect13050(BaseEffect):
@@ -44831,31 +44831,32 @@ class Effect13050(BaseEffect):
     Module: 'Vigilant' Vital Drone Navigation Computer
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
-    def handler(fit, src, context, projectionRange, **kwargs):
-        bonus = src.getModifiedItemAttr('moduleAberrantDroneNavigationComputerBonusEffect')
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'maxVelocity', bonus,
-                                       stackingPenalties=True, **kwargs)
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxVelocity', bonus,
-                                     stackingPenalties=True, **kwargs)
+    def handler(fit, module, context, projectionRange, **kwargs):
+        module.multiplyItemAttr(
+            'speedFactor', module.getModifiedItemAttr('moduleAberrantDroneNavigationComputerBonusEffect'),
+            stackingPenalties=True, **kwargs)
 
 
 class Effect13051(BaseEffect):
     """
-    moduleAberrantCapRechargerBonusEffectActivation
+    moduleAberrantCapRechargerBonusEffectActivationPostAssignment
 
     Used by:
     Module: 'Vigilant' Vital Cap Recharger
     """
 
+    runTime = 'early'
     type = 'active'
 
     @staticmethod
     def handler(fit, module, context, projectionRange, **kwargs):
-        fit.ship.multiplyItemAttr(
-            'rechargeRate', module.getModifiedItemAttr('moduleAberrantCapRechargerBonusEffect'), **kwargs)
+        module.forceItemAttr(
+            'capacitorRechargeRateMultiplier',
+            module.getModifiedItemAttr('ModuleAberrantCapacitorRechargeRatePostAssignmentHidden'), **kwargs)
 
 
 class Effect13053(BaseEffect):

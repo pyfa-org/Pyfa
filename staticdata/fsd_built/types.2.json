@@ -7475,7 +7475,7 @@
       "ja": "エントーシスリンクIIのブループリント", 
       "ko": "엔토시스 링크 II 블루프린트", 
       "ru": "Entosis Link II Blueprint", 
-      "zh": "侵噬链接蓝图 II"
+      "zh": "侵噬链接 II 蓝图"
     }, 
     "typeNameID": 305460, 
     "volume": 0.01
@@ -13492,7 +13492,7 @@
       "ja": "エントラップメント施設2設計図（機能停止）", 
       "ko": "폐기된 항성계 감시 시설 II 블루프린트", 
       "ru": "Defunct Entrapment Array 2 Blueprint", 
-      "zh": "失效的诱捕阵列2蓝图"
+      "zh": "弃用的诱捕阵列2 蓝图"
     }, 
     "typeNameID": 306769, 
     "volume": 0.01
@@ -13527,7 +13527,7 @@
       "ja": "エントラップメント施設3設計図（機能停止）", 
       "ko": "폐기된 항성계 감시 시설 III 블루프린트", 
       "ru": "Defunct Entrapment Array 3 Blueprint", 
-      "zh": "失效的诱捕阵列3蓝图"
+      "zh": "弃用的诱捕阵列3 蓝图"
     }, 
     "typeNameID": 306770, 
     "volume": 0.01
@@ -13562,7 +13562,7 @@
       "ja": "エントラップメント施設4設計図（機能停止）", 
       "ko": "폐기된 항성계 감시 시설 IV 블루프린트", 
       "ru": "Defunct Entrapment Array 4 Blueprint", 
-      "zh": "失效的诱捕阵列4蓝图"
+      "zh": "弃用的诱捕阵列4 蓝图"
     }, 
     "typeNameID": 306771, 
     "volume": 0.01
@@ -13597,7 +13597,7 @@
       "ja": "エントラップメント施設5設計図（機能停止）", 
       "ko": "폐기된 항성계 감시 시설 V 블루프린트", 
       "ru": "Defunct Entrapment Array 5 Blueprint", 
-      "zh": "失效的诱捕阵列5蓝图"
+      "zh": "弃用的诱捕阵列5 蓝图"
     }, 
     "typeNameID": 306772, 
     "volume": 0.01
@@ -13632,7 +13632,7 @@
       "ja": "海賊探知施設1設計図（機能停止）", 
       "ko": "폐기된 해적 탐지 시설 I 블루프린트", 
       "ru": "Defunct Pirate Detection Array 1 Blueprint", 
-      "zh": "失效的海盗探测阵列1蓝图"
+      "zh": "弃用的海盗探测阵列1 蓝图"
     }, 
     "typeNameID": 306773, 
     "volume": 0.01
@@ -13667,7 +13667,7 @@
       "ja": "海賊探知施設2設計図（機能停止）", 
       "ko": "폐기된 해적 탐지 시설 II 블루프린트", 
       "ru": "Defunct Pirate Detection Array 2 Blueprint", 
-      "zh": "失效的海盗探测阵列2蓝图"
+      "zh": "弃用的海盗探测阵列2 蓝图"
     }, 
     "typeNameID": 306774, 
     "volume": 0.01
@@ -13702,7 +13702,7 @@
       "ja": "海賊探知施設3設計図（機能停止）", 
       "ko": "폐기된 해적 탐지 시설 III 블루프린트", 
       "ru": "Defunct Pirate Detection Array 3 Blueprint", 
-      "zh": "失效的海盗探测阵列3蓝图"
+      "zh": "弃用的海盗探测阵列3 蓝图"
     }, 
     "typeNameID": 306775, 
     "volume": 0.01
@@ -13737,7 +13737,7 @@
       "ja": "海賊探知施設4設計図（機能停止）", 
       "ko": "폐기된 해적 탐지 시설 IV 블루프린트", 
       "ru": "Defunct Pirate Detection Array 4 Blueprint", 
-      "zh": "失效的海盗探测阵列4蓝图"
+      "zh": "弃用的海盗探测阵列4 蓝图"
     }, 
     "typeNameID": 306776, 
     "volume": 0.01
@@ -13772,7 +13772,7 @@
       "ja": "海賊探知施設5設計図（機能停止）", 
       "ko": "폐기된 해적 탐지 시설 V 블루프린트", 
       "ru": "Defunct Pirate Detection Array 5 Blueprint", 
-      "zh": "失效的海盗探测阵列5蓝图"
+      "zh": "弃用的海盗探测阵列5 蓝图"
     }, 
     "typeNameID": 306777, 
     "volume": 0.01
@@ -13807,7 +13807,7 @@
       "ja": "クアンタムフラックスジェネレーター1設計図（機能停止）", 
       "ko": "폐기된 양자 플럭스 생성기 I 블루프린트", 
       "ru": "Defunct Quantum Flux Generator 1 Blueprint", 
-      "zh": "失效的量子通量发生器1蓝图"
+      "zh": "弃用的量子通量发生器1 蓝图"
     }, 
     "typeNameID": 306778, 
     "volume": 0.01
@@ -13842,7 +13842,7 @@
       "ja": "クアンタムフラックスジェネレーター2設計図（機能停止）", 
       "ko": "폐기된 양자 플럭스 생성기 II 블루프린트", 
       "ru": "Defunct Quantum Flux Generator 2 Blueprint", 
-      "zh": "失效的量子通量发生器2蓝图"
+      "zh": "弃用的量子通量发生器2 蓝图"
     }, 
     "typeNameID": 306779, 
     "volume": 0.01
@@ -13877,7 +13877,7 @@
       "ja": "クアンタムフラックスジェネレーター3設計図（機能停止）", 
       "ko": "폐기된 양자 플럭스 생성기 III 블루프린트", 
       "ru": "Defunct Quantum Flux Generator 3 Blueprint", 
-      "zh": "失效的量子通量发生器3蓝图"
+      "zh": "弃用的量子通量发生器3 蓝图"
     }, 
     "typeNameID": 306780, 
     "volume": 0.01
@@ -13912,7 +13912,7 @@
       "ja": "クアンタムフラックスジェネレーター4設計図（機能停止）", 
       "ko": "폐기된 양자 플럭스 생성기 IV 블루프린트", 
       "ru": "Defunct Quantum Flux Generator 4 Blueprint", 
-      "zh": "失效的量子通量发生器4蓝图"
+      "zh": "弃用的量子通量发生器4 蓝图"
     }, 
     "typeNameID": 306781, 
     "volume": 0.01
@@ -13947,7 +13947,7 @@
       "ja": "クアンタムフラックスジェネレーター5設計図（機能停止）", 
       "ko": "폐기된 양자 플럭스 생성기 V 블루프린트", 
       "ru": "Defunct Quantum Flux Generator 5 Blueprint", 
-      "zh": "失效的量子通量发生器5蓝图"
+      "zh": "弃用的量子通量发生器5 蓝图"
     }, 
     "typeNameID": 306782, 
     "volume": 0.01
@@ -13982,7 +13982,7 @@
       "ja": "鉱石試掘施設1設計図（機能停止）", 
       "ko": "폐기된 광물 탐사 시설 I 블루프린트", 
       "ru": "Defunct Ore Prospecting Array 1 Blueprint", 
-      "zh": "失效的矿石勘探阵列1蓝图"
+      "zh": "弃用的矿石勘探阵列1 蓝图"
     }, 
     "typeNameID": 306783, 
     "volume": 0.01
@@ -14017,7 +14017,7 @@
       "ja": "鉱石試掘施設2設計図（機能停止）", 
       "ko": "폐기된 광물 탐사 시설 II 블루프린트", 
       "ru": "Defunct Ore Prospecting Array 2 Blueprint", 
-      "zh": "失效的矿石勘探阵列2蓝图"
+      "zh": "弃用的矿石勘探阵列2 蓝图"
     }, 
     "typeNameID": 306784, 
     "volume": 0.01
@@ -14052,7 +14052,7 @@
       "ja": "鉱石試掘施設3設計図（機能停止）", 
       "ko": "폐기된 광물 탐사 시설 III 블루프린트", 
       "ru": "Defunct Ore Prospecting Array 3 Blueprint", 
-      "zh": "失效的矿石勘探阵列3蓝图"
+      "zh": "弃用的矿石勘探阵列3 蓝图"
     }, 
     "typeNameID": 306785, 
     "volume": 0.01
@@ -14087,7 +14087,7 @@
       "ja": "鉱石試掘施設4設計図（機能停止）", 
       "ko": "폐기된 광물 탐사 시설 IV 블루프린트", 
       "ru": "Defunct Ore Prospecting Array 4 Blueprint", 
-      "zh": "失效的矿石勘探阵列4蓝图"
+      "zh": "弃用的矿石勘探阵列4 蓝图"
     }, 
     "typeNameID": 306786, 
     "volume": 0.01
@@ -14122,7 +14122,7 @@
       "ja": "鉱石試掘施設5設計図（機能停止）", 
       "ko": "폐기된 광물 탐사 시설 V 블루프린트", 
       "ru": "Defunct Ore Prospecting Array 5 Blueprint", 
-      "zh": "失效的矿石勘探阵列5蓝图"
+      "zh": "弃用的矿石勘探阵列5 蓝图"
     }, 
     "typeNameID": 306787, 
     "volume": 0.01
@@ -14157,7 +14157,7 @@
       "ja": "サーベイネットワーク1設計図（機能停止）", 
       "ko": "폐기된 조사 네트워크 I 블루프린트", 
       "ru": "Defunct Survey Networks 1 Blueprint", 
-      "zh": "失效的勘探网络1蓝图"
+      "zh": "弃用的勘探网络1 蓝图"
     }, 
     "typeNameID": 306788, 
     "volume": 0.01
@@ -14192,7 +14192,7 @@
       "ja": "サーベイネットワーク2設計図（機能停止）", 
       "ko": "폐기된 조사 네트워크 II 블루프린트", 
       "ru": "Defunct Survey Networks 2 Blueprint", 
-      "zh": "失效的勘探网络2蓝图"
+      "zh": "弃用的勘探网络2 蓝图"
     }, 
     "typeNameID": 306789, 
     "volume": 0.01
@@ -14227,7 +14227,7 @@
       "ja": "サーベイネットワーク3設計図（機能停止）", 
       "ko": "폐기된 조사 네트워크 III 블루프린트", 
       "ru": "Defunct Survey Networks 3 Blueprint", 
-      "zh": "失效的勘探网络3蓝图"
+      "zh": "弃用的勘探网络3 蓝图"
     }, 
     "typeNameID": 306790, 
     "volume": 0.01
@@ -14262,7 +14262,7 @@
       "ja": "サーベイネットワーク4設計図（機能停止）", 
       "ko": "폐기된 조사 네트워크 IV 블루프린트", 
       "ru": "Defunct Survey Networks 4 Blueprint", 
-      "zh": "失效的勘探网络4蓝图"
+      "zh": "弃用的勘探网络4 蓝图"
     }, 
     "typeNameID": 306791, 
     "volume": 0.01
@@ -14297,7 +14297,7 @@
       "ja": "サーベイネットワーク5設計図（機能停止）", 
       "ko": "폐기된 조사 네트워크 V 블루프린트", 
       "ru": "Defunct Survey Networks 5 Blueprint", 
-      "zh": "失效的勘探网络5蓝图"
+      "zh": "弃用的勘探网络5 蓝图"
     }, 
     "typeNameID": 306792, 
     "volume": 0.01
@@ -14332,7 +14332,7 @@
       "ja": "高性能物流ネットワーク設計図（廃止予定）", 
       "ko": "폐기된 상급 지원 네트워크 블루프린트", 
       "ru": "Defunct Advanced Logistics Network Blueprint", 
-      "zh": "失效的高级后勤网络蓝图"
+      "zh": "弃用的高级后勤网络蓝图"
     }, 
     "typeNameID": 306793, 
     "volume": 0.01
@@ -14367,7 +14367,7 @@
       "ja": "サイノシュラルナビゲーション設計図（廃止予定）", 
       "ko": "폐기된 사이노슈럴 항법 블루프린트", 
       "ru": "Defunct Cynosural Navigation Blueprint", 
-      "zh": "失效的诱导力场导航系统蓝图"
+      "zh": "弃用的诱导力场导航系统蓝图"
     }, 
     "typeNameID": 306794, 
     "volume": 0.01
@@ -14402,7 +14402,7 @@
       "ja": "サイノシュラル抑制設計図（廃止予定）", 
       "ko": "폐기된 사이노슈럴 억제 블루프린트", 
       "ru": "Defunct Cynosural Suppression Blueprint", 
-      "zh": "失效的诱导力场压制系统蓝图"
+      "zh": "弃用的诱导力场压制系统蓝图"
     }, 
     "typeNameID": 306795, 
     "volume": 0.01
@@ -14437,7 +14437,7 @@
       "ja": "大型母艦建設施設設計図（廃止予定）", 
       "ko": "폐기된 슈퍼캐피탈 건조 시설 블루프린트", 
       "ru": "Defunct Supercapital Construction Facilities Blueprint", 
-      "zh": "失效的超级旗舰建造设施蓝图"
+      "zh": "弃用的超级旗舰建造设施蓝图"
     }, 
     "typeNameID": 306796, 
     "volume": 0.01
@@ -14472,7 +14472,7 @@
       "ja": "エントラップメント施設1設計図（機能停止）", 
       "ko": "폐기된 항성계 감시 시설 I 블루프린트", 
       "ru": "Defunct Entrapment Array 1 Blueprint", 
-      "zh": "失效的诱捕阵列1蓝图"
+      "zh": "弃用的诱捕阵列1 蓝图"
     }, 
     "typeNameID": 306797, 
     "volume": 0.01
@@ -34081,7 +34081,7 @@
       "ja": "ミサイル誘導エンハンサーIのブループリント", 
       "ko": "미사일 유도 향상장치 I 블루프린트", 
       "ru": "Missile Guidance Enhancer I Blueprint", 
-      "zh": "导弹制导增强器蓝图 I"
+      "zh": "导弹制导增强器 I 蓝图"
     }, 
     "typeNameID": 505989, 
     "volume": 0.01
@@ -34107,7 +34107,7 @@
       "ja": "ミサイル誘導エンハンサーIIのブループリント", 
       "ko": "미사일 유도 향상장치 II 블루프린트", 
       "ru": "Missile Guidance Enhancer II Blueprint", 
-      "zh": "导弹制导增强器蓝图 II"
+      "zh": "导弹制导增强器 II 蓝图"
     }, 
     "typeNameID": 505991, 
     "volume": 0.01
@@ -34505,7 +34505,7 @@
       "ja": "ミサイル誘導コンピューターIのブループリント", 
       "ko": "미사일 유도 컴퓨터 I 블루프린트", 
       "ru": "Missile Guidance Computer I Blueprint", 
-      "zh": "导弹制导计算机蓝图 I"
+      "zh": "导弹制导计算机 I 蓝图"
     }, 
     "typeNameID": 506038, 
     "volume": 0.01
@@ -34531,7 +34531,7 @@
       "ja": "ミサイル誘導コンピューターIIのブループリント", 
       "ko": "미사일 유도 컴퓨터 II 블루프린트", 
       "ru": "Missile Guidance Computer II Blueprint", 
-      "zh": "导弹制导计算机蓝图 II"
+      "zh": "导弹制导计算机 II 蓝图"
     }, 
     "typeNameID": 506040, 
     "volume": 0.01
@@ -51187,7 +51187,7 @@
       "ja": "アップウェル記念碑AM設計図", 
       "ko": "업웰 기념비 AM 블루프린트", 
       "ru": "Upwell Monument AM Blueprint", 
-      "zh": "昇威纪念碑AM蓝图"
+      "zh": "昇威纪念碑AM 蓝图"
     }, 
     "typeNameID": 508936, 
     "volume": 0.01
@@ -51471,7 +51471,7 @@
       "ja": "超大規模採掘基地のブループリント", 
       "ko": "초대형 드릴 플랫폼 블루프린트", 
       "ru": "X-Large Drilling Platform Blueprint", 
-      "zh": "超大型钻探平台蓝图"
+      "zh": "自定义星门 1 蓝图"
     }, 
     "typeNameID": 508960, 
     "volume": 0.01
@@ -52089,7 +52089,7 @@
       "ja": "スタンドアップ誘導ボムランチャーI設計図", 
       "ko": "스탠드업 유도폭탄 런처 I 블루프린트", 
       "ru": "Standup Guided Bomb Launcher I Blueprint", 
-      "zh": "屹立制导炸弹发射器蓝图 I"
+      "zh": "屹立制导炸弹发射器 I 蓝图"
     }, 
     "typeNameID": 509086, 
     "volume": 0.01
@@ -52202,7 +52202,7 @@
       "ja": "スタンドアップ弾道制御装置I設計図", 
       "ko": "스탠드업 탄도 제어시스템 I 블루프린트", 
       "ru": "Standup Ballistic Control System I Blueprint", 
-      "zh": "屹立弹道控制系统蓝图 I"
+      "zh": "屹立弹道控制系统 I 蓝图"
     }, 
     "typeNameID": 509110, 
     "volume": 0.01
@@ -52226,7 +52226,7 @@
       "ja": "スタンドアップリパルサーフィールドプロジェクター1のブループリント", 
       "ko": "스탠드업 리펄서 필드 프로젝터 I 블루프린트", 
       "ru": "Standup Repulsor Field Projector I Blueprint", 
-      "zh": "屹立冲击力场投射器蓝图 I"
+      "zh": "屹立冲击力场投射器 I 蓝图"
     }, 
     "typeNameID": 509112, 
     "volume": 0.01
@@ -52251,7 +52251,7 @@
       "ja": "スタンドアップマーケットハブI設計図", 
       "ko": "스탠드업 거래소 허브 I 블루프린트", 
       "ru": "Standup Market Hub I Blueprint", 
-      "zh": "屹立市场中心蓝图 I"
+      "zh": "屹立市场中心 I 蓝图"
     }, 
     "typeNameID": 509114, 
     "volume": 0.01
@@ -52276,7 +52276,7 @@
       "ja": "スタンドアップクローン作成センターI設計図", 
       "ko": "스탠드업 클론 센터 I 블루프린트", 
       "ru": "Standup Cloning Center I Blueprint", 
-      "zh": "屹立克隆中心蓝图 I"
+      "zh": "屹立克隆中心 I 蓝图"
     }, 
     "typeNameID": 509116, 
     "volume": 0.01
@@ -52393,7 +52393,7 @@
       "ja": "スタンドアップ・コプロセッサー・アレイI設計図", 
       "ko": "스탠드업 보조 CPU I 블루프린트", 
       "ru": "Standup Co-Processor Array I Blueprint", 
-      "zh": "屹立协处理器阵列蓝图 I"
+      "zh": "屹立协处理器阵列 I 蓝图"
     }, 
     "typeNameID": 509126, 
     "volume": 0.01
@@ -52418,7 +52418,7 @@
       "ja": "スタンドアップ・ポイント防衛兵器I設計図", 
       "ko": "스탠드업 거점 방어 포탑 I 블루프린트", 
       "ru": "Standup Point Defense Battery I Blueprint", 
-      "zh": "屹立定点防御炮塔蓝图 I"
+      "zh": "屹立定点防御炮塔 I 蓝图"
     }, 
     "typeNameID": 509128, 
     "volume": 0.01
@@ -52443,7 +52443,7 @@
       "ja": "スタンドアップ弧型ヴォートンプロジェクターI設計図", 
       "ko": "스탠드업 아크 보르톤 프로젝터 I 블루프린트", 
       "ru": "Standup Arcing Vorton Projector I Blueprint", 
-      "zh": "屹立电弧弦投射器蓝图 I"
+      "zh": "屹立电弧弦投射器 I 蓝图"
     }, 
     "typeNameID": 509130, 
     "volume": 0.01
@@ -52491,7 +52491,7 @@
       "ja": "スタンドアップ再処理施設1のブループリント", 
       "ko": "스탠드업 정제시설 I 블루프린트", 
       "ru": "Standup Reprocessing Facility I Blueprint", 
-      "zh": "屹立提炼设施I蓝图"
+      "zh": "屹立提炼设施 I 蓝图"
     }, 
     "typeNameID": 509134, 
     "volume": 0.01
@@ -52540,7 +52540,7 @@
       "ja": "スタンドアップ衛星ドリルI設計図", 
       "ko": "스탠드업 위성 드릴 I 블루프린트", 
       "ru": "Standup Moon Drill I Blueprint", 
-      "zh": "屹立卫星钻探蓝图 I"
+      "zh": "屹立卫星钻探 I 蓝图"
     }, 
     "typeNameID": 509138, 
     "volume": 0.01
@@ -52588,7 +52588,7 @@
       "ja": "スタンドアップ戦闘機用ダメージ増幅器1のブループリント", 
       "ko": "스탠드업 파이터 데미지 증폭기 I 블루프린트", 
       "ru": "Standup Fighter Damage Amplifier I Blueprint", 
-      "zh": "屹立铁骑舰载机伤害增效装置蓝图 I"
+      "zh": "屹立铁骑舰载机伤害增效装置 I 蓝图"
     }, 
     "typeNameID": 509146, 
     "volume": 0.01
@@ -52636,7 +52636,7 @@
       "ja": "スタンドアップ戦闘機追跡エンハンサー1のブループリント", 
       "ko": "스탠드업 파이터 트래킹 향상장치 I 블루프린트", 
       "ru": "Standup Fighter Tracking Enhancer I Blueprint", 
-      "zh": "屹立铁骑舰载机索敌增强器蓝图 I"
+      "zh": "屹立铁骑舰载机索敌增强器 I 蓝图"
     }, 
     "typeNameID": 509151, 
     "volume": 0.01
@@ -52661,7 +52661,7 @@
       "ja": "スタンドアップ可変スペクトラムECM1のブループリント", 
       "ko": "스탠드업 가변성 스펙트럼 ECM I 블루프린트", 
       "ru": "Standup Variable Spectrum ECM I Blueprint", 
-      "zh": "屹立可变光谱ECM蓝图 I"
+      "zh": "屹立可变光谱ECM I 蓝图"
     }, 
     "typeNameID": 509153, 
     "volume": 0.01
@@ -52710,7 +52710,7 @@
       "ja": "スタンドアップ超大型エネルギーニュートラライザーI設計図", 
       "ko": "스탠드업 XL 에너지 뉴트럴라이저 I 블루프린트", 
       "ru": "Standup XL Energy Neutralizer I Blueprint", 
-      "zh": "屹立超大型能量中和器蓝图 I"
+      "zh": "屹立超大型能量中和器 I 蓝图"
     }, 
     "typeNameID": 509157, 
     "volume": 0.01
@@ -52735,7 +52735,7 @@
       "ja": "スタンドアップ・ヘビーエネルギーニュートライザー1のブループリント", 
       "ko": "스탠드업 대형 에너지 뉴트럴라이저 I 블루프린트", 
       "ru": "Standup Heavy Energy Neutralizer I Blueprint", 
-      "zh": "屹立重型能量中和器蓝图 I"
+      "zh": "屹立重型能量中和器 I 蓝图"
     }, 
     "typeNameID": 509159, 
     "volume": 0.01
@@ -52760,7 +52760,7 @@
       "ja": "スタンドアップ・ミサイル誘導エンハンサーI設計図", 
       "ko": "스탠드업 미사일 유도 향상장치 I 블루프린트", 
       "ru": "Standup Missile Guidance Enhancer I Blueprint", 
-      "zh": "屹立导弹制导增强器蓝图 I"
+      "zh": "屹立导弹制导增强器 I 蓝图"
     }, 
     "typeNameID": 509161, 
     "volume": 0.01
@@ -52809,7 +52809,7 @@
       "ja": "スタンドアップ対主力艦ミサイルランチャーI設計図", 
       "ko": "스탠드업 대 캐피탈 미사일 런처 I 블루프린트", 
       "ru": "Standup Anticapital Missile Launcher I Blueprint", 
-      "zh": "屹立反旗舰导弹发射器蓝图 I"
+      "zh": "屹立反旗舰导弹发射器 I 蓝图"
     }, 
     "typeNameID": 509165, 
     "volume": 0.01
@@ -52834,7 +52834,7 @@
       "ja": "スタンドアップ多目的ミサイルランチャーI設計図", 
       "ko": "스탠드업 다목적 미사일 런처 I 블루프린트", 
       "ru": "Standup Multirole Missile Launcher I Blueprint", 
-      "zh": "屹立多功能导弹发射器蓝图 I"
+      "zh": "屹立多功能导弹发射器 I 蓝图"
     }, 
     "typeNameID": 509167, 
     "volume": 0.01
@@ -53092,7 +53092,7 @@
       "ja": "スタンドアップ・リアクター制御装置I設計図", 
       "ko": "스탠드업 반응로 제어유닛 I 블루프린트", 
       "ru": "Standup Reactor Control Unit I Blueprint", 
-      "zh": "屹立反应堆控制组件蓝图 I"
+      "zh": "屹立反应堆控制组件 I 蓝图"
     }, 
     "typeNameID": 509188, 
     "volume": 0.01
@@ -53237,7 +53237,7 @@
       "ja": "スタンドアップ・リモートセンサーダンプナーI設計図", 
       "ko": "스탠드업 원격 센서 댐프너 I 블루프린트", 
       "ru": "Standup Remote Sensor Dampener I Blueprint", 
-      "zh": "屹立远程感应抑阻器蓝图 I"
+      "zh": "屹立远程感应抑阻器 I 蓝图"
     }, 
     "typeNameID": 509200, 
     "volume": 0.01
@@ -53536,7 +53536,7 @@
       "ja": "ストラクチャステイシスウェビファイヤー1のブループリント", 
       "ko": "스탠드업 스테이시스 웹 생성기 I 블루프린트", 
       "ru": "Standup Stasis Webifier I Blueprint", 
-      "zh": "屹立停滞缠绕光束蓝图 I"
+      "zh": "屹立停滞缠绕光束 I 蓝图"
     }, 
     "typeNameID": 509228, 
     "volume": 0.01
@@ -53561,7 +53561,7 @@
       "ja": "スタンドアップターゲットぺインターI設計図", 
       "ko": "스탠드업 타겟 페인터 I 블루프린트", 
       "ru": "Standup Target Painter I Blueprint", 
-      "zh": "屹立目标标记装置蓝图 I"
+      "zh": "屹立目标标记装置 I 蓝图"
     }, 
     "typeNameID": 509230, 
     "volume": 0.01
@@ -53586,7 +53586,7 @@
       "ja": "スタンドアップ兵器妨害器I設計図", 
       "ko": "스탠드업 무기 디스럽터 I 블루프린트", 
       "ru": "Standup Weapon Disruptor I Blueprint", 
-      "zh": "屹立武器扰断器I蓝图"
+      "zh": "屹立武器扰断器 I 蓝图"
     }, 
     "typeNameID": 509234, 
     "volume": 0.01
@@ -53632,7 +53632,7 @@
       "ja": "スタンドアップCSPトラクタービーム1のブループリント", 
       "ko": "스탠드업 CSP 트랙터 빔 I 블루프린트", 
       "ru": "Standup CSP Tractor Beam I Blueprint", 
-      "zh": "屹立CSP牵引光束蓝图 I"
+      "zh": "屹立CSP牵引光束 I 蓝图"
     }, 
     "typeNameID": 509238, 
     "volume": 0.01
@@ -53657,7 +53657,7 @@
       "ja": "スタンドアップ集中型ワープ妨害器I設計図", 
       "ko": "스탠드업 집속 워프 디스럽터 I 블루프린트", 
       "ru": "Standup Focused Warp Disruptor I Blueprint", 
-      "zh": "屹立聚焦跃迁扰断器蓝图 I"
+      "zh": "屹立聚焦跃迁扰断器 I 蓝图"
     }, 
     "typeNameID": 509240, 
     "volume": 0.01
@@ -59722,7 +59722,7 @@
       "ja": "スタンドアップ大型弾薬製造資源効率I設計図", 
       "ko": "스탠드업 L-Set 탄약 제조 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Ammunition Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型弹药制造效率蓝图 I"
+      "zh": "屹立大型弹药制造效率 I 蓝图"
     }, 
     "typeNameID": 509783, 
     "volume": 0.01
@@ -59747,7 +59747,7 @@
       "ja": "スタンドアップ超大型機材と消耗品製造効率1のブループリント", 
       "ko": "스탠드업 XL-Set 장비 및 소모품 제조 효율성 장치 I 블루프린트", 
       "ru": "Standup XL-Set Equipment and Consumable Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立设备和消费品制造效率I XL蓝图"
+      "zh": "屹立超大型设备和消费品制造效率 I 蓝图"
     }, 
     "typeNameID": 509785, 
     "volume": 0.01
@@ -60094,7 +60094,7 @@
       "ja": "中型消耗品製造2のブループリント", 
       "ko": "중형 소모품 생산 II 블루프린트", 
       "ru": "Medium Consumable Manufacturing II Blueprint", 
-      "zh": "中型消费品制造蓝图 II"
+      "zh": "屹立中型设备制造时间效率 II 蓝图"
     }, 
     "typeNameID": 509815, 
     "volume": 0.01
@@ -60165,7 +60165,7 @@
       "ja": "スタンドアップ大型弾薬製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 탄약 제조 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Ammunition Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型弹药制造效率蓝图 II"
+      "zh": "屹立大型弹药制造效率 II 蓝图"
     }, 
     "typeNameID": 509821, 
     "volume": 0.01
@@ -60190,7 +60190,7 @@
       "ja": "スタンドアップ大型標準大型艦製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 기본 대형 함선 제작 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Basic Large Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型基础大型舰船制造效率蓝图 I"
+      "zh": "屹立大型基础大型舰船制造效率 I 蓝图"
     }, 
     "typeNameID": 509823, 
     "volume": 0.01
@@ -60215,7 +60215,7 @@
       "ja": "スタンドアップ大型標準大型艦製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 기본 대형 함선 제작 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Basic Large Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型基础大型舰船制造效率蓝图 II"
+      "zh": "屹立大型基础大型舰船制造效率 II 蓝图"
     }, 
     "typeNameID": 509825, 
     "volume": 0.01
@@ -60240,7 +60240,7 @@
       "ja": "スタンドアップ大型最新大型艦製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 상급 대형 함선 제작 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Advanced Large Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型高级大型舰船制造效率蓝图 I"
+      "zh": "屹立大型高级大型舰船制造效率 I 蓝图"
     }, 
     "typeNameID": 509827, 
     "volume": 0.01
@@ -60265,7 +60265,7 @@
       "ja": "スタンドアップ大型最新大型艦製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 상급 대형 함선 제작 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Advanced Large Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型高级大型舰船制造效率蓝图 II"
+      "zh": "屹立大型高级大型舰船制造效率 II 蓝图"
     }, 
     "typeNameID": 509829, 
     "volume": 0.01
@@ -60290,7 +60290,7 @@
       "ja": "スタンドアップ大型装備製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 장비 제조 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Equipment Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型设备制造效率蓝图 I"
+      "zh": "屹立大型设备制造效率 I 蓝图"
     }, 
     "typeNameID": 509831, 
     "volume": 0.01
@@ -60315,7 +60315,7 @@
       "ja": "スタンドアップ大型装備製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 장비 제조 효율성 증가 II 블루프린트", 
       "ru": "Standup L-Set Equipment Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型设备制造效率蓝图 II"
+      "zh": "屹立大型设备制造效率 II 蓝图"
     }, 
     "typeNameID": 509833, 
     "volume": 0.01
@@ -60386,7 +60386,7 @@
       "ja": "スタンドアップ大型最新コンポーネント製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 상급 부품 제조 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Advanced Component Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型高级组件制造效率蓝图 I"
+      "zh": "屹立大型高级组件制造效率 I 蓝图"
     }, 
     "typeNameID": 509839, 
     "volume": 0.01
@@ -60411,7 +60411,7 @@
       "ja": "スタンドアップ大型最新コンポーネント製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 상급 부품 제조 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Advanced Component Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立高级组件制造效率II L蓝图"
+      "zh": "屹立大型高级组件制造效率 II 蓝图"
     }, 
     "typeNameID": 509841, 
     "volume": 0.01
@@ -60434,7 +60434,7 @@
       "ja": "大型Tech 1サブシステム製造1のブループリント", 
       "ko": "대형 테크 I 서브시스템 제조 리그 I 블루프린트", 
       "ru": "Large Tech I Subsystem Manufacturing I Blueprint", 
-      "zh": "大型一级科技子系统制造I蓝图"
+      "zh": "大型一级科技子系统制造 I 蓝图"
     }, 
     "typeNameID": 509843, 
     "volume": 0.01
@@ -60458,7 +60458,7 @@
       "ja": "大型Tech 1サブシステム製造2のブループリント", 
       "ko": "대형 테크 I 서브시스템 제조 리그 II 블루프린트", 
       "ru": "Large Tech I Subsystem Manufacturing II Blueprint", 
-      "zh": "大型一级科技子系统制造II蓝图"
+      "zh": "大型一级科技子系统制造 II 蓝图"
     }, 
     "typeNameID": 509845, 
     "volume": 0.01
@@ -60483,7 +60483,7 @@
       "ja": "スタンドアップ超大型機材と消耗品製造効率2のブループリント", 
       "ko": "스탠드업 XL-Set 장비 및 소모품 제조 효율성 장치 II 블루프린트", 
       "ru": "Standup XL-Set Equipment and Consumable Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立设备和消费品制造效率II XL蓝图"
+      "zh": "屹立超大型设备和消费品制造效率 II 蓝图"
     }, 
     "typeNameID": 509847, 
     "volume": 0.01
@@ -60508,7 +60508,7 @@
       "ja": "スタンドアップ超大型艦船製造効率1のブループリント", 
       "ko": "스탠드업 XL-Set 함선 제작 효율성 장치 I 블루프린트", 
       "ru": "Standup XL-Set Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立超大型舰船制造效率蓝图 I"
+      "zh": "屹立超大型舰船制造效率 I 蓝图"
     }, 
     "typeNameID": 509849, 
     "volume": 0.01
@@ -60533,7 +60533,7 @@
       "ja": "スタンドアップ超大型艦船製造効率2のブループリント", 
       "ko": "스탠드업 XL-Set 함선 제작 효율성 장치 II 블루프린트", 
       "ru": "Standup XL-Set Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立超大型舰船制造效率蓝图 II"
+      "zh": "屹立超大型舰船制造效率 II 蓝图"
     }, 
     "typeNameID": 509851, 
     "volume": 0.01
@@ -60557,7 +60557,7 @@
       "ja": "スタンドアップ超大型研究施設最適化2のブループリント", 
       "ko": "스탠드업 XL-Set 연구실 강화 장치 II 블루프린트", 
       "ru": "Standup XL-Set Laboratory Optimization II Blueprint", 
-      "zh": "屹立超大型实验室优化蓝图 II"
+      "zh": "屹立超大型实验室优化 II 蓝图"
     }, 
     "typeNameID": 509853, 
     "volume": 0.01
@@ -60583,7 +60583,7 @@
       "ja": "スタンドアップ超大型研究施設最適化1のブループリント", 
       "ko": "스탠드업 XL-Set 연구실 강화 장치 I 블루프린트", 
       "ru": "Standup XL-Set Laboratory Optimization I Blueprint", 
-      "zh": "屹立超大型实验室优化蓝图 I"
+      "zh": "屹立超大型实验室优化 I 蓝图"
     }, 
     "typeNameID": 509855, 
     "volume": 0.01
@@ -60606,7 +60606,7 @@
       "ja": "中型Tech 1小型艦船研究1のブループリント", 
       "ko": "중형 테크 I 소형 함선 연구 리그 I 블루프린트", 
       "ru": "Medium Tech I Small Ship Research I Blueprint", 
-      "zh": "中型一级科技小型舰船研究蓝图 I"
+      "zh": "中型一级科技小型舰船研究 I 蓝图"
     }, 
     "typeNameID": 509857, 
     "volume": 0.01
@@ -60630,7 +60630,7 @@
       "ja": "中型Tech 1小型艦船研究2のブループリント", 
       "ko": "중형 테크 I 소형 함선 연구 리그 II 블루프린트", 
       "ru": "Medium Tech I Small Ship Research II Blueprint", 
-      "zh": "中型一级科技小型舰船研究蓝图 II"
+      "zh": "中型一级科技小型舰船研究 II 蓝图"
     }, 
     "typeNameID": 509859, 
     "volume": 0.01
@@ -60653,7 +60653,7 @@
       "ja": "中型Tech 1中型艦船研究1のブループリント", 
       "ko": "중형 테크 I 중형 함선 연구 리그 I 블루프린트", 
       "ru": "Medium Tech I Medium Ship Research I Blueprint", 
-      "zh": "中型一级科技中型舰船研究蓝图 I"
+      "zh": "中型一级科技中型舰船研究 I 蓝图"
     }, 
     "typeNameID": 509861, 
     "volume": 0.01
@@ -60677,7 +60677,7 @@
       "ja": "中型Tech 1中型艦船研究2のブループリント", 
       "ko": "중형 테크 I 중형 함선 연구 리그 II 블루프린트", 
       "ru": "Medium Tech I Medium Ship Research II Blueprint", 
-      "zh": "中型一级科技中型舰船研究蓝图 II"
+      "zh": "中型一级科技中型舰船研究 II 蓝图"
     }, 
     "typeNameID": 509863, 
     "volume": 0.01
@@ -60701,7 +60701,7 @@
       "ja": "中型Tech 1大型艦船研究2のブループリント", 
       "ko": "중형 테크 I 대형 함선 연구 리그 II 블루프린트", 
       "ru": "Medium Tech I Large Ship Research II Blueprint", 
-      "zh": "中型一级科技大型舰船研究蓝图 II"
+      "zh": "中型一级科技大型舰船研究 II 蓝图"
     }, 
     "typeNameID": 509865, 
     "volume": 0.01
@@ -60724,7 +60724,7 @@
       "ja": "中型ドローン研究1のブループリント", 
       "ko": "미디움 드론 연구 I 블루프린트", 
       "ru": "Medium Drone Research I Blueprint", 
-      "zh": "中型无人机研究蓝图 I"
+      "zh": "中型无人机研究 I 蓝图"
     }, 
     "typeNameID": 509867, 
     "volume": 0.01
@@ -60748,7 +60748,7 @@
       "ja": "中型ドローン研究2のブループリント", 
       "ko": "미디움 드론 연구 II 블루프린트", 
       "ru": "Medium Drone Research II Blueprint", 
-      "zh": "中型无人机研究蓝图 II"
+      "zh": "中型无人机研究 II 蓝图"
     }, 
     "typeNameID": 509869, 
     "volume": 0.01
@@ -60771,7 +60771,7 @@
       "ja": "中型消耗品研究1のブループリント", 
       "ko": "중형 소모품 연구 I 블루프린트", 
       "ru": "Medium Consumable Research I Blueprint", 
-      "zh": "中型消费品研究蓝图 I"
+      "zh": "中型消费品研究 I 蓝图"
     }, 
     "typeNameID": 509871, 
     "volume": 0.01
@@ -60795,7 +60795,7 @@
       "ja": "中型消耗品研究2のブループリント", 
       "ko": "미디움 소모품 연구 II 블루프린트", 
       "ru": "Medium Consumable Research II Blueprint", 
-      "zh": "中型消费品研究蓝图 II"
+      "zh": "中型消费品研究 II 蓝图"
     }, 
     "typeNameID": 509873, 
     "volume": 0.01
@@ -60818,7 +60818,7 @@
       "ja": "中型モジュール研究1のブループリント", 
       "ko": "중형 모듈 연구 I 블루프린트", 
       "ru": "Medium Module Research I Blueprint", 
-      "zh": "中型装备研究蓝图 I"
+      "zh": "中型装备研究 I 蓝图"
     }, 
     "typeNameID": 509875, 
     "volume": 0.01
@@ -60842,7 +60842,7 @@
       "ja": "中型モジュール研究2のブループリント", 
       "ko": "중형 모듈 연구 II 블루프린트", 
       "ru": "Medium Module Research II Blueprint", 
-      "zh": "中型装备研究II蓝图"
+      "zh": "中型装备研究 II 蓝图"
     }, 
     "typeNameID": 509877, 
     "volume": 0.01
@@ -60865,7 +60865,7 @@
       "ja": "大型モジュール、消耗品、ドローン研究1のブループリント", 
       "ko": "대형 모듈, 소모품, 드론 연구 I 블루프린트", 
       "ru": "Large Module, Consumable, Drone Research I Blueprint", 
-      "zh": "大型装备、消费品和无人机研究蓝图 I"
+      "zh": "大型装备、消费品和无人机研究 I 蓝图"
     }, 
     "typeNameID": 509879, 
     "volume": 0.01
@@ -60889,7 +60889,7 @@
       "ja": "大型モジュール、消耗品、ドローン研究2のブループリント", 
       "ko": "대형 모듈, 소모품, 드론 연구 II 블루프린트", 
       "ru": "Large Module, Consumable, Drone Research II Blueprint", 
-      "zh": "大型装备、消费品和无人机研究II蓝图"
+      "zh": "大型装备、消费品和无人机研究 II 蓝图"
     }, 
     "typeNameID": 509881, 
     "volume": 0.01
@@ -60912,7 +60912,7 @@
       "ja": "大型Tech 1艦船研究1のブループリント", 
       "ko": "대형 테크 I 함선 연구 리그 I 블루프린트", 
       "ru": "Large Tech I Ship Research I Blueprint", 
-      "zh": "大型一级科技舰船研究蓝图 I"
+      "zh": "大型一级科技舰船研究 I 蓝图"
     }, 
     "typeNameID": 509883, 
     "volume": 0.01
@@ -60936,7 +60936,7 @@
       "ja": "大型Tech 1艦船研究2のブループリント", 
       "ko": "대형 테크 II 함선 연구 리그 II 블루프린트", 
       "ru": "Large Tech I Ship Research II Blueprint", 
-      "zh": "大型一级科技舰船研究II蓝图"
+      "zh": "大型一级科技舰船研究 II 蓝图"
     }, 
     "typeNameID": 509885, 
     "volume": 0.01
@@ -60959,7 +60959,7 @@
       "ja": "大型Tech 2コンポーネント研究1のブループリント", 
       "ko": "대형 테크 II 부품 연구 리그 I 블루프린트", 
       "ru": "Large Tech II Component Research I Blueprint", 
-      "zh": "大型二级科技组件研究蓝图 I"
+      "zh": "大型二级科技组件研究 I 蓝图"
     }, 
     "typeNameID": 509891, 
     "volume": 0.01
@@ -60983,7 +60983,7 @@
       "ja": "大型Tech 2コンポーネント研究2のブループリント", 
       "ko": "대형 테크 II 부품 연구 리그 II 블루프린트", 
       "ru": "Large Tech II Component Research II Blueprint", 
-      "zh": "大型二级科技组件研究蓝图 II"
+      "zh": "大型二级科技组件研究 II 蓝图"
     }, 
     "typeNameID": 509893, 
     "volume": 0.01
@@ -61006,7 +61006,7 @@
       "ja": "大型Tech 1キャピタルコンポーネント研究1のブループリント", 
       "ko": "대형 테크 I 캐피탈 부품 연구 리그 I 블루프린트", 
       "ru": "Large Tech I Capital Component Research I Blueprint", 
-      "zh": "大型一级科技旗舰组件研究蓝图 I"
+      "zh": "大型一级科技旗舰组件研究 I 蓝图"
     }, 
     "typeNameID": 509895, 
     "volume": 0.01
@@ -61030,7 +61030,7 @@
       "ja": "大型Tech 1キャピタルコンポーネント研究2のブループリント", 
       "ko": "대형 테크 I 캐피탈 부품 연구 리그 II 블루프린트", 
       "ru": "Large Tech I Capital Component Research II Blueprint", 
-      "zh": "大型一级科技旗舰组件研究蓝图 II"
+      "zh": "大型一级科技旗舰组件研究 II 蓝图"
     }, 
     "typeNameID": 509897, 
     "volume": 0.01
@@ -61053,7 +61053,7 @@
       "ja": "大型ストラクチャ コンポーネント研究1のブループリント", 
       "ko": "대형 설비 구성품 연구 I 블루프린트", 
       "ru": "Large Structure Component Research I Blueprint", 
-      "zh": "大型建筑组件研究蓝图 I"
+      "zh": "大型建筑组件研究 I 蓝图"
     }, 
     "typeNameID": 509899, 
     "volume": 0.01
@@ -61077,7 +61077,7 @@
       "ja": "大型ストラクチャ コンポーネント研究2のブループリント", 
       "ko": "대형 설비 구성품 연구 II 블루프린트", 
       "ru": "Large Structure Component Research II Blueprint", 
-      "zh": "大型建筑组件研究蓝图 II"
+      "zh": "大型建筑组件研究 II 蓝图"
     }, 
     "typeNameID": 509901, 
     "volume": 0.01
@@ -61100,7 +61100,7 @@
       "ja": "大型Tech 1サブシステム研究1のブループリント", 
       "ko": "대형 테크 I 서브시스템 연구 리그 I 블루프린트", 
       "ru": "Large Tech I Subsystem Research I Blueprint", 
-      "zh": "大型一级科技子系统研究蓝图 I"
+      "zh": "大型一级科技子系统研究 I 蓝图"
     }, 
     "typeNameID": 509903, 
     "volume": 0.01
@@ -61124,7 +61124,7 @@
       "ja": "大型Tech 1サブシステム研究2のブループリント", 
       "ko": "대형 테크 I 서브시스템 연구 리그 II 블루프린트", 
       "ru": "Large Tech I Subsystem Research II Blueprint", 
-      "zh": "大型一级科技子系统研究蓝图 II"
+      "zh": "大型一级科技子系统研究 II 蓝图"
     }, 
     "typeNameID": 509905, 
     "volume": 0.01
@@ -61147,7 +61147,7 @@
       "ja": "超大型装置研究1のブループリント", 
       "ko": "초대형 장비 연구 I 블루프린트", 
       "ru": "X-Large Equipment Research I Blueprint", 
-      "zh": "超大型设备研究蓝图 I"
+      "zh": "超大型设备研究 I 蓝图"
     }, 
     "typeNameID": 509907, 
     "volume": 0.01
@@ -61171,7 +61171,7 @@
       "ja": "超大型装置研究2のブループリント", 
       "ko": "초대형 장비 연구 II 블루프린트", 
       "ru": "X-Large Equipment Research II Blueprint", 
-      "zh": "超大型设备研究蓝图 II"
+      "zh": "超大型设备研究 II 蓝图"
     }, 
     "typeNameID": 509909, 
     "volume": 0.01
@@ -61194,7 +61194,7 @@
       "ja": "超大型艦船研究1のブループリント", 
       "ko": "초대형 함선 연구 리그 I 블루프린트", 
       "ru": "X-Large Ship Research I Blueprint", 
-      "zh": "超大型舰船研究蓝图 I"
+      "zh": "超大型舰船研究 I 蓝图"
     }, 
     "typeNameID": 509911, 
     "volume": 0.01
@@ -61218,7 +61218,7 @@
       "ja": "超大型艦船研究2のブループリント", 
       "ko": "초대형 함선 연구 리그 II 블루프린트", 
       "ru": "X-Large Ship Research II Blueprint", 
-      "zh": "超大型舰船研究蓝图 II"
+      "zh": "超大型舰船研究 II 蓝图"
     }, 
     "typeNameID": 509913, 
     "volume": 0.01
@@ -61243,7 +61243,7 @@
       "ja": "スタンドアップ超大型ストラクチャおよびコンポーネント製造効率1のブループリント", 
       "ko": "스탠드업 XL-Set 구조물 및 부품 제조 효율성 장치 I 블루프린트", 
       "ru": "Standup XL-Set Structure and Component Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立超大型建筑和组件制造效率蓝图 I"
+      "zh": "屹立超大型建筑和组件制造效率 I 蓝图"
     }, 
     "typeNameID": 509915, 
     "volume": 0.01
@@ -61268,7 +61268,7 @@
       "ja": "スタンドアップ超大型ストラクチャおよびコンポーネント製造効率2のブループリント", 
       "ko": "스탠드업 XL-Set 구조물 및 부품 제조 효율성 장치 II 블루프린트", 
       "ru": "Standup XL-Set Structure and Component Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立超大型建筑和组件制造效率蓝图 II"
+      "zh": "屹立超大型建筑和组件制造效率 II 蓝图"
     }, 
     "typeNameID": 509917, 
     "volume": 0.01
@@ -61293,7 +61293,7 @@
       "ja": "スタンドアップ中型ミサイル精度1のブループリント", 
       "ko": "스탠드업 M-Set 미사일 정밀타격 I 블루프린트", 
       "ru": "Standup M-Set Missile Precision I Blueprint", 
-      "zh": "屹立中型导弹精度蓝图 I"
+      "zh": "屹立中型导弹精度 I 蓝图"
     }, 
     "typeNameID": 509919, 
     "volume": 0.01
@@ -61318,7 +61318,7 @@
       "ja": "スタンドアップ中型ミサイル精度2のブループリント", 
       "ko": "스탠드업 M-Set 미사일 정밀타격 II 블루프린트", 
       "ru": "Standup M-Set Missile Precision II Blueprint", 
-      "zh": "屹立中型导弹精度蓝图 II"
+      "zh": "屹立中型导弹精度 II 蓝图"
     }, 
     "typeNameID": 509921, 
     "volume": 0.01
@@ -61343,7 +61343,7 @@
       "ja": "スタンドアップ中型ミサイル発射1のブループリント", 
       "ko": "스탠드업 M-Set 미사일 궤도 예측 I 블루프린트", 
       "ru": "Standup M-Set Missile Projection I Blueprint", 
-      "zh": "屹立中型导弹投射蓝图 I"
+      "zh": "屹立中型导弹投射 I 蓝图"
     }, 
     "typeNameID": 509923, 
     "volume": 0.01
@@ -61368,7 +61368,7 @@
       "ja": "スタンドアップ中型ミサイル発射2のブループリント", 
       "ko": "스탠드업 M-Set 미사일 궤도 예측 II 블루프린트", 
       "ru": "Standup M-Set Missile Projection II Blueprint", 
-      "zh": "屹立中型导弹投射蓝图 II"
+      "zh": "屹立中型导弹投射 II 蓝图"
     }, 
     "typeNameID": 509925, 
     "volume": 0.01
@@ -61393,7 +61393,7 @@
       "ja": "スタンドアップ中型エネルギーニュートライザーの発動1のブループリント", 
       "ko": "스탠드업 M-Set 에너지 뉴트럴라이저 예측 장치 I 블루프린트", 
       "ru": "Standup M-Set Energy Neutralizer Projection I Blueprint", 
-      "zh": "屹立中型能量中和器投射蓝图 I"
+      "zh": "屹立中型能量中和器投射 I 蓝图"
     }, 
     "typeNameID": 509927, 
     "volume": 0.01
@@ -61418,7 +61418,7 @@
       "ja": "スタンドアップ中型エネルギーニュートライザーの発動2のブループリント", 
       "ko": "스탠드업 M-Set 에너지 뉴트럴라이저 예측 장치 II 블루프린트", 
       "ru": "Standup M-Set Energy Neutralizer Projection II Blueprint", 
-      "zh": "屹立中型能量中和器投射蓝图 II"
+      "zh": "屹立中型能量中和器投射 II 蓝图"
     }, 
     "typeNameID": 509929, 
     "volume": 0.01
@@ -61443,7 +61443,7 @@
       "ja": "スタンドアップ中型エネルギーニュートライザーエコノミー1のブループリント", 
       "ko": "스탠드업 M-Set 에너지 뉴트럴라이저 효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Energy Neutralizer Economy I Blueprint", 
-      "zh": "屹立中型能量中和器节能蓝图 I"
+      "zh": "屹立中型能量中和器节能 I 蓝图"
     }, 
     "typeNameID": 509931, 
     "volume": 0.01
@@ -61468,7 +61468,7 @@
       "ja": "スタンドアップ中型エネルギーニュートライザーエコノミー2のブループリント", 
       "ko": "스탠드업 M-Set 에너지 뉴트럴라이저 효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Energy Neutralizer Economy II Blueprint", 
-      "zh": "屹立中型能量中和器节能蓝图 II"
+      "zh": "屹立中型能量中和器节能 II 蓝图"
     }, 
     "typeNameID": 509933, 
     "volume": 0.01
@@ -61493,7 +61493,7 @@
       "ja": "スタンドアップ中型戦闘機サバイバル1のブループリント", 
       "ko": "스탠드업 M-Set 파이터 생존성 강화 I 블루프린트", 
       "ru": "Standup M-Set Fighter Survival I Blueprint", 
-      "zh": "屹立中型铁骑舰载机生存蓝图 I"
+      "zh": "屹立中型铁骑舰载机生存 I 蓝图"
     }, 
     "typeNameID": 509935, 
     "volume": 0.01
@@ -61518,7 +61518,7 @@
       "ja": "スタンドアップ中型戦闘機サバイバル2のブループリント", 
       "ko": "스탠드업 M-Set 파이터 생존성 강화 II 블루프린트", 
       "ru": "Standup M-Set Fighter Survival II Blueprint", 
-      "zh": "屹立中型铁骑舰载机生存蓝图 II"
+      "zh": "屹立中型铁骑舰载机生存 II 蓝图"
     }, 
     "typeNameID": 509937, 
     "volume": 0.01
@@ -61543,7 +61543,7 @@
       "ja": "スタンドアップ中型戦闘機ナビゲーション1のブループリント", 
       "ko": "스탠드업 M-Set 파이터 항법 시스템 I 블루프린트", 
       "ru": "Standup M-Set Fighter Navigation I Blueprint", 
-      "zh": "屹立中型铁骑舰载机导航蓝图 I"
+      "zh": "屹立中型铁骑舰载机导航 I 蓝图"
     }, 
     "typeNameID": 509939, 
     "volume": 0.01
@@ -61568,7 +61568,7 @@
       "ja": "スタンドアップ中型戦闘機ナビゲーション2のブループリント", 
       "ko": "스탠드업 M-Set 파이터 항법 시스템 II 블루프린트", 
       "ru": "Standup M-Set Fighter Navigation II Blueprint", 
-      "zh": "屹立铁骑舰载机导航II M蓝图"
+      "zh": "屹立中型铁骑舰载机导航 II 蓝图"
     }, 
     "typeNameID": 509941, 
     "volume": 0.01
@@ -61593,7 +61593,7 @@
       "ja": "スタンドアップ中型電子戦兵器の発射1のブループリント", 
       "ko": "스탠드업 M-Set 전자전 예측 장치 I 블루프린트", 
       "ru": "Standup M-Set Electronic Warfare Projection I Blueprint", 
-      "zh": "屹立电子战投射I M蓝图"
+      "zh": "屹立中型电子战投射 I 蓝图"
     }, 
     "typeNameID": 509943, 
     "volume": 0.01
@@ -61618,7 +61618,7 @@
       "ja": "スタンドアップ中型電子戦兵器の発射2のブループリント", 
       "ko": "스탠드업 M-Set 전자전 예측 장치 II 블루프린트", 
       "ru": "Standup M-Set Electronic Warfare Projection II Blueprint", 
-      "zh": "屹立电子战投射II M蓝图"
+      "zh": "屹立中型电子战投射 II 蓝图"
     }, 
     "typeNameID": 509945, 
     "volume": 0.01
@@ -61643,7 +61643,7 @@
       "ja": "スタンドアップ中型電子戦兵器エコノミー1のブループリント", 
       "ko": "스탠드업 M-Set 전자전 효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Electronic Warfare Economy I Blueprint", 
-      "zh": "屹立电子战节能I M蓝图"
+      "zh": "屹立中型电子战节能 I 蓝图"
     }, 
     "typeNameID": 509947, 
     "volume": 0.01
@@ -61668,7 +61668,7 @@
       "ja": "スタンドアップ中型電子戦兵器エコノミー2のブループリント", 
       "ko": "스탠드업 M-Set 전자전 효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Electronic Warfare Economy II Blueprint", 
-      "zh": "屹立中型电子战节能蓝图 II"
+      "zh": "屹立中型电子战节能 II 蓝图"
     }, 
     "typeNameID": 509949, 
     "volume": 0.01
@@ -61693,7 +61693,7 @@
       "ja": "スタンドアップ中型ストラクチャターゲット多重化1のブループリント", 
       "ko": "스탠드업 M-Set 타겟 구조물 다중 처리 장치 I 블루프린트", 
       "ru": "Standup M-Set Structure Target Multiplexing I Blueprint", 
-      "zh": "屹立中型建筑多重锁定装置蓝图 I"
+      "zh": "屹立中型建筑多重锁定装置 I 蓝图"
     }, 
     "typeNameID": 509951, 
     "volume": 0.01
@@ -61718,7 +61718,7 @@
       "ja": "スタンドアップ中型ストラクチャターゲット多重化2のブループリント", 
       "ko": "스탠드업 M-Set 타겟 구조물 다중 처리 장치 II 블루프린트", 
       "ru": "Standup M-Set Structure Target Multiplexing II Blueprint", 
-      "zh": "屹立中型建筑多重锁定装置蓝图 II"
+      "zh": "屹立中型建筑多重锁定装置 II 蓝图"
     }, 
     "typeNameID": 509953, 
     "volume": 0.01
@@ -61743,7 +61743,7 @@
       "ja": "スタンドアップ中型高性能ターゲットシステムI設計図", 
       "ko": "스탠드업 M-Set 향상된 타겟팅 시스템 I 블루프린트", 
       "ru": "Standup M-Set Enhanced Targeting System I Blueprint", 
-      "zh": "屹立中型锁定增强系统蓝图 I"
+      "zh": "屹立中型锁定增强系统 I 蓝图"
     }, 
     "typeNameID": 509955, 
     "volume": 0.01
@@ -61768,7 +61768,7 @@
       "ja": "スタンドアップ中型高性能ターゲットシステムII設計図", 
       "ko": "스탠드업 M-Set 향상된 타겟팅 시스템 II 블루프린트", 
       "ru": "Standup M-Set Enhanced Targeting System II Blueprint", 
-      "zh": "屹立中型锁定增强系统蓝图 II"
+      "zh": "屹立中型锁定增强系统 II 蓝图"
     }, 
     "typeNameID": 509957, 
     "volume": 0.01
@@ -62059,7 +62059,7 @@
       "ja": "スタンドアップ大型ミサイル航行プロセッサ1のブループリント", 
       "ko": "스탠드업 L-Set 미사일 비행 프로세서 I 블루프린트", 
       "ru": "Standup L-Set Missile Flight Processor I Blueprint", 
-      "zh": "屹立大型导弹飞行处理器蓝图 I"
+      "zh": "屹立大型导弹飞行处理器 I 蓝图"
     }, 
     "typeNameID": 509983, 
     "volume": 0.01
@@ -62084,7 +62084,7 @@
       "ja": "スタンドアップ大型ミサイル航行プロセッサ2のブループリント", 
       "ko": "스탠드업 L-Set 미사일 비행 프로세서 II 블루프린트", 
       "ru": "Standup L-Set Missile Flight Processor II Blueprint", 
-      "zh": "屹立导弹飞行处理器II L蓝图"
+      "zh": "屹立大型导弹飞行处理器 II 蓝图"
     }, 
     "typeNameID": 509985, 
     "volume": 0.01
@@ -62109,7 +62109,7 @@
       "ja": "スタンドアップ大型エネルギーニュートライザーフィードバックコントロール1のブループリント", 
       "ko": "스탠드업 L-Set 에너지 뉴트럴라이저 피드백 제어 장치 I 블루프린트", 
       "ru": "Standup L-Set Energy Neutralizer Feedback Control I Blueprint", 
-      "zh": "屹立能量中和器反馈控制I L蓝图"
+      "zh": "屹立大型能量中和器反馈控制 I 蓝图"
     }, 
     "typeNameID": 509987, 
     "volume": 0.01
@@ -62134,7 +62134,7 @@
       "ja": "スタンドアップ大型エネルギーニュートライザーフィードバックコントロール2のブループリント", 
       "ko": "스탠드업 L-Set 에너지 뉴트럴라이저 피드백 제어 장치 II 블루프린트", 
       "ru": "Standup L-Set Energy Neutralizer Feedback Control II Blueprint", 
-      "zh": "屹立大型能量中和器反馈控制蓝图 II"
+      "zh": "屹立大型能量中和器反馈控制 II 蓝图"
     }, 
     "typeNameID": 509989, 
     "volume": 0.01
@@ -62159,7 +62159,7 @@
       "ja": "スタンドアップ大型戦闘機ミッションコントロール1のブループリント", 
       "ko": "스탠드업 L-Set 파이터 미션 관제 I 블루프린트", 
       "ru": "Standup L-Set Fighter Mission Control I Blueprint", 
-      "zh": "屹立大型铁骑舰载机任务控制蓝图 I"
+      "zh": "屹立大型铁骑舰载机任务控制 I 蓝图"
     }, 
     "typeNameID": 509991, 
     "volume": 0.01
@@ -62184,7 +62184,7 @@
       "ja": "スタンドアップ大型戦闘機ミッションコントロール2のブループリント", 
       "ko": "스탠드업 L-Set 파이터 미션 관제 II 블루프린트", 
       "ru": "Standup L-Set Fighter Mission Control II Blueprint", 
-      "zh": "屹立大型铁骑舰载机任务控制蓝图 II"
+      "zh": "屹立大型铁骑舰载机任务控制 II 蓝图"
     }, 
     "typeNameID": 509993, 
     "volume": 0.01
@@ -62209,7 +62209,7 @@
       "ja": "スタンドアップ大型EWコマンドシステムI設計図", 
       "ko": "스탠드업 L-Set 전자전 지휘 시스템 I 블루프린트", 
       "ru": "Standup L-Set EW Command System I Blueprint", 
-      "zh": "屹立大型电子战指挥系统蓝图 I"
+      "zh": "屹立大型电子战指挥系统 I 蓝图"
     }, 
     "typeNameID": 509995, 
     "volume": 0.01
@@ -62234,7 +62234,7 @@
       "ja": "スタンドアップ大型EWコマンドシステムII設計図", 
       "ko": "스탠드업 L-Set 전자전 지휘 시스템 II 블루프린트", 
       "ru": "Standup L-Set EW Command System II Blueprint", 
-      "zh": "屹立大型电子战指挥系统蓝图 II"
+      "zh": "屹立大型电子战指挥系统 II 蓝图"
     }, 
     "typeNameID": 509997, 
     "volume": 0.01
@@ -62259,7 +62259,7 @@
       "ja": "スタンドアップ大型爆弾照準器1のブループリント", 
       "ko": "스탠드업 L-Set 폭탄 조준기 I 블루프린트", 
       "ru": "Standup L-Set Bomb Aimer I Blueprint", 
-      "zh": "屹立大型炸弹瞄准装置蓝图 I"
+      "zh": "屹立大型炸弹瞄准装置 I 蓝图"
     }, 
     "typeNameID": 509999, 
     "volume": 0.01
@@ -62284,7 +62284,7 @@
       "ja": "スタンドアップ大型爆弾照準器2のブループリント", 
       "ko": "스탠드업 L-Set 폭탄 조준기 II 블루프린트", 
       "ru": "Standup L-Set Bomb Aimer II Blueprint", 
-      "zh": "屹立大型炸弹瞄准装置蓝图 II"
+      "zh": "屹立大型炸弹瞄准装置 II 蓝图"
     }, 
     "typeNameID": 510001, 
     "volume": 0.01
@@ -62309,7 +62309,7 @@
       "ja": "スタンドアップ大型地点防衛バッテリーコントロール1のブループリント", 
       "ko": "스탠드업 L-Set 거점 방어 포탑 I 블루프린트", 
       "ru": "Standup L-Set Point Defense Battery Control I Blueprint", 
-      "zh": "屹立大型定点防御炮塔控制蓝图 I"
+      "zh": "屹立大型定点防御炮塔控制 I 蓝图"
     }, 
     "typeNameID": 510003, 
     "volume": 0.01
@@ -62334,7 +62334,7 @@
       "ja": "スタンドアップ大型地点防衛バッテリーコントロール2のブループリント", 
       "ko": "스탠드업 L-Set 거점 방어 포탑 II 블루프린트", 
       "ru": "Standup L-Set Point Defense Battery Control II Blueprint", 
-      "zh": "屹立大型定点防御炮塔控制蓝图 II"
+      "zh": "屹立大型定点防御炮塔控制 II 蓝图"
     }, 
     "typeNameID": 510005, 
     "volume": 0.01
@@ -62359,7 +62359,7 @@
       "ja": "スタンドアップ大型ターゲット捕捉アレイI設計図", 
       "ko": "스탠드업 L-Set 타겟팅 지원 시설 I 블루프린트", 
       "ru": "Standup L-Set Target Acquisition Array I Blueprint", 
-      "zh": "屹立大型目标锁定阵列蓝图 I"
+      "zh": "屹立大型目标锁定阵列 I 蓝图"
     }, 
     "typeNameID": 510007, 
     "volume": 0.01
@@ -62384,7 +62384,7 @@
       "ja": "スタンドアップ大型ターゲット捕捉アレイII設計図", 
       "ko": "스탠드업 L-Set 타겟팅 지원 시설 II 블루프린트", 
       "ru": "Standup L-Set Target Acquisition Array II Blueprint", 
-      "zh": "屹立大型目标锁定阵列蓝图 II"
+      "zh": "屹立大型目标锁定阵列 II 蓝图"
     }, 
     "typeNameID": 510009, 
     "volume": 0.01
@@ -62541,7 +62541,7 @@
       "ja": "スタンドアップ超大型ミサイル発射制御コンピューター1のブループリント", 
       "ko": "스탠드업 XL-Set 미사일 사격 통제 시스템 I 블루프린트", 
       "ru": "Standup XL-Set Missile Fire Control Computer I Blueprint", 
-      "zh": "屹立超大型导弹火力控制计算机蓝图 I"
+      "zh": "屹立超大型导弹火力控制计算机 I 蓝图"
     }, 
     "typeNameID": 510023, 
     "volume": 0.01
@@ -62566,7 +62566,7 @@
       "ja": "スタンドアップ超大型ミサイル発射制御コンピューター2のブループリント", 
       "ko": "스탠드업 XL-Set 미사일 사격 통제 시스템 II 블루프린트", 
       "ru": "Standup XL-Set Missile Fire Control Computer II Blueprint", 
-      "zh": "屹立超大型导弹火力控制计算机蓝图 II"
+      "zh": "屹立超大型导弹火力控制计算机 II 蓝图"
     }, 
     "typeNameID": 510025, 
     "volume": 0.01
@@ -62591,7 +62591,7 @@
       "ja": "スタンドアップ超大型統合戦闘機とPDネットワーク1のブループリント", 
       "ko": "스탠드업 XL-Set 파이터 및 거점 방어 통합 네트워크 장치 I 블루프린트", 
       "ru": "Standup XL-Set Integrated Fighter and PD Network I Blueprint", 
-      "zh": "屹立超大型集成式铁骑舰载机与定点防御网络蓝图 I"
+      "zh": "屹立超大型集成式铁骑舰载机与定点防御网络 I 蓝图"
     }, 
     "typeNameID": 510027, 
     "volume": 0.01
@@ -62616,7 +62616,7 @@
       "ja": "スタンドアップ超大型統合戦闘機とPDネットワーク2のブループリント", 
       "ko": "스탠드업 XL-Set 파이터 및 거점 방어 통합 네트워크 장치 II 블루프린트", 
       "ru": "Standup XL-Set Integrated Fighter and PD Network II Blueprint", 
-      "zh": "屹立超大型集成式铁骑舰载机与定点防御网络蓝图 II"
+      "zh": "屹立超大型集成式铁骑舰载机与定点防御网络 II 蓝图"
     }, 
     "typeNameID": 510029, 
     "volume": 0.01
@@ -62641,7 +62641,7 @@
       "ja": "スタンドアップ超大型EWとエミッションコーディネーター1のブループリント", 
       "ko": "스탠드업 XL-Set 전자전 및 에너지 뉴트럴라이저 조정기 I 블루프린트", 
       "ru": "Standup XL-Set EW and Emissions Co-ordinator I Blueprint", 
-      "zh": "屹立超大型电子战和散热协调器蓝图 I"
+      "zh": "屹立超大型电子战和散热协调器 I 蓝图"
     }, 
     "typeNameID": 510031, 
     "volume": 0.01
@@ -62666,7 +62666,7 @@
       "ja": "スタンドアップ超大型EWとエミッションコーディネーター2のブループリント", 
       "ko": "스탠드업 XL-Set 전자전 및 에너지 뉴트럴라이저 조정기 II 블루프린트", 
       "ru": "Standup XL-Set EW and Emissions Co-ordinator II Blueprint", 
-      "zh": "屹立超大型电子战和散热协调器蓝图 II"
+      "zh": "屹立超大型电子战和散热协调器 II 蓝图"
     }, 
     "typeNameID": 510033, 
     "volume": 0.01
@@ -62691,7 +62691,7 @@
       "ja": "スタンドアップ超大型殲滅級兵器セット1のブループリント", 
       "ko": "스탠드업 XL-Set 둠스데이 무기 제어 장치 I 블루프린트", 
       "ru": "Standup XL-Set Extinction Level Weapons Suite I Blueprint", 
-      "zh": "屹立超大型毁灭级武器套装蓝图 I"
+      "zh": "屹立超大型毁灭级武器套装 I 蓝图"
     }, 
     "typeNameID": 510035, 
     "volume": 0.01
@@ -62716,7 +62716,7 @@
       "ja": "スタンドアップ超大型殲滅級兵器セット2のブループリント", 
       "ko": "스탠드업 XL-Set 둠스데이 무기 제어 장치 I 블루프린트", 
       "ru": "Standup XL-Set Extinction Level Weapons Suite II Blueprint", 
-      "zh": "屹立超大型毁灭级武器套装蓝图 II"
+      "zh": "屹立超大型毁灭级武器套装 II 蓝图"
     }, 
     "typeNameID": 510037, 
     "volume": 0.01
@@ -62784,7 +62784,7 @@
       "ja": "旧中型HS資源回収I設計図", 
       "ko": "OLD M-Set HS 자원 레클레메이션 I 블루프린트", 
       "ru": "OLD M-Set HS Materials Reclamation I Blueprint", 
-      "zh": "旧HS材料回收I M蓝图"
+      "zh": "旧中型HS材料回收 I 蓝图"
     }, 
     "typeNameID": 510047, 
     "volume": 0.01
@@ -62809,7 +62809,7 @@
       "ja": "旧中型HS資源回収II設計図", 
       "ko": "OLD M-Set HS 자원 레클레메이션 II 블루프린트", 
       "ru": "OLD M-Set HS Materials Reclamation II Blueprint", 
-      "zh": "旧中型HS材料回收蓝图 II"
+      "zh": "旧中型HS材料回收 II 蓝图"
     }, 
     "typeNameID": 510049, 
     "volume": 0.01
@@ -62833,7 +62833,7 @@
       "ja": "旧大型鉱石グレーディングプロセッサーI設計図", 
       "ko": "OLD L-Set 광물 품질관리 프로세서 I 블루프린트", 
       "ru": "OLD L-Set Ore Grading Processor I Blueprint", 
-      "zh": "旧大型矿石分级处理器蓝图 I"
+      "zh": "旧大型矿石分级处理器 I 蓝图"
     }, 
     "typeNameID": 510051, 
     "volume": 0.01
@@ -62858,7 +62858,7 @@
       "ja": "旧大型鉱石グレーディングプロセッサーII設計図", 
       "ko": "OLD L-Set 광물 품질관리 프로세서 II 블루프린트", 
       "ru": "OLD L-Set Ore Grading Processor II Blueprint", 
-      "zh": "旧大型矿石分级处理器蓝图 II"
+      "zh": "旧大型矿石分级处理器 II 蓝图"
     }, 
     "typeNameID": 510053, 
     "volume": 0.01
@@ -62882,7 +62882,7 @@
       "ja": "旧超大型再処理モニターI設計図", 
       "ko": "OLD XL-Set 정제시설 모니터링 시스템 I 블루프린트", 
       "ru": "OLD XL-Set Reprocessing Monitor I Blueprint", 
-      "zh": "旧超大型提炼监控蓝图 I"
+      "zh": "旧超大型提炼监控 I 蓝图"
     }, 
     "typeNameID": 510055, 
     "volume": 0.01
@@ -62907,7 +62907,7 @@
       "ja": "旧超大型再処理モニターII設計図", 
       "ko": "OLD XL-Set 정제시설 모니터링 시스템 II 블루프린트", 
       "ru": "OLD XL-Set Reprocessing Monitor II Blueprint", 
-      "zh": "旧超大型提炼监控蓝图 II"
+      "zh": "旧超大型提炼监控 II 蓝图"
     }, 
     "typeNameID": 510057, 
     "volume": 0.01
@@ -62930,7 +62930,7 @@
       "ja": "中型Tech 1大型艦船研究1のブループリント", 
       "ko": "중형 테크 I 대형 함선 연구 리그 I 블루프린트", 
       "ru": "Medium Tech I Large Ship Research I Blueprint", 
-      "zh": "中型一级科技大型舰船研究蓝图 I"
+      "zh": "中型一级科技大型舰船研究 I 蓝图"
     }, 
     "typeNameID": 510063, 
     "volume": 0.01
@@ -65546,7 +65546,7 @@
       "ja": "中型広報センターのブループリント", 
       "ko": "중형 홍보 센터 블루프린트", 
       "ru": "Medium Advertisement Center Blueprint", 
-      "zh": "中型宣传中心蓝图"
+      "zh": "昇威简易广告中心蓝图"
     }, 
     "typeNameID": 510295, 
     "volume": 0.01
@@ -65570,7 +65570,7 @@
       "ja": "大型広報センターのブループリント", 
       "ko": "대형 홍보 센터 블루프린트", 
       "ru": "Large Advertisement Center Blueprint", 
-      "zh": "大型宣传中心蓝图"
+      "zh": "昇威高级广告中心蓝图"
     }, 
     "typeNameID": 510297, 
     "volume": 0.01
@@ -65596,7 +65596,7 @@
       "ja": "スタンドアップ・シグナル増幅器I設計図", 
       "ko": "스탠드업 신호 증폭기 I 블루프린트", 
       "ru": "Standup Signal Amplifier I Blueprint", 
-      "zh": "屹立信号放大器蓝图 I"
+      "zh": "屹立信号放大器 I 蓝图"
     }, 
     "typeNameID": 510299, 
     "volume": 0.01
@@ -67002,7 +67002,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機<b>用途：</b> エネルギーの無効化<b>詳細：</b> シーナバイトがエネルギーを無効化し、戦況をサポートする。<b>エネルギーニュートライザー</b>： 標的のキャパシタエネルギーを一部無効化する。<b>マイクロワープドライブ</b>： シグネチャ半径が拡大する代わりに大幅に速度を増加させる。マイクロワープドライブは使用後のクールダウンに長時間を要する。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 에너지 뉴트럴라이즈 <br><br><b>설명:</b> 세노바이트는 에너지 뉴트럴라이징 임무를 수행하는 함선입니다. <br><br><b>에너지 뉴트럴라이저</b>: 대상 함선의 캐패시터를 일정량 무력화시킵니다. <br><br><b>마이크로 워프 드라이브</b>: 속도가 크게 향상되지만 시그니처 반경이 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки\n\n<b>Задача:</b> Нейтрализация заряда\n\n<b>Описание:</b> «Цинобит» эффективно расправляется с энергией в накопителях вражеских кораблей.\n\n\n\n<b>Дистанционный нейтрализатор заряда</b>: Нейтрализует часть энергии в накопителе выбранного корабля.\n\n<b>Микроварп-ускоритель</b>: Даёт значительный прирост к скорости полёта за счёт увеличения размера сигнатуры корабля. Микроварп-ускорителю нужно дать остыть перед повторным использованием; это может занять довольно долгое время.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>能量中和\n\n<b>描述：</b>修道士在战场上进行能量中和支援。\n\n\n\n<b>能量中和器</b>中和目标舰船电容器的部分能量。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>能量中和\n\n<b>描述：</b>修道士在战场上进行能量中和支援。\n\n\n\n<b>能量中和器</b>中和目标舰船电容器的部分能量。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
     }, 
     "descriptionID": 515644, 
     "graphicID": 2899, 
@@ -72780,7 +72780,7 @@
       "ja": "ストラクチャ キネティックレジスタンス・スクリプトのブループリント", 
       "ko": "선체 키네틱 저항력 스크립트 블루프린트", 
       "ru": "Structure Kinetic Resistance Script Blueprint", 
-      "zh": "建筑动能抗性脚本蓝图"
+      "zh": "建筑动能伤害抗性脚本蓝图"
     }, 
     "typeNameID": 510731, 
     "volume": 0.01
@@ -73195,7 +73195,7 @@
       "ja": "スタンドアップXLクルーズミサイル設計図", 
       "ko": "스탠드업 XL 크루즈 미사일 블루프린트", 
       "ru": "Standup XL Cruise Missile Blueprint", 
-      "zh": "屹立巡航导弹XL蓝图"
+      "zh": "屹立超大型巡航导弹蓝图"
     }, 
     "typeNameID": 510745, 
     "volume": 0.01
@@ -91820,7 +91820,7 @@
       "ja": "アイス採掘レーザーI設計図", 
       "ko": "아이스 채굴 레이저 I 블루프린트", 
       "ru": "Ice Mining Laser I Blueprint", 
-      "zh": "冰矿开采激光器蓝图 I"
+      "zh": "冰矿开采激光器 I 蓝图"
     }, 
     "typeNameID": 511830, 
     "volume": 0.01
@@ -91844,7 +91844,7 @@
       "ja": "アイス採掘レーザーII設計図", 
       "ko": "아이스 채굴 레이저 II 블루프린트", 
       "ru": "Ice Mining Laser II Blueprint", 
-      "zh": "冰矿开采激光器蓝图 II"
+      "zh": "冰矿开采激光器 II 蓝图"
     }, 
     "typeNameID": 511831, 
     "volume": 0.01
@@ -130407,7 +130407,7 @@
       "ja": "ガイダンス妨害器1のブループリント", 
       "ko": "유도 디스럽터 I 블루프린트", 
       "ru": "Guidance Disruptor I Blueprint", 
-      "zh": "制导干扰器蓝图 I"
+      "zh": "制导干扰器 I 蓝图"
     }, 
     "typeNameID": 513632, 
     "volume": 0.01
@@ -130432,7 +130432,7 @@
       "ja": "ガイダンス妨害器2のブループリント", 
       "ko": "유도 디스럽터 II 블루프린트", 
       "ru": "Guidance Disruptor II Blueprint", 
-      "zh": "制导干扰器蓝图 II"
+      "zh": "制导干扰器 II 蓝图"
     }, 
     "typeNameID": 513633, 
     "volume": 0.01
@@ -130510,7 +130510,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機<b>用途：</b> ジャミング<b>詳細：</b> スカラベが電子機器へのジャミングを行い、戦況をサポートする。<b>ジャマー</b>： 捕捉システムを妨害する。<b>マイクロワープドライブ</b>： シグネチャ半径が拡大する代わりに大幅に速度を増加させる。マイクロワープドライブは使用後のクールダウンに長時間を要する。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 재밍 <br><br><b>설명:</b> 스캐럽은 전자전 재밍을 수행하기 위해 설계되었습니다. <br><br><b>재머</b>: 타겟팅 시스템에 간섭합니다. <br><br><b>마이크로 워프 드라이브</b>: 속도가 크게 향상되지만 시그니처 반경이 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки \n\n<b>Задача:</b> Электронное противодействие\n\n<b>Описание:</b> «Скарабей» вносит помехи в работу систем целеуказания вражеских кораблей.\n\n\n\n<b>Глушение</b>: Вносит помехи в работу систем целеуказания корабля-цели.\n\n<b>Микроварп-ускоритель</b>: Даёт значительный прирост к скорости полёта за счёт увеличения размера сигнатуры корабля. Микроварп-ускорителю нужно дать остыть перед повторным использованием; это может занять довольно долгое время.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>电子干扰\n\n<b>描述：</b>圣甲虫在战场上进行电子干扰支援。\n\n\n\n<b>干扰器</b>：干扰锁定系统。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>电子干扰\n\n<b>描述：</b>圣甲虫在战场上进行电子干扰支援。\n\n\n\n<b>干扰器</b>：干扰锁定系统。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
     }, 
     "descriptionID": 515646, 
     "graphicID": 2975, 
@@ -130550,7 +130550,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機\n\n<b>用途：</b> ワープ妨害\n\n<b>説明：</b> サイレンは戦場でワープ妨害サポートを繰り出すことができる。\n\n\n\n<b>ワープ妨害器</b>: ターゲットワープシステムを妨害する。\n\n<b>アフターバーナー</b>: 適度なスピードアップを実現する。アフターバーナーのクールダウンサイクルは長い。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 워프 디스럽션 <br><br><b>설명:</b> 사이렌은 워프 디스럽션을 수행하기 위해 설계되었습니다. <br><br><b>워프 디스럽터</b>: 대상 함선의 워프 시스템을 교란합니다. <br><br><b>애프터버너</b>: 비행 속도가 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки <b>Роль:</b> Искажение варп-двигателей <b>Описание:</b> «Сайрен» порой просто незаменим в бою — этот корабль оказывает достойную поддержку своим союзникам, выводя из строя варп-двигатели кораблей неприятеля. <b>Варп-подавитель</b>: нарушает работу варп-двигателей у целей. <b>Форсажный ускоритель</b>: умеренно увеличивает скорость. Каждый раз после использования форсажному ускорителю требуется длительное охлаждение.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>跃迁干扰\n\n<b>描述：</b>塞壬在战场上进行跃迁干扰支援。\n\n\n\n<b>跃迁扰断器</b>：干扰目标的跃迁系统。\n\n<b>加力燃烧器</b>：提供一定程度的速度加成。加力燃烧器运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>跃迁干扰\n\n<b>描述：</b>塞壬在战场上进行跃迁干扰支援。\n\n\n\n<b>跃迁扰断器</b>：干扰目标的跃迁系统。\n\n<b>加力燃烧器</b>：提供一定程度的速度加成。加力燃烧器运转后的冷却时间较长。"
     }, 
     "descriptionID": 515648, 
     "graphicID": 2972, 
@@ -130590,7 +130590,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機<b>用途：</b> ステイシスウェビファイヤー<b>詳細：</b> ドロミがウェビファイヤーにより、戦況をサポートする。<b>ステイシスウェビファイヤー</b>： 標的のドライブシステムを妨害し、速度を低下させる。<b>マイクロワープドライブ</b>： シグネチャ半径が拡大する代わりに大幅に速度を増加させる。マイクロワープドライブは使用後のクールダウンに長時間を要する。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 스테이시스 웹 생성 <br><br><b>설명:</b> 드로미는 스테이시스 웹 사용을 위해 설계되었습니다. <br><br><b>스테이시스 웹 생성기</b>: 대상 함선의 추진 시스템을 교란하여 느리게 만듭니다. <br><br><b>마이크로 워프 드라이브</b>: 속도가 크게 향상되지만 시그니처 반경이 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки\n\n<b>Задача:</b> Создание стазис-полей\n\n<b>Описание:</b> «Дроми» создаёт стазис-поля, замедляющие вражеские корабли.\n\n\n\n<b>Генератор стазис-поля</b>: Вносит помехи в работу двигательных систем корабля-цели, замедляя его движение.\n\n<b>Микроварп-ускоритель</b>: Даёт значительный прирост к скорости полёта за счёт увеличения размера сигнатуры корабля. Микроварп-ускорителю нужно дать остыть перед повторным использованием; это может занять довольно долгое время.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>停滞缠绕\n\n<b>描述：</b>德洛米在战场上进行停滞缠绕支援。\n\n\n\n<b>停滞缠绕光束</b>：扰断目标舰船的驱动系统，使其速度减慢。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>停滞缠绕\n\n<b>描述：</b>德洛米在战场上进行停滞缠绕支援。\n\n\n\n<b>停滞缠绕光束</b>：扰断目标舰船的驱动系统，使其速度减慢。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
     }, 
     "descriptionID": 515650, 
     "graphicID": 2973, 
@@ -136199,7 +136199,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機<b>用途：</b> エネルギーの無効化<b>詳細：</b> シーナバイトがエネルギーを無効化し、戦況をサポートする。<b>エネルギーニュートライザー</b>： 標的のキャパシタエネルギーを一部無効化する。<b>マイクロワープドライブ</b>： シグネチャ半径が拡大する代わりに大幅に速度を増加させる。マイクロワープドライブは使用後のクールダウンに長時間を要する。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 에너지 뉴트럴라이즈 <br><br><b>설명:</b> 세노바이트는 에너지 뉴트럴라이징 임무를 수행하는 함선입니다. <br><br><b>에너지 뉴트럴라이저</b>: 대상 함선의 캐패시터를 일정량 무력화시킵니다. <br><br><b>마이크로 워프 드라이브</b>: 속도가 크게 향상되지만 시그니처 반경이 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки\n\n<b>Задача:</b> Нейтрализация заряда\n\n<b>Описание:</b> «Цинобит» эффективно расправляется с энергией в накопителях вражеских кораблей.\n\n\n\n<b>Дистанционный нейтрализатор заряда</b>: Нейтрализует часть энергии в накопителе выбранного корабля.\n\n<b>Микроварп-ускоритель</b>: Даёт значительный прирост к скорости полёта за счёт увеличения размера сигнатуры корабля. Микроварп-ускорителю нужно дать остыть перед повторным использованием; это может занять довольно долгое время.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>能量中和\n\n<b>描述：</b>修道士在战场上进行能量中和支援。\n\n\n\n<b>能量中和器</b>中和目标舰船电容器的部分能量。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>能量中和\n\n<b>描述：</b>修道士在战场上进行能量中和支援。\n\n\n\n<b>能量中和器</b>中和目标舰船电容器的部分能量。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
     }, 
     "descriptionID": 515645, 
     "graphicID": 2899, 
@@ -136239,7 +136239,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機<b>用途：</b> ジャミング<b>詳細：</b> スカラベが電子機器へのジャミングを行い、戦況をサポートする。<b>ジャマー</b>： 捕捉システムを妨害する。<b>マイクロワープドライブ</b>： シグネチャ半径が拡大する代わりに大幅に速度を増加させる。マイクロワープドライブは使用後のクールダウンに長時間を要する。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 재밍 <br><br><b>설명:</b> 스캐럽은 전자전 재밍을 수행하기 위해 설계되었습니다. <br><br><b>재머</b>: 타겟팅 시스템에 간섭합니다. <br><br><b>마이크로 워프 드라이브</b>: 속도가 크게 향상되지만 시그니처 반경이 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки\n\n<b>Задача:</b> Электронное противодействие\n\n<b>Описание:</b> «Скарабей» вносит помехи в работу систем целеуказания вражеских кораблей.\n\n\n\n<b>Глушение</b>: Вносит помехи в работу систем целеуказания корабля-цели.\n\n<b>Микроварп-ускоритель</b>: Даёт значительный прирост к скорости полёта за счёт увеличения размера сигнатуры корабля. Микроварп-ускорителю нужно дать остыть перед повторным использованием; это может занять довольно долгое время.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>电子干扰\n\n<b>描述：</b>圣甲虫在战场上进行电子干扰支援。\n\n\n\n<b>干扰器</b>：干扰锁定系统。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>电子干扰\n\n<b>描述：</b>圣甲虫在战场上进行电子干扰支援。\n\n\n\n<b>干扰器</b>：干扰锁定系统。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
     }, 
     "descriptionID": 515647, 
     "graphicID": 2975, 
@@ -136279,7 +136279,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機\n\n<b>用途:</b> ワープ妨害\n\n<b>説明:</b> サイレンは戦場でワープ妨害サポートを繰り出すことができる。\n\n\n\n<b>ワープ妨害器</b>: ターゲットワープシステムを妨害する。\n\n<b>アフターバーナー</b>: 適度なスピードアップを実現する。アフターバーナーのクールダウンサイクルは長い。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 워프 디스럽션 <br><br><b>설명:</b> 사이렌은 워프 디스럽션을 수행하기 위해 설계되었습니다. <br><br><b>워프 디스럽터</b>: 대상 함선의 워프 시스템을 교란합니다. <br><br><b>애프터버너</b>: 비행 속도가 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки <b>Роль:</b> Искажение варп-двигателей <b>Описание:</b> «Сайрен» порой просто незаменим в бою — этот корабль оказывает достойную поддержку своим союзникам, выводя из строя варп-двигатели кораблей неприятеля. <b>Варп-подавитель</b>: нарушает работу варп-двигателей у целей. <b>Форсажный ускоритель</b>: умеренно увеличивает скорость. Каждый раз после использования форсажному ускорителю требуется длительное охлаждение.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>跃迁干扰\n\n<b>描述：</b>塞壬在战场上进行跃迁干扰支援。\n\n\n\n<b>跃迁扰断器</b>：干扰目标的跃迁系统。\n\n<b>加力燃烧器</b>：提供一定程度的速度加成。加力燃烧器运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>跃迁干扰\n\n<b>描述：</b>塞壬在战场上进行跃迁干扰支援。\n\n\n\n<b>跃迁扰断器</b>：干扰目标的跃迁系统。\n\n<b>加力燃烧器</b>：提供一定程度的速度加成。加力燃烧器运转后的冷却时间较长。"
     }, 
     "descriptionID": 515649, 
     "graphicID": 2972, 
@@ -136320,7 +136320,7 @@
       "ja": "<b>タイプ：</b> 支援戦闘機<b>用途：</b> ステイシスウェビファイヤー<b>詳細：</b> ドロミがウェビファイヤーにより、戦況をサポートする。<b>ステイシスウェビファイヤー</b>： 標的のドライブシステムを妨害し、速度を低下させる。<b>マイクロワープドライブ</b>： シグネチャ半径が拡大する代わりに大幅に速度を増加させる。マイクロワープドライブは使用後のクールダウンに長時間を要する。", 
       "ko": "<b>분류:</b> 서포트 파이터 <br><br><b>임무:</b> 스테이시스 웹 생성 <br><br><b>설명:</b> 드로미는 스테이시스 웹 사용을 위해 설계되었습니다. <br><br><b>스테이시스 웹 생성기</b>: 대상 함선의 추진 시스템을 교란하여 느리게 만듭니다. <br><br><b>마이크로 워프 드라이브</b>: 속도가 크게 향상되지만 시그니처 반경이 증가합니다. 긴 재사용 대기시간을 갖고 있습니다.", 
       "ru": "<b>Тип:</b> Истребитель поддержки\n\n<b>Задача:</b> Создание стазис-полей\n\n<b>Описание:</b> «Дроми» создаёт стазис-поля, замедляющие вражеские корабли.\n\n\n\n<b>Генератор стазис-поля</b>: Вносит помехи в работу двигательных систем корабля-цели, замедляя его движение.\n\n<b>Микроварп-ускоритель</b>: Даёт значительный прирост к скорости полёта за счёт увеличения размера сигнатуры корабля. Микроварп-ускорителю нужно дать остыть перед повторным использованием; это может занять довольно долгое время.", 
-      "zh": "<b>类型：</b>后勤铁骑舰载机\n\n<b>作用：</b>停滞缠绕\n\n<b>描述：</b>德洛米在战场上进行停滞缠绕支援。\n\n\n\n<b>停滞缠绕光束</b>：扰断目标舰船的驱动系统，使其速度减慢。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
+      "zh": "<b>类型：</b>支援铁骑舰载机\n\n<b>作用：</b>停滞缠绕\n\n<b>描述：</b>德洛米在战场上进行停滞缠绕支援。\n\n\n\n<b>停滞缠绕光束</b>：扰断目标舰船的驱动系统，使其速度减慢。\n\n<b>微型跃迁推进器</b>：通过牺牲信号半径来大幅度提升速度。装备运转后的冷却时间较长。"
     }, 
     "descriptionID": 515651, 
     "graphicID": 2973, 
@@ -136396,7 +136396,7 @@
       "ja": "支援戦闘機による作戦が可能。レベル上昇ごとに支援戦闘機のヒットポイントが5％上昇。", 
       "ko": "서포트 파이터 운용을 위한 스킬입니다. 매 레벨마다 서포트 파이터 내구도 5% 증가", 
       "ru": "Навык эксплуатации истребителей поддержки. За каждую степень освоения навыка: на 5% повышается запас прочности истребителей поддержки.", 
-      "zh": "操作后勤铁骑舰载机的技能。每升一级，后勤铁骑舰载机的HP提高5%。"
+      "zh": "操作支援铁骑舰载机的技能。每升一级，支援铁骑舰载机的HP提高5%。"
     }, 
     "descriptionID": 514197, 
     "groupID": 273, 
@@ -136416,7 +136416,7 @@
       "ja": "支援戦闘機", 
       "ko": "서포트 파이터", 
       "ru": "Истребители поддержки", 
-      "zh": "后勤铁骑舰载机操控理论"
+      "zh": "支援铁骑舰载机操控理论"
     }, 
     "typeNameID": 514194, 
     "volume": 0.01
@@ -138702,7 +138702,7 @@
       "ja": "キャピタルエネルギーニュートラライザーI設計図", 
       "ko": "캐피탈 에너지 뉴트럴라이저 I 블루프린트", 
       "ru": "Capital Energy Neutralizer I Blueprint", 
-      "zh": "旗舰级能量中和器蓝图 I"
+      "zh": "旗舰级能量中和器 I 蓝图"
     }, 
     "typeNameID": 514505, 
     "volume": 0.01
@@ -138777,7 +138777,7 @@
       "ja": "キャピタルエネルギーニュートラライザーII設計図", 
       "ko": "캐피탈 에너지 뉴트럴라이저 II 블루프린트", 
       "ru": "Capital Energy Neutralizer II Blueprint", 
-      "zh": "旗舰级能量中和器蓝图 II"
+      "zh": "旗舰级能量中和器 II 蓝图"
     }, 
     "typeNameID": 514508, 
     "volume": 0.01
@@ -138849,7 +138849,7 @@
       "ja": "キャピタルエネルギーノスフェラトゥI設計図", 
       "ko": "캐피탈 에너지 노스페라투 I 블루프린트", 
       "ru": "Capital Energy Nosferatu I Blueprint", 
-      "zh": "旗舰级掠能器蓝图 I"
+      "zh": "旗舰级掠能器 I 蓝图"
     }, 
     "typeNameID": 514517, 
     "volume": 0.01
@@ -138924,7 +138924,7 @@
       "ja": "キャピタルエネルギーノスフェラトゥ2のブループリント", 
       "ko": "캐피탈 에너지 노스페라투 II 블루프린트", 
       "ru": "Capital Energy Nosferatu II Blueprint", 
-      "zh": "旗舰级掠能器蓝图 II"
+      "zh": "旗舰级掠能器 II 蓝图"
     }, 
     "typeNameID": 514520, 
     "volume": 0.01
@@ -139768,7 +139768,7 @@
       "ja": "キャピタル緊急船体エナジャイザー1のブループリント", 
       "ko": "캐피탈 긴급 보호막 I 블루프린트", 
       "ru": "Capital Emergency Hull Energizer I Blueprint", 
-      "zh": "旗舰级紧急船体增能器蓝图 I"
+      "zh": "旗舰级紧急船体增能器 I 蓝图"
     }, 
     "typeNameID": 514619, 
     "volume": 0.01
@@ -139845,7 +139845,7 @@
       "ja": "キャピタル緊急船体エナジャイザー2のブループリント", 
       "ko": "캐피탈 긴급 보호막 II 블루프린트", 
       "ru": "Capital Emergency Hull Energizer II Blueprint", 
-      "zh": "旗舰级紧急船体增能器蓝图 II"
+      "zh": "旗舰级紧急船体增能器 II 蓝图"
     }, 
     "typeNameID": 514622, 
     "variationParentTypeID": 40719, 
@@ -140352,7 +140352,7 @@
       "ja": "大型ワープ妨害器I設計図", 
       "ko": "헤비 워프 디스럽터 I 블루프린트", 
       "ru": "Heavy Warp Disruptor I Blueprint", 
-      "zh": "重型跃迁扰断器蓝图 I"
+      "zh": "重型跃迁扰断器 I 蓝图"
     }, 
     "typeNameID": 514654, 
     "volume": 0.01
@@ -140452,7 +140452,7 @@
       "ja": "大型ワープ妨害器II設計図", 
       "ko": "헤비 워프 디스럽터 II 블루프린트", 
       "ru": "Heavy Warp Disruptor II Blueprint", 
-      "zh": "重型跃迁扰断器蓝图 II"
+      "zh": "重型跃迁扰断器 II 蓝图"
     }, 
     "typeNameID": 514658, 
     "volume": 0.01
@@ -140562,7 +140562,7 @@
       "ja": "大型ワープスクランブラー1のブループリント", 
       "ko": "헤비 워프 스크램블러 I 블루프린트", 
       "ru": "Heavy Warp Scrambler I Blueprint", 
-      "zh": "重型跃迁扰频器蓝图 I"
+      "zh": "重型跃迁扰频器 I 蓝图"
     }, 
     "typeNameID": 514664, 
     "volume": 0.01
@@ -140818,7 +140818,7 @@
       "ja": "大型ワープスクランブラー2のブループリント", 
       "ko": "헤비 워프 스크램블러 II 블루프린트", 
       "ru": "Heavy Warp Scrambler II Blueprint", 
-      "zh": "重型跃迁扰频器蓝图 II"
+      "zh": "重型跃迁扰频器 II 蓝图"
     }, 
     "typeNameID": 514673, 
     "volume": 0.01
@@ -148210,7 +148210,7 @@
       "ja": "クワッドメガパルスレーザーI設計図", 
       "ko": "쿼드 메가 펄스 레이저 I 블루프린트", 
       "ru": "Quad Mega Pulse Laser I Blueprint", 
-      "zh": "四联超级脉冲激光器蓝图 I"
+      "zh": "四联超级脉冲激光器 I 蓝图"
     }, 
     "typeNameID": 515108, 
     "volume": 0.01
@@ -148335,7 +148335,7 @@
       "ja": "クワッドメガパルスレーザーII設計図", 
       "ko": "쿼드 메가 펄스 레이저 II 블루프린트", 
       "ru": "Quad Mega Pulse Laser II Blueprint", 
-      "zh": "四联超级脉冲激光器蓝图 II"
+      "zh": "四联超级脉冲激光器 II 蓝图"
     }, 
     "typeNameID": 515113, 
     "volume": 0.01
@@ -148727,7 +148727,7 @@
       "ja": "トリプル中性子ブラスターキャノンI設計図", 
       "ko": "트리플 중성자 블라스터 캐논 I 블루프린트", 
       "ru": "Triple Neutron Blaster Cannon I Blueprint", 
-      "zh": "三中子疾速加农炮蓝图 I"
+      "zh": "三中子疾速加农炮 I 蓝图"
     }, 
     "typeNameID": 515124, 
     "volume": 0.01
@@ -148852,7 +148852,7 @@
       "ja": "トリプル中性子ブラスターキャノンII設計図", 
       "ko": "트리플 중성자 블라스터 캐논 II 블루프린트", 
       "ru": "Triple Neutron Blaster Cannon II Blueprint", 
-      "zh": "三中子疾速加农炮蓝图 II"
+      "zh": "三中子疾速加农炮 II 蓝图"
     }, 
     "typeNameID": 515129, 
     "volume": 0.01
@@ -148900,7 +148900,7 @@
       "ja": "クワッド800mmリピートキャノンI設計図", 
       "ko": "쿼드 800mm 기관포 I 블루프린트", 
       "ru": "Quad 800mm Repeating Cannon I Blueprint", 
-      "zh": "四联800mm频射加农炮蓝图 I"
+      "zh": "四联800mm频射加农炮 I 蓝图"
     }, 
     "typeNameID": 515131, 
     "volume": 0.01
@@ -149025,7 +149025,7 @@
       "ja": "クワッド800mmリピートキャノンII設計図", 
       "ko": "쿼드 800mm 기관포 II 블루프린트", 
       "ru": "Quad 800mm Repeating Cannon II Blueprint", 
-      "zh": "四联800mm频射加农炮蓝图 II"
+      "zh": "四联800mm频射加农炮 II 蓝图"
     }, 
     "typeNameID": 515136, 
     "volume": 0.01
@@ -149414,7 +149414,7 @@
       "ja": "デュアルギガパルスレーザーII設計図", 
       "ko": "듀얼 기가 펄스 레이저 II 블루프린트", 
       "ru": "Dual Giga Pulse Laser II Blueprint", 
-      "zh": "双联千兆级脉冲激光器蓝图 II"
+      "zh": "双联千兆级脉冲激光器 II 蓝图"
     }, 
     "typeNameID": 515148, 
     "volume": 0.01
@@ -150175,7 +150175,7 @@
       "ja": "イオンシージブラスターII設計図", 
       "ko": "이온 시즈 블라스터 II 블루프린트", 
       "ru": "Ion Siege Blaster II Blueprint", 
-      "zh": "离子会战疾速炮II蓝图"
+      "zh": "离子会战疾速炮 II 蓝图"
     }, 
     "typeNameID": 515268, 
     "volume": 0.01
@@ -150474,7 +150474,7 @@
       "ja": "デュアル1000mmレールガン2のブループリント", 
       "ko": "듀얼 1000mm 레일건 II 블루프린트", 
       "ru": "Dual 1000mm Railgun II Blueprint", 
-      "zh": "双联1000mm磁轨炮蓝图 II"
+      "zh": "双联1000mm磁轨炮 II 蓝图"
     }, 
     "typeNameID": 515279, 
     "volume": 0.01
@@ -150548,7 +150548,7 @@
       "ja": "プロトタイプ高精度デュアル1000mmレールガンのブループリント", 
       "ko": "프로토타입 정밀 듀얼 1000mm 레일건 블루프린트", 
       "ru": "Prototype Precise Dual 1000mm Railgun Blueprint", 
-      "zh": "验证型精准双联1000mm磁轨炮蓝图"
+      "zh": "尖端型精准双联1000mm磁轨炮蓝图"
     }, 
     "typeNameID": 515278, 
     "volume": 0.01
@@ -150758,7 +150758,7 @@
     "capacity": 0.0, 
     "description": {
       "de": "Diese Scripts wurden ursprünglich von einer jugendlichen Hackergruppe namens \"The Fendahlian Collective\" verwendet, um an High-Tech-Sicherheitsfirmware vorbeizukommen. Sie enthalten einen komplexen Code, der die inneren Abläufe bestimmter Module verändert, indem er direkte Befehle in die Firmware eingibt. Die Einsatzmöglichkeiten dieser Technologie blieben den großen Corporations nicht verborgen, und die Jugendlichen, die sie entwickelt hatten, leiten nun ihre eigenen Forschungsabteilungen.\n\n\n\nDieses Script kann in ein Sensorbooster- oder Sensorfernbooster-Modul geladen werden, um die den Bonus auf die Sensorstärke des Moduls auf Kosten der Boni auf die Zielerfassungsreichweite und Zielerfassungsgeschwindigkeit zu erhöhen.", 
-      "en-us": "Originally used by the adolescent hacker group 'The Fendahlian Collective' to break past high tech security firmware, these script packs contain intricate code which modify the inherent behavior of certain modules by directly inserting commands into the firmware. The applications of such technology was not lost on the major players and the kids who invented it now head their own research divisions.\r\n\r\nThis script can be loaded into a sensor booster or remote sensor booster module to increase the module's sensor strength bonus at the expense of the targeting range and locking speed bonuses.", 
+      "en-us": "Originally used by the adolescent hacker group The 'Fendahlian Collective' to break past high tech security firmware, these script packs contain intricate code which modify the inherent behavior of certain modules by directly inserting commands into the firmware. The applications of such technology was not lost on the major players and the kids who invented it now head their own research divisions.\r\n\r\nThis script can be loaded into a sensor booster or remote sensor booster module to increase the module's sensor strength bonus at the expense of the targeting range and locking speed bonuses.", 
       "es": "Estos paquetes de scripts, utilizados originalmente por el grupo de hackers adolescentes The Fendahlian Collective para sortear firmware de seguridad de alta tecnología, contienen un código intrincado que modifica el comportamiento propio de ciertos módulos mediante la inserción directa de comandos en el firmware. Las aplicaciones de esta tecnología no les pasaron desapercibidas a los agentes principales, así que los chavales que la inventaron ahora dirigen sus propias divisiones de investigación.\n\nEste script puede cargarse en un potenciador de sensor remoto o un potenciador de sensor para aumentar la bonificación de intensidad del sensor del módulo a costa de las bonificaciones de velocidad de adquisición de objetivos y distancia-objetivo.", 
       "fr": "Initialement développés par le groupe de pirates informatiques adolescents du « Collectif fendahlien » pour pénétrer illicitement dans des micrologiciels de sécurité de pointe, ces packs de scripts complexes permettent d'implanter des commandes directement dans le code de micrologiciels pour détourner le fonctionnement de certains modules. Les applications de cette technologie continuent de faire des émules, et ses créateurs dirigent désormais leurs propres divisions de recherche.\n\n\n\nCe script peut être chargé sur un amplificateur de détection ou un module de détection à distance afin d'augmenter la puissance de détection du module, aux dépens de la portée du ciblage et de la vitesse de verrouillage.", 
       "ja": "元々は若いハッカー集団「レンダーリアン・コレクティブ」が当時存在した高度なセキュリティファームウェアを破壊するために使用した一連のスクリプトであり、ファームウェアに直接コマンドを挿入することで特定のモジュールの挙動を変更させる複雑なコードが含まれている。主要な組織はこの技術を今でも応用しており、開発に寄与した少年たちは今では自分たちの研究施設を持つ身となった。このスクリプトをセンサーブースターあるいはリモートセンサーブースターモジュールに装備すれば、ターゲット範囲および捕捉速度のボーナスと引き換えにモジュールのセンサー強度が上昇する。", 
@@ -151110,7 +151110,7 @@
       "ja": "ヘキサ2500mmリピートキャノン2のブループリント", 
       "ko": "헥사 2500 mm 기관포 II 블루프린트", 
       "ru": "Hexa 2500mm Repeating Cannon II Blueprint", 
-      "zh": "六联2500mm频射加农炮蓝图 II"
+      "zh": "六联2500mm频射加农炮 II 蓝图"
     }, 
     "typeNameID": 515298, 
     "volume": 0.01
@@ -151259,7 +151259,7 @@
       "ja": "クワッド3500mmシージアーティレリII設計図", 
       "ko": "쿼드 3500mm 공성포 II 블루프린트", 
       "ru": "Quad 3500mm Siege Artillery II Blueprint", 
-      "zh": "四联3500mm会战火炮蓝图 II"
+      "zh": "四联3500mm会战型火炮 II 蓝图"
     }, 
     "typeNameID": 515304, 
     "volume": 0.01
@@ -151702,7 +151702,7 @@
       "ja": "デュアルギガビームレーザーII設計図", 
       "ko": "듀얼 기가 빔 레이저 II 블루프린트", 
       "ru": "Dual Giga Beam Laser II Blueprint", 
-      "zh": "双联千兆级集束激光器蓝图 II"
+      "zh": "双联千兆级集束激光器 II 蓝图"
     }, 
     "typeNameID": 515318, 
     "volume": 0.01
@@ -151728,7 +151728,7 @@
       "ja": "XLクルーズミサイルランチャーII設計図", 
       "ko": "XL 크루즈 미사일 런처 II 블루프린트", 
       "ru": "XL Cruise Missile Launcher II Blueprint", 
-      "zh": "超大型巡航导弹发射器蓝图 II"
+      "zh": "超大型巡航导弹发射器 II 蓝图"
     }, 
     "typeNameID": 515344, 
     "volume": 0.01
@@ -151754,7 +151754,7 @@
       "ja": "XLトルピードランチャーII設計図", 
       "ko": "XL 토피도 런처 II 블루프린트", 
       "ru": "XL Torpedo Launcher II Blueprint", 
-      "zh": "鱼雷发射器II XL蓝图"
+      "zh": "超大型鱼雷发射器 II 蓝图"
     }, 
     "typeNameID": 515345, 
     "volume": 0.01
@@ -152931,7 +152931,7 @@
       "ja": "ヘビーステイシスグラップラー1のブループリント", 
       "ko": "헤비 스테이시스 그래플러 I 블루프린트", 
       "ru": "Heavy Stasis Grappler I Blueprint", 
-      "zh": "重型停滞捕捉光束蓝图 I"
+      "zh": "重型停滞捕捉光束 I 蓝图"
     }, 
     "typeNameID": 515407, 
     "volume": 0.01
@@ -152956,7 +152956,7 @@
       "ja": "ヘビーステイシスグラップラー2のブループリント", 
       "ko": "헤비 스테이시스 그래플러 II 블루프린트", 
       "ru": "Heavy Stasis Grappler II Blueprint", 
-      "zh": "重型停滞捕捉光束蓝图 II"
+      "zh": "重型停滞捕捉光束 II 蓝图"
     }, 
     "typeNameID": 515408, 
     "volume": 0.01
@@ -153061,7 +153061,7 @@
       "ja": "高速トルピードランチャーI設計図", 
       "ko": "급속 토피도 런처 I 블루프린트", 
       "ru": "Rapid Torpedo Launcher I Blueprint", 
-      "zh": "快速鱼雷发射器蓝图 I"
+      "zh": "快速鱼雷发射器 I 蓝图"
     }, 
     "typeNameID": 515415, 
     "volume": 0.01
@@ -153139,7 +153139,7 @@
       "ja": "高速トルピードランチャーII設計図", 
       "ko": "급속 토피도 런처 II 블루프린트", 
       "ru": "Rapid Torpedo Launcher II Blueprint", 
-      "zh": "快速鱼雷发射器蓝图 II"
+      "zh": "快速鱼雷发射器 II 蓝图"
     }, 
     "typeNameID": 515418, 
     "volume": 0.01
@@ -153164,7 +153164,7 @@
       "ja": "ドレッドガリスタス高速トルピードランチャーのブループリント", 
       "ko": "드레드 구리스타스 급속 토피도 런처 블루프린트", 
       "ru": "Dread Guristas Rapid Torpedo Launcher Blueprint", 
-      "zh": "恐惧古斯塔斯超快速鱼雷发射器蓝图"
+      "zh": "恐惧古斯塔斯快速鱼雷发射器蓝图"
     }, 
     "typeNameID": 515419, 
     "volume": 0.01
@@ -153491,7 +153491,7 @@
       "ja": "10000MNアフターバーナー1のブループリント", 
       "ko": "10000MN 애프터버너 I 블루프린트", 
       "ru": "10000MN Afterburner I Blueprint", 
-      "zh": "10000MN加力燃烧器I蓝图"
+      "zh": "10000MN加力燃烧器 I 蓝图"
     }, 
     "typeNameID": 515441, 
     "volume": 0.01
@@ -153566,7 +153566,7 @@
       "ja": "10000MNアフターバーナー2のブループリント", 
       "ko": "10000MN 애프터버너 II 블루프린트", 
       "ru": "10000MN Afterburner II Blueprint", 
-      "zh": "10000MN加力燃烧器蓝图 II"
+      "zh": "10000MN加力燃烧器 II 蓝图"
     }, 
     "typeNameID": 515444, 
     "volume": 0.01
@@ -153910,7 +153910,7 @@
       "ja": "50000MNマイクロワープドライブI設計図", 
       "ko": "50000MN 마이크로 워프 드라이브 I 블루프린트", 
       "ru": "50000MN Microwarpdrive I Blueprint", 
-      "zh": "50000MN微型跃迁推进器蓝图 I"
+      "zh": "50000MN微型跃迁推进器 I 蓝图"
     }, 
     "typeNameID": 515455, 
     "volume": 0.01
@@ -154009,7 +154009,7 @@
       "ja": "50000MNマイクロワープドライブII設計図", 
       "ko": "50000MN 마이크로 워프 드라이브 II 블루프린트", 
       "ru": "50000MN Microwarpdrive II Blueprint", 
-      "zh": "50000MN微型跃迁推进器蓝图 II"
+      "zh": "50000MN微型跃迁推进器 II 蓝图"
     }, 
     "typeNameID": 515458, 
     "volume": 0.01
@@ -155600,7 +155600,7 @@
       "ja": "ヘイルXLのブループリント", 
       "ko": "헤일 XL 블루프린트", 
       "ru": "Hail XL Blueprint", 
-      "zh": "冰雹蓝图 XL"
+      "zh": "冰雹 XL 蓝图"
     }, 
     "typeNameID": 515556, 
     "volume": 0.01
@@ -155665,7 +155665,7 @@
       "ja": "バラージXLのブループリント", 
       "ko": "버라지 XL 블루프린트", 
       "ru": "Barrage XL Blueprint", 
-      "zh": "雷暴蓝图 XL"
+      "zh": "雷暴 XL 蓝图"
     }, 
     "typeNameID": 515554, 
     "volume": 0.01
@@ -155730,7 +155730,7 @@
       "ja": "トレマーXLのブループリント", 
       "ko": "트래머 XL 블루프린트", 
       "ru": "Tremor XL Blueprint", 
-      "zh": "战栗蓝图 XL"
+      "zh": "战栗 XL 蓝图"
     }, 
     "typeNameID": 515558, 
     "volume": 0.01
@@ -155795,7 +155795,7 @@
       "ja": "クエイクXLのブループリント", 
       "ko": "퀘이크탄 XL 블루프린트", 
       "ru": "Quake XL Blueprint", 
-      "zh": "地震蓝图 XL"
+      "zh": "地震 XL 蓝图"
     }, 
     "typeNameID": 515560, 
     "volume": 0.01
@@ -155861,7 +155861,7 @@
       "ja": "ボイドXLのブループリント", 
       "ko": "보이드 XL 블루프린트", 
       "ru": "Void XL Blueprint", 
-      "zh": "涅槃蓝图 XL"
+      "zh": "涅槃 XL 蓝图"
     }, 
     "typeNameID": 515562, 
     "volume": 0.01
@@ -155927,7 +155927,7 @@
       "ja": "ヌルXLのブループリント", 
       "ko": "널 XL 블루프린트", 
       "ru": "Null XL Blueprint", 
-      "zh": "虚空蓝图 XL"
+      "zh": "虚空 XL 蓝图"
     }, 
     "typeNameID": 515564, 
     "volume": 0.01
@@ -155993,7 +155993,7 @@
       "ja": "ジャベリンXLのブループリント", 
       "ko": "자벨린 XL 블루프린트", 
       "ru": "Javelin XL Blueprint", 
-      "zh": "标枪蓝图 XL"
+      "zh": "标枪 XL 蓝图"
     }, 
     "typeNameID": 515566, 
     "volume": 0.01
@@ -156059,7 +156059,7 @@
       "ja": "スパイクXLのブループリント", 
       "ko": "스파이크 XL 블루프린트", 
       "ru": "Spike XL Blueprint", 
-      "zh": "钉刺XL蓝图"
+      "zh": "钉刺 XL 蓝图"
     }, 
     "typeNameID": 515568, 
     "volume": 0.01
@@ -156125,7 +156125,7 @@
       "ja": "スコーチXLのブループリント", 
       "ko": "스코치 XL 블루프린트", 
       "ru": "Scorch XL Blueprint", 
-      "zh": "灼烧蓝图 XL"
+      "zh": "灼烧 XL 蓝图"
     }, 
     "typeNameID": 515569, 
     "volume": 0.01
@@ -156191,7 +156191,7 @@
       "ja": "コンフラグレーションXLのブループリント", 
       "ko": "컨플래그레이션 XL 블루프린트", 
       "ru": "Conflagration XL Blueprint", 
-      "zh": "爆燃蓝图 XL"
+      "zh": "爆燃 XL 蓝图"
     }, 
     "typeNameID": 515572, 
     "volume": 0.01
@@ -156258,7 +156258,7 @@
       "ja": "グリームXLのブループリント", 
       "ko": "글림 XL 블루프린트", 
       "ru": "Gleam XL Blueprint", 
-      "zh": "微光蓝图 XL"
+      "zh": "微光 XL 蓝图"
     }, 
     "typeNameID": 515573, 
     "volume": 0.01
@@ -156325,7 +156325,7 @@
       "ja": "オーロラXLのブループリント", 
       "ko": "오로라 XL 블루프린트", 
       "ru": "Aurora XL Blueprint", 
-      "zh": "极光蓝图 XL"
+      "zh": "极光 XL 蓝图"
     }, 
     "typeNameID": 515576, 
     "volume": 0.01
@@ -156719,7 +156719,7 @@
       "ja": "サイクロプス2のブループリント", 
       "ko": "사이클롭스 II 블루프린트", 
       "ru": "Cyclops II Blueprint", 
-      "zh": "独眼巨人蓝图 II"
+      "zh": "独眼巨人 II 蓝图"
     }, 
     "typeNameID": 515624, 
     "volume": 0.01
@@ -156744,7 +156744,7 @@
       "ja": "マレウス2のブループリント", 
       "ko": "말레우스 II 블루프린트", 
       "ru": "Malleus II Blueprint", 
-      "zh": "槌骨蓝图 II"
+      "zh": "槌骨 II 蓝图"
     }, 
     "typeNameID": 515625, 
     "volume": 0.01
@@ -156769,7 +156769,7 @@
       "ja": "マンティス2のブループリント", 
       "ko": "맨티스 II 블루프린트", 
       "ru": "Mantis II Blueprint", 
-      "zh": "螳螂蓝图 II"
+      "zh": "螳螂 II 蓝图"
     }, 
     "typeNameID": 515626, 
     "volume": 0.01
@@ -156794,7 +156794,7 @@
       "ja": "ティルヴィング2のブループリント", 
       "ko": "티르핑 II 블루프린트", 
       "ru": "Tyrfing II Blueprint", 
-      "zh": "斩裂剑蓝图 II"
+      "zh": "斩裂剑 II 蓝图"
     }, 
     "typeNameID": 515627, 
     "volume": 0.01
@@ -156818,7 +156818,7 @@
       "ja": "アメタット1のブループリント", 
       "ko": "아메타트 I 블루프린트", 
       "ru": "Ametat I Blueprint", 
-      "zh": "阿米特蓝图 I"
+      "zh": "阿米特 I 蓝图"
     }, 
     "typeNameID": 515628, 
     "volume": 0.01
@@ -156843,7 +156843,7 @@
       "ja": "アメタット2のブループリント", 
       "ko": "아메타트 II 블루프린트", 
       "ru": "Ametat II Blueprint", 
-      "zh": "阿米特蓝图 II"
+      "zh": "阿米特 II 蓝图"
     }, 
     "typeNameID": 515629, 
     "volume": 0.01
@@ -156867,7 +156867,7 @@
       "ja": "ターマイト1のブループリント", 
       "ko": "터마이트 I 블루프린트", 
       "ru": "Termite I Blueprint", 
-      "zh": "白蚁蓝图 I"
+      "zh": "白蚁 I 蓝图"
     }, 
     "typeNameID": 515630, 
     "volume": 0.01
@@ -156892,7 +156892,7 @@
       "ja": "ターマイト2のブループリント", 
       "ko": "터마이트 II 블루프린트", 
       "ru": "Termite II Blueprint", 
-      "zh": "白蚁蓝图 II"
+      "zh": "白蚁 II 蓝图"
     }, 
     "typeNameID": 515631, 
     "volume": 0.01
@@ -156916,7 +156916,7 @@
       "ja": "アンタイオス1のブループリント", 
       "ko": "안테우스 I 블루프린트", 
       "ru": "Antaeus I Blueprint", 
-      "zh": "安泰蓝图 I"
+      "zh": "安泰 I 蓝图"
     }, 
     "typeNameID": 515632, 
     "volume": 0.01
@@ -156941,7 +156941,7 @@
       "ja": "アンタイオス2のブループリント", 
       "ko": "안테우스 II 블루프린트", 
       "ru": "Antaeus II Blueprint", 
-      "zh": "安泰蓝图 II"
+      "zh": "安泰 II 蓝图"
     }, 
     "typeNameID": 515633, 
     "volume": 0.01
@@ -156965,7 +156965,7 @@
       "ja": "グングニル1のブループリント", 
       "ko": "궁니르 I 블루프린트", 
       "ru": "Gungnir I Blueprint", 
-      "zh": "长枪I蓝图"
+      "zh": "长枪 I 蓝图"
     }, 
     "typeNameID": 515634, 
     "volume": 0.01
@@ -156990,7 +156990,7 @@
       "ja": "グングニル2のブループリント", 
       "ko": "궁니르 II 블루프린트", 
       "ru": "Gungnir II Blueprint", 
-      "zh": "长枪蓝图 II"
+      "zh": "长枪 II 蓝图"
     }, 
     "typeNameID": 515635, 
     "volume": 0.01
@@ -157014,7 +157014,7 @@
       "ja": "シーナバイト1のブループリント", 
       "ko": "세노바이트 I 블루프린트", 
       "ru": "Cenobite I Blueprint", 
-      "zh": "修道士蓝图 I"
+      "zh": "修道士 I 蓝图"
     }, 
     "typeNameID": 515636, 
     "volume": 0.01
@@ -157039,7 +157039,7 @@
       "ja": "シーナバイト2のブループリント", 
       "ko": "세노바이트 II 블루프린트", 
       "ru": "Cenobite II Blueprint", 
-      "zh": "修道士蓝图 II"
+      "zh": "修道士 II 蓝图"
     }, 
     "typeNameID": 515637, 
     "volume": 0.01
@@ -157063,7 +157063,7 @@
       "ja": "スカラベ1のブループリント", 
       "ko": "스캐럽 I 블루프린트", 
       "ru": "Scarab I Blueprint", 
-      "zh": "圣甲虫蓝图 I"
+      "zh": "圣甲虫 I 蓝图"
     }, 
     "typeNameID": 515638, 
     "volume": 0.01
@@ -157088,7 +157088,7 @@
       "ja": "スカラベ2のブループリント", 
       "ko": "스캐럽 II 블루프린트", 
       "ru": "Scarab II Blueprint", 
-      "zh": "圣甲虫蓝图 II"
+      "zh": "圣甲虫 II 蓝图"
     }, 
     "typeNameID": 515639, 
     "volume": 0.01
@@ -157112,7 +157112,7 @@
       "ja": "セイレーン1のブループリント", 
       "ko": "사이렌 I 블루프린트", 
       "ru": "Siren I Blueprint", 
-      "zh": "塞壬蓝图 I"
+      "zh": "塞壬 I 蓝图"
     }, 
     "typeNameID": 515640, 
     "volume": 0.01
@@ -157137,7 +157137,7 @@
       "ja": "セイレーン2のブループリント", 
       "ko": "사이렌 II 블루프린트", 
       "ru": "Siren II Blueprint", 
-      "zh": "塞壬II蓝图"
+      "zh": "塞壬 II 蓝图"
     }, 
     "typeNameID": 515641, 
     "volume": 0.01
@@ -157161,7 +157161,7 @@
       "ja": "ドロミ1のブループリント", 
       "ko": "드로미 I 블루프린트", 
       "ru": "Dromi I Blueprint", 
-      "zh": "德洛米I蓝图"
+      "zh": "德洛米 I 蓝图"
     }, 
     "typeNameID": 515642, 
     "volume": 0.01
@@ -157186,7 +157186,7 @@
       "ja": "ドロミ2のブループリント", 
       "ko": "드로미 II 블루프린트", 
       "ru": "Dromi II Blueprint", 
-      "zh": "德洛米II蓝图"
+      "zh": "德洛米 II 蓝图"
     }, 
     "typeNameID": 515643, 
     "volume": 0.01
@@ -157211,7 +157211,7 @@
       "ja": "テンプラー2のブループリント", 
       "ko": "템플러 II 블루프린트", 
       "ru": "Templar II Blueprint", 
-      "zh": "圣殿骑士蓝图 II"
+      "zh": "圣殿骑士 II 蓝图"
     }, 
     "typeNameID": 515652, 
     "volume": 0.01
@@ -157235,7 +157235,7 @@
       "ja": "エクイティー1のブループリント", 
       "ko": "에퀴테 I 블루프린트", 
       "ru": "Equite I Blueprint", 
-      "zh": "骑士蓝图 I"
+      "zh": "骑士 I 蓝图"
     }, 
     "typeNameID": 515653, 
     "volume": 0.01
@@ -157260,7 +157260,7 @@
       "ja": "エクイティー2のブループリント", 
       "ko": "에퀴테 II 블루프린트", 
       "ru": "Equite II Blueprint", 
-      "zh": "骑士蓝图 II"
+      "zh": "骑士 II 蓝图"
     }, 
     "typeNameID": 515654, 
     "volume": 0.01
@@ -157285,7 +157285,7 @@
       "ja": "ドラゴンフライ2のブループリント", 
       "ko": "드래곤플라이 II 블루프린트", 
       "ru": "Dragonfly II Blueprint", 
-      "zh": "蜻蜓蓝图 II"
+      "zh": "蜻蜓 II 蓝图"
     }, 
     "typeNameID": 515655, 
     "volume": 0.01
@@ -157309,7 +157309,7 @@
       "ja": "ローカスト1のブループリント", 
       "ko": "로커스트 I 블루프린트", 
       "ru": "Locust I Blueprint", 
-      "zh": "蚱蜢蓝图 I"
+      "zh": "蚱蜢 I 蓝图"
     }, 
     "typeNameID": 515656, 
     "volume": 0.01
@@ -157334,7 +157334,7 @@
       "ja": "ローカスト2のブループリント", 
       "ko": "로커스트 II 블루프린트", 
       "ru": "Locust II Blueprint", 
-      "zh": "蚱蜢蓝图 II"
+      "zh": "蚱蜢 II 蓝图"
     }, 
     "typeNameID": 515657, 
     "volume": 0.01
@@ -157359,7 +157359,7 @@
       "ja": "フィルボルグ2のブループリント", 
       "ko": "피르볼그 II 블루프린트", 
       "ru": "Firbolg II Blueprint", 
-      "zh": "掷矛手蓝图 II"
+      "zh": "掷矛手 II 蓝图"
     }, 
     "typeNameID": 515658, 
     "volume": 0.01
@@ -157383,7 +157383,7 @@
       "ja": "サティルI設計図", 
       "ko": "사티로스 I 블루프린트", 
       "ru": "Satyr I Blueprint", 
-      "zh": "萨梯蓝图 I"
+      "zh": "萨梯 I 蓝图"
     }, 
     "typeNameID": 515659, 
     "volume": 0.01
@@ -157408,7 +157408,7 @@
       "ja": "サティルII設計図", 
       "ko": "사티로스 II 블루프린트", 
       "ru": "Satyr II Blueprint", 
-      "zh": "萨梯蓝图 II"
+      "zh": "萨梯 II 蓝图"
     }, 
     "typeNameID": 515660, 
     "volume": 0.01
@@ -157433,7 +157433,7 @@
       "ja": "エインヘルイ2のブループリント", 
       "ko": "에인헤리 II 블루프린트", 
       "ru": "Einherji II Blueprint", 
-      "zh": "因赫吉蓝图 II"
+      "zh": "因赫吉 II 蓝图"
     }, 
     "typeNameID": 515661, 
     "volume": 0.01
@@ -157457,7 +157457,7 @@
       "ja": "グラーム1のブループリント", 
       "ko": "그램 I 블루프린트", 
       "ru": "Gram I Blueprint", 
-      "zh": "格拉墨蓝图 I"
+      "zh": "格拉墨 I 蓝图"
     }, 
     "typeNameID": 515662, 
     "volume": 0.01
@@ -157482,7 +157482,7 @@
       "ja": "グラーム2のブループリント", 
       "ko": "그램 II 블루프린트", 
       "ru": "Gram II Blueprint", 
-      "zh": "格拉墨蓝图 II"
+      "zh": "格拉墨 II 蓝图"
     }, 
     "typeNameID": 515663, 
     "volume": 0.01
@@ -158399,7 +158399,7 @@
       "ja": "戦闘機サポートユニットII設計図", 
       "ko": "파이터 보조 장치 II 블루프린트", 
       "ru": "Fighter Support Unit II Blueprint", 
-      "zh": "铁骑舰载机辅助单元蓝图 II"
+      "zh": "铁骑舰载机辅助单元 II 蓝图"
     }, 
     "typeNameID": 515773, 
     "volume": 0.01
@@ -158854,7 +158854,7 @@
       "ja": "旧中型LNS資源回収II設計図", 
       "ko": "OLD M-Set LNS 자원 레클레메이션 II 블루프린트", 
       "ru": "OLD M-Set LNS Materials Reclamation II Blueprint", 
-      "zh": "旧中型LNS材料回收蓝图 II"
+      "zh": "旧中型LNS材料回收 II 蓝图"
     }, 
     "typeNameID": 515800, 
     "volume": 0.01
@@ -158878,7 +158878,7 @@
       "ja": "旧中型I1資源回収I設計図", 
       "ko": "OLD M-Set I1 자원 레클레메이션 I 블루프린트", 
       "ru": "OLD M-Set I1 Materials Reclamation I Blueprint", 
-      "zh": "旧中型I1材料回收蓝图 I"
+      "zh": "旧中型I1材料回收 I 蓝图"
     }, 
     "typeNameID": 515801, 
     "volume": 0.01
@@ -158902,7 +158902,7 @@
       "ja": "旧中型I1資源回収II設計図", 
       "ko": "OLD M-Set I1 자원 레클레메이션 II 블루프린트", 
       "ru": "OLD M-Set I1 Materials Reclamation II Blueprint", 
-      "zh": "旧中型I1材料回收蓝图 II"
+      "zh": "旧中型I1材料回收 II 蓝图"
     }, 
     "typeNameID": 515802, 
     "volume": 0.01
@@ -158926,7 +158926,7 @@
       "ja": "旧中型I2資源回収I設計図", 
       "ko": "OLD M-Set I2 자원 레클레메이션 I 블루프린트", 
       "ru": "OLD M-Set I2 Materials Reclamation I Blueprint", 
-      "zh": "旧中型I2材料回收蓝图 I"
+      "zh": "旧中型I2材料回收 I 蓝图"
     }, 
     "typeNameID": 515803, 
     "volume": 0.01
@@ -158950,7 +158950,7 @@
       "ja": "旧中型I2資源回収II設計図", 
       "ko": "OLD M-Set I2 자원 레클레메이션 II 블루프린트", 
       "ru": "OLD M-Set I2 Materials Reclamation II Blueprint", 
-      "zh": "旧中型I2材料回收蓝图 II"
+      "zh": "旧中型I2材料回收 II 蓝图"
     }, 
     "typeNameID": 515804, 
     "volume": 0.01
@@ -158974,7 +158974,7 @@
       "ja": "旧大型アイスグレーディングプロセッサーI設計図", 
       "ko": "OLD L-Set 아이스 품질관리 프로세서 I 블루프린트", 
       "ru": "OLD L-Set Ice Grading Processor I Blueprint", 
-      "zh": "旧大型冰矿分级处理器蓝图 I"
+      "zh": "旧大型冰矿分级处理器 I 蓝图"
     }, 
     "typeNameID": 515805, 
     "volume": 0.01
@@ -158998,7 +158998,7 @@
       "ja": "旧大型アイスグレーディングプロセッサーII設計図", 
       "ko": "OLD L-Set 아이스 품질관리 프로세서 II 블루프린트", 
       "ru": "OLD L-Set Ice Grading Processor II Blueprint", 
-      "zh": "旧大型冰矿分级处理器蓝图 II"
+      "zh": "旧大型冰矿分级处理器 II 蓝图"
     }, 
     "typeNameID": 515806, 
     "volume": 0.01
@@ -159022,7 +159022,7 @@
       "ja": "旧中型LNS資源回収I設計図", 
       "ko": "OLD M-Set LNS 자원 레클레메이션 I 블루프린트", 
       "ru": "OLD M-Set LNS Materials Reclamation I Blueprint", 
-      "zh": "旧中型LNS材料回收蓝图 I"
+      "zh": "旧中型LNS材料回收 I 蓝图"
     }, 
     "typeNameID": 515799, 
     "volume": 0.01
@@ -163438,7 +163438,7 @@
       "ja": "キャパシタブースター3200のブループリント", 
       "ko": "캐패시터 부스터 3200 블루프린트", 
       "ru": "Cap Booster 3200 Blueprint", 
-      "zh": "电容注电器装料 3200蓝图"
+      "zh": "电容注电器装料 3200 蓝图"
     }, 
     "typeNameID": 516706, 
     "volume": 0.01
@@ -163462,7 +163462,7 @@
       "ja": "キャピタルシールドエクステンダーI設計図", 
       "ko": "캐피탈 실드 확장장치 I 블루프린트", 
       "ru": "Capital Shield Extender I Blueprint", 
-      "zh": "旗舰级护盾扩展装置蓝图 I"
+      "zh": "旗舰级护盾扩展装置 I 蓝图"
     }, 
     "typeNameID": 516707, 
     "volume": 0.01
@@ -163536,7 +163536,7 @@
       "ja": "キャピタルシールドエクステンダーII設計図", 
       "ko": "캐피탈 실드 확장장치 II 블루프린트", 
       "ru": "Capital Shield Extender II Blueprint", 
-      "zh": "旗舰级护盾扩展装置蓝图 II"
+      "zh": "旗舰级护盾扩展装置 II 蓝图"
     }, 
     "typeNameID": 516710, 
     "volume": 0.01
@@ -163657,7 +163657,7 @@
       "ja": "25000mm スチールプレート1のブループリント", 
       "ko": "25000mm 강철 플레이트 I 블루프린트", 
       "ru": "25000mm Steel Plates I Blueprint", 
-      "zh": "25000mm钢附甲板蓝图 I"
+      "zh": "25000mm钢附甲板 I 蓝图"
     }, 
     "typeNameID": 516715, 
     "volume": 0.01
@@ -163734,7 +163734,7 @@
       "ja": "25000mm スチールプレート2のブループリント", 
       "ko": "25000mm 강철 플레이트 II 블루프린트", 
       "ru": "25000mm Steel Plates II Blueprint", 
-      "zh": "25000mm钢附甲板蓝图 II"
+      "zh": "25000mm钢附甲板 II 蓝图"
     }, 
     "typeNameID": 516718, 
     "volume": 0.01
@@ -163883,7 +163883,7 @@
       "ja": "キャピタルアーマーリペアラII設計図", 
       "ko": "캐피탈 장갑수리 장치 II 블루프린트", 
       "ru": "Capital Armor Repairer II Blueprint", 
-      "zh": "旗舰级装甲维修器蓝图 II"
+      "zh": "旗舰级装甲维修器 II 蓝图"
     }, 
     "typeNameID": 516725, 
     "volume": 0.01
@@ -164028,7 +164028,7 @@
       "ja": "キャピタルリモートアーマーリペアラII設計図", 
       "ko": "캐피탈 원격 장갑수리 장치 II 블루프린트", 
       "ru": "Capital Remote Armor Repairer II Blueprint", 
-      "zh": "旗舰级远程装甲维修器蓝图 II"
+      "zh": "旗舰级远程装甲维修器 II 蓝图"
     }, 
     "typeNameID": 516733, 
     "volume": 0.01
@@ -164125,7 +164125,7 @@
       "ja": "キャピタル船体リペアラI設計図", 
       "ko": "캐피탈 선체수리 장치 I 블루프린트", 
       "ru": "Capital Hull Repairer I Blueprint", 
-      "zh": "旗舰级结构维修器蓝图 I"
+      "zh": "旗舰级结构维修器 I 蓝图"
     }, 
     "typeNameID": 516737, 
     "volume": 0.01
@@ -164199,7 +164199,7 @@
       "ja": "キャピタル船体リペアラII設計図", 
       "ko": "캐피탈 선체수리 장치 II 블루프린트", 
       "ru": "Capital Hull Repairer II Blueprint", 
-      "zh": "旗舰级结构维修器蓝图 II"
+      "zh": "旗舰级结构维修器 II 蓝图"
     }, 
     "typeNameID": 516736, 
     "volume": 0.01
@@ -164223,7 +164223,7 @@
       "ja": "キャピタルリモート船体リペアラII設計図", 
       "ko": "캐피탈 원격 선체수리 장치 II 블루프린트", 
       "ru": "Capital Remote Hull Repairer II Blueprint", 
-      "zh": "旗舰级远程结构维修器蓝图 II"
+      "zh": "旗舰级远程结构维修器 II 蓝图"
     }, 
     "typeNameID": 516740, 
     "volume": 0.01
@@ -164297,7 +164297,7 @@
       "ja": "キャピタルシールドブースターII設計図", 
       "ko": "캐피탈 실드 부스터 II 블루프린트", 
       "ru": "Capital Shield Booster II Blueprint", 
-      "zh": "旗舰级护盾回充增量器II蓝图"
+      "zh": "旗舰级护盾回充增量器 II 蓝图"
     }, 
     "typeNameID": 516743, 
     "volume": 0.01
@@ -164416,7 +164416,7 @@
       "ja": "キャピタル・キャパシタバッテリーI設計図", 
       "ko": "캐피탈 캐패시터 배터리 I 블루프린트", 
       "ru": "Capital Cap Battery I Blueprint", 
-      "zh": "旗舰级电容器电池蓝图 I"
+      "zh": "旗舰级电容器电池 I 蓝图"
     }, 
     "typeNameID": 516752, 
     "volume": 0.01
@@ -164465,7 +164465,7 @@
       "ja": "キャピタル・キャパシタバッテリーII設計図", 
       "ko": "캐피탈 캐패시터 배터리 II 블루프린트", 
       "ru": "Capital Cap Battery II Blueprint", 
-      "zh": "旗舰级电容器电池蓝图 II"
+      "zh": "旗舰级电容器电池 II 蓝图"
     }, 
     "typeNameID": 516750, 
     "volume": 0.01
@@ -164537,7 +164537,7 @@
       "ja": "キャピタル・キャパシタブースターI設計図", 
       "ko": "캐피탈 캐패시터 부스터 I 블루프린트", 
       "ru": "Capital Capacitor Booster I Blueprint", 
-      "zh": "旗舰级电容注电器蓝图 I"
+      "zh": "旗舰级电容注电器 I 蓝图"
     }, 
     "typeNameID": 516753, 
     "volume": 0.01
@@ -164586,7 +164586,7 @@
       "ja": "キャピタル・キャパシタブースターII設計図", 
       "ko": "캐피탈 캐패시터 부스터 II 블루프린트", 
       "ru": "Capital Capacitor Booster II Blueprint", 
-      "zh": "旗舰级电容注电器蓝图 II"
+      "zh": "旗舰级电容注电器 II 蓝图"
     }, 
     "typeNameID": 516755, 
     "volume": 0.01
@@ -164842,7 +164842,7 @@
       "ja": "キャピタルフレックスアーマーハードナーI設計図", 
       "ko": "캐피탈 다목적 장갑 강화장치 I 블루프린트", 
       "ru": "Capital Flex Armor Hardener I Blueprint", 
-      "zh": "旗舰级弯曲装甲增强器蓝图 I"
+      "zh": "旗舰级弯曲装甲增强器 I 蓝图"
     }, 
     "typeNameID": 516766, 
     "volume": 0.01
@@ -164866,7 +164866,7 @@
       "ja": "キャピタルフレックスアーマーハードナーII設計図", 
       "ko": "캐피탈 다목적 장갑 강화장치 II 블루프린트", 
       "ru": "Capital Flex Armor Hardener II Blueprint", 
-      "zh": "旗舰级弯曲装甲增强器蓝图 II"
+      "zh": "旗舰级弯曲装甲增强器 II 蓝图"
     }, 
     "typeNameID": 516767, 
     "volume": 0.01
@@ -164962,7 +164962,7 @@
       "ja": "キャピタルフレックスシールドハードナーI設計図", 
       "ko": "캐피탈 다목적 실드 강화장치 I 블루프린트", 
       "ru": "Capital Flex Shield Hardener I Blueprint", 
-      "zh": "旗舰级弯曲护盾增强器I蓝图"
+      "zh": "旗舰级弯曲护盾增强器 I 蓝图"
     }, 
     "typeNameID": 516770, 
     "volume": 0.01
@@ -164986,7 +164986,7 @@
       "ja": "キャピタルフレックスシールドハードナーII設計図", 
       "ko": "캐피탈 다목적 실드 강화장치 II 블루프린트", 
       "ru": "Capital Flex Shield Hardener II Blueprint", 
-      "zh": "旗舰级弯曲护盾增强器蓝图 II"
+      "zh": "旗舰级弯曲护盾增强器 II 蓝图"
     }, 
     "typeNameID": 516772, 
     "volume": 0.01
@@ -193447,7 +193447,7 @@
       "ja": "キャピタル工業コアII設計図", 
       "ko": "캐피탈 인더스트리얼 코어 II 블루프린트", 
       "ru": "Capital Industrial Core II Blueprint", 
-      "zh": "旗舰工业核心蓝图 II"
+      "zh": "旗舰工业核心 II 蓝图"
     }, 
     "typeNameID": 519266, 
     "volume": 0.01
@@ -206664,7 +206664,7 @@
       "ja": "採掘支援バーストI設計図", 
       "ko": "채광 버스트 I 블루프린트", 
       "ru": "Mining Foreman Burst I Blueprint", 
-      "zh": "开采先锋脉冲波蓝图 I"
+      "zh": "开采先锋脉冲波 I 蓝图"
     }, 
     "typeNameID": 520610, 
     "volume": 0.01
@@ -206689,7 +206689,7 @@
       "ja": "シールドコマンドバーストI設計図", 
       "ko": "실드 버스트 I 블루프린트", 
       "ru": "Shield Command Burst I Blueprint", 
-      "zh": "护盾指挥脉冲波蓝图 I"
+      "zh": "护盾指挥脉冲波 I 蓝图"
     }, 
     "typeNameID": 520612, 
     "volume": 0.01
@@ -206714,7 +206714,7 @@
       "ja": "機動戦コマンドバーストI設計図", 
       "ko": "스커미시 버스트 I 블루프린트", 
       "ru": "Skirmish Command Burst I Blueprint", 
-      "zh": "游击战指挥脉冲波蓝图 I"
+      "zh": "游击战指挥脉冲波 I 蓝图"
     }, 
     "typeNameID": 520614, 
     "volume": 0.01
@@ -206738,7 +206738,7 @@
       "ja": "アーマーコマンドバーストI設計図", 
       "ko": "장갑 버스트 I 블루프린트", 
       "ru": "Armor Command Burst I Blueprint", 
-      "zh": "装甲指挥脉冲波蓝图 I"
+      "zh": "装甲指挥脉冲波 I 蓝图"
     }, 
     "typeNameID": 520616, 
     "volume": 0.01
@@ -206762,7 +206762,7 @@
       "ja": "情報戦コマンドバーストI設計図", 
       "ko": "정보전 버스트 I 블루프린트", 
       "ru": "Information Command Burst I Blueprint", 
-      "zh": "信息战指挥脉冲波蓝图 I"
+      "zh": "信息战指挥脉冲波 I 蓝图"
     }, 
     "typeNameID": 520617, 
     "volume": 0.01
@@ -208849,7 +208849,7 @@
       "ja": "アーマーコマンドバーストII設計図", 
       "ko": "장갑 버스트 II 블루프린트", 
       "ru": "Armor Command Burst II Blueprint", 
-      "zh": "装甲指挥脉冲波蓝图 II"
+      "zh": "装甲指挥脉冲波 II 蓝图"
     }, 
     "typeNameID": 521414, 
     "volume": 0.01
@@ -208873,7 +208873,7 @@
       "ja": "情報戦コマンドバーストII設計図", 
       "ko": "정보전 버스트 II 블루프린트", 
       "ru": "Information Command Burst II Blueprint", 
-      "zh": "信息战指挥脉冲波蓝图 II"
+      "zh": "信息战指挥脉冲波 II 蓝图"
     }, 
     "typeNameID": 521415, 
     "volume": 0.01
@@ -208897,7 +208897,7 @@
       "ja": "採掘支援バーストII設計図", 
       "ko": "채광 버스트 II 블루프린트", 
       "ru": "Mining Foreman Burst II Blueprint", 
-      "zh": "开采先锋脉冲波蓝图 II"
+      "zh": "开采先锋脉冲波 II 蓝图"
     }, 
     "typeNameID": 521416, 
     "volume": 0.01
@@ -208921,7 +208921,7 @@
       "ja": "シールドコマンドバーストII設計図", 
       "ko": "실드 버스트 II 블루프린트", 
       "ru": "Shield Command Burst II Blueprint", 
-      "zh": "护盾指挥脉冲波蓝图 II"
+      "zh": "护盾指挥脉冲波 II 蓝图"
     }, 
     "typeNameID": 521419, 
     "volume": 0.01
@@ -208945,7 +208945,7 @@
       "ja": "機動戦コマンドバーストII設計図", 
       "ko": "스커미시 버스트 II 블루프린트", 
       "ru": "Skirmish Command Burst II Blueprint", 
-      "zh": "游击战指挥脉冲波蓝图 II"
+      "zh": "游击战指挥脉冲波 II 蓝图"
     }, 
     "typeNameID": 521418, 
     "volume": 0.01
@@ -216920,7 +216920,7 @@
       "ja": "小型コマンドプロセッサ1のブループリント", 
       "ko": "소형 지휘 프로세서 I 블루프린트", 
       "ru": "Small Command Processor I Blueprint", 
-      "zh": "小型指挥处理器蓝图 I"
+      "zh": "小型指挥处理器 I 蓝图"
     }, 
     "typeNameID": 522371, 
     "volume": 0.01
@@ -216944,7 +216944,7 @@
       "ja": "中型コマンドプロセッサ1のブループリント", 
       "ko": "중형 지휘 프로세서 I 블루프린트", 
       "ru": "Medium Command Processor I Blueprint", 
-      "zh": "中型指挥处理器蓝图 I"
+      "zh": "中型指挥处理器 I 蓝图"
     }, 
     "typeNameID": 522373, 
     "volume": 0.01
@@ -216968,7 +216968,7 @@
       "ja": "大型コマンドプロセッサ1のブループリント", 
       "ko": "대형 지휘 프로세서 I 블루프린트", 
       "ru": "Large Command Processor I Blueprint", 
-      "zh": "大型指挥处理器蓝图 I"
+      "zh": "大型指挥处理器 I 蓝图"
     }, 
     "typeNameID": 522375, 
     "volume": 0.01
@@ -216992,7 +216992,7 @@
       "ja": "キャピタルコマンドプロセッサーI設計図", 
       "ko": "캐피탈 지휘 프로세서 I 블루프린트", 
       "ru": "Capital Command Processor I Blueprint", 
-      "zh": "旗舰级指挥处理器I蓝图"
+      "zh": "旗舰级指挥处理器 I 蓝图"
     }, 
     "typeNameID": 522377, 
     "volume": 0.01
@@ -217041,7 +217041,7 @@
       "ja": "アイス採掘ドローンI設計図", 
       "ko": "아이스 채굴 드론 I 블루프린트", 
       "ru": "Ice Harvesting Drone I Blueprint", 
-      "zh": "冰矿采集无人机蓝图 I"
+      "zh": "冰矿采集无人机 I 蓝图"
     }, 
     "typeNameID": 522380, 
     "volume": 0.01
@@ -217066,7 +217066,7 @@
       "ja": "アイス採掘ドローンII設計図", 
       "ko": "아이스 채굴 드론 II 블루프린트", 
       "ru": "Ice Harvesting Drone II Blueprint", 
-      "zh": "冰矿采集无人机II蓝图"
+      "zh": "冰矿采集无人机 II 蓝图"
     }, 
     "typeNameID": 522381, 
     "volume": 0.01
@@ -217090,7 +217090,7 @@
       "ja": "「拡張型」氷採掘ドローンのブループリント", 
       "ko": "'강화' 아이스 채굴 드론 블루프린트", 
       "ru": "'Augmented' Ice Harvesting Drone Blueprint", 
-      "zh": "强化冰矿采集无人机蓝图"
+      "zh": "加强型冰矿采集无人机蓝图"
     }, 
     "typeNameID": 522382, 
     "volume": 0.01
@@ -217454,7 +217454,7 @@
       "ja": "スタンドアップ大型主力艦造船所I", 
       "ko": "스탠드업 캐피탈 쉽야드 I 블루프린트", 
       "ru": "Standup Capital Shipyard I Blueprint", 
-      "zh": "屹立旗舰级船坞I蓝图"
+      "zh": "屹立旗舰级船坞 I 蓝图"
     }, 
     "typeNameID": 522487, 
     "volume": 0.01
@@ -217479,7 +217479,7 @@
       "ja": "「スタンドアップ」発明ラボIのブループリント", 
       "ko": "스탠드업 인벤션 연구실 I 블루프린트", 
       "ru": "Standup Invention Lab I Blueprint", 
-      "zh": "屹立发明实验室蓝图 I"
+      "zh": "屹立发明实验室 I 蓝图"
     }, 
     "typeNameID": 522488, 
     "volume": 0.01
@@ -217504,7 +217504,7 @@
       "ja": "スタンドアップ製造プラントIのブループリント", 
       "ko": "스탠드업 제조공장 I 블루프린트", 
       "ru": "Standup Manufacturing Plant I Blueprint", 
-      "zh": "屹立制造厂蓝图 I"
+      "zh": "屹立制造厂 I 蓝图"
     }, 
     "typeNameID": 522489, 
     "volume": 0.01
@@ -217529,7 +217529,7 @@
       "ja": "「スタンドアップ」研究ラボIのブループリント", 
       "ko": "스탠드업 연구실 I 블루프린트", 
       "ru": "Standup Research Lab I Blueprint", 
-      "zh": "屹立研究实验室蓝图 I"
+      "zh": "屹立研究实验室 I 蓝图"
     }, 
     "typeNameID": 522490, 
     "volume": 0.01
@@ -217554,7 +217554,7 @@
       "ja": "スタンドアップ大型主力艦造船所Iのブループリント", 
       "ko": "스탠드업 슈퍼캐피탈 쉽야드 I 블루프린트", 
       "ru": "Standup Supercapital Shipyard I Blueprint", 
-      "zh": "屹立超级旗舰级船坞蓝图 I"
+      "zh": "屹立超级旗舰级船坞 I 蓝图"
     }, 
     "typeNameID": 522491, 
     "volume": 0.01
@@ -217782,7 +217782,7 @@
       "ja": "スタンドアップ中型装備製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 장비 제조 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Equipment Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型设备制造材料效率蓝图 I"
+      "zh": "屹立中型设备制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522712, 
     "volume": 0.01
@@ -217807,7 +217807,7 @@
       "ja": "スタンドアップ中型装備製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 장비 제조 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Equipment Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型设备制造材料效率蓝图 II"
+      "zh": "屹立中型设备制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522713, 
     "volume": 0.01
@@ -217832,7 +217832,7 @@
       "ja": "スタンドアップ中型装備製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 장비 제조 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Equipment Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型设备制造时间效率蓝图 I"
+      "zh": "屹立中型设备制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522714, 
     "volume": 0.01
@@ -217857,7 +217857,7 @@
       "ja": "スタンドアップ中型装備製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 장비 제조 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Equipment Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型设备制造时间效率蓝图 II"
+      "zh": "屹立中型设备制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522715, 
     "volume": 0.01
@@ -217882,7 +217882,7 @@
       "ja": "スタンドアップ中型弾薬製造資源効率I設計図", 
       "ko": "스탠드업 M-Set 탄약 제조 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Ammunition Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型弹药制造材料效率蓝图 I"
+      "zh": "屹立中型弹药制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522716, 
     "volume": 0.01
@@ -217907,7 +217907,7 @@
       "ja": "スタンドアップ中型弾薬製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 탄약 제조 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Ammunition Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型弹药制造材料效率蓝图 II"
+      "zh": "屹立中型弹药制造效率 II 蓝图"
     }, 
     "typeNameID": 522717, 
     "volume": 0.01
@@ -217932,7 +217932,7 @@
       "ja": "スタンドアップ中型弾薬製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 탄약 제조 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Ammunition Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型弹药制造时间效率蓝图 I"
+      "zh": "屹立中型弹药制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522718, 
     "volume": 0.01
@@ -217957,7 +217957,7 @@
       "ja": "スタンドアップ中型弾薬製造時間効率II設計図", 
       "ko": "스탠드업 M-Set 탄약 제조 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Ammunition Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型弹药制造时间效率蓝图 II"
+      "zh": "屹立中型弹药制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522719, 
     "volume": 0.01
@@ -217982,7 +217982,7 @@
       "ja": "スタンドアップ中型ドローン・戦闘機製造資源効率I設計図", 
       "ko": "스탠드업 M-Set 드론 및 파이터 제조 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Drone and Fighter Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型无人机和铁骑舰载机制造材料效率蓝图 I"
+      "zh": "屹立中型无人机和铁骑舰载机制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522720, 
     "volume": 0.01
@@ -218007,7 +218007,7 @@
       "ja": "スタンドアップ中型ドローン・戦闘機製造資源効率II設計図", 
       "ko": "스탠드업 M-Set 드론 및 파이터 제조 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Drone and Fighter Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型无人机和铁骑舰载机制造材料效率蓝图 II"
+      "zh": "屹立中型无人机和铁骑舰载机制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522721, 
     "volume": 0.01
@@ -218032,7 +218032,7 @@
       "ja": "スタンドアップ中型ドローン・戦闘機製造時間効率I設計図", 
       "ko": "스탠드업 M-Set 드론 및 파이터 제조 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Drone and Fighter Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型无人机和铁骑舰载机制造时间效率蓝图 I"
+      "zh": "屹立中型无人机和铁骑舰载机制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522724, 
     "volume": 0.01
@@ -218057,7 +218057,7 @@
       "ja": "スタンドアップ中型ドローン・戦闘機製造時間効率II設計図", 
       "ko": "스탠드업 M-Set 드론 및 파이터 제조 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Drone and Fighter Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型无人机和铁骑舰载机制造时间效率蓝图 II"
+      "zh": "屹立中型无人机和铁骑舰载机制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522726, 
     "volume": 0.01
@@ -218082,7 +218082,7 @@
       "ja": "スタンドアップ中型標準小型艦製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 소형 함선 제작 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Small Ship Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型基础小型舰船制造材料效率蓝图 I"
+      "zh": "屹立中型基础小型舰船制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522727, 
     "volume": 0.01
@@ -218107,7 +218107,7 @@
       "ja": "スタンドアップ中型標準小型艦製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 기본 소형 함선 제작 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Small Ship Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型基础小型舰船制造材料效率蓝图 II"
+      "zh": "屹立中型基础小型舰船制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522730, 
     "volume": 0.01
@@ -218132,7 +218132,7 @@
       "ja": "スタンドアップ中型標準小型艦製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 소형 함선 제작 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Small Ship Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型基础小型舰船制造时间效率蓝图 I"
+      "zh": "屹立中型基础小型舰船制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522731, 
     "volume": 0.01
@@ -218157,7 +218157,7 @@
       "ja": "スタンドアップ中型標準小型艦製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 기본 소형 함선 제작 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Small Ship Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型基础小型舰船制造时间效率蓝图 II"
+      "zh": "屹立中型基础小型舰船制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522732, 
     "volume": 0.01
@@ -218182,7 +218182,7 @@
       "ja": "スタンドアップ中型標準中型艦製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 중형 함선 제작 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Medium Ship Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型基础中型舰船制造材料效率蓝图 I"
+      "zh": "屹立中型基础中型舰船制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522733, 
     "volume": 0.01
@@ -218207,7 +218207,7 @@
       "ja": "スタンドアップ中型標準中型艦製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 기본 중형 함선 제작 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Medium Ship Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立基础中型舰船制造材料效率II M蓝图"
+      "zh": "屹立中型基础中型舰船制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522734, 
     "volume": 0.01
@@ -218232,7 +218232,7 @@
       "ja": "スタンドアップ中型標準中型艦船製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 중형 함선 제작 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Medium Ship Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型基础中型舰船制造时间效率蓝图 I"
+      "zh": "屹立中型基础中型舰船制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522735, 
     "volume": 0.01
@@ -218257,7 +218257,7 @@
       "ja": "スタンドアップ中型標準中型艦船製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 기본 중형 함선 제작 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Medium Ship Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型基础中型舰船制造时间效率蓝图 II"
+      "zh": "屹立中型基础中型舰船制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522736, 
     "volume": 0.01
@@ -218282,7 +218282,7 @@
       "ja": "スタンドアップ中型標準大型艦製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 대형 함선 제작 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Large Ship Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型基础大型舰船制造材料效率蓝图 I"
+      "zh": "屹立中型基础大型舰船制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522737, 
     "volume": 0.01
@@ -218307,7 +218307,7 @@
       "ja": "スタンドアップ中型標準大型艦製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 기본 대형 함선 제작 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Large Ship Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型基础大型舰船制造材料效率蓝图 II"
+      "zh": "屹立中型基础大型舰船制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522738, 
     "volume": 0.01
@@ -218332,7 +218332,7 @@
       "ja": "スタンドアップ中型標準大型艦製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 대형 함선 제작 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Large Ship Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型基础大型舰船制造时间效率蓝图 I"
+      "zh": "屹立中型基础大型舰船制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522739, 
     "volume": 0.01
@@ -218357,7 +218357,7 @@
       "ja": "スタンドアップ中型標準大型艦製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 기본 대형 함선 제작 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Large Ship Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型基础大型舰船制造时间效率蓝图 II"
+      "zh": "屹立中型基础大型舰船制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522740, 
     "volume": 0.01
@@ -218382,7 +218382,7 @@
       "ja": "スタンドアップ中型最新小型艦製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 소형 함선 제작 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Small Ship Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立高级小型舰船制造材料效率I M蓝图"
+      "zh": "屹立中型高级小型舰船制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522741, 
     "volume": 0.01
@@ -218407,7 +218407,7 @@
       "ja": "スタンドアップ中型最新小型艦製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 소형 함선 제작 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Small Ship Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立高级小型舰船制造材料效率II M蓝图"
+      "zh": "屹立中型高级小型舰船制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522742, 
     "volume": 0.01
@@ -218432,7 +218432,7 @@
       "ja": "スタンドアップ中型最新小型艦製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 소형 함선 제작 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Small Ship Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立高级小型舰船制造时间效率I M蓝图"
+      "zh": "屹立中型高级小型舰船制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522743, 
     "volume": 0.01
@@ -218457,7 +218457,7 @@
       "ja": "スタンドアップ中型最新小型艦製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 소형 함선 제작 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Small Ship Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型高级小型舰船制造时间效率蓝图 II"
+      "zh": "屹立中型高级小型舰船制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522744, 
     "volume": 0.01
@@ -218482,7 +218482,7 @@
       "ja": "スタンドアップ中型最新中型艦製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 중형 함선 제작 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Medium Ship Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立高级中型舰船制造材料效率I M蓝图"
+      "zh": "屹立中型高级中型舰船制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522745, 
     "volume": 0.01
@@ -218507,7 +218507,7 @@
       "ja": "スタンドアップ中型最新中型艦製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 중형 함선 제작 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Medium Ship Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型高级中型舰船制造材料效率蓝图 II"
+      "zh": "屹立中型高级中型舰船制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522746, 
     "volume": 0.01
@@ -218532,7 +218532,7 @@
       "ja": "スタンドアップ中型最新中型艦製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 중형 함선 제작 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Medium Ship Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立高级中型舰船制造时间效率I M蓝图"
+      "zh": "屹立中型高级中型舰船制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522747, 
     "volume": 0.01
@@ -218557,7 +218557,7 @@
       "ja": "スタンドアップ中型最新中型艦製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 중형 함선 제작 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Medium Ship Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型高级中型舰船制造时间效率蓝图 II"
+      "zh": "屹立中型高级中型舰船制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522748, 
     "volume": 0.01
@@ -218582,7 +218582,7 @@
       "ja": "Iスタンドアップ中型最新中型艦製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 대형 함선 제작 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Large Ship Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型高级大型舰船制造材料效率蓝图 I"
+      "zh": "屹立中型高级大型舰船制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522749, 
     "volume": 0.01
@@ -218607,7 +218607,7 @@
       "ja": "Iスタンドアップ中型最新中型艦製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 대형 함선 제작 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Large Ship Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型高级大型舰船制造材料效率蓝图 II"
+      "zh": "屹立中型高级大型舰船制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522750, 
     "volume": 0.01
@@ -218632,7 +218632,7 @@
       "ja": "スタンドアップ中型最新大型艦製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 대형 함선 제작 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Large Ship Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型高级大型舰船制造时间效率蓝图 I"
+      "zh": "屹立中型高级大型舰船制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522751, 
     "volume": 0.01
@@ -218657,7 +218657,7 @@
       "ja": "スタンドアップ中型最新大型艦製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 대형 함선 제작 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Large Ship Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型高级大型舰船制造时间效率蓝图 II"
+      "zh": "屹立中型高级大型舰船制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522752, 
     "volume": 0.01
@@ -218682,7 +218682,7 @@
       "ja": "スタンドアップ中型最新コンポーネント生産効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 부품 제조 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Component Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型高级组件制造材料效率蓝图 I"
+      "zh": "屹立中型高级组件制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522753, 
     "volume": 0.01
@@ -218707,7 +218707,7 @@
       "ja": "スタンドアップ中型最新コンポーネント生産効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 부품 제조 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Component Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型高级组件制造材料效率蓝图 II"
+      "zh": "屹立中型高级组件制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522754, 
     "volume": 0.01
@@ -218732,7 +218732,7 @@
       "ja": "スタンドアップ中型最新コンポーネント製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 상급 부품 제조 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Advanced Component Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型高级组件制造时间效率蓝图 I"
+      "zh": "屹立中型高级组件制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522755, 
     "volume": 0.01
@@ -218757,7 +218757,7 @@
       "ja": "スタンドアップ中型最新コンポーネント製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 상급 부품 제조 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Advanced Component Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型高级组件制造时间效率蓝图 II"
+      "zh": "屹立中型高级组件制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522756, 
     "volume": 0.01
@@ -218782,7 +218782,7 @@
       "ja": "スタンドアップ中型標準キャピタルコンポーネント生産効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 캐피탈 부품 제조 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Capital Component Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型基础旗舰组件制造材料效率蓝图 I"
+      "zh": "屹立中型基础旗舰组件制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522757, 
     "volume": 0.01
@@ -218807,7 +218807,7 @@
       "ja": "スタンドアップ中型標準キャピタルコンポーネントの生産効率II設計図", 
       "ko": "스탠드업 M-Set 기본 캐피탈 부품 제조 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Capital Component Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型基础旗舰组件制造材料效率蓝图 II"
+      "zh": "屹立中型基础旗舰组件制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522758, 
     "volume": 0.01
@@ -218832,7 +218832,7 @@
       "ja": "スタンドアップ中型標準キャピタルコンポーネント製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 기본 캐피탈 부품 제조 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Basic Capital Component Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型基础旗舰组件制造时间效率蓝图 I"
+      "zh": "屹立中型基础旗舰组件制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522759, 
     "volume": 0.01
@@ -218857,7 +218857,7 @@
       "ja": "スタンドアップ中型標準キャピタルコンポーネント製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 기본 캐피탈 부품 제조 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Basic Capital Component Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型基础旗舰组件制造时间效率蓝图 II"
+      "zh": "屹立中型基础旗舰组件制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522760, 
     "volume": 0.01
@@ -218882,7 +218882,7 @@
       "ja": "スタンドアップ中型ストラクチャ製造材料効率1のブループリント", 
       "ko": "스탠드업 M-Set 구조물 제조 자원효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Structure Manufacturing Material Efficiency I Blueprint", 
-      "zh": "屹立中型建筑制造材料效率蓝图 I"
+      "zh": "屹立中型建筑制造材料效率 I 蓝图"
     }, 
     "typeNameID": 522761, 
     "volume": 0.01
@@ -218907,7 +218907,7 @@
       "ja": "スタンドアップ中型ストラクチャ製造材料効率2のブループリント", 
       "ko": "스탠드업 M-Set 구조물 제조 자원효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Structure Manufacturing Material Efficiency II Blueprint", 
-      "zh": "屹立中型建筑制造材料效率蓝图 II"
+      "zh": "屹立中型建筑制造材料效率 II 蓝图"
     }, 
     "typeNameID": 522762, 
     "volume": 0.01
@@ -218932,7 +218932,7 @@
       "ja": "スタンドアップ中型ストラクチャ製造時間効率1のブループリント", 
       "ko": "스탠드업 M-Set 구조물 제조 시간효율성 장치 I 블루프린트", 
       "ru": "Standup M-Set Structure Manufacturing Time Efficiency I Blueprint", 
-      "zh": "屹立中型建筑制造时间效率蓝图 I"
+      "zh": "屹立中型建筑制造时间效率 I 蓝图"
     }, 
     "typeNameID": 522763, 
     "volume": 0.01
@@ -218957,7 +218957,7 @@
       "ja": "スタンドアップ中型ストラクチャ製造時間効率2のブループリント", 
       "ko": "스탠드업 M-Set 구조물 제조 시간효율성 장치 II 블루프린트", 
       "ru": "Standup M-Set Structure Manufacturing Time Efficiency II Blueprint", 
-      "zh": "屹立中型建筑制造时间效率蓝图 II"
+      "zh": "屹立中型建筑制造时间效率 II 蓝图"
     }, 
     "typeNameID": 522764, 
     "volume": 0.01
@@ -218982,7 +218982,7 @@
       "ja": "スタンドアップ中型発明コスト最適化1のブループリント", 
       "ko": "스탠드업 M-Set 인벤션 비용 최적화 장치 I 블루프린트", 
       "ru": "Standup M-Set Invention Cost Optimization I Blueprint", 
-      "zh": "屹立中型发明成本优化蓝图 I"
+      "zh": "屹立中型发明成本优化 I 蓝图"
     }, 
     "typeNameID": 522765, 
     "volume": 0.01
@@ -219007,7 +219007,7 @@
       "ja": "スタンドアップ中型発明コスト最適化2のブループリント", 
       "ko": "스탠드업 M-Set 인벤션 비용 최적화 장치 III 블루프린트", 
       "ru": "Standup M-Set Invention Cost Optimization II Blueprint", 
-      "zh": "屹立中型发明成本优化蓝图 II"
+      "zh": "屹立中型发明成本优化 II 蓝图"
     }, 
     "typeNameID": 522766, 
     "volume": 0.01
@@ -219032,7 +219032,7 @@
       "ja": "スタンドアップ中型発明加速器1のブループリント", 
       "ko": "스탠드업 M-Set 인벤션 가속 장치 I 블루프린트", 
       "ru": "Standup M-Set Invention Accelerator I Blueprint", 
-      "zh": "屹立中型发明加速器蓝图 I"
+      "zh": "屹立中型发明加速 I 蓝图"
     }, 
     "typeNameID": 522767, 
     "volume": 0.01
@@ -219057,7 +219057,7 @@
       "ja": "スタンドアップ中型発明加速器2のブループリント", 
       "ko": "스탠드업 M-Set 인벤션 가속 장치 II 블루프린트", 
       "ru": "Standup M-Set Invention Accelerator II Blueprint", 
-      "zh": "屹立中型发明加速蓝图 II"
+      "zh": "屹立中型发明加速 II 蓝图"
     }, 
     "typeNameID": 522769, 
     "volume": 0.01
@@ -219082,7 +219082,7 @@
       "ja": "スタンドアップ中型ME研究コスト最適化1のブループリント", 
       "ko": "스탠드업 M-Set 자원효율성 연구 비용 최적화 장치 I 블루프린트", 
       "ru": "Standup M-Set ME Research Cost Optimization I Blueprint", 
-      "zh": "屹立材料效率研究成本优化I M蓝图"
+      "zh": "屹立中型材料效率研究成本优化 I 蓝图"
     }, 
     "typeNameID": 522770, 
     "volume": 0.01
@@ -219107,7 +219107,7 @@
       "ja": "スタンドアップ中型ME研究コスト最適化2のブループリント", 
       "ko": "스탠드업 M-Set 자원효율성 연구 비용 최적화 장치 II 블루프린트", 
       "ru": "Standup M-Set ME Research Cost Optimization II Blueprint", 
-      "zh": "屹立中型材料效率研究成本优化蓝图 II"
+      "zh": "屹立中型材料效率研究成本优化 II 蓝图"
     }, 
     "typeNameID": 522771, 
     "volume": 0.01
@@ -219132,7 +219132,7 @@
       "ja": "スタンドアップ中型ME研究加速器1のブループリント", 
       "ko": "스탠드업 M-Set 자원효율성 연구 가속 장치 I 블루프린트", 
       "ru": "Standup M-Set ME Research Accelerator I Blueprint", 
-      "zh": "屹立中型材料效率研究加速蓝图 I"
+      "zh": "屹立中型材料效率研究加速 I 蓝图"
     }, 
     "typeNameID": 522772, 
     "volume": 0.01
@@ -219157,7 +219157,7 @@
       "ja": "スタンドアップ中型ME研究加速器2のブループリント", 
       "ko": "스탠드업 M-Set 자원효율성 연구 가속 장치 II 블루프린트", 
       "ru": "Standup M-Set ME Research Accelerator II Blueprint", 
-      "zh": "屹立中型材料效率研究加速蓝图 II"
+      "zh": "屹立中型材料效率研究加速 II 蓝图"
     }, 
     "typeNameID": 522773, 
     "volume": 0.01
@@ -219182,7 +219182,7 @@
       "ja": "スタンドアップ中型TE研究コスト最適化1のブループリント", 
       "ko": "스탠드업 M-Set 시간효율성 연구 비용 최적화 장치 I 블루프린트", 
       "ru": "Standup M-Set TE Research Cost Optimization I Blueprint", 
-      "zh": "屹立中型时间效率研究成本优化蓝图 I"
+      "zh": "屹立中型时间效率研究成本优化 I 蓝图"
     }, 
     "typeNameID": 522774, 
     "volume": 0.01
@@ -219207,7 +219207,7 @@
       "ja": "スタンドアップ中型TE研究コスト最適化2のブループリント", 
       "ko": "스탠드업 M-Set 시간효율성 연구 비용 최적화 장치 II 블루프린트", 
       "ru": "Standup M-Set TE Research Cost Optimization II Blueprint", 
-      "zh": "屹立中型时间效率研究成本优化蓝图 II"
+      "zh": "屹立中型时间效率研究成本优化 II 蓝图"
     }, 
     "typeNameID": 522775, 
     "volume": 0.01
@@ -219232,7 +219232,7 @@
       "ja": "スタンドアップ中型TE研究加速器1のブループリント", 
       "ko": "스탠드업 M-Set 시간효율성 연구 가속 장치 I 블루프린트", 
       "ru": "Standup M-Set TE Research Accelerator I Blueprint", 
-      "zh": "屹立中型时间效率研究加速器蓝图 I"
+      "zh": "屹立中型时间效率研究加速器 I 蓝图"
     }, 
     "typeNameID": 522776, 
     "volume": 0.01
@@ -219257,7 +219257,7 @@
       "ja": "スタンドアップ中型TE研究加速器2のブループリント", 
       "ko": "스탠드업 M-Set 시간효율성 연구 가속 장치 II 블루프린트", 
       "ru": "Standup M-Set TE Research Accelerator II Blueprint", 
-      "zh": "屹立时间效率研究加速器II M蓝图"
+      "zh": "屹立中型时间效率研究加速 II 蓝图"
     }, 
     "typeNameID": 522777, 
     "volume": 0.01
@@ -219282,7 +219282,7 @@
       "ja": "スタンドアップ中型ブループリントコピーコスト最適化1のブループリント", 
       "ko": "스탠드업 M-Set 블루프린트 복제 비용 최적화 장치 I 블루프린트", 
       "ru": "Standup M-Set Blueprint Copy Cost Optimization I Blueprint", 
-      "zh": "屹立蓝图拷贝成本优化I M蓝图"
+      "zh": "屹立中型蓝图拷贝成本优化 I 蓝图"
     }, 
     "typeNameID": 522778, 
     "volume": 0.01
@@ -219307,7 +219307,7 @@
       "ja": "スタンドアップ中型ブループリントコピーコスト最適化2のブループリント", 
       "ko": "스탠드업 M-Set 블루프린트 복제 비용 최적화 장치 II 블루프린트", 
       "ru": "Standup M-Set Blueprint Copy Cost Optimization II Blueprint", 
-      "zh": "屹立中型蓝图拷贝成本优化蓝图 II"
+      "zh": "屹立中型蓝图拷贝成本优化 II 蓝图"
     }, 
     "typeNameID": 522779, 
     "volume": 0.01
@@ -219332,7 +219332,7 @@
       "ja": "スタンドアップ中型ブループリントコピー加速器1のブループリント", 
       "ko": "스탠드업 M-Set 블루프린트 복제 가속 장치 I 블루프린트", 
       "ru": "Standup M-Set Blueprint Copy Accelerator I Blueprint", 
-      "zh": "屹立中型蓝图拷贝加速器蓝图 I"
+      "zh": "屹立中型蓝图拷贝加速 I 蓝图"
     }, 
     "typeNameID": 522780, 
     "volume": 0.01
@@ -219357,7 +219357,7 @@
       "ja": "スタンドアップ中型ブループリントコピー加速器2のブループリント", 
       "ko": "스탠드업 M-Set 블루프린트 복제 가속 장치 II 블루프린트", 
       "ru": "Standup M-Set Blueprint Copy Accelerator II Blueprint", 
-      "zh": "屹立中型蓝图拷贝加速蓝图 II"
+      "zh": "屹立中型蓝图拷贝加速器 II 蓝图"
     }, 
     "typeNameID": 522783, 
     "volume": 0.01
@@ -219560,7 +219560,7 @@
       "ja": "スタンドアップ大型最新中型艦製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 상급 중형 함선 제작 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Advanced Medium Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型高级中型舰船制造效率蓝图 I"
+      "zh": "屹立大型高级中型舰船制造效率 I 蓝图"
     }, 
     "typeNameID": 523069, 
     "volume": 0.01
@@ -219585,7 +219585,7 @@
       "ja": "スタンドアップ大型最新中型艦製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 상급 중형 함선 제작 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Advanced Medium Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立高级中型舰船制造效率II L蓝图"
+      "zh": "屹立大型高级中型舰船制造效率 II 蓝图"
     }, 
     "typeNameID": 523070, 
     "volume": 0.01
@@ -219610,7 +219610,7 @@
       "ja": "スタンドアップ大型最新小型艦製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 상급 소형 함선 제작 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Advanced Small Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型高级小型舰船制造效率蓝图 I"
+      "zh": "屹立大型高级小型舰船制造效率 I 蓝图"
     }, 
     "typeNameID": 523071, 
     "volume": 0.01
@@ -219635,7 +219635,7 @@
       "ja": "スタンドアップ大型最新小型艦製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 상급 소형 함선 제작 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Advanced Small Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型高级小型舰船制造效率蓝图 II"
+      "zh": "屹立大型高级小型舰船制造效率 II 蓝图"
     }, 
     "typeNameID": 523072, 
     "volume": 0.01
@@ -219660,7 +219660,7 @@
       "ja": "スタンドアップ大型標準キャピタルコンポーネント製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 기본 캐피탈 부품 제조 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Basic Capital Component Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型基础旗舰组件制造效率蓝图 I"
+      "zh": "屹立大型基础旗舰组件制造效率 I 蓝图"
     }, 
     "typeNameID": 523073, 
     "volume": 0.01
@@ -219685,7 +219685,7 @@
       "ja": "スタンドアップ大型標準キャピタルコンポーネント製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 기본 캐피탈 부품 제조 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Basic Capital Component Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型基础旗舰组件制造效率蓝图 II"
+      "zh": "屹立大型基础旗舰组件制造效率 II 蓝图"
     }, 
     "typeNameID": 523074, 
     "volume": 0.01
@@ -219710,7 +219710,7 @@
       "ja": "スタンドアップ大型標準中型艦製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 기본 중형 함선 제작 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Basic Medium Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型基础中型舰船制造效率蓝图 I"
+      "zh": "屹立大型基础中型舰船制造效率 I 蓝图"
     }, 
     "typeNameID": 523075, 
     "volume": 0.01
@@ -219735,7 +219735,7 @@
       "ja": "スタンドアップ大型標準中型艦製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 기본 중형 함선 제작 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Basic Medium Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型基础中型舰船制造效率蓝图 II"
+      "zh": "屹立大型基础中型舰船制造效率 II 蓝图"
     }, 
     "typeNameID": 523076, 
     "volume": 0.01
@@ -219760,7 +219760,7 @@
       "ja": "スタンドアップ大型標準小型艦製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 기본 소형 함선 제작 효율성 장치 I 블루프린트", 
       "ru": "Standup L-Set Basic Small Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立基础小型舰船制造效率I L蓝图"
+      "zh": "屹立大型基础小型舰船制造效率 I 蓝图"
     }, 
     "typeNameID": 523077, 
     "volume": 0.01
@@ -219785,7 +219785,7 @@
       "ja": "スタンドアップ大型標準小型艦製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 기본 소형 함선 제작 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Basic Small Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立基础小型舰船制造效率II L蓝图"
+      "zh": "屹立大型基础小型舰船制造效率 II 蓝图"
     }, 
     "typeNameID": 523078, 
     "volume": 0.01
@@ -219810,7 +219810,7 @@
       "ja": "スタンドアップ大型ブループリントコピー最適化1のブループリント", 
       "ko": "스탠드업 L-Set 블루프린트 복제 최적화 I 블루프린트", 
       "ru": "Standup L-Set Blueprint Copy Optimization I Blueprint", 
-      "zh": "屹立大型蓝图拷贝优化蓝图 I"
+      "zh": "屹立大型蓝图拷贝优化 I 蓝图"
     }, 
     "typeNameID": 523079, 
     "volume": 0.01
@@ -219835,7 +219835,7 @@
       "ja": "スタンドアップ大型ブループリントコピー最適化2のブループリント", 
       "ko": "스탠드업 L-Set 블루프린트 복제 최적화 II 블루프린트", 
       "ru": "Standup L-Set Blueprint Copy Optimization II Blueprint", 
-      "zh": "屹立大型蓝图拷贝优化蓝图 II"
+      "zh": "屹立大型蓝图拷贝优化 II 蓝图"
     }, 
     "typeNameID": 523080, 
     "volume": 0.01
@@ -219860,7 +219860,7 @@
       "ja": "スタンドアップ大型母艦製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 캐피탈 함선 제작 효율성 I 블루프린트", 
       "ru": "Standup L-Set Capital Ship Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立旗舰制造效率I L蓝图"
+      "zh": "屹立大型旗舰制造效率 I 蓝图"
     }, 
     "typeNameID": 523081, 
     "volume": 0.01
@@ -219885,7 +219885,7 @@
       "ja": "スタンドアップ大型母艦製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 캐피탈 함선 제작 효율성 II 블루프린트", 
       "ru": "Standup L-Set Capital Ship Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型旗舰制造效率蓝图 II"
+      "zh": "屹立大型旗舰制造效率 II 蓝图"
     }, 
     "typeNameID": 523082, 
     "volume": 0.01
@@ -219910,7 +219910,7 @@
       "ja": "スタンドアップ大型ドローン・戦闘機製造資源効率I設計図", 
       "ko": "스탠드업 L-Set 드론 및 파이터 제작 효율성 I 블루프린트", 
       "ru": "Standup L-Set Drone and Fighter Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型无人机和铁骑舰载机制造效率蓝图 I"
+      "zh": "屹立大型无人机和铁骑舰载机制造效率 I 蓝图"
     }, 
     "typeNameID": 523083, 
     "volume": 0.01
@@ -219935,7 +219935,7 @@
       "ja": "スタンドアップ大型ドローン及び戦闘機製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 드론 및 파이터 제조 효율성 장치 II 블루프린트", 
       "ru": "Standup L-Set Drone and Fighter Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型无人机和铁骑舰载机制造效率蓝图 II"
+      "zh": "屹立大型无人机和铁骑舰载机制造效率 II 蓝图"
     }, 
     "typeNameID": 523084, 
     "volume": 0.01
@@ -219960,7 +219960,7 @@
       "ja": "スタンドアップ大型発明最適化1のブループリント", 
       "ko": "스탠드업 L-Set 인벤션 최적화 장치 I 블루프린트", 
       "ru": "Standup L-Set Invention Optimization I Blueprint", 
-      "zh": "屹立发明优化I L蓝图"
+      "zh": "屹立大型发明优化 I 蓝图"
     }, 
     "typeNameID": 523085, 
     "volume": 0.01
@@ -219985,7 +219985,7 @@
       "ja": "スタンドアップ大型発明最適化2のブループリント", 
       "ko": "스탠드업 L-Set 인벤션 최적화 장치 II 블루프린트", 
       "ru": "Standup L-Set Invention Optimization II Blueprint", 
-      "zh": "屹立大型发明优化蓝图 II"
+      "zh": "屹立大型发明优化 II 蓝图"
     }, 
     "typeNameID": 523086, 
     "volume": 0.01
@@ -220010,7 +220010,7 @@
       "ja": "スタンドアップ大型ME研究最適化1のブループリント", 
       "ko": "스탠드업 L-Set 자원효율성 연구 최적화 장치 I 블루프린트", 
       "ru": "Standup L-Set ME Research Optimization I Blueprint", 
-      "zh": "屹立材料效率研究优化I L蓝图"
+      "zh": "屹立大型材料效率研究优化 I 蓝图"
     }, 
     "typeNameID": 523087, 
     "volume": 0.01
@@ -220035,7 +220035,7 @@
       "ja": "スタンドアップ大型ME研究最適化2のブループリント", 
       "ko": "스탠드업 L-Set 자원효율성 연구 최적화 장치 II 블루프린트", 
       "ru": "Standup L-Set ME Research Optimization II Blueprint", 
-      "zh": "屹立大型材料效率研究优化蓝图 II"
+      "zh": "屹立大型材料效率研究优化 II 蓝图"
     }, 
     "typeNameID": 523088, 
     "volume": 0.01
@@ -220060,7 +220060,7 @@
       "ja": "スタンドアップ大型ストラクチャ製造効率1のブループリント", 
       "ko": "스탠드업 L-Set 구조물 제조 효율성 I 블루프린트", 
       "ru": "Standup L-Set Structure Manufacturing Efficiency I Blueprint", 
-      "zh": "屹立大型建筑制造效率蓝图 I"
+      "zh": "屹立大型建筑制造效率 I 蓝图"
     }, 
     "typeNameID": 523089, 
     "volume": 0.01
@@ -220085,7 +220085,7 @@
       "ja": "スタンドアップ大型ストラクチャ製造効率2のブループリント", 
       "ko": "스탠드업 L-Set 구조물 제조 효율성 II 블루프린트", 
       "ru": "Standup L-Set Structure Manufacturing Efficiency II Blueprint", 
-      "zh": "屹立大型建筑制造效率蓝图 II"
+      "zh": "屹立大型建筑制造效率 II 蓝图"
     }, 
     "typeNameID": 523090, 
     "volume": 0.01
@@ -220110,7 +220110,7 @@
       "ja": "スタンドアップ大型TE研究最適化1のブループリント", 
       "ko": "스탠드업 L-Set 시간효율성 연구 최적화 I 블루프린트", 
       "ru": "Standup L-Set TE Research Optimization I Blueprint", 
-      "zh": "屹立大型时间效率研究优化蓝图 I"
+      "zh": "屹立大型时间效率研究优化 I 蓝图"
     }, 
     "typeNameID": 523091, 
     "volume": 0.01
@@ -220135,7 +220135,7 @@
       "ja": "スタンドアップ大型TE研究最適化2のブループリント", 
       "ko": "스탠드업 L-Set 시간효율성 연구 최적화 II 블루프린트", 
       "ru": "Standup L-Set TE Research Optimization II Blueprint", 
-      "zh": "屹立大型时间效率研究优化蓝图 II"
+      "zh": "屹立大型时间效率研究优化 II 蓝图"
     }, 
     "typeNameID": 523092, 
     "volume": 0.01
@@ -220223,7 +220223,7 @@
       "ja": "迎撃ランチャーIブループリント", 
       "ko": "디펜더 런처 I 블루프린트", 
       "ru": "Defender Launcher I Blueprint", 
-      "zh": "反弹道导弹发射器蓝图 I"
+      "zh": "反弹道导弹发射器 I 蓝图"
     }, 
     "typeNameID": 523462, 
     "volume": 0.01
@@ -242708,7 +242708,7 @@
       "ja": "パシファイヤー設計図", 
       "ko": "퍼시파이어 블루프린트", 
       "ru": "Pacifier Blueprint", 
-      "zh": "安抚者级蓝图"
+      "zh": "安抚者蓝图"
     }, 
     "typeNameID": 526238, 
     "volume": 0.01
@@ -244457,7 +244457,7 @@
       "ja": "スタンドアップ化合物リアクターI設計図", 
       "ko": "스탠드업 복합 반응 I 블루프린트", 
       "ru": "Standup Composite Reactor I Blueprint", 
-      "zh": "屹立复合反应堆蓝图 I"
+      "zh": "屹立复合反应堆 I 蓝图"
     }, 
     "typeNameID": 526388, 
     "volume": 0.01
@@ -244482,7 +244482,7 @@
       "ja": "スタンドアップ・ハイブリッド・リアクターI設計図", 
       "ko": "스탠드업 하이브리드 반응로 I 블루프린트", 
       "ru": "Standup Hybrid Reactor I Blueprint", 
-      "zh": "屹立混合反应堆蓝图 I"
+      "zh": "屹立混合反应堆 I 蓝图"
     }, 
     "typeNameID": 526389, 
     "volume": 0.01
@@ -244507,7 +244507,7 @@
       "ja": "スタンドアップ有機化合リアクターI設計図", 
       "ko": "스탠드업 생화학 반응로 I 블루프린트", 
       "ru": "Standup Biochemical Reactor I Blueprint", 
-      "zh": "屹立生化反应堆蓝图 I"
+      "zh": "屹立生化反应堆 I 蓝图"
     }, 
     "typeNameID": 526390, 
     "volume": 0.01
