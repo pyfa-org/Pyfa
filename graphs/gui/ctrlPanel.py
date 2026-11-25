@@ -109,6 +109,13 @@ class GraphControlPanel(wx.Panel):
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
         commonOptsSizer.Add(self.showY0Cb, 0, wx.EXPAND | wx.TOP, 5)
 
+        self.reverseFilteredMatchupsCb = wx.CheckBox(
+            self, wx.ID_ANY, _t('Include reverse matchups when filtered'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.reverseFilteredMatchupsCb.SetValue(False)
+        self.reverseFilteredMatchupsCb.Bind(wx.EVT_CHECKBOX, self.OnReverseFilteredMatchupsChange)
+        self.reverseFilteredMatchupsCb.SetToolTip(wx.ToolTip(_t(
+            'Also plot target→attacker for the same ships. Add each ship to both attacker and target lists.')))
+        commonOptsSizer.Add(self.reverseFilteredMatchupsCb, 0, wx.EXPAND | wx.TOP, 5)
         optsSizer.Add(commonOptsSizer, 0, wx.EXPAND | wx.RIGHT, 10)
 
         # Right column: inputs
@@ -207,6 +214,7 @@ class GraphControlPanel(wx.Panel):
         # Source and target list
         self.refreshColumns(layout=False)
         self.targetList.Show(view.hasTargets)
+        self.reverseFilteredMatchupsCb.Show(view.hasTargets)
 
         # Ammo options and X axis visibility (only for graphs with segments)
         hasSegments = getattr(view, 'hasSegments', False)
@@ -419,6 +427,10 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame.clearCache(reason=GraphCacheCleanupReason.inputChanged)
         self.graphFrame.draw()
 
+    def OnReverseFilteredMatchupsChange(self, event):
+        event.Skip()
+        self.graphFrame.draw()
+
     def OnYTypeUpdate(self, event):
         event.Skip()
         self._updateInputs()
@@ -586,6 +598,34 @@ class GraphControlPanel(wx.Panel):
     @property
     def targets(self):
         return self.targetList.wrappers
+
+    @property
+    def filteredSources(self):
+        srcs = self.sources
+        selected = self.sourceList.getSelectedWrappers()
+        if not selected:
+            return srcs
+        sel = set(selected)
+        return [w for w in srcs if w in sel]
+
+    @property
+    def filteredTargets(self):
+        tgts = self.targets
+        selected = self.targetList.getSelectedWrappers()
+        if not selected:
+            return tgts
+        sel = set(selected)
+        return [w for w in tgts if w in sel]
+
+    @property
+    def isGraphFiltered(self):
+        return bool(self.sourceList.getSelectedWrappers()) or bool(self.targetList.getSelectedWrappers())
+
+    @property
+    def showReverseFilteredMatchups(self):
+        if not self.graphFrame.getView().hasTargets or not self.isGraphFiltered:
+            return False
+        return self.reverseFilteredMatchupsCb.GetValue()
 
     # Fit events
     def OnFitRenamed(self, event):
